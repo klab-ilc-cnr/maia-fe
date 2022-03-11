@@ -23,7 +23,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     FormsModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: ['http://localhost:9090/api'],
+        allowedUrls: ['http://localhost:9000/projectx/api'],
         sendAccessToken: true
       }
     })
