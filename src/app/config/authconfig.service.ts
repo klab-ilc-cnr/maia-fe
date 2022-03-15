@@ -59,7 +59,13 @@ export class AuthConfigService {
         .pipe(filter((e: any) => {
           return e.type === 'token_received';
         }))
-        .subscribe(() => this.handleNewToken());
+        .subscribe(() =>
+        {
+          this.handleNewToken()
+          console.debug('state', this.oauthService.state);
+          const scopes = this.oauthService.getGrantedScopes();
+          console.debug('scopes', scopes);
+        });
       // disabling keycloak for now
       // resolveFn();
       // continue initializing app or redirect to login-page
