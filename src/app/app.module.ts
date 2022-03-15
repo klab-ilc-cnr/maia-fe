@@ -8,25 +8,33 @@ import {UserFormComponent} from './user-form/user-form.component';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from '@angular/common/http';
 import {UserService} from './service/user.service';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthConfigModule } from './config/auth.config.module';
+import { HeaderComponent } from './header/header.component';
+// import { OAuthModule } from 'angular-oauth2-oidc';
+// import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
-    UserFormComponent
+    UserFormComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    OAuthModule.forRoot({
-      resourceServer: {
-        allowedUrls: ['http://localhost:9000/projectx/api'],
-        sendAccessToken: true
-      }
-    })
+    BrowserAnimationsModule,
+    AuthConfigModule,
+    // AuthModule
+    // OAuthModule.forRoot({
+    //   resourceServer: {
+    //     allowedUrls: ['http://localhost:9000/projectx/api'],
+    //     sendAccessToken: true
+    //   }
+    // })
   ],
   providers: [UserService],
   bootstrap: [AppComponent]
