@@ -36,7 +36,7 @@ import { HeaderComponent } from './header/header.component';
     //   }
     // })
   ],
-  providers: [UserService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
