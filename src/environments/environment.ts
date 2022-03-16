@@ -12,7 +12,7 @@ export const environment = {
   envName: 'local',
   keycloak: {
     issuer: issuer,
-    redirectUri: window.location.origin + '/users',
+    redirectUri: window.location.origin + '/usersManagement/users',
     clientId: clientid,
     scope: 'openid profile email offline_access users',
     responseType: 'code',

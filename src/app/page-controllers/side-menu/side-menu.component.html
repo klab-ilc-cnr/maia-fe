@@ -1,0 +1,34 @@
+<nav class="navbar-default navbar-static-side side-menu" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
+            <li *ngIf="true"
+                [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/adduser'])}">
+                <a routerLink='/usersManagement/users'>
+                    <span class="nav-label">Gestione utenti</span>
+                    <fa-icon [icon]="faChevronDown" *ngIf="isActive(['usersManagement/users','usersManagement/adduser'])">
+                    </fa-icon>
+                    <fa-icon [icon]="faChevronLeft" *ngIf="!(isActive(['usersManagement/users','usersManagement/adduser']))">
+                    </fa-icon>
+                </a>
+                <ul class="nav nav-second-level"
+                    [ngClass]="{'collapse':!(isActive(['usersManagement/users','usersManagement/adduser']))}">
+                    <li [ngClass]="{'active': isActive(['usersManagement/users'])}">
+                        <a routerLink="/usersManagement/users">
+                            <span class="nav-label">Anagrafiche</span>
+                        </a>
+                    </li>
+                    <li [ngClass]="{'active': isActive(['usersManagement/adduser'])}">
+                        <a routerLink="/usersManagement/adduser">
+                            <span class="nav-label">Ruoli e permessi</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

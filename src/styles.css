@@ -1,1 +1,341 @@
-/* You can add global styles to this file, and also import other style files */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+.cross-validation-error input,
+input.ng-invalid.ng-touched,
+ng-select2.ng-invalid.ng-touched > span.select2-container,
+p-radioButton.ng-invalid.ng-touched .p-radiobutton-box,
+p-dropdown.ng-invalid.ng-touched > .p-dropdown,
+p-inputnumber.ng-invalid.ng-touched input {
+  border-left: 5px solid #A94442;
+  border-bottom: 1px solid #A94442;
+  border-right: 1px solid #A94442;
+  border-top: 1px solid #A94442; }
+
+p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
+  border-radius: 100%; }
+
+.invalid-feedback,
+.invalid-feedback.invalid-feedback-show,
+.form-control.ng-invalid.ng-touched ~ .invalid-feedback,
+.form-control.ng-invalid.ng-dirty ~ .invalid-feedback {
+  display: block; }
+
+.cross-validation-error input ~ .input-group-append > button,
+.ng-invalid ~ .input-group-append > button {
+  border-color: #A94442; }
+
+.cross-validation-error input ~ .input-group-append ~ .input-group-append > button,
+.ng-invalid ~ .input-group-append ~ .input-group-append > button {
+  border-color: #A94442; }
+
+.swalDangerButton {
+  background-color: #EC4758 !important; }
+
+.blue-widget-dark-bg {
+  background-color: #011f4b;
+  color: #ffffff; }
+
+.blue-widget-normal-bg {
+  background-color: #03396c;
+  color: #ffffff; }
+
+.blue-widget-light-bg {
+  background-color: #005b96;
+  color: #ffffff; }
+
+.blue-widget-lightest-bg {
+  background-color: #6497b1;
+  color: #ffffff; }
+
+table > tbody > tr.selectable-table {
+  cursor: pointer; }
+
+.subtitle {
+  margin-top: -5px; }
+
+.form-control.nonGrayReadonly:disabled,
+.form-control.nonGrayReadonly[readonly],
+.p-inputnumber.nonGrayReadonly .p-inputnumber-input {
+  background-color: #ffffff; }
+
+.margin-right-small {
+  margin-right: 3px; }
+
+.margin-top-small {
+  margin-top: 5px; }
+
+.cursor-hand {
+  cursor: pointer; }
+
+.ibox {
+  margin-bottom: 20px; }
+
+.spaceRight {
+  margin-right: 3px; }
+
+.spaceLeft {
+  margin-left: 3px; }
+
+.spaceBottom {
+  margin-bottom: 3px; }
+
+.header-label {
+  font-weight: bold; }
+
+.header-value {
+  font-weight: normal; }
+
+.active-item {
+  color: #5DADE2 !important; }
+
+.swal2-container {
+  z-index: 6000 !important; }
+
+.tooltip {
+  font-size: 1rem; }
+
+.order-tooltip {
+  z-index: 2300; }
+
+.order-tooltip .tooltip-inner {
+  max-width: 300px; }
+
+.breadcrumb {
+  margin-top: 5px;
+  margin-bottom: -10px; }
+
+.ibox-title {
+  padding: 15px 8px 8px 15px; }
+
+.positive-balance {
+  color: #229954 !important; }
+
+.negative-balance {
+  color: #D91614 !important; }
+
+.footer-label {
+  font-weight: bold; }
+
+.footer-value {
+  font-weight: normal; }
+
+.iga-badge,
+.project-badge,
+.payment-badge,
+.invoice-badge {
+  border-radius: 5px;
+  padding: .25em .5em;
+  font-weight: 600;
+  letter-spacing: .3px; }
+
+.iga-badge.status-accepted,
+.project-badge.status-active,
+.invoice-badge.status-paid,
+.payment-badge.status-paid {
+  background-color: #e6ffe6; }
+
+.iga-badge.status-sent,
+.project-badge.status-pending-approval,
+.invoice-badge.status-partially-paid {
+  background-color: #fffed1; }
+
+.iga-badge.status-done,
+.project-badge.status-suspended {
+  background-color: #e7e7e7; }
+
+.iga-badge.status-not-accepted,
+.project-badge.status-closed,
+.invoice-badge.status-not-paid {
+  background-color: #ffd4d4; }
+
+.iga-badge.status-to-do,
+.project-badge.status-billable {
+  background-color: #dbe5ff; }
+
+.iga-badge.status-accepted {
+  color: #229954; }
+
+.iga-badge.status-sent {
+  color: #ffae00; }
+
+.iga-badge.status-done {
+  color: #000000; }
+
+.iga-badge.status-not-accepted {
+  color: #D91614; }
+
+.iga-badge.status-to-do {
+  color: #1D70E0; }
+
+.payment-badge.status-paid {
+  color: #229954; }
+
+.project-badge.status-active {
+  color: #229954; }
+
+.project-badge.status-pending-approval {
+  color: #ffae00; }
+
+.project-badge.status-billable {
+  color: #1D70E0; }
+
+.project-badge.status-closed {
+  color: #D91614; }
+
+.project-badge.status-suspended {
+  color: #000000; }
+
+.invoice-badge.status-paid {
+  color: #229954; }
+
+.invoice-badge.status-not-paid {
+  color: #D91614; }
+
+.invoice-badge.status-partially-paid {
+  color: #ffae00; }
+
+tfoot > tr:first-child {
+  border-top: 2px solid; }
+
+.no-margin-bottom {
+  margin-bottom: 0; }
+
+.formTopMargin {
+  margin-top: 15px; }
+
+.fc-event-title {
+  color: #ffffff; }
+
+html {
+  font-size: 13px; }
+
+.p-datatable table,
+.p-datatable .p-inputtext,
+.p-datatable .p-slider,
+.p-datatable .p-multiselect,
+.p-datatable .p-multiselect-items-wrapper > ul,
+.p-datatable .p-dropdown-items-wrapper > ul,
+.p-datatable .p-component {
+  font-size: 12px; }
+
+.p-datatable .p-datatable-thead > tr > th {
+  text-align: center;
+  text-overflow: ellipsis; }
+
+.p-datatable .p-multiselect-items-wrapper > ul,
+.p-datatable .p-dropdown-items-wrapper > ul {
+  text-align: left; }
+
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-tfoot > tr > td {
+  padding: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+  .p-datatable .p-datatable-tbody > tr > td:hover,
+  .p-datatable .p-datatable-tfoot > tr > td:hover {
+    text-decoration: underline;
+    text-overflow: initial;
+    overflow-x: auto; }
+
+.p-column-filter.p-inputtext,
+.p-column-filter.p-multiselect,
+.p-column-filter.p-dropdown {
+  width: 100%; }
+
+.slider-number-range-sm {
+  font-size: x-small; }
+
+p-calendar .p-calendar .p-datepicker {
+  min-width: 350px; }
+
+.fc-event {
+  padding: 1px; }
+
+.cost-account-view-panel {
+  top: 35% !important;
+  left: 35% !important;
+  width: 700px; }
+
+.p-overlaypanel:before {
+  bottom: none !important;
+  left: unset !important;
+  position: unset !important;
+  content: unset !important; }
+
+.p-overlaypanel:after {
+  border-bottom-color: transparent !important;
+  border-top-color: transparent !important; }
+
+li.p-dropdown-item {
+  white-space: normal; }
+
+.p-inputgroup-addon {
+  background-color: #e9ecef;
+  min-width: auto; }
+
+.input-readonly .p-inputnumber-input {
+  opacity: 1;
+  background-color: #e9ecef;
+  border: 1px solid #bebdbd;
+  color: #495057; }
+
+.p-inputgroup input:first-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }
+
+.p-inputgroup input:last-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.p-padding {
+  padding-left: 10px;
+  padding-right: 10px; }
+
+.p-button-inline {
+  padding: 9px; }
+
+.p-paginator-left-content {
+  margin-left: 5px; }
+
+.overflow-usedBudget .p-inputnumber-input,
+.overflow-usedBudget.p-inputgroup-addon {
+  color: #D91614 !important; }
+
+.content-middle {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column; }
+
+.card-single-center {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  height: 100vh; }
+
+.seven-cols-item {
+  width: 12%;
+  margin: auto; }
+
+.dropdown-item-text {
+  position: relative;
+  left: 10px; }
+
+.dropdown-item-button {
+  position: absolute;
+  right: 10px;
+  margin: auto; }
+
+.p-field-checkbox {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center; }
+
+.p-field-checkbox > label,
+.p-field-radiobutton > label {
+  margin-left: .5rem;
+  margin-bottom: .0rem;
+  line-height: 1; }

@@ -1,0 +1,10 @@
+.nav li a .sideMenuIcon
+{
+    margin-right: 6px
+}
+
+nav.side-menu app-icon-collapsed-menu,
+nav.side-menu app-icon-opened-menu
+{
+    float: right
+}

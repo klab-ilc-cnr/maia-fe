@@ -10,7 +10,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {UserService} from './service/user.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthConfigModule } from './config/auth.config.module';
-import { HeaderComponent } from './header/header.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LayoutComponent } from './layout/layout.component';
+import { PageControllersModule } from './page-controllers/page-controllers.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
 
@@ -19,7 +22,7 @@ import { HeaderComponent } from './header/header.component';
     AppComponent,
     UserListComponent,
     UserFormComponent,
-    HeaderComponent
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +31,9 @@ import { HeaderComponent } from './header/header.component';
     FormsModule,
     BrowserAnimationsModule,
     AuthConfigModule,
+    NgbModule,
+    PageControllersModule,
+    FontAwesomeModule
     // AuthModule
     // OAuthModule.forRoot({
     //   resourceServer: {

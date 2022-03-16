@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NullValidationHandler, OAuthService, AuthConfig} from 'angular-oauth2-oidc';
+// import {NullValidationHandler, OAuthService, AuthConfig} from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-root',
