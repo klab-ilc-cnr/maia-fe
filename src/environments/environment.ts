@@ -4,7 +4,7 @@
 
 let clientid = "projectx-fe";
 let secret = "your_app_secret";
-let issuer = "http://localhost:8080/auth/realms/princnr";
+let issuer = "http://localhost:8080/realms/princnr";
 let allowedUrls = 'http://localhost:9000/projectx/api';
 
 export const environment = {
