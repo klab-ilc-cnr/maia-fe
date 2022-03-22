@@ -1,17 +1,22 @@
 import {Component} from '@angular/core';
+import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { cilUser } from '@coreui/icons';
 // import {NullValidationHandler, OAuthService, AuthConfig} from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [IconSetService]
 })
 export class AppComponent {
   title = 'projectxFE';
 
   constructor(
+    public iconSet: IconSetService
     // private oauthService: OAuthService
   ) {
+    iconSet.icons = { cilUser };
     // this.configure();
   }
 

@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
+
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {UserListComponent} from './user-list/user-list.component';
@@ -16,6 +17,15 @@ import { PageControllersModule } from './page-controllers/page-controllers.modul
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
+
+import {
+  BreadcrumbModule,
+  HeaderModule,
+  FooterModule,
+  SidebarModule,
+} from '@coreui/angular';
+
+import { IconComponent, IconModule, IconSetModule, IconSetService } from '@coreui/icons-angular';
 
 @NgModule({
   declarations: [
@@ -33,7 +43,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AuthConfigModule,
     NgbModule,
     PageControllersModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    IconComponent,
+    IconModule,
+    IconSetModule.forRoot(),
+    SidebarModule
     // AuthModule
     // OAuthModule.forRoot({
     //   resourceServer: {
@@ -42,7 +56,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     //   }
     // })
   ],
-  providers: [],
+  providers: [IconSetService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

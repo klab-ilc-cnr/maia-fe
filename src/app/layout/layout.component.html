@@ -1,7 +1,11 @@
 <body class="fixed-sidebar fixed-nav fixed-nav-basic">
     <div id="wrapper">
         <app-header></app-header>
-        <app-side-menu></app-side-menu>
+        <c-sidebar visible>
+          <c-sidebar-brand>Sidebar Brand</c-sidebar-brand>
+          <c-sidebar-nav [navItems]="navItems"></c-sidebar-nav>
+          <c-sidebar-toggler></c-sidebar-toggler>
+        </c-sidebar>
         <div id="page-wrapper" class="gray-bg">
             <router-outlet></router-outlet>
         </div>
