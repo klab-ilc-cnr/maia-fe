@@ -14,6 +14,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutComponent } from './layout/layout.component';
 import { PageControllersModule } from './page-controllers/page-controllers.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { ButtonModule } from "primeng/button";
+
+import { SidebarModule } from "primeng/sidebar";
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
 
@@ -33,7 +37,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AuthConfigModule,
     NgbModule,
     PageControllersModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ButtonModule,
+    SidebarModule
     // AuthModule
     // OAuthModule.forRoot({
     //   resourceServer: {

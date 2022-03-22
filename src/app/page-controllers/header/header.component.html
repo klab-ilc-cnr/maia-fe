@@ -1,4 +1,4 @@
-<div class="header">
+<!-- <div class="header">
     <div class="row">
         <div class="col-md-9">
             <h1 style="text-align: center;">Todos</h1>
@@ -6,5 +6,27 @@
         <div class="col-md-3">
             <h4><a href="#" (click)="logout()">Logout</a></h4>
         </div>
+    </div>
+</div> -->
+
+<div class="layout-topbar">
+    <a class="p-link layout-menu-button layout-topbar-button" href="#" (click)="layout.toggleMenu($event)">
+      <i class="pi pi-bars"></i>
+    </a>
+
+    <a class="layout-topbar-logo" routerLink="">
+        <i class="pi pi-apple"></i>
+        <span>Project X</span>
+    </a>
+
+    <a class="p-link layout-topbar-menu-button layout-topbar-button" href="#" >
+        <i class="pi pi-ellipsis-v"></i>
+    </a>
+
+    <div class="layout-topbar-menu" >
+      <a href="#" class="p-link layout-topbar-button">
+          <i class="pi pi-user"></i>
+          <span>Profile</span>
+      </a>
     </div>
 </div>

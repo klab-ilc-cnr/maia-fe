@@ -1,9 +1,27 @@
-<body class="fixed-sidebar fixed-nav fixed-nav-basic">
-    <div id="wrapper">
+<body>
+  <div class="layout-wrapper" [ngClass]="{'layout-overlay':isOverlay(),
+                                          'layout-static':isStatic(),
+                                          'layout-overlay-sidebar-active': overlayMenuActive,
+                                          'layout-static-sidebar-inactive': staticMenuInactive,
+                                          'layout-mobile-sidebar-active': menuActiveMobile}">
+    <app-header></app-header>
+    <app-side-menu></app-side-menu>
+
+    <div class="layout-container">
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+        </div>
+        <!-- <app-footer></app-footer> -->
+    </div>
+    <!-- <app-config></app-config> -->
+    <!-- <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div> -->
+  </div>
+    <!-- <div id="wrapper">
         <app-header></app-header>
+        <p-button type="text" (click)="display = true; m = false;" icon="pi pi-plus" label="Show"></p-button>
         <app-side-menu></app-side-menu>
         <div id="page-wrapper" class="gray-bg">
             <router-outlet></router-outlet>
         </div>
-    </div>
+    </div> -->
 </body>
