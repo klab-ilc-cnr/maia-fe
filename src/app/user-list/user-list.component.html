@@ -7,15 +7,21 @@
       <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Name</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Cognome</th>
         <th scope="col">Email</th>
+        <th scope="col">Ruolo</th>
+        <th scope="col">Stato</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let user of users">
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
+        <td>{{ user.surname }}</td>
         <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.active ? 'ATTIVO' : 'NON ATTIVO' }}</td>
       </tr>
       </tbody>
     </table>
