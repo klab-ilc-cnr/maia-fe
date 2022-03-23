@@ -37,6 +37,10 @@ a {
   color: var(--primary-color);
 }
 
+a:hover {
+  color: $redPalette1;
+}
+
 .layout-theme-light {
   background-color: #edf1f5;
 }
@@ -394,6 +398,14 @@ a {
 }
 
 // FOOTER
+.layout-footer {
+  transition: margin-left $transitionDuration;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--surface-border);
+}
 
 // RESPONSIVE
 @media (min-width: 992px) {

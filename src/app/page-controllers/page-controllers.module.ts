@@ -9,14 +9,14 @@ import { SidebarModule } from "primeng/sidebar";
 import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
-  declarations: [HeaderComponent, SideMenuComponent, FooterComponent],
-  exports: [HeaderComponent, SideMenuComponent],
+  declarations: [FooterComponent, HeaderComponent, SideMenuComponent],
+  exports: [FooterComponent, HeaderComponent, SideMenuComponent],
   imports: [
     ButtonModule,
     CommonModule,
     FontAwesomeModule,
     RouterModule,
-    SidebarModule
+    SidebarModule,
   ]
 })
 export class PageControllersModule { }
