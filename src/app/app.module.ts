@@ -16,8 +16,10 @@ import { PageControllersModule } from './page-controllers/page-controllers.modul
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ButtonModule } from "primeng/button";
-
-import { SidebarModule } from "primeng/sidebar";
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TableModule } from "primeng/table";
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
 
@@ -39,8 +41,11 @@ import { SidebarModule } from "primeng/sidebar";
     PageControllersModule,
     FontAwesomeModule,
     ButtonModule,
-    SidebarModule,
-    ReactiveFormsModule
+    TableModule,
+    ReactiveFormsModule,
+    MultiSelectModule,
+    DropdownModule,
+    InputSwitchModule
     // AuthModule
     // OAuthModule.forRoot({
     //   resourceServer: {

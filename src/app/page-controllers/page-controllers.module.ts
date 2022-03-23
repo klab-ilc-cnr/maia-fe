@@ -16,7 +16,7 @@ import { FooterComponent } from './footer/footer.component';
     CommonModule,
     FontAwesomeModule,
     RouterModule,
-    SidebarModule,
+    SidebarModule
   ]
 })
 export class PageControllersModule { }

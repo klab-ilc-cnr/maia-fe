@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Roles } from '../model/roles'
+import { Table } from 'primeng/table';
 import { User } from '../model/user';
 import { UserService } from '../service/user.service';
 
@@ -9,7 +11,10 @@ import { UserService } from '../service/user.service';
 })
 export class UserListComponent implements OnInit {
 
-  users: User[] | undefined;
+  @ViewChild('dt') public dt: Table | undefined
+
+  public roleOptions = Array<string>();
+  public users = new Array<User>();
 
   constructor(private userService: UserService) {
   }
@@ -18,5 +23,6 @@ export class UserListComponent implements OnInit {
     this.userService.findAll().subscribe(data => {
       this.users = data;
     });
+    this.roleOptions = Object.keys(Roles);
   }
 }

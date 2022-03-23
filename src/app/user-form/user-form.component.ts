@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { User } from '../model/user';
-import {Roles} from '../model/roles'
+import { Roles } from '../model/roles';
 
 @Component({
   selector: 'app-user-form',
@@ -21,8 +21,10 @@ export class UserFormComponent implements OnInit {
     private userService: UserService) {
     this.user = new User();
   }
+
   ngOnInit(): void {
-    this.roles=Object.keys(Roles);
+    this.roles = Object.keys(Roles);
+    this.user.active = true;
   }
 
   onSubmit() {
@@ -34,8 +36,7 @@ export class UserFormComponent implements OnInit {
   }
 
   onRoleChanged(event: any) {
-    console.log("selected value", 
-    event.target.value);
+    console.log("selected value", event.target.value, this.user.active);
     this.user.role = event.target.value;
     this.user.active = true;
   }

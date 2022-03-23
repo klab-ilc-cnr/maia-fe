@@ -1,29 +1,41 @@
-<div class="card">
-  <div class="card-header">
-    Anagrafiche
-  </div>
-  <div class="card-body">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Cognome</th>
-        <th scope="col">Email</th>
-        <th scope="col">Ruolo</th>
-        <th scope="col">Stato</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.id }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.surname }}</td>
-        <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
-        <td>{{ user.role }}</td>
-        <td>{{ user.active ? 'ATTIVO' : 'NON ATTIVO' }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+      <div class="page-header">
+        <h5>Anagrafiche</h5>
+        <a routerLink="/usersManagement/adduser" class="btn btn-danger btn-with-icon ms-auto">
+          <i class="pi pi-user-plus"></i>
+          <span>Nuovo Utente</span>
+        </a>
+      </div>
+      <p-table #dt [value]="users" [rowHover]="true" [responsive]="true" [scrollable]="false"
+        [paginator]="true" [rows]="10" selectionMode="single" dataKey="id" styleClass="p-datatable-striped">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th pSortableColumn="name">Nome <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="surname">Cognome <p-sortIcon field="surname"></p-sortIcon></th>
+            <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+            <th pSortableColumn="role">Ruolo <p-sortIcon field="role"></p-sortIcon></th>
+            <th pSortableColumn="status">Stato <p-sortIcon field="status"></p-sortIcon></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user columns="col">
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.surname }}</td>
+            <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.active ? 'ATTIVO' : 'NON ATTIVO' }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+					<tr>
+						<td colspan="6">Nesssun utente trovato.</td>
+					</tr>
+				</ng-template>
+      </p-table>
+		</div>
+	</div>
 </div>
