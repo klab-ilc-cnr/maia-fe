@@ -19,6 +19,7 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 ]
 })
 export class LayoutComponent implements OnInit {
+
   public menuInactiveDesktop: boolean | undefined;
 
   public menuActiveMobile: boolean | undefined;
@@ -27,11 +28,17 @@ export class LayoutComponent implements OnInit {
 
   public staticMenuInactive: boolean = false;
 
+  public topMenuActive: boolean | undefined;
+
+  public topMenuLeaving: boolean | undefined;
+
   documentClickListener: (() => void) | undefined;
 
   menuClick: boolean | undefined;
 
   menuMode = 'static';
+
+  topMenuButtonClick: boolean | undefined;
 
   constructor(public renderer: Renderer2) { }
 
@@ -46,9 +53,9 @@ export class LayoutComponent implements OnInit {
             this.menuActiveMobile = false;
         }
 
-        // if (!this.topMenuButtonClick) {
-        //     this.hideTopMenu();
-        // }
+        if (!this.topMenuButtonClick) {
+            this.hideTopMenu();
+        }
       }
       else {
         if (!this.menuClick && this.isOverlay()) {
@@ -65,7 +72,7 @@ export class LayoutComponent implements OnInit {
 
       // this.configClick = false;
       this.menuClick = false;
-      // this.topMenuButtonClick = false;
+      this.topMenuButtonClick = false;
     });
   }
 
@@ -75,7 +82,7 @@ export class LayoutComponent implements OnInit {
     if (this.isDesktop()) {
       if (this.menuMode === 'overlay') {
         if(this.menuActiveMobile === true) {
-            this.overlayMenuActive = true;
+          this.overlayMenuActive = true;
         }
 
         this.overlayMenuActive = !this.overlayMenuActive;
@@ -87,10 +94,35 @@ export class LayoutComponent implements OnInit {
     }
     else {
       this.menuActiveMobile = !this.menuActiveMobile;
-      // this.topMenuActive = false;
+      this.topMenuActive = false;
     }
 
     event.preventDefault();
+  }
+
+  toggleTopMenu(event: Event) {
+    this.topMenuButtonClick = true;
+    this.menuActiveMobile = false;
+
+    if (this.topMenuActive) {
+        this.hideTopMenu();
+    } else {
+        this.topMenuActive = true;
+    }
+
+    event.preventDefault();
+  }
+
+  hideTopMenu() {
+    this.topMenuLeaving = true;
+    setTimeout(() => {
+      this.topMenuActive = false;
+      this.topMenuLeaving = false;
+    }, 1);
+  }
+
+  onMenuClick() {
+    this.menuClick = true;
   }
 
   isDesktop() {
