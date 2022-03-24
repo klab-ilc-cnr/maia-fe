@@ -3,13 +3,11 @@
 		<div class="card">
       <div class="page-header">
         <h5>Anagrafiche</h5>
-        <a routerLink="/usersManagement/adduser" class="btn btn-danger btn-with-icon ms-auto">
-          <i class="pi pi-user-plus"></i>
-          <span>Nuovo Utente</span>
-        </a>
+        <p-button label="Nuovo utente" icon="pi pi-user-plus" styleClass="p-button-danger" (click)="goToNewUser()" class="ms-start"></p-button>
       </div>
       <p-table #dt [value]="users" [rowHover]="true" [responsive]="true" [scrollable]="false"
-        [paginator]="true" [rows]="10" selectionMode="single" dataKey="id" styleClass="p-datatable-striped">
+        [paginator]="true" [rows]="7" selectionMode="single" dataKey="id" styleClass="p-datatable-striped"
+        responsiveLayout="scroll" (onRowSelect)="goToEditUser($event)">
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
@@ -18,21 +16,25 @@
             <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
             <th pSortableColumn="role">Ruolo <p-sortIcon field="role"></p-sortIcon></th>
             <th pSortableColumn="status">Stato <p-sortIcon field="status"></p-sortIcon></th>
+            <th class="text-center">Dettagli</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user columns="col">
-          <tr>
+          <tr [pSelectableRow]="user">
             <td>{{ user.id }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.surname }}</td>
             <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
             <td>{{ user.role }}</td>
             <td>{{ user.active ? 'ATTIVO' : 'NON ATTIVO' }}</td>
+            <td class="text-center">
+              <button pButton pRipple type="button" icon="pi pi-user-edit" class="p-button-rounded p-button-danger p-button-text" (click)="goToEditUserById(user.id)"></button>
+            </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
 					<tr>
-						<td colspan="6">Nesssun utente trovato.</td>
+						<td colspan="7">Nesssun utente trovato.</td>
 					</tr>
 				</ng-template>
       </p-table>

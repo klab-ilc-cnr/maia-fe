@@ -9,21 +9,21 @@
         </div>
         <ul role="menu">
           <li *ngIf="true"
-            [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/adduser'])}">
+            [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/userDetails'])}">
             <a routerLink="/usersManagement/users">
               <i class="layout-menuitem-icon pi pi-users"></i>
               <span>Gestione utenti</span>
-              <i class="pi pi-chevron-down pi-fw ms-auto" *ngIf="isActive(['usersManagement/users','usersManagement/adduser'])"></i>
-              <i class="pi pi-chevron-right pi-fw ms-auto" *ngIf="!isActive(['usersManagement/users','usersManagement/adduser'])"></i>
+              <i class="pi pi-chevron-down pi-fw ms-auto" *ngIf="isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
+              <i class="pi pi-chevron-right pi-fw ms-auto" *ngIf="!isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
             </a>
-            <ul [ngClass]="{'collapse':!(isActive(['usersManagement/users','usersManagement/adduser']))}">
+            <ul [ngClass]="{'collapse':!(isActive(['usersManagement/users','usersManagement/userDetails']))}">
               <li [ngClass]="{'active': isActive(['usersManagement/users'])}">
                 <a routerLink="/usersManagement/users">
                   <span>Anagrafiche</span>
                 </a>
               </li>
-              <li [ngClass]="{'active': isActive(['usersManagement/adduser'])}" class="d-none">
-                <a routerLink="/usersManagement/adduser">
+              <li [ngClass]="{'active': isActive(['usersManagement/userDetails'])}" class="d-none">
+                <a routerLink="/usersManagement/userDetails">
                   <span>Ruoli e permessi</span>
                 </a>
               </li>

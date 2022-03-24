@@ -19,7 +19,16 @@ export class UserService {
     return this.http.get<User[]>(this.usersUrl);
   }
 
+  public retrieveById(id: string): Observable<User> {
+    return this.http.get<User>(this.usersUrl, { params: { id } });
+  }
+
   public save(user: User) {
+    return this.http.post<User>(this.usersUrl, user);
+  }
+
+  public update(user: User) {
+    // TO DO: modificare per gestire l'update
     return this.http.post<User>(this.usersUrl, user);
   }
 }

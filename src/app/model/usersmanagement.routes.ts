@@ -7,7 +7,7 @@ export const USERSMANAGEMENT_ROUTES = [
         component: UserListComponent
     },
     {
-        path: 'adduser',
+        path: 'userDetails/:id',
         component: UserFormComponent
     }
 ];

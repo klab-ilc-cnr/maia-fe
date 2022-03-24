@@ -2,7 +2,10 @@
 	<div class="col-12">
 		<div class="card">
       <div class="page-header">
-        <h5>Nuovo utente</h5>
+        <h5>
+          <div *ngIf="isEditUser(); else elseBlock">Dettaglio utente</div>
+          <ng-template #elseBlock>Nuovo utente</ng-template>
+        </h5>
       </div>
       <div class="card-body p-fluid">
         <form (ngSubmit)="onSubmit()" #userForm="ngForm">
@@ -53,8 +56,10 @@
             <p-inputSwitch #active="ngModel" name="active" [(ngModel)]="user.active"></p-inputSwitch>
           </div>
           <div class="text-end">
+            <button type="button" (click)="goToUserList()"
+                    class="btn btn-secondary ms-auto">Annulla</button>
             <button type="submit" [disabled]="!userForm.form.valid"
-                    class="btn btn-danger ms-auto">Submit</button>
+                    class="btn btn-danger ms-2">Salva</button>
           </div>
         </form>
       </div>

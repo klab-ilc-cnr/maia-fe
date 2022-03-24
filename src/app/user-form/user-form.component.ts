@@ -13,6 +13,8 @@ export class UserFormComponent implements OnInit {
 
   user: User;
 
+  private editUser = false;
+  private newId = 'new';
   public roles = Array<string>();
 
   constructor(
@@ -23,15 +25,37 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      var id = params.get('id');
+
+      if (id != this.newId && id != null) {
+        this.editUser = true;
+        this.loadUser(id);
+      }
+      else {
+        this.user = new User();
+        this.user.active = true;
+      }
+    });
+
     this.roles = Object.keys(Roles);
-    this.user.active = true;
+  }
+
+  isEditUser () {
+    return this.editUser;
   }
 
   onSubmit() {
-    this.userService.save(this.user).subscribe(result => this.gotoUserList());
+    if (this.editUser) {
+      console.log(this.user.email, this.user.id, this.user.role, this.user.active)
+      this.userService.update(this.user).subscribe(result => this.goToUserList());
+    }
+    else {
+      this.userService.save(this.user).subscribe(result => this.goToUserList());
+    }
   }
 
-  gotoUserList() {
+  goToUserList() {
     this.router.navigate(['usersManagement/users']);
   }
 
@@ -39,5 +63,14 @@ export class UserFormComponent implements OnInit {
     console.log("selected value", event.target.value, this.user.active);
     this.user.role = event.target.value;
     this.user.active = true;
+  }
+
+  private loadUser(id: string): void {
+    this.userService
+        .retrieveById(id)
+        .subscribe(
+          data => {
+            this.user = data;
+        });
   }
 }
