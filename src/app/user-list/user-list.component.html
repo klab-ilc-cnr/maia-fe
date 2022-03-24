@@ -6,7 +6,7 @@
         <p-button label="Nuovo utente" icon="pi pi-user-plus" styleClass="p-button-danger" (click)="goToNewUser()" class="ms-start"></p-button>
       </div>
       <p-table #dt [value]="users" [rowHover]="true" [responsive]="true" [scrollable]="false"
-        [paginator]="true" [rows]="7" selectionMode="single" dataKey="id" styleClass="p-datatable-striped"
+        [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" styleClass="p-datatable-striped"
         responsiveLayout="scroll" (onRowSelect)="goToEditUser($event)">
         <ng-template pTemplate="header">
           <tr>

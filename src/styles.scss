@@ -593,3 +593,8 @@ p {
 .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
   background: $redPalette5;
 }
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: $redPalette5;
+  color: $redPalette3;
+}
