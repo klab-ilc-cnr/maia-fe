@@ -28,7 +28,6 @@ export class UserService {
   }
 
   public update(user: User) {
-    // TO DO: modificare per gestire l'update
-    return this.http.post<User>(this.usersUrl, user);
+    return this.http.post<User>(this.usersUrl+'/updateUser', user);
   }
 }

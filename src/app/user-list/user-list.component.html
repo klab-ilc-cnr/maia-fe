@@ -28,7 +28,10 @@
             <td>{{ user.role }}</td>
             <td>{{ user.active ? 'ATTIVO' : 'NON ATTIVO' }}</td>
             <td class="text-center">
-              <button pButton pRipple type="button" icon="pi pi-user-edit" class="p-button-rounded p-button-danger p-button-text" (click)="goToEditUserById(user.id)"></button>
+              <button pButton pRipple type="button" icon="pi pi-user-edit"
+                class="p-button-rounded p-button-danger p-button-text"
+                (click)="goToEditUserById(user.id)">
+              </button>
             </td>
           </tr>
         </ng-template>
