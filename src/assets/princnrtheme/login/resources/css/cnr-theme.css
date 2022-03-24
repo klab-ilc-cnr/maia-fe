@@ -1,0 +1,66 @@
+:root {
+    --red-palette-1: #A5130F;
+    --red-palette-2: #CD1913;
+    --red-palette-3: #E01C15;
+    --red-palette-4: #F16E6A;
+    --red-palette-5: #FCDBDA;
+    --pf-global--primary-color--100: var(--red-palette-1);
+    --pf-c-button--m-primary--hover--BackgroundColor: var(--red-palette-1);
+    --pf-c-button--m-primary--active--BackgroundColor: var(--red-palette-1);
+    --pf-c-button--m-primary--focus--BackgroundColor: var(--red-palette-1);
+    --surface-ground: #f8f9fa;
+}
+
+#kc-header-wrapper {
+    color: var(--red-palette-1);
+}
+
+@media (min-width: 767px) {
+    .login-pf body {
+        background: var(--surface-ground);
+    }
+}
+
+.login-pf-page .card-pf {
+    padding: 48px;
+}
+
+.card-pf {
+    border-color: var(--pf-global--primary-color--100);
+    border-radius: 12px;
+}
+
+.pf-c-form-control:hover,
+.pf-c-form-control:focus {
+    border-bottom-color: var(--red-palette-1);
+}
+
+.pf-c-form-control.pf-m-focus,
+.pf-c-form-control:focus {
+    --pf-c-form-control--BorderBottomColor: var(--red-palette-1);
+}
+
+.pf-c-button.pf-m-primary {
+    border-radius: 12px;
+}
+
+.pf-c-button.pf-m-primary {
+    color: var(--pf-c-button--m-primary--Color);
+    background-color: var(--pf-c-button--m-primary--BackgroundColor);
+}
+
+.pf-c-button.pf-m-primary:hover,
+.pf-c-button.pf-m-primary.pf-m-hover {
+
+    background-color: var(--red-palette-2);
+}
+
+.pf-c-button.pf-m-primary:active,
+.pf-c-button.pf-m-primary.pf-m-active {
+    background-color: var(--red-palette-2);
+}
+
+.pf-c-button.pf-m-primary:focus,
+.pf-c-button.pf-m-primary.pf-m-focus {
+    background-color: var(--red-palette-2);
+}
