@@ -20,7 +20,7 @@ export class UserService {
   }
 
   public retrieveById(id: string): Observable<User> {
-    return this.http.get<User>(this.usersUrl, { params: { id } });
+    return this.http.get<User>(`${this.usersUrl}/${id}`);
   }
 
   public save(user: User) {
