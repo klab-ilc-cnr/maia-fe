@@ -8,7 +8,7 @@
           </div>
         </div>
         <ul role="menu">
-          <li *ngIf="true"
+          <li *ngIf="canManageUsers"
             [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/userDetails'])}">
             <a routerLink="/usersManagement/users">
               <i class="layout-menuitem-icon pi pi-users"></i>

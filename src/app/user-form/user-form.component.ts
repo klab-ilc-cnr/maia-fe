@@ -41,6 +41,11 @@ export class UserFormComponent implements OnInit {
     this.roles = Object.keys(Roles);
   }
 
+  public get canManageUsers(): boolean {
+    return true;
+    //return this.authorizationService.canManageUsers();
+  }
+
   isEditUser () {
     return this.editUser;
   }

@@ -27,6 +27,11 @@ export class SideMenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public get canManageUsers(): boolean {
+    return true;
+    //return this.authorizationService.canManageUsers();
+  }
+
   public isActive(urls: string[]): boolean {
     var isActive = false;
     urls.forEach(url => {
@@ -35,6 +40,7 @@ export class SideMenuComponent implements OnInit {
         return;
       }
     });
+
     return isActive;
   }
 

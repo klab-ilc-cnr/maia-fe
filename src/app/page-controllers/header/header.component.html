@@ -13,7 +13,7 @@
     </a>
 
     <div class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active':layout.topMenuActive}">
-      <a href="#" class="p-link layout-topbar-button">
+      <a class="p-link layout-topbar-button" (click)="goToMyProfile()">
         <i class="pi pi-user"></i>
         <span>Profile</span>
       </a>
