@@ -93,6 +93,19 @@ export class AuthConfigService {
   private handleNewToken() {
     this._decodedAccessToken = this.oauthService.getAccessToken();
     this._decodedIDToken = this.oauthService.getIdToken();
+
+    var parsedJwt = this.parseJwt(this.oauthService.getAccessToken());
+    //parsedJson.realm_access.roles.filter((r:string) => r === 'AMMINISTRATORE')
   }
+
+  private parseJwt (token: string) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
 
 }
