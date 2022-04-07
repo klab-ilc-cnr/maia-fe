@@ -7,6 +7,7 @@ export class AuthConfigService {
 
   private _decodedAccessToken: any;
   private _decodedIDToken: any;
+  private _parsedJwt: any;
 
   get decodedAccessToken() {
     return this._decodedAccessToken;
@@ -14,6 +15,10 @@ export class AuthConfigService {
 
   get decodedIDToken() {
     return this._decodedIDToken;
+  }
+
+  public parsedJwt(){
+    return this._parsedJwt;
   }
 
   constructor(
@@ -93,9 +98,10 @@ export class AuthConfigService {
   private handleNewToken() {
     this._decodedAccessToken = this.oauthService.getAccessToken();
     this._decodedIDToken = this.oauthService.getIdToken();
-
-    var parsedJwt = this.parseJwt(this.oauthService.getAccessToken());
+    this._parsedJwt = this.parseJwt(this.oauthService.getAccessToken());
+    
     //parsedJson.realm_access.roles.filter((r:string) => r === 'AMMINISTRATORE')
+    //console.log(parsedJwt);
   }
 
   private parseJwt (token: string) {

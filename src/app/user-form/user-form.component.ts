@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { User } from '../model/user';
 import { Roles } from '../model/roles';
+import { LoggedUserService } from '../service/logged-user.service';
 
 @Component({
   selector: 'app-user-form',
@@ -20,8 +21,10 @@ export class UserFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService) {
+    private userService: UserService,
+    private loggedUserService : LoggedUserService) {
     this.user = new User();
+    
   }
 
   ngOnInit(): void {
@@ -42,8 +45,9 @@ export class UserFormComponent implements OnInit {
   }
 
   public get canManageUsers(): boolean {
-    return true;
+    //return true;
     //return this.authorizationService.canManageUsers();
+    return this.loggedUserService.canManageUsers();
   }
 
   isEditUser () {

@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { LoggedUserService } from 'src/app/service/logged-user.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -17,7 +18,8 @@ export class SideMenuComponent implements OnInit {
   public currentPath: string[] = [''];
 
   constructor(
-    private router: Router
+    private router: Router,
+    private loggedUserService : LoggedUserService
   ) {
     router.events.pipe(
       filter(e => e instanceof NavigationEnd)
@@ -28,8 +30,9 @@ export class SideMenuComponent implements OnInit {
   }
 
   public get canManageUsers(): boolean {
-    return true;
+    //return true;
     //return this.authorizationService.canManageUsers();
+    return this.loggedUserService.canManageUsers();
   }
 
   public isActive(urls: string[]): boolean {

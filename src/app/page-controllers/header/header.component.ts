@@ -4,6 +4,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
 import { User } from 'src/app/model/user';
+import { LoggedUserService } from 'src/app/service/logged-user.service';
 
 @Component({
   selector: 'app-header',
@@ -16,24 +17,26 @@ export class HeaderComponent implements OnInit {
               public layout: LayoutComponent,
               private router: Router,
               private activeRoute: ActivatedRoute,
-              private userService: UserService) {
+              private userService: UserService,
+              private loggedUserService : LoggedUserService) {
   }
 
   ngOnInit() {
+    console.log(this.loggedUserService.name());    
   }
 
   logout() {
-    this.oauthService.logOut();
+    this.loggedUserService.logout()
   }
 
   goToMyProfile() {
+    //FIXME questa chiamata non deve passare ID sarà il backend a restituire il dato sulla base dell'utente loggato su keycloak
     this.router.navigate(['usersManagement','userDetails', this.currentUser.id]);
   }
 
   private get currentUser(): User {
-    var loggedUser = new User();
-    loggedUser.id = '2';
-    return loggedUser;
+
+    return this.loggedUserService.getUser();
 
     //per recuperare le info dell'utente loggato
     //return this.loggedUserService.isLoggedIn ? this.loggedUserService.currentUser : null;
