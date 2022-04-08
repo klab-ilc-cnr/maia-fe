@@ -30,8 +30,6 @@ export class SideMenuComponent implements OnInit {
   }
 
   public get canManageUsers(): boolean {
-    //return true;
-    //return this.authorizationService.canManageUsers();
     return this.loggedUserService.canManageUsers();
   }
 

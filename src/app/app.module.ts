@@ -46,13 +46,6 @@ import { TableModule } from "primeng/table";
     MultiSelectModule,
     DropdownModule,
     InputSwitchModule
-    // AuthModule
-    // OAuthModule.forRoot({
-    //   resourceServer: {
-    //     allowedUrls: ['http://localhost:9000/projectx/api'],
-    //     sendAccessToken: true
-    //   }
-    // })
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -19,9 +19,9 @@
             <th class="text-center">Dettagli</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-user columns="col">
+        <ng-template pTemplate="body" let-user columns="col" let-i="rowIndex">
           <tr [pSelectableRow]="user">
-            <td>{{ user.id }}</td>
+            <td>{{ i+1 }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.surname }}</td>
             <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>

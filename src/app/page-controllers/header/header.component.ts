@@ -32,15 +32,6 @@ export class HeaderComponent implements OnInit {
   }
 
   goToMyProfile() {
-    //FIXME questa chiamata non deve passare ID sarà il backend a restituire il dato sulla base dell'utente loggato su keycloak
     this.router.navigate(['usersManagement','userDetails']);
   }
-
-/*   private get currentUser(): User | undefined {
-
-    return this.loggedUserService.getUser();
-
-    //per recuperare le info dell'utente loggato
-    //return this.loggedUserService.isLoggedIn ? this.loggedUserService.currentUser : null;
-  } */
 }
