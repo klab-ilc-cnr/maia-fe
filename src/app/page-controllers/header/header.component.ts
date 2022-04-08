@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
 import { User } from 'src/app/model/user';
 import { LoggedUserService } from 'src/app/service/logged-user.service';
+import { AuthConfigService } from 'src/app/config/authconfig.service';
 
 @Component({
   selector: 'app-header',
@@ -18,27 +19,28 @@ export class HeaderComponent implements OnInit {
               private router: Router,
               private activeRoute: ActivatedRoute,
               private userService: UserService,
-              private loggedUserService : LoggedUserService) {
+              private loggedUserService : LoggedUserService,
+              private authConfigService : AuthConfigService) {
   }
 
   ngOnInit() {
-    console.log(this.loggedUserService.name());    
+    console.log(this.loggedUserService.currentUser?.name);
   }
 
   logout() {
-    this.loggedUserService.logout()
+    this.authConfigService.logout()
   }
 
   goToMyProfile() {
     //FIXME questa chiamata non deve passare ID sarà il backend a restituire il dato sulla base dell'utente loggato su keycloak
-    this.router.navigate(['usersManagement','userDetails', this.currentUser.id]);
+    this.router.navigate(['usersManagement','userDetails']);
   }
 
-  private get currentUser(): User {
+/*   private get currentUser(): User | undefined {
 
     return this.loggedUserService.getUser();
 
     //per recuperare le info dell'utente loggato
     //return this.loggedUserService.isLoggedIn ? this.loggedUserService.currentUser : null;
-  }
+  } */
 }

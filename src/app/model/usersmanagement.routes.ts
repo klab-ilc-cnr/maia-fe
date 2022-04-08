@@ -9,5 +9,9 @@ export const USERSMANAGEMENT_ROUTES = [
     {
         path: 'userDetails/:id',
         component: UserFormComponent
+    },
+    {
+        path: 'userDetails',
+        component: UserFormComponent
     }
 ];

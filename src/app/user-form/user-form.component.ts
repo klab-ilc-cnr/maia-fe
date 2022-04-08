@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { User } from '../model/user';
 import { Roles } from '../model/roles';
 import { LoggedUserService } from '../service/logged-user.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user-form',
@@ -11,10 +12,13 @@ import { LoggedUserService } from '../service/logged-user.service';
   styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit {
+  
+  @ViewChild('userDetailsForm', { static: true }) userDetailsForm: NgForm | undefined;
 
   user: User;
 
   private editUser = false;
+  private newUser = false;
   private newId = 'new';
   public roles = Array<string>();
 
@@ -29,29 +33,40 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
+
       var id = params.get('id');
 
-      if (id != this.newId && id != null) {
+      if(id === this.newId)
+      {
+        this.userDetailsForm?.reset();
+        this.newUser = true;
+        return;
+      }
+
+      if (id != null && id != undefined) {
         this.editUser = true;
         this.loadUser(id);
+        return;
       }
-      else {
-        this.user = new User();
-        this.user.active = true;
-      }
+
+      this.editUser = false;
+      this.loadCurrentUserProfile();
+      
     });
 
     this.roles = Object.keys(Roles);
   }
 
   public get canManageUsers(): boolean {
-    //return true;
-    //return this.authorizationService.canManageUsers();
     return this.loggedUserService.canManageUsers();
   }
 
   isEditUser () {
     return this.editUser;
+  }
+
+  isNewUser () {
+    return this.newUser;
   }
 
   onSubmit() {
@@ -60,7 +75,8 @@ export class UserFormComponent implements OnInit {
       this.userService.update(this.user).subscribe(result => this.goToUserList());
     }
     else {
-      this.userService.save(this.user).subscribe(result => this.goToUserList());
+      this.userService.save(this.user).subscribe(
+        result => this.goToUserList());
     }
   }
 
@@ -75,8 +91,18 @@ export class UserFormComponent implements OnInit {
   }
 
   private loadUser(id: string): void {
+    if(id)
     this.userService
         .retrieveById(id)
+        .subscribe(
+          data => {
+            this.user = data;
+        });
+  }
+
+  private loadCurrentUserProfile(): void {
+    this.userService
+        .retrieveCurrentUser()
         .subscribe(
           data => {
             this.user = data;

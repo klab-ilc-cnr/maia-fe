@@ -23,11 +23,15 @@ export class UserService {
     return this.http.get<User>(`${this.usersUrl}/${id}`);
   }
 
+  public retrieveCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.usersUrl}/current`);
+  }
+
   public save(user: User) {
     return this.http.post<User>(this.usersUrl, user);
   }
 
   public update(user: User) {
-    return this.http.post<User>(this.usersUrl+'/updateUser', user);
+    return this.http.put<User>(this.usersUrl, user);
   }
 }

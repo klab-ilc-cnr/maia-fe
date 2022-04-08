@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
 import {AuthConfig, NullValidationHandler, OAuthService} from 'angular-oauth2-oidc';
 import {filter} from 'rxjs/operators';
+import { User } from '../model/user';
+import { LoggedUserService } from '../service/logged-user.service';
+import { UserService } from '../service/user.service';
 
 @Injectable()
 export class AuthConfigService {
@@ -21,9 +24,15 @@ export class AuthConfigService {
     return this._parsedJwt;
   }
 
+  logout() {
+    this.oauthService.logOut();
+  }
+
   constructor(
     private readonly oauthService: OAuthService,
-    private readonly authConfig: AuthConfig
+    private readonly authConfig: AuthConfig,
+    private loggedUserService: LoggedUserService,
+    private userService : UserService
   ) {
   }
 
@@ -99,9 +108,16 @@ export class AuthConfigService {
     this._decodedAccessToken = this.oauthService.getAccessToken();
     this._decodedIDToken = this.oauthService.getIdToken();
     this._parsedJwt = this.parseJwt(this.oauthService.getAccessToken());
+
+    //(this._parsedJwt.realm_access.roles.indexOf(Roles.AMMINISTRATORE) > -1);
+    //console.log(this._parsedJwt);
     
-    //parsedJson.realm_access.roles.filter((r:string) => r === 'AMMINISTRATORE')
-    //console.log(parsedJwt);
+    this.userService.retrieveCurrentUser()
+    .subscribe(
+      currentUser => {
+        this.loggedUserService.registerUser(currentUser);        
+      }
+    )
   }
 
   private parseJwt (token: string) {
