@@ -5,6 +5,7 @@ import { User } from '../model/user';
 import { Roles } from '../model/roles';
 import { LoggedUserService } from '../service/logged-user.service';
 import { NgForm } from '@angular/forms';
+import { LanguageService } from '../service/language.service';
 
 @Component({
   selector: 'app-user-form',
@@ -21,12 +22,14 @@ export class UserFormComponent implements OnInit {
   private newUser = false;
   private newId = 'new';
   public roles = Array<string>();
+  public languages = Array<string>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private loggedUserService : LoggedUserService) {
+    private loggedUserService : LoggedUserService,
+    private languageService : LanguageService) {
     this.user = new User();
     
   }
@@ -55,6 +58,13 @@ export class UserFormComponent implements OnInit {
     });
 
     this.roles = Object.keys(Roles);
+    
+    this.languageService.retrieveAll()
+    .subscribe(
+      result => {
+        this.languages = result;
+      }
+    )
   }
 
   public get canManageUsers(): boolean {

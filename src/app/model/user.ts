@@ -7,4 +7,5 @@ export class User {
   email: string | undefined;
   role: Roles | undefined;
   active: boolean | undefined;
+  languages: [] | undefined;
 }
