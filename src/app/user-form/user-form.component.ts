@@ -6,6 +6,7 @@ import { Roles } from '../model/roles';
 import { LoggedUserService } from '../service/logged-user.service';
 import { NgForm } from '@angular/forms';
 import { LanguageService } from '../service/language.service';
+import { Language } from '../model/language';
 
 @Component({
   selector: 'app-user-form',
@@ -22,7 +23,7 @@ export class UserFormComponent implements OnInit {
   private newUser = false;
   private newId = 'new';
   public roles = Array<string>();
-  public languages = Array<string>();
+  public languages = Array<Language>();
 
   constructor(
     private route: ActivatedRoute,
@@ -82,7 +83,8 @@ export class UserFormComponent implements OnInit {
   onSubmit() {
     if (this.editUser) {
       console.log(this.user.email, this.user.id, this.user.role, this.user.active)
-      this.userService.update(this.user).subscribe(result => this.goToUserList());
+      this.userService.update(this.user).subscribe(
+        result => this.goToUserList());
     }
     else {
       this.userService.save(this.user).subscribe(

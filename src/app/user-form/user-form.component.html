@@ -98,7 +98,7 @@
           </div>
           <div class="form-group">
             <label for="role">Lingue *</label>
-            <p-dropdown
+            <!-- <p-dropdown
               #role="ngModel"
               name="languages"
               [(ngModel)]="user.languages"
@@ -109,7 +109,24 @@
               [required]="true"
               [disabled]="!languages || !canManageUsers"
             >
-            </p-dropdown>
+            </p-dropdown> -->
+            <p-listbox 
+            [options]="languages"
+            [(ngModel)]="user.languages"
+            name="language"
+            [metaKeySelection]="false"
+            [checkbox]="true"
+            [filter]="true"
+            [multiple]="true"
+            optionLabel="name"
+            [listStyle]="{'max-height':'250px'}"
+            [style]="{'width':'15rem'}">
+              <ng-template let-language pTemplate="item">
+                  <div class="language-item">
+                      <div>{{language.name}}</div>
+                  </div>
+              </ng-template>
+          </p-listbox>
             <!-- <div *ngIf="languages.invalid && (languages.dirty || languages.touched)" class="alert alert-danger">
               Devi selezionare almeno una lingua
             </div> -->

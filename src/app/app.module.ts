@@ -20,6 +20,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from "primeng/table";
+import {ListboxModule} from 'primeng/listbox';
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
 
@@ -45,7 +46,8 @@ import { TableModule } from "primeng/table";
     ReactiveFormsModule,
     MultiSelectModule,
     DropdownModule,
-    InputSwitchModule
+    InputSwitchModule,
+    ListboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,4 @@
+import { Language } from "./language";
 import { Roles } from "./roles";
 
 export class User {
@@ -7,5 +8,5 @@ export class User {
   email: string | undefined;
   role: Roles | undefined;
   active: boolean | undefined;
-  languages: [] | undefined;
+  languages: Language[] | undefined;
 }
