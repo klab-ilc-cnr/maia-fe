@@ -32,6 +32,6 @@ export class HeaderComponent implements OnInit {
   }
 
   goToMyProfile() {
-    this.router.navigate(['usersManagement','userDetails']);
+    this.router.navigate(['usersManagement','userDetails', this.loggedUserService.currentUser?.id]);
   }
 }

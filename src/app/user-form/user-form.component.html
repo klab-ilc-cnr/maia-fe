@@ -118,6 +118,7 @@
             [checkbox]="true"
             [filter]="true"
             [multiple]="true"
+            [disabled]="!languages || !canManageUsers"
             optionLabel="name"
             [listStyle]="{'max-height':'250px'}"
             [style]="{'width':'15rem'}">
