@@ -21,6 +21,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from "primeng/table";
 import {ListboxModule} from 'primeng/listbox';
+import { WorkspaceComponent } from './workspace/workspace.component';
+import { WorkspaceListComponent } from './workspace-list/workspace-list.component';
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
 
@@ -29,7 +31,9 @@ import {ListboxModule} from 'primeng/listbox';
     AppComponent,
     UserListComponent,
     UserFormComponent,
-    LayoutComponent
+    LayoutComponent,
+    WorkspaceComponent,
+    WorkspaceListComponent
   ],
   imports: [
     BrowserModule,

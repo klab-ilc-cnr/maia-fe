@@ -16,7 +16,7 @@ export const environment = {
     issuer: issuer,
     redirectUri: window.location.origin + '/usersManagement/users',
     clientId: clientid,
-    scope: 'openid profile email offline_access users',
+    scope: 'openid profile email offline_access',
     responseType: 'code',
     dummyClientSecret: secret,
     // logoutUrl: logoutUrl + clientid,
