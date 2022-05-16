@@ -37,9 +37,18 @@
 							"node_modules/font-awesome/css/font-awesome.min.css",
 							"node_modules/primeng/resources/primeng.min.css",
 							"node_modules/primeng/resources/themes/saga-blue/theme.css",
-							"src/styles.scss"
+							"src/styles.scss",
+							"node_modules/jspanel4/dist/jspanel.min.css"
 						],
-						"scripts": []
+						"scripts": [
+							"node_modules/jspanel4/dist/jspanel.js",
+							"node_modules/jspanel4/dist/extensions/contextmenu/jspanel.contextmenu.js",
+							"node_modules/jspanel4/dist/extensions/hint/jspanel.hint.js",
+							"node_modules/jspanel4/dist/extensions/modal/jspanel.modal.js",
+							"node_modules/jspanel4/dist/extensions/tooltip/jspanel.tooltip.js",
+							"node_modules/jspanel4/dist/extensions/dock/jspanel.dock.js"
+
+						]
 					},
 					"configurations": {
 						"production": {
@@ -104,9 +113,17 @@
 							"src/assets"
 						],
 						"styles": [
-							"src/styles.scss"
+							"src/styles.scss",
+							"node_modules/jspanel4/dist/jspanel.min.css"
 						],
-						"scripts": []
+						"scripts": [
+							"node_modules/jspanel4/dist/jspanel.js",
+							"node_modules/jspanel4/dist/extensions/contextmenu/jspanel.contextmenu.js",
+							"node_modules/jspanel4/dist/extensions/hint/jspanel.hint.js",
+							"node_modules/jspanel4/dist/extensions/modal/jspanel.modal.js",
+							"node_modules/jspanel4/dist/extensions/tooltip/jspanel.tooltip.js",
+							"node_modules/jspanel4/dist/extensions/dock/jspanel.dock.js"
+						]
 					}
 				}
 			}
