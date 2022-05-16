@@ -1,3 +1,4 @@
+import { WorkspaceListComponent } from "../workspace-list/workspace-list.component";
 import { USERSMANAGEMENT_ROUTES } from "./usersmanagement.routes";
 import { WORKSPACES_ROUTES } from "./workspaces.routes";
 
@@ -7,7 +8,7 @@ export const PROJECTX_ROUTES = [
         children: USERSMANAGEMENT_ROUTES
     },
     {
-        path: 'workspace',
-        children: WORKSPACES_ROUTES
+        path: 'workspaces',
+        component: WorkspaceListComponent
     }
 ];

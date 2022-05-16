@@ -4,6 +4,8 @@ import { UserListComponent } from "./user-list/user-list.component";
 import { UserFormComponent } from "./user-form/user-form.component";
 import { LayoutComponent } from './layout/layout.component';
 import { PROJECTX_ROUTES } from './routes/projectx.routes'
+import { WORKSPACES_ROUTES } from './routes/workspaces.routes';
+import { WorkspaceLayoutComponent } from './workspace-layout/workspace-layout.component';
 
 const routes: Routes = [
   {
@@ -12,6 +14,11 @@ const routes: Routes = [
     children: PROJECTX_ROUTES
     // canActivate: [AuthGuard],
     // canActivateChild: [RoleGuard],
+  },
+  {
+      path: '',
+      component: WorkspaceLayoutComponent,
+      children: WORKSPACES_ROUTES
   }
   // { path: 'users', component: UserListComponent },
   // { path: 'adduser', component: UserFormComponent }
