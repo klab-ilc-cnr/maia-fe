@@ -1,8 +1,10 @@
-<p-menubar [model]="items">
+<p-menubar [model]="itemsInput" (click) = "menuClick($event)">
     <ng-template pTemplate="start">
-        <img src="assets/showcase/images/primeng.svg" height="40" class="mr-2">
+        <h2 class="px-4">Workspace</h2>
     </ng-template>
     <ng-template pTemplate="end">
-        <input type="text" pInputText placeholder="Search">
+        <a class="layout-topbar-logo text-dark fs-1" routerLink="">
+            <fa-icon [icon]="faHouseDamage"></fa-icon>
+        </a>
     </ng-template>
 </p-menubar>

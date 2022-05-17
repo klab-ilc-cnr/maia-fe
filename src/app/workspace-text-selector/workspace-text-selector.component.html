@@ -1,0 +1,21 @@
+<div class="card">
+    <h5>Single Column</h5>
+    <p-table [value]="textList">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="title">Testo <p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="updatedOn">Ultima modifica <p-sortIcon field="updatedOn"></p-sortIcon></th>
+                <th pSortableColumn="createdBy">Utente <p-sortIcon field="createdBy"></p-sortIcon></th>
+                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-text>
+            <tr>
+                <td>{{text.title}}</td>
+                <td>{{text.updatedOn}}</td>
+                <td>{{text.createdBy}}</td>
+                <td>{{text.status}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

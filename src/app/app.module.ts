@@ -29,6 +29,7 @@ import { WorkspaceMenuComponent } from './workspace-menu/workspace-menu.componen
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
 import { MenubarModule } from 'primeng/menubar';
+import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { MenubarModule } from 'primeng/menubar';
     WorkspaceComponent,
     WorkspaceListComponent,
     WorkspaceLayoutComponent,
-    WorkspaceMenuComponent
+    WorkspaceMenuComponent,
+    WorkspaceTextSelectorComponent
   ],
   imports: [
     BrowserModule,
