@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TextChoiceElement } from '../model/text-choice-element.model';
 
 @Component({
   selector: 'app-workspace-text-selector',
@@ -7,11 +8,20 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class WorkspaceTextSelectorComponent implements OnInit {
 
-  @Input()textList : Array<any> = []
+  @Input() textChoiceList: Array<TextChoiceElement> = []
+  @Output() onTextSelectEvent = new EventEmitter<any>();
+
+  selectedText : any;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onClick(event: any) {
+    if(event.srcElement.tagName === 'TD')
+    {
+      this.onTextSelectEvent.emit(event)
+    }
+  }
 }

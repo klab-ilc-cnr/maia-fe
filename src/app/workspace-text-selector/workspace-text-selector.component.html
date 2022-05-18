@@ -1,6 +1,6 @@
 <div class="card">
     <h5>Single Column</h5>
-    <p-table [value]="textList">
+    <p-table [value]="textChoiceList" selectionMode="single" [(selection)]="selectedText" dataKey="code" (click)="onClick($event)">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="title">Testo <p-sortIcon field="title"></p-sortIcon></th>
