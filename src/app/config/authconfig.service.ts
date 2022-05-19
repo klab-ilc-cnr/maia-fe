@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AuthConfig, NullValidationHandler, OAuthService} from 'angular-oauth2-oidc';
 import {filter} from 'rxjs/operators';
-import { LoggedUserService } from '../service/logged-user.service';
-import { UserService } from '../service/user.service';
+import { LoggedUserService } from '../services/logged-user.service';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class AuthConfigService {

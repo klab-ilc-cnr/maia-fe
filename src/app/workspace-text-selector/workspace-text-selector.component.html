@@ -1,5 +1,5 @@
 <div class="card">
-    <h5>Single Column</h5>
+    <h5>Scegli il testo da aprire</h5>
     <p-table [value]="textChoiceList" selectionMode="single" [(selection)]="selectedText" dataKey="code" (click)="onClick($event)">
         <ng-template pTemplate="header">
             <tr>
@@ -10,11 +10,11 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-text>
-            <tr>
-                <td>{{text.title}}</td>
-                <td>{{text.updatedOn}}</td>
-                <td>{{text.createdBy}}</td>
-                <td>{{text.status}}</td>
+            <tr id="{{text.id}}">
+                <td data-type="title">{{text.title}}</td>
+                <td data-type="updatedOn">{{text.updatedOn}}</td>
+                <td data-type="createdBy">{{text.createdBy}}</td>
+                <td data-type="status">{{text.status}}</td>
             </tr>
         </ng-template>
     </p-table>

@@ -1,10 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, HostListener, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { text } from '@fortawesome/fontawesome-svg-core';
 import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
 import { MenuItem } from 'primeng/api';
 import { Observable } from 'rxjs';
-import { TextChoiceElement } from '../model/text-choice-element.model';
-import { UserService } from '../service/user.service';
+import { TextChoiceElement as Text } from '../model/text-choice-element.model';
+import { UserService } from '../services/user.service';
+import { WorkspaceService } from '../services/workspace.service';
 import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
 import { WorkspaceTextSelectorComponent } from '../workspace-text-selector/workspace-text-selector.component';
 
@@ -18,7 +20,7 @@ var currentWorkspaceInstance: any;
 export class WorkspaceComponent implements OnInit, AfterViewInit {
 
   //private mainPanel: any;
-  private panels: Map<string, any> = new Map();
+  private openPanels: Map<string, any> = new Map();
   private workspaceContainer = "#panelsContainer";
 
   public items: MenuItem[] = [];
@@ -27,13 +29,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     private activeRoute: ActivatedRoute,
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    private vcr: ViewContainerRef) { }
+    private vcr: ViewContainerRef,
+    private workspaceService: WorkspaceService) { }
 
   ngOnInit(): void {
 
     jsPanel.extend({
       addToPanelsMap: function () {
-        currentWorkspaceInstance.panels.set(this.id, this);
+        currentWorkspaceInstance.openPanels.set(this.id, this);
         return this;
       }
     })
@@ -99,33 +102,19 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     // returning true will navigate without confirmation
     // returning false will show a confirm dialog before navigating away
     //this.mainPanel.close();
-    this.panels.forEach((panel, id) => panel.close());
+    this.openPanels.forEach((panel, id) => panel.close());
     return false;
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: { target: any; }) {
     //this.mainPanel.maximize();
-    console.log(this.panels);
+    console.log(this.openPanels);
   }
 
   openTextChoicePanel(event: any) {
-    var text: TextChoiceElement = {
-      title: 'provaTitolo',
-      updatedOn: '13/05/2023',
-      createdBy: 'mundizza+amministratore@gmail.com',
-      status: 'Aperto'
-    };
 
-    var text2: TextChoiceElement = {
-      title: 'provaTitolo2',
-      updatedOn: '13/05/2025',
-      createdBy: 'mundizza+utente@gmail.com',
-      status: ''
-    };
-
-    var textList: Array<TextChoiceElement> = [];
-    textList.push(text, text2);
+    const textList = this.retrieveTextList();
 
     const element = this.workspaceTextSelectorComponentToHtml(textList);
     //this.mainPanel.content.append(element);
@@ -133,10 +122,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     var modal = jsPanel.modal.create({
       id: 'modalTextSelect',
       theme: 'filleddark',
-      headerTitle: '<h3>scegli il testo da aprire</h3>',
+      headerTitle: '',
       content: element,
       onclosed: function (panel: any, closedByUser: boolean) {
-        currentWorkspaceInstance.panels.delete(panel.id);
+        currentWorkspaceInstance.openPanels.delete(panel.id);
       }
     })
       .resize({
@@ -148,6 +137,19 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //this.panels.set(modal.id, modal);
   }
 
+  retrieveTextList(): Text[] {
+    var textList: Array<Text> = [];
+
+    this.workspaceService.retrieveTexts().subscribe(data => {
+      //data.forEach(el => textList.push({title:el.title, status:el.status, createdBy: el.createdBy, updatedOn:el.updatedOn}))
+      //textList=data;
+      //textList = JSON.parse(JSON.stringify(data));
+      data.forEach(el => textList.push(el))
+    });
+
+    return textList;
+  }
+
   //Componente creato in maniera dinamica,
   //con gestione manuale degli input e degli eventi
   workspaceTextSelectorComponentToHtml(textList: Array<any>) {
@@ -157,18 +159,20 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     componentRef.instance.onTextSelectEvent
       .subscribe(event => {
-        console.log(event); this.openTextPanel(event)
+        let idPanel = event.target.parentElement.id;
+        console.log(event.target.getAttribute('data-type')); this.openTextPanel(idPanel)
       });
 
     const element = componentRef.location.nativeElement;
     return element;
   }
 
-  openTextPanel(event: any) {
-    this.panels.get('modalTextSelect').close();
+  openTextPanel(idPanel: string) {
+    this.openPanels.get('modalTextSelect').close();
 
     var textPanel = jsPanel.create({
-      id: 'textPanel1',
+      id: 'textPanel'+idPanel,
+      headerTitle:'textPanel'+idPanel,
       //container: this.mainPanel.content,
       position: {
         //my: 'right-bottom',
@@ -183,11 +187,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       //content:"<p>test</p>"
       container: this.workspaceContainer,
       onclosed: function (panel: any, closedByUser: boolean) {
-        currentWorkspaceInstance.panels.delete(panel.id);
+        currentWorkspaceInstance.openPanels.delete(panel.id);
       }
     })
-    .addToPanelsMap();
-//    this.panels.set(child.id, child);
+      .addToPanelsMap();
+    //    this.panels.set(child.id, child);
 
     let el = document.createElement('p');
     this.userService.findAll().subscribe(data => {
@@ -197,7 +201,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   }
 
   onClosedModal() {
-    this.panels.delete('modalTextSelect')
+    this.openPanels.delete('modalTextSelect')
   }
 }
 

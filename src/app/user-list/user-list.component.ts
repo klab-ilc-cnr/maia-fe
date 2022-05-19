@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Roles } from '../model/roles'
 import { Table } from 'primeng/table';
 import { User } from '../model/user';
-import { UserService } from '../service/user.service';
+import { UserService } from '../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

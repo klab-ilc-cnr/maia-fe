@@ -2,7 +2,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { LanguageService } from "src/app/service/language.service";
+import { LanguageService } from "src/app/services/language.service";
 
 let clientid = "projectx-fe";
 let secret = "your_app_secret";
@@ -33,7 +33,8 @@ export const environment = {
   },
   allowedUrls: allowedUrls,
   usersUrl : allowedUrls + '/users',
-  languagesUrl : allowedUrls + '/languages'
+  languagesUrl : allowedUrls + '/languages',
+  workspacesUrl: allowedUrls + '/workspaces'
 };
 
 /*

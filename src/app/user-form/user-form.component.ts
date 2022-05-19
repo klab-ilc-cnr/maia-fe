@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../service/user.service';
+import { UserService } from '../services/user.service';
 import { User } from '../model/user';
 import { Roles } from '../model/roles';
-import { LoggedUserService } from '../service/logged-user.service';
+import { LoggedUserService } from '../services/logged-user.service';
 import { NgForm } from '@angular/forms';
-import { LanguageService } from '../service/language.service';
+import { LanguageService } from '../services/language.service';
 import { Language } from '../model/language';
 
 @Component({

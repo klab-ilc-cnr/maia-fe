@@ -7,7 +7,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
-import { UserService } from './service/user.service';
+import { UserService } from './services/user.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthConfigModule } from './config/auth.config.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
