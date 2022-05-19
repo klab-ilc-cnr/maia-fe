@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TextChoiceElement } from '../model/text-choice-element.model';
+import { TextChoice } from '../model/text-choice-element.model';
 
 @Component({
   selector: 'app-workspace-text-selector',
@@ -8,7 +8,7 @@ import { TextChoiceElement } from '../model/text-choice-element.model';
 })
 export class WorkspaceTextSelectorComponent implements OnInit {
 
-  @Input() textChoiceList: Array<TextChoiceElement> = []
+  @Input() textChoiceList: Array<TextChoice> = []
   @Output() onTextSelectEvent = new EventEmitter<any>();
 
   selectedText : any;

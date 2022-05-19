@@ -2,9 +2,12 @@ import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, 
 import { ActivatedRoute, Router } from '@angular/router';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
+import { LoginOptions } from 'angular-oauth2-oidc';
 import { MenuItem } from 'primeng/api';
 import { Observable } from 'rxjs';
-import { TextChoiceElement as Text } from '../model/text-choice-element.model';
+import { TextChoice as TextChoice } from '../model/text-choice-element.model';
+import { TileContent } from '../model/tile-content.model';
+import { TileType } from '../model/tile-type.model';
 import { UserService } from '../services/user.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
@@ -35,9 +38,33 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
     jsPanel.extend({
+      //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
+      panelToTileContentMap: new Map<number, TileContent>(),
+
       addToPanelsMap: function () {
         currentWorkspaceInstance.openPanels.set(this.id, this);
+        
         return this;
+      },
+      addTileContent: function(panelId:number, TileContent: TileContent)
+      {
+        this.panelToTileContentMap.set(panelId, TileContent);
+        console.log('Added ');
+        console.log(this.getPanelToTileContentMap())
+        
+        return this;
+      },
+      deleteTileContent: function(panelId: number)
+      {
+        this.panelToTileContentMap.delete(panelId);
+        console.log('Deleted ');
+        console.log(this.getPanelToTileContentMap());
+        
+        return this;
+      },
+      getPanelToTileContentMap: function()
+      {
+        return this.panelToTileContentMap;
       }
     })
 
@@ -109,6 +136,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: { target: any; }) {
     //this.mainPanel.maximize();
+    console.log('Mappa panels');
     console.log(this.openPanels);
   }
 
@@ -137,10 +165,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //this.panels.set(modal.id, modal);
   }
 
-  retrieveTextList(): Text[] {
-    var textList: Array<Text> = [];
+  retrieveTextList(): TextChoice[] {
+    var textList: Array<TextChoice> = [];
 
-    this.workspaceService.retrieveTexts().subscribe(data => {
+    this.workspaceService.retrieveTextChoiceList().subscribe(data => {
       //data.forEach(el => textList.push({title:el.title, status:el.status, createdBy: el.createdBy, updatedOn:el.updatedOn}))
       //textList=data;
       //textList = JSON.parse(JSON.stringify(data));
@@ -159,20 +187,23 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     componentRef.instance.onTextSelectEvent
       .subscribe(event => {
-        let idPanel = event.target.parentElement.id;
-        console.log(event.target.getAttribute('data-type')); this.openTextPanel(idPanel)
+        console.log(event.target.getAttribute('data-type'));
+        
+        let textId = event.target.parentElement.id;
+        let title = event.target.parentElement.querySelector( "[data-type='title']" ).textContent;
+        this.openTextPanel(textId, title)
       });
 
     const element = componentRef.location.nativeElement;
     return element;
   }
 
-  openTextPanel(idPanel: string) {
+  openTextPanel(textId: string, title: string) {
     this.openPanels.get('modalTextSelect').close();
 
     var textPanel = jsPanel.create({
-      id: 'textPanel'+idPanel,
-      headerTitle:'textPanel'+idPanel,
+      id: 'textPanel_' + textId,
+      headerTitle:'testo - ' + title.toLowerCase(),
       //container: this.mainPanel.content,
       position: {
         //my: 'right-bottom',
@@ -188,20 +219,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       container: this.workspaceContainer,
       onclosed: function (panel: any, closedByUser: boolean) {
         currentWorkspaceInstance.openPanels.delete(panel.id);
+        this.deleteTileContent(panel.id);
       }
     })
       .addToPanelsMap();
     //    this.panels.set(child.id, child);
+    textPanel.addTileContent(textPanel.id, new TileContent(TileType.TEXT, textId));
 
     let el = document.createElement('p');
-    this.userService.findAll().subscribe(data => {
-      el.textContent = data.map(o => o.name + " " + o.surname + " " + o.email).toString();
+    this.workspaceService.retrieveText(textId).subscribe(data => {
+      el.textContent = data.content ?? '';
       textPanel.content.append(el);
     });
-  }
-
-  onClosedModal() {
-    this.openPanels.delete('modalTextSelect')
   }
 }
 
