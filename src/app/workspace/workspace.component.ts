@@ -116,10 +116,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
           //container: '#layoutcontainer'
         })
           .maximize(); */
-
-
-
-
   }
 
   // @HostListener allows us to also guard against browser refresh, close, etc.

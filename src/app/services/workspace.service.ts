@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TextChoice as TextChoice } from '../model/text-choice-element.model';
 import { TextTileContent } from '../model/text-tile-content.model';
+import { Workspace } from '../model/workspace.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ export class WorkspaceService {
 
   constructor(private http: HttpClient) {
     this.workspacesUrl = environment.workspacesUrl;
+  }
+
+  public retrieveAll(): Observable<Array<Workspace>>{
+    return this.http.get<Array<Workspace>>(`${this.workspacesUrl}`);
   }
 
   public retrieveTextChoiceList(): Observable<Array<TextChoice>> {
