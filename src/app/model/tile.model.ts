@@ -1,8 +1,10 @@
 import { TileType } from "./tile-type.model";
 
-export class TileContent {
-    type : TileType | undefined;
+export class Tile<T> {
     id: string | undefined;
+    workspaceId: number | undefined;
+    content: T | undefined;
+    type : TileType | undefined;
 
     constructor(type:TileType, id: string)
     {

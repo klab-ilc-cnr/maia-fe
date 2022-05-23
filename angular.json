@@ -46,7 +46,8 @@
 							"node_modules/jspanel4/dist/extensions/hint/jspanel.hint.js",
 							"node_modules/jspanel4/dist/extensions/modal/jspanel.modal.js",
 							"node_modules/jspanel4/dist/extensions/tooltip/jspanel.tooltip.js",
-							"node_modules/jspanel4/dist/extensions/dock/jspanel.dock.js"
+							"node_modules/jspanel4/dist/extensions/dock/jspanel.dock.js",
+							"node_modules/jspanel4/dist/extensions/layout/jspanel.layout.min.js"
 
 						]
 					},
@@ -122,7 +123,8 @@
 							"node_modules/jspanel4/dist/extensions/hint/jspanel.hint.js",
 							"node_modules/jspanel4/dist/extensions/modal/jspanel.modal.js",
 							"node_modules/jspanel4/dist/extensions/tooltip/jspanel.tooltip.js",
-							"node_modules/jspanel4/dist/extensions/dock/jspanel.dock.js"
+							"node_modules/jspanel4/dist/extensions/dock/jspanel.dock.js",
+							"node_modules/jspanel4/dist/extensions/layout/jspanel.layout.min.js"
 						]
 					}
 				}

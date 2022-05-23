@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Workspace } from '../model/workspace.model';
+import { WorkspaceChoice } from '../model/workspace-choice.model';
 import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
@@ -10,17 +10,17 @@ import { WorkspaceService } from '../services/workspace.service';
 })
 export class WorkspaceListComponent implements OnInit {
 
-  workspaces: Workspace[] = [];
+  workspaces: WorkspaceChoice[] = [];
 
-  workspace: Workspace = new Workspace;
+  workspace: WorkspaceChoice = new WorkspaceChoice;
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
     private workspaceService: WorkspaceService) { }
 
   ngOnInit(): void {
-    this.workspaceService.retrieveAll()
-      .subscribe((data: Workspace[]) => {
+    this.workspaceService.retrieveWorkspaceChoiceList()
+      .subscribe((data: WorkspaceChoice[]) => {
         this.workspaces = data;
       });
   }
@@ -29,13 +29,13 @@ export class WorkspaceListComponent implements OnInit {
     this.router.navigate(["/workspace", "new"], { relativeTo: this.activeRoute });
   }
 
-  editWorkspace(workspace: Workspace) {
+  editWorkspace(workspace: WorkspaceChoice) {
     alert('edit');
     /*     this.workspace = {...workspace};
         this.workspaceDialog = true; */
   }
 
-  deleteWorkspace(workspace: Workspace) {
+  deleteWorkspace(workspace: WorkspaceChoice) {
     alert('delete');
     /*     this.confirmationService.confirm({
             message: 'Are you sure you want to delete ' + workspace.title + '?',

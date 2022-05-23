@@ -6,12 +6,14 @@ import { LoginOptions } from 'angular-oauth2-oidc';
 import { MenuItem } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { TextChoice as TextChoice } from '../model/text-choice-element.model';
-import { TileContent } from '../model/tile-content.model';
+import { Tile } from '../model/tile.model';
 import { TileType } from '../model/tile-type.model';
 import { UserService } from '../services/user.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
 import { WorkspaceTextSelectorComponent } from '../workspace-text-selector/workspace-text-selector.component';
+import { TextTileContent } from '../model/text-tile-content.model';
+import { ThisReceiver } from '@angular/compiler';
 
 var currentWorkspaceInstance: any;
 
@@ -22,11 +24,19 @@ var currentWorkspaceInstance: any;
 })
 export class WorkspaceComponent implements OnInit, AfterViewInit {
 
+  private newId = 'new';
+  private newWorkspace = false;
+
+  private workSaved = false;
   //private mainPanel: any;
   private openPanels: Map<string, any> = new Map();
   private workspaceContainer = "#panelsContainer";
 
   public items: MenuItem[] = [];
+
+  private storedData: any;
+  private storedTiles: Map<string, any> = new Map();
+  private storageName = "storedTiles";
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
@@ -37,34 +47,65 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
+    this.activeRoute.paramMap.subscribe(params => {
+
+      var id = params.get('id');
+
+      if (id === this.newId) {
+        this.newWorkspace = true;
+        return;
+      }
+
+      if (id != null && id != undefined) {
+        this.newWorkspace = false;
+        this.workspaceService.loadTiles(id).subscribe(data => {
+          //TODO
+        });
+        return;
+      }
+
+      /* this.editUser = false;
+      this.loadCurrentUserProfile(); */
+
+    });
+
     jsPanel.extend({
       //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
-      panelToTileContentMap: new Map<number, TileContent>(),
+      panelToTextTileContentMap: new Map<number, Tile<TextTileContent>>(),
 
       addToPanelsMap: function () {
         currentWorkspaceInstance.openPanels.set(this.id, this);
-        
+
         return this;
       },
-      addTileContent: function(panelId:number, TileContent: TileContent)
-      {
-        this.panelToTileContentMap.set(panelId, TileContent);
-        console.log('Added ');
-        console.log(this.getPanelToTileContentMap())
-        
+      addTileContent: function (panelId: number, tileContent: any) {
+        switch (tileContent.type as TileType) {
+          case 0:
+            this.panelToTextTileContentMap.set(panelId, tileContent);
+            console.log('Added ');
+            console.log(this.getPanelToTextTileContentMap())
+            break;
+          default:
+            console.error("type " + tileContent.type + " not implemented");
+        }
+
         return this;
       },
-      deleteTileContent: function(panelId: number)
-      {
-        this.panelToTileContentMap.delete(panelId);
-        console.log('Deleted ');
-        console.log(this.getPanelToTileContentMap());
-        
+      deleteTileContent: function (panelId: number, type: TileType) {
+        switch (type) {
+          case TileType.TEXT:
+            this.panelToTextTileContentMap.delete(panelId);
+            console.log('Deleted ');
+            console.log(this.getPanelToTextTileContentMap());
+            break;
+          default:
+            console.error("type ${type} not implemented");
+        }
+
         return this;
       },
-      getPanelToTileContentMap: function()
-      {
-        return this.panelToTileContentMap;
+      getPanelToTextTileContentMap: function () {
+        return this.panelToTextTileContentMap;
       }
     })
 
@@ -91,31 +132,58 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
           { label: 'Ontologia 2' },
           { label: 'Ontologia 3' }
         ]
+      },
+      {
+        label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
+      },
+      {
+        label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
       }
     ];
+  }
+  restoreTiles(event: any) {
+    console.log('restore');
+
+    const tilesConfigs: any = {};
+
+    for (const [tileId, tileConfig] of this.storedTiles.entries()) {
+      tilesConfigs[tileId] = tileConfig;
+    }
+
+    console.log(tilesConfigs);
+
+    localStorage.setItem(this.storageName, this.storedData)
+
+    jsPanel.layout.restore({
+      configs: tilesConfigs,
+      storagename: this.storageName
+    });
+  }
+
+  saveWork(event: any) {
+    console.log(this.openPanels);
+    //this.workSaved = true;
+
+    // save panel layout
+    this.storedData = jsPanel.layout.save({
+      selector: '.jsPanel-standard',
+      storagename: this.storageName
+    });
+
+    this.storedTiles = new Map(this.openPanels);
+
+    // close panels, here we simply close all panels in the document
+    for (const panel of jsPanel.getPanels()) {
+      panel.close();
+    }
+
+    // for demo purpose only log stored data to the console
+    // or use your browser's dev tools to inspect localStorage
+    console.log(this.storedData);
   }
 
   ngAfterViewInit(): void {
     currentWorkspaceInstance = this;
-    /*     this.mainPanel = jsPanel.create({
-          headerControls: {
-            close: "remove",
-            maximize: "remove",
-            normalize: "remove",
-            minimize: "remove",
-            smallify: "remove",
-            add: {
-              html: '<p>Ritorna alla lista</p>',
-              name: 'workspaces',
-              position: 6,
-              handler: (panel: any, control: any) => {
-                this.router.navigate(['../workspaces', this.activeRoute]);
-              }
-            }
-          }
-          //container: '#layoutcontainer'
-        })
-          .maximize(); */
   }
 
   // @HostListener allows us to also guard against browser refresh, close, etc.
@@ -126,7 +194,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     // returning false will show a confirm dialog before navigating away
     //this.mainPanel.close();
     this.openPanels.forEach((panel, id) => panel.close());
-    return false;
+    localStorage.removeItem(this.storageName)
+
+    return this.workSaved;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -184,9 +254,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     componentRef.instance.onTextSelectEvent
       .subscribe(event => {
         console.log(event.target.getAttribute('data-type'));
-        
+
         let textId = event.target.parentElement.id;
-        let title = event.target.parentElement.querySelector( "[data-type='title']" ).textContent;
+        let title = event.target.parentElement.querySelector("[data-type='title']").textContent;
         this.openTextPanel(textId, title)
       });
 
@@ -197,36 +267,38 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   openTextPanel(textId: string, title: string) {
     this.openPanels.get('modalTextSelect').close();
 
-    var textPanel = jsPanel.create({
-      id: 'textPanel_' + textId,
-      headerTitle:'testo - ' + title.toLowerCase(),
-      //container: this.mainPanel.content,
-      position: {
-        //my: 'right-bottom',
-        //at: 'right-bottom',
-        //offsetX: 300,
-        offsetY: 0
-
-      },
+    let textTileConfig = {
+      id: 'textTile_' + textId,
+      container: this.workspaceContainer,
+      headerTitle: 'testo - ' + title.toLowerCase(),
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
-      //content:"<p>test</p>"
-      container: this.workspaceContainer,
-      onclosed: function (panel: any, closedByUser: boolean) {
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
         currentWorkspaceInstance.openPanels.delete(panel.id);
-        this.deleteTileContent(panel.id);
+        this.deleteTileContent(panel.id, TileType.TEXT);
       }
-    })
-      .addToPanelsMap();
-    //    this.panels.set(child.id, child);
-    textPanel.addTileContent(textPanel.id, new TileContent(TileType.TEXT, textId));
+    };
 
+    let textTile = jsPanel.create(textTileConfig)
+      .addToPanelsMap();
+
+    /*     textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
+          currentWorkspaceInstance.openPanels.delete(panel.id);
+          this.deleteTileContent(panel.id, TileType.TEXT);
+        }); */
+
+    textTile.addTileContent(textTile.id, textTileConfig);
+
+    console.log("text tile config before: ", textTileConfig);
+    
     let el = document.createElement('p');
     this.workspaceService.retrieveText(textId).subscribe(data => {
       el.textContent = data.content ?? '';
-      textPanel.content.append(el);
+      textTile.content.append(el);
+      console.log("text tile config after: ", textTileConfig);
     });
+
   }
 }
 

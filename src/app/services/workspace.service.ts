@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TextChoice as TextChoice } from '../model/text-choice-element.model';
 import { TextTileContent } from '../model/text-tile-content.model';
+import { Tile } from '../model/tile.model';
+import { WorkspaceChoice } from '../model/workspace-choice.model';
 import { Workspace } from '../model/workspace.model';
 
 @Injectable({
@@ -17,8 +19,12 @@ export class WorkspaceService {
     this.workspacesUrl = environment.workspacesUrl;
   }
 
-  public retrieveAll(): Observable<Array<Workspace>>{
-    return this.http.get<Array<Workspace>>(`${this.workspacesUrl}`);
+  public loadTiles(workspaceId: string): Observable<Workspace>{
+    return this.http.get<Workspace>(`${this.workspacesUrl}/tiles/${workspaceId}`);
+  }
+
+  public retrieveWorkspaceChoiceList(): Observable<Array<WorkspaceChoice>>{
+    return this.http.get<Array<WorkspaceChoice>>(`${this.workspacesUrl}/workspaceChoiceList`);
   }
 
   public retrieveTextChoiceList(): Observable<Array<TextChoice>> {

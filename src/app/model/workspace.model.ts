@@ -1,6 +1,7 @@
+import { TextTileContent } from "./text-tile-content.model";
+import { Tile } from "./tile.model";
+
 export class Workspace {
     id: number | undefined;
-    title: string | undefined
-    textPreview: string | undefined;
-    lastAccess: string | undefined;
+    textTileList: Array<Tile<TextTileContent>> | undefined;
 }
