@@ -1,3 +1,3 @@
 export class TextTileContent {
-    content: string | undefined;
+    text: string | undefined;
 }
