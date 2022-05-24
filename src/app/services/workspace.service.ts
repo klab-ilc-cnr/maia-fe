@@ -19,7 +19,7 @@ export class WorkspaceService {
     this.workspacesUrl = environment.workspacesUrl;
   }
 
-  public loadTiles(workspaceId: string): Observable<Workspace>{
+  public loadTiles(workspaceId: number): Observable<Workspace>{
     return this.http.get<Workspace>(`${this.workspacesUrl}/tiles/${workspaceId}`);
   }
 

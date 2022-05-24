@@ -59,8 +59,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
       if (this.workspaceId != null && this.workspaceId != undefined) {
         this.newWorkspace = false;
-        this.workspaceService.loadTiles(this.workspaceId).subscribe(data => {
-          //TODO
+        this.workspaceService.loadTiles(Number(this.workspaceId)).subscribe(data => {
+          //TODO caricare tile dal backend
         });
         return;
       }
@@ -223,7 +223,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     // returning false will show a confirm dialog before navigating away
     //this.mainPanel.close();
     //this.openPanels.forEach((panel, id) => panel.close());
-    jsPanel.getPanels().forEach((panel: { close: () => any; }) => panel.close());
+
+    //Chiudo tutti i pannelli aperti anche i modal
+    jsPanel.getPanels(function (this: any) {
+      return this.classList.contains('jsPanel');
+    })
+      .forEach((panel: { close: () => any; }) => panel.close());
+
     localStorage.removeItem(this.storageName)
 
     return this.workSaved;
