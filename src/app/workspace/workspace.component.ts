@@ -15,7 +15,7 @@ import { WorkspaceTextSelectorComponent } from '../workspace-text-selector/works
 import { TextTileContent } from '../model/text-tile-content.model';
 import { ThisReceiver } from '@angular/compiler';
 
-var currentWorkspaceInstance: any;
+//var currentWorkspaceInstance: any;
 
 @Component({
   selector: 'app-workspace',
@@ -83,8 +83,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         switch (tile.type as TileType) {
           case 0:
             this.textTileMap.set(panelId, tile);
-            console.log('Added ');
-            console.log(this.getTextTileMap())
+            console.log('Added ', this.getTextTileMap())
             break;
           default:
             console.error("type " + tile.type + " not implemented");
@@ -96,8 +95,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         switch (type) {
           case TileType.TEXT:
             this.textTileMap.delete(panelId);
-            console.log('Deleted ');
-            console.log(this.getTextTileMap());
+            console.log('Deleted ', this.getTextTileMap());
             break;
           default:
             console.error("type ${type} not implemented");
@@ -168,7 +166,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       tilesConfigs[tileId] = tile.tileConfig;
     }
 
-    console.log(tilesConfigs);
+    console.log('tiles configs', tilesConfigs);
 
     //Ripristino i dati nel localstorage, che verrà letto successivamente da jsPanel
     localStorage.setItem(this.storageName, this.storedData)
@@ -208,11 +206,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     // for demo purpose only log stored data to the console
     // or use your browser's dev tools to inspect localStorage
-    console.log(this.storedData);
+    console.log('stored data', this.storedData);
   }
 
   ngAfterViewInit(): void {
-    currentWorkspaceInstance = this;
+    //currentWorkspaceInstance = this;
   }
 
   // @HostListener allows us to also guard against browser refresh, close, etc.
