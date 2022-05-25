@@ -30,6 +30,10 @@ import { WorkspaceMenuComponent } from './workspace-menu/workspace-menu.componen
 // import { AuthModule } from './auth/auth.module';
 import { MenubarModule } from 'primeng/menubar';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -60,9 +64,12 @@ import { WorkspaceTextSelectorComponent } from './workspace-text-selector/worksp
     DropdownModule,
     InputSwitchModule,
     ListboxModule,
-    MenubarModule
-  ],
-  providers: [PendingChangesGuard],
+    MenubarModule,
+    DialogModule,
+    ConfirmDialogModule,
+    ToastModule
+    ],
+  providers: [PendingChangesGuard, MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,50 +1,81 @@
+<p-toast></p-toast>
+
 <div class="grid">
-	<div class="col-12">
-		<div class="card">
+    <div class="col-12">
+        <div class="card">
             <div class="page-header">
                 <h5>Workspace</h5>
-                <p-button label="Nuovo workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="goToNewWorkspace()" class="ms-start"></p-button>
+                <p-button label="Nuovo workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="openNew()"
+                    class="ms-start"></p-button>
             </div>
             <div class="card">
-                <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
-                [rowHover]="true" dataKey="id"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-                <ng-template pTemplate="caption">
-                    <div class="p-d-flex p-ai-center p-jc-between">
-<!--                        <h5 class="p-m-0">Manage workspaces</h5>
-                         <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
-                        </span> -->
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="title">Titolo <p-sortIcon field="title"></p-sortIcon></th>
-                        <th pSortableColumn="preview">Estratto <p-sortIcon field="preview"></p-sortIcon></th>
-                        <th pSortableColumn="lastAccess">Ultimo accesso <p-sortIcon field="lastAccess"></p-sortIcon></th>
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-workspace>
-                    <tr>
-                        <td>{{workspace.title}}</td>
-                        <td>{{workspace.textPreview}}</td>
-                        <td>{{workspace.lastAccess}}</td>
-                        <td>
-                            <button pButton pRipple icon="pi pi-desktop" class="p-button-rounded p-button-rounded p-button-lg p-mr-2 mx-2" (click)="goToWorkspace(workspace.id)"></button>
-                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 mx-2" (click)="editWorkspace(workspace)"></button>
-                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mx-2" (click)="deleteWorkspace(workspace)"></button>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="summary">
-                    <div class="p-d-flex p-ai-center p-jc-between">
-                        In total there are {{workspaces ? workspaces.length : 0 }} workspaces.
-                    </div>
-                </ng-template>
-            </p-table>
+                <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true"
+                    [globalFilterFields]="['name','country.name','representative.name','status']" [rowHover]="true"
+                    dataKey="id"
+                    currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
+                    [showCurrentPageReport]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="note">Note<p-sortIcon field="note"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="updated">Ultimo accesso<p-sortIcon field="updated"></p-sortIcon>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-workspace>
+                        <tr>
+                            <td>{{workspace.name}}</td>
+                            <td>{{workspace.note}}</td>
+                            <td>{{workspace.updated | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
+                            <td>
+                                <button pButton pRipple icon="pi pi-desktop"
+                                    class="p-button-rounded p-button-rounded p-button-lg p-mr-2 mx-2"
+                                    (click)="goToWorkspace(workspace.id)"></button>
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success p-mr-2 mx-2"
+                                    (click)="editWorkspace(workspace)"></button>
+                                <button pButton pRipple icon="pi pi-trash"
+                                    class="p-button-rounded p-button-warning mx-2"
+                                    (click)="deleteSelectedWorkspace(workspace)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div class="p-d-flex p-ai-center p-jc-between">
+                            In totale ci sono {{workspaces ? workspaces.length : 0 }} workspace.
+                        </div>
+                    </ng-template>
+                </p-table>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
+
+
+<p-dialog [(visible)]="workspaceDialog" [style]="{width: '450px'}" header="Dettagli workspce" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input class="form-control" type="text" pInputText id="name" [(ngModel)]="workspace.name" required
+                autofocus />
+            <small class="p-invalid" *ngIf="submitted && !workspace.name">Il nome è obbligatorio.</small>
+        </div>
+        <div class="form-group">
+            <label for="description">Note</label>
+            <textarea class="form-control" id="description" pInputTextarea [(ngModel)]="workspace.note" required
+                rows="3" cols="20"></textarea>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annulla" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text"
+            (click)="saveWorkspace()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}" acceptLabel="Si" rejectLabel="No"></p-confirmDialog>

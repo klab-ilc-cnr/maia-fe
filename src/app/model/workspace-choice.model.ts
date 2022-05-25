@@ -1,6 +1,6 @@
 export class WorkspaceChoice {
     id: number | undefined;
-    title: string | undefined
-    textPreview: string | undefined;
-    lastAccess: string | undefined;
+    name: string | undefined
+    note: string | undefined;
+    updated: Date | undefined;
 }

@@ -19,11 +19,19 @@ export class WorkspaceService {
     this.workspacesUrl = environment.workspacesUrl;
   }
 
-  public loadTiles(workspaceId: number): Observable<Workspace>{
+  public deleteWorkspace(workspaceId: number | undefined): Observable<number> {
+    return this.http.delete<number>(`${this.workspacesUrl}/${workspaceId}`); //PERCHè NON INVIA LA RICHIESTA????
+  }
+
+  public createWorkspace(workspace: WorkspaceChoice): Observable<WorkspaceChoice> {
+    return this.http.post<WorkspaceChoice>(`${this.workspacesUrl}`, workspace);
+  }
+
+  public loadTiles(workspaceId: number): Observable<Workspace> {
     return this.http.get<Workspace>(`${this.workspacesUrl}/tiles/${workspaceId}`);
   }
 
-  public retrieveWorkspaceChoiceList(): Observable<Array<WorkspaceChoice>>{
+  public retrieveWorkspaceChoiceList(): Observable<Array<WorkspaceChoice>> {
     return this.http.get<Array<WorkspaceChoice>>(`${this.workspacesUrl}/workspaceChoiceList`);
   }
 
