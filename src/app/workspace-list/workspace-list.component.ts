@@ -43,9 +43,8 @@ export class WorkspaceListComponent implements OnInit {
   }
 
   editWorkspace(workspace: WorkspaceChoice) {
-    alert('edit');
-    /*     this.workspace = {...workspace};
-        this.workspaceDialog = true; */
+    this.workspace = { ...workspace };
+    this.workspaceDialog = true;
   }
 
   public goToWorkspace(workspaceId: string) {
@@ -60,11 +59,15 @@ export class WorkspaceListComponent implements OnInit {
   saveWorkspace() {
     this.submitted = true;
 
+    //EDIT
     if (this.workspace.name?.trim()) {
       if (this.workspace.id) {
-        this.workspaces[this.findIndexById(this.workspace.id)] = this.workspace;
+        this.workspaceService.updateWorkspace(this.workspace).subscribe(wsChoice => {
+        this.workspaces[this.findIndexById(wsChoice.id!)] = {...wsChoice};
         this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace aggiornato', life: 3000 });
+        })
       }
+      //CREATE
       else {
         //this.workspace.id = this.createId();
         this.workspaceService.createWorkspace(this.workspace).subscribe(wsChoice => {
@@ -76,7 +79,7 @@ export class WorkspaceListComponent implements OnInit {
 
       this.workspaces = [...this.workspaces];
       this.workspaceDialog = false;
-      this.workspace = new WorkspaceChoice();
+      //this.workspace = new WorkspaceChoice();
     }
   }
 

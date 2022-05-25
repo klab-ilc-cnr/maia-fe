@@ -12,11 +12,15 @@ import { Workspace } from '../model/workspace.model';
   providedIn: 'root'
 })
 export class WorkspaceService {
-
+  
   private workspacesUrl: string;
-
+  
   constructor(private http: HttpClient) {
     this.workspacesUrl = environment.workspacesUrl;
+  }
+
+  public updateWorkspace(workspace: WorkspaceChoice): Observable<WorkspaceChoice> {
+    return this.http.put<WorkspaceChoice>(`${this.workspacesUrl}`, workspace);
   }
 
   public deleteWorkspace(workspaceId: number | undefined): Observable<number> {
