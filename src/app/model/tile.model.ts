@@ -7,9 +7,12 @@ export class Tile<T> {
     tileConfig: any | undefined;
     type : TileType | undefined;
 
-    constructor(type:TileType, id: string)
+    constructor(id: string, workspaceId: string, content:T, tileConfig:any, type:TileType)
     {
-        this.type = type;
         this.id = id;
+        this.workspaceId = workspaceId;
+        this.content = content;
+        this.tileConfig = tileConfig;
+        this.type = type;
     }
 }

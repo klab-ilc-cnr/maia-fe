@@ -9,9 +9,7 @@
                     class="ms-start"></p-button>
             </div>
             <div class="card">
-                <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true"
-                    [globalFilterFields]="['name','country.name','representative.name','status']" [rowHover]="true"
-                    dataKey="id"
+                <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
                     currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
                     [showCurrentPageReport]="true">
                     <ng-template pTemplate="header">
@@ -72,7 +70,8 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annulla" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Annulla" icon="pi pi-times" class="p-button-text"
+            (click)="hideDialog()"></button>
         <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text"
             (click)="saveWorkspace()"></button>
     </ng-template>

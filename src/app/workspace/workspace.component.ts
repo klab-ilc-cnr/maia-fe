@@ -168,6 +168,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     console.log('tiles configs', tilesConfigs);
 
+    //TODO Ripristinare lo stato del workspace
+
     //Ripristino i dati nel localstorage, che verrà letto successivamente da jsPanel
     localStorage.setItem(this.storageName, this.storedData)
 
@@ -198,6 +200,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     });
 
     this.storedTiles = new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
+
+    let openTiles = jsPanel.extensions.getTextTileMap();
+    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), this.storedData, openTiles).subscribe();
 
     // close panels, here we simply close all panels in the document
     for (const panel of jsPanel.getPanels()) {
