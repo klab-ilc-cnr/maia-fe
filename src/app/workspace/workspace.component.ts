@@ -14,6 +14,7 @@ import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.compone
 import { WorkspaceTextSelectorComponent } from '../workspace-text-selector/workspace-text-selector.component';
 import { TextTileContent } from '../model/text-tile-content.model';
 import { ThisReceiver } from '@angular/compiler';
+import { Workspace } from '../model/workspace.model';
 
 //var currentWorkspaceInstance: any;
 
@@ -28,6 +29,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   private newWorkspace = false;
   private workspaceId: string | undefined = undefined;
 
+  private textTilePrefix: string = 'textTile_';
+
   private workSaved = false;
   //private mainPanel: any;
   //private openPanels: Map<string, any> = new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
@@ -35,8 +38,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
   public items: MenuItem[] = [];
 
-  private storedData: any;
-  private storedTiles: Map<string, Tile<any>> = new Map();
+  //private storedData: any;
+  //private storedTiles: Map<string, Tile<any>> = new Map();
   private storageName = "storedTiles";
 
   constructor(private router: Router,
@@ -59,14 +62,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
       if (this.workspaceId != null && this.workspaceId != undefined) {
         this.newWorkspace = false;
-        this.workspaceService.loadTiles(Number(this.workspaceId)).subscribe(data => {
-          //TODO caricare tile dal backend
+        this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).subscribe(data => {
+          data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
+          this.restoreTiles(data);
         });
         return;
       }
-
-      /* this.editUser = false;
-      this.loadCurrentUserProfile(); */
 
     });
 
@@ -81,7 +82,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
             }, */
       addToTileMap: function (panelId: number, tile: Tile<any>) {
         switch (tile.type as TileType) {
-          case 0:
+          case TileType.TEXT:
             this.textTileMap.set(panelId, tile);
             console.log('Added ', this.getTextTileMap())
             break;
@@ -109,9 +110,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       addContent: function (tile: Tile<TextTileContent>, workspaceComponent: WorkspaceComponent) {
         //this rappresenta l'elemento jsPanel
         switch (tile.type as TileType) {
-          case 0:
+          case TileType.TEXT:
             let el = document.createElement('p');
-            workspaceComponent.workspaceService.retrieveText(tile.id).subscribe(data => {
+            workspaceComponent.workspaceService.retrieveText(tile.content?.id!).subscribe(data => {
               el.textContent = data.text ?? '';
               this.content.append(el);
 
@@ -150,28 +151,31 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       },
       {
         label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
-      },
+      }
+/*       ,
       {
         label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
-      }
+      } */
     ];
   }
-  restoreTiles(event: any) {
+  restoreTiles(workspaceStatus : Workspace) {
     console.log('restore');
+
+    let storedData: any = workspaceStatus.layout;
+    let storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
+    console.log('restored layout',storedData);
 
     const tilesConfigs: any = {};
 
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
-    for (const [tileId, tile] of this.storedTiles.entries()) {
-      tilesConfigs[tileId] = tile.tileConfig;
+    for (const [index, tile] of storedTiles.entries()) {
+      tilesConfigs[this.textTilePrefix + index] = tile.tileConfig;
     }
 
     console.log('tiles configs', tilesConfigs);
 
-    //TODO Ripristinare lo stato del workspace
-
     //Ripristino i dati nel localstorage, che verrà letto successivamente da jsPanel
-    localStorage.setItem(this.storageName, this.storedData)
+    localStorage.setItem(this.storageName, storedData)
 
     //Ripristino le tile
     jsPanel.layout.restore({
@@ -180,7 +184,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     });
 
     //Ripristino il contenuto delle tile
-    for (const [tileId, tile] of this.storedTiles.entries()) {
+    for (const [tileId, tile] of storedTiles.entries()) {
       let currPanelElement = jsPanel.getPanels().find(
         (x: { id: string; }) => x.id === tile.tileConfig.id
       );
@@ -194,24 +198,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //this.workSaved = true;
 
     // save panel layout
-    this.storedData = jsPanel.layout.save({
+    let storedData = jsPanel.layout.save({
       selector: '.jsPanel-standard',
       storagename: this.storageName
     });
 
-    this.storedTiles = new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
+    //this.storedTiles = new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
 
     let openTiles = jsPanel.extensions.getTextTileMap();
-    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), this.storedData, openTiles).subscribe();
+    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles).subscribe();
 
     // close panels, here we simply close all panels in the document
-    for (const panel of jsPanel.getPanels()) {
+/*     for (const panel of jsPanel.getPanels()) {
       panel.close();
-    }
+    } */
 
     // for demo purpose only log stored data to the console
     // or use your browser's dev tools to inspect localStorage
-    console.log('stored data', this.storedData);
+    console.log('stored data', storedData);
   }
 
   ngAfterViewInit(): void {
@@ -313,7 +317,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       .close();
 
     let textTileConfig = {
-      id: 'textTile_' + textId,
+      id: this.textTilePrefix + textId,
       container: this.workspaceContainer,
       headerTitle: 'testo - ' + title.toLowerCase(),
       maximizedMargin: 5,
@@ -335,9 +339,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     let tileObject: Tile<TextTileContent> =
     {
-      id: textId,
+      id: undefined,
       workspaceId: this.workspaceId,
-      content: { text: "" },
+      content: {id: Number(textId), text:''}, //TODO Inserire l'id corretto dell'elemento da recuperare
       tileConfig: textTileConfig,
       type: TileType.TEXT
     };

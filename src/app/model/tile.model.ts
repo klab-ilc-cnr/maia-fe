@@ -1,7 +1,7 @@
 import { TileType } from "./tile-type.model";
 
 export class Tile<T> {
-    id: string;
+    id: string | undefined;
     workspaceId: string | undefined;
     content: T | undefined; // i diversi tipi di tile potrebbero avere contenuti diversi
     tileConfig: any | undefined;

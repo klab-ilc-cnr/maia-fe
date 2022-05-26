@@ -1,5 +1,5 @@
 export enum TileType {
-    TEXT,
-    ONTOLOGY,
-    LEXICON
+    TEXT = "TEXT",
+    ONTOLOGY = "ONTOLOGY",
+    LEXICON = "LEXICON"
 }

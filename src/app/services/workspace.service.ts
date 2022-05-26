@@ -39,33 +39,37 @@ export class WorkspaceService {
 
   //TILE
 
-  public saveWorkspaceStatus(workspaceId: number, localStorageData: any, openTiles: Map<string, Tile<any>>): Observable<[boolean, boolean]> {
+  public saveWorkspaceStatus(workspaceId: number, localStorageData: any, openTiles: Map<string, Tile<any>>): Observable<boolean> {
     let tiles: Array<Tile<any>> = [];
     for (const [tileId, tile] of openTiles.entries()) {
       //tile.tileConfig = JSON.stringify(tile.tileConfig); //passo le configurazioni come stringa
 
-      let newTile = new Tile(tile.id, tile.workspaceId!, tile.content, JSON.stringify(tile.tileConfig), tile.type!)
+      let newTile = new Tile(tile.id!, tile.workspaceId!, tile.content, JSON.stringify(tile.tileConfig), tile.type!)
       tiles.push(newTile);
     }
 
-    let layoutSave$ = this.http.post<boolean>(
-      `${this.workspacesUrl}/tiles/layout/${workspaceId}`,
-      localStorageData
+    let workspace = new Workspace(workspaceId, tiles, localStorageData);
+
+    let layoutSave$ = this.http.put<boolean>(
+      `${this.workspacesUrl}/layout`,
+      workspace
     );
 
-    let tilesSave$ = this.http.post<boolean>(`${this.workspacesUrl}/tiles/${workspaceId}`, tiles);
+    return layoutSave$;
 
-    return tilesSave$.pipe(combineLatestWith(layoutSave$)); //esegue entrambi i servizi
-  }
-
-  public loadTiles(workspaceId: number): Observable<Workspace> {
-    return this.http.get<Workspace>(`${this.workspacesUrl}/tiles/${workspaceId}`);
+    /*     let tilesSave$ = this.http.post<boolean>(`${this.workspacesUrl}/tiles/${workspaceId}`, tiles);
+    
+        return tilesSave$.pipe(combineLatestWith(layoutSave$)); //esegue entrambi i servizi */
   }
 
   //WORKSPACECHOICE
 
   public retrieveWorkspaceChoiceList(): Observable<Array<WorkspaceChoice>> {
     return this.http.get<Array<WorkspaceChoice>>(`${this.workspacesUrl}/workspaceChoiceList`);
+  }
+
+  public loadWorkspaceStatus(workspaceId: number): Observable<Workspace> {
+    return this.http.get<Workspace>(`${this.workspacesUrl}/status/${workspaceId}`);
   }
 
   //TEXTCHOICE
@@ -76,7 +80,7 @@ export class WorkspaceService {
 
   //TEXT
 
-  public retrieveText(textId: string) {
+  public retrieveText(textId: number) {
     return this.http.get<TextTileContent>(`${this.workspacesUrl}/texts/${textId}`);
   }
 }
