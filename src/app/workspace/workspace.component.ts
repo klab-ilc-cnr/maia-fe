@@ -15,6 +15,7 @@ import { WorkspaceTextSelectorComponent } from '../workspace-text-selector/works
 import { TextTileContent } from '../model/text-tile-content.model';
 import { ThisReceiver } from '@angular/compiler';
 import { Workspace } from '../model/workspace.model';
+import { MessageService } from 'primeng/api';
 
 //var currentWorkspaceInstance: any;
 
@@ -47,6 +48,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private vcr: ViewContainerRef,
+    private messageService: MessageService,
     private workspaceService: WorkspaceService) { }
 
   ngOnInit(): void {
@@ -152,18 +154,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       {
         label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
       }
-/*       ,
-      {
-        label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
-      } */
+      /*       ,
+            {
+              label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
+            } */
     ];
   }
-  restoreTiles(workspaceStatus : Workspace) {
+  restoreTiles(workspaceStatus: Workspace) {
     console.log('restore');
 
     let storedData: any = workspaceStatus.layout;
     let storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
-    console.log('restored layout',storedData);
+    console.log('restored layout', storedData);
 
     const tilesConfigs: any = {};
 
@@ -206,12 +208,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //this.storedTiles = new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
 
     let openTiles = jsPanel.extensions.getTextTileMap();
-    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles).subscribe();
+    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles)
+      .subscribe(() => {
+        this.workSaved = true;
+        this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
+      }
+      );
 
     // close panels, here we simply close all panels in the document
-/*     for (const panel of jsPanel.getPanels()) {
-      panel.close();
-    } */
+    /*     for (const panel of jsPanel.getPanels()) {
+          panel.close();
+        } */
 
     // for demo purpose only log stored data to the console
     // or use your browser's dev tools to inspect localStorage
@@ -231,13 +238,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //this.mainPanel.close();
     //this.openPanels.forEach((panel, id) => panel.close());
 
-    //Chiudo tutti i pannelli aperti anche i modal
-    jsPanel.getPanels(function (this: any) {
-      return this.classList.contains('jsPanel');
-    })
-      .forEach((panel: { close: () => any; }) => panel.close());
+    if (this.workSaved) {
 
-    localStorage.removeItem(this.storageName)
+      //Chiudo tutti i pannelli aperti anche i modal
+      jsPanel.getPanels(function (this: any) {
+        return this.classList.contains('jsPanel');
+      })
+        .forEach((panel: { close: () => any; }) => panel.close());
+
+      localStorage.removeItem(this.storageName)
+    }
 
     return this.workSaved;
   }
@@ -341,7 +351,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     {
       id: undefined,
       workspaceId: this.workspaceId,
-      content: {id: Number(textId), text:''}, //TODO Inserire l'id corretto dell'elemento da recuperare
+      content: { id: Number(textId), text: '' }, //TODO Inserire l'id corretto dell'elemento da recuperare
       tileConfig: textTileConfig,
       type: TileType.TEXT
     };
