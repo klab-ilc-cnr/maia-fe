@@ -33,6 +33,10 @@ export class SideMenuComponent implements OnInit {
     return this.loggedUserService.canManageUsers();
   }
 
+  public get canManageLayers(): boolean{
+    return this.loggedUserService.canManageLayers();
+  }
+
   public isActive(urls: string[]): boolean {
     var isActive = false;
     urls.forEach(url => {

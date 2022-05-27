@@ -351,7 +351,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     {
       id: undefined,
       workspaceId: this.workspaceId,
-      content: { id: Number(textId), text: '' }, //TODO Inserire l'id corretto dell'elemento da recuperare
+      content: { id: Number(textId), text: '' },
       tileConfig: textTileConfig,
       type: TileType.TEXT
     };

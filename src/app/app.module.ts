@@ -34,6 +34,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
+import { LayerComponent } from './layer/layer.component';
+import { ColorPickerModule } from "primeng/colorpicker";
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import {ToastModule} from 'primeng/toast';
     WorkspaceListComponent,
     WorkspaceLayoutComponent,
     WorkspaceMenuComponent,
-    WorkspaceTextSelectorComponent
+    WorkspaceTextSelectorComponent,
+    LayerComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +70,8 @@ import {ToastModule} from 'primeng/toast';
     MenubarModule,
     DialogModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    ColorPickerModule
     ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

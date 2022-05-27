@@ -34,7 +34,8 @@ export const environment = {
   allowedUrls: allowedUrls,
   usersUrl : allowedUrls + '/users',
   languagesUrl : allowedUrls + '/languages',
-  workspacesUrl: allowedUrls + '/workspaces'
+  workspacesUrl: allowedUrls + '/workspaces',
+  layersUrl: allowedUrls + '/layers'
 };
 
 /*

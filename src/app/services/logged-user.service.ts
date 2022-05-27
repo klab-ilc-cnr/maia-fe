@@ -25,6 +25,15 @@ export class LoggedUserService {
     return (user?.role === (Roles.AMMINISTRATORE));
   }
 
+  public canManageLayers(): boolean{
+    let user = this.currentUser;
+    if(user === null && user === undefined)
+    {
+      return false;
+    }
+    return (user?.role === (Roles.AMMINISTRATORE));
+  }
+
   public registerUser(user: User) {
     this.setUserInStorage(user);
 }

@@ -38,6 +38,14 @@
             </a>
           </li>
         </ul>
+                <ul role="menu">
+          <li *ngIf="canManageLayers">
+            <a routerLink="/layers">
+              <i class="layout-menuitem-icon pi pi-tags"></i>
+              <span>Layer</span>
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
