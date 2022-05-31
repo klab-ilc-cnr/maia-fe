@@ -25,7 +25,9 @@
                 <ng-template pTemplate="body" let-layer let-i="rowIndex">
                     <tr>
                         <td>{{layer.name}}</td>
-                        <td><p-colorPicker [(ngModel)]="layers[i].color" [disabled]="true"></p-colorPicker></td>
+                        <td>
+                            <p-colorPicker [(ngModel)]="layers[i].color" [disabled]="true"></p-colorPicker>
+                        </td>
                         <td>{{layer.description}}</td>
                         <td>
                             <button pButton pRipple icon="pi pi-pencil"
@@ -52,27 +54,27 @@
     <ng-template pTemplate="content">
         <div class="form-group">
             <label for="name">Nome</label>
-            <input class="form-control" type="text" pInputText id="name" [(ngModel)]="layer.name" required
-                autofocus />
+            <input class="form-control" type="text" pInputText id="name" [(ngModel)]="layer.name" required autofocus />
+            <br>
             <small class="p-invalid" *ngIf="submitted && !layer.name">Il nome è obbligatorio.</small>
         </div>
-                <div class="form-group">
+        <div class="form-group">
             <label for="name">Colore</label>
+            <p-colorPicker class="nopacity" [(ngModel)]="layer.color" required="true"></p-colorPicker>
+            <br>
             <small class="p-invalid" *ngIf="submitted && !layer.color">Il colore è obbligatorio.</small>
-            <p-colorPicker class="nopacity" [(ngModel)]="layer.color" required></p-colorPicker>
         </div>
         <div class="form-group">
             <label for="description">Descrizione</label>
-            <textarea class="form-control" id="description" pInputTextarea [(ngModel)]="layer.description"
-                rows="3" cols="20"></textarea>
+            <textarea class="form-control" id="description" pInputTextarea [(ngModel)]="layer.description" rows="3"
+                cols="20"></textarea>
         </div>
     </ng-template>
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annulla" icon="pi pi-times" class="p-button-text"
             (click)="hideDialog()"></button>
-        <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text"
-            (click)="saveLayer()"></button>
+        <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text" (click)="saveLayer()"></button>
     </ng-template>
 </p-dialog>
 

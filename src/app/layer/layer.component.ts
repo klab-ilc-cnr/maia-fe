@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Layer } from '../model/layer.model';
 import { LayerService } from '../services/layer.service';
-import {ColorPickerModule} from 'primeng/colorpicker';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 @Component({
   selector: 'app-layer',
@@ -51,12 +51,20 @@ export class LayerComponent implements OnInit {
   saveLayer() {
     this.submitted = true;
 
+    //bug colorpicker required fix
+    if(this.layer.color === undefined 
+      || this.layer.color === null 
+      || this.layer.color.trim().length <= 0 )
+      {
+        return;
+      }
+
     //EDIT
     if (this.layer.name?.trim()) {
       if (this.layer.id) {
         this.layerService.updateLayer(this.layer).subscribe(layer => {
-        this.layers[this.findIndexById(layer.id!)] = {...layer};
-        this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer aggiornato', life: 3000 });
+          this.layers[this.findIndexById(layer.id!)] = { ...layer };
+          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer aggiornato', life: 3000 });
         })
       }
       //CREATE
@@ -91,5 +99,4 @@ export class LayerComponent implements OnInit {
       }
     });
   }
-
 }

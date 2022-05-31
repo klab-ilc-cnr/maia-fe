@@ -29,7 +29,7 @@ export class LayerService {
     return this.http.delete<number>(`${this.layerUrl}/${layerId}`);
   }
 
-  public createLayer(workspace: Layer): Observable<Layer> {
-    return this.http.post<Layer>(`${this.layerUrl}`, workspace);
+  public createLayer(layer: Layer): Observable<Layer> {
+    return this.http.post<Layer>(`${this.layerUrl}`, layer);
   }
 }
