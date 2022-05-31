@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Layer } from '../model/layer.model';
 import { LayerService } from '../services/layer.service';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-layer',
