@@ -1,3 +1,5 @@
-.nopacity{
-    opacity: 1 !important;
-}
+  :host {
+    ::ng-deep .p-colorpicker-preview.p-inputtext.p-disabled {
+      opacity: 1;
+    }
+  }
