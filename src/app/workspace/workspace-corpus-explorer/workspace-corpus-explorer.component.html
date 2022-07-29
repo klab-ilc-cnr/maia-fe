@@ -1,0 +1,37 @@
+<div class="p-fluid">
+  <form #form="ngForm" (ngSubmit)="onSearch()" class="mt-3 mb-2">
+    <div class="input-group input-group-lg mx-auto" style="max-width: 300px">
+      <input type="text" class="form-control" name="fiscalCode" #fiscalCode="ngModel"
+        placeholder="Cerca" aria-describedby="button-search" [(ngModel)]="s" appFiscalCode>
+      <button class="btn btn-primary" type="submit" id="button-search">
+        <i class="pi pi-search"></i>
+      </button>
+    </div>
+  </form>
+</div>
+<div class="group-actions mb-3">
+  <button class="btn btn-outline-primary rounded-circle" id="button-upload-file" pTooltip="Carica file" tooltipPosition="bottom">
+    <app-icon-upload-file style="margin-right: 0.3rem;"></app-icon-upload-file>
+  </button>
+  <button class="btn btn-outline-primary rounded-circle" id="button-add-folder" pTooltip="Aggiungi cartella" tooltipPosition="bottom">
+    <app-icon-add-folder></app-icon-add-folder>
+  </button>
+  <button class="btn btn-outline-primary rounded-circle" id="button-rename" pTooltip="Rinomina" tooltipPosition="bottom">
+    <app-icon-rename></app-icon-rename>
+  </button>
+  <button class="btn btn-outline-primary rounded-circle" id="button-move" pTooltip="Sposta" tooltipPosition="bottom">
+    <app-icon-move></app-icon-move>
+  </button>
+  <button class="btn btn-outline-danger rounded-circle" id="button-delete" pTooltip="Elimina" tooltipPosition="bottom">
+    <i class="pi pi-trash"></i>
+  </button>
+</div>
+
+<p-tree
+  [value]="files"
+  selectionMode="single"
+  [(selection)]="selectedFile"
+  [contextMenu]="cm"
+  (onNodeContextMenuSelect)="onTreeContextMenuSelect($event)"></p-tree>
+
+<p-contextMenu #cm [model]="items"></p-contextMenu>

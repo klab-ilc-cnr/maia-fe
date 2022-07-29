@@ -8,6 +8,7 @@ import { Tile } from '../model/tile.model';
 import { WorkspaceChoice } from '../model/workspace-choice.model';
 import { Workspace } from '../model/workspace.model';
 import { combineLatest, of } from 'rxjs';
+import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -58,7 +59,6 @@ export class WorkspaceService {
     return layoutSave$;
 
     /*     let tilesSave$ = this.http.post<boolean>(`${this.workspacesUrl}/tiles/${workspaceId}`, tiles);
-    
         return tilesSave$.pipe(combineLatestWith(layoutSave$)); //esegue entrambi i servizi */
   }
 
@@ -82,5 +82,14 @@ export class WorkspaceService {
 
   public retrieveText(textId: number) {
     return this.http.get<TextTileContent>(`${this.workspacesUrl}/texts/${textId}`);
+  }
+
+  //
+
+  baseUrl = "http://localhost:8081"
+  // baseUrl = "https://lari2.ilc.cnr.it/"
+  public retrieveCorpus(uuid: string): Observable<CorpusTileContent> {
+    // return this.http.get(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
+    return this.http.get<CorpusTileContent>('assets/mock/files.json')
   }
 }

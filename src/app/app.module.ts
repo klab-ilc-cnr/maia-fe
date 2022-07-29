@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthConfigModule } from './config/auth.config.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutComponent } from './layout/layout.component';
-import { PageControllersModule } from './page-controllers/page-controllers.module';
+import { PageControllersModule } from './controllers/page-controllers/page-controllers.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ButtonModule } from "primeng/button";
@@ -36,6 +36,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
 import { LayerComponent } from './layer/layer.component';
 import { ColorPickerModule } from "primeng/colorpicker";
+import { WorkspaceCorpusExplorerComponent } from './workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { TreeModule } from 'primeng/tree';
+import { IconsModule } from './controllers/icons/icons.module';
+import { TooltipModule } from 'primeng/tooltip';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,8 @@ import { ColorPickerModule } from "primeng/colorpicker";
     WorkspaceLayoutComponent,
     WorkspaceMenuComponent,
     WorkspaceTextSelectorComponent,
-    LayerComponent
+    LayerComponent,
+    WorkspaceCorpusExplorerComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +77,11 @@ import { ColorPickerModule } from "primeng/colorpicker";
     DialogModule,
     ConfirmDialogModule,
     ToastModule,
-    ColorPickerModule
+    ColorPickerModule,
+    TreeModule,
+    IconsModule,
+    TooltipModule,
+    ContextMenuModule
     ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

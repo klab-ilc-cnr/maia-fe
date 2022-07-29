@@ -1,3 +1,4 @@
+import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, HostListener, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { text } from '@fortawesome/fontawesome-svg-core';
@@ -16,6 +17,7 @@ import { TextTileContent } from '../model/text-tile-content.model';
 import { ThisReceiver } from '@angular/compiler';
 import { Workspace } from '../model/workspace.model';
 import { MessageService } from 'primeng/api';
+import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
 
 //var currentWorkspaceInstance: any;
 
@@ -79,7 +81,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
       /*       addToPanelsMap: function () {
               currentWorkspaceInstance.openPanels.set(this.id, this);
-      
+
               return this;
             }, */
       addToTileMap: function (panelId: number, tile: Tile<any>) {
@@ -132,6 +134,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         label: 'Testo',
         items: [
           { label: 'Apri', id: 'OPEN', command: (event) => { this.openTextChoicePanel(event) } },
+          { separator: true },
+          { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } },
           { separator: true },
           { label: 'Testo menu 1' },
         ]
@@ -258,6 +262,90 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     console.log('Mappa panels');
     //console.log(this.openPanels);
     console.log(jsPanel.getPanels());
+  }
+
+  openExploreCorpusPanel(event: any) {
+
+    // const documentList = this.retrieveTextList();
+
+    const componentRef = this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
+
+    // componentRef.instance.textChoiceList = textList;
+
+    // componentRef.instance.onTextSelectEvent
+    //   .subscribe(event => {
+    //     console.log(event.target.getAttribute('data-type'));
+
+    //     let textId = event.target.parentElement.id;
+    //     let title = event.target.parentElement.querySelector("[data-type='title']").textContent;
+    //     this.openTextPanel(textId, title)
+    //   });
+
+    const element = componentRef.location.nativeElement;
+
+    // jsPanel.getPanels(function (this: any) {
+    //   return this.classList.contains('jsPanel-modal');
+    // })
+    //   .find((x: { id: string; }) => x.id === 'modalTextSelect')
+    //   .close();
+
+    let corpusExplorerTileConfig = {
+      id: 'corpusExplorerTile',
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Esplora Corpus',
+      maximizedMargin: 5,
+      dragit: { snap: true },
+      syncMargins: true,
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        //currentWorkspaceInstance.openPanels.delete(panel.id);
+
+        // mio commento
+        //this.deleteTileContent(panel.id, TileType.TEXT);
+      }
+    };
+
+    let corpusTileElement = jsPanel.create(corpusExplorerTileConfig);
+
+    corpusTileElement
+      .resize({
+        height: window.innerHeight / 2
+      })
+      .reposition();
+    //.addToPanelsMap();
+
+    /*     textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
+          currentWorkspaceInstance.openPanels.delete(panel.id);
+          this.deleteTileContent(panel.id, TileType.TEXT);
+        }); */
+
+    // let tileObject: Tile<CorpusTileContent> =
+    // {
+    //   id: undefined,
+    //   workspaceId: this.workspaceId,
+    //   content: element,
+    //   tileConfig: corpusExplorerTileConfig,
+    //   type: TileType.TEXT
+    // };
+
+    // corpusTileElement.addContent(tileObject, this);
+
+    // var modal = jsPanel.modal.create({
+    //   id: 'corpusExplorerModal',
+    //   theme: 'filleddark',
+    //   headerTitle: '',
+    //   content: element,
+    //   onclosed: function (panel: any, closedByUser: boolean) {
+    //     //currentWorkspaceInstance.openPanels.delete(panel.id);
+    //   }
+    // })
+    //   .resize({
+    //     width: window.innerWidth / 2,
+    //     height: window.innerHeight / 2
+    //   })
+    //   .reposition(); // reposition panel in order to maintain centered position
+    // //.addToPanelsMap();
+    // //this.panels.set(modal.id, modal);
   }
 
   openTextChoicePanel(event: any) {

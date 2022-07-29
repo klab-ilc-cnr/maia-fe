@@ -1,0 +1,90 @@
+{
+  "requestUUID": "123456789",
+  "results": "1",
+  "documentSystem": [
+    {
+      "path": "falisco",
+      "name": "Falisco",
+      "type": "directory",
+      "element-id": 1,
+      "metadata": {},
+      "children": [
+        {
+          "path": "falisco/pa",
+          "name": "PA",
+          "type": "directory",
+          "element-id": 2,
+          "metadata": {},
+          "children": [
+            {
+              "path": "falisco/pa/pa1.xml",
+              "name": "PA1.xml",
+              "type": "file",
+              "element-id": 3,
+              "metadata": {
+                "supportType": "marble",
+                "dateCreated": "2012-12-22"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "falisco2",
+      "name": "Falisco2",
+      "type": "directory",
+      "element-id": 20,
+      "metadata": {},
+      "children": [
+        {
+          "path": "falisco2/pa21",
+          "name": "PA21",
+          "type": "directory",
+          "element-id": 21,
+          "metadata": {},
+          "children": [
+            {
+              "path": "falisco2/pa21/pa211.xml",
+              "name": "PA211.xml",
+              "type": "file",
+              "element-id": 211,
+              "metadata": {
+                "supportType": "marble",
+                "dateCreated": "2012-12-22"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "folder3",
+      "name": "FOlder 3",
+      "type": "directory",
+      "element-id": 30,
+      "metadata": {},
+      "children": [
+        {
+          "path": "folder3/f31",
+          "name": "F3-1",
+          "type": "directory",
+          "element-id": 31,
+          "metadata": {},
+          "children": []
+        },
+        {
+          "path": "folder3/f32.txt",
+          "name": "f32.txt",
+          "type": "file",
+          "element-id": 32,
+          "metadata": {
+            "supportType": "marble",
+            "dateCreated": "2012-12-22"
+          }
+        }
+      ]
+    }
+
+  ]
+}
