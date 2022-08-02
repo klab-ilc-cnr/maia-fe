@@ -89,7 +89,7 @@ export class WorkspaceService {
   baseUrl = "http://localhost:8081"
   // baseUrl = "https://lari2.ilc.cnr.it/"
   public retrieveCorpus(uuid: string): Observable<CorpusTileContent> {
-    // return this.http.get(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
+    // return this.http.get<CorpusTileContent>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
     return this.http.get<CorpusTileContent>('assets/mock/files.json')
   }
 }

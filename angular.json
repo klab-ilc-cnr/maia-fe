@@ -33,9 +33,15 @@
 							"src/assets"
 						],
 						"styles": [
+                            "node_modules/primeicons/primeicons.css",
+							"node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+							"node_modules/primeng/resources/primeng.min.css",
+							"node_modules/bootstrap/dist/css/bootstrap.min.css",
 							"src/styles.scss"
 						],
 						"scripts": [
+                            "node_modules/jquery/dist/jquery.min.js",
+                            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
 							"node_modules/jspanel4/dist/jspanel.js",
 							"node_modules/jspanel4/dist/extensions/contextmenu/jspanel.contextmenu.js",
 							"node_modules/jspanel4/dist/extensions/hint/jspanel.hint.js",
@@ -43,7 +49,6 @@
 							"node_modules/jspanel4/dist/extensions/tooltip/jspanel.tooltip.js",
 							"node_modules/jspanel4/dist/extensions/dock/jspanel.dock.js",
 							"node_modules/jspanel4/dist/extensions/layout/jspanel.layout.min.js"
-
 						]
 					},
 					"configurations": {

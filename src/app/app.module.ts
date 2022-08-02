@@ -33,7 +33,7 @@ import { WorkspaceTextSelectorComponent } from './workspace-text-selector/worksp
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import {ToastModule} from 'primeng/toast';
+import { ToastModule } from 'primeng/toast';
 import { LayerComponent } from './layer/layer.component';
 import { ColorPickerModule } from "primeng/colorpicker";
 import { WorkspaceCorpusExplorerComponent } from './workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
@@ -41,6 +41,7 @@ import { TreeModule } from 'primeng/tree';
 import { IconsModule } from './controllers/icons/icons.module';
 import { TooltipModule } from 'primeng/tooltip';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { TreeSelectModule } from 'primeng/treeselect';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ContextMenuModule } from 'primeng/contextmenu';
     TreeModule,
     IconsModule,
     TooltipModule,
-    ContextMenuModule
+    ContextMenuModule,
+    TreeSelectModule
     ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

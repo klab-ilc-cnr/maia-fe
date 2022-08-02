@@ -1,28 +1,52 @@
-<div class="p-fluid">
-  <form #form="ngForm" (ngSubmit)="onSearch()" class="mt-3 mb-2">
-    <div class="input-group input-group-lg mx-auto" style="max-width: 300px">
-      <input type="text" class="form-control" name="fiscalCode" #fiscalCode="ngModel"
-        placeholder="Cerca" aria-describedby="button-search" [(ngModel)]="s" appFiscalCode>
-      <button class="btn btn-primary" type="submit" id="button-search">
-        <i class="pi pi-search"></i>
-      </button>
-    </div>
-  </form>
-</div>
 <div class="group-actions mb-3">
-  <button class="btn btn-outline-primary rounded-circle" id="button-upload-file" pTooltip="Carica file" tooltipPosition="bottom">
-    <app-icon-upload-file style="margin-right: 0.3rem;"></app-icon-upload-file>
+  <button
+    class="btn btn-outline-success rounded-circle"
+    id="button-upload-file"
+    pTooltip="Carica file"
+    tooltipPosition="bottom"
+    (click)="showUploadFileModal()"
+    [disabled]="shouldBeDisabledU"
+  >
+    <app-icon-upload-file style="margin-right: 0.3rem"></app-icon-upload-file>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" id="button-add-folder" pTooltip="Aggiungi cartella" tooltipPosition="bottom">
+  <button
+    class="btn btn-outline-primary rounded-circle"
+    id="button-add-folder"
+    pTooltip="Aggiungi cartella"
+    tooltipPosition="bottom"
+    (click)="showAddFolderModal()"
+    [disabled]="shouldBeDisabledA"
+  >
     <app-icon-add-folder></app-icon-add-folder>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" id="button-rename" pTooltip="Rinomina" tooltipPosition="bottom">
+  <button
+    class="btn btn-outline-primary rounded-circle"
+    id="button-rename"
+    pTooltip="Rinomina"
+    tooltipPosition="bottom"
+    (click)="showRenameModal()"
+    [disabled]="shouldBeDisabledR"
+  >
     <app-icon-rename></app-icon-rename>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" id="button-move" pTooltip="Sposta" tooltipPosition="bottom">
+  <button
+    class="btn btn-outline-primary rounded-circle"
+    id="button-move"
+    pTooltip="Sposta"
+    tooltipPosition="bottom"
+    (click)="showMoveModal()"
+    [disabled]="shouldBeDisabledMD"
+  >
     <app-icon-move></app-icon-move>
   </button>
-  <button class="btn btn-outline-danger rounded-circle" id="button-delete" pTooltip="Elimina" tooltipPosition="bottom">
+  <button
+    class="btn btn-outline-danger rounded-circle"
+    id="button-delete"
+    pTooltip="Elimina"
+    tooltipPosition="bottom"
+    (click)="showDeleteModal()"
+    [disabled]="shouldBeDisabledMD"
+  >
     <i class="pi pi-trash"></i>
   </button>
 </div>
@@ -30,8 +54,294 @@
 <p-tree
   [value]="files"
   selectionMode="single"
-  [(selection)]="selectedFile"
+  [(selection)]="selectedDocument"
   [contextMenu]="cm"
-  (onNodeContextMenuSelect)="onTreeContextMenuSelect($event)"></p-tree>
+  (onNodeSelect)="nodeSelect($event)"
+  (onNodeContextMenuSelect)="onTreeContextMenuSelect($event, cm)"
+  [draggableNodes]="true"
+  [droppableNodes]="true"
+  draggableScope="self"
+  droppableScope="self"
+  [filter]="true"
+  [loading]="loading"
+  scrollHeight="250px"
+></p-tree>
 
-<p-contextMenu #cm [model]="items"></p-contextMenu>
+<p-contextMenu #cm appendTo="body" [model]="items"></p-contextMenu>
+
+<div
+  class="modal fade"
+  id="uploadFileModal"
+  tabindex="-1"
+  aria-labelledby="uploadFileModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitFileUploaderModal()"
+        #fileUploaderForm="ngForm"
+        id="fileUploaderForm"
+        class="validated"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadFileModalLabel">Importa nuovo file</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Scegli un file *</label>
+            <input
+              type="file"
+              class="form-control"
+              [ngClass]="{'is-invalid': !isFileUploaded && (isFileUploaderTouched || isFileSizeExceed)}"
+              aria-label="file example"
+              id="fileUploader"
+              type="file"
+              accept="text/plain, .xml, .reg, .bat, .pls, .m3u, .m3u8, .srt, .ies, .air, .stp, .xspf, .dix, .sfm, .theme, .torrent"
+              required
+              (change)="onFileUpload($event)"
+              (click)="onFileUploaderTouch()"
+            />
+            <div *ngIf="!isFileUploaded && isFileUploaderTouched" class="invalid-feedback">
+              Necessario selezionare un file plain text
+            </div>
+            <div *ngIf="!isFileUploaded && isFileSizeExceed" class="invalid-feedback">
+              Le dimensioni del file superano i 10MB consentiti
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Seleziona cartella *</label>
+            <div class="p-fluid">
+              <p-treeSelect #folderToUpload="ngModel" name="folderToUpload" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToFileUpload" placeholder="Seleziona cartella" required></p-treeSelect>
+              <div *ngIf="folderToUpload.invalid && (folderToUpload.touched || folderToUpload.dirty)"
+                class="invalid-feedback">
+                <div *ngIf="folderToUpload.errors?.['required']">
+                  Necessario selezionare una cartella
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Annulla
+          </button>
+          <button type="submit" class="btn btn-primary">Conferma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="addFolderModal"
+  tabindex="-1"
+  aria-labelledby="addFolderModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitAddFolderModal()"
+        #addFolderForm="ngForm"
+        id="addFolderForm"
+        class="validated"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="addFolderModalLabel">Aggiungi cartella</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nome nuova cartella *</label>
+            <input #nfName="ngModel" type="text" name="nfName" class="form-control" [(ngModel)]="newFolderName"
+              required maxlength="300" placeholder="Nome nuova cartella">
+            <div *ngIf="nfName.invalid && (nfName.touched || nfName.dirty)" class="invalid-feedback">
+              <div *ngIf="nfName.errors?.['required']">
+                Necessario inserire il nome della nuova cartella
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Seleziona cartella *</label>
+            <div class="p-fluid">
+              <p-treeSelect #folderToAdd="ngModel" name="folderToAdd" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToAddFolder" placeholder="Seleziona cartella" required></p-treeSelect>
+              <div *ngIf="folderToAdd.invalid && (folderToAdd.touched || folderToAdd.dirty)"
+                class="invalid-feedback">
+                <div *ngIf="folderToAdd.errors?.['required']">
+                  Necessario selezionare una cartella
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Annulla
+          </button>
+          <button type="submit" class="btn btn-primary">Conferma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="renameModal"
+  tabindex="-1"
+  aria-labelledby="renameModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitRenameModal()"
+        #renameForm="ngForm"
+        id="renameForm"
+        class="validated"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="renameModalLabel">Rinomina {{ selectedDocument?.label }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nuovo nome *</label>
+            <input #newElementName="ngModel" type="text" name="nfName" class="form-control" [(ngModel)]="newName"
+              required maxlength="300" placeholder="Nuovo nome">
+            <div *ngIf="newElementName.invalid && (newElementName.touched || newElementName.dirty)" class="invalid-feedback">
+              <div *ngIf="newElementName.errors?.['required']">
+                Necessario inserire il nuovo nome
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Annulla
+          </button>
+          <button type="submit" class="btn btn-primary">Conferma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="moveModal"
+  tabindex="-1"
+  aria-labelledby="moveModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitMoveModal()"
+        #moveForm="ngForm"
+        id="moveForm"
+        class="validated"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="moveModalLabel">Sposta {{ selectedDocument?.label }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Seleziona cartella di destinazione *</label>
+            <div class="p-fluid">
+              <p-treeSelect #folderToMoveIn="ngModel" name="folderToMoveIn" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToMoveElementIn" placeholder="Seleziona cartella" required></p-treeSelect>
+              <div *ngIf="folderToMoveIn.invalid && (folderToMoveIn.touched || folderToMoveIn.dirty)"
+                class="invalid-feedback">
+                <div *ngIf="folderToMoveIn.errors?.['required']">
+                  Necessario selezionare una cartella di destinazione
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Annulla
+          </button>
+          <button type="submit" class="btn btn-primary">Conferma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Conferma eliminazione {{ selectedDocument?.label }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <span *ngIf="isMovingToTrash; else elseBlock">
+          L'elemento verrà spostato nel cestino
+          <i class="pi pi-trash text-danger"></i>
+        </span>
+        <ng-template #elseBlock>L'elemento sarà permanentemente eliminato</ng-template>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annulla
+        </button>
+        <button type="button" class="btn btn-primary" (click)="onSubmitDeleteModal()">Conferma</button>
+      </div>
+    </div>
+  </div>
+</div>

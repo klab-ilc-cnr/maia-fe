@@ -604,3 +604,36 @@ p {
   background: $redPalette5;
   color: $redPalette3;
 }
+
+.cross-validation-error input,
+input.ng-invalid.ng-touched,
+p-radioButton.ng-invalid.ng-touched .p-radiobutton-box,
+p-dropdown.ng-invalid.ng-touched > .p-dropdown,
+p-treeselect.ng-invalid.ng-touched > .p-treeselect,
+p-inputnumber.ng-invalid.ng-touched  input,
+input[type="file"].form-control.is-invalid {
+  border-left: 5px solid $errorRed;
+  border-bottom: 1px solid $errorRed;
+  border-right: 1px solid $errorRed;
+  border-top: 1px solid $errorRed;
+}
+
+p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
+  border-radius: 100%
+}
+.invalid-feedback,
+.invalid-feedback.invalid-feedback-show,
+.form-control.ng-invalid.ng-touched ~ .invalid-feedback,
+.form-control.ng-invalid.ng-dirty ~ .invalid-feedback {
+  display: block
+}
+
+.cross-validation-error input ~ .input-group-append > button,
+.ng-invalid ~ .input-group-append > button {
+  border-color: $errorRed
+}
+
+.cross-validation-error input ~ .input-group-append ~ .input-group-append > button,
+.ng-invalid ~ .input-group-append ~ .input-group-append > button {
+  border-color: $errorRed
+}

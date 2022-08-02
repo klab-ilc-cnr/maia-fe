@@ -38,6 +38,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   //private mainPanel: any;
   //private openPanels: Map<string, any> = new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
   private workspaceContainer = "#panelsContainer";
+  private isCorpusExplorerTileOpen: boolean = false;
 
   public items: MenuItem[] = [];
 
@@ -265,10 +266,60 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   }
 
   openExploreCorpusPanel(event: any) {
+    var ecPanelId = 'corpusExplorerTile'
 
+    var panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === ecPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
     // const documentList = this.retrieveTextList();
 
     const componentRef = this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
+
+    componentRef.instance.onTextSelectEvent
+      .subscribe(event => {
+        console.log("qui", event);
+
+        let textId = event.node.data?.['element-id'];
+        let title = event.node.label;
+
+        let textTileConfig = {
+          id: this.textTilePrefix + textId,
+          container: this.workspaceContainer,
+          headerTitle: 'testo - ' + title.toLowerCase(),
+          maximizedMargin: 5,
+          dragit: { snap: true },
+          syncMargins: true,
+          onclosed: function (this: any, panel: any, closedByUser: boolean) {
+            //currentWorkspaceInstance.openPanels.delete(panel.id);
+            this.deleteTileContent(panel.id, TileType.TEXT);
+          }
+        };
+
+        let textTileElement = jsPanel.create(textTileConfig);
+        //.addToPanelsMap();
+
+        /*     textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
+              currentWorkspaceInstance.openPanels.delete(panel.id);
+              this.deleteTileContent(panel.id, TileType.TEXT);
+            }); */
+
+        let tileObject: Tile<TextTileContent> =
+        {
+          id: undefined,
+          workspaceId: this.workspaceId,
+          content: { id: Number(textId), text: '' },
+          tileConfig: textTileConfig,
+          type: TileType.TEXT
+        };
+
+        textTileElement.addContent(tileObject, this);
+        // this.openTextPanel(textId, title)
+      });
 
     // componentRef.instance.textChoiceList = textList;
 
@@ -290,7 +341,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //   .close();
 
     let corpusExplorerTileConfig = {
-      id: 'corpusExplorerTile',
+      id: ecPanelId,
       container: this.workspaceContainer,
       content: element,
       headerTitle: 'Esplora Corpus',
@@ -299,9 +350,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       syncMargins: true,
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
-
-        // mio commento
-        //this.deleteTileContent(panel.id, TileType.TEXT);
+        this.deleteTileContent(panel.id, TileType.TEXT);
       }
     };
 

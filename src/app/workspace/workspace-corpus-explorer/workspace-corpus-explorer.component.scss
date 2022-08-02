@@ -2,8 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin: 1rem;
 
   .btn {
     height: 39px;
@@ -14,6 +13,12 @@
   }
 }
 
-:host ::ng-deep .p-tree {
-  margin: 0 1rem;
+:host ::ng-deep {
+  .p-tree {
+    margin: 0 1rem;
+  }
+
+  .p-tree-container p-treenode .pi.pi-trash:before {
+    color: #dc3545;
+  }
 }
