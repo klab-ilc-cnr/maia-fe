@@ -233,7 +233,7 @@
         <div class="modal-body">
           <div class="form-group">
             <label class="form-label">Nuovo nome *</label>
-            <input #newElementName="ngModel" type="text" name="nfName" class="form-control" [(ngModel)]="newName"
+            <input #newElementName="ngModel" type="text" name="newElementName" class="form-control" [(ngModel)]="newName"
               required maxlength="300" placeholder="Nuovo nome">
             <div *ngIf="newElementName.invalid && (newElementName.touched || newElementName.dirty)" class="invalid-feedback">
               <div *ngIf="newElementName.errors?.['required']">

@@ -9,6 +9,7 @@ import { WorkspaceChoice } from '../model/workspace-choice.model';
 import { Workspace } from '../model/workspace.model';
 import { combineLatest, of } from 'rxjs';
 import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
+import { DocumentType } from '../model/tileContent/document-type';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -88,8 +89,94 @@ export class WorkspaceService {
 
   baseUrl = "http://localhost:8081"
   // baseUrl = "https://lari2.ilc.cnr.it/"
-  public retrieveCorpus(uuid: string): Observable<CorpusTileContent> {
-    // return this.http.get<CorpusTileContent>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
-    return this.http.get<CorpusTileContent>('assets/mock/files.json')
+  public retrieveCorpus(): Observable<CorpusTileContent> {
+    let uuid = "12345678"
+
+    return this.http.get<CorpusTileContent>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
+    //return this.http.get<CorpusTileContent>('assets/mock/files.json')
   }
+
+  public uploadFile(element_id: number, file: File): Observable<any> {
+    let uuid = "12345678"
+
+    let formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>(`${this.baseUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData)
+  }
+
+  public renameElement(element_id: number, rename_string: string, type: DocumentType): Observable<any> {
+    let uuid = "12345678"
+
+    let payload = {
+      "uuid": uuid,
+      "user-id": 0,
+      "element-id": element_id,
+      "rename-string": rename_string
+    }
+
+    let operationUrl = "renameFolder"
+
+    if (type == DocumentType.File) {
+      operationUrl = "renameFile"
+    }
+
+    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
+  }
+
+  public removeElement(element_id: number, type: DocumentType): Observable<any> {
+    let uuid = "12345678"
+
+    let payload = {
+      "uuid": uuid,
+      "user-id": 0,
+      "element-id": element_id
+    }
+
+    let operationUrl = "removeFolder"
+
+    if (type == DocumentType.File) {
+      operationUrl = "removeFile"
+    }
+
+    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
+  }
+
+  public moveElement(element_id: number, target_id: number, type: DocumentType): Observable<any> {
+    let uuid = "12345678"
+
+    let realTargetId = target_id
+    console.log(realTargetId)
+    // To be able to move to the root it is necessary to change the target id from 0 to 1 (which in the db appears to be the root)
+    if (realTargetId == 0) {
+      realTargetId = 1
+    }
+
+    let payload = {
+      "uuid": uuid,
+      "user-id": 0,
+      "element-id": element_id,
+      "target-id": realTargetId
+    }
+
+    let operationUrl = "moveFolder"
+
+    if (type == DocumentType.File) {
+      operationUrl = "moveFileTo"
+    }
+
+    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
+  }
+
+  public addFolder(element_id: number): Observable<any> {
+    let uuid = "12345678"
+
+    let payload = {
+      "uuid": uuid,
+      "user-id": 0,
+      "element-id": element_id
+    }
+
+    return this.http.post<any>(`${this.baseUrl}/api/crud/addFolder`, payload)
+  }
+
 }
