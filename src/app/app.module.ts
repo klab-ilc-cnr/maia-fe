@@ -42,6 +42,7 @@ import { IconsModule } from './controllers/icons/icons.module';
 import { TooltipModule } from 'primeng/tooltip';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { TreeSelectModule } from 'primeng/treeselect';
+import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { TreeSelectModule } from 'primeng/treeselect';
     WorkspaceMenuComponent,
     WorkspaceTextSelectorComponent,
     LayerComponent,
-    WorkspaceCorpusExplorerComponent
+    WorkspaceCorpusExplorerComponent,
+    PopupDeleteItemComponent
   ],
   imports: [
     BrowserModule,

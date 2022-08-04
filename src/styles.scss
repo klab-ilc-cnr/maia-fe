@@ -637,3 +637,19 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
 .ng-invalid ~ .input-group-append ~ .input-group-append > button {
   border-color: $errorRed
 }
+
+.swal2-container {
+  z-index: 6000 !important
+}
+
+.swalDangerButton {
+  background-color: $swalDangerColor !important
+}
+
+.swalOkButton {
+  background-color: #2196F3 !important;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #9dc1fb, 0 1px 2px 0 black !important;
+  }
+}

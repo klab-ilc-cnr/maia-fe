@@ -1,51 +1,45 @@
 <div class="group-actions mb-3">
   <button
     class="btn btn-outline-success rounded-circle"
-    id="button-upload-file"
     pTooltip="Carica file"
     tooltipPosition="bottom"
     (click)="showUploadFileModal()"
-    [disabled]="shouldBeDisabledU"
+    [disabled]="shouldUploadFileBeDisabled"
   >
     <app-icon-upload-file style="margin-right: 0.3rem"></app-icon-upload-file>
   </button>
   <button
     class="btn btn-outline-primary rounded-circle"
-    id="button-add-folder"
     pTooltip="Aggiungi cartella"
     tooltipPosition="bottom"
     (click)="showAddFolderModal()"
-    [disabled]="shouldBeDisabledA"
   >
     <app-icon-add-folder></app-icon-add-folder>
   </button>
   <button
     class="btn btn-outline-primary rounded-circle"
-    id="button-rename"
     pTooltip="Rinomina"
     tooltipPosition="bottom"
     (click)="showRenameModal()"
-    [disabled]="shouldBeDisabledR"
+    [disabled]="shouldRMBeDisabled"
   >
     <app-icon-rename></app-icon-rename>
   </button>
   <button
     class="btn btn-outline-primary rounded-circle"
-    id="button-move"
     pTooltip="Sposta"
     tooltipPosition="bottom"
     (click)="showMoveModal()"
-    [disabled]="shouldBeDisabledMD"
+    [disabled]="shouldRMBeDisabled"
   >
     <app-icon-move></app-icon-move>
   </button>
   <button
+    *ngIf="shouldDeleteBeDisplayed"
     class="btn btn-outline-danger rounded-circle"
-    id="button-delete"
     pTooltip="Elimina"
     tooltipPosition="bottom"
     (click)="showDeleteModal()"
-    [disabled]="shouldBeDisabledMD"
   >
     <i class="pi pi-trash"></i>
   </button>
@@ -58,14 +52,21 @@
   [contextMenu]="cm"
   (onNodeSelect)="nodeSelect($event)"
   (onNodeContextMenuSelect)="onTreeContextMenuSelect($event, cm)"
-  [draggableNodes]="true"
-  [droppableNodes]="true"
-  draggableScope="self"
-  droppableScope="self"
   [filter]="true"
   [loading]="loading"
   scrollHeight="250px"
+  #tree
 ></p-tree>
+
+<div class="d-flex justify-content-center m-3">
+  <button
+    class="btn btn-secondary"
+    id="btnReload"
+    (click)="reload()"
+  >
+    Aggiorna Corpus
+  </button>
+</div>
 
 <p-contextMenu #cm appendTo="body" [model]="items"></p-contextMenu>
 
@@ -310,38 +311,4 @@
   </div>
 </div>
 
-<div
-  class="modal fade"
-  id="deleteModal"
-  tabindex="-1"
-  aria-labelledby="deleteModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Conferma eliminazione {{ selectedDocument?.label }}</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <span *ngIf="isMovingToTrash; else elseBlock">
-          L'elemento verrà spostato nel cestino
-          <i class="pi pi-trash text-danger"></i>
-        </span>
-        <ng-template #elseBlock>L'elemento sarà permanentemente eliminato</ng-template>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Annulla
-        </button>
-        <button type="button" class="btn btn-primary" (click)="onSubmitDeleteModal()">Conferma</button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
