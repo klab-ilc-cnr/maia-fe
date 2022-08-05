@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DocumentType } from './../../../model/tileContent/document-type';
+import { ElementType } from 'src/app/model/tile/element-type';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -30,7 +30,7 @@ export class PopupDeleteItemComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public showDeleteConfirm(deleteFn: (id: number, name: string, type: DocumentType) => void, id?: number, name?: string, type?: DocumentType): void {
+  public showDeleteConfirm(deleteFn: (id: number, name: string, type: ElementType) => void, id?: number, name?: string, type?: ElementType): void {
     Swal.fire({
       icon: 'warning',
       input: 'text',

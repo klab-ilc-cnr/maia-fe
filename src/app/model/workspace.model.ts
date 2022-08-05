@@ -1,5 +1,5 @@
-import { TextTileContent } from "./text-tile-content.model";
-import { Tile } from "./tile.model";
+import { TextTileContent } from "./tile/text-tile-content.model";
+import { Tile } from "./tile/tile.model";
 
 export class Workspace {
     id: number | undefined;

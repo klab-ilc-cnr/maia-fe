@@ -1,10 +1,10 @@
+import { ElementType } from './element-type';
 import { DocumentMetadata } from "./document-metadata"
-import { DocumentType } from "./document-type"
 
 export class DocumentElement {
   path: string | undefined
   name: string | undefined
-  type!: DocumentType
+  type!: ElementType
   'element-id': number
   metadata: DocumentMetadata | undefined
   children: DocumentElement[] | undefined

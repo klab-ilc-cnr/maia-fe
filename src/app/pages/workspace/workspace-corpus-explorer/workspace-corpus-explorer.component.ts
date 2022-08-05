@@ -1,6 +1,6 @@
 import { ContextMenu } from 'primeng/contextmenu';
-import { DocumentElement } from 'src/app/model/tileContent/document-element';
-import { DocumentType } from 'src/app/model/tileContent/document-type';
+import { DocumentElement } from 'src/app/model/tile/document-element';
+import { ElementType } from 'src/app/model/tile/element-type';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { WorkspaceService } from 'src/app/services/workspace.service';
@@ -17,13 +17,13 @@ declare var $: any;
   styleUrls: ['./workspace-corpus-explorer.component.scss']
 })
 export class WorkspaceCorpusExplorerComponent implements OnInit {
-  private deleteElement = (id: number, name: string, type: DocumentType): void => {
+  private deleteElement = (id: number, name: string, type: ElementType): void => {
     this.showOperationInProgress('Sto cancellando');
 
     let errorMsg = 'Errore nell\'eliminare la cartella \'' + name + '\''
     let successMsg = 'Cartella \'' + name + '\' eliminata con successo'
 
-    if (type == DocumentType.File) {
+    if (type == ElementType.File) {
       errorMsg = 'Errore nell\'eliminare il file \'' + name + '\''
       successMsg = 'File \'' + name + '\' eliminato con successo'
     }
@@ -129,10 +129,10 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     setTimeout(() => {
       if (this.clickCount === 1) {
       } else if (this.clickCount === 2) {
-        if (event.node.data?.type == DocumentType.File) {
+        if (event.node.data?.type == ElementType.File) {
           this.onTextSelectEvent.emit(event)
         }
-        else if (event.node.data?.type == DocumentType.Directory) {
+        else if (event.node.data?.type == ElementType.Directory) {
           event.node.expanded = !event.node.expanded;
         }
       }
@@ -177,13 +177,13 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         if (result['response-status'] == 0) {
           let newId = result.node['element-id']
 
-          this.workspaceService.renameElement(newId, name, DocumentType.Directory).subscribe({
+          this.workspaceService.renameElement(newId, name, ElementType.Directory).subscribe({
             next: (result) => {
               if (result.responseStatus == 0) {
                 this.messageService.add(this.generateSuccessMessageConfig('Cartella \'' + name + '\' creata con successo'));
               }
               else {
-                this.workspaceService.removeElement(newId, DocumentType.Directory).subscribe({
+                this.workspaceService.removeElement(newId, ElementType.Directory).subscribe({
                   next: (result) => {
                     this.messageService.add(this.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
                   },
@@ -282,7 +282,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       let errorMsg = 'Errore nello spostare la cartella \'' + name + '\' in \'' + newParentName + '\''
       let successMsg = 'Cartella \'' + name + '\' spostata con successo'
 
-      if (type == DocumentType.File) {
+      if (type == ElementType.File) {
         errorMsg = 'Errore nello spostare il file \'' + name + '\' in \'' + newParentName + '\''
         successMsg = 'File \'' + name + '\' spostato con successo'
       }
@@ -329,7 +329,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       let errorMsg = 'Errore nel rinominare la cartella \'' + oldName + '\' in \'' + newName + '\''
       let successMsg = 'Cartella \'' + newName + '\' rinominata con successo'
 
-      if (type == DocumentType.File) {
+      if (type == ElementType.File) {
         errorMsg = 'Errore nel rinominare il file \'' + oldName + '\' in \'' + newName + '\''
         successMsg = 'File \'' + newName + '\' rinominato con successo'
       }
@@ -372,7 +372,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   showAddFolderModal(): void {
     this.resetAddFolderForm();
 
-    if (this.selectedDocument && this.selectedDocument.data?.type == DocumentType.Directory) {
+    if (this.selectedDocument && this.selectedDocument.data?.type == ElementType.Directory) {
       var node = this.searchNodeByElementId(this.foldersAvailableToAddFolder, this.selectedDocument)
 
       if (node) {
@@ -391,7 +391,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
       let confirmMsg = 'Stai per cancellare la cartella \'' + name + '\''
 
-      if (type == DocumentType.File) {
+      if (type == ElementType.File) {
         confirmMsg = 'Stai per cancellare il file \'' + name + '\''
       }
 
@@ -407,7 +407,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.foldersAvailableToMoveElementIn = [];
 
     if (this.selectedDocument) {
-      if (this.selectedDocument.data?.type == DocumentType.Directory){
+      if (this.selectedDocument.data?.type == ElementType.Directory){
         this.foldersAvailableToMoveElementIn = this.foldersAvailableToAddFolder
       }
       else {
@@ -431,7 +431,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   showUploadFileModal(): void {
     this.resetFileUploaderForm();
 
-    if (this.selectedDocument && this.selectedDocument.data?.type == DocumentType.Directory) {
+    if (this.selectedDocument && this.selectedDocument.data?.type == ElementType.Directory) {
       var node = this.searchNodeByElementId(this.foldersAvailableToFileUpload, this.selectedDocument)
 
       if (node) {
@@ -459,11 +459,11 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       node.children =  this.documentsToTreeNodes(doc.children)
     }
 
-    if (doc.type == DocumentType.Directory) {
+    if (doc.type == ElementType.Directory) {
       node.expandedIcon = "pi pi-folder-open"
       node.collapsedIcon = "pi pi-folder"
     }
-    else if (doc.type == DocumentType.File) {
+    else if (doc.type == ElementType.File) {
       node.icon = "pi pi-file"
       node.leaf = true
     }
@@ -515,7 +515,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
     cmItems.unshift(menuRename)
 
-    if (node.data.type == DocumentType.Directory) {
+    if (node.data.type == ElementType.Directory) {
       cmItems.unshift(menuAddFolder)
     }
 
@@ -544,7 +544,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     var dataParsed: TreeNode<any>[] = [];
 
     docs.forEach((obj) => {
-      if (obj.data.type != DocumentType.File) {
+      if (obj.data.type != ElementType.File) {
         obj.children = this.omitFiles(obj.children)
         dataParsed.push(obj);
       }
@@ -635,7 +635,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           let rootNode = {
             path: "/root/",
             name: "Corpus",
-            type: DocumentType.Directory,
+            type: ElementType.Directory,
             'element-id': 0,
             metadata: {},
             children: this.rawData

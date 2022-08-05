@@ -1,18 +1,20 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, HostListener, OnInit, ViewContainerRef } from '@angular/core';
+import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
+import { style } from '@angular/animations';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
 import { LoginOptions } from 'angular-oauth2-oidc';
 import { MenuItem } from 'primeng/api';
 import { Observable } from 'rxjs';
-import { TextChoice } from 'src/app/model/text-choice-element.model';
-import { Tile } from 'src/app/model/tile.model';
-import { TileType } from 'src/app/model/tile-type.model';
+import { TextChoice } from 'src/app/model/tile/text-choice-element.model';
+import { Tile } from 'src/app/model/tile/tile.model';
+import { TileType } from 'src/app/model/tile/tile-type.model';
 import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
-import { TextTileContent } from 'src/app/model/text-tile-content.model';
+import { TextTileContent } from 'src/app/model/tile/text-tile-content.model';
 import { ThisReceiver } from '@angular/compiler';
 import { Workspace } from 'src/app/model/workspace.model';
 import { MessageService } from 'primeng/api';
@@ -38,7 +40,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   //private mainPanel: any;
   //private openPanels: Map<string, any> = new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
   private workspaceContainer = "#panelsContainer";
-  private isCorpusExplorerTileOpen: boolean = false;
 
   public items: MenuItem[] = [];
 
@@ -46,13 +47,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   //private storedTiles: Map<string, Tile<any>> = new Map();
   private storageName = "storedTiles";
 
-  constructor(private router: Router,
+  @ViewChild('panelsContainer') public container!: ElementRef;
+  @ViewChild('workspaceMenuContainer') public wsMenuContainer!: ElementRef;
+
+  constructor(
+    private router: Router,
     private activeRoute: ActivatedRoute,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private vcr: ViewContainerRef,
     private messageService: MessageService,
-    private workspaceService: WorkspaceService) { }
+    private workspaceService: WorkspaceService,
+    private renderer: Renderer2) { }
 
   ngOnInit(): void {
 
@@ -165,12 +171,20 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
             } */
     ];
   }
+
+  ngAfterViewInit(): void {
+    //currentWorkspaceInstance = this;
+
+    let height = window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
+    this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
+  }
+
   restoreTiles(workspaceStatus: Workspace) {
     console.log('restore');
 
     let storedData: any = workspaceStatus.layout;
     let storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
-    console.log('restored layout', storedData);
+    console.log('restored layout', storedData, storedTiles);
 
     const tilesConfigs: any = {};
 
@@ -228,10 +242,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     // for demo purpose only log stored data to the console
     // or use your browser's dev tools to inspect localStorage
     console.log('stored data', storedData);
-  }
-
-  ngAfterViewInit(): void {
-    //currentWorkspaceInstance = this;
   }
 
   // @HostListener allows us to also guard against browser refresh, close, etc.
@@ -318,27 +328,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         };
 
         textTileElement.addContent(tileObject, this);
-        // this.openTextPanel(textId, title)
+        // this.openTextPanelCarmelo(textId, title)
       });
 
-    // componentRef.instance.textChoiceList = textList;
-
-    // componentRef.instance.onTextSelectEvent
-    //   .subscribe(event => {
-    //     console.log(event.target.getAttribute('data-type'));
-
-    //     let textId = event.target.parentElement.id;
-    //     let title = event.target.parentElement.querySelector("[data-type='title']").textContent;
-    //     this.openTextPanel(textId, title)
-    //   });
-
     const element = componentRef.location.nativeElement;
-
-    // jsPanel.getPanels(function (this: any) {
-    //   return this.classList.contains('jsPanel-modal');
-    // })
-    //   .find((x: { id: string; }) => x.id === 'modalTextSelect')
-    //   .close();
 
     let corpusExplorerTileConfig = {
       id: ecPanelId,
@@ -351,6 +344,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         this.deleteTileContent(panel.id, TileType.TEXT);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        componentRef.instance.reload()
       }
     };
 
@@ -362,39 +358,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       })
       .reposition();
     //.addToPanelsMap();
-
-    /*     textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
-          currentWorkspaceInstance.openPanels.delete(panel.id);
-          this.deleteTileContent(panel.id, TileType.TEXT);
-        }); */
-
-    // let tileObject: Tile<CorpusTileContent> =
-    // {
-    //   id: undefined,
-    //   workspaceId: this.workspaceId,
-    //   content: element,
-    //   tileConfig: corpusExplorerTileConfig,
-    //   type: TileType.TEXT
-    // };
-
-    // corpusTileElement.addContent(tileObject, this);
-
-    // var modal = jsPanel.modal.create({
-    //   id: 'corpusExplorerModal',
-    //   theme: 'filleddark',
-    //   headerTitle: '',
-    //   content: element,
-    //   onclosed: function (panel: any, closedByUser: boolean) {
-    //     //currentWorkspaceInstance.openPanels.delete(panel.id);
-    //   }
-    // })
-    //   .resize({
-    //     width: window.innerWidth / 2,
-    //     height: window.innerHeight / 2
-    //   })
-    //   .reposition(); // reposition panel in order to maintain centered position
-    // //.addToPanelsMap();
-    // //this.panels.set(modal.id, modal);
   }
 
   openTextChoicePanel(event: any) {
@@ -455,7 +418,78 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return element;
   }
 
-  openTextPanel(textId: string, title: string) {
+  openTextPanel(textId: number, title: string) {
+    jsPanel.getPanels(function (this: any) {
+      return this.classList.contains('jsPanel-modal');
+    })
+      .find((x: { id: string; }) => x.id === 'modalTextSelect')
+      .close();
+
+
+
+    var panelId = this.textTilePrefix + textId
+
+    var panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === panelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+    // const documentList = this.retrieveTextList();
+
+    const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
+    componentRef.instance.textId = textId;
+    const element = componentRef.location.nativeElement;
+
+
+    let textTileConfig = {
+      id: panelId,
+      container: this.workspaceContainer,
+      headerTitle: 'testo - ' + title.toLowerCase(),
+      content: element,
+      maximizedMargin: 5,
+      dragit: { snap: true },
+      syncMargins: true,
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        //currentWorkspaceInstance.openPanels.delete(panel.id);
+        //this.deleteTileContent(panel.id, TileType.TEXT);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        //componentRef.instance.reload()
+      }
+    };
+
+    let textTileElement = jsPanel.create(textTileConfig);
+
+    textTileElement
+      .resize({
+        height: window.innerHeight / 2,
+        width: window.innerWidth / 3
+      })
+      .reposition();
+
+    //.addToPanelsMap();
+
+    /*     textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
+          currentWorkspaceInstance.openPanels.delete(panel.id);
+          this.deleteTileContent(panel.id, TileType.TEXT);
+        }); */
+
+    // let tileObject: Tile<TextTileContent> =
+    // {
+    //   id: undefined,
+    //   workspaceId: this.workspaceId,
+    //   content: { id: Number(textId), text: '' },
+    //   tileConfig: textTileConfig,
+    //   type: TileType.TEXT
+    // };
+
+    // textTileElement.addContent(tileObject, this);
+  }
+
+  openTextPanelCarmelo(textId: string, title: string) {
     //this.openPanels.get('modalTextSelect').close();
     jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');

@@ -1,0 +1,17 @@
+<p>workspace-text-window works!</p>
+<table class="table table-striped" (focus)="selectionchange($event)">
+  <!-- <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Country</th>
+    <th scope="col">Area</th>
+    <th scope="col">Population</th>
+  </tr>
+  </thead> -->
+  <tbody>
+    <tr *ngFor="let row of rows">
+      <th>{{ row.id }}</th>
+      <td (mousedown)="selectionchange($event)">{{ row.text }}</td>
+    </tr>
+  </tbody>
+</table>

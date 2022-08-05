@@ -43,6 +43,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
     LayerComponent,
     WorkspaceCorpusExplorerComponent,
     PopupDeleteItemComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
+    WorkspaceTextWindowComponent
   ],
   imports: [
     BrowserModule,

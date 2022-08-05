@@ -2,14 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatestAll, combineLatestWith, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { TextChoice as TextChoice } from '../model/text-choice-element.model';
-import { TextTileContent } from '../model/text-tile-content.model';
-import { Tile } from '../model/tile.model';
+import { TextChoice as TextChoice } from '../model/tile/text-choice-element.model';
+import { TextTileContent } from '../model/tile/text-tile-content.model';
+import { Tile } from '../model/tile/tile.model';
 import { WorkspaceChoice } from '../model/workspace-choice.model';
 import { Workspace } from '../model/workspace.model';
 import { combineLatest, of } from 'rxjs';
-import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
-import { DocumentType } from '../model/tileContent/document-type';
+import { CorpusTileContent } from '../model/tile/corpus-tile-content';
+import { ElementType } from 'src/app/model/tile/element-type';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -104,7 +104,7 @@ export class WorkspaceService {
     return this.http.post<any>(`${this.baseUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData)
   }
 
-  public renameElement(element_id: number, rename_string: string, type: DocumentType): Observable<any> {
+  public renameElement(element_id: number, rename_string: string, type: ElementType): Observable<any> {
     let uuid = "12345678"
 
     let payload = {
@@ -116,14 +116,14 @@ export class WorkspaceService {
 
     let operationUrl = "renameFolder"
 
-    if (type == DocumentType.File) {
+    if (type == ElementType.File) {
       operationUrl = "renameFile"
     }
 
     return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
   }
 
-  public removeElement(element_id: number, type: DocumentType): Observable<any> {
+  public removeElement(element_id: number, type: ElementType): Observable<any> {
     let uuid = "12345678"
 
     let payload = {
@@ -134,14 +134,14 @@ export class WorkspaceService {
 
     let operationUrl = "removeFolder"
 
-    if (type == DocumentType.File) {
+    if (type == ElementType.File) {
       operationUrl = "removeFile"
     }
 
     return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
   }
 
-  public moveElement(element_id: number, target_id: number, type: DocumentType): Observable<any> {
+  public moveElement(element_id: number, target_id: number, type: ElementType): Observable<any> {
     let uuid = "12345678"
 
     let realTargetId = target_id
@@ -160,7 +160,7 @@ export class WorkspaceService {
 
     let operationUrl = "moveFolder"
 
-    if (type == DocumentType.File) {
+    if (type == ElementType.File) {
       operationUrl = "moveFileTo"
     }
 

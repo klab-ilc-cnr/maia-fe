@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TextChoice } from 'src/app/model/text-choice-element.model';
+import { TextChoice } from 'src/app/model/tile/text-choice-element.model';
 
 @Component({
   selector: 'app-workspace-text-selector',
