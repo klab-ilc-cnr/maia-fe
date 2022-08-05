@@ -3,15 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { UserFormComponent } from './user-form/user-form.component';
+import { UserListComponent } from './pages/usersManagement/user-list/user-list.component';
+import { UserFormComponent } from './pages/usersManagement/user-form/user-form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './services/user.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthConfigModule } from './config/auth.config.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LayoutComponent } from './layout/layout.component';
 import { PageControllersModule } from './controllers/page-controllers/page-controllers.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -21,35 +20,35 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from "primeng/table";
 import { ListboxModule } from 'primeng/listbox';
-import { WorkspaceComponent } from './workspace/workspace.component';
-import { WorkspaceListComponent } from './workspace-list/workspace-list.component';
-import { WorkspaceLayoutComponent } from './workspace-layout/workspace-layout.component';
+import { WorkspaceComponent } from './pages/workspace/workspace.component';
+import { WorkspaceListComponent } from './pages/workspace/workspace-list/workspace-list.component';
+import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
 import { PendingChangesGuard } from './pending-changes-guard';
-import { WorkspaceMenuComponent } from './workspace-menu/workspace-menu.component';
+import { WorkspaceMenuComponent } from './pages/workspace/workspace-menu/workspace-menu.component';
 // import { OAuthModule } from 'angular-oauth2-oidc';
 // import { AuthModule } from './auth/auth.module';
 import { MenubarModule } from 'primeng/menubar';
-import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
+import { WorkspaceTextSelectorComponent } from './pages/workspace/workspace-text-selector/workspace-text-selector.component';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { LayerComponent } from './layer/layer.component';
 import { ColorPickerModule } from "primeng/colorpicker";
-import { WorkspaceCorpusExplorerComponent } from './workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { TreeModule } from 'primeng/tree';
 import { IconsModule } from './controllers/icons/icons.module';
 import { TooltipModule } from 'primeng/tooltip';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
     UserFormComponent,
-    LayoutComponent,
     WorkspaceComponent,
     WorkspaceListComponent,
     WorkspaceLayoutComponent,
@@ -57,7 +56,8 @@ import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/
     WorkspaceTextSelectorComponent,
     LayerComponent,
     WorkspaceCorpusExplorerComponent,
-    PopupDeleteItemComponent
+    PopupDeleteItemComponent,
+    MainLayoutComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { ContextMenu } from 'primeng/contextmenu';
-import { DocumentElement } from './../../model/tileContent/document-element';
-import { DocumentType } from './../../model/tileContent/document-type';
+import { DocumentElement } from 'src/app/model/tileContent/document-element';
+import { DocumentType } from 'src/app/model/tileContent/document-type';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { WorkspaceService } from 'src/app/services/workspace.service';

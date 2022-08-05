@@ -1,5 +1,5 @@
-import { UserFormComponent } from "../user-form/user-form.component";
-import { UserListComponent } from "../user-list/user-list.component";
+import { UserFormComponent } from "../pages/usersManagement/user-form/user-form.component";
+import { UserListComponent } from "../pages/usersManagement/user-list/user-list.component";
 
 export const USERSMANAGEMENT_ROUTES = [
     {

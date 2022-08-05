@@ -2,9 +2,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, OnInit, Renderer2 } from '@angular/core';
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+  selector: 'app-main-layout',
+  templateUrl: './main-layout.component.html',
+  styleUrls: ['./main-layout.component.scss'],
   animations: [
     trigger('submenu', [
         state('hidden', style({
@@ -16,9 +16,9 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
         transition('visible => hidden', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
         transition('hidden => visible', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
     ])
-]
+  ]
 })
-export class LayoutComponent implements OnInit {
+export class MainLayoutComponent implements OnInit {
 
   public menuInactiveDesktop: boolean | undefined;
 

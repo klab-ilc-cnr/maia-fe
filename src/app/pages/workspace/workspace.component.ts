@@ -1,4 +1,3 @@
-import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, HostListener, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { text } from '@fortawesome/fontawesome-svg-core';
@@ -6,18 +5,19 @@ import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
 import { LoginOptions } from 'angular-oauth2-oidc';
 import { MenuItem } from 'primeng/api';
 import { Observable } from 'rxjs';
-import { TextChoice as TextChoice } from '../model/text-choice-element.model';
-import { Tile } from '../model/tile.model';
-import { TileType } from '../model/tile-type.model';
-import { UserService } from '../services/user.service';
-import { WorkspaceService } from '../services/workspace.service';
-import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
-import { WorkspaceTextSelectorComponent } from '../workspace-text-selector/workspace-text-selector.component';
-import { TextTileContent } from '../model/text-tile-content.model';
+import { TextChoice } from 'src/app/model/text-choice-element.model';
+import { Tile } from 'src/app/model/tile.model';
+import { TileType } from 'src/app/model/tile-type.model';
+import { UserService } from 'src/app/services/user.service';
+import { WorkspaceService } from 'src/app/services/workspace.service';
+// import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
+import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
+import { TextTileContent } from 'src/app/model/text-tile-content.model';
 import { ThisReceiver } from '@angular/compiler';
-import { Workspace } from '../model/workspace.model';
+import { Workspace } from 'src/app/model/workspace.model';
 import { MessageService } from 'primeng/api';
-import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
+import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
+// import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
 
 //var currentWorkspaceInstance: any;
 

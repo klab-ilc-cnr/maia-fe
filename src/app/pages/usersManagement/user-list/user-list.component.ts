@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Roles } from '../model/roles'
+import { Roles } from 'src/app/model/roles';
 import { Table } from 'primeng/table';
-import { User } from '../model/user';
-import { UserService } from '../services/user.service';
+import { User } from 'src/app/model/user';
+import { UserService } from 'src/app/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

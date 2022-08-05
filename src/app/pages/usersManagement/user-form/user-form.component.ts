@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { User } from '../model/user';
-import { Roles } from '../model/roles';
-import { LoggedUserService } from '../services/logged-user.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/model/user';
+import { Roles } from 'src/app/model/roles';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { NgForm } from '@angular/forms';
-import { LanguageService } from '../services/language.service';
-import { Language } from '../model/language';
+import { LanguageService } from 'src/app/services/language.service';
+import { Language } from 'src/app/model/language';
 
 @Component({
   selector: 'app-user-form',
@@ -14,7 +14,7 @@ import { Language } from '../model/language';
   styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit {
-  
+
   @ViewChild('userDetailsForm', { static: true }) userDetailsForm: NgForm | undefined;
 
   user: User;
@@ -32,7 +32,7 @@ export class UserFormComponent implements OnInit {
     private loggedUserService : LoggedUserService,
     private languageService : LanguageService) {
     this.user = new User();
-    
+
   }
 
   ngOnInit(): void {
@@ -55,11 +55,11 @@ export class UserFormComponent implements OnInit {
 
       this.editUser = false;
       this.loadCurrentUserProfile();
-      
+
     });
 
     this.roles = Object.keys(Roles);
-    
+
     this.languageService.retrieveAll()
     .subscribe(
       result => {

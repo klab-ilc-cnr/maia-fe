@@ -5,7 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/model/user';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { AuthConfigService } from 'src/app/config/authconfig.service';
-import { LayoutComponent } from 'src/app/layout/layout.component';
+import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ import { LayoutComponent } from 'src/app/layout/layout.component';
 export class HeaderComponent implements OnInit {
 
   constructor(private readonly oauthService: OAuthService,
-              public layout: LayoutComponent,
+              public layout: MainLayoutComponent,
               private router: Router,
               private activeRoute: ActivatedRoute,
               private userService: UserService,

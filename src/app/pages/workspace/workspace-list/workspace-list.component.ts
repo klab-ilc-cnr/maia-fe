@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkspaceChoice } from '../model/workspace-choice.model';
-import { WorkspaceService } from '../services/workspace.service';
+import { WorkspaceChoice } from 'src/app/model/workspace-choice.model';
+import { WorkspaceService } from 'src/app/services/workspace.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 

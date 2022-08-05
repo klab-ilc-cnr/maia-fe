@@ -29,17 +29,13 @@
               </li>
             </ul>
           </li>
-        </ul>
-        <ul role="menu">
-          <li>
+          <li [ngClass]="{'active': isActive(['workspaces'])}">
             <a routerLink="/workspaces">
               <i class="layout-menuitem-icon pi pi-desktop"></i>
               <span>Workspace</span>
             </a>
           </li>
-        </ul>
-                <ul role="menu">
-          <li *ngIf="canManageLayers">
+          <li *ngIf="canManageLayers" [ngClass]="{'active': isActive(['layers'])}">
             <a routerLink="/layers">
               <i class="layout-menuitem-icon pi pi-tags"></i>
               <span>Layer</span>

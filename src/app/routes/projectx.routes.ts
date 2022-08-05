@@ -1,5 +1,5 @@
 import { LayerComponent } from "../layer/layer.component";
-import { WorkspaceListComponent } from "../workspace-list/workspace-list.component";
+import { WorkspaceListComponent } from "../pages/workspace/workspace-list/workspace-list.component";
 import { USERSMANAGEMENT_ROUTES } from "./usersmanagement.routes";
 import { WORKSPACES_ROUTES } from "./workspaces.routes";
 
