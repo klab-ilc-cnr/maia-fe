@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Layer } from '../model/layer.model';
-import { LayerService } from '../services/layer.service';
+import { Layer } from '../../model/layer.model';
+import { LayerService } from '../../services/layer.service';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { Table } from 'primeng/table';
 
@@ -53,8 +53,8 @@ export class LayerComponent implements OnInit {
     this.submitted = true;
 
     //bug colorpicker required fix
-    if(this.layer.color === undefined 
-      || this.layer.color === null 
+    if(this.layer.color === undefined
+      || this.layer.color === null
       || this.layer.color.trim().length <= 0 )
       {
         return;

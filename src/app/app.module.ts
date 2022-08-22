@@ -33,7 +33,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
-import { LayerComponent } from './layer/layer.component';
+import { LayerComponent } from './pages/layer/layer.component';
 import { ColorPickerModule } from "primeng/colorpicker";
 import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { TreeModule } from 'primeng/tree';
@@ -88,7 +88,7 @@ import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-w
     TooltipModule,
     ContextMenuModule,
     TreeSelectModule
-    ],
+  ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })

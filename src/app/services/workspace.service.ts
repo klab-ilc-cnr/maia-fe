@@ -85,7 +85,7 @@ export class WorkspaceService {
     return this.http.get<TextTileContent>(`${this.workspacesUrl}/texts/${textId}`);
   }
 
-  //
+  // INIZIO CHIAMATE CASH SERVER
 
   baseUrl = "http://localhost:8081"
   // baseUrl = "https://lari2.ilc.cnr.it/"
@@ -178,5 +178,6 @@ export class WorkspaceService {
 
     return this.http.post<any>(`${this.baseUrl}/api/crud/addFolder`, payload)
   }
+  // FINE CHIAMATE CASH SERVER
 
 }
