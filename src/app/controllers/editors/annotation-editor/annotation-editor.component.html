@@ -1,0 +1,67 @@
+<p>annotation-editor works!      {{ annotationModel?.layer }}
+</p>
+<form #annotationForm="ngForm" class="validated" (ngSubmit)="onSubmit(annotationForm)">
+  <div class="form-group">
+    <label class="col-sm-2 col-form-label">Layer</label>
+    <div class="read-only-input">
+      {{ annotationModel?.layerName }}
+      <input type="hidden" [ngModel]="(annotationModel?.layer)" #layer="ngModel" name="layer">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 col-form-label">Testo</label>
+    <div class="read-only-input">
+      {{ annotationModel?.value }}
+      <input type="hidden" [ngModel]="(annotationModel?.value)" #value="ngModel" name="value">
+    </div>
+  </div>
+  <!-- <div class="form-group row">
+      <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitOfMeasure' | translate}}</label>
+      <div class="col-sm-6">
+          <div class="p-fluid">
+              <p-dropdown #unitOfMeasure="ngModel" name="unitOfMeasure" [(ngModel)]="model.value.unitOfMeasure"
+                  placeholder="{{'assetCategory.labels.unitOfMeasureSelection' | translate}}" [options]="unitsOfMeasureOptions" filter="true" showClear="true" required>
+              </p-dropdown>
+              <div *ngIf="unitOfMeasure.invalid && (unitOfMeasure.touched || unitOfMeasure.dirty)"
+                  class="invalid-feedback">
+                  <div *ngIf="unitOfMeasure.errors.required">
+                      {{'assetCategory.messages.errors.unitOfMeasureRequired' | translate}}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitPrice' | translate}}</label>
+      <div class="col-sm-6">
+          <div class="p-fluid">
+              <div class="p-inputgroup">
+                  <span class="p-inputgroup-addon">
+                      <app-icon-price></app-icon-price>
+                  </span>
+                  <p-inputNumber #unitPrice="ngModel" name="unitPrice" class="p-inputnumber"
+                      [(ngModel)]="model.value.unitPrice" mode="decimal" locale="it-IT"
+                      [showButtons]="true" maxValue  minValue="0" [step]="0.01"
+                      [min]="0" [minFractionDigits]="2" [maxFractionDigits]="2" required>
+                  </p-inputNumber>
+              </div>
+              <div *ngIf="unitPrice.invalid && (unitPrice.touched || unitPrice.dirty)"
+                  class="invalid-feedback">
+                  <div *ngIf="unitPrice.errors.required">
+                      {{'assetCategory.messages.errors.unitPriceRequired' | translate}}
+                  </div>
+                  <div *ngIf="unitPrice.errors.maxValue">
+                      {{'common.messages.errors.maxValue' | translate}}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-sm-2 col-form-label">{{'assetCategory.properties.description' | translate}}</label>
+      <div class="col-sm-6">
+          <textarea rows="4" #description="ngModel" type="text" name="description"
+              class="form-control" (ngModel)="(model.value.description)"></textarea>
+      </div>
+  </div> -->
+</form>

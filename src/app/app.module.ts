@@ -44,6 +44,7 @@ import { TreeSelectModule } from 'primeng/treeselect';
 import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
+import { AnnotationEditorComponent } from './controllers/editors/annotation-editor/annotation-editor.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-w
     WorkspaceCorpusExplorerComponent,
     PopupDeleteItemComponent,
     MainLayoutComponent,
-    WorkspaceTextWindowComponent
+    WorkspaceTextWindowComponent,
+    AnnotationEditorComponent
   ],
   imports: [
     BrowserModule,
