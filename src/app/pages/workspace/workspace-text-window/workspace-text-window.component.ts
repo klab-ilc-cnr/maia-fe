@@ -1,7 +1,8 @@
+import { SpanCoordinates } from './../../../model/annotation/span-coordinates';
 import { Annotation } from './../../../model/annotation/annotation';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { Workspace } from 'src/app/model/workspace.model';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TextRow } from 'src/app/model/tile/text-row';
 import { SelectItem } from 'primeng/api';
 import { LayerService } from 'src/app/services/layer.service';
@@ -22,6 +23,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
   selectedLayer: any;
 
   layerOptions = new Array<SelectItem>();
+
+  private selectionStart?: number;
+  private selectionEnd?: number;
+  @ViewChild('el') public el!: ElementRef;
+  annotation = new Annotation();
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -71,7 +77,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     })
   }
 
-  selectionchange(event: any) {
+  selectionchange(event: any): void {
     console.log(event)
 
     // const start = event.target.selectionStart;
@@ -81,6 +87,36 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     // console.log(window!.getSelection()?.anchorNode?.textContent)
     // console.log(window!.getSelection()?.anchorOffset!, window?.getSelection()?.focusOffset)
+
+    const selection = window.getSelection();
+    if (selection != null && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const preSelectionRange = range.cloneRange();
+      preSelectionRange.selectNodeContents(this.el.nativeElement);
+      preSelectionRange.setEnd(range.startContainer, range.startOffset);
+      this.selectionStart = [...preSelectionRange.toString()].length;
+      this.selectionEnd = this.selectionStart + [...range.toString()].length;
+    } else {
+      this.selectionStart = undefined;
+      this.selectionEnd = undefined;
+    }
+
+    if (this.selectionStart === undefined || this.selectionEnd === undefined || this.selectionStart >= this.selectionEnd) {
+      console.log()
+      return;
+    }
+
+    let startIndex= this.selectionStart
+    let endIndex= this.selectionEnd
+
+    this.annotation.layer = this.selectedLayer
+    this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label
+    this.annotation.spans = new Array<SpanCoordinates>();
+    this.annotation.spans.push({
+
+    })
+
+    console.log(startIndex, endIndex, selection, selection?.getRangeAt(0))
   }
 
   changeLayer(event: any) {

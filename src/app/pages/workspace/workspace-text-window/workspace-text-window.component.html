@@ -28,7 +28,7 @@
           </tr>
       </ng-template>
     </p-table> -->
-    <table class="table table-striped css-serial" (focus)="selectionchange($event)">
+    <table class="table table-striped css-serial" #el>
       <!-- <thead>
       <tr>
         <th scope="col">#</th>
@@ -47,6 +47,6 @@
   </div>
   <div class="col-4">
     <p>workspace-text-window works!</p>
-    <app-annotation-editor [annotationModel]=""></app-annotation-editor>
+    <app-annotation-editor [annotationModel]="annotation"></app-annotation-editor>
   </div>
 </div>
