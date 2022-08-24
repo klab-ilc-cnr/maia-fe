@@ -14,93 +14,48 @@ export class AnnotationService {
   baseUrl = "http://localhost:8443"
   // baseUrl = "https://lari2.ilc.cnr.it/"
 
-  // public retrieveCorpus(): Observable<CorpusTileContent> {
-  //   let uuid = "12345678"
+  public retrieveByNodeId(nodeId: number): Observable<any> {
+    let uuid = "12345678";
 
-  //   return this.http.get<CorpusTileContent>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
-  //   //return this.http.get<CorpusTileContent>('assets/mock/files.json')
-  // }
-
-  public create(nodeId: number, item: any): Observable<any> {
-    let uuid = "12345678"
-
-    return this.http.post<any>(`${this.baseUrl}/api/v1/annotation?requestUUID=${uuid}&nodeid=${nodeId}`, item)
+    return this.http.get<any>(`${this.baseUrl}/api/v1/annotation?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
 
-  // public renameElement(element_id: number, rename_string: string, type: ElementType): Observable<any> {
-  //   let uuid = "12345678"
+  public create(nodeId: number, item: any): Observable<any> {
+    let uuid = "12345678";
 
-  //   let payload = {
-  //     "uuid": uuid,
-  //     "user-id": 0,
-  //     "element-id": element_id,
-  //     "rename-string": rename_string
-  //   }
+    return this.http.post<any>(`${this.baseUrl}/api/v1/annotation?requestUUID=${uuid}&nodeid=${nodeId}`, item);
+  }
 
-  //   let operationUrl = "renameFolder"
+  public update(item: any) {
+    let uuid = "12345678";
 
-  //   if (type == ElementType.File) {
-  //     operationUrl = "renameFile"
-  //   }
+    return this.http.put<any>(`${this.baseUrl}/api/v1/annotation?requestUUID=${uuid}`, item);
+  }
 
-  //   return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
-  // }
+  public retrieveTokens(nodeId: number): Observable<any> {
+    let uuid = "12345678";
 
-  // public removeElement(element_id: number, type: ElementType): Observable<any> {
-  //   let uuid = "12345678"
+    return this.http.get<any>(`${this.baseUrl}/api/v1/token?requestUUID=${uuid}&nodeid=${nodeId}`);
+  }
 
-  //   let payload = {
-  //     "uuid": uuid,
-  //     "user-id": 0,
-  //     "element-id": element_id
-  //   }
+  public retrieveText(nodeId: number): Observable<any> {
+    let uuid = "12345678";
 
-  //   let operationUrl = "removeFolder"
+    return this.http.get<any>(`${this.baseUrl}/api/v1/gettext?requestUUID=${uuid}&nodeid=${nodeId}`);
+  }
 
-  //   if (type == ElementType.File) {
-  //     operationUrl = "removeFile"
-  //   }
+  public retreiveContent(nodeId: number) {
+    let uuid = "12345678";
 
-  //   return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
-  // }
+    return this.http.get<any>(`${this.baseUrl}/api/v1/getcontent?requestUUID=${uuid}&nodeid=${nodeId}`);
+  }
 
-  // public moveElement(element_id: number, target_id: number, type: ElementType): Observable<any> {
-  //   let uuid = "12345678"
+  public delete(annotationId: number): Observable<any> {
+    let uuid = "12345678";
 
-  //   let realTargetId = target_id
-  //   console.log(realTargetId)
-  //   // To be able to move to the root it is necessary to change the target id from 0 to 1 (which in the db appears to be the root)
-  //   if (realTargetId == 0) {
-  //     realTargetId = 1
-  //   }
+    return this.http.delete<any>(`${this.baseUrl}/api/v1/annotate?requestUUID=${uuid}&annotationID=${annotationId}`);
+  }
 
-  //   let payload = {
-  //     "uuid": uuid,
-  //     "user-id": 0,
-  //     "element-id": element_id,
-  //     "target-id": realTargetId
-  //   }
-
-  //   let operationUrl = "moveFolder"
-
-  //   if (type == ElementType.File) {
-  //     operationUrl = "moveFileTo"
-  //   }
-
-  //   return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
-  // }
-
-  // public addFolder(element_id: number): Observable<any> {
-  //   let uuid = "12345678"
-
-  //   let payload = {
-  //     "uuid": uuid,
-  //     "user-id": 0,
-  //     "element-id": element_id
-  //   }
-
-  //   return this.http.post<any>(`${this.baseUrl}/api/crud/addFolder`, payload)
-  // }
   // FINE CHIAMATE CASH SERVER
 
 }
