@@ -1,3 +1,4 @@
+import { MessageConfigurationService } from './../../../services/message-configuration.service';
 import { ContextMenu } from 'primeng/contextmenu';
 import { DocumentElement } from 'src/app/model/tile/document-element';
 import { ElementType } from 'src/app/model/tile/element-type';
@@ -33,7 +34,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         .subscribe({
           next: (result) => {
             if (result.responseStatus == 0) {
-              this.messageService.add(this.generateSuccessMessageConfig(successMsg));
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
               Swal.close();
             }
             else if (result.responseStatus == 1) {
@@ -87,6 +88,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     private loggedUserService : LoggedUserService,
     private workspaceService: WorkspaceService,
     private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
   ) { }
 
   ngOnInit(): void {
@@ -180,21 +182,21 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           this.workspaceService.renameElement(newId, name, ElementType.Directory).subscribe({
             next: (result) => {
               if (result.responseStatus == 0) {
-                this.messageService.add(this.generateSuccessMessageConfig('Cartella \'' + name + '\' creata con successo'));
+                this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Cartella \'' + name + '\' creata con successo'));
               }
               else {
                 this.workspaceService.removeElement(newId, ElementType.Directory).subscribe({
                   next: (result) => {
-                    this.messageService.add(this.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
                   },
                   error: () => {
-                    this.messageService.add(this.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
                   }
                 })
               }
             },
             error: () => {
-              this.messageService.add(this.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
             },
             complete: () => {
               $('#addFolderModal').modal('hide')
@@ -204,16 +206,16 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           })
         }
         else if (result['response-status'] == 1) {
-          this.messageService.add(this.generateErrorMessageConfig('Utente non autorizzato'))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
           $('#addFolderModal').modal('hide')
         }
         else {
-          this.messageService.add(this.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
           $('#addFolderModal').modal('hide')
         }
       },
       error: (err) => {
-        this.messageService.add(this.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
         $('#addFolderModal').modal('hide')
       },
       complete: () => {
@@ -242,17 +244,17 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       this.workspaceService.uploadFile(element_id, this.fileUploaded).subscribe({
         next: (result) => {
           if (result['response-status'] == 0) {
-            this.messageService.add(this.generateSuccessMessageConfig(successMsg));
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
           else if (result['response-status'] == 1) {
-            this.messageService.add(this.generateErrorMessageConfig('Utente non autorizzato'))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
           }
           else {
-            this.messageService.add(this.generateErrorMessageConfig(errorMsg))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
           }
         },
         error: () => {
-          this.messageService.add(this.generateErrorMessageConfig(errorMsg))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
         },
         complete: () => {
           this.updateDocumentSystem();
@@ -260,7 +262,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       })
     }
     else {
-      this.messageService.add(this.generateErrorMessageConfig("Errore nell'operazione di caricamento file"))
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di caricamento file"))
     }
 
     $('#uploadFileModal').modal('hide')
@@ -290,17 +292,17 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       this.workspaceService.moveElement(element_id, target_id, type).subscribe({
         next: (result) => {
           if (result.responseStatus == 0) {
-            this.messageService.add(this.generateSuccessMessageConfig(successMsg));
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
           else if (result.responseStatus == 1) {
-            this.messageService.add(this.generateErrorMessageConfig('Utente non autorizzato'))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
           }
           else {
-            this.messageService.add(this.generateErrorMessageConfig(errorMsg))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
           }
         },
         error: () => {
-          this.messageService.add(this.generateErrorMessageConfig(errorMsg))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
         },
         complete: () => {
           this.updateDocumentSystem();
@@ -308,7 +310,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       })
     }
     else {
-      this.messageService.add(this.generateErrorMessageConfig("Errore nell'operazione di spostamento"))
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di spostamento"))
     }
 
     $('#moveModal').modal('hide')
@@ -337,17 +339,17 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       this.workspaceService.renameElement(element_id, newName, type).subscribe({
         next: (result) => {
           if (result.responseStatus == 0) {
-            this.messageService.add(this.generateSuccessMessageConfig(successMsg));
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
           else if (result.responseStatus == 1) {
-            this.messageService.add(this.generateErrorMessageConfig('Utente non autorizzato'))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
           }
           else {
-            this.messageService.add(this.generateErrorMessageConfig(errorMsg))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
           }
         },
         error: () => {
-          this.messageService.add(this.generateErrorMessageConfig(errorMsg))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
         },
         complete: () => {
           this.updateDocumentSystem();
@@ -355,7 +357,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       })
     }
     else {
-      this.messageService.add(this.generateErrorMessageConfig("Errore nell'operazione di rinominazione"))
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di rinominazione"))
     }
 
     $('#renameModal').modal('hide')
@@ -522,24 +524,6 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.items = cmItems;
   }
 
-  private generateErrorMessageConfig(msg: string): any {
-    return {
-      severity: 'error',
-      summary: 'Errore',
-      detail: msg,
-      life: 3000
-    }
-  }
-
-  private generateSuccessMessageConfig(msg: string): any {
-    return {
-      severity: 'success',
-      summary: 'Successo',
-      detail: msg,
-      life: 3000
-    }
-  }
-
   private omitFiles(docs: any[]) {
     var dataParsed: TreeNode<any>[] = [];
 
@@ -592,7 +576,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       title: errorMessage,
       showConfirmButton: true
     });
-}
+  }
 
   private showOperationInProgress(message: string): void {
     Swal.fire({
@@ -605,7 +589,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       showCancelButton: false,
       showConfirmButton: false
     });
-}
+  }
 
   private searchNodeByElementId(source: any[], element: any): any {
     for (let el of source) {
