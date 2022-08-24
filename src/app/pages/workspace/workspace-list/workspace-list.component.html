@@ -10,7 +10,9 @@
             </div>
             <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
                 currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
-                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
+                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
+                selectionMode="single"
+                (onRowSelect)="openWorkspace($event)">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
@@ -23,13 +25,13 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-workspace>
-                    <tr>
+                    <tr [pSelectableRow]="workspace">
                         <td>{{workspace.name}}</td>
                         <td>{{workspace.note}}</td>
                         <td>{{workspace.updated | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
                         <td>
                             <button pButton pRipple icon="pi pi-desktop"
-                                class="p-button-rounded p-button-rounded p-button-lg p-mr-2 mx-2"
+                                class="p-button-rounded p-mr-2 mx-2"
                                 (click)="goToWorkspace(workspace.id)"></button>
                             <button pButton pRipple icon="pi pi-pencil"
                                 class="p-button-rounded p-button-success p-mr-2 mx-2"

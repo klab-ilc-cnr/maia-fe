@@ -38,6 +38,12 @@ export class WorkspaceListComponent implements OnInit {
     this.workspaceDialog = true;
   }
 
+  openWorkspace(event: any) {
+    if (event.data.id) {
+      this.goToWorkspace(event.data.id)
+    }
+  }
+
   public goToNewWorkspace() {
     this.router.navigate(["/workspace", "new"], { relativeTo: this.activeRoute });
   }
