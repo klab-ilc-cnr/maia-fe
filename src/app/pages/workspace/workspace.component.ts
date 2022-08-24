@@ -175,8 +175,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     //currentWorkspaceInstance = this;
 
-    let height = window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
-    this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
+    this.resizeContainerHeight()
   }
 
   restoreTiles(workspaceStatus: Workspace) {
@@ -273,6 +272,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     console.log('Mappa panels');
     //console.log(this.openPanels);
     console.log(jsPanel.getPanels());
+
+    this.resizeContainerHeight()
   }
 
   openExploreCorpusPanel(event: any) {
@@ -346,7 +347,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         this.deleteTileContent(panel.id, TileType.TEXT);
       },
       onfronted: function (this: any, panel: any, status: any) {
-        componentRef.instance.reload()
+        //componentRef.instance.reload()
+        let panelIDs = jsPanel.getPanels(function() {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+        console.log(panelIDs)
       }
     };
 
@@ -425,8 +430,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       .find((x: { id: string; }) => x.id === 'modalTextSelect')
       .close();
 
-
-
     var panelId = this.textTilePrefix + textId
 
     var panelExist = jsPanel.getPanels().find(
@@ -441,8 +444,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
-    const element = componentRef.location.nativeElement;
+    componentRef.instance.height = window.innerHeight / 2;
 
+    const element = componentRef.location.nativeElement;
 
     let textTileConfig = {
       id: panelId,
@@ -455,9 +459,25 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         //this.deleteTileContent(panel.id, TileType.TEXT);
+        console.log('hellooo')
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
+      },
+      resizeit: {
+        resize: (panel: any, paneldata: any, event: any) => {
+          console.log('hi')
+          componentRef.instance.updateHeight(paneldata.height)
+          console.log(panel, paneldata, event)
+        }
+      },
+      onwindowresize: function () {
+        console.log("hello 1")
+        // console.log(panel, event)
+      },
+      onparentresize: function() {
+        console.log("hello 2")
+        // console.log(parent, parentsize)
       }
     };
 
@@ -528,6 +548,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     };
 
     textTileElement.addContent(tileObject, this);
+  }
+
+  private resizeContainerHeight() {
+    let height = window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
+    this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
   }
 }
 

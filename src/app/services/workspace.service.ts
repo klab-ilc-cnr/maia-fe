@@ -87,7 +87,7 @@ export class WorkspaceService {
 
   // INIZIO CHIAMATE CASH SERVER
 
-  baseUrl = "http://localhost:8081"
+  baseUrl = "http://localhost:8443"
   // baseUrl = "https://lari2.ilc.cnr.it/"
   public retrieveCorpus(): Observable<CorpusTileContent> {
     let uuid = "12345678"

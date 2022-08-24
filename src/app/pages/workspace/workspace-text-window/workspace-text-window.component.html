@@ -1,17 +1,52 @@
-<p>workspace-text-window works!</p>
-<table class="table table-striped" (focus)="selectionchange($event)">
-  <!-- <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col">Country</th>
-    <th scope="col">Area</th>
-    <th scope="col">Population</th>
-  </tr>
-  </thead> -->
-  <tbody>
-    <tr *ngFor="let row of rows">
-      <th>{{ row.id }}</th>
-      <td (mousedown)="selectionchange($event)">{{ row.text }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="toolbar">
+
+</div>
+
+<div class="form-group row mx-0 px-0 justify-content-center">
+  <label class="col-sm-2 col-form-label">Layer</label>
+  <div class="col-sm-6">
+    <div class="p-fluid">
+      <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer"
+        placeholder="Seleziona un layer" [options]="layerOptions" [filter]="true" [showClear]="true" (onChange)="changeLayer($event)" [required]="true">
+      </p-dropdown>
+      <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">
+        <div *ngIf="layer.errors?.['required']">
+          Seleziona un layer
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mx-0">
+  <div class="col-8 px-0" style="overflow-y: auto;" [ngStyle]="{'height.px': tableHeight}">
+    <!-- <p-table [value]="rows" styleClass="p-datatable-striped" class="css-serial" responsiveLayout="scroll">
+      <ng-template pTemplate="body" let-row>
+          <tr>
+            <td></td>
+            <td (mousedown)="selectionchange($event)">{{ row.text }}</td>
+          </tr>
+      </ng-template>
+    </p-table> -->
+    <table class="table table-striped css-serial" (focus)="selectionchange($event)">
+      <!-- <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Country</th>
+        <th scope="col">Area</th>
+        <th scope="col">Population</th>
+      </tr>
+      </thead> -->
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td></td>
+          <td (mousedown)="selectionchange($event)">{{ row.text }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-4">
+    <p>workspace-text-window works!</p>
+    <app-annotation-editor [annotationModel]=""></app-annotation-editor>
+  </div>
+</div>

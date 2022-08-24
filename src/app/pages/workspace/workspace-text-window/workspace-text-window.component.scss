@@ -1,0 +1,28 @@
+.css-serial {
+  counter-reset: serial-number;
+
+  tr td {
+    padding: .5rem 1rem;
+
+    &:first-child {
+      &::before {
+        counter-increment: serial-number;
+        content: counter(serial-number);
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+      }
+
+      vertical-align: bottom;
+      padding-right: .5rem;
+    }
+
+    &:last-child {
+      padding-left: .5rem;
+    }
+  }
+}
+
+.form-group {
+  margin-top: 1rem;
+}
