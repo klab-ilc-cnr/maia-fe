@@ -37,10 +37,16 @@
           </li>
           <li *ngIf="canManageLayers" [ngClass]="{'active': isActive(['layers'])}">
             <a routerLink="/layers">
-              <i class="layout-menuitem-icon pi pi-tags"></i>
+              <app-icon-layer-group class="layout-menuitem-icon"></app-icon-layer-group>
               <span>Layer</span>
             </a>
           </li>
+          <!-- <li>
+            <a routerLink="/layers">
+              <i class="layout-menuitem-icon pi pi-tags"></i>
+              <span>TagSet</span>
+            </a>
+          </li> -->
         </ul>
       </li>
     </ul>

@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from "primeng/button";
 import { SidebarModule } from "primeng/sidebar";
 import { FooterComponent } from './footer/footer.component';
+import { IconsModule } from '../icons/icons.module';
 
 @NgModule({
   declarations: [FooterComponent, HeaderComponent, SideMenuComponent],
@@ -16,7 +17,8 @@ import { FooterComponent } from './footer/footer.component';
     CommonModule,
     FontAwesomeModule,
     RouterModule,
-    SidebarModule
+    SidebarModule,
+    IconsModule
   ]
 })
 export class PageControllersModule { }
