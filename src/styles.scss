@@ -14,6 +14,8 @@
 :root {
   --primary-color: #{$redPalette2};
   --focus-ring: 0 0 0 0.2rem #{$redPalette3};
+  --text-font-family:monospace;
+  --text-font-size:13px;
 }
 
 // MAIN

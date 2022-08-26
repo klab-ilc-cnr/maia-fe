@@ -1,3 +1,5 @@
+@import "../../../../assets/scss/variables";
+
 .css-serial {
   counter-reset: serial-number;
 
@@ -26,3 +28,56 @@
 .form-group {
   margin-top: 1rem;
 }
+
+.text-container {
+  overflow-y: auto;
+  border: 1px solid $redPalette7;
+}
+
+/* ANNOTATION */
+.text-editor {
+  width: 100%;
+
+  rect {
+    width: 100%;
+  }
+}
+
+// BACKGROUND STRIPED
+.background0 {
+  stroke: none;
+  fill: #ffffff;
+}
+
+.background1 {
+  stroke: none;
+  fill: #eeeeee;
+}
+
+.sentnum {
+  path {
+    stroke: #999999;
+    stroke-width: 1px;
+  }
+
+  text {
+    fill: #999999;
+    text-anchor: end;
+  }
+}
+
+.text {
+  font-family: var(--text-font-family);
+  font-size: var(--text-font-size);
+}
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* fine ANNOTATION */
