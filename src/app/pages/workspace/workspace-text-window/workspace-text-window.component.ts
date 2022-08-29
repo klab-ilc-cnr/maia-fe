@@ -2,13 +2,11 @@ import { AnnotationService } from 'src/app/services/annotation.service';
 import { SpanCoordinates } from './../../../model/annotation/span-coordinates';
 import { Annotation } from './../../../model/annotation/annotation';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { Workspace } from 'src/app/model/workspace.model';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TextRow } from 'src/app/model/text/text-row';
 import { SelectItem } from 'primeng/api';
 import { LayerService } from 'src/app/services/layer.service';
 import { Layer } from 'src/app/model/layer.model';
-import { NgForm } from '@angular/forms';
 import { TextLine } from 'src/app/model/text/text-line';
 
 @Component({
@@ -22,7 +20,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   height: number = window.innerHeight / 2;
   dVerticalLine: string = "M 0 0";
   svgHeight: number = 0;
-  tableHeight: number = window.innerHeight / 2;
+  textContainerHeight: number = window.innerHeight / 2;
   textId: number | undefined;
   rows: TextRow[] = [];
   selectedLayer: any;
@@ -44,20 +42,19 @@ export class WorkspaceTextWindowComponent implements OnInit {
     stdTextOffsetX: 37,
     spaceBeforeVerticalLine: 2,
     spaceAfterVerticalLine: 2,
-    font: "13px monospace"
+    font: "13px monospace",
+    jsPanelHeaderBarHeight: 29.5,
+    layerSelectHeightAndMargin: 37.75 + 26,
+    paddingAfterTextEditor: 10
   }
 
-  @ViewChild('el') public el!: ElementRef;
   annotation = new Annotation();
 
   constructor(
     private annotationService: AnnotationService,
     private workspaceService: WorkspaceService,
     private layerService: LayerService
-  ) {
-    console.log(document.documentElement.style.getPropertyValue('--text-font-family'));
-    console.log(document.documentElement.style.getPropertyValue('--text-font-size'));
-  }
+  ) { }
 
   ngOnInit(): void {
     if (!this.textId) {
@@ -107,6 +104,18 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     })
 
+  updateComponentSize(newHeight: any) {
+    this.updateHeight(newHeight);
+    this.updateTextEditorSize();
+  }
+
+  updateHeight(newHeight: any) {
+    console.log(this.height, newHeight)
+
+    this.height = newHeight - Math.ceil(this.visualConfig.jsPanelHeaderBarHeight);
+    this.textContainerHeight = this.height - Math.ceil(this.visualConfig.layerSelectHeightAndMargin + this.visualConfig.paddingAfterTextEditor);
+
+    console.log(this.height, this.textContainerHeight);
   }
 
   updateTextEditorSize() {
@@ -245,75 +254,5 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.svgHeight = this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
 
     this.dVerticalLine = "M 34 0 L 34 " + this.svgHeight;
-  }
-
-  private getComputedTextLength(text: string) {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-
-    if (!context) {
-      return text.length;
-    }
-
-    context.font = this.visualConfig.font || getComputedStyle(document.body).font;
-
-    return context.measureText(text).width;
-  }
-
-  selectionchange(event: any): void {
-    console.log("stai selezionando", event)
-
-    // const start = event.target.selectionStart;
-    // const end = event.target.selectionEnd;
-    // var t = window!.getSelection()?.anchorNode?.textContent?.substring( window?.getSelection()?.anchorOffset!, window?.getSelection()?.focusOffset )
-    // console.log(event, start, end, window.getSelection(), t)
-
-    // console.log(window!.getSelection()?.anchorNode?.textContent)
-    // console.log(window!.getSelection()?.anchorOffset!, window?.getSelection()?.focusOffset)
-
-    const selection = window.getSelection();
-    if (selection != null && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const preSelectionRange = range.cloneRange();
-      preSelectionRange.selectNodeContents(this.el.nativeElement);
-      preSelectionRange.setEnd(range.startContainer, range.startOffset);
-      this.selectionStart = [...preSelectionRange.toString()].length;
-      this.selectionEnd = this.selectionStart + [...range.toString()].length;
-    } else {
-      this.selectionStart = undefined;
-      this.selectionEnd = undefined;
-    }
-
-    if (this.selectionStart === undefined || this.selectionEnd === undefined || this.selectionStart >= this.selectionEnd) {
-      console.log()
-      return;
-    }
-
-    let startIndex= this.selectionStart
-    let endIndex= this.selectionEnd
-
-    this.annotation.layer = this.selectedLayer
-    this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label
-    this.annotation.spans = new Array<SpanCoordinates>();
-    this.annotation.spans.push({
-
-    })
-
-    console.log(startIndex, endIndex, selection, selection?.getRangeAt(0))
-  }
-
-  changeLayer(event: any) {
-    console.log('hello', this.selectedLayer, event)
-  }
-
-  resetDropdownSelection(event: any) {
-
-  }
-
-  updateHeight(newHeight: any) {
-    console.log(this.height)
-    this.height = newHeight - 64;
-    this.tableHeight = this.height - 40;
-    console.log(this.height, this.tableHeight)
   }
 }

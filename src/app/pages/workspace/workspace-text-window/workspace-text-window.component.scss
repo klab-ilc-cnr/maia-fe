@@ -43,6 +43,11 @@
   }
 }
 
+.annotation-container {
+  overflow-y: auto;
+  border: 1px solid $redPalette7;
+}
+
 // BACKGROUND STRIPED
 .background0 {
   stroke: none;

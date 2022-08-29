@@ -424,11 +424,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   }
 
   openTextPanel(textId: number, title: string) {
-    jsPanel.getPanels(function (this: any) {
+    let modalTextSelect = jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');
     })
       .find((x: { id: string; }) => x.id === 'modalTextSelect')
-      .close();
+
+    if (modalTextSelect) {
+      modalTextSelect.close();
+    }
 
     var panelId = this.textTilePrefix + textId
 
@@ -463,21 +466,37 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
+        console.log('panel', this, panel, status)
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        let panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        let panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        let panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        let panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        let panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateComponentSize(panelH);
       },
       resizeit: {
         resize: (panel: any, paneldata: any, event: any) => {
           console.log('hi')
           componentRef.instance.updateHeight(paneldata.height)
           console.log(panel, paneldata, event)
+        },
+        stop: (panel: any, paneldata: any, event: any) => {
+          componentRef.instance.updateTextEditorSize();
         }
-      },
-      onwindowresize: function () {
-        console.log("hello 1")
-        // console.log(panel, event)
-      },
-      onparentresize: function() {
-        console.log("hello 2")
-        // console.log(parent, parentsize)
       }
     };
 
@@ -489,6 +508,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         width: window.innerWidth / 3
       })
       .reposition();
+      const {content, ...text} = textTileConfig;
+
+    let tileObject: Tile<TextTileContent> = {
+      id: textTileConfig.id,
+      workspaceId: this.workspaceId,
+      content: textTileConfig.content,
+      tileConfig: text,
+      type: TileType.TEXT
+    };
+
 
     //.addToPanelsMap();
 
