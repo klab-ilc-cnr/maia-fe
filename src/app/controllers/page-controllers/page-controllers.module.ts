@@ -8,9 +8,10 @@ import { ButtonModule } from "primeng/button";
 import { SidebarModule } from "primeng/sidebar";
 import { FooterComponent } from './footer/footer.component';
 import { IconsModule } from '../icons/icons.module';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
-  declarations: [FooterComponent, HeaderComponent, SideMenuComponent],
+  declarations: [FooterComponent, HeaderComponent, SideMenuComponent, LoaderComponent],
   exports: [FooterComponent, HeaderComponent, SideMenuComponent],
   imports: [
     ButtonModule,
