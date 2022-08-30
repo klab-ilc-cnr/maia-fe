@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayerComponent } from './layer.component';
+import { LayersListComponent } from './layers-list.component';
 
-describe('LayerComponent', () => {
-  let component: LayerComponent;
-  let fixture: ComponentFixture<LayerComponent>;
+describe('LayersListComponent', () => {
+  let component: LayersListComponent;
+  let fixture: ComponentFixture<LayersListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LayerComponent ]
+      declarations: [ LayersListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayerComponent);
+    fixture = TestBed.createComponent(LayersListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Layer } from '../../model/layer.model';
-import { LayerService } from '../../services/layer.service';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { Table } from 'primeng/table';
+import { Layer } from 'src/app/model/layer.model';
+import { LayerService } from 'src/app/services/layer.service';
 
 @Component({
-  selector: 'app-layer',
-  templateUrl: './layer.component.html',
-  styleUrls: ['./layer.component.scss']
+  selector: 'app-layers-list',
+  templateUrl: './layers-list.component.html',
+  styleUrls: ['./layers-list.component.scss']
 })
-export class LayerComponent implements OnInit {
+export class LayersListComponent implements OnInit {
+
 
   layers: Layer[] = [];
 

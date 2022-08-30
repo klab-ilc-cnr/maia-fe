@@ -33,7 +33,6 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
-import { LayerComponent } from './pages/layer/layer.component';
 import { ColorPickerModule } from "primeng/colorpicker";
 import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { TreeModule } from 'primeng/tree';
@@ -45,6 +44,7 @@ import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
 import { AnnotationEditorComponent } from './controllers/editors/annotation-editor/annotation-editor.component';
+import { LayersListComponent } from './pages/layers/layers-list/layers-list.component';
 
 @NgModule({
   declarations: [
@@ -56,12 +56,12 @@ import { AnnotationEditorComponent } from './controllers/editors/annotation-edit
     WorkspaceLayoutComponent,
     WorkspaceMenuComponent,
     WorkspaceTextSelectorComponent,
-    LayerComponent,
     WorkspaceCorpusExplorerComponent,
     PopupDeleteItemComponent,
     MainLayoutComponent,
     WorkspaceTextWindowComponent,
-    AnnotationEditorComponent
+    AnnotationEditorComponent,
+    LayersListComponent
   ],
   imports: [
     BrowserModule,
