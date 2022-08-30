@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ElementType } from 'src/app/model/tile/element-type';
+import { ElementType } from 'src/app/model/corpus/element-type';
 import Swal from 'sweetalert2';
 
 @Component({

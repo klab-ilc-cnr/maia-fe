@@ -1,7 +1,7 @@
 import { MessageConfigurationService } from './../../../services/message-configuration.service';
 import { ContextMenu } from 'primeng/contextmenu';
-import { DocumentElement } from 'src/app/model/tile/document-element';
-import { ElementType } from 'src/app/model/tile/element-type';
+import { DocumentElement } from 'src/app/model/corpus/document-element';
+import { ElementType } from 'src/app/model/corpus/element-type';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { WorkspaceService } from 'src/app/services/workspace.service';
