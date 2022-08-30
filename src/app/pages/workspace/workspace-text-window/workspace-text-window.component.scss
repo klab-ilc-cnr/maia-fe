@@ -38,7 +38,7 @@
 .text-editor {
   width: 100%;
 
-  rect {
+  rect.background {
     width: 100%;
   }
 }
@@ -57,6 +57,30 @@
 .background1 {
   stroke: none;
   fill: #eeeeee;
+}
+
+.span text {
+  font-size: var(--annotation-font-size);
+  text-anchor: middle;
+  // font-family: 'PT Sans Caption', sans-serif;
+  font-family: var(--annotation-font-family);
+  pointer-events: none;
+}
+
+.highlight rect {
+  opacity: 0.3;
+}
+
+.span path.curly {
+  /* stroke: grey; */
+  stroke-width: 0.5;
+}
+.span path {
+  fill: none;
+}
+
+path {
+  pointer-events: none;
 }
 
 .sentnum {

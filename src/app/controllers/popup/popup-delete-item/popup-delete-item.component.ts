@@ -30,7 +30,7 @@ export class PopupDeleteItemComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public showDeleteConfirm(deleteFn: (id: number, name: string, type: ElementType) => void, id?: number, name?: string, type?: ElementType): void {
+  public showDeleteConfirm(deleteFn: (id: number, name?: string, type?: ElementType) => void, id?: number, name?: string, type?: ElementType): void {
     Swal.fire({
       icon: 'warning',
       input: 'text',
@@ -53,7 +53,7 @@ export class PopupDeleteItemComponent implements OnInit {
         })
       }
     }).then((result) => {
-      if (result.isConfirmed && id && name && type) {
+      if (result.isConfirmed && id) {
         deleteFn(id, name, type);
       }
       else {
