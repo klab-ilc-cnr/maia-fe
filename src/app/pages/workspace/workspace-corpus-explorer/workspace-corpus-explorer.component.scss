@@ -1,18 +1,3 @@
-.group-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem;
-
-  .btn {
-    height: 39px;
-    width: 39px;
-    padding: 0.5rem;
-    margin: 0 0.5rem;
-    font-size: 1.25rem;
-  }
-}
-
 :host ::ng-deep {
   .p-tree {
     margin: 0 1rem;

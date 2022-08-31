@@ -1,0 +1,13 @@
+:host ::ng-deep {
+  $newSize:30px;
+
+  .p-checkbox {
+    width: $newSize;
+    height: $newSize;
+
+    .p-checkbox-box {
+      width: $newSize;
+      height: $newSize;
+    }
+  }
+}

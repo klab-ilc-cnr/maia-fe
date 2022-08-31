@@ -48,6 +48,7 @@ import { LayersListComponent } from './pages/layers/layers-list/layers-list.comp
 import { LayersViewComponent } from './pages/layers/layers-view/layers-view.component';
 import { FeaturesListComponent } from './pages/layers/features/features-list/features-list.component';
 import { WorkspaceLayersVisibilityManagerComponent } from './pages/workspace/workspace-layers-visibility-manager/workspace-layers-visibility-manager.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { WorkspaceLayersVisibilityManagerComponent } from './pages/workspace/wor
     IconsModule,
     TooltipModule,
     ContextMenuModule,
-    TreeSelectModule
+    TreeSelectModule,
+    CheckboxModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

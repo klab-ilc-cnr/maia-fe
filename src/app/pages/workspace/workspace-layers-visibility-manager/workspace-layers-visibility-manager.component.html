@@ -1,0 +1,39 @@
+<div class="px-4">
+  <div class="button-group-actions mb-4">
+    <button
+      class="btn btn-outline-secondary rounded-circle"
+      pTooltip="Aggiorna layers"
+      tooltipPosition="bottom"
+      (click)="reload()"
+    >
+      <i class="pi pi-refresh"></i>
+    </button>
+    <button
+      class="btn btn-outline-primary rounded-circle"
+      pTooltip="Mostra tutti"
+      tooltipPosition="bottom"
+      (click)="showAll()"
+    >
+    <i class="pi pi-eye"></i>
+    </button>
+    <button
+      class="btn btn-outline-primary rounded-circle"
+      pTooltip="Rinomina"
+      tooltipPosition="bottom"
+      (click)="hideAll()"
+    >
+      <i class="pi pi-eye-slash"></i>
+    </button>
+  </div>
+  <div *ngFor="let layer of layers" class="field-checkbox">
+    <p-checkbox name="layers" value="layer" [value]="layer" [(ngModel)]="selectedLayers" [inputId]="layer.id!.toString()" (onChange)="selectionChange()" checkboxIcon="pi pi-eye"></p-checkbox>
+    <label [for]="layer.id" class="d-flex align-items-center justify-content-between">
+      <span>
+        {{ layer.name }}
+      </span>
+      <span class="ps-2">
+        <i class="fa-solid fa-palette" [ngStyle]="{'color':layer.color}" style="font-size: 1.5rem;"></i>
+      </span>
+    </label>
+  </div>
+</div>

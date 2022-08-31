@@ -44,6 +44,18 @@ export class AnnotationEditorComponent implements OnInit {
   @Output() onDelete = new EventEmitter<any>();
   @Output() onSave = new EventEmitter<any>();
 
+  public get isEditing(): boolean {
+    if (this.annotationModel && this.annotationModel.id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public get noneAnnotationIsSelected(): boolean {
+    return (!this.annotationModel || !this.annotationModel?.layer || this.annotationModel?.layer == -1 || !this.annotationModel.spans);
+  }
+
   @ViewChild(NgForm) public annotationForm!: NgForm;
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
@@ -66,18 +78,6 @@ export class AnnotationEditorComponent implements OnInit {
     //   .subscribe((data: LayerWithFeatures) => {
 
     //   });
-  }
-
-  public get isEditing(): boolean {
-    if (this.annotationModel && this.annotationModel.id) {
-      return true;
-    }
-
-    return false;
-  }
-
-  public get noneAnnotationIsSelected(): boolean {
-    return (!this.annotationModel || !this.annotationModel?.layer || this.annotationModel?.layer == -1 || !this.annotationModel.spans);
   }
 
   onCancelBtn() {

@@ -3,9 +3,9 @@
 
 @import "../node_modules/primeng/resources/primeng.min.css";
 @import "../node_modules/primeicons/primeicons.css";
+@import url('~primeng/resources/themes/saga-blue/theme.css');
 @import url('~bootstrap/dist/css/bootstrap.min.css');
 @import url('~font-awesome/css/font-awesome.min.css');
-@import url('~primeng/resources/themes/saga-blue/theme.css');
 @import url('~jspanel4/dist/jspanel.min.css');
 @import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 @import "./assets/scss/variables";
@@ -656,5 +656,46 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
 
   &:focus {
     box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #9dc1fb, 0 1px 2px 0 black !important;
+  }
+}
+
+.formgroup-inline .field,
+.formgroup-inline .field-checkbox,
+.formgroup-inline .field-radiobutton {
+  margin-right: 1rem;
+}
+
+.formgroup-inline .field > label,
+.formgroup-inline .field-checkbox > label,
+.formgroup-inline .field-radiobutton > label {
+  margin-right: 0.5rem;
+  margin-bottom: 0;
+}
+
+.field-checkbox,
+.field-radiobutton {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.field-checkbox > label,
+.field-radiobutton > label {
+  margin-left: 0.5rem;
+  line-height: 1;
+}
+
+.button-group-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+
+  .btn {
+    height: 39px;
+    width: 39px;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    font-size: 1.25rem;
   }
 }

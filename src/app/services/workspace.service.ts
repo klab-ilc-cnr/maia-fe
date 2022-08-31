@@ -8,8 +8,8 @@ import { Tile } from '../model/tile/tile.model';
 import { WorkspaceChoice } from '../model/workspace-choice.model';
 import { Workspace } from '../model/workspace.model';
 import { combineLatest, of } from 'rxjs';
-import { CorpusTileContent } from '../model/tile/corpus-tile-content';
-import { ElementType } from 'src/app/model/tile/element-type';
+import { DocumentSystem } from '../model/corpus/document-system';
+import { ElementType } from '../model/corpus/element-type';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -52,6 +52,11 @@ export class WorkspaceService {
 
     let workspace = new Workspace(workspaceId, tiles, localStorageData);
 
+    return this.http.put<boolean>(
+      `${this.workspacesUrl}/layout`,
+      workspace
+    );
+
     let layoutSave$ = this.http.put<boolean>(
       `${this.workspacesUrl}/layout`,
       workspace
@@ -89,11 +94,11 @@ export class WorkspaceService {
 
   baseUrl = "http://localhost:8443"
   // baseUrl = "https://lari2.ilc.cnr.it/"
-  public retrieveCorpus(): Observable<CorpusTileContent> {
+  public retrieveCorpus(): Observable<DocumentSystem> {
     let uuid = "12345678"
 
-    return this.http.get<CorpusTileContent>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
-    //return this.http.get<CorpusTileContent>('assets/mock/files.json')
+    return this.http.get<DocumentSystem>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
+    //return this.http.get<DocumentSystem>('assets/mock/files.json')
   }
 
   public uploadFile(element_id: number, file: File): Observable<any> {

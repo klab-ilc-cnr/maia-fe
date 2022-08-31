@@ -55,45 +55,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   @Output() onTextSelectEvent = new EventEmitter<any>();
 
-  files: TreeNode<DocumentElement>[] = [];
-  fileUploaded: any = undefined;
-  foldersAvailableToAddFolder: TreeNode<DocumentElement>[] = [];
-  foldersAvailableToFileUpload: TreeNode<DocumentElement>[] = [];
-  foldersAvailableToMoveElementIn: TreeNode<DocumentElement>[] = [];
-  isFileSizeExceed: boolean = false;
-  isFileUploaded: boolean = false;
-  isFileUploaderTouched: boolean = false;
-  items: MenuItem[] = [];
-  loading: boolean = false;
-  newFolderName: string | undefined;
-  newName: string | undefined;
-  selectedDocument: TreeNode<DocumentElement> | undefined;
-  selectedFolderNode: TreeNode<DocumentElement> | undefined;
-
-  @ViewChild('fileUploader') public fileUploader!: ElementRef;
-  @ViewChild('tree') public tree: any;
-
-  @ViewChild('addFolderForm') public addFolderForm!: NgForm;
-  @ViewChild('fileUploaderForm') public fileUploaderForm!: NgForm;
-  @ViewChild('moveForm') public moveForm!: NgForm;
-  @ViewChild('renameForm') public renameForm!: NgForm;
-
-  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
-
-  // PER MOCK
-  rawData: any;
   private clickCount = 0;
-
-  constructor(
-    private loggedUserService : LoggedUserService,
-    private workspaceService: WorkspaceService,
-    private messageService: MessageService,
-    private msgConfService: MessageConfigurationService
-  ) { }
-
-  ngOnInit(): void {
-    this.updateDocumentSystem()
-  }
 
   public get shouldDeleteBeDisplayed(): boolean {
     return this.loggedUserService.currentUser?.role == "AMMINISTRATORE";
@@ -124,6 +86,43 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
     return false;
   };
+
+  files: TreeNode<DocumentElement>[] = [];
+  fileUploaded: any = undefined;
+  foldersAvailableToAddFolder: TreeNode<DocumentElement>[] = [];
+  foldersAvailableToFileUpload: TreeNode<DocumentElement>[] = [];
+  foldersAvailableToMoveElementIn: TreeNode<DocumentElement>[] = [];
+  isFileSizeExceed: boolean = false;
+  isFileUploaded: boolean = false;
+  isFileUploaderTouched: boolean = false;
+  items: MenuItem[] = [];
+  loading: boolean = false;
+  newFolderName: string | undefined;
+  newName: string | undefined;
+  rawData: any;
+  selectedDocument: TreeNode<DocumentElement> | undefined;
+  selectedFolderNode: TreeNode<DocumentElement> | undefined;
+
+  @ViewChild('fileUploader') public fileUploader!: ElementRef;
+  @ViewChild('tree') public tree: any;
+
+  @ViewChild('addFolderForm') public addFolderForm!: NgForm;
+  @ViewChild('fileUploaderForm') public fileUploaderForm!: NgForm;
+  @ViewChild('moveForm') public moveForm!: NgForm;
+  @ViewChild('renameForm') public renameForm!: NgForm;
+
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
+
+  constructor(
+    private loggedUserService : LoggedUserService,
+    private workspaceService: WorkspaceService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
+  ) { }
+
+  ngOnInit(): void {
+    this.updateDocumentSystem()
+  }
 
   nodeSelect(event: any): void {
     this.clickCount++;

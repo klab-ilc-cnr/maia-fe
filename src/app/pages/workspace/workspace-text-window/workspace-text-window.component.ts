@@ -2,7 +2,7 @@ import { AnnotationService } from 'src/app/services/annotation.service';
 import { SpanCoordinates } from './../../../model/annotation/span-coordinates';
 import { Annotation } from './../../../model/annotation/annotation';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { TextRow } from 'src/app/model/text/text-row';
 import { MessageService, SelectItem } from 'primeng/api';
 import { LayerService } from 'src/app/services/layer.service';
@@ -18,6 +18,33 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   styleUrls: ['./workspace-text-window.component.scss']
 })
 export class WorkspaceTextWindowComponent implements OnInit {
+  @Input()
+  get visibleLayers(): Layer[] { return this._visibleLayers; }
+  set visibleLayers(visibleLayers: Layer[]) {
+    console.info('cambio layers', this.textId, this)
+    this._visibleLayers = visibleLayers;
+    this.loadData();
+  }
+  private _visibleLayers: Layer[] = [];
+
+  private selectionStart?: number;
+  private selectionEnd?: number;
+  private _editIsLocked: boolean = false;
+  private visualConfig = {
+    spaceBeforeTextLine: 8,
+    spaceAfterTextLine: 8,
+    stdTextLineHeight: 16,
+    stdTextOffsetX: 37,
+    spaceBeforeVerticalLine: 2,
+    spaceAfterVerticalLine: 2,
+    textFont: "13px monospace",
+    jsPanelHeaderBarHeight: 29.5,
+    layerSelectHeightAndMargin: 37.75 + 26,
+    paddingAfterTextEditor: 10,
+    annotationHeight: 12,
+    curlyHeight: 4,
+    annotationFont: "10px 'PT Sans Caption'"
+  }
 
   annotation = new Annotation();
   textRes: any;
@@ -34,27 +61,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
   textId: number | undefined;
 
   @ViewChild('svg') public svg!: ElementRef;
-  // svg = document.getElementById('svg');
-
-  private selectionStart?: number;
-  private selectionEnd?: number;
-  private _editIsLocked: boolean = false;
-
-  private visualConfig = {
-    spaceBeforeTextLine: 8,
-    spaceAfterTextLine: 8,
-    stdTextLineHeight: 16,
-    stdTextOffsetX: 37,
-    spaceBeforeVerticalLine: 2,
-    spaceAfterVerticalLine: 2,
-    textFont: "13px monospace",
-    jsPanelHeaderBarHeight: 29.5,
-    layerSelectHeightAndMargin: 37.75 + 26,
-    paddingAfterTextEditor: 10,
-    annotationHeight: 12,
-    curlyHeight: 4,
-    annotationFont: "10px 'PT Sans Caption'"
-  }
 
   constructor(
     private annotationService: AnnotationService,
@@ -133,9 +139,18 @@ export class WorkspaceTextWindowComponent implements OnInit {
         this.textRes = textResponse;
         this.annotationsRes = annotationsResponse;
 
-        this.simplifiedAnns = []
+        this.simplifiedAnns = [];
+
+        let layersIndex = new Array<string>();
+
+        this.visibleLayers.forEach(l => {
+          if (l.id) {
+            layersIndex.push(l.id?.toString())
+          }
+        })
+
         this.annotationsRes.annotations.forEach((a: Annotation) => {
-          if (a.spans) {
+          if (a.spans && layersIndex.includes(a.layer)) {
             let x = a.spans.map((sc: SpanCoordinates) => {
               let {spans, ...newAnn} = a;
               return {
