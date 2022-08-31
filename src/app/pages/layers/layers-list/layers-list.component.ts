@@ -75,6 +75,7 @@ export class LayersListComponent implements OnInit {
           this.layer = layer;
           this.layers.push(this.layer);
           this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer creato', life: 3000 });
+          this.viewLayerFeatures(layer);
         })
       }
 
@@ -100,5 +101,9 @@ export class LayersListComponent implements OnInit {
         })
       }
     });
+  }
+
+  viewLayerFeatures(layer: Layer) {
+    this.router.navigate([layer.id], { relativeTo: this.activeRoute });
   }
 }

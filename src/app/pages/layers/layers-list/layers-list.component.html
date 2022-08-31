@@ -5,53 +5,57 @@
         <div class="card">
             <div class="page-header">
                 <h5>Gestore layer</h5>
-                <p-button label="Nuovo layer" icon="pi pi-tags" styleClass="p-button-danger" (click)="openNew()"
+                <p-button label="Nuovo layer" icon="fa-solid fa-layer-group" styleClass="p-button-danger" (click)="openNew()"
                     class="ms-start"></p-button>
             </div>
-            <p-table #dt [value]="layers" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-                currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
-                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
-                [globalFilterFields]="['name','color','description']">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="color">Colore<p-sortIcon field="color"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon>
-                        </th>
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="caption">
-                    <div class="flex">
-                        <span class="p-input-icon-left ml-auto">
-                            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Cerca" />
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="body" let-layer let-i="rowIndex">
-                    <tr>
-                        <td>{{layer.name}}</td>
-                        <td>
-                            <p-colorPicker [(ngModel)]="layers[i].color" [disabled]="true"></p-colorPicker>
-                        </td>
-                        <td>{{layer.description}}</td>
-                        <td>
-                            <button pButton pRipple icon="pi pi-pencil"
-                                class="p-button-rounded p-button-success p-mr-2 mx-2"
-                                (click)="editLayer(layer)"></button>
-                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mx-2"
-                                (click)="deleteLayer(layer)"></button>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="summary">
-                    <div class="p-d-flex p-ai-center p-jc-between">
-                        In totale ci sono {{layers ? layers.length : 0 }} layer.
-                    </div>
-                </ng-template>
-            </p-table>
+            <div class="card-body p-fluid">
+              <p-table #dt [value]="layers" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+                  currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
+                  [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
+                  [globalFilterFields]="['name','color','description']">
+                  <ng-template pTemplate="header">
+                      <tr>
+                          <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
+                          </th>
+                          <th pSortableColumn="color">Colore<p-sortIcon field="color"></p-sortIcon>
+                          </th>
+                          <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon>
+                          </th>
+                          <th></th>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="caption">
+                      <div class="flex">
+                          <span class="p-input-icon-left ml-auto">
+                              <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Cerca" />
+                          </span>
+                      </div>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-layer let-i="rowIndex">
+                      <tr>
+                          <td>{{layer.name}}</td>
+                          <td>
+                              <p-colorPicker [(ngModel)]="layers[i].color" [disabled]="true"></p-colorPicker>
+                          </td>
+                          <td>{{layer.description}}</td>
+                          <td>
+                              <button pButton pRipple icon="pi pi-pencil"
+                                  class="p-button-rounded p-button-success p-mr-2 mx-2"
+                                  (click)="editLayer(layer)"></button>
+                              <button pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
+                                  (click)="viewLayerFeatures(layer)"></button>
+                              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+                                  (click)="deleteLayer(layer)"></button>
+                          </td>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="summary">
+                      <div class="p-d-flex p-ai-center p-jc-between">
+                          In totale ci sono {{layers ? layers.length : 0 }} layer.
+                      </div>
+                  </ng-template>
+              </p-table>
+            </div>
         </div>
     </div>
 </div>

@@ -2,6 +2,7 @@ import { LayersListComponent } from './../pages/layers/layers-list/layers-list.c
 import { WorkspaceListComponent } from "../pages/workspace/workspace-list/workspace-list.component";
 import { USERSMANAGEMENT_ROUTES } from "./usersmanagement.routes";
 import { WORKSPACES_ROUTES } from "./workspaces.routes";
+import { LAYERS_ROUTES } from './layers.routes';
 
 export const PROJECTX_ROUTES = [
     {
@@ -14,6 +15,6 @@ export const PROJECTX_ROUTES = [
     },
     {
         path: 'layers',
-        component: LayersListComponent
+        children: LAYERS_ROUTES
     }
 ];

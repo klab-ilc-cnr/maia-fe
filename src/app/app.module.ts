@@ -45,6 +45,9 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
 import { AnnotationEditorComponent } from './controllers/editors/annotation-editor/annotation-editor.component';
 import { LayersListComponent } from './pages/layers/layers-list/layers-list.component';
+import { LayersViewComponent } from './pages/layers/layers-view/layers-view.component';
+import { FeaturesListComponent } from './pages/layers/features/features-list/features-list.component';
+import { WorkspaceLayersVisibilityManagerComponent } from './pages/workspace/workspace-layers-visibility-manager/workspace-layers-visibility-manager.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,10 @@ import { LayersListComponent } from './pages/layers/layers-list/layers-list.comp
     MainLayoutComponent,
     WorkspaceTextWindowComponent,
     AnnotationEditorComponent,
-    LayersListComponent
+    LayersListComponent,
+    LayersViewComponent,
+    FeaturesListComponent,
+    WorkspaceLayersVisibilityManagerComponent
   ],
   imports: [
     BrowserModule,
