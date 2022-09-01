@@ -1,3 +1,4 @@
+import { LoaderService } from 'src/app/services/loader.service';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -62,6 +63,7 @@ export class AnnotationEditorComponent implements OnInit {
   constructor(
     private annotationService: AnnotationService,
     private workspaceService: WorkspaceService,
+    private loaderService: LoaderService,
     private layerService: LayerService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService
@@ -104,10 +106,9 @@ export class AnnotationEditorComponent implements OnInit {
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement((this.annotationModel?.id || 0)), this.annotationModel.id);
   }
 
-
   private save(): void {
     if (!this.fileId || !this.annotationModel) {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"))
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
       return;
     }
 
@@ -123,23 +124,24 @@ export class AnnotationEditorComponent implements OnInit {
       apiCall = this.annotationService.create(this.fileId, this.annotationModel);
     }
 
-    // this.loaderService.show();
+    this.loaderService.show();
     apiCall.subscribe({
       next: () => {
-        // this.loaderService.hide();
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
         this.onSave.emit()
       },
       error: (err: string) => {
-        //this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+      },
+      complete: () => {
+        this.loaderService.hide();
       }
     });
   }
 
   private saveWithFormErrors(): void {
     this.annotationForm.form.markAllAsTouched();
-    //this.alertService.error(this.translations['common.messages.errors.savingFailed']);
+    this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
   }
 
   private showOperationFailed(errorMessage: string): void {

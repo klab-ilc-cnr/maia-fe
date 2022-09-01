@@ -1,3 +1,4 @@
+import { LoaderService } from 'src/app/services/loader.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { SpanCoordinates } from './../../../model/annotation/span-coordinates';
 import { Annotation } from './../../../model/annotation/annotation';
@@ -64,6 +65,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
   constructor(
     private annotationService: AnnotationService,
+    private loaderService: LoaderService,
     private workspaceService: WorkspaceService,
     private layerService: LayerService,
     private messageService: MessageService,
@@ -112,6 +114,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
 
     this.annotation = new Annotation();
+
+    this.loaderService.show();
 
     forkJoin([
       this.layerService.retrieveLayers(),
@@ -168,6 +172,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
         console.log('Hello', this.simplifiedAnns)
 
         this.renderData();
+      },
+      complete: () => {
+        this.loaderService.hide();
       }
     });
   }

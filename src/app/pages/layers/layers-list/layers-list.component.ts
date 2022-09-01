@@ -1,3 +1,4 @@
+import { LoaderService } from 'src/app/services/loader.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -12,8 +13,6 @@ import { LayerService } from 'src/app/services/layer.service';
   styleUrls: ['./layers-list.component.scss']
 })
 export class LayersListComponent implements OnInit {
-
-
   layers: Layer[] = [];
 
   layer: Layer = new Layer();
@@ -21,16 +20,24 @@ export class LayersListComponent implements OnInit {
   layerDialog: boolean = false;
   submitted: boolean = false;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private activeRoute: ActivatedRoute,
+    private loaderService: LoaderService,
     private layerService: LayerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    this.loaderService.show();
     this.layerService.retrieveLayers()
-      .subscribe((data: Layer[]) => {
-        this.layers = data;
+      .subscribe({
+        next: (data: Layer[]) => {
+          this.layers = data;
+        },
+        complete: () => {
+          this.loaderService.hide();
+        }
       });
   }
 
@@ -61,26 +68,35 @@ export class LayersListComponent implements OnInit {
         return;
       }
 
+    this.loaderService.show();
+
     //EDIT
     if (this.layer.name?.trim()) {
       if (this.layer.id) {
-        this.layerService.updateLayer(this.layer).subscribe(layer => {
-          this.layers[this.findIndexById(layer.id!)] = { ...layer };
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer aggiornato', life: 3000 });
+        this.layerService.updateLayer(this.layer).subscribe({
+          next: (layer) => {
+            this.layers[this.findIndexById(layer.id!)] = { ...layer };
+            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer aggiornato', life: 3000 });
+          },
+          complete: () => {
+            this.saveLayerCompleted();
+          }
         })
       }
       //CREATE
       else {
-        this.layerService.createLayer(this.layer).subscribe(layer => {
-          this.layer = layer;
-          this.layers.push(this.layer);
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer creato', life: 3000 });
-          this.viewLayerFeatures(layer);
+        this.layerService.createLayer(this.layer).subscribe({
+          next: (layer) => {
+            this.layer = layer;
+            this.layers.push(this.layer);
+            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer creato', life: 3000 });
+            this.viewLayerFeatures(layer);
+          },
+          complete: () => {
+            this.saveLayerCompleted();
+          }
         })
       }
-
-      this.layers = [...this.layers];
-      this.layerDialog = false;
     }
   }
 
@@ -94,10 +110,17 @@ export class LayersListComponent implements OnInit {
       header: 'Conferma',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.layerService.deleteLayer(layer.id).subscribe((data) => {
-          let indexOfDeleted = this.layers.findIndex(l => l.id === data);
-          this.layers.splice(indexOfDeleted, 1);
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer eliminato', life: 3000 });
+        this.loaderService.show();
+
+        this.layerService.deleteLayer(layer.id).subscribe({
+          next: (data) => {
+            let indexOfDeleted = this.layers.findIndex(l => l.id === data);
+            this.layers.splice(indexOfDeleted, 1);
+            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer eliminato', life: 3000 });
+          },
+          complete: () => {
+            this.loaderService.hide();
+          }
         })
       }
     });
@@ -105,5 +128,12 @@ export class LayersListComponent implements OnInit {
 
   viewLayerFeatures(layer: Layer) {
     this.router.navigate([layer.id], { relativeTo: this.activeRoute });
+  }
+
+  private saveLayerCompleted() {
+    this.loaderService.hide();
+
+    this.layers = [...this.layers];
+    this.layerDialog = false;
   }
 }

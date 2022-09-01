@@ -7,6 +7,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { NgForm } from '@angular/forms';
 import { LanguageService } from 'src/app/services/language.service';
 import { Language } from 'src/app/model/language';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-user-form',
@@ -28,6 +29,7 @@ export class UserFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private loaderService: LoaderService,
     private userService: UserService,
     private loggedUserService : LoggedUserService,
     private languageService : LanguageService) {
@@ -60,12 +62,16 @@ export class UserFormComponent implements OnInit {
 
     this.roles = Object.keys(Roles);
 
+    this.loaderService.show();
     this.languageService.retrieveAll()
-    .subscribe(
-      result => {
+    .subscribe({
+      next: (result) => {
         this.languages = result;
+      },
+      complete: () => {
+        this.loaderService.hide();
       }
-    )
+    })
   }
 
   public get canManageUsers(): boolean {
@@ -81,14 +87,19 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loaderService.show();
     if (this.editUser) {
       console.log(this.user.email, this.user.id, this.user.role, this.user.active)
-      this.userService.update(this.user).subscribe(
-        result => this.goToUserList());
+      this.userService.update(this.user).subscribe({
+        next: (result) => this.goToUserList(),
+        complete: () => this.loaderService.hide()
+      });
     }
     else {
-      this.userService.save(this.user).subscribe(
-        result => this.goToUserList());
+      this.userService.save(this.user).subscribe({
+        next: (result) => this.goToUserList(),
+        complete: () => this.loaderService.hide()
+      });
     }
   }
 
@@ -103,21 +114,34 @@ export class UserFormComponent implements OnInit {
   }
 
   private loadUser(id: string): void {
-    if(id)
+    if(!id) {
+      return;
+    }
+
+    this.loaderService.show();
     this.userService
         .retrieveById(id)
-        .subscribe(
-          data => {
+        .subscribe({
+          next: (data) => {
             this.user = data;
+          },
+          complete: () => {
+            this.loaderService.hide();
+          }
         });
   }
 
   private loadCurrentUserProfile(): void {
+    this.loaderService.show();
     this.userService
         .retrieveCurrentUser()
-        .subscribe(
-          data => {
+        .subscribe({
+          next: (data) => {
             this.user = data;
+          },
+          complete: () => {
+            this.loaderService.hide();
+          }
         });
   }
 }

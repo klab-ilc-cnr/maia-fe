@@ -4,6 +4,7 @@ import { Table } from 'primeng/table';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-user-list',
@@ -17,14 +18,21 @@ export class UserListComponent implements OnInit {
   public roleOptions = Array<string>();
   public users = new Array<User>();
 
-  constructor(private router: Router,
-              private activeRoute: ActivatedRoute,
-              private userService: UserService) {
-  }
+  constructor(
+    private router: Router,
+    private loaderService: LoaderService,
+    private activeRoute: ActivatedRoute,
+    private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.findAll().subscribe(data => {
-      this.users = data;
+    this.loaderService.show();
+    this.userService.findAll().subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      complete: () => {
+        this.loaderService.hide();
+      }
     });
 
     this.roleOptions = Object.keys(Roles);

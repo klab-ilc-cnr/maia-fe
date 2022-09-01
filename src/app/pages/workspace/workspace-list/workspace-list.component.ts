@@ -1,3 +1,4 @@
+import { LoaderService } from 'src/app/services/loader.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkspaceChoice } from 'src/app/model/workspace-choice.model';
@@ -21,14 +22,21 @@ export class WorkspaceListComponent implements OnInit {
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
+    private loaderService: LoaderService,
     private workspaceService: WorkspaceService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    this.loaderService.show();
     this.workspaceService.retrieveWorkspaceChoiceList()
-      .subscribe((data: WorkspaceChoice[]) => {
-        this.workspaces = data;
+      .subscribe({
+        next: (data: WorkspaceChoice[]) => {
+          this.workspaces = data;
+        },
+        complete: () => {
+          this.loaderService.hide();
+        }
       });
   }
 
@@ -65,26 +73,35 @@ export class WorkspaceListComponent implements OnInit {
   saveWorkspace() {
     this.submitted = true;
 
+    this.loaderService.show();
     //EDIT
     if (this.workspace.name?.trim()) {
       if (this.workspace.id) {
-        this.workspaceService.updateWorkspace(this.workspace).subscribe(wsChoice => {
-        this.workspaces[this.findIndexById(wsChoice.id!)] = {...wsChoice};
-        this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace aggiornato', life: 3000 });
+        this.workspaceService.updateWorkspace(this.workspace).subscribe({
+          next: (wsChoice) => {
+            this.workspaces[this.findIndexById(wsChoice.id!)] = {...wsChoice};
+            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace aggiornato', life: 3000 });
+          },
+          complete: () => {
+            this.saveWorkspaceCompleted();
+          }
         })
       }
       //CREATE
       else {
         //this.workspace.id = this.createId();
-        this.workspaceService.createWorkspace(this.workspace).subscribe(wsChoice => {
-          this.workspace = wsChoice;
-          this.workspaces.push(this.workspace);
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace creato', life: 3000 });
+        this.workspaceService.createWorkspace(this.workspace).subscribe({
+          next: (wsChoice) => {
+            this.workspace = wsChoice;
+            this.workspaces.push(this.workspace);
+            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace creato', life: 3000 });
+          },
+          complete: () => {
+            this.saveWorkspaceCompleted();
+          }
         })
       }
 
-      this.workspaces = [...this.workspaces];
-      this.workspaceDialog = false;
       //this.workspace = new WorkspaceChoice();
     }
   }
@@ -99,13 +116,21 @@ export class WorkspaceListComponent implements OnInit {
       header: 'Conferma',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.workspaceService.deleteWorkspace(workspace.id).subscribe((data) => {
-          let indexOfDeleted = this.workspaces.findIndex(ws => ws.id === data);
-          this.workspaces.splice(indexOfDeleted, 1);
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace eliminato', life: 3000 });
+        this.workspaceService.deleteWorkspace(workspace.id).subscribe({
+          next: (data) => {
+            let indexOfDeleted = this.workspaces.findIndex(ws => ws.id === data);
+            this.workspaces.splice(indexOfDeleted, 1);
+            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace eliminato', life: 3000 });
+          }
         })
       }
     });
   }
 
+  private saveWorkspaceCompleted() {
+    this.workspaces = [...this.workspaces];
+    this.workspaceDialog = false;
+
+    this.loaderService.hide();
+  }
 }

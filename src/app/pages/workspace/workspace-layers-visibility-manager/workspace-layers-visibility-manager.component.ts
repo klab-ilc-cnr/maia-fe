@@ -1,3 +1,4 @@
+import { LoaderService } from 'src/app/services/loader.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Layer } from 'src/app/model/layer.model';
@@ -15,6 +16,7 @@ export class WorkspaceLayersVisibilityManagerComponent implements OnInit {
   selectedLayers: Layer[] | undefined;
 
   constructor(
+    private loaderService: LoaderService,
     private layerService: LayerService
   ) { }
 
@@ -42,6 +44,7 @@ export class WorkspaceLayersVisibilityManagerComponent implements OnInit {
   }
 
   private loadData() {
+    this.loaderService.show();
     this.layerService.retrieveLayers().subscribe({
       next: (layers) => {
         this.layers = layers;
@@ -49,6 +52,9 @@ export class WorkspaceLayersVisibilityManagerComponent implements OnInit {
         if (!this.selectedLayers) {
           this.selectedLayers = layers;
         }
+      },
+      complete: () => {
+        this.loaderService.hide();
       }
     })
   }

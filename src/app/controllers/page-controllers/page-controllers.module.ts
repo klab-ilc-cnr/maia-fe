@@ -12,7 +12,7 @@ import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [FooterComponent, HeaderComponent, SideMenuComponent, LoaderComponent],
-  exports: [FooterComponent, HeaderComponent, SideMenuComponent],
+  exports: [FooterComponent, HeaderComponent, SideMenuComponent, LoaderComponent],
   imports: [
     ButtonModule,
     CommonModule,

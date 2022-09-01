@@ -1,0 +1,62 @@
+// @import "../../../../assets/scss/variables";
+@import "src/assets/scss/_variables.scss";
+
+$color1: $ilcColorRed;
+$color2: $ilcColorGold;
+$color3: $ilcColorBlue;
+
+$animation-duration: 1.8s;
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 10px;
+  background: $ilcColorBlue;
+  border-radius: 5px;
+  animation: load $animation-duration ease-in-out infinite;
+  &:before, &:after {
+    position: absolute;
+    display: block;
+    content: "";
+    animation: load $animation-duration ease-in-out infinite;
+    height: 10px;
+    border-radius: 5px;
+  }
+    &:before {
+    top: -20px;
+    left: 10px;
+    width: 40px;
+    background: $ilcColorRed;
+  }
+  &:after {
+    bottom: -20px;
+    width: 35px;
+    background: $ilcColorGold;
+  }
+}
+
+@keyframes load {
+  0% {
+    transform: translateX(40px);
+  }
+
+  50% {
+    transform: translateX(-30px);
+  }
+  100% {
+    transform: translateX(40px);
+  }
+}
+
+.bg-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1060;
+  width: 100vw;
+  height: 100vh;
+  background-color: $backgroundOverlayColor;
+}

@@ -23,6 +23,7 @@ import { Workspace } from 'src/app/model/workspace.model';
 import { MessageService } from 'primeng/api';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { Layer } from 'src/app/model/layer.model';
+import { LoaderService } from 'src/app/services/loader.service';
 // import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
 
 //var currentWorkspaceInstance: any;
@@ -92,6 +93,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
+    private loaderService: LoaderService,
     private layerService: LayerService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
@@ -136,36 +138,46 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       } */
     ];
 
-    this.activeRoute.paramMap.subscribe(params => {
+    this.activeRoute.paramMap.subscribe({
+      next: (params) => {
+        this.workspaceId = params.get('id') ?? undefined;
 
-      this.workspaceId = params.get('id') ?? undefined;
-
-      if (!this.workspaceId) {
-        this.router.navigate(['workspaces']);
-        return;
-      }
-
-      this.layerService.retrieveLayers().subscribe({
-        next: (layers: Layer[]) =>{
-          this.visibleLayers = layers;
-        },
-        complete: () => {
-          if (this.workspaceId === this.newId) {
-            this.newWorkspace = true;
-            return;
-          }
-
-          if (this.workspaceId != null && this.workspaceId != undefined) {
-            this.newWorkspace = false;
-            this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).subscribe(data => {
-              console.log(data)
-              data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
-              this.restoreTiles(data);
-            });
-            return;
-          }
+        if (!this.workspaceId) {
+          this.router.navigate(['workspaces']);
+          return;
         }
+
+        this.loaderService.show();
+        this.layerService.retrieveLayers().subscribe({
+          next: (layers: Layer[]) =>{
+            this.visibleLayers = layers;
+          },
+          complete: () => {
+            this.loaderService.hide();
+
+            if (this.workspaceId === this.newId) {
+              this.newWorkspace = true;
+              return;
+            }
+
+            if (this.workspaceId != null && this.workspaceId != undefined) {
+              this.newWorkspace = false;
+              this.loaderService.show();
+              this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).subscribe({
+                next: (data) => {
+                  console.log(data)
+                  data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
+                  this.restoreTiles(data);
+                },
+                complete: () => {
+                  this.loaderService.hide();
+                }
+              });
+              return;
+            }
+          }
       })
+      }
     });
 
     jsPanel.extend({
@@ -173,12 +185,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       textTileMap: new Map<number, Tile<TextTileContent>>(),
       tileMap: new Map<number, Tile<any>>(),
       componentsList: new Array<any>(),
+      // addToPanelsMap: function () {
+      //   currentWorkspaceInstance.openPanels.set(this.id, this);
 
-      /*       addToPanelsMap: function () {
-              currentWorkspaceInstance.openPanels.set(this.id, this);
-
-              return this;
-            }, */
+      //   return this;
+      // },
       addToTileMap: function (tile: Tile<any>) {
         console.log(tile)
         switch (tile.type as TileType) {
@@ -263,11 +274,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         switch (tile.type as TileType) {
           case TileType.TEXT:
             let el = document.createElement('p');
-            workspaceComponent.workspaceService.retrieveText(tile.content?.id!).subscribe(data => {
-              el.textContent = data.text ?? '';
-              this.content.append(el);
+            this.loaderService.show();
+            workspaceComponent.workspaceService.retrieveText(tile.content?.id!).subscribe({
+              next: (data) => {
+                el.textContent = data.text ?? '';
+                this.content.append(el);
 
-              this.addToTileMap(tile);
+                this.addToTileMap(tile);
+              },
+              complete: () => {
+                this.loaderService.hide();
+              }
             })
             break;
           default:
@@ -433,10 +450,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     //.addToPanelsMap();
 
-    /*     textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
-          currentWorkspaceInstance.openPanels.delete(panel.id);
-          this.deleteTileContent(panel.id, TileType.TEXT);
-        }); */
+    // textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
+    //   currentWorkspaceInstance.openPanels.delete(panel.id);
+    //   this.deleteTileContent(panel.id, TileType.TEXT);
+    // });
 
     // let tileObject: Tile<TextTileContent> =
     // {
@@ -474,10 +491,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     let textTileElement = jsPanel.create(textTileConfig);
     //.addToPanelsMap();
 
-    /*     textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
-          currentWorkspaceInstance.openPanels.delete(panel.id);
-          this.deleteTileContent(panel.id, TileType.TEXT);
-        }); */
+    // textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
+    //   currentWorkspaceInstance.openPanels.delete(panel.id);
+    //   this.deleteTileContent(panel.id, TileType.TEXT);
+    // });
 
     let tileObject: Tile<TextTileContent> =
     {
@@ -541,11 +558,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   retrieveTextList(): TextChoice[] {
     var textList: Array<TextChoice> = [];
 
-    this.workspaceService.retrieveTextChoiceList().subscribe(data => {
-      //data.forEach(el => textList.push({title:el.title, status:el.status, createdBy: el.createdBy, updatedOn:el.updatedOn}))
-      //textList=data;
-      //textList = JSON.parse(JSON.stringify(data));
-      data.forEach(el => textList.push(el))
+    this.loaderService.show();
+    this.workspaceService.retrieveTextChoiceList().subscribe({
+      next: (data) => {
+        //data.forEach(el => textList.push({title:el.title, status:el.status, createdBy: el.createdBy, updatedOn:el.updatedOn}))
+        //textList=data;
+        //textList = JSON.parse(JSON.stringify(data));
+        data.forEach(el => textList.push(el))
+      },
+      complete: () => {
+        this.loaderService.hide();
+      }
     });
 
     return textList;
@@ -564,19 +587,23 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //this.storedTiles = new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
 
     let openTiles = jsPanel.extensions.getTileMap();
+    this.loaderService.show();
     this.workspaceService
       .saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles)
       .subscribe({
         next: () => {
           this.workSaved = true;
           this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
+        },
+        complete: () => {
+          this.loaderService.hide();
         }
       });
 
     // close panels, here we simply close all panels in the document
-    /*     for (const panel of jsPanel.getPanels()) {
-          panel.close();
-        } */
+    // for (const panel of jsPanel.getPanels()) {
+    //   panel.close();
+    // }
 
     // for demo purpose only log stored data to the console
     // or use your browser's dev tools to inspect localStorage

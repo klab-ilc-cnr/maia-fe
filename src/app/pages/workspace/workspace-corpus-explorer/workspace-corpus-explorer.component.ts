@@ -1,4 +1,4 @@
-import { MessageConfigurationService } from './../../../services/message-configuration.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { ContextMenu } from 'primeng/contextmenu';
 import { DocumentElement } from 'src/app/model/corpus/document-element';
 import { ElementType } from 'src/app/model/corpus/element-type';
@@ -9,6 +9,8 @@ import { NgForm } from '@angular/forms';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import Swal from 'sweetalert2';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { LoaderService } from 'src/app/services/loader.service';
+import { Roles } from 'src/app/model/roles';
 
 declare var $: any;
 
@@ -58,7 +60,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   private clickCount = 0;
 
   public get shouldDeleteBeDisplayed(): boolean {
-    return this.loggedUserService.currentUser?.role == "AMMINISTRATORE";
+    return this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE;
   };
 
   public get shouldRMBeDisabled(): boolean {
@@ -116,6 +118,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   constructor(
     private loggedUserService : LoggedUserService,
     private workspaceService: WorkspaceService,
+    private loaderService: LoaderService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService
   ) { }
@@ -173,10 +176,11 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     let element_id = this.addFolderForm.form.value.folderToAdd.data?.['element-id'];
     let name = this.addFolderForm.form.value.nfName;
 
+    this.loaderService.show();
     this.workspaceService.addFolder(element_id).subscribe({
       next: (result) => {
         if (result['response-status'] == 0) {
-          let newId = result.node['element-id']
+          let newId = result.node['element-id'];
 
           this.workspaceService.renameElement(newId, name, ElementType.Directory).subscribe({
             next: (result) => {
@@ -186,45 +190,46 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
               else {
                 this.workspaceService.removeElement(newId, ElementType.Directory).subscribe({
                   next: (result) => {
-                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
                   },
                   error: () => {
-                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
                   }
                 })
               }
             },
             error: () => {
-              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
+              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
             },
             complete: () => {
-              $('#addFolderModal').modal('hide')
+              $('#addFolderModal').modal('hide');
+              this.loaderService.hide();
 
               this.updateDocumentSystem();
             }
           })
         }
         else if (result['response-status'] == 1) {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
-          $('#addFolderModal').modal('hide')
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
+          $('#addFolderModal').modal('hide');
         }
         else {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
-          $('#addFolderModal').modal('hide')
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
+          $('#addFolderModal').modal('hide');
         }
       },
       error: (err) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''))
-        $('#addFolderModal').modal('hide')
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
+        $('#addFolderModal').modal('hide');
       },
       complete: () => {
-        $('#addFolderModal').modal('hide')
+        $('#addFolderModal').modal('hide');
 
         this.updateDocumentSystem();
       }
     })
 
-    $('#addFolderModal').modal('hide')
+    $('#addFolderModal').modal('hide');
   }
 
   onSubmitFileUploaderModal(): void {
@@ -233,148 +238,156 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     }
 
     if (this.fileUploaded && this.selectedFolderNode) {
-      let element_id = this.fileUploaderForm.form.value.folderToUpload.data["element-id"]
-      let name = this.fileUploaded.name
-      let folderName = this.fileUploaderForm.form.value.folderToUpload.data.name
+      let element_id = this.fileUploaderForm.form.value.folderToUpload.data["element-id"];
+      let name = this.fileUploaded.name;
+      let folderName = this.fileUploaderForm.form.value.folderToUpload.data.name;
 
-      let errorMsg = 'Errore nel caricare il file \'' + name + '\' in \'' + folderName + '\''
-      let successMsg = 'File \'' + name + '\' caricato con successo in \'' + folderName + '\''
+      let errorMsg = 'Errore nel caricare il file \'' + name + '\' in \'' + folderName + '\'';
+      let successMsg = 'File \'' + name + '\' caricato con successo in \'' + folderName + '\'';
 
+      this.loaderService.show();
       this.workspaceService.uploadFile(element_id, this.fileUploaded).subscribe({
         next: (result) => {
           if (result['response-status'] == 0) {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
           else if (result['response-status'] == 1) {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
           }
           else {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           }
         },
         error: () => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
         },
         complete: () => {
+          this.loaderService.hide();
+
           this.updateDocumentSystem();
         }
       })
     }
     else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di caricamento file"))
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di caricamento file"));
     }
 
-    $('#uploadFileModal').modal('hide')
+    $('#uploadFileModal').modal('hide');
   }
 
   onSubmitMoveModal(): void {
     if (this.moveForm.invalid) {
       this.moveForm.form.markAllAsTouched();
-      return ;
+      return;
     }
 
     if (this.selectedDocument && this.selectedDocument.data) {
-      let element_id = this.selectedDocument.data['element-id']
-      let name = this.selectedDocument.data.name
-      let newParentName = this.moveForm.form.value.folderToMoveIn.data.name
-      let target_id = this.moveForm.form.value.folderToMoveIn.data["element-id"]
-      let type = this.selectedDocument.data.type
+      let element_id = this.selectedDocument.data['element-id'];
+      let name = this.selectedDocument.data.name;
+      let newParentName = this.moveForm.form.value.folderToMoveIn.data.name;
+      let target_id = this.moveForm.form.value.folderToMoveIn.data["element-id"];
+      let type = this.selectedDocument.data.type;
 
-      let errorMsg = 'Errore nello spostare la cartella \'' + name + '\' in \'' + newParentName + '\''
-      let successMsg = 'Cartella \'' + name + '\' spostata con successo'
+      let errorMsg = 'Errore nello spostare la cartella \'' + name + '\' in \'' + newParentName + '\'';
+      let successMsg = 'Cartella \'' + name + '\' spostata con successo';
 
       if (type == ElementType.File) {
-        errorMsg = 'Errore nello spostare il file \'' + name + '\' in \'' + newParentName + '\''
-        successMsg = 'File \'' + name + '\' spostato con successo'
+        errorMsg = 'Errore nello spostare il file \'' + name + '\' in \'' + newParentName + '\'';
+        successMsg = 'File \'' + name + '\' spostato con successo';
       }
 
+      this.loaderService.show();
       this.workspaceService.moveElement(element_id, target_id, type).subscribe({
         next: (result) => {
           if (result.responseStatus == 0) {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
           else if (result.responseStatus == 1) {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
           }
           else {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           }
         },
         error: () => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
         },
         complete: () => {
+          this.loaderService.hide();
+
           this.updateDocumentSystem();
         }
       })
     }
     else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di spostamento"))
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di spostamento"));
     }
 
-    $('#moveModal').modal('hide')
+    $('#moveModal').modal('hide');
   }
 
   onSubmitRenameModal(): void {
     if (this.renameForm.invalid) {
       this.renameForm.form.markAllAsTouched();
-      return ;
+      return;
     }
 
     if (this.selectedDocument && this.selectedDocument.data) {
-      let element_id = this.selectedDocument.data['element-id']
-      let newName = this.renameForm.form.value.newElementName
-      let oldName = this.selectedDocument.data.name
-      let type = this.selectedDocument.data.type
+      let element_id = this.selectedDocument.data['element-id'];
+      let newName = this.renameForm.form.value.newElementName;
+      let oldName = this.selectedDocument.data.name;
+      let type = this.selectedDocument.data.type;
 
-      let errorMsg = 'Errore nel rinominare la cartella \'' + oldName + '\' in \'' + newName + '\''
-      let successMsg = 'Cartella \'' + newName + '\' rinominata con successo'
+      let errorMsg = 'Errore nel rinominare la cartella \'' + oldName + '\' in \'' + newName + '\'';
+      let successMsg = 'Cartella \'' + newName + '\' rinominata con successo';
 
       if (type == ElementType.File) {
-        errorMsg = 'Errore nel rinominare il file \'' + oldName + '\' in \'' + newName + '\''
-        successMsg = 'File \'' + newName + '\' rinominato con successo'
+        errorMsg = 'Errore nel rinominare il file \'' + oldName + '\' in \'' + newName + '\'';
+        successMsg = 'File \'' + newName + '\' rinominato con successo';
       }
 
+      this.loaderService.show();
       this.workspaceService.renameElement(element_id, newName, type).subscribe({
         next: (result) => {
           if (result.responseStatus == 0) {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
           else if (result.responseStatus == 1) {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
           }
           else {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           }
         },
         error: () => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg))
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
         },
         complete: () => {
+          this.loaderService.hide();
           this.updateDocumentSystem();
         }
       })
     }
     else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di rinominazione"))
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di rinominazione"));
     }
 
-    $('#renameModal').modal('hide')
+    $('#renameModal').modal('hide');
   }
 
   onTreeContextMenuSelect(event: any, cm: ContextMenu): void {
-    this.generateContextMenu(event.node)
+    this.generateContextMenu(event.node);
   }
 
   reload(): void {
-    this.updateDocumentSystem()
+    this.updateDocumentSystem();
   }
 
   showAddFolderModal(): void {
     this.resetAddFolderForm();
 
     if (this.selectedDocument && this.selectedDocument.data?.type == ElementType.Directory) {
-      var node = this.searchNodeByElementId(this.foldersAvailableToAddFolder, this.selectedDocument)
+      var node = this.searchNodeByElementId(this.foldersAvailableToAddFolder, this.selectedDocument);
 
       if (node) {
         this.selectedFolderNode = node;
@@ -386,14 +399,14 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   showDeleteModal(): void {
     if (this.selectedDocument && this.selectedDocument.data) {
-      let element_id = this.selectedDocument.data['element-id']
-      let name = this.selectedDocument.data.name || ""
-      let type = this.selectedDocument.data.type
+      let element_id = this.selectedDocument.data['element-id'];
+      let name = this.selectedDocument.data.name || "";
+      let type = this.selectedDocument.data.type;
 
-      let confirmMsg = 'Stai per cancellare la cartella \'' + name + '\''
+      let confirmMsg = 'Stai per cancellare la cartella \'' + name + '\'';
 
       if (type == ElementType.File) {
-        confirmMsg = 'Stai per cancellare il file \'' + name + '\''
+        confirmMsg = 'Stai per cancellare il file \'' + name + '\'';
       }
 
       this.popupDeleteItem.confirmMessage = confirmMsg;
@@ -409,10 +422,10 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
     if (this.selectedDocument) {
       if (this.selectedDocument.data?.type == ElementType.Directory){
-        this.foldersAvailableToMoveElementIn = this.foldersAvailableToAddFolder
+        this.foldersAvailableToMoveElementIn = this.foldersAvailableToAddFolder;
       }
       else {
-        this.foldersAvailableToMoveElementIn = this.foldersAvailableToFileUpload
+        this.foldersAvailableToMoveElementIn = this.foldersAvailableToFileUpload;
       }
     }
 
@@ -433,7 +446,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.resetFileUploaderForm();
 
     if (this.selectedDocument && this.selectedDocument.data?.type == ElementType.Directory) {
-      var node = this.searchNodeByElementId(this.foldersAvailableToFileUpload, this.selectedDocument)
+      var node = this.searchNodeByElementId(this.foldersAvailableToFileUpload, this.selectedDocument);
 
       if (node) {
         this.selectedFolderNode = node;
@@ -457,20 +470,20 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     var node: TreeNode<DocumentElement> = {};
 
     if (doc.children) {
-      node.children =  this.documentsToTreeNodes(doc.children)
+      node.children =  this.documentsToTreeNodes(doc.children);
     }
 
     if (doc.type == ElementType.Directory) {
-      node.expandedIcon = "pi pi-folder-open"
-      node.collapsedIcon = "pi pi-folder"
+      node.expandedIcon = "pi pi-folder-open";
+      node.collapsedIcon = "pi pi-folder";
     }
     else if (doc.type == ElementType.File) {
-      node.icon = "pi pi-file"
-      node.leaf = true
+      node.icon = "pi pi-file";
+      node.leaf = true;
     }
 
-    node.label = doc.name
-    node.data = doc
+    node.label = doc.name;
+    node.data = doc;
 
     return node;
   }
@@ -485,7 +498,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     }
 
     if (node.data.name == "Corpus") {
-      this.items = [menuAddFolder]
+      this.items = [menuAddFolder];
       return;
     }
 
@@ -514,10 +527,10 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       }
     }
 
-    cmItems.unshift(menuRename)
+    cmItems.unshift(menuRename);
 
     if (node.data.type == ElementType.Directory) {
-      cmItems.unshift(menuAddFolder)
+      cmItems.unshift(menuAddFolder);
     }
 
     this.items = cmItems;
@@ -528,7 +541,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
     docs.forEach((obj) => {
       if (obj.data.type != ElementType.File) {
-        obj.children = this.omitFiles(obj.children)
+        obj.children = this.omitFiles(obj.children);
         dataParsed.push(obj);
       }
     })
@@ -610,6 +623,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   private updateDocumentSystem() {
     this.loading = true;
+    this.loaderService.show();
 
     this.workspaceService.retrieveCorpus().subscribe({
       next: (data) => {
@@ -625,9 +639,9 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           }
 
           let fileTree = [];
-          fileTree.push(rootNode)
+          fileTree.push(rootNode);
 
-          this.files = this.documentsToTreeNodes(fileTree)
+          this.files = this.documentsToTreeNodes(fileTree);
 
           if (this.files.length > 0) {
             this.files[0].expanded = true;
@@ -638,17 +652,18 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           var filesDeepCopy = JSON.parse(JSON.stringify(this.files))
 
           var docSystemWithoutFiles = this.omitFiles(filesDeepCopy);
-          this.foldersAvailableToAddFolder = JSON.parse(JSON.stringify(docSystemWithoutFiles))
+          this.foldersAvailableToAddFolder = JSON.parse(JSON.stringify(docSystemWithoutFiles));
 
           if (docSystemWithoutFiles.length > 0) {
             docSystemWithoutFiles[0].selectable = false;
           }
 
-          this.foldersAvailableToFileUpload = docSystemWithoutFiles
+          this.foldersAvailableToFileUpload = docSystemWithoutFiles;
         }
       },
       complete: () => {
-        this.tree.resetFilter()
+        this.tree.resetFilter();
+        this.loaderService.hide();
         this.loading = false;
       }
     })
