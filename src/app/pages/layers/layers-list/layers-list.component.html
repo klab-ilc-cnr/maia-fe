@@ -58,7 +58,6 @@
     </div>
 </div>
 
-
 <p-dialog [(visible)]="layerDialog" [style]="{width: '450px'}" header="Dettagli layer" [modal]="true"
     styleClass="p-fluid">
     <ng-template pTemplate="content">
@@ -88,4 +87,4 @@
     </ng-template>
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '450px'}" acceptLabel="Si" rejectLabel="No"></p-confirmDialog>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

@@ -1,11 +1,14 @@
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { LoaderService } from 'src/app/services/loader.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { Table } from 'primeng/table';
 import { Layer } from 'src/app/model/layer.model';
 import { LayerService } from 'src/app/services/layer.service';
+import Swal from 'sweetalert2';
+import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
   selector: 'app-layers-list',
@@ -13,6 +16,26 @@ import { LayerService } from 'src/app/services/layer.service';
   styleUrls: ['./layers-list.component.scss']
 })
 export class LayersListComponent implements OnInit {
+  private delete = (id: number, name: string): void => {
+    this.showOperationInProgress('Sto cancellando');
+
+    let errorMsg = 'Errore nell\'eliminare il layer \'' + name + '\'';
+    let successMsg = 'Layer \'' + name + '\' eliminato con successo';
+
+    this.layerService
+        .deleteLayer(id)
+        .subscribe({
+          next: (result) => {
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+            Swal.close();
+            this.loadData();
+          },
+          error: () => {
+            this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
+          }
+        })
+  }
+
   layers: Layer[] = [];
 
   layer: Layer = new Layer();
@@ -20,25 +43,23 @@ export class LayersListComponent implements OnInit {
   layerDialog: boolean = false;
   submitted: boolean = false;
 
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
+
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
     private loaderService: LoaderService,
     private layerService: LayerService,
     private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
-    this.loaderService.show();
-    this.layerService.retrieveLayers()
-      .subscribe({
-        next: (data: Layer[]) => {
-          this.layers = data;
-        },
-        complete: () => {
-          this.loaderService.hide();
-        }
-      });
+    this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
   }
 
   openNew() {
@@ -101,29 +122,25 @@ export class LayersListComponent implements OnInit {
   }
 
   deleteLayer(layer: Layer) {
-    this.confirmationService.confirm({
-      message: 'Sei sicuro di voler eliminare il layer',
-      header: 'Conferma',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.loaderService.show();
+    let confirmMsg = 'Stai per cancellare il layer \'' + layer.name + '\'';
 
-        this.layerService.deleteLayer(layer.id).subscribe({
-          next: (data) => {
-            let indexOfDeleted = this.layers.findIndex(l => l.id === data);
-            this.layers.splice(indexOfDeleted, 1);
-            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer eliminato', life: 3000 });
-          },
-          complete: () => {
-            this.loaderService.hide();
-          }
-        })
-      }
-    });
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() => this.delete(layer.id!, (layer.name || "")), layer.id, layer.name);
   }
 
   viewLayerFeatures(layer: Layer) {
     this.router.navigate([layer.id], { relativeTo: this.activeRoute });
+  }
+
+  private loadData() {
+    this.loaderService.show();
+    this.layerService.retrieveLayers()
+      .subscribe({
+        next: (data: Layer[]) => {
+          this.layers = data;
+          this.loaderService.hide();
+        }
+      });
   }
 
   private saveLayerCompleted() {
@@ -131,5 +148,26 @@ export class LayersListComponent implements OnInit {
 
     this.layers = [...this.layers];
     this.layerDialog = false;
+  }
+
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: 'warning',
+      titleText: message,
+      text: 'per favore attendere',
+      customClass: {
+        container: 'swal2-container'
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
   }
 }
