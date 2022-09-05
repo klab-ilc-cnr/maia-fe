@@ -46,7 +46,6 @@ import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-w
 import { AnnotationEditorComponent } from './controllers/editors/annotation-editor/annotation-editor.component';
 import { LayersListComponent } from './pages/layers/layers-list/layers-list.component';
 import { LayersViewComponent } from './pages/layers/layers-view/layers-view.component';
-import { FeaturesListComponent } from './pages/layers/features/features-list/features-list.component';
 import { WorkspaceLayersVisibilityManagerComponent } from './pages/workspace/workspace-layers-visibility-manager/workspace-layers-visibility-manager.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TagsetsListComponent } from './pages/tagsets/tagsets-list/tagsets-list.component';
@@ -70,7 +69,6 @@ import { TagsetValueNotDuplicateNameDirective } from './validators/tagset-value-
     AnnotationEditorComponent,
     LayersListComponent,
     LayersViewComponent,
-    FeaturesListComponent,
     WorkspaceLayersVisibilityManagerComponent,
     TagsetsListComponent,
     TagsetCreateEditComponent,

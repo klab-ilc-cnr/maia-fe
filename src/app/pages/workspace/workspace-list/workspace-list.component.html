@@ -5,7 +5,7 @@
         <div class="card">
             <div class="page-header">
                 <h5>Workspace</h5>
-                <p-button label="Nuovo workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="openNew()"
+                <p-button label="Nuovo workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"
                     class="ms-start"></p-button>
             </div>
             <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
@@ -31,13 +31,13 @@
                         <td>{{workspace.updated | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
                         <td>
                             <button pButton pRipple icon="pi pi-desktop"
-                                class="p-button-rounded p-mr-2 mx-2"
+                                class="p-button-rounded mx-2"
                                 (click)="goToWorkspace(workspace.id)"></button>
                             <button pButton pRipple icon="pi pi-pencil"
-                                class="p-button-rounded p-button-success p-mr-2 mx-2"
-                                (click)="editWorkspace(workspace)"></button>
-                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mx-2"
-                                (click)="deleteSelectedWorkspace(workspace)"></button>
+                                class="p-button-rounded p-button-success mx-2"
+                                (click)="showEditWorkspaceModal(workspace)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+                                (click)="showDeleteWorkspaceModal(workspace)"></button>
                         </td>
                     </tr>
                 </ng-template>
@@ -51,8 +51,70 @@
     </div>
 </div>
 
+<div
+  class="modal fade"
+  id="workspaceModal"
+  tabindex="-1"
+  aria-labelledby="workspaceModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitWorkspaceModal(workspaceForm)"
+        #workspaceForm="ngForm"
+        id="workspaceForm"
+        class="validated"
+      >
+        <input type="hidden" #id="ngModel" name="id" [(ngModel)]="workspace.id">
+        <div class="modal-header">
+          <h5 class="modal-title" id="workspaceModalLabel">{{workspaceModalTitle}}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nome *</label>
+            <div class="p-fluid">
+              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="workspace.name"
+                required autofocus maxlength="300" placeholder="Nome workspace">
+              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                <div *ngIf="name.errors?.['required']">
+                  Il nome è obbligatorio
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Note</label>
+            <div class="p-fluid">
+              <textarea rows="3" #note="ngModel" type="text" name="note" class="form-control" [(ngModel)]="workspace.note"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annulla
+          </button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitWorkspaceModal(workspaceForm)">
+            <span *ngIf="isEditing; else elseBlock">
+              Aggiorna
+            </span>
+            <ng-template #elseBlock>
+              <span>Aggiungi</span>
+            </ng-template>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-<p-dialog [(visible)]="workspaceDialog" [style]="{width: '450px'}" header="Dettagli workspce" [modal]="true"
+<!-- <p-dialog [(visible)]="workspaceDialog" [style]="{width: '450px'}" header="Dettagli workspce" [modal]="true"
     styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="form-group">
@@ -74,6 +136,6 @@
         <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text"
             (click)="saveWorkspace()"></button>
     </ng-template>
-</p-dialog>
+</p-dialog> -->
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

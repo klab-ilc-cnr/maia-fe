@@ -509,6 +509,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     let storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
     console.log('restored layout', storedData, storedTiles, workspaceStatus);
 
+    if (storedTiles.length == 0) {
+      return;
+    }
+
     const tilesConfigs: any = {};
 
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
