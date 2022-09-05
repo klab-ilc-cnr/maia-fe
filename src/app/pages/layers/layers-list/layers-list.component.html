@@ -3,7 +3,7 @@
         <div class="card">
             <div class="page-header">
                 <h5>Gestore layer</h5>
-                <p-button label="Nuovo layer" icon="fa-solid fa-layer-group" styleClass="p-button-danger" (click)="openNew()"
+                <p-button label="Nuovo layer" icon="fa-solid fa-layer-group" styleClass="p-button-danger" (click)="showLayerModal()"
                     class="ms-start"></p-button>
             </div>
             <div class="card-body p-fluid">
@@ -39,11 +39,11 @@
                           <td>
                               <button pButton pRipple icon="pi pi-pencil"
                                   class="p-button-rounded p-button-success p-mr-2 mx-2"
-                                  (click)="editLayer(layer)"></button>
+                                  (click)="showEditLayerModal(layer)"></button>
                               <button pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
                                   (click)="viewLayerFeatures(layer)"></button>
                               <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
-                                  (click)="deleteLayer(layer)"></button>
+                                  (click)="showDeleteLayerModal(layer)"></button>
                           </td>
                       </tr>
                   </ng-template>
@@ -58,7 +58,81 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="layerDialog" [style]="{width: '450px'}" header="Dettagli layer" [modal]="true"
+<div
+  class="modal fade"
+  id="layerModal"
+  tabindex="-1"
+  aria-labelledby="layerModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitLayerModal(layerForm)"
+        #layerForm="ngForm"
+        id="layerForm"
+        class="validated"
+      >
+        <input type="hidden" #id="ngModel" name="id" [(ngModel)]="layer.id">
+        <div class="modal-header">
+          <h5 class="modal-title" id="layerModalLabel">{{layerModalTitle}}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nome *</label>
+            <div class="p-fluid">
+              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="layer.name"
+                required autofocus maxlength="300" placeholder="Nome layer">
+              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                <div *ngIf="name.errors?.['required']">
+                  Il nome è obbligatorio
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Colore *</label>
+            <div class="p-fluid">
+              <p-colorPicker #color="ngModel" name="color" class="nopacity" [(ngModel)]="layer.color" required></p-colorPicker>
+              <div *ngIf="color.invalid && (color.touched || color.dirty)" class="invalid-feedback">
+                <div *ngIf="color.errors?.['required']">
+                  Il colore è obbligatorio
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrizione</label>
+            <div class="p-fluid">
+              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="layer.description"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annulla
+          </button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitLayerModal(layerForm)">
+            <span *ngIf="isEditing; else elseBlock">
+              Aggiorna
+            </span>
+            <ng-template #elseBlock>
+              <span>Aggiungi</span>
+            </ng-template>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- <p-dialog [(visible)]="layerDialog" [style]="{width: '450px'}" header="Dettagli layer" [modal]="true"
     styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="form-group">
@@ -85,6 +159,6 @@
             (click)="hideDialog()"></button>
         <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text" (click)="saveLayer()"></button>
     </ng-template>
-</p-dialog>
+</p-dialog> -->
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

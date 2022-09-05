@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { Table } from 'primeng/table';
-import { Layer } from 'src/app/model/layer.model';
+import { Layer } from 'src/app/model/layer/layer.model';
 import { LayerService } from 'src/app/services/layer.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-layers-list',
@@ -36,13 +37,26 @@ export class LayersListComponent implements OnInit {
         })
   }
 
-  layers: Layer[] = [];
+  public get layerModalTitle(): string {
+    if (((!this.layerForm) || (!this.layerForm.value)) || (!this.layerForm.value.name)) {
+      return "Nuovo layer";
+    }
+
+    return this.layerForm.value.name;
+  }
+
+  public get isEditing(): boolean {
+    if (this.layer && this.layer.id) {
+      return true;
+    }
+
+    return false;
+  }
 
   layer: Layer = new Layer();
+  layers: Layer[] = [];
 
-  layerDialog: boolean = false;
-  submitted: boolean = false;
-
+  @ViewChild(NgForm) public layerForm!: NgForm;
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   constructor(
@@ -62,74 +76,40 @@ export class LayersListComponent implements OnInit {
     Swal.close();
   }
 
-  openNew() {
-    this.layer = new Layer();
-    this.submitted = false;
-    this.layerDialog = true;
-  }
-
-  editLayer(layer: Layer) {
-    this.layer = { ...layer };
-    this.layerDialog = true;
-  }
-
-  hideDialog() {
-    this.layerDialog = false;
-    this.submitted = false;
-  }
-
-  saveLayer() {
-    this.submitted = true;
-
-    //bug colorpicker required fix
-    if(this.layer.color === undefined
-      || this.layer.color === null
-      || this.layer.color.trim().length <= 0 )
-      {
-        return;
-      }
-
-    this.loaderService.show();
-
-    //EDIT
-    if (this.layer.name?.trim()) {
-      if (this.layer.id) {
-        this.layerService.updateLayer(this.layer).subscribe({
-          next: (layer) => {
-            this.layers[this.findIndexById(layer.id!)] = { ...layer };
-            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer aggiornato', life: 3000 });
-            this.saveLayerCompleted();
-          }
-        })
-      }
-      //CREATE
-      else {
-        this.layerService.createLayer(this.layer).subscribe({
-          next: (layer) => {
-            this.layer = layer;
-            this.layers.push(this.layer);
-            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer creato', life: 3000 });
-            this.viewLayerFeatures(layer);
-            this.saveLayerCompleted();
-          }
-        })
-      }
+  onSubmitLayerModal(form: NgForm): void {
+    if (this.layerForm.invalid) {
+      return this.saveWithFormErrors();
     }
+
+    this.save();
   }
 
-  findIndexById(id: number): number {
-    return this.layers.findIndex(l => l.id === this.layer.id)
-  }
-
-  deleteLayer(layer: Layer) {
+  showDeleteLayerModal(layer: Layer) {
     let confirmMsg = 'Stai per cancellare il layer \'' + layer.name + '\'';
 
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.delete(layer.id!, (layer.name || "")), layer.id, layer.name);
   }
 
+  showEditLayerModal(layer: Layer) {
+    this.resetForm();
+    this.layer = JSON.parse(JSON.stringify(layer));
+
+    $('#layerModal').modal('show');
+  }
+
+  showLayerModal() {
+    this.resetForm();
+
+    $('#layerModal').modal('show');
+  }
+
   viewLayerFeatures(layer: Layer) {
     this.router.navigate([layer.id], { relativeTo: this.activeRoute });
+  }
+
+  private findIndexById(id: number): number {
+    return this.layers.findIndex(l => l.id === this.layer.id)
   }
 
   private loadData() {
@@ -143,11 +123,89 @@ export class LayersListComponent implements OnInit {
       });
   }
 
-  private saveLayerCompleted() {
-    this.loaderService.hide();
+  private resetForm() {
+    this.layer = new Layer();
+    this.layerForm.form.markAsUntouched();
+    this.layerForm.form.markAsPristine();
+  }
 
+  private save(): void {
+    if (!this.layer) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
+      return;
+    }
+
+    //bug colorpicker required fix
+    if(this.layer.color === undefined
+      || this.layer.color === null
+      || this.layer.color.trim().length <= 0 )
+      {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
+        return;
+      }
+
+    let msgSuccess = "Operazione effettuata con successo";
+
+    this.loaderService.show();
+
+    if (this.isEditing && this.layer.name?.trim() && this.layer.id) {
+      msgSuccess = "Layer modificato con successo";
+
+      this.layerService
+        .updateLayer(this.layer)
+        .subscribe({
+          next: (layer) => {
+            $('#layerModal').modal('hide');
+
+            this.layers[this.findIndexById(layer.id!)] = { ...layer }; // NON SERVE PIU' SECONDO ME
+
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+            this.loaderService.hide();
+            this.saveLayerCompleted();
+            this.loadData();
+          },
+          error: (err: string) => {
+            $('#layerModal').modal('hide');
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+            this.loaderService.hide();
+            this.saveLayerCompleted();
+          }
+        });
+    }
+    else {
+      msgSuccess = "Layer creato con successo";
+
+      this.layerService
+        .createLayer(this.layer)
+        .subscribe({
+          next: (layer) => {
+            $('#layerModal').modal('hide');
+
+            this.layer = layer; // NON SERVE PIU' SECONDO ME
+            this.layers.push(this.layer); // NON SERVE PIU' SECONDO ME
+
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+            this.loaderService.hide();
+            this.saveLayerCompleted();
+
+            this.viewLayerFeatures(layer);
+          },
+          error: (err: string) => {
+            $('#layerModal').modal('hide');
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+            this.loaderService.hide();
+            this.saveLayerCompleted();
+          }
+        });
+    }
+  }
+
+  private saveWithFormErrors(): void {
+    this.layerForm.form.markAllAsTouched();
+  }
+
+  private saveLayerCompleted() {
     this.layers = [...this.layers];
-    this.layerDialog = false;
   }
 
   private showOperationFailed(errorMessage: string): void {
