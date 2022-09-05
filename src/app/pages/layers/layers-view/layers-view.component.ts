@@ -5,11 +5,11 @@ import { MessageService, SelectItem } from 'primeng/api';
 import { LayerService } from 'src/app/services/layer.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Layer } from 'src/app/model/layer/layer.model';
-import { Feature } from 'src/app/model/feature/feature';
+import { Layer } from 'src/app/models/layer/layer.model';
+import { Feature } from 'src/app/models/feature/feature';
 import { NgForm } from '@angular/forms';
-import { FeatureType } from 'src/app/model/feature/feature-type';
-import { Tagset } from 'src/app/model/tagset/tagset';
+import { FeatureType } from 'src/app/models/feature/feature-type';
+import { Tagset } from 'src/app/models/tagset/tagset';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { Table } from 'primeng/table';
-import { Layer } from 'src/app/model/layer/layer.model';
+import { Layer } from 'src/app/models/layer/layer.model';
 import { LayerService } from 'src/app/services/layer.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';

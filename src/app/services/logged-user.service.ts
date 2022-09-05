@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Roles } from '../model/roles';
-import { User } from '../model/user';
+import { Roles } from '../models/roles';
+import { User } from '../models/user';
 
 const CURRENT_USER_LOCAL_STORAGE = 'currentUser';
 

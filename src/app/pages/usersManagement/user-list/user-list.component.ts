@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Roles } from 'src/app/model/roles';
+import { Roles } from 'src/app/models/roles';
 import { Table } from 'primeng/table';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';

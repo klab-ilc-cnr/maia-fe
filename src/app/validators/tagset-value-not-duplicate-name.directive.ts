@@ -1,6 +1,6 @@
-import { Tagset } from 'src/app/model/tagset/tagset';
+import { Tagset } from 'src/app/models/tagset/tagset';
 import { Directive, Input } from '@angular/core';
-import { TagsetValue } from '../model/tagset/tagset-value';
+import { TagsetValue } from '../models/tagset/tagset-value';
 import { AbstractControl, NG_ASYNC_VALIDATORS, NG_VALIDATORS, ValidatorFn } from '@angular/forms';
 
 const VALIDATOR_ERROR = { 'tagsetValueNotDuplicateName': true };

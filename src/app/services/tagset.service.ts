@@ -1,4 +1,4 @@
-import { Tagset } from './../model/tagset/tagset';
+import { Tagset } from './../models/tagset/tagset';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';

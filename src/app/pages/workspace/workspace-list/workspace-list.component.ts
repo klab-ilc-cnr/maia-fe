@@ -2,7 +2,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { LoaderService } from 'src/app/services/loader.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkspaceChoice } from 'src/app/model/workspace-choice.model';
+import { WorkspaceChoice } from 'src/app/models/workspace-choice.model';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';

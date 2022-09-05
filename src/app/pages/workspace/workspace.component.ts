@@ -1,6 +1,6 @@
 import { LayerService } from 'src/app/services/layer.service';
 import { WorkspaceLayersVisibilityManagerComponent } from './workspace-layers-visibility-manager/workspace-layers-visibility-manager.component';
-import { CorpusTileContent } from './../../model/tile/corpus-tile-content';
+import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 import { style } from '@angular/animations';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, OnInit, Renderer2, Type, ViewChild, ViewContainerRef } from '@angular/core';
@@ -10,21 +10,21 @@ import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
 import { LoginOptions } from 'angular-oauth2-oidc';
 import { MenuItem } from 'primeng/api';
 import { Observable } from 'rxjs';
-import { TextChoice } from 'src/app/model/tile/text-choice-element.model';
-import { Tile } from 'src/app/model/tile/tile.model';
-import { TileType } from 'src/app/model/tile/tile-type.model';
+import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
+import { Tile } from 'src/app/models/tile/tile.model';
+import { TileType } from 'src/app/models/tile/tile-type.model';
 import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
-import { TextTileContent } from 'src/app/model/tile/text-tile-content.model';
+import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { ThisReceiver } from '@angular/compiler';
-import { Workspace } from 'src/app/model/workspace.model';
+import { Workspace } from 'src/app/models/workspace.model';
 import { MessageService } from 'primeng/api';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
-import { Layer } from 'src/app/model/layer/layer.model';
+import { Layer } from 'src/app/models/layer/layer.model';
 import { LoaderService } from 'src/app/services/loader.service';
-// import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
+// import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 //var currentWorkspaceInstance: any;
 

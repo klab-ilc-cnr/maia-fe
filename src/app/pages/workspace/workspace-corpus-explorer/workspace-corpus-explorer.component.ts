@@ -1,7 +1,7 @@
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { ContextMenu } from 'primeng/contextmenu';
-import { DocumentElement } from 'src/app/model/corpus/document-element';
-import { ElementType } from 'src/app/model/corpus/element-type';
+import { DocumentElement } from 'src/app/models/corpus/document-element';
+import { ElementType } from 'src/app/models/corpus/element-type';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { WorkspaceService } from 'src/app/services/workspace.service';
@@ -10,7 +10,7 @@ import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete
 import Swal from 'sweetalert2';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { LoaderService } from 'src/app/services/loader.service';
-import { Roles } from 'src/app/model/roles';
+import { Roles } from 'src/app/models/roles';
 
 declare var $: any;
 

@@ -1,5 +1,5 @@
 import { LoaderService } from 'src/app/services/loader.service';
-import { Tagset } from './../../../model/tagset/tagset';
+import { Tagset } from './../../../models/tagset/tagset';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';

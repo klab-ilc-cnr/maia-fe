@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/model/user';
-import { Roles } from 'src/app/model/roles';
+import { User } from 'src/app/models/user';
+import { Roles } from 'src/app/models/roles';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { NgForm } from '@angular/forms';
 import { LanguageService } from 'src/app/services/language.service';
-import { Language } from 'src/app/model/language';
+import { Language } from 'src/app/models/language';
 import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({

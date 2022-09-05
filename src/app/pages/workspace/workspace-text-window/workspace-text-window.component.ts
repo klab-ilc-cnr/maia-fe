@@ -1,16 +1,16 @@
 import { LoaderService } from 'src/app/services/loader.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
-import { SpanCoordinates } from './../../../model/annotation/span-coordinates';
-import { Annotation } from './../../../model/annotation/annotation';
+import { SpanCoordinates } from '../../../models/annotation/span-coordinates';
+import { Annotation } from '../../../models/annotation/annotation';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { TextRow } from 'src/app/model/text/text-row';
+import { TextRow } from 'src/app/models/text/text-row';
 import { MessageService, SelectItem } from 'primeng/api';
 import { LayerService } from 'src/app/services/layer.service';
-import { Layer } from 'src/app/model/layer/layer.model';
-import { TextLine } from 'src/app/model/text/text-line';
+import { Layer } from 'src/app/models/layer/layer.model';
+import { TextLine } from 'src/app/models/text/text-line';
 import { forkJoin } from 'rxjs';
-import { TextHighlight } from 'src/app/model/text/text-highlight';
+import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 @Component({

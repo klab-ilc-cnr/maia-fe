@@ -2,14 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatestAll, combineLatestWith, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { TextChoice as TextChoice } from '../model/tile/text-choice-element.model';
-import { TextTileContent } from '../model/tile/text-tile-content.model';
-import { Tile } from '../model/tile/tile.model';
-import { WorkspaceChoice } from '../model/workspace-choice.model';
-import { Workspace } from '../model/workspace.model';
+import { TextChoice as TextChoice } from '../models/tile/text-choice-element.model';
+import { TextTileContent } from '../models/tile/text-tile-content.model';
+import { Tile } from '../models/tile/tile.model';
+import { WorkspaceChoice } from '../models/workspace-choice.model';
+import { Workspace } from '../models/workspace.model';
 import { combineLatest, of } from 'rxjs';
-import { DocumentSystem } from '../model/corpus/document-system';
-import { ElementType } from '../model/corpus/element-type';
+import { DocumentSystem } from '../models/corpus/document-system';
+import { ElementType } from '../models/corpus/element-type';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 

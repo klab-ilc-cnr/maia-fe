@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Feature } from '../model/feature/feature';
-import { LayerWithFeatures } from '../model/layer/layer-with-features';
-import { Layer } from '../model/layer/layer.model';
+import { Feature } from '../models/feature/feature';
+import { LayerWithFeatures } from '../models/layer/layer-with-features';
+import { Layer } from '../models/layer/layer.model';
 
 @Injectable({
   providedIn: 'root'
