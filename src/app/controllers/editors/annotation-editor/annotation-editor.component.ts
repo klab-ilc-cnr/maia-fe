@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Annotation } from 'src/app/model/annotation/annotation';
-import { LayerWithFeatures } from 'src/app/model/layer-with-features';
+import { LayerWithFeatures } from 'src/app/model/layer/layer-with-features';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -80,6 +80,10 @@ export class AnnotationEditorComponent implements OnInit {
     //   .subscribe((data: LayerWithFeatures) => {
 
     //   });
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
   }
 
   onCancelBtn() {

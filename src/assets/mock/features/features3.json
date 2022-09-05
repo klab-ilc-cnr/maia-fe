@@ -1,0 +1,22 @@
+[{
+  "id": 1,
+  "layerId": 3,
+  "name": "Feature 1",
+  "type": "String",
+  "description": "descrizione feature 1"
+},
+{
+  "id": 2,
+  "layerId": 3,
+  "name": "Feature con tagset",
+  "type": "Tagset",
+  "tagsetId": 1,
+  "description": "descrizione feature con tagset"
+},
+{
+  "id": 3,
+  "layerId": 3,
+  "name": "Feature 2",
+  "type": "URI",
+  "description": "descrizione feature 2"
+}]

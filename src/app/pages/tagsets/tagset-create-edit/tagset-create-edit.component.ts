@@ -58,8 +58,6 @@ export class TagsetCreateEditComponent implements OnInit {
     Swal.close();
   }
 
-  private counter: number = 0;
-
   public get isEditing(): boolean {
     if (this.tagsetModel && this.tagsetModel.id) {
       return true;
@@ -97,9 +95,9 @@ export class TagsetCreateEditComponent implements OnInit {
   tagsetValueModel: TagsetValue = new TagsetValue();
   areTagsetValuesChanged: boolean = false;
 
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   @ViewChild("tagsetForm") public tagsetForm!: NgForm;
   @ViewChild("tagsetValueForm") public tagsetValueForm!: NgForm;
-  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   constructor(
     private loaderService: LoaderService,
@@ -151,15 +149,13 @@ export class TagsetCreateEditComponent implements OnInit {
   }
 
   showEditValueModal(value: TagsetValue): void {
-    console.log('modifico', value)
+    this.resetForm();
     this.tagsetValueModel = JSON.parse(JSON.stringify(value));
     $('#tagsetValueModal').modal('show');
   }
 
   showTagsetValueModal() {
-    this.tagsetValueModel = new TagsetValue();
-    this.tagsetValueForm.form.markAsUntouched();
-    this.tagsetValueForm.form.markAsPristine();
+    this.resetForm();
     $('#tagsetValueModal').modal('show');
   }
 
@@ -207,10 +203,15 @@ export class TagsetCreateEditComponent implements OnInit {
 
           console.log(this.tagsetModel)
 
-          this.counter = this.tagsetModel.values.length;
           this.loaderService.hide();
         }
       })
+  }
+
+  private resetForm() {
+    this.tagsetValueModel = new TagsetValue();
+    this.tagsetValueForm.form.markAsUntouched();
+    this.tagsetValueForm.form.markAsPristine();
   }
 
   private save(): void {

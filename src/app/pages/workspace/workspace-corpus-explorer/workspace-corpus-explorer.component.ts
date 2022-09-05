@@ -187,6 +187,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
           this.workspaceService.renameElement(newId, name, ElementType.Directory).subscribe({
             next: (result) => {
+              $('#addFolderModal').modal('hide');
+
               if (result.responseStatus == 0) {
                 this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Cartella \'' + name + '\' creata con successo'));
               }
@@ -201,24 +203,24 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
                 })
               }
 
-              $('#addFolderModal').modal('hide');
               this.loaderService.hide();
 
               this.updateDocumentSystem();
             },
             error: () => {
+              $('#addFolderModal').modal('hide');
               this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
               this.loaderService.hide();
             }
           })
         }
         else if (result['response-status'] == 1) {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
           $('#addFolderModal').modal('hide');
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
         }
         else {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
           $('#addFolderModal').modal('hide');
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
         }
 
         $('#addFolderModal').modal('hide');
@@ -250,6 +252,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       this.loaderService.show();
       this.workspaceService.uploadFile(element_id, this.fileUploaded).subscribe({
         next: (result) => {
+          $('#uploadFileModal').modal('hide');
+
           if (result['response-status'] == 0) {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
@@ -265,6 +269,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           this.updateDocumentSystem();
         },
         error: () => {
+          $('#uploadFileModal').modal('hide');
           this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           this.loaderService.hide();
         }
@@ -301,6 +306,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       this.loaderService.show();
       this.workspaceService.moveElement(element_id, target_id, type).subscribe({
         next: (result) => {
+          $('#moveModal').modal('hide');
+
           if (result.responseStatus == 0) {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
@@ -316,6 +323,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           this.updateDocumentSystem();
         },
         error: () => {
+          $('#moveModal').modal('hide');
           this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           this.loaderService.hide();
         }
@@ -351,6 +359,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       this.loaderService.show();
       this.workspaceService.renameElement(element_id, newName, type).subscribe({
         next: (result) => {
+          $('#renameModal').modal('hide');
+
           if (result.responseStatus == 0) {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           }
@@ -365,6 +375,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           this.updateDocumentSystem();
         },
         error: () => {
+          $('#renameModal').modal('hide');
           this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           this.loaderService.hide();
         }
@@ -611,7 +622,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         return el;
       }
 
-      if (el.children && el.children != []) {
+      if (el.children && el.children.lenght != 0) {
         let node = this.searchNodeByElementId(el.children, element);
 
         if (node) {

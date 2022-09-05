@@ -2,162 +2,157 @@
   <div class="col-12">
     <div class="card">
       <div class="page-header">
-        <h5>
+        <h5 [ngStyle]="{'background-color': layerInfo?.color+'4D'}" style="border-radius: 3px">
           <!-- <div *ngIf="isEditUser(); else elseBlock">Dettaglio utente</div>
           <ng-template #elseBlock>Nuovo utente</ng-template> -->
-          layer
+          {{title}}
         </h5>
-        <button pButton pRipple label="Torna alla lista" icon="pi pi-arrow-left" class="p-button-secondary" (click)="back()"></button>
+        <div class="button-group-actions">
+          <button pButton pRipple label="Torna alla lista" icon="pi pi-arrow-left" class="p-button-secondary" (click)="back()"></button>
+        </div>
       </div>
       <div class="card-body p-fluid">
-        <!-- <form #userDetailsForm="ngForm" (ngSubmit)="onSubmit()" #userForm="ngForm">
-          <div class="form-group">
-            <label for="name">Nome *</label>
-            <input
-              type="text"
-              [(ngModel)]="user.name"
-              class="form-control"
-              id="name"
-              name="name"
-              placeholder="Inserisci il tuo nome"
-              required
-              #name="ngModel"
-              [disabled]="!canManageUsers"
-            />
-            <div
-              *ngIf="name.invalid && (name.dirty || name.touched)"
-              class="alert alert-danger"
-            >
-              Il nome è obbligatorio
-            </div>
+        <div class="row row-cols-1 row-cols-md-3">
+          <div class="col">
+            <label class="header-label">Nome</label>
+            <p>{{layerInfo?.name}}</p>
           </div>
-          <div class="form-group">
-            <label for="surname">Cognome *</label>
-            <input
-              type="text"
-              [(ngModel)]="user.surname"
-              class="form-control"
-              id="surname"
-              name="surname"
-              placeholder="Inserisci il tuo cognome"
-              required
-              #surname="ngModel"
-              [disabled]="!canManageUsers"
-            />
-            <div
-              *ngIf="surname.invalid && (surname.dirty || surname.touched)"
-              class="alert alert-danger"
-            >
-              Il cognome è obbligatorio
-            </div>
+          <div class="col">
+            <label class="header-label">Colore</label>
+            <p>
+              <p-colorPicker [ngModel]="layerInfo?.color" [disabled]="true"></p-colorPicker>
+            </p>
           </div>
-          <div class="form-group">
-            <label for="email">Email *</label>
-            <input
-              type="email"
-              [(ngModel)]="user.email"
-              class="form-control disabled"
-              id="email"
-              name="email"
-              placeholder="Inserisci il tuo indirizzo email"
-              required
-              #email="ngModel"
-              [disabled]="!isNewUser()"
-            />
-            <div
-              *ngIf="email.invalid && (email.dirty || email.touched)"
-              class="alert alert-danger"
-            >
-              L'email è obbligatoria
-            </div>
+          <div class="col">
+            <label class="header-label">Descrizione</label>
+            <p>{{layerInfo?.description}}</p>
           </div>
-          <div class="form-group">
-            <label for="role">Ruolo *</label>
-            <p-dropdown
-              #role="ngModel"
-              name="role"
-              [(ngModel)]="user.role"
-              [options]="roles"
-              [filter]="true"
-              [showClear]="true"
-              placeholder="Scegli un ruolo"
-              [required]="true"
-              [disabled]="!roles || !canManageUsers"
-            >
-            </p-dropdown>
-            <div *ngIf="role.invalid && (role.dirty || role.touched)" class="alert alert-danger">
-              Il ruolo è obbligatorio
-            </div>
-          </div>
-          <div class="form-group d-flex align-items-center">
-            <label for="active">Utente attivo</label>
-            <p-inputSwitch
-              #active="ngModel"
-              name="active"
-              [(ngModel)]="user.active"
-              [disabled]="!canManageUsers"
-            ></p-inputSwitch>
-          </div>
-          <div class="form-group">
-            <label for="role">Lingue *</label>
-            <p-dropdown
-              #role="ngModel"
-              name="languages"
-              [(ngModel)]="user.languages"
-              [options]="languages"
-              [filter]="true"
-              [showClear]="true"
-              placeholder="Seleziona le lingue"
-              [required]="true"
-              [disabled]="!languages || !canManageUsers"
-            >
-            </p-dropdown>
-            <p-listbox
-            [options]="languages"
-            [(ngModel)]="user.languages"
-            name="language"
-            [metaKeySelection]="false"
-            [checkbox]="true"
-            [filter]="true"
-            [multiple]="true"
-            [disabled]="!languages || !canManageUsers"
-            optionLabel="name"
-            [listStyle]="{'max-height':'250px'}"
-            [style]="{'width':'15rem'}">
-              <ng-template let-language pTemplate="item">
-                  <div class="language-item">
-                      <div>{{language.name}}</div>
-                  </div>
-              </ng-template>
-          </p-listbox>
-            <div *ngIf="languages.invalid && (languages.dirty || languages.touched)" class="alert alert-danger">
-              Devi selezionare almeno una lingua
-            </div>
-          </div>
-          <div class="text-end">
-            <button
-              type="button"
-              (click)="goToUserList()"
-              class="btn btn-secondary ms-auto"
-              [hidden]="!canManageUsers"
-            >
-              Annulla
-            </button>
-            <button
-              type="submit"
-              [disabled]="!userForm.form.valid"
-              [hidden]="!canManageUsers"
-              class="btn btn-danger ms-2">
-              Salva
-            </button>
-          </div>
-        </form> -->
+        </div>
       </div>
     </div>
     <div class="card">
       <div class="card-body p-fluid">
-
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <label class="header-label">Features</label>
+          <button pButton pRipple type="button" label="Nuova feature" icon="pi pi-plus" class="w-auto" (click)="showFeatureModal()"></button>
+        </div>
+        <p-table #dt [value]="features" [rowHover]="true" dataKey="id"
+          [responsive]="true" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="type">Tipo<p-sortIcon field="type"></p-sortIcon>
+              </th>
+              <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon>
+              </th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-feature let-i="rowIndex">
+            <tr>
+              <td>{{feature.name}}</td>
+              <td>{{feature.type}}</td>
+              <td>{{feature.description}}</td>
+              <td>
+                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="showEditFeatureModal(feature)"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="showDeleteFeatureModal(feature)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
 </div>
+
+<div
+  class="modal fade"
+  id="featureModal"
+  tabindex="-1"
+  aria-labelledby="featureModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitFeatureModal(featureForm)"
+        #featureForm="ngForm"
+        id="featureForm"
+        class="validated"
+      >
+        <input type="hidden" #layerId="ngModel" name="layerId" [(ngModel)]="featureModel.layerId">
+        <div class="modal-header">
+          <h5 class="modal-title" id="featureModalLabel">{{featureModalTitle}}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nome *</label>
+            <div class="p-fluid">
+              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="featureModel.name"
+                required maxlength="300" placeholder="Nome feature">
+              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                <div *ngIf="name.errors?.['required']">
+                  Necessario inserire il nome della feature
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo *</label>
+            <div class="p-fluid">
+              <p-dropdown #type="ngModel" name="type" [(ngModel)]="featureModel.type"
+                placeholder="Tipo feature" [options]="featureTypeOptions" [filter]="true" [showClear]="true" [required]="true" (onChange)="featureTypeChange($event)">
+              </p-dropdown>
+              <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">
+                <div *ngIf="type.errors?.['required']">
+                  Necessario inserire il tipo della feature
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="featureType">
+            <label class="form-label">Tagset *</label>
+            <div class="p-fluid">
+              <p-dropdown #tagsetId="ngModel" name="tagsetId" [(ngModel)]="featureModel.tagsetId"
+                placeholder="Tipo feature" [options]="tagsetOptions" [filter]="true" [showClear]="true" [required]="true">
+              </p-dropdown>
+              <div *ngIf="tagsetId.invalid && (tagsetId.touched || tagsetId.dirty)" class="invalid-feedback">
+                <div *ngIf="tagsetId.errors?.['required']">
+                  Necessario inserire il tagset della feature
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrizione</label>
+            <div class="p-fluid">
+              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="featureModel.description"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annulla
+          </button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitFeatureModal(featureForm)">
+            <span *ngIf="isEditing; else elseBlock">
+              Aggiorna
+            </span>
+            <ng-template #elseBlock>
+              <span>Aggiungi</span>
+            </ng-template>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

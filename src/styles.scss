@@ -559,6 +559,16 @@ p {
   padding: 0rem 1rem;
   margin-bottom: 1rem;
   min-height: 45px;
+
+  .button-group-actions {
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    button:not(:last-child) {
+      margin-right: .5rem;
+    }
+  }
 }
 
 // Modifiche
@@ -698,4 +708,10 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
     margin: 0 0.5rem;
     font-size: 1.25rem;
   }
+}
+
+.header-label {
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 0.5rem;
 }

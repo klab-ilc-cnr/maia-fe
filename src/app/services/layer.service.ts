@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LayerWithFeatures } from '../model/layer-with-features';
-import { Layer } from '../model/layer.model';
+import { Feature } from '../model/feature/feature';
+import { LayerWithFeatures } from '../model/layer/layer-with-features';
+import { Layer } from '../model/layer/layer.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,34 @@ export class LayerService {
 
   // METODI MOCKATI
 
+  public retrieveFeatureTypes(): Observable<any> {
+    return this.http.get<any>(`assets/mock/features/featureTypes.json`);
+  }
+
   public retrieveLayerById(layerId: number): Observable<LayerWithFeatures> {
     return this.http.get<any>(`assets/mock/layerWithFeatures${layerId}.json`);
+  }
+
+  public retrieveFeaturesByLayerId(layerId: number): Observable<Feature[]> {
+    return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
+  }
+
+  public createFeature(item: any): Observable<Feature> {
+    // return this.http.get<any>(`assets/mock/featuresCreate.json`);
+
+    // QUI SARà UNA CHIAMATA POST
+    return this.http.post<Feature>(`${this.layerUrl}/features`, item);
+  }
+
+  public updateFeature(item: any): Observable<Feature> {
+    // return this.http.get<any>(`assets/mock/features.json`);
+
+    // QUI SARà UNA CHIAMATA PUT
+    return this.http.put<Feature>(`${this.layerUrl}/features`, item);
+  }
+
+  public deleteFeature(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.layerUrl}/features/${id}`);
   }
 
   // FINE METODI MOCKATI
