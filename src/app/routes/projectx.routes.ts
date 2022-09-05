@@ -1,3 +1,4 @@
+import { TAGSETS_ROUTES } from './tagsets.routes';
 import { LayersListComponent } from './../pages/layers/layers-list/layers-list.component';
 import { WorkspaceListComponent } from "../pages/workspace/workspace-list/workspace-list.component";
 import { USERSMANAGEMENT_ROUTES } from "./usersmanagement.routes";
@@ -16,5 +17,9 @@ export const PROJECTX_ROUTES = [
     {
         path: 'layers',
         children: LAYERS_ROUTES
+    },
+    {
+        path: 'tagsets',
+        children: TAGSETS_ROUTES
     }
 ];

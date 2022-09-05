@@ -1,0 +1,15 @@
+{
+  "id": 2,
+  "name": "feature 2",
+  "description": "descrizione feature 2",
+  "values": [{
+    "name": "nome",
+    "description": "descrizione feature 2-nome"
+  }, {
+    "name": "aggettivo",
+    "description": "descrizione feature 2-aggettivo"
+  },{
+    "name": "verbo",
+    "description": "descrizione feature 2-verbo"
+  }]
+}

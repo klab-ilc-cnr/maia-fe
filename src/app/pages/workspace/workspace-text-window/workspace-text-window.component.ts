@@ -7,7 +7,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { TextRow } from 'src/app/model/text/text-row';
 import { MessageService, SelectItem } from 'primeng/api';
 import { LayerService } from 'src/app/services/layer.service';
-import { Layer } from 'src/app/model/layer.model';
+import { Layer } from 'src/app/model/layer/layer.model';
 import { TextLine } from 'src/app/model/text/text-line';
 import { forkJoin } from 'rxjs';
 import { TextHighlight } from 'src/app/model/text/text-highlight';

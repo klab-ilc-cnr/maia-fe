@@ -1,7 +1,7 @@
 import { LoaderService } from 'src/app/services/loader.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Layer } from 'src/app/model/layer.model';
+import { Layer } from 'src/app/model/layer/layer.model';
 
 @Component({
   selector: 'app-workspace-layers-visibility-manager',

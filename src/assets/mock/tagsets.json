@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "parti del discorso",
+    "description": "descrizione parti del discorso",
+    "values": [{
+      "name": "nome",
+      "description": "descrizione parti del discorso-nome"
+    }, {
+      "name": "aggettivo",
+      "description": "descrizione parti del discorso-aggettivo"
+    },{
+      "name": "verbo",
+      "description": "descrizione parti del discorso-verbo"
+    }]
+  },
+  {
+    "id": 2,
+    "name": "feature 2",
+    "description": "descrizione feature 2",
+    "values": [{
+      "name": "nome",
+      "description": "descrizione feature 2-nome"
+    }, {
+      "name": "aggettivo",
+      "description": "descrizione feature 2-aggettivo"
+    },{
+      "name": "verbo",
+      "description": "descrizione feature 2-verbo"
+    }]
+  },
+  {
+    "id": 3,
+    "name": "feature 3",
+    "description": "descrizione feature 3",
+    "values": [{
+      "name": "nome",
+      "description": "descrizione feature 3-nome"
+    }, {
+      "name": "aggettivo",
+      "description": "descrizione feature 3-aggettivo"
+    },{
+      "name": "verbo",
+      "description": "descrizione feature 3-verbo"
+    }]
+  }
+]

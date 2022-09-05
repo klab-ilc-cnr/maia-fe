@@ -41,12 +41,12 @@
               <span>Layer</span>
             </a>
           </li>
-          <!-- <li>
-            <a routerLink="/layers">
+          <li *ngIf="canManageTagsets" [ngClass]="{'active': isActive(['tagsets'])}">
+            <a routerLink="/tagsets">
               <i class="layout-menuitem-icon pi pi-tags"></i>
-              <span>TagSet</span>
+              <span>Tagset</span>
             </a>
-          </li> -->
+          </li>
         </ul>
       </li>
     </ul>

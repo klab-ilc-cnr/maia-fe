@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "name": "parti del discorso",
+  "description": "descrizione parti del discorso",
+  "values": [{
+    "name": "nome",
+    "description": "descrizione parti del discorso-nome"
+  }, {
+    "name": "aggettivo",
+    "description": "descrizione parti del discorso-aggettivo"
+  },{
+    "name": "verbo",
+    "description": "descrizione parti del discorso-verbo"
+  }]
+}

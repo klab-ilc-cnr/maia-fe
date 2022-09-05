@@ -1,0 +1,40 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="page-header">
+        <h5>Gestore tagsets</h5>
+        <button pButton pRipple label="Nuovo tagset" icon="pi pi-tag" class="p-button-danger" (click)="onNew()"></button>
+      </div>
+      <div class="card-body p-fluid">
+        <p-table #dt [value]="tagsets" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+          currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
+          [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon></th>
+                <th></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-tagset let-i="rowIndex">
+              <tr>
+                <td>{{tagset.name}}</td>
+                <td>{{tagset.description}}</td>
+                <td>
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="onEdit(tagset)"></button>
+                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="onDelete(tagset)"></button>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                In totale ci sono {{ tagsets ? tagsets.length : 0 }} tagsets.
+              </div>
+            </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

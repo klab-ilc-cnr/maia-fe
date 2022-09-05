@@ -37,6 +37,10 @@ export class SideMenuComponent implements OnInit {
     return this.loggedUserService.canManageLayers();
   }
 
+  public get canManageTagsets(): boolean{
+    return this.loggedUserService.canManageTagsets();
+  }
+
   public isActive(urls: string[]): boolean {
     var isActive = false;
     urls.forEach(url => {

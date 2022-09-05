@@ -22,7 +22,7 @@ import { ThisReceiver } from '@angular/compiler';
 import { Workspace } from 'src/app/model/workspace.model';
 import { MessageService } from 'primeng/api';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
-import { Layer } from 'src/app/model/layer.model';
+import { Layer } from 'src/app/model/layer/layer.model';
 import { LoaderService } from 'src/app/services/loader.service';
 // import { CorpusTileContent } from '../model/tileContent/corpus-tile-content';
 

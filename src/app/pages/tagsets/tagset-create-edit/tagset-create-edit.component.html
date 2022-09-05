@@ -1,0 +1,283 @@
+<form
+  (ngSubmit)="onSubmitTagsetForm(tagsetForm)"
+  #tagsetForm="ngForm"
+  id="tagsetForm"
+  class="validated"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <div class="page-header mb-0">
+          <h5>{{title}}</h5>
+          <div class="button-group-actions">
+            <button pButton pRipple type="button" label="Salva" icon="pi pi-save" (click)="onSubmitTagsetForm(tagsetForm)"></button>
+            <button pButton pRipple type="button" label="Annulla" icon="pi pi-times" class="p-button-secondary" (click)="back()"></button>
+            <button *ngIf="isEditing" pButton pRipple type="button" label="Elimina" icon="pi pi-trash" class="p-button-danger" (click)="showDeleteModal(tagsetModel)"></button>
+          </div>
+        </div>
+        <div class="card-body p-fluid">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row px-0">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body p-fluid">
+          <div class="form-group">
+            <label class="form-label">Nome *</label>
+            <div class="p-fluid">
+              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="tagsetModel.name"
+                required maxlength="300" placeholder="Nome tagset">
+              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                <div *ngIf="name.errors?.['required']">
+                  Necessario inserire il nome del tagset
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrizione</label>
+            <div class="p-fluid">
+              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="tagsetModel.description"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="card">
+        <div class="card-body p-fluid">
+          <div class="form-group">
+            <div class="d-flex align-items-center justify-content-between mb-2 w-auto">
+              <label class="form-label">Valori</label>
+              <div *ngIf="areTagsetValuesChanged" class="text-warning text-center">
+                I valori del tagset sono cambiati, ricordati di salvare le modifiche.
+              </div>
+              <button pButton pRipple type="button" label="Nuovo valore" icon="pi pi-plus" class="w-auto" (click)="showTagsetValueModal()"></button>
+            </div>
+            <div class="p-fluid">
+              <p-table #dt [value]="tagsetModel.values!" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+                currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
+                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon></th>
+                      <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon></th>
+                      <th></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-value let-i="rowIndex">
+                    <tr>
+                      <td>{{value.name}}</td>
+                      <td>{{value.description}}</td>
+                      <td>
+                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="showEditValueModal(value)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="showDeleteValueModal(value)"></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div
+  class="modal fade"
+  id="tagsetValueModal"
+  tabindex="-1"
+  aria-labelledby="tagsetValueModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        #tagsetValueForm="ngForm"
+        id="tagsetValueForm"
+        class="validated"
+        [appTagsetValueNotDuplicateName]="tagsetModel.values!"
+      >
+        <input type="hidden" #tvOriginalName="ngModel" name="tvOriginalName" [(ngModel)]="tagsetValueModel.originalName">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tagsetValueModalLabel">{{tagsetValueModalTitle}}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="cross-validation"
+            [class.cross-validation-error]="tagsetValueForm.errors?.['tagsetValueNotDuplicateName'] && (tagsetValueForm.touched || tagsetValueForm.dirty)">
+            <div class="form-group">
+              <label class="form-label">Nome *</label>
+              <div class="p-fluid">
+                <input #tvName="ngModel" type="text" name="tvName" class="form-control" [(ngModel)]="tagsetValueModel.name"
+                  required maxlength="300" placeholder="Nome del valore del tagset">
+                <div *ngIf="tvName.invalid && (tvName.touched || tvName.dirty)" class="invalid-feedback">
+                  <div *ngIf="tvName.errors?.['required']">
+                    Necessario inserire il nome del valore del tagset
+                  </div>
+                </div>
+                <div *ngIf="tagsetValueForm.errors?.['tagsetValueNotDuplicateName']" class="invalid-feedback">
+                  Esiste già un valore con questo nome
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrizione</label>
+            <div class="p-fluid">
+              <textarea rows="3" #tvDescription="ngModel" type="text" name="tvDescription" class="form-control" [(ngModel)]="tagsetValueModel.description"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annulla
+          </button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitTagsetValueModal(tagsetValueForm)">
+            <span *ngIf="isTagsetValueEditing; else elseBlock">
+              Aggiorna
+            </span>
+            <ng-template #elseBlock>
+              <span>Aggiungi</span>
+            </ng-template>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
+
+
+<!--
+<div
+  class="modal fade"
+  id="tagsetModal"
+  tabindex="-1"
+  aria-labelledby="tagsetModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="onSubmitTagsetModal(tagsetForm)"
+        #tagsetForm="ngForm"
+        id="tagsetForm"
+        class="validated"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="tagsetModalLabel">{{tagsetModalTitle}}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nome *</label>
+            <div class="p-fluid">
+              <input #name="ngModel" type="text" name="nfName" class="form-control" [(ngModel)]="featureModel.name"
+                required maxlength="300" placeholder="Nome feature">
+              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                <div *ngIf="name.errors?.['required']">
+                  Necessario inserire il nome della feature
+                </div>
+              </div>
+            </div>
+          </div>-->
+<!--
+          <div class="form-group">
+            <label class="form-label">Tipo *</label>
+            <div class="p-fluid">
+              <p-dropdown #type="ngModel" name="type" [(ngModel)]="featureModel.type"
+                placeholder="Tipo feature" [options]="unitsOfMeasureOptions" [filter]="true" [showClear]="true" [required]="true">
+              </p-dropdown>
+              <div *ngIf="type.invalid && (type.touched || type.dirty)"
+                class="invalid-feedback">
+                <div *ngIf="type.errors?.['required']">
+                  Necessario inserire il tipo della feature
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="featureType">
+            <label class="form-label">Tagset *</label>
+            <div class="p-fluid">
+              <p-dropdown #tagset="ngModel" name="type" [(ngModel)]="featureModel.tagsetId"
+                placeholder="Tipo feature" [options]="unitsOfMeasureOptions" [filter]="true" [showClear]="true" [required]="true">
+              </p-dropdown>
+              <div *ngIf="tagset.invalid && (tagset.touched || tagset.dirty)"
+                class="invalid-feedback">
+                <div *ngIf="tagset.errors?.['required']">
+                  Necessario inserire il tagset della feature
+                </div>
+              </div>
+            </div>
+          </div> -->
+<!--
+          <div class="form-group">
+            <label class="form-label">Descrizione *</label>
+            <div class="p-fluid">
+              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" (ngModel)="(featureModel.description)"></textarea>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Annulla
+          </button>
+          <button type="submit" class="btn btn-primary">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
+
+<!-- <p-dialog [(visible)]="layerDialog" [style]="{width: '450px'}" header="Dettagli layer" [modal]="true"
+  styleClass="p-fluid">
+  <ng-template pTemplate="content">
+      <div class="form-group">
+          <label for="name">Nome</label>
+          <input class="form-control" type="text" pInputText id="name" [(ngModel)]="layer.name" required autofocus />
+          <br>
+          <small class="p-invalid" *ngIf="submitted && !layer.name">Il nome è obbligatorio.</small>
+      </div>
+      <div class="form-group">
+          <label for="name">Colore</label>
+          <p-colorPicker class="nopacity" [(ngModel)]="layer.color" required></p-colorPicker>
+          <br>
+          <small class="p-invalid" *ngIf="submitted && !layer.color">Il colore è obbligatorio.</small>
+      </div>
+      <div class="form-group">
+          <label for="description">Descrizione</label>
+          <textarea class="form-control" id="description" pInputTextarea [(ngModel)]="layer.description" rows="3"
+              cols="20"></textarea>
+      </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+      <button pButton pRipple label="Annulla" icon="pi pi-times" class="p-button-text"
+          (click)="hideDialog()"></button>
+      <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text" (click)="saveLayer()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}" acceptLabel="Si" rejectLabel="No"></p-confirmDialog> -->

@@ -49,6 +49,9 @@ import { LayersViewComponent } from './pages/layers/layers-view/layers-view.comp
 import { FeaturesListComponent } from './pages/layers/features/features-list/features-list.component';
 import { WorkspaceLayersVisibilityManagerComponent } from './pages/workspace/workspace-layers-visibility-manager/workspace-layers-visibility-manager.component';
 import { CheckboxModule } from 'primeng/checkbox';
+import { TagsetsListComponent } from './pages/tagsets/tagsets-list/tagsets-list.component';
+import { TagsetCreateEditComponent } from './pages/tagsets/tagset-create-edit/tagset-create-edit.component';
+import { TagsetValueNotDuplicateNameDirective } from './validators/tagset-value-not-duplicate-name.directive';
 
 @NgModule({
   declarations: [
@@ -68,7 +71,10 @@ import { CheckboxModule } from 'primeng/checkbox';
     LayersListComponent,
     LayersViewComponent,
     FeaturesListComponent,
-    WorkspaceLayersVisibilityManagerComponent
+    WorkspaceLayersVisibilityManagerComponent,
+    TagsetsListComponent,
+    TagsetCreateEditComponent,
+    TagsetValueNotDuplicateNameDirective
   ],
   imports: [
     BrowserModule,
