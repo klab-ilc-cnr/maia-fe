@@ -77,8 +77,6 @@ export class LayersListComponent implements OnInit {
           next: (layer) => {
             this.layers[this.findIndexById(layer.id!)] = { ...layer };
             this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer aggiornato', life: 3000 });
-          },
-          complete: () => {
             this.saveLayerCompleted();
           }
         })
@@ -91,8 +89,6 @@ export class LayersListComponent implements OnInit {
             this.layers.push(this.layer);
             this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Layer creato', life: 3000 });
             this.viewLayerFeatures(layer);
-          },
-          complete: () => {
             this.saveLayerCompleted();
           }
         })

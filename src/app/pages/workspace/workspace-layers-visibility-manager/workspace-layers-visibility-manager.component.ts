@@ -52,8 +52,7 @@ export class WorkspaceLayersVisibilityManagerComponent implements OnInit {
         if (!this.selectedLayers) {
           this.selectedLayers = layers;
         }
-      },
-      complete: () => {
+
         this.loaderService.hide();
       }
     })

@@ -172,8 +172,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
         console.log('Hello', this.simplifiedAnns)
 
         this.renderData();
-      },
-      complete: () => {
         this.loaderService.hide();
       }
     });

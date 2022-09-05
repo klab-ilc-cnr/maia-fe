@@ -23,12 +23,12 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   private deleteElement = (id: number, name: string, type: ElementType): void => {
     this.showOperationInProgress('Sto cancellando');
 
-    let errorMsg = 'Errore nell\'eliminare la cartella \'' + name + '\''
-    let successMsg = 'Cartella \'' + name + '\' eliminata con successo'
+    let errorMsg = 'Errore nell\'eliminare la cartella \'' + name + '\'';
+    let successMsg = 'Cartella \'' + name + '\' eliminata con successo';
 
     if (type == ElementType.File) {
-      errorMsg = 'Errore nell\'eliminare il file \'' + name + '\''
-      successMsg = 'File \'' + name + '\' eliminato con successo'
+      errorMsg = 'Errore nell\'eliminare il file \'' + name + '\'';
+      successMsg = 'File \'' + name + '\' eliminato con successo';
     }
 
     this.workspaceService
@@ -40,17 +40,16 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
               Swal.close();
             }
             else if (result.responseStatus == 1) {
-              this.showOperationFailed('Utente non autorizzato')
+              this.showOperationFailed('Utente non autorizzato');
             }
             else {
-              this.showOperationFailed(errorMsg)
+              this.showOperationFailed(errorMsg);
             }
+
+            this.updateDocumentSystem();
           },
           error: () => {
-            this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
-          },
-          complete: () => {
-            this.updateDocumentSystem();
+            this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
           }
         })
   }
@@ -127,6 +126,10 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.updateDocumentSystem()
   }
 
+  ngOnDestroy(): void {
+    Swal.close();
+  }
+
   nodeSelect(event: any): void {
     this.clickCount++;
 
@@ -197,15 +200,15 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
                   }
                 })
               }
-            },
-            error: () => {
-              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
-            },
-            complete: () => {
+
               $('#addFolderModal').modal('hide');
               this.loaderService.hide();
 
               this.updateDocumentSystem();
+            },
+            error: () => {
+              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
+              this.loaderService.hide();
             }
           })
         }
@@ -217,15 +220,14 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
           $('#addFolderModal').modal('hide');
         }
+
+        $('#addFolderModal').modal('hide');
+
+        this.updateDocumentSystem();
       },
       error: (err) => {
         this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
         $('#addFolderModal').modal('hide');
-      },
-      complete: () => {
-        $('#addFolderModal').modal('hide');
-
-        this.updateDocumentSystem();
       }
     })
 
@@ -257,14 +259,14 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           else {
             this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           }
-        },
-        error: () => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-        },
-        complete: () => {
+
           this.loaderService.hide();
 
           this.updateDocumentSystem();
+        },
+        error: () => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+          this.loaderService.hide();
         }
       })
     }
@@ -308,14 +310,14 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           else {
             this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           }
-        },
-        error: () => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-        },
-        complete: () => {
+
           this.loaderService.hide();
 
           this.updateDocumentSystem();
+        },
+        error: () => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+          this.loaderService.hide();
         }
       })
     }
@@ -358,13 +360,13 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           else {
             this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           }
+
+          this.loaderService.hide();
+          this.updateDocumentSystem();
         },
         error: () => {
           this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-        },
-        complete: () => {
           this.loaderService.hide();
-          this.updateDocumentSystem();
         }
       })
     }
@@ -660,8 +662,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
           this.foldersAvailableToFileUpload = docSystemWithoutFiles;
         }
-      },
-      complete: () => {
+
         this.tree.resetFilter();
         this.loaderService.hide();
         this.loading = false;

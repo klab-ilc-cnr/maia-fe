@@ -67,8 +67,6 @@ export class UserFormComponent implements OnInit {
     .subscribe({
       next: (result) => {
         this.languages = result;
-      },
-      complete: () => {
         this.loaderService.hide();
       }
     })
@@ -91,14 +89,18 @@ export class UserFormComponent implements OnInit {
     if (this.editUser) {
       console.log(this.user.email, this.user.id, this.user.role, this.user.active)
       this.userService.update(this.user).subscribe({
-        next: (result) => this.goToUserList(),
-        complete: () => this.loaderService.hide()
+        next: (result) => {
+          this.goToUserList();
+          this.loaderService.hide();
+        }
       });
     }
     else {
       this.userService.save(this.user).subscribe({
-        next: (result) => this.goToUserList(),
-        complete: () => this.loaderService.hide()
+        next: (result) => {
+          this.goToUserList();
+          this.loaderService.hide();
+        }
       });
     }
   }
@@ -124,8 +126,6 @@ export class UserFormComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.user = data;
-          },
-          complete: () => {
             this.loaderService.hide();
           }
         });
@@ -138,8 +138,6 @@ export class UserFormComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.user = data;
-          },
-          complete: () => {
             this.loaderService.hide();
           }
         });

@@ -79,10 +79,7 @@ export class WorkspaceListComponent implements OnInit {
       if (this.workspace.id) {
         this.workspaceService.updateWorkspace(this.workspace).subscribe({
           next: (wsChoice) => {
-            this.workspaces[this.findIndexById(wsChoice.id!)] = {...wsChoice};
-            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace aggiornato', life: 3000 });
-          },
-          complete: () => {
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Workspace aggiornato'));
             this.saveWorkspaceCompleted();
           }
         })
@@ -92,11 +89,9 @@ export class WorkspaceListComponent implements OnInit {
         //this.workspace.id = this.createId();
         this.workspaceService.createWorkspace(this.workspace).subscribe({
           next: (wsChoice) => {
-            this.workspace = wsChoice;
-            this.workspaces.push(this.workspace);
-            this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace creato', life: 3000 });
-          },
-          complete: () => {
+            // this.workspace = wsChoice;
+            // this.workspaces.push(this.workspace);
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Workspace creato'));
             this.saveWorkspaceCompleted();
           }
         })

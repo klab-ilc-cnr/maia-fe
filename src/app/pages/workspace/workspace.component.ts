@@ -151,8 +151,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         this.layerService.retrieveLayers().subscribe({
           next: (layers: Layer[]) =>{
             this.visibleLayers = layers;
-          },
-          complete: () => {
             this.loaderService.hide();
 
             if (this.workspaceId === this.newId) {
@@ -168,8 +166,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
                   console.log(data)
                   data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
                   this.restoreTiles(data);
-                },
-                complete: () => {
                   this.loaderService.hide();
                 }
               });
@@ -281,8 +277,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
                 this.content.append(el);
 
                 this.addToTileMap(tile);
-              },
-              complete: () => {
                 this.loaderService.hide();
               }
             })
@@ -564,9 +558,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         //data.forEach(el => textList.push({title:el.title, status:el.status, createdBy: el.createdBy, updatedOn:el.updatedOn}))
         //textList=data;
         //textList = JSON.parse(JSON.stringify(data));
-        data.forEach(el => textList.push(el))
-      },
-      complete: () => {
+        data.forEach(el => textList.push(el));
         this.loaderService.hide();
       }
     });
@@ -594,8 +586,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         next: () => {
           this.workSaved = true;
           this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
-        },
-        complete: () => {
           this.loaderService.hide();
         }
       });

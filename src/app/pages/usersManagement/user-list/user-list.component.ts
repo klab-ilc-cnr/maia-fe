@@ -29,8 +29,6 @@ export class UserListComponent implements OnInit {
     this.userService.findAll().subscribe({
       next: (data) => {
         this.users = data;
-      },
-      complete: () => {
         this.loaderService.hide();
       }
     });

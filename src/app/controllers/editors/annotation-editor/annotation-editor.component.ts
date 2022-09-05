@@ -128,12 +128,11 @@ export class AnnotationEditorComponent implements OnInit {
     apiCall.subscribe({
       next: () => {
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
-        this.onSave.emit()
+        this.onSave.emit();
+        this.loaderService.hide();
       },
       error: (err: string) => {
         this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
-      },
-      complete: () => {
         this.loaderService.hide();
       }
     });
@@ -141,7 +140,6 @@ export class AnnotationEditorComponent implements OnInit {
 
   private saveWithFormErrors(): void {
     this.annotationForm.form.markAllAsTouched();
-    this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
   }
 
   private showOperationFailed(errorMessage: string): void {
