@@ -34,7 +34,7 @@
           </g>
           <g class="highlight">
             <g *ngFor="let row of rows">
-              <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="37" [attr.height]="line.height! + 4" class="span">
+              <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="line.x" [attr.height]="line.height! + 4" class="span">
                 <g *ngFor="let h of line.highlights">
                   <rect [attr.x]="h.coordinates.x" [attr.y]="h.coordinates.y" [attr.height]="h.height" [attr.width]="h.width" [attr.fill]="h.bgColor" [attr.stroke]="h.bgColor" stroke-width="0px" rx="3px" ry="3px" stroke-linejoin="round"></rect>
                 </g>
@@ -42,13 +42,8 @@
             </g>
           </g>
           <g class="text">
-            <!-- <text height="16">
-              <tspan>
-                ciao
-              </tspan>
-            </text> -->
-            <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="37" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-ndex]="row.startIndex" [attr.end-index]="row.endIndex">
-              <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="37" [attr.height]="line.height" style="white-space: pre;" [attr.start-ndex]="line.startIndex" [attr.end-index]="line.endIndex">
+            <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-ndex]="row.startIndex" [attr.end-index]="row.endIndex">
+              <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-ndex]="line.startIndex" [attr.end-index]="line.endIndex">
                 <tspan *ngFor="let w of line.words" [attr.y]="line.yText" style="white-space: pre;">{{w}}</tspan>
               </tspan>
             </text>
@@ -59,11 +54,13 @@
 
           </g>
           <g *ngFor="let row of rows">
-            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="37" [attr.height]="17" class="span">
-              <g *ngFor="let a of line.annotations">
-                <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.color" (click)="openAnnotation(a.id)"></rect>
-                <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
-                <path [attr.d]="a.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>
+            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
+              <g *ngFor="let anns of line.annotationsTowers">
+                <g *ngFor="let a of anns.tower">
+                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.color" (click)="openAnnotation(a.id)"></rect>
+                  <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
+                </g>
+                <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>
               </g>
             </g>
           </g>
@@ -72,7 +69,7 @@
           </g>
           <!-- -->
           <g class="sentnum unselectable">
-            <text *ngFor="let row of rows; index as i" [attr.y]="row.ySentnum" [attr.x]="32" [attr.height]="row.height">
+            <text *ngFor="let row of rows; index as i" [attr.y]="row.ySentnum" [attr.x]="row.xSentnum" [attr.height]="row.height">
               {{i+1}}
             </text>
             <path [attr.d]="sentnumVerticalLine"></path>

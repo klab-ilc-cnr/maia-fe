@@ -11,4 +11,6 @@ export class TextRow {
   height: number | undefined
   startIndex: number | undefined
   endIndex: number | undefined
+  xText: number | undefined
+  xSentnum: number | undefined
 }

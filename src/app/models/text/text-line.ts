@@ -7,8 +7,9 @@ export class TextLine {
   yText: number | undefined
   startIndex: number | undefined
   endIndex: number | undefined
-  annotations: Array<any> | undefined
+  annotationsTowers: Array<any> | undefined
   yAnnotation: number | undefined
   highlights: Array<TextHighlight> | undefined
   yHighlight: number | undefined
+  x: number | undefined
 }

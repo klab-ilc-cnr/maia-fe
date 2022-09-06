@@ -3,7 +3,8 @@
     Annotazione
   </div>
   <div *ngIf="noneAnnotationIsSelected; else elseBlock" class="annotation-area none">
-    Nessuna annotazione selezionata {{ annotationModel?.layer }}
+    Nessuna annotazione selezionata
+    <!-- Nessuna annotazione selezionata {{ annotationModel?.layer }} -->
   </div>
   <ng-template #elseBlock>
     <div class="annotation-area">
