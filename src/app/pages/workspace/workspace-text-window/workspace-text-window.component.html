@@ -57,7 +57,7 @@
             <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
               <g *ngFor="let anns of line.annotationsTowers">
                 <g *ngFor="let a of anns.tower">
-                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.color" (click)="openAnnotation(a.id)"></rect>
+                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px"></rect>
                   <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
                 </g>
                 <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>

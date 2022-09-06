@@ -391,6 +391,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         annTower.push({
           color: '#000',
           bgColor: layer?.color,
+          borderColor: '#808080',
           text: layer?.id,
           textCoordinates: {
             x: Math.ceil(startX + w/2 - textAnnLenght/2),
