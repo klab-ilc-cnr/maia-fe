@@ -76,10 +76,11 @@ export class TagsetCreateEditComponent implements OnInit {
 
   public get tagsetValueModalTitle(): string {
     if (((!this.tagsetValueForm) || (!this.tagsetValueForm.value)) || (!this.tagsetValueForm.value.name)) {
+    if (((!this.tagsetValueForm) || (!this.tagsetValueForm.value)) || (!this.tagsetValueForm.value.tvName)) {
       return "Nuovo valore del tagset";
     }
 
-    return this.tagsetValueForm.value.name;
+    return this.tagsetValueForm.value.tvName;
   }
 
   public get title(): string {
