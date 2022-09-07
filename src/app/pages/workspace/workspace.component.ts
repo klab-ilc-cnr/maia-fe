@@ -589,8 +589,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: () => {
           this.workSaved = true;
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
           this.loaderService.hide();
+          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
         }
       });
 

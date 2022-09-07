@@ -187,8 +187,8 @@ export class LayersViewComponent implements OnInit {
           this.loaderService.hide();
         },
         error: (err) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(err))
           this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(err))
         }
       });
   }
@@ -221,13 +221,13 @@ export class LayersViewComponent implements OnInit {
     apiCall.subscribe({
       next: () => {
         $('#featureModal').modal('hide');
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
         this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
       },
       error: (err: string) => {
         $('#featureModal').modal('hide');
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
         this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
       }
     });
   }

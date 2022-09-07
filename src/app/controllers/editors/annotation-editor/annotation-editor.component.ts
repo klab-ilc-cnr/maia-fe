@@ -131,13 +131,13 @@ export class AnnotationEditorComponent implements OnInit {
     this.loaderService.show();
     apiCall.subscribe({
       next: () => {
+        this.loaderService.hide();
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
         this.onSave.emit();
-        this.loaderService.hide();
       },
       error: (err: string) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
         this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
       }
     });
   }

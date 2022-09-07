@@ -235,12 +235,12 @@ export class TagsetCreateEditComponent implements OnInit {
     this.loaderService.show();
     apiCall.subscribe({
       next: () => {
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
         this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
       },
       error: (err: string) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
         this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
       }
     });
   }

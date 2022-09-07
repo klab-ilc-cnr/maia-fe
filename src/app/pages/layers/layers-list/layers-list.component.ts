@@ -159,15 +159,15 @@ export class LayersListComponent implements OnInit {
 
             this.layers[this.findIndexById(layer.id!)] = { ...layer }; // NON SERVE PIU' SECONDO ME
 
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
             this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
             this.saveLayerCompleted();
             this.loadData();
           },
           error: (err: string) => {
             $('#layerModal').modal('hide');
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
             this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
             this.saveLayerCompleted();
           }
         });
@@ -184,16 +184,16 @@ export class LayersListComponent implements OnInit {
             this.layer = layer; // NON SERVE PIU' SECONDO ME
             this.layers.push(this.layer); // NON SERVE PIU' SECONDO ME
 
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
             this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
             this.saveLayerCompleted();
 
             this.viewLayerFeatures(layer);
           },
           error: (err: string) => {
             $('#layerModal').modal('hide');
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
             this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
             this.saveLayerCompleted();
           }
         });

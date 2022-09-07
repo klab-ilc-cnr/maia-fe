@@ -159,16 +159,16 @@ export class WorkspaceListComponent implements OnInit {
         $('#workspaceModal').modal('hide');
 
         this.saveWorkspaceCompleted();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
         this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
         this.loadData();
       },
       error: (err: string) => {
         $('#workspaceModal').modal('hide');
 
         this.saveWorkspaceCompleted();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
         this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
       }
     });
   }

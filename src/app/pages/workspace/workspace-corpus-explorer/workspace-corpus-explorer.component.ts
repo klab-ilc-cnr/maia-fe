@@ -209,17 +209,19 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
             },
             error: () => {
               $('#addFolderModal').modal('hide');
-              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
               this.loaderService.hide();
+              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
             }
           })
         }
         else if (result['response-status'] == 1) {
           $('#addFolderModal').modal('hide');
+          this.loaderService.hide();
           this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
         }
         else {
           $('#addFolderModal').modal('hide');
+          this.loaderService.hide();
           this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
         }
 
@@ -228,8 +230,9 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         this.updateDocumentSystem();
       },
       error: (err) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
         $('#addFolderModal').modal('hide');
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
       }
     })
 
@@ -270,8 +273,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         },
         error: () => {
           $('#uploadFileModal').modal('hide');
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
         }
       })
     }
@@ -324,8 +327,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         },
         error: () => {
           $('#moveModal').modal('hide');
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
         }
       })
     }
@@ -376,8 +379,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         },
         error: () => {
           $('#renameModal').modal('hide');
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
           this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
         }
       })
     }
