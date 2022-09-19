@@ -674,26 +674,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   private generateLayersManagerPanelConfiguration(panelId: string) {
     const componentRef = this.vcr.createComponent(WorkspaceLayersVisibilityManagerComponent);
 
-    componentRef.instance.changeVisibleLayers
-      .subscribe({
-        next: (layers: any) => {
-          this.visibleLayers = layers;
-
-          let list = jsPanel.extensions.getComponentsList();
-
-          let textTiles = list.filter((item: any) => item.tileType == TileType.TEXT );
-
-          textTiles.forEach((t: any) => {
-            t.component.instance.visibleLayers = this.visibleLayers;
-          })
-
-          // let textId = event.node.data?.['element-id'];
-          // let title = event.node.label;
-
-          // this.openTextPanel(textId, title.toLowerCase())
-        }
-      });
-
     const element = componentRef.location.nativeElement;
 
     let config = {

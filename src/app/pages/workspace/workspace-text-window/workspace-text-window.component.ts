@@ -20,14 +20,6 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   styleUrls: ['./workspace-text-window.component.scss']
 })
 export class WorkspaceTextWindowComponent implements OnInit {
-  @Input()
-  get visibleLayers(): Layer[] { return this._visibleLayers; }
-  set visibleLayers(visibleLayers: Layer[]) {
-    console.info('cambio layers', this.textId, this)
-    this._visibleLayers = visibleLayers;
-    this.loadData();
-  }
-  private _visibleLayers: Layer[] = [];
 
   private selectionStart?: number;
   private selectionEnd?: number;
@@ -42,7 +34,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     spaceAfterVerticalLine: 2,
     textFont: "13px monospace",
     jsPanelHeaderBarHeight: 29.5,
-    layerSelectHeightAndMargin: 37.75 + 26,
+    layerSelectHeightAndMargin: 69.75 + 16,
     paddingAfterTextEditor: 10,
     annotationHeight: 12,
     curlyHeight: 4,
@@ -58,6 +50,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
   layersList: Layer[] = [];
   rows: TextRow[] = [];
   selectedLayer: any;
+  selectedLayers: Layer[] | undefined;
+  visibleLayers: Layer[] = [];
   sentnumVerticalLine: string = "M 0 0";
   svgHeight: number = 0;
   textContainerHeight: number = window.innerHeight / 2;
@@ -84,6 +78,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.loadData();
   }
 
+  changeVisibleLayers(event: any) {
+    this.visibleLayers = this.selectedLayers || [];
+    this.loadData();
+  }
+
   loadData() {
     if (!this.textId) {
       return;
@@ -100,6 +99,14 @@ export class WorkspaceTextWindowComponent implements OnInit {
     ]).subscribe({
       next: ([layersResponse, textResponse, annotationsResponse]) => {
         this.layersList = layersResponse;
+
+        if (!this.selectedLayers) {
+          this.visibleLayers = this.selectedLayers = this.layersList;
+        }
+        else {
+          this.visibleLayers = this.selectedLayers;
+        }
+
         this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id }));
 
         this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
@@ -172,8 +179,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   onSelectionChange(event: any): void {
-    // console.log("stai selezionando", event)
-
     const selection = this.getCurrentTextSelection();
 
     if (!selection) {

@@ -25,10 +25,6 @@
   }
 }
 
-.form-group {
-  margin-top: 1rem;
-}
-
 .text-container {
   overflow-y: auto;
   border: 1px solid $redPalette7;
@@ -110,3 +106,31 @@ path {
 }
 
 /* fine ANNOTATION */
+
+:host ::ng-deep .multiselect-custom {
+  .p-multiselect-label {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+  }
+
+  .layer-item-value {
+    border-style: solid;
+    border-width: 1px;
+    padding: .25rem .5rem;
+    border-radius: 3px;
+    display: inline-flex;
+    margin-right: .5rem;
+  }
+
+  .layer-placeholder {
+    padding: 0.25rem;
+  }
+}
+
+:host ::ng-deep {
+  @media screen and (max-width: 640px) {
+    .p-multiselect {
+      width: 100%;
+    }
+  }
+}
