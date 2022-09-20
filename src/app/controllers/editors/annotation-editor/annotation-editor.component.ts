@@ -39,7 +39,6 @@ export class AnnotationEditorComponent implements OnInit {
 
   @Input() annotationModel: Annotation | undefined;
   @Input() fileId: number | undefined;
-  @Input() selection: any;
 
   @Output() onCancel = new EventEmitter<any>();
   @Output() onDelete = new EventEmitter<any>();
@@ -166,5 +165,4 @@ export class AnnotationEditorComponent implements OnInit {
       showConfirmButton: false
     });
   }
-
 }

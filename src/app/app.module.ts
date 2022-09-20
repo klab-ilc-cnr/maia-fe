@@ -51,6 +51,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TagsetsListComponent } from './pages/tagsets/tagsets-list/tagsets-list.component';
 import { TagsetCreateEditComponent } from './pages/tagsets/tagset-create-edit/tagset-create-edit.component';
 import { TagsetValueNotDuplicateNameDirective } from './validators/tagset-value-not-duplicate-name.directive';
+import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { TagsetValueNotDuplicateNameDirective } from './validators/tagset-value-
     WorkspaceLayersVisibilityManagerComponent,
     TagsetsListComponent,
     TagsetCreateEditComponent,
-    TagsetValueNotDuplicateNameDirective
+    TagsetValueNotDuplicateNameDirective,
+    RelationEditorComponent
   ],
   imports: [
     BrowserModule,

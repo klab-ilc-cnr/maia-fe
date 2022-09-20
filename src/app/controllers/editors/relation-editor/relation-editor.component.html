@@ -1,0 +1,89 @@
+<div class="px-2 h-100 w-100">
+  <div class="border-bottom mb-2 py-2">
+    Relazione
+  </div>
+  <div *ngIf="noneRelationIsSelected; else elseBlock" class="relation-area none">
+    Nessuna relazione selezionata
+  </div>
+  <ng-template #elseBlock>
+    <div class="relation-area">
+      <form #relationForm="ngForm" class="validated" (ngSubmit)="onSubmit(relationForm)">
+        <div class="form-group">
+          <label>Da</label>
+          <div class="p-fluid">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="srcAnn-basic-addon" [ngStyle]="{'background-color': sourceLayer?.color+'4D'}">{{ sourceLayer?.name }}</span>
+              <input class="form-control" type="text" [value]="sourceAnn.value" id="basic-srcAnnValue" aria-describedby="srcAnn-basic-addon" disabled readonly>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>A</label>
+          <div class="p-fluid">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="targetAnn-basic-addon" [ngStyle]="{'background-color': targetLayer?.color+'4D'}">{{ targetLayer?.name }}</span>
+              <input class="form-control" type="text" [value]="targetAnn.value" id="basic-targetAnnValue" aria-describedby="targetAnn-basic-addon" disabled readonly>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitOfMeasure' | translate}}</label>
+            <div class="col-sm-6">
+                <div class="p-fluid">
+                    <p-dropdown #unitOfMeasure="ngModel" name="unitOfMeasure" [(ngModel)]="model.value.unitOfMeasure"
+                        placeholder="{{'assetCategory.labels.unitOfMeasureSelection' | translate}}" [options]="unitsOfMeasureOptions" filter="true" showClear="true" required>
+                    </p-dropdown>
+                    <div *ngIf="unitOfMeasure.invalid && (unitOfMeasure.touched || unitOfMeasure.dirty)"
+                        class="invalid-feedback">
+                        <div *ngIf="unitOfMeasure.errors.required">
+                            {{'assetCategory.messages.errors.unitOfMeasureRequired' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitPrice' | translate}}</label>
+            <div class="col-sm-6">
+                <div class="p-fluid">
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon">
+                            <app-icon-price></app-icon-price>
+                        </span>
+                        <p-inputNumber #unitPrice="ngModel" name="unitPrice" class="p-inputnumber"
+                            [(ngModel)]="model.value.unitPrice" mode="decimal" locale="it-IT"
+                            [showButtons]="true" maxValue  minValue="0" [step]="0.01"
+                            [min]="0" [minFractionDigits]="2" [maxFractionDigits]="2" required>
+                        </p-inputNumber>
+                    </div>
+                    <div *ngIf="unitPrice.invalid && (unitPrice.touched || unitPrice.dirty)"
+                        class="invalid-feedback">
+                        <div *ngIf="unitPrice.errors.required">
+                            {{'assetCategory.messages.errors.unitPriceRequired' | translate}}
+                        </div>
+                        <div *ngIf="unitPrice.errors.maxValue">
+                            {{'common.messages.errors.maxValue' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.description' | translate}}</label>
+            <div class="col-sm-6">
+                <textarea rows="4" #description="ngModel" type="text" name="description"
+                    class="form-control" (ngModel)="(model.value.description)"></textarea>
+            </div>
+        </div> -->
+        <div class="d-block">
+          <button pButton pRipple type="button" icon="pi pi-save" label="Salva" class="w-100 mb-2 p-button-sm" (click)="onSubmit(relationForm)"></button>
+          <button pButton pRipple type="button" icon="pi pi-times" label="Annulla" class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>
+          <button pButton pRipple type="button" icon="fa-solid fa-eraser" label="Pulisci" class="w-100 mb-2 p-button-sm p-button-help"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" label="Elimina" class="w-100 mb-2 p-button-sm p-button-danger" [disabled]="!isEditing" (click)="showDeleteModal()"></button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>
+
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
