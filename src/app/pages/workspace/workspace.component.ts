@@ -425,8 +425,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     textTileElement
       .resize({
-        height: window.innerHeight / 2,
-        width: window.innerWidth / 3
+        height: window.innerHeight / 3 * 2,
+        width: window.innerWidth / 3 * 2
       })
       .reposition();
       const {content, ...text} = textTileConfig;
@@ -709,7 +709,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string) {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
-    componentRef.instance.height = window.innerHeight / 2;
+    componentRef.instance.height = window.innerHeight / 3 * 2;
     componentRef.instance.visibleLayers = this.visibleLayers;
 
     const element = componentRef.location.nativeElement;

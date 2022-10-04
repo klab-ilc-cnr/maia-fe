@@ -48,15 +48,19 @@
   </div>
 </div>
 
-
-
 <div class="row mx-0">
   <div class="col-8" >
     <div class="text-container" [ngStyle]="{'height.px': textContainerHeight}">
-      <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg>
+      <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >
         <svg class="text-editor" [attr.height]="svgHeight">
           <defs>
-
+            <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
+              <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>
+            </marker>
+            <!-- <marker id="drag_arrow" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
+              <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>
+            </marker> -->
+            <marker></marker>
           </defs>
           <g class="background">
             <rect *ngFor="let row of rows; index as i" class="background" [ngClass]="{'background0': i%2, 'background1 bordered': !(i%2)}" [attr.height]="row.height" [attr.y]="row.yBG"></rect>
@@ -89,7 +93,7 @@
             <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
               <g *ngFor="let anns of line.annotationsTowers">
                 <g *ngFor="let a of anns.tower">
-                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px"></rect>
+                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px" (mousedown)="startDrawing($event, a)" (mouseup)="endDrawingAndCreateRelation($event, a)"></rect>
                   <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
                 </g>
                 <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>
@@ -100,6 +104,7 @@
 
           </g>
           <!-- -->
+          <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />
           <g class="sentnum unselectable">
             <text *ngFor="let row of rows; index as i" [attr.y]="row.ySentnum" [attr.x]="row.xSentnum" [attr.height]="row.height">
               {{i+1}}
@@ -112,7 +117,21 @@
   </div>
   <div class="col-4 ps-0">
     <div class="text-container" [ngStyle]="{'height.px': textContainerHeight}">
-      <app-annotation-editor [annotationModel]="annotation" [fileId]="textId" (onSave)="onAnnotationSaved()" (onDelete)="onAnnotationDeleted()" (onCancel)="onAnnotationCancel()"></app-annotation-editor>
+      <app-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="annotation" [fileId]="textId"
+        (onSave)="onAnnotationSaved()"
+        (onDelete)="onAnnotationDeleted()"
+        (onCancel)="onAnnotationCancel()">
+      </app-annotation-editor>
+      <app-relation-editor *ngIf="showRelationEditor"
+        [relationModel]="relation"
+        [sourceAnn]="sourceAnn"
+        [targetAnn]="targetAnn"
+        [sourceLayer]="sourceLayer"
+        [targetLayer]="targetLayer"
+        (onSave)="onRelationSaved()"
+        (onDelete)="onRelationDeleted()"
+        (onCancel)="onRelationCancel()">
+      </app-relation-editor>
     </div>
   </div>
 </div>

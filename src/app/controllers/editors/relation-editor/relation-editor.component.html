@@ -26,55 +26,25 @@
             </div>
           </div>
         </div>
-        <!-- <div class="form-group row">
-            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitOfMeasure' | translate}}</label>
-            <div class="col-sm-6">
-                <div class="p-fluid">
-                    <p-dropdown #unitOfMeasure="ngModel" name="unitOfMeasure" [(ngModel)]="model.value.unitOfMeasure"
-                        placeholder="{{'assetCategory.labels.unitOfMeasureSelection' | translate}}" [options]="unitsOfMeasureOptions" filter="true" showClear="true" required>
-                    </p-dropdown>
-                    <div *ngIf="unitOfMeasure.invalid && (unitOfMeasure.touched || unitOfMeasure.dirty)"
-                        class="invalid-feedback">
-                        <div *ngIf="unitOfMeasure.errors.required">
-                            {{'assetCategory.messages.errors.unitOfMeasureRequired' | translate}}
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group">
+          <label class="form-label">Nome *</label>
+          <div class="p-fluid">
+            <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="relationModel.name"
+              required maxlength="300" placeholder="Nome relazione">
+            <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+              <div *ngIf="name.errors?.['required']">
+                Necessario inserire il nome della relazione
+              </div>
             </div>
+          </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitPrice' | translate}}</label>
-            <div class="col-sm-6">
-                <div class="p-fluid">
-                    <div class="p-inputgroup">
-                        <span class="p-inputgroup-addon">
-                            <app-icon-price></app-icon-price>
-                        </span>
-                        <p-inputNumber #unitPrice="ngModel" name="unitPrice" class="p-inputnumber"
-                            [(ngModel)]="model.value.unitPrice" mode="decimal" locale="it-IT"
-                            [showButtons]="true" maxValue  minValue="0" [step]="0.01"
-                            [min]="0" [minFractionDigits]="2" [maxFractionDigits]="2" required>
-                        </p-inputNumber>
-                    </div>
-                    <div *ngIf="unitPrice.invalid && (unitPrice.touched || unitPrice.dirty)"
-                        class="invalid-feedback">
-                        <div *ngIf="unitPrice.errors.required">
-                            {{'assetCategory.messages.errors.unitPriceRequired' | translate}}
-                        </div>
-                        <div *ngIf="unitPrice.errors.maxValue">
-                            {{'common.messages.errors.maxValue' | translate}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group">
+          <label class="form-label">Descrizione</label>
+          <div class="p-fluid">
+            <input #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="relationModel.description"
+              maxlength="300" placeholder="Descrizione">
+          </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.description' | translate}}</label>
-            <div class="col-sm-6">
-                <textarea rows="4" #description="ngModel" type="text" name="description"
-                    class="form-control" (ngModel)="(model.value.description)"></textarea>
-            </div>
-        </div> -->
         <div class="d-block">
           <button pButton pRipple type="button" icon="pi pi-save" label="Salva" class="w-100 mb-2 p-button-sm" (click)="onSubmit(relationForm)"></button>
           <button pButton pRipple type="button" icon="pi pi-times" label="Annulla" class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>

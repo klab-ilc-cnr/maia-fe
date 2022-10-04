@@ -26,22 +26,51 @@ export class RelationEditorComponent implements OnInit {
     let errorMsg = 'Errore nell\'eliminare la relazione'
     let successMsg = 'Relazione eliminata con successo'
 
+    if (id == "" || id == undefined || id == null || !this.sourceAnn.attributes || !this.targetAnn.attributes) {
+      this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
+      return;
+    }
 
-    // this.annotationService
-    //     .delete(id)
-    //     .subscribe({
-    //       next: (result) => {
-    //         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-    //         Swal.close();
-    //         this.onDelete.emit()
-    //       },
-    //       error: () => {
-    //         this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
-    //       }
-    //     })
+    let sIndex = this.sourceAnn.attributes['relations'].out.findIndex((r: Relation) => r.id == this.relationModel?.id);
+    let tIndex = this.targetAnn.attributes['relations'].in.findIndex((r: Relation) => r.id == this.relationModel?.id);
+
+    if (sIndex < 0) {
+      this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
+      return;
+    }
+
+    if (tIndex < 0) {
+      this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
+      return;
+    }
+
+    this.sourceAnn.attributes['relations'].out.splice(sIndex, 1);
+    this.targetAnn.attributes['relations'].in.splice(tIndex, 1);
+
+    this.loaderService.show();
+    this.annotationService.update(this.sourceAnn).subscribe({
+      next: () => {
+        this.annotationService.update(this.targetAnn).subscribe({
+          next: () => {
+            this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+            Swal.close();
+            this.onDelete.emit();
+          },
+          error: (err: string) => {
+            this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+          }
+        });
+      },
+      error: (err: string) => {
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+      }
+    });
   }
 
-  @Input() relationModel: Relation | undefined;
+  @Input() relationModel: Relation = new Relation();
   @Input() sourceLayer: Layer | undefined;
   @Input() targetLayer: Layer | undefined;
   @Input()
@@ -197,22 +226,17 @@ export class RelationEditorComponent implements OnInit {
     this.loaderService.show();
     this.annotationService.update(this.sourceAnn).subscribe({
       next: () => {
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
-        this.onSave.emit();
-      },
-      error: (err: string) => {
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
-      }
-    });
-
-    this.loaderService.show();
-    this.annotationService.update(this.targetAnn).subscribe({
-      next: () => {
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
-        this.onSave.emit();
+        this.annotationService.update(this.targetAnn).subscribe({
+          next: () => {
+            this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+            this.onSave.emit();
+          },
+          error: (err: string) => {
+            this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+          }
+        });
       },
       error: (err: string) => {
         this.loaderService.hide();

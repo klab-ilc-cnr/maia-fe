@@ -1,3 +1,4 @@
+import { EditorType } from './../../../models/editor-type';
 import { LineBuilder } from 'src/app/models/text/line-builder';
 import { LoaderService } from 'src/app/services/loader.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
@@ -13,6 +14,9 @@ import { TextLine } from 'src/app/models/text/text-line';
 import { forkJoin } from 'rxjs';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { v4 as uuidv4 } from 'uuid';
+import { Relation } from 'src/app/models/relation/relation';
+import { Relations } from 'src/app/models/relation/relations';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -25,6 +29,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   private selectionEnd?: number;
   private _editIsLocked: boolean = false;
   private visualConfig = {
+    draggedArcHeight: 30,
     spaceBeforeTextLine: 8,
     spaceAfterTextLine: 8,
     stdTextLineHeight: 16,
@@ -38,24 +43,44 @@ export class WorkspaceTextWindowComponent implements OnInit {
     paddingAfterTextEditor: 10,
     annotationHeight: 12,
     curlyHeight: 4,
-    annotationFont: "10px 'PT Sans Caption'"
+    annotationFont: "10px 'PT Sans Caption'",
+    arcFont: "10px 'PT Sans Caption'",
+    labelMaxLenght: 10,
+    labelPaddingXAxis: 3,
+    arcAngleOffset: 3
   }
 
   annotation = new Annotation();
-  textRes: any;
   annotationsRes: any;
-  simplifiedAnns: any;
+  dragArrow: any = {
+    m: "",
+    c: "",
+    isDrawing: false,
+    visibility: "hidden",
+    sourceAnn: new Annotation(),
+    targetAnn: new Annotation()
+  };
   height: number = window.innerHeight / 2;
   layerOptions = new Array<SelectItem>();
   layersList: Layer[] = [];
+  relation = new Relation();
   rows: TextRow[] = [];
   selectedLayer: any;
   selectedLayers: Layer[] | undefined;
-  visibleLayers: Layer[] = [];
   sentnumVerticalLine: string = "M 0 0";
+  showAnnotationEditor: boolean = false;
+  showRelationEditor: boolean = false;
+  simplifiedAnns: any;
+  simplifiedArcs: Array<Relation> = [];
+  sourceAnn = new Annotation();
+  sourceLayer = new Layer();
   svgHeight: number = 0;
+  targetAnn =  new Annotation();
+  targetLayer =  new Layer();
   textContainerHeight: number = window.innerHeight / 2;
   textId: number | undefined;
+  textRes: any;
+  visibleLayers: Layer[] = [];
 
   @ViewChild('svg') public svg!: ElementRef;
 
@@ -73,6 +98,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
+    this.showAnnotationEditor = true;
+
     this.updateHeight(this.height);
 
     this.loadData();
@@ -89,6 +116,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
 
     this.annotation = new Annotation();
+    this.relation = new Relation();
 
     this.loaderService.show();
 
@@ -127,6 +155,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         this.annotationsRes = annotationsResponse;
 
         this.simplifiedAnns = [];
+        this.simplifiedArcs = [];
 
         let layersIndex = new Array<string>();
 
@@ -138,7 +167,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
         this.annotationsRes.annotations.forEach((a: Annotation) => {
           if (a.spans && layersIndex.includes(a.layer)) {
-            let x = a.spans.map((sc: SpanCoordinates) => {
+            let sAnn = a.spans.map((sc: SpanCoordinates) => {
               let {spans, ...newAnn} = a;
               return {
                 ...newAnn,
@@ -146,18 +175,45 @@ export class WorkspaceTextWindowComponent implements OnInit {
               }
             })
 
-            this.simplifiedAnns.push(...x);
+            this.simplifiedAnns.push(...sAnn);
+          }
+
+          if (a.attributes && a.attributes["relations"]) {
+            let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
+              if(!this.simplifiedArcs.includes(r)) {
+                this.simplifiedArcs.push(r);
+              }
+            })
           }
         })
 
         this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
 
         console.log('Hello', this.simplifiedAnns)
+        console.log('Archi', this.simplifiedArcs)
 
         this.renderData();
         this.loaderService.hide();
       }
     });
+  }
+
+  mouseMoved(event: any) {
+    if (this.dragArrow.isDrawing) {
+      //console.log('mi sto muovendo', event);
+      this.dragArrow.visibility = "visible";
+      this.svg.nativeElement.classList.add('unselectable');
+
+      let x1 = this.dragArrow.x1
+      let y1 = Math.min(...[this.dragArrow.y1, event.offsetY]) - this.visualConfig.draggedArcHeight;
+      let x2 = event.offsetX
+      let y2 = y1
+
+      this.dragArrow.c = "C " + x1 + " " + y1 + ", " + x2 + " " + y2 + ", " + event.offsetX + " " + event.offsetY
+      return;
+    }
+
+   // console.log('hey hey hey', event)
   }
 
   onAnnotationCancel() {
@@ -178,7 +234,26 @@ export class WorkspaceTextWindowComponent implements OnInit {
     console.log('hello', this.selectedLayer, event)
   }
 
+  onRelationCancel() {
+    this.relation = new Relation();
+    this.annotation = new Annotation();
+    this.showEditorAndHideOthers(EditorType.Annotation);
+  }
+
+  onRelationDeleted() {
+    this.relation = new Relation();
+    this.showEditorAndHideOthers(EditorType.Annotation);
+    this.loadData();
+  }
+
+  onRelationSaved() {
+    this.relation = new Relation();
+    this.showEditorAndHideOthers(EditorType.Annotation);
+    this.loadData();
+  }
+
   onSelectionChange(event: any): void {
+    console.log('selezione', event)
     const selection = this.getCurrentTextSelection();
 
     if (!selection) {
@@ -190,6 +265,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
     let text = this.textRes.text.substring(startIndex, endIndex);
+    let relations = new Relations();
 
     this.annotation.layer = this.selectedLayer;
     this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
@@ -199,12 +275,23 @@ export class WorkspaceTextWindowComponent implements OnInit {
       end: endIndex
     })
 
+    this.annotation.attributes = {};
+    this.annotation.attributes["relations"] = relations;
+
     this.annotation.value = text;
+
+    this.showEditorAndHideOthers(EditorType.Annotation);
 
     // console.log(startIndex, endIndex, text)
   }
 
   openAnnotation(id: number) {
+    if (this.dragArrow.isDrawing) {
+      return;
+    }
+
+    this.showEditorAndHideOthers(EditorType.Annotation);
+
     if (!id) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Impossibile visualizzare l\'annotazione selezionata'));
       return;
@@ -227,6 +314,95 @@ export class WorkspaceTextWindowComponent implements OnInit {
     //this._editIsLocked = true;
   }
 
+  startDrawing(event: any, annotation: any) {
+    console.log('sto disegnando', event, annotation)
+
+    if (!annotation.id) {
+      return;
+    }
+
+    let ann = this.annotationsRes.annotations.find((a: any) => a.id == annotation.id);
+
+    if (!ann) {
+      return;
+    }
+
+    this.dragArrow.sourceAnn = ann;
+    this.dragArrow.isDrawing = true;
+    this.dragArrow.m = "M " + (annotation.startX + (annotation.endX - annotation.startX)/2) + " " + annotation.y + ", "
+    this.dragArrow.x1 = annotation.startX + annotation.width/2;
+    this.dragArrow.y1 = annotation.y - this.visualConfig.draggedArcHeight;
+
+    this.clearSelection();
+  }
+
+  endDrawing(event: any) {
+    if (!this.dragArrow.isDrawing) {
+      return;
+    }
+
+    console.log('non sto disegnando', event)
+
+    this.dragArrow.isDrawing = false;
+    this.dragArrow.visibility = "hidden";
+    this.dragArrow.m = ""
+    this.dragArrow.c = ""
+
+    this.svg.nativeElement.classList.remove('unselectable');
+    this.clearSelection();
+  }
+
+  endDrawingAndCreateRelation(event: any, annotation: Annotation) {
+    if (!this.dragArrow.isDrawing) {
+      return;
+    }
+
+    if (!annotation.id) {
+      this.endDrawing(event)
+      return;
+    }
+
+    let ann = this.annotationsRes.annotations.find((a: any) => a.id == annotation.id);
+
+    if (!ann) {
+      this.endDrawing(event)
+      return;
+    }
+
+    this.dragArrow.targetAnn = ann;
+
+    this.sourceAnn = JSON.parse(JSON.stringify(this.dragArrow.sourceAnn));
+    this.targetAnn = JSON.parse(JSON.stringify(this.dragArrow.targetAnn));
+
+    let sLayer = this.layersList.find(l => l.id == Number.parseInt(this.sourceAnn.layer));
+    let tLayer = this.layersList.find(l => l.id == Number.parseInt(this.targetAnn.layer));
+
+    if (!sLayer || !tLayer) {
+      this.endDrawing(event)
+      return;
+    }
+
+    this.sourceLayer = sLayer;
+    this.targetLayer = tLayer;
+
+    let relation = new Relation();
+
+    relation.name = "Relation";
+    relation.srcAnnId = this.dragArrow.sourceAnn.id;
+    relation.srcLayerId = Number.parseInt(this.dragArrow.sourceAnn.layer);
+    relation.targetAnnId = this.dragArrow.targetAnn.id;
+    relation.targetLayerId = Number.parseInt(this.dragArrow.targetAnn.layer);
+
+    this.relation = relation;
+
+    this.showEditorAndHideOthers(EditorType.Relation);
+
+    this.endDrawing(event)
+
+    // this.
+    // this.dragArrow
+  }
+
   updateComponentSize(newHeight: any) {
     this.updateHeight(newHeight);
     this.updateTextEditorSize();
@@ -245,13 +421,32 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.renderData();
   }
 
+  private clearSelection() {
+    const selection = window.getSelection();
+
+    if (selection != null) {
+      selection.removeAllRanges();
+    }
+    // window.getSelection().removeAllRanges();
+    // if (selRect != null) {
+    //   for(var s=0; s != selRect.length; s++) {
+    //     selRect[s].parentNode.removeChild(selRect[s]);
+    //   }
+    //   selRect = null;
+    //   lastStartRec = null;
+    //   lastEndRec = null;
+    // }
+  }
+
   private createLine(auxLineBuilder: any) {
     let startIndex = auxLineBuilder.startLine;
     let endIndex = auxLineBuilder.startLine + auxLineBuilder.line.text.length;
 
-    let res = this.renderAnnotationsForLine(startIndex, endIndex);
-    let lineTowers = res.lineTowers;
-    let lineHighlights = res.lineHighLights;
+    let resAnns = this.renderAnnotationsForLine(startIndex, endIndex);
+    let lineTowers = resAnns.lineTowers;
+    let lineHighlights = resAnns.lineHighLights;
+
+    let resArcs = this.renderArcsForLine(startIndex, endIndex, lineTowers);
 
     let lineHeight = this.getStdLineHeight();
 
@@ -403,7 +598,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
             y: 0
           },
           startX: startX,
-          width: w + 'px',
+          width: w,
           endX: endX,
           height: this.visualConfig.annotationHeight,
           id: ann.id
@@ -458,6 +653,105 @@ export class WorkspaceTextWindowComponent implements OnInit {
     };
   }
 
+  private findAnnotationById(id: number) {
+    return this.simplifiedAnns.find((an: any) => an.id == id);
+  }
+
+  private renderArcsForLine(startIndex: number, endIndex: number, lineTowers: Array<any>) {
+    let lineArcs = new Array();
+    let relationsIncludedInLine = new Array();
+
+    this.simplifiedArcs.forEach(ar => {
+      if (!ar.srcAnnId || !ar.targetAnnId) {
+        return;
+      }
+
+      let sourceAnn = this.findAnnotationById(ar.srcAnnId);
+      let targetAnn = this.findAnnotationById(ar.targetAnnId);
+
+      if (!sourceAnn || !targetAnn) {
+        return;
+      }
+
+      if (sourceAnn.span.start >= startIndex && sourceAnn.span.start <= endIndex
+        && targetAnn.span.end >= startIndex && targetAnn.span.end <= endIndex) {
+          relationsIncludedInLine.push({
+            relation: ar,
+            sourceAnn: sourceAnn,
+            targetAnn: targetAnn,
+            leftToRight: sourceAnn.span.start <= targetAnn.span.start
+          });
+      }
+    })
+
+    relationsIncludedInLine.sort((a: any, b: any) => Math.abs(a.sourceAnn.span.start - b.targetAnn.span.start));
+
+    relationsIncludedInLine.forEach(r => {
+      if (r.leftToRight) {
+        let towerH = this.getMaxTowerBetweenAnns(lineTowers, r.sourceAnn.span.end, r.targetAnn.span.start);
+
+        let startArcX = this.getComputedTextLength(this.randomString(r.sourceAnn.span.end - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+        let endArcX = this.getComputedTextLength(this.randomString(r.targetAnn.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+
+        let arcSize = endArcX - startArcX;
+        let labelText = r.relation.name.substring(0, this.visualConfig.labelMaxLenght);
+
+        let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
+
+        let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
+
+        let startFirstSegment = startArcX + this.visualConfig.arcAngleOffset;
+        let endSecondSegment = endArcX - this.visualConfig.arcAngleOffset;
+
+        let arcCenter = (endSecondSegment - startFirstSegment)/2;
+
+        let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
+        let startSecondSegment = endFirstSegment + labelWidth;
+
+        if (labelWidth > arcSize) {
+          // let semiWidth = labelWidth/2;
+          // startFirstSegment = startArcX + (endArcX - startArcX)/2
+        }
+
+        let arc = {
+          start: {
+            x: startArcX,
+            y: 0,
+          },
+          end: {
+            x: endArcX,
+            y: 0
+          },
+          firstSegment: {
+            start: startFirstSegment,
+            end: endFirstSegment
+          },
+          secondSegment: {
+            start: startSecondSegment,
+            end: endSecondSegment
+          },
+          label: {
+            start: endFirstSegment,
+            end: startSecondSegment,
+            width: labelWidth,
+            text: labelText,
+            startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+            yArcLabel: 0
+          }
+        }
+        if (towerH == 0) {
+
+        }
+      }
+    })
+  }
+
+  private getMaxTowerBetweenAnns(lineTowers: Array<any>, start: number, end: number) {
+    let filteredTowers = lineTowers.filter((t: any) => t.spanCoordinates.start >= start && t.spanCoordinates.end <= end);
+
+    return this.getMaxTowerPosition(filteredTowers);
+  }
+
   private renderData() {
     this.rows = [];
 
@@ -476,6 +770,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let annFont = getComputedStyle(document.documentElement).getPropertyValue('--annotation-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--annotations-font-family')
     this.visualConfig.annotationFont = annFont;
+
+    let arcFont = getComputedStyle(document.documentElement).getPropertyValue('--arc-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--arc-font-family')
+    this.visualConfig.arcFont = arcFont;
 
     let linesCounter = 0;
     let yStartRow = 0;
@@ -587,6 +884,28 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.svgHeight = this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
 
     this.sentnumVerticalLine = "M 34 0 L 34 " + this.svgHeight;
+  }
+
+  private showEditorAndHideOthers(name: EditorType) {
+    switch (name) {
+      case EditorType.Annotation: {
+        this.showAnnotationEditor = true;
+        this.showRelationEditor = false;
+        break;
+      }
+
+      case EditorType.Relation: {
+        this.showAnnotationEditor = false;
+        this.showRelationEditor = true;
+        break;
+      }
+
+      default: {
+        this.showAnnotationEditor = true;
+        this.showRelationEditor = false;
+        return;
+      }
+    }
   }
 
   private sortFragmentsIntoTowers(annotations: any[]) {
