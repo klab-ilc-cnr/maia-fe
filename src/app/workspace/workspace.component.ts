@@ -154,11 +154,51 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       {
         label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
       }
-      /*       ,
-            {
-              label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
-            } */
     ];
+
+    jsPanel.create({
+      id: 'testiTree',
+      headerTitle: 'Testi',
+      container: this.workspaceContainer,
+      position: {
+        my: 'left-top',
+        at: 'left-top',
+        autoposition: 'down'
+      },
+      maximizedMargin: 5,
+      dragit: {
+        disable: true,
+        snap: true
+      },
+      syncMargins: true,
+      headerControls: {
+        minimize: 'remove',
+        close: 'remove',
+        maximize: 'remove'
+      }
+    });
+
+    jsPanel.create({
+      headerTitle: 'Lessici',
+      container: this.workspaceContainer,
+      position: {
+        my: 'left-top',
+        at: 'left-top',
+        of: '#testiTree',
+        autoposition: 'down'
+      },
+      maximizedMargin: 5,
+      dragit: {
+        disable: true,
+        snap: true
+      },
+      syncMargins: true,
+      headerControls: {
+        minimize: 'remove',
+        close: 'remove',
+        maximize: 'remove'
+      }
+    });
   }
   restoreTiles(workspaceStatus: Workspace) {
     console.log('restore');
