@@ -1421,7 +1421,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private getMaxTowerBetweenAnns(lineTowers: Array<any>, start: number, end: number) {
-    let filteredTowers = lineTowers.filter((t: any) => t.spanCoordinates.start >= start && t.spanCoordinates.end <= end);
+    let filteredTowers = lineTowers.filter((t: any) => (t.spanCoordinates.start >= start && t.spanCoordinates.end <= end) || (t.spanCoordinates.start < start && t.spanCoordinates.end > start) || (t.spanCoordinates.start < end && t.spanCoordinates.end > end));
 
     return this.getMaxTowerPosition(filteredTowers);
   }
