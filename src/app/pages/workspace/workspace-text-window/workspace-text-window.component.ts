@@ -47,7 +47,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     arcFont: "10px 'PT Sans Caption'",
     labelMaxLenght: 10,
     labelPaddingXAxis: 3,
-    arcAngleOffset: 3
+    arcAngleOffset: 3,
+    arcSpacing: 10
   }
 
   annotation = new Annotation();
@@ -180,7 +181,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
           if (a.attributes && a.attributes["relations"]) {
             let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-              if(!this.simplifiedArcs.includes(r)) {
+              if(!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
                 this.simplifiedArcs.push(r);
               }
             })
@@ -200,7 +201,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
   mouseMoved(event: any) {
     if (this.dragArrow.isDrawing) {
-      //console.log('mi sto muovendo', event);
       this.dragArrow.visibility = "visible";
       this.svg.nativeElement.classList.add('unselectable');
 
@@ -212,8 +212,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
       this.dragArrow.c = "C " + x1 + " " + y1 + ", " + x2 + " " + y2 + ", " + event.offsetX + " " + event.offsetY
       return;
     }
-
-   // console.log('hey hey hey', event)
   }
 
   onAnnotationCancel() {
@@ -253,7 +251,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   onSelectionChange(event: any): void {
-    console.log('selezione', event)
     const selection = this.getCurrentTextSelection();
 
     if (!selection) {
@@ -265,6 +262,20 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
     let text = this.textRes.text.substring(startIndex, endIndex);
+
+    if (!this.onlySpaces(text)) {
+      let originalLength = text.length;
+      let newText = text.trimStart();
+      let newLength = newText.length;
+
+      startIndex = startIndex + (originalLength - newLength);
+
+      newText = text.trimEnd();
+      newLength = newText.length;
+
+      endIndex = endIndex - (originalLength - newLength);
+    }
+
     let relations = new Relations();
 
     this.annotation.layer = this.selectedLayer;
@@ -281,8 +292,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.annotation.value = text;
 
     this.showEditorAndHideOthers(EditorType.Annotation);
-
-    // console.log(startIndex, endIndex, text)
   }
 
   openAnnotation(id: number) {
@@ -290,14 +299,14 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
-    this.showEditorAndHideOthers(EditorType.Annotation);
-
     if (!id) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Impossibile visualizzare l\'annotazione selezionata'));
       return;
     }
 
-    let ann = this.annotationsRes.annotations.find((a: any) => a.id == id)
+    this.showEditorAndHideOthers(EditorType.Annotation);
+
+    let ann = this.annotationsRes.annotations.find((a: any) => a.id == id);
 
     if (!ann) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Annotazione non trovata'));
@@ -314,9 +323,72 @@ export class WorkspaceTextWindowComponent implements OnInit {
     //this._editIsLocked = true;
   }
 
-  startDrawing(event: any, annotation: any) {
-    console.log('sto disegnando', event, annotation)
+  openRelation(id: string) {
+    if (this.dragArrow.isDrawing) {
+      return;
+    }
 
+    if (!id) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig('Impossibile visualizzare la relazione selezionata'));
+      return;
+    }
+
+    let rel = this.simplifiedArcs.find((a: any) => a.id == id)
+
+    if (!rel) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig('Relazione non trovata'));
+      return;
+    }
+
+    this.relation = {...rel};
+    this.sourceAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.srcAnnId);
+    this.targetAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.targetAnnId);
+
+    let sLayer = this.layersList.find(l => l.id == Number.parseInt(this.sourceAnn.layer));
+    let tLayer = this.layersList.find(l => l.id == Number.parseInt(this.targetAnn.layer));
+
+    if (!sLayer || !tLayer) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig('Impossibile visualizzare la relazione selezionata'));
+      return;
+    }
+
+    this.sourceLayer = sLayer;
+    this.targetLayer = tLayer;
+
+    this.showEditorAndHideOthers(EditorType.Relation);
+  }
+
+  overEnterRelation(id: string) {
+    $('*[data-relation-id="' + id + '"]').addClass("filtered");
+
+    let arc = this.simplifiedArcs.find(ar => ar.id == id);
+
+    if (!arc || !arc.srcAnnId || !arc.targetAnnId) {
+      return;
+    }
+
+    $('#' + arc.srcAnnId + '').addClass("filtered");
+    $('#' + arc.targetAnnId + '').addClass("filtered");
+    $('#' + this.generateHighlightId(arc.srcAnnId) + '').addClass("over");
+    $('#' + this.generateHighlightId(arc.targetAnnId) + '').addClass("over");
+  }
+
+  overLeaveRelation(id: string) {
+    $('*[data-relation-id="' + id + '"]').removeClass("filtered");
+
+    let arc = this.simplifiedArcs.find(ar => ar.id == id);
+
+    if (!arc || !arc.srcAnnId || !arc.targetAnnId) {
+      return;
+    }
+
+    $('#' + arc.srcAnnId + '').removeClass("filtered");
+    $('#' + arc.targetAnnId + '').removeClass("filtered");
+    $('#' + this.generateHighlightId(arc.srcAnnId) + '').removeClass("over");
+    $('#' + this.generateHighlightId(arc.targetAnnId) + '').removeClass("over");
+  }
+
+  startDrawing(event: any, annotation: any) {
     if (!annotation.id) {
       return;
     }
@@ -340,8 +412,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     if (!this.dragArrow.isDrawing) {
       return;
     }
-
-    console.log('non sto disegnando', event)
 
     this.dragArrow.isDrawing = false;
     this.dragArrow.visibility = "hidden";
@@ -421,6 +491,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.renderData();
   }
 
+  private onlySpaces(str: string) {
+    return str.trim().length === 0;
+  }
+
   private clearSelection() {
     const selection = window.getSelection();
 
@@ -455,6 +529,18 @@ export class WorkspaceTextWindowComponent implements OnInit {
       lineHeight = this.getStdLineHeight() + towerH + this.visualConfig.curlyHeight + 1;
     }
 
+    let arcH = 0;
+
+    if (resArcs.length > 0) {
+      arcH = this.getMaxArcOffset(resArcs) + 2 + this.visualConfig.arcSpacing;
+    }
+
+    let newPossibleHeight = this.getStdLineHeight() + arcH;
+
+    if (newPossibleHeight > lineHeight) {
+      lineHeight = newPossibleHeight;
+    }
+
     let yStartLine = auxLineBuilder.yStartLine + lineHeight;
     let yText = yStartLine - this.visualConfig.spaceAfterTextLine;
     let yAnnotation = yText - this.visualConfig.stdTextLineHeight - this.visualConfig.spaceBeforeTextLine - 1;
@@ -464,7 +550,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     lineTowers.forEach((t) => {
       annsHeightsAdder = 0;
       t.tower.forEach((ann: any) => {
-        ann.y = yAnnotation - this.visualConfig.curlyHeight - 1 - annsHeightsAdder - t.yAnnotationOffset;
+        ann.y = yAnnotation - this.visualConfig.curlyHeight - 1 - ann.yOffset - t.yTowerOffset;
         ann.textCoordinates.y = ann.y + ann.height - 2;
         annsHeightsAdder += this.visualConfig.annotationHeight;
       })
@@ -472,6 +558,62 @@ export class WorkspaceTextWindowComponent implements OnInit {
       if (t.tower.length != 0) {
         t.curlyPath = this.generateCurlyPath(t.tower[0])
       }
+    })
+
+    resArcs.forEach((ar) => {
+      let sAnn = this.findAnnotationInTowers(ar.relation.sourceAnn.id, lineTowers);
+      let tAnn = this.findAnnotationInTowers(ar.relation.targetAnn.id, lineTowers);
+
+      switch (ar.type) {
+        case "includedArc": {
+          ar.start.y = sAnn.y + this.visualConfig.annotationHeight/2;
+          ar.end.y = tAnn.y + this.visualConfig.annotationHeight/2;
+
+          let diffH = yAnnotation - Math.max(ar.start.y, ar.end.y)
+          ar.yArcOffset = yAnnotation + diffH - ar.yArcOffset;
+
+          break;
+        }
+
+        case "startedArc": {
+          ar.start.y = sAnn.y + this.visualConfig.annotationHeight/2;
+          ar.end.y = sAnn.y + this.visualConfig.annotationHeight/2;
+
+          let diffH = yAnnotation - Math.max(ar.start.y, ar.end.y)
+          ar.yArcOffset = yAnnotation + diffH - ar.yArcOffset;
+
+          break;
+        }
+
+        case "endedArc": {
+          ar.start.y = tAnn.y + this.visualConfig.annotationHeight/2;
+          ar.end.y = tAnn.y + this.visualConfig.annotationHeight/2;
+
+          let diffH = yAnnotation - Math.max(ar.start.y, ar.end.y)
+          ar.yArcOffset = yAnnotation + diffH - ar.yArcOffset;
+
+          break;
+        }
+
+        case "passingArc": {
+          ar.yArcOffset = yAnnotation - ar.yArcOffset;
+          ar.start.y = ar.yArcOffset;
+          ar.end.y = ar.yArcOffset;
+          break;
+        }
+
+        default: {
+          return;
+        }
+      }
+
+      ar.firstSegmentPath = this.generatePath(ar);
+      ar.secondSegmentPath = this.generatePath(ar);
+
+      ar.circleStartX = Math.min(ar.firstSegment.start, ar.secondSegment.end) + Math.abs(ar.firstSegment.start - ar.secondSegment.end)/2;
+      ar.circleStartY = ar.yArcOffset + ar.yAnnOffset - 3.5;
+      ar.circleHeight = 7
+      ar.circleWidth = 7
     })
 
     let yHighlight = yText - this.visualConfig.stdTextLineHeight + 5;
@@ -491,7 +633,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
       annotationsTowers: lineTowers,
       yAnnotation: yAnnotation,
       highlights: lineHighlights,
-      yHighlight: yHighlight
+      yHighlight: yHighlight,
+      arcs: resArcs
     }
 
     return line;
@@ -509,6 +652,46 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let curve2 = "C " + x + " " + (y + this.visualConfig.curlyHeight) + ", " + ann.endX + " " + y + ", " + ann.endX + " " + (y + this.visualConfig.curlyHeight)
 
     return move + " " + curve1 + " " + curve2;
+  }
+
+  private generatePath(ar: any): string {
+    switch (ar.type) {
+      case "includedArc": {
+        let move = "M " + ar.start.x + " " + ar.start.y;
+        let firstSegment = "L " + ar.firstSegment.start + " " + (ar.yArcOffset + ar.yAnnOffset);
+        let mainSegment = "L " + ar.secondSegment.end + " " +  (ar.yArcOffset + ar.yAnnOffset);
+        let secondSegment = "L " + ar.end.x + " " + ar.end.y;
+
+        return move + " " + firstSegment + " " + mainSegment + " " + secondSegment;
+      }
+
+      case "startedArc": {
+        let move = "M " + ar.start.x + " " + ar.start.y;
+        let firstSegment = "L " + ar.firstSegment.start + " " + (ar.yArcOffset + ar.yAnnOffset);
+        let secondSegment = "L " + ar.end.x + " " + (ar.yArcOffset + ar.yAnnOffset);
+
+        return move + " " + firstSegment + " " + secondSegment;
+      }
+
+      case "endedArc": {
+        let move = "M " + ar.start.x + " " + (ar.yArcOffset + ar.yAnnOffset);
+        let firstSegment = "L " + ar.secondSegment.end + " " + (ar.yArcOffset + ar.yAnnOffset);
+        let secondSegment = "L " + ar.end.x + " " + ar.end.y;
+
+        return move + " " + firstSegment + " " + secondSegment;
+      }
+
+      case "passingArc": {
+        let move = "M " + ar.start.x + " " + (ar.yArcOffset + ar.yAnnOffset);
+        let mainSegment = "L " + ar.secondSegment.end + " " + (ar.yArcOffset + ar.yAnnOffset);
+
+        return move + " " + mainSegment;
+      }
+
+      default: {
+        return "";
+      }
+    }
   }
 
   private getComputedTextLength(text: string, font: string) {
@@ -550,7 +733,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private getMaxTowerPosition(array: any[]) {
-    return Math.max(...array.map(o => (o.towerHeight + o.yAnnotationOffset)))
+    return Math.max(...array.map(o => (o.towerHeight + o.yTowerOffset)))
   }
 
   private getStdLineHeight() {
@@ -577,6 +760,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     towers.forEach((t: any) => {
       let annTower = new Array();
+      let yAnnOffset = 0;
 
       t.anns.forEach((ann: any) => {
         let layer = this.layersList.find(l => l.id == Number.parseInt(ann.layer));
@@ -601,8 +785,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
           width: w,
           endX: endX,
           height: this.visualConfig.annotationHeight,
+          yOffset: yAnnOffset,
           id: ann.id
         })
+
+        yAnnOffset += this.visualConfig.annotationHeight
 
         lineHighlights.push({
           bgColor: layer?.color,
@@ -611,7 +798,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
             y: 0
           },
           height: this.visualConfig.stdTextLineHeight - 2,
-          width: w + 2
+          width: w + 2,
+          id: this.generateHighlightId(ann.id)
         })
       })
 
@@ -621,21 +809,21 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
       yOffset = minorTowers.reduce((acc: any, o: any) => acc + o.towerHeight, 0);
 
-      let minorTowersGroupedByYannotationOffset = minorTowers.reduce((a, { yAnnotationOffset,...rest }) => {
-        const key = `${yAnnotationOffset}`;
-        a[key] = a[key] || { yAnnotationOffset, towers: [] };
+      let minorTowersGroupedByYtowerOffset = minorTowers.reduce((a, { yTowerOffset,...rest }) => {
+        const key = `${yTowerOffset}`;
+        a[key] = a[key] || { yTowerOffset, towers: [] };
         a[key]["towers"].push(rest)
         return a;
       }, {});
 
       let towersGroups = [];
-      towersGroups = Object.values(minorTowersGroupedByYannotationOffset);
+      towersGroups = Object.values(minorTowersGroupedByYtowerOffset);
 
       if (towersGroups.length > 0) {
-        let maxGroup: any = towersGroups.reduce((max: any, tGroup: any) => max.yAnnotationOffset > tGroup.yAnnotationOffset ? max : tGroup);
+        let maxGroup: any = towersGroups.reduce((max: any, tGroup: any) => max.yTowerOffset > tGroup.yTowerOffset ? max : tGroup);
         let higherTowersGroupHeight = Math.max(...maxGroup.towers.map((o: any) => (o.towerHeight)))
 
-        yOffset = maxGroup.yAnnotationOffset + higherTowersGroupHeight;
+        yOffset = maxGroup.yTowerOffset + higherTowersGroupHeight;
         yOffset += (this.visualConfig.curlyHeight + 3);
       }
 
@@ -643,7 +831,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         spanCoordinates: t.span,
         tower: annTower,
         towerHeight: annTower.length * this.visualConfig.annotationHeight,
-        yAnnotationOffset: yOffset
+        yTowerOffset: yOffset
       })
     })
 
@@ -653,97 +841,583 @@ export class WorkspaceTextWindowComponent implements OnInit {
     };
   }
 
+  private generateHighlightId(id: number) {
+    return "h-" + id;
+  }
+
   private findAnnotationById(id: number) {
     return this.simplifiedAnns.find((an: any) => an.id == id);
+  }
+
+  private findAnnotationInTowers(id: number, lineTowers: Array<any>) {
+    var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
+
+    var ann = undefined;
+
+    if (t && t.tower) {
+      ann = t.tower.find((ann: any) => ann.id == id);
+    }
+
+    return ann;
+  }
+
+  private findTowerByAnnotationId(id: number, lineTowers: Array<any>) {
+    var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
+    return t;
+  }
+
+  private getMaxArcOffset(array: Array<any>) {
+    return Math.max(...array.map(o => (o.yArcOffset + o.yAnnOffset)));
+  }
+
+  private getMaxArcOffsetInRange(array: Array<any>, startX: number, endX: number) {
+    let min = Math.min (startX, endX)
+    let max = Math.max (startX, endX)
+    let filteredArcs = array.filter((ar: any) => (ar.start.x >= min && ar.end.x <= max) ||
+      (ar.start.x < min && ar.end.x >= min && ar.end.x <= max) ||
+      (ar.start.x > max && ar.end.x >= min && ar.end.x <= max) ||
+      (ar.start.x >= min && ar.start.x <= max && ar.end.x < min) ||
+      (ar.start.x >= min && ar.start.x <= max && ar.end.x > max) ||
+      (ar.start.x < min && ar.end.x > max));
+
+      let filtereds = array.filter((ar: any) => (ar.start.x >= startX && ar.end.x <= endX))
+
+    return this.getMaxArcOffset(filteredArcs);
+  }
+
+  private elaborateArc(r: any, lineTowers: Array<any>, sourceSpanLimit: any, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+    let towerH = this.getMaxTowerBetweenAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
+
+    let startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+    let endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+
+    let arcSize = endArcX - startArcX;
+    let labelText = r.relation.name.substring(0, this.visualConfig.labelMaxLenght);
+
+    let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
+
+    let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
+
+    let startFirstSegment = startArcX;
+    let endSecondSegment = endArcX;
+
+    if (isFromLeftToRight) {
+      startFirstSegment += this.visualConfig.arcAngleOffset;
+      endSecondSegment -= this.visualConfig.arcAngleOffset;
+    }
+    else {
+      startFirstSegment -= this.visualConfig.arcAngleOffset;
+      endSecondSegment += this.visualConfig.arcAngleOffset;
+    }
+
+    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+
+    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + labelWidth;
+
+    let yOffset = this.visualConfig.arcSpacing * 2;
+    if (towerH > 0) {
+      yOffset += towerH;
+    }
+
+    let maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
+    let adjustOffset = yOffset == this.visualConfig.arcSpacing * 2 ? yOffset : 0;
+    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing;
+
+    if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
+      yOffset = newPossibleOffset;
+    }
+
+    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+    // yOffset -= yAnnOffset;
+
+    let yLabel = yOffset;
+
+    if (labelWidth > arcSize) {
+      // let semiWidth = labelWidth/2;
+      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    }
+
+    let arc = {
+      start: {
+        x: startArcX,
+        y: r.sourceTower.yTowerOffset,
+      },
+      end: {
+        x: endArcX,
+        y: r.targetTower.yTowerOffset,
+      },
+      yArcOffset: yOffset,
+      yAnnOffset: 0,
+      firstSegment: {
+        start: startFirstSegment,
+        end: endFirstSegment
+      },
+      secondSegment: {
+        start: startSecondSegment,
+        end: endSecondSegment
+      },
+      label: {
+        start: endFirstSegment,
+        end: startSecondSegment,
+        width: labelWidth,
+        text: labelText,
+        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        yArcLabel: yLabel
+      },
+      relation: r,
+      relationId: r.relation.id,
+      type: "includedArc"
+    }
+
+    return arc;
+  }
+
+  private elaborateStartedArc(r: any, lineTowers: Array<any>, sourceSpanLimit: any, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+    let towerH = this.getMaxTowerBetweenAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
+
+    let startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+    let endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+
+    let arcSize = endArcX - startArcX;
+    let labelText = r.relation.name.substring(0, this.visualConfig.labelMaxLenght);
+
+    let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
+
+    let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
+
+    let startFirstSegment = startArcX;
+
+
+    if (isFromLeftToRight) {
+      startFirstSegment += this.visualConfig.arcAngleOffset;
+      endArcX = this.svg.nativeElement.clientWidth;
+      // endSecondSegment -= this.visualConfig.arcAngleOffset;
+    }
+    else {
+      startFirstSegment -= this.visualConfig.arcAngleOffset;
+      endArcX = this.visualConfig.stdTextOffsetX;
+      // endSecondSegment += this.visualConfig.arcAngleOffset;
+    }
+
+    let endSecondSegment = endArcX;
+
+    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+
+    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + labelWidth;
+
+    let yOffset = this.visualConfig.arcSpacing;
+    if (towerH > 0) {
+      yOffset += towerH;
+    }
+
+    let maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
+    let adjustOffset = yOffset == this.visualConfig.arcSpacing ? yOffset : 0;
+    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2;
+
+    if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
+      yOffset = newPossibleOffset;
+    }
+
+    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+    // yOffset -= yAnnOffset;
+
+    let yLabel = yOffset;
+
+    if (labelWidth > arcSize) {
+      // let semiWidth = labelWidth/2;
+      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    }
+
+    let arc = {
+      start: {
+        x: startArcX,
+        y: r.sourceTower.yTowerOffset,
+      },
+      end: {
+        x: endArcX,
+        y: 0,
+      },
+      yArcOffset: yOffset,
+      yAnnOffset: 0,
+      firstSegment: {
+        start: startFirstSegment,
+        end: endFirstSegment
+      },
+      secondSegment: {
+        start: startSecondSegment,
+        end: endSecondSegment
+      },
+      label: {
+        start: endFirstSegment,
+        end: startSecondSegment,
+        width: labelWidth,
+        text: labelText,
+        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        yArcLabel: yLabel
+      },
+      relation: r,
+      relationId: r.relation.id,
+      type: "startedArc"
+    }
+
+    return arc;
+  }
+
+  private elaborateEndedArc(r: any, lineTowers: Array<any>, sourceSpanLimit: any, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+    let towerH = this.getMaxTowerBetweenAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
+
+    let startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+    let endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+
+    let arcSize = endArcX - startArcX;
+    let labelText = r.relation.name.substring(0, this.visualConfig.labelMaxLenght);
+
+    let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
+
+    let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
+
+    let endSecondSegment = endArcX;
+
+    if (isFromLeftToRight) {
+      // startFirstSegment += this.visualConfig.arcAngleOffset;
+      startArcX = this.visualConfig.stdTextOffsetX;
+      endSecondSegment -= this.visualConfig.arcAngleOffset;
+    }
+    else {
+      // startFirstSegment -= this.visualConfig.arcAngleOffset;
+      startArcX = this.svg.nativeElement.clientWidth;
+      endSecondSegment += this.visualConfig.arcAngleOffset;
+    }
+
+    let startFirstSegment = startArcX;
+
+    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+
+    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + labelWidth;
+
+    let yOffset = this.visualConfig.arcSpacing;
+    if (towerH > 0) {
+      yOffset += towerH;
+    }
+
+    let maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
+    let adjustOffset = yOffset == this.visualConfig.arcSpacing ? yOffset : 0;
+    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2;
+
+    if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
+      yOffset = newPossibleOffset;
+    }
+
+    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+    // yOffset -= yAnnOffset;
+
+    let yLabel = yOffset;
+
+    if (labelWidth > arcSize) {
+      // let semiWidth = labelWidth/2;
+      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    }
+
+    let arc = {
+      start: {
+        x: startArcX,
+        y: 0,
+      },
+      end: {
+        x: endArcX,
+        y: r.targetTower.yTowerOffset,
+      },
+      yArcOffset: yOffset,
+      yAnnOffset: 0,
+      firstSegment: {
+        start: startFirstSegment,
+        end: endFirstSegment
+      },
+      secondSegment: {
+        start: startSecondSegment,
+        end: endSecondSegment
+      },
+      label: {
+        start: endFirstSegment,
+        end: startSecondSegment,
+        width: labelWidth,
+        text: labelText,
+        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        yArcLabel: yLabel
+      },
+      relation: r,
+      relationId: r.relation.id,
+      type: "endedArc"
+    }
+
+    return arc;
+  }
+
+  private elaboratePassingArc(r: any, lineTowers: Array<any>, sourceSpanLimit: any, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+    let towerH = this.getMaxTowerBetweenAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
+
+    let startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+    let endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+
+    let arcSize = endArcX - startArcX;
+    let labelText = r.relation.name.substring(0, this.visualConfig.labelMaxLenght);
+
+    let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
+
+    let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
+
+
+    if (isFromLeftToRight) {
+      startArcX = this.visualConfig.stdTextOffsetX;
+      endArcX = this.svg.nativeElement.clientWidth;
+    }
+    else {
+      startArcX = this.svg.nativeElement.clientWidth;
+      endArcX = this.visualConfig.stdTextOffsetX;
+    }
+
+    let startFirstSegment = startArcX;
+    let endSecondSegment = endArcX;
+
+    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+
+    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + labelWidth;
+
+    let yOffset = this.visualConfig.arcSpacing;
+    if (towerH > 0) {
+      yOffset += towerH;
+    }
+
+    let maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
+    let adjustOffset = yOffset == this.visualConfig.arcSpacing ? yOffset : 0;
+    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2;
+
+    if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
+      yOffset = newPossibleOffset;
+    }
+
+    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+    // yOffset -= yAnnOffset;
+
+    let yLabel = yOffset;
+
+    if (labelWidth > arcSize) {
+      // let semiWidth = labelWidth/2;
+      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    }
+
+    let arc = {
+      start: {
+        x: startArcX,
+        y: 0,
+      },
+      end: {
+        x: endArcX,
+        y: 0,
+      },
+      yArcOffset: yOffset,
+      yAnnOffset: 0,
+      firstSegment: {
+        start: startFirstSegment,
+        end: endFirstSegment
+      },
+      secondSegment: {
+        start: startSecondSegment,
+        end: endSecondSegment
+      },
+      label: {
+        start: endFirstSegment,
+        end: startSecondSegment,
+        width: labelWidth,
+        text: labelText,
+        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        yArcLabel: yLabel
+      },
+      relation: r,
+      relationId: r.relation.id,
+      type: "passingArc"
+    }
+
+    return arc;
   }
 
   private renderArcsForLine(startIndex: number, endIndex: number, lineTowers: Array<any>) {
     let lineArcs = new Array();
     let relationsIncludedInLine = new Array();
+    let relationsStartedInLine = new Array();
+    let relationsEndedInLine = new Array();
+    let relationsPassignThroughLine = new Array();
 
-    this.simplifiedArcs.forEach(ar => {
+    for (let ar of this.simplifiedArcs) {
       if (!ar.srcAnnId || !ar.targetAnnId) {
-        return;
+        break;
       }
 
       let sourceAnn = this.findAnnotationById(ar.srcAnnId);
       let targetAnn = this.findAnnotationById(ar.targetAnnId);
 
+      let sourceTower = this.findTowerByAnnotationId(ar.srcAnnId, lineTowers);
+      let targetTower = this.findTowerByAnnotationId(ar.targetAnnId, lineTowers);
+
       if (!sourceAnn || !targetAnn) {
-        return;
+        break;
       }
 
-      if (sourceAnn.span.start >= startIndex && sourceAnn.span.start <= endIndex
-        && targetAnn.span.end >= startIndex && targetAnn.span.end <= endIndex) {
+      if (sourceAnn.span.start >= startIndex && sourceAnn.span.start <= endIndex &&
+        targetAnn.span.end >= startIndex && targetAnn.span.end <= endIndex && sourceTower && targetTower) {
           relationsIncludedInLine.push({
             relation: ar,
             sourceAnn: sourceAnn,
             targetAnn: targetAnn,
+            sourceTower: sourceTower,
+            targetTower: targetTower,
             leftToRight: sourceAnn.span.start <= targetAnn.span.start
           });
       }
-    })
 
-    relationsIncludedInLine.sort((a: any, b: any) => Math.abs(a.sourceAnn.span.start - b.targetAnn.span.start));
+      if (sourceAnn.span.start >= startIndex && sourceAnn.span.start <= endIndex &&
+        (targetAnn.span.end < startIndex || targetAnn.span.end > endIndex) && sourceTower) {
+          relationsStartedInLine.push({
+            relation: ar,
+            sourceAnn: sourceAnn,
+            targetAnn: targetAnn,
+            sourceTower: sourceTower,
+            targetTower: targetTower,
+            leftToRight: sourceAnn.span.start <= targetAnn.span.start
+          });
+      }
+
+      if (targetAnn.span.end >= startIndex && targetAnn.span.end <= endIndex &&
+        (sourceAnn.span.start < startIndex || sourceAnn.span.start > endIndex) && targetTower) {
+          relationsEndedInLine.push({
+            relation: ar,
+            sourceAnn: sourceAnn,
+            targetAnn: targetAnn,
+            sourceTower: sourceTower,
+            targetTower: targetTower,
+            leftToRight: sourceAnn.span.start <= targetAnn.span.start
+          });
+      }
+
+      if (((sourceAnn.span.start < startIndex && sourceAnn.span.start < startIndex && targetAnn.span.start > endIndex && targetAnn.span.end > endIndex) ||
+        (sourceAnn.span.start > endIndex && sourceAnn.span.start > endIndex && targetAnn.span.start < startIndex && targetAnn.span.end < startIndex))
+          && !sourceTower && !targetTower) {
+          relationsPassignThroughLine.push({
+            relation: ar,
+            sourceAnn: sourceAnn,
+            targetAnn: targetAnn,
+            sourceTower: sourceTower,
+            targetTower: targetTower,
+            leftToRight: sourceAnn.span.start <= targetAnn.span.start
+          });
+      }
+    }
+
+    relationsIncludedInLine.sort((a: any, b: any) =>
+      (Math.abs(a.sourceAnn.span.start - a.targetAnn.span.start) - Math.abs(b.sourceAnn.span.start - b.targetAnn.span.start)) ||
+      (Math.min(a.sourceAnn.span.start, a.targetAnn.span.start) - Math.min(b.sourceAnn.span.start, b.targetAnn.span.start))
+    );
+
+    relationsStartedInLine.sort((a: any, b: any) => a.leftToRight ?
+      a.sourceAnn.span.end - b.sourceAnn.span.end :
+      a.sourceAnn.span.start - b.sourceAnn.span.start
+    );
+
+    relationsStartedInLine.reverse();
+
+    relationsEndedInLine.sort((a: any, b: any) => a.leftToRight ?
+      a.targetAnn.span.start - b.targetAnn.span.start :
+      a.targetAnn.span.end - b.targetAnn.span.end
+    );
+
+    relationsEndedInLine.reverse();
+
+    relationsPassignThroughLine.sort((a: any, b: any) =>
+      Math.min(Math.abs(a.sourceAnn.span.end - a.targetAnn.span.start), Math.abs(b.sourceAnn.span.end - b.targetAnn.span.start)) ||
+      Math.min(Math.min(a.sourceAnn.span.start, a.targetAnn.span.start), Math.min(b.sourceAnn.span.start, b.targetAnn.span.start))
+    );
 
     relationsIncludedInLine.forEach(r => {
-      if (r.leftToRight) {
-        let towerH = this.getMaxTowerBetweenAnns(lineTowers, r.sourceAnn.span.end, r.targetAnn.span.start);
+      let arc: any;
 
-        let startArcX = this.getComputedTextLength(this.randomString(r.sourceAnn.span.end - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        let endArcX = this.getComputedTextLength(this.randomString(r.targetAnn.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+      arc = this.elaborateArc(
+        r,
+        lineTowers,
+        r.leftToRight ? r.sourceAnn.span.end : r.sourceAnn.span.start,
+        r.leftToRight ? r.targetAnn.span.start : r.targetAnn.span.end,
+        startIndex,
+        lineArcs,
+        r.leftToRight
+      );
 
-        let arcSize = endArcX - startArcX;
-        let labelText = r.relation.name.substring(0, this.visualConfig.labelMaxLenght);
-
-        let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
-
-        let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
-
-        let startFirstSegment = startArcX + this.visualConfig.arcAngleOffset;
-        let endSecondSegment = endArcX - this.visualConfig.arcAngleOffset;
-
-        let arcCenter = (endSecondSegment - startFirstSegment)/2;
-
-        let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
-        let startSecondSegment = endFirstSegment + labelWidth;
-
-        if (labelWidth > arcSize) {
-          // let semiWidth = labelWidth/2;
-          // startFirstSegment = startArcX + (endArcX - startArcX)/2
-        }
-
-        let arc = {
-          start: {
-            x: startArcX,
-            y: 0,
-          },
-          end: {
-            x: endArcX,
-            y: 0
-          },
-          firstSegment: {
-            start: startFirstSegment,
-            end: endFirstSegment
-          },
-          secondSegment: {
-            start: startSecondSegment,
-            end: endSecondSegment
-          },
-          label: {
-            start: endFirstSegment,
-            end: startSecondSegment,
-            width: labelWidth,
-            text: labelText,
-            startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
-            yArcLabel: 0
-          }
-        }
-        if (towerH == 0) {
-
-        }
-      }
+      lineArcs.push(arc);
     })
+
+    relationsStartedInLine.forEach(r => {
+      let arc: any;
+
+      arc = this.elaborateStartedArc(
+        r,
+        lineTowers,
+        r.leftToRight ? r.sourceAnn.span.end : r.sourceAnn.span.start,
+        r.leftToRight ? endIndex : startIndex,
+        startIndex,
+        lineArcs,
+        r.leftToRight
+      );
+
+      lineArcs.push(arc);
+    })
+
+    relationsEndedInLine.forEach(r => {
+      let arc: any;
+
+      arc = this.elaborateEndedArc(
+        r,
+        lineTowers,
+        r.leftToRight ? startIndex : endIndex,
+        r.leftToRight ? r.targetAnn.span.start : r.targetAnn.span.end,
+        startIndex,
+        lineArcs,
+        r.leftToRight
+      );
+
+      lineArcs.push(arc);
+    })
+
+    relationsPassignThroughLine.forEach(r => {
+      let arc: any;
+
+      arc = this.elaboratePassingArc(
+        r,
+        lineTowers,
+        r.leftToRight ? startIndex : endIndex,
+        r.leftToRight ? r.targetAnn.span.start : r.targetAnn.span.end,
+        startIndex,
+        lineArcs,
+        r.leftToRight
+      );
+
+      lineArcs.push(arc);
+    })
+
+    return lineArcs;
   }
 
   private getMaxTowerBetweenAnns(lineTowers: Array<any>, start: number, end: number) {
@@ -762,7 +1436,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let start = 0;
     let end = rawText.length;
 
-    // console.log(this.svg, this.svg.nativeElement.clientWidth, this.svg.nativeElement.offsetWidth)
     let width = this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
 
     let textFont = getComputedStyle(document.documentElement).getPropertyValue('--text-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--text-font-family');

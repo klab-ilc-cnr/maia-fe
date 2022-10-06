@@ -57,6 +57,9 @@
             <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
               <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>
             </marker>
+            <marker id="arrow_triangle_5_black" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="black">
+              <polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"/>
+            </marker>
             <!-- <marker id="drag_arrow" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
               <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>
             </marker> -->
@@ -72,14 +75,14 @@
             <g *ngFor="let row of rows">
               <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="line.x" [attr.height]="line.height! + 4" class="span">
                 <g *ngFor="let h of line.highlights">
-                  <rect [attr.x]="h.coordinates.x" [attr.y]="h.coordinates.y" [attr.height]="h.height" [attr.width]="h.width" [attr.fill]="h.bgColor" [attr.stroke]="h.bgColor" stroke-width="0px" rx="3px" ry="3px" stroke-linejoin="round"></rect>
+                  <rect [attr.id]="h.id" [attr.x]="h.coordinates.x" [attr.y]="h.coordinates.y" [attr.height]="h.height" [attr.width]="h.width" [attr.fill]="h.bgColor" [attr.stroke]="h.bgColor" stroke-width="0px" rx="3px" ry="3px" stroke-linejoin="round"></rect>
                 </g>
               </g>
             </g>
           </g>
           <g class="text">
-            <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-ndex]="row.startIndex" [attr.end-index]="row.endIndex">
-              <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-ndex]="line.startIndex" [attr.end-index]="line.endIndex">
+            <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
+              <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-index]="line.startIndex" [attr.end-index]="line.endIndex">
                 <tspan *ngFor="let w of line.words" [attr.y]="line.yText" style="white-space: pre;">{{w}}</tspan>
               </tspan>
             </text>
@@ -87,13 +90,23 @@
           </g>
           <!-- Generare n gruppi per archi e annotazioni -->
           <g>
+            <!-- <ng-template ngFor let-arc [ngForOf]="arcs" let-i="index">
 
+            </ng-template> -->
+          </g>
+          <g *ngFor="let row of rows">
+            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
+              <g *ngFor="let arc of line.arcs" >
+                <path [attr.d]="arc.firstSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
+                <rect [attr.x]="arc.circleStartX" [attr.y]="arc.circleStartY" [attr.height]="arc.circleHeight" [attr.width]="arc.circleWidth" fill="black" stroke="black" stroke-width="0.5px" rx="3px" ry="3px" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)"></rect>
+              </g>
+            </g>
           </g>
           <g *ngFor="let row of rows">
             <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
               <g *ngFor="let anns of line.annotationsTowers">
                 <g *ngFor="let a of anns.tower">
-                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px" (mousedown)="startDrawing($event, a)" (mouseup)="endDrawingAndCreateRelation($event, a)"></rect>
+                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" [attr.id]="a.id" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px" (mousedown)="startDrawing($event, a)" (mouseup)="endDrawingAndCreateRelation($event, a)"></rect>
                   <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
                 </g>
                 <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>

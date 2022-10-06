@@ -137,6 +137,11 @@ export class RelationEditorComponent implements OnInit {
     this.onCancel.emit();
   }
 
+  onClearBtn() {
+    this.relationForm.form.reset();
+    this.saveWithFormErrors();
+  }
+
   onSubmit(form: NgForm): void {
     if (this.relationForm.invalid) {
       return this.saveWithFormErrors();

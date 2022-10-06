@@ -12,4 +12,5 @@ export class TextLine {
   highlights: Array<TextHighlight> | undefined
   yHighlight: number | undefined
   x: number | undefined
+  arcs: Array<any> | undefined
 }

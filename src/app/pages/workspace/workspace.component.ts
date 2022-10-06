@@ -111,8 +111,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
           // { label: 'Apri', id: 'OPEN', command: (event) => { this.openTextChoicePanel(event) } },
           // { separator: true },
           { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } },
-          { separator: true },
-          { label: 'Gestione layers', id: 'LayersManager', command: (event) => { this.openLayersManagerPanel(event) } },
+          // { separator: true },
+          // { label: 'Gestione layers', id: 'LayersManager', command: (event) => { this.openLayersManagerPanel(event) } },
         ]
       },
       {

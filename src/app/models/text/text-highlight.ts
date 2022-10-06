@@ -6,4 +6,5 @@ export class TextHighlight {
   bgColor: string | undefined
   width: number | undefined
   height: number | undefined
+  id: string | undefined
 }
