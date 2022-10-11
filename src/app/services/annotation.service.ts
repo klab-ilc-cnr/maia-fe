@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnnotationService {
 
-  constructor(private http: HttpClient) { }
+  private annotationUrl: string;
+
+  constructor(private http: HttpClient) {
+    this.annotationUrl = environment.annotationUrl;
+   }
 
   // INIZIO CHIAMATE CASH SERVER
 

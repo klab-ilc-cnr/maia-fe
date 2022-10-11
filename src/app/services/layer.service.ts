@@ -67,8 +67,13 @@ export class LayerService {
     return this.http.put<Feature>(`${this.featureUrl}`, item);
   }
 
-  public deleteFeature(layerId: number, featureId: number): Observable<void> {
-    return this.http.delete<void>(`${this.featureUrl}/${layerId}/${featureId}`);
+  public canBeDeleted(layerId: number, featureId: number): Observable<boolean> {
+
+    return this.http.get<boolean>(`${this.featureUrl}/canbedeleted/${layerId}/${featureId}`);
+  }
+
+  public deleteFeature(layerId: number, featureId: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.featureUrl}/${layerId}/${featureId}`);
   }
 
   // FINE METODI MOCKATI
