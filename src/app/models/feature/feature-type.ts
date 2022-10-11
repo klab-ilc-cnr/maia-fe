@@ -1,5 +1,5 @@
 export enum FeatureType {
-  String = "String",
-  Tagset = "Tagset",
+  STRING = "STRING",
+  TAGSET = "TAGSET",
   URI = "URI"
 }

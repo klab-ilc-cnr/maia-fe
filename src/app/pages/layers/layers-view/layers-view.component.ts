@@ -28,7 +28,7 @@ export class LayersViewComponent implements OnInit {
     let successMsg = 'Feature \'' + name + '\' eliminato con successo';
 
     this.layerService
-        .deleteFeature(id)
+        .deleteFeature(this.layerInfo!.id!, id)
         .subscribe({
           next: (result) => {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
@@ -50,7 +50,7 @@ export class LayersViewComponent implements OnInit {
   }
 
   public get featureType(): boolean {
-    return this.featureModel.type == FeatureType.Tagset;
+    return this.featureModel.type == FeatureType.TAGSET;
   }
 
   public get isEditing(): boolean {
@@ -168,15 +168,17 @@ export class LayersViewComponent implements OnInit {
         }
       });
 
-    this.loaderService.show();
-    this.layerService
+/*    this.loaderService.show();
+     this.layerService
       .retrieveFeatureTypes()
       .subscribe({
         next: (data) => {
           this.featureTypeOptions = data.map((item: any) => ({ label: item.name, value: item.name }));
           this.loaderService.hide();
         }
-      });
+      }); */
+
+      this.featureTypeOptions = Object.values(FeatureType).map((item: any) => ({ label: item, value: item }));
 
     this.loaderService.show();
     this.tagsetService

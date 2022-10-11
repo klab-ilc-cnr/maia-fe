@@ -12,9 +12,11 @@ import { Layer } from '../models/layer/layer.model';
 export class LayerService {
 
   private layerUrl: string;
+  private featureUrl: string;
 
   constructor(private http: HttpClient) {
     this.layerUrl = environment.layersUrl;
+    this.featureUrl = environment.featureUrl;
   }
 
   //LAYER
@@ -46,25 +48,27 @@ export class LayerService {
   }
 
   public retrieveFeaturesByLayerId(layerId: number): Observable<Feature[]> {
-    return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
+    //return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
+
+    return this.http.get<Feature[]>(`${this.featureUrl}/${layerId}`);
   }
 
   public createFeature(item: any): Observable<Feature> {
     // return this.http.get<any>(`assets/mock/featuresCreate.json`);
 
     // QUI SARà UNA CHIAMATA POST
-    return this.http.post<Feature>(`${this.layerUrl}/features`, item);
+    return this.http.post<Feature>(`${this.featureUrl}`, item);
   }
 
   public updateFeature(item: any): Observable<Feature> {
     // return this.http.get<any>(`assets/mock/features.json`);
 
     // QUI SARà UNA CHIAMATA PUT
-    return this.http.put<Feature>(`${this.layerUrl}/features`, item);
+    return this.http.put<Feature>(`${this.featureUrl}`, item);
   }
 
-  public deleteFeature(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.layerUrl}/features/${id}`);
+  public deleteFeature(layerId: number, featureId: number): Observable<void> {
+    return this.http.delete<void>(`${this.featureUrl}/${layerId}/${featureId}`);
   }
 
   // FINE METODI MOCKATI
