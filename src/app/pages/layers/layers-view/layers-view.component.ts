@@ -1,3 +1,4 @@
+import { FeatureService } from 'src/app/services/feature.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { TagsetService } from 'src/app/services/tagset.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -27,13 +28,13 @@ export class LayersViewComponent implements OnInit {
     let errorMsg = 'Errore nell\'eliminare la feature tagset \'' + name + '\'';
     let successMsg = 'Feature \'' + name + '\' eliminato con successo';
 
-    this.layerService
+    this.featureService
         .deleteFeature(this.layerInfo!.id!, id)
         .subscribe({
           next: (result) => {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
             Swal.close();
-            this.back();
+            this.loadDetails(this.layerId);
           },
           error: () => {
             this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
@@ -69,6 +70,7 @@ export class LayersViewComponent implements OnInit {
     return this.layerInfo.name;
   }
 
+  layerId!: number;
   layerInfo: Layer | undefined;
   features: Feature[] = [];
   featureModel: Feature = new Feature();
@@ -81,6 +83,7 @@ export class LayersViewComponent implements OnInit {
   constructor(
     private loaderService: LoaderService,
     private layerService: LayerService,
+    private featureService: FeatureService,
     private tagsetService: TagsetService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
@@ -93,7 +96,8 @@ export class LayersViewComponent implements OnInit {
       var id = params.get('id');
 
       if (id != null) {
-        this.loadDetails(Number.parseInt(id));
+        this.layerId = Number.parseInt(id);
+        this.loadDetails(this.layerId);
       }
       else {
         this.back();
@@ -159,7 +163,7 @@ export class LayersViewComponent implements OnInit {
       });
 
     this.loaderService.show();
-    this.layerService
+    this.featureService
       .retrieveFeaturesByLayerId(layerId)
       .subscribe({
         next: (features: Feature[]) => {
@@ -168,17 +172,7 @@ export class LayersViewComponent implements OnInit {
         }
       });
 
-/*    this.loaderService.show();
-     this.layerService
-      .retrieveFeatureTypes()
-      .subscribe({
-        next: (data) => {
-          this.featureTypeOptions = data.map((item: any) => ({ label: item.name, value: item.name }));
-          this.loaderService.hide();
-        }
-      }); */
-
-      this.featureTypeOptions = Object.values(FeatureType).map((item: any) => ({ label: item, value: item }));
+    this.featureTypeOptions = Object.values(FeatureType).map((item: any) => ({ label: item, value: item }));
 
     this.loaderService.show();
     this.tagsetService
@@ -212,11 +206,11 @@ export class LayersViewComponent implements OnInit {
 
     if (this.isEditing) {
       msgSuccess = "Feature modificata con successo";
-      apiCall = this.layerService.updateFeature(this.featureModel);
+      apiCall = this.featureService.updateFeature(this.featureModel);
     }
     else {
       msgSuccess = "Feature creata con successo";
-      apiCall = this.layerService.createFeature(this.featureModel);
+      apiCall = this.featureService.createFeature(this.featureModel);
     }
 
     this.loaderService.show();
@@ -224,6 +218,7 @@ export class LayersViewComponent implements OnInit {
       next: () => {
         $('#featureModal').modal('hide');
         this.loaderService.hide();
+        this.loadDetails(this.layerId);
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
       },
       error: (err: string) => {

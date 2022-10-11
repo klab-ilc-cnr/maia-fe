@@ -11,8 +11,8 @@
           <h5>{{title}}</h5>
           <div class="button-group-actions">
             <button pButton pRipple type="button" label="Salva" icon="pi pi-save" (click)="onSubmitTagsetForm(tagsetForm)"></button>
-            <button pButton pRipple type="button" label="Annulla" icon="pi pi-times" class="p-button-secondary" (click)="back()"></button>
-            <button *ngIf="isEditing" pButton pRipple type="button" label="Elimina" icon="pi pi-trash" class="p-button-danger" (click)="showDeleteModal(tagsetModel)"></button>
+            <button pButton pRipple type="button" label="Annulla" icon="pi pi-times" class="p-button-secondary" (click)="backToList()"></button>
+            <button *ngIf="isEditing" pButton pRipple type="button" label="Elimina" icon="pi pi-trash" class="p-button-danger" (click)="showDeleteModal(tagsetModel)" [disabled]="canBeDeleted"></button>
           </div>
         </div>
         <div class="card-body p-fluid">

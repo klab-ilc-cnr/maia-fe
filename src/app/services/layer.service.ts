@@ -19,8 +19,6 @@ export class LayerService {
     this.featureUrl = environment.featureUrl;
   }
 
-  //LAYER
-
   public retrieveLayers(): Observable<Array<Layer>> {
     return this.http.get<Array<Layer>>(`${this.layerUrl}`);
   }
@@ -37,15 +35,7 @@ export class LayerService {
     return this.http.post<Layer>(`${this.layerUrl}`, layer);
   }
 
-  // METODI MOCKATI
-
-  public retrieveFeatureTypes(): Observable<any> {
-    return this.http.get<any>(`assets/mock/features/featureTypes.json`);
-  }
-
-  public retrieveLayerById(layerId: number): Observable<LayerWithFeatures> {
-    return this.http.get<any>(`assets/mock/layerWithFeatures${layerId}.json`);
-  }
+  //FEATURES
 
   public retrieveFeaturesByLayerId(layerId: number): Observable<Feature[]> {
     //return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
@@ -75,6 +65,4 @@ export class LayerService {
   public deleteFeature(layerId: number, featureId: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.featureUrl}/${layerId}/${featureId}`);
   }
-
-  // FINE METODI MOCKATI
 }

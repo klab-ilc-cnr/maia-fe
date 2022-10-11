@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Observable } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { Tagset } from 'src/app/models/tagset/tagset';
 import { TagsetValue } from 'src/app/models/tagset/tagset-value';
@@ -30,7 +31,7 @@ export class TagsetCreateEditComponent implements OnInit {
           next: (result) => {
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
             Swal.close();
-            this.back();
+            this.backToList();
           },
           error: () => {
             this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
@@ -90,6 +91,7 @@ export class TagsetCreateEditComponent implements OnInit {
     return this.tagsetForm.value.name;
   }
 
+  canBeDeleted: boolean = false;
   newId: string = "new"
   tagsetModel: Tagset = new Tagset();
   tagsetValueModel: TagsetValue = new TagsetValue();
@@ -114,7 +116,7 @@ export class TagsetCreateEditComponent implements OnInit {
         const id = params.get('id');
 
         if (id == null) {
-          this.back();
+          this.backToList();
         }
         else if (id != this.newId) {
           this.loadData(Number.parseInt(id));
@@ -130,8 +132,12 @@ export class TagsetCreateEditComponent implements OnInit {
     Swal.close();
   }
 
-  back() {
-    this.router.navigate(['tagsets']);
+  backToList() {
+    this.router.navigate(["../"], { relativeTo: this.activeRoute });
+  }
+
+  retrieveCanBeDeleted(id: number): Observable<boolean> {
+    return this.tagsetService.retrieveCanBeDeleted(id);
   }
 
   showDeleteModal(tagset: Tagset): void {
@@ -206,6 +212,11 @@ export class TagsetCreateEditComponent implements OnInit {
           this.loaderService.hide();
         }
       })
+
+      this.retrieveCanBeDeleted(id)
+        .subscribe({
+          next: (canBeDeleted) => this.canBeDeleted = canBeDeleted
+        })
   }
 
   private resetForm() {
@@ -236,6 +247,7 @@ export class TagsetCreateEditComponent implements OnInit {
     apiCall.subscribe({
       next: () => {
         this.loaderService.hide();
+        this.backToList();
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
       },
       error: (err: string) => {

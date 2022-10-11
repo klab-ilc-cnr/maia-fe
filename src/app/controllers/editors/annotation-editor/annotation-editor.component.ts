@@ -10,6 +10,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
+import { FeatureService } from 'src/app/services/feature.service';
 
 @Component({
   selector: 'app-annotation-editor',
@@ -37,7 +38,22 @@ export class AnnotationEditorComponent implements OnInit {
         })
   }
 
-  @Input() annotationModel: Annotation | undefined;
+  // @Input() annotationModel: Annotation | undefined;
+  @Input()
+  get annotationModel(): Annotation { return this._annotation; }
+  set annotationModel(annotation: Annotation) {
+    this._annotation = annotation;
+
+    // Da modificare
+    this.featureService.retrieveFeaturesByLayerId(Number.parseInt(annotation.layer)).subscribe({
+      next: (data) => {
+        console.log(data)
+      }
+    })
+    // this.loadData();
+  }
+  private _annotation: Annotation = new Annotation();
+
   @Input() fileId: number | undefined;
 
   @Output() onCancel = new EventEmitter<any>();
@@ -64,6 +80,7 @@ export class AnnotationEditorComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private loaderService: LoaderService,
     private layerService: LayerService,
+    private featureService: FeatureService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService
   ) { }
