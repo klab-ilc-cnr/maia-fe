@@ -46,7 +46,11 @@ export class TagsetService {
     return this.http.put<Tagset>(`${this.tagsetUrl}`, item);
   }
 
-  public delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.tagsetUrl}/${id}`);
+  public delete(id: number): Observable<number> {
+    return this.http.delete<number>(`${this.tagsetUrl}/${id}`);
+  }
+
+  public retrieveCanBeDeleted(id: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.tagsetUrl}/canbedeleted/${id}`);
   }
 }

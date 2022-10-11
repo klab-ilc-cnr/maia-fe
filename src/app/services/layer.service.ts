@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Feature } from '../models/feature/feature';
 import { LayerWithFeatures } from '../models/layer/layer-with-features';
 import { Layer } from '../models/layer/layer.model';
 
@@ -12,14 +11,10 @@ import { Layer } from '../models/layer/layer.model';
 export class LayerService {
 
   private layerUrl: string;
-  private featureUrl: string;
 
   constructor(private http: HttpClient) {
     this.layerUrl = environment.layersUrl;
-    this.featureUrl = environment.featureUrl;
   }
-
-  //LAYER
 
   public retrieveLayers(): Observable<Array<Layer>> {
     return this.http.get<Array<Layer>>(`${this.layerUrl}`);
@@ -38,38 +33,8 @@ export class LayerService {
   }
 
   // METODI MOCKATI
-
-  public retrieveFeatureTypes(): Observable<any> {
-    return this.http.get<any>(`assets/mock/features/featureTypes.json`);
-  }
-
   public retrieveLayerById(layerId: number): Observable<LayerWithFeatures> {
     return this.http.get<any>(`assets/mock/layerWithFeatures${layerId}.json`);
   }
-
-  public retrieveFeaturesByLayerId(layerId: number): Observable<Feature[]> {
-    //return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
-
-    return this.http.get<Feature[]>(`${this.featureUrl}/${layerId}`);
-  }
-
-  public createFeature(item: any): Observable<Feature> {
-    // return this.http.get<any>(`assets/mock/featuresCreate.json`);
-
-    // QUI SARà UNA CHIAMATA POST
-    return this.http.post<Feature>(`${this.featureUrl}`, item);
-  }
-
-  public updateFeature(item: any): Observable<Feature> {
-    // return this.http.get<any>(`assets/mock/features.json`);
-
-    // QUI SARà UNA CHIAMATA PUT
-    return this.http.put<Feature>(`${this.featureUrl}`, item);
-  }
-
-  public deleteFeature(layerId: number, featureId: number): Observable<void> {
-    return this.http.delete<void>(`${this.featureUrl}/${layerId}/${featureId}`);
-  }
-
   // FINE METODI MOCKATI
 }
