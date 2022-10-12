@@ -1,4 +1,4 @@
-import { EditorType } from './../../../models/editor-type';
+import { EditorType } from 'src/app/models/editor-type';
 import { LineBuilder } from 'src/app/models/text/line-builder';
 import { LoaderService } from 'src/app/services/loader.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
@@ -49,8 +49,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     labelPaddingXAxis: 3,
     arcAngleOffset: 3,
     arcSpacing: 10,
-    arcCircleLabelPlaceHolderHeight: 7,
-    arcCircleLabelPlaceHolderWiddth: 7
+    arcCircleLabelPlaceholderHeight: 7,
+    arcCircleLabelPlaceholderWidth: 7
   }
 
   annotation = new Annotation();
@@ -519,7 +519,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
     let adjustOffset = yOffset == yBaseOffset ? yOffset : 0;
-    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2/spaceFactor;
+    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 3/spaceFactor;
 
     if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
       yOffset = newPossibleOffset;
@@ -529,8 +529,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private computeStartAndEndXPosition(sourceSpanLimit: number, targetSpanLimit: number, startIndex: number) {
-    let startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-    let endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+    const startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+    const endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
 
     return {
       startArcX: startArcX,
@@ -634,10 +634,15 @@ export class WorkspaceTextWindowComponent implements OnInit {
       ar.firstSegmentPath = paths.firstSegmentPath;
       ar.secondSegmentPath = paths.secondSegmentPath;
 
-      ar.circleStartX = Math.min(ar.firstSegment.start, ar.secondSegment.end) + Math.abs(ar.firstSegment.start - ar.secondSegment.end)/2;
-      ar.circleStartY = ar.yArcOffset + ar.yAnnOffset - this.visualConfig.arcCircleLabelPlaceHolderHeight/2;
-      ar.circleHeight = this.visualConfig.arcCircleLabelPlaceHolderHeight;
-      ar.circleWidth = this.visualConfig.arcCircleLabelPlaceHolderWiddth;
+      if (ar.circleVisible) {
+        ar.circleStartX = Math.min(ar.firstSegment.start, ar.secondSegment.end) + Math.abs(ar.firstSegment.start - ar.secondSegment.end)/2 - this.visualConfig.arcCircleLabelPlaceholderWidth/2;
+        ar.circleStartY = ar.yArcOffset + ar.yAnnOffset - this.visualConfig.arcCircleLabelPlaceholderHeight/2;
+        ar.circleHeight = this.visualConfig.arcCircleLabelPlaceholderHeight;
+        ar.circleWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
+      }
+      else {
+        ar.label.yArcLabel = ar.yArcOffset + 3;
+      }
     })
 
     let yHighlight = yText - this.visualConfig.stdTextLineHeight + 5;
@@ -665,7 +670,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private elaborateArcLabel(name: string) {
-    let labelText = name.substring(0, this.visualConfig.labelMaxLenght);
+    let labelText = name.trim().substring(0, this.visualConfig.labelMaxLenght);
     let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
     let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
 
@@ -683,8 +688,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
     let startArcX = xPositionRes.startArcX;
     let endArcX = xPositionRes.endArcX;
-
-    let arcSize = Math.abs(endArcX - startArcX);
 
     // ElaborateArcLabel
     let arcLabelRes = this.elaborateArcLabel(r.relation.name)
@@ -707,15 +710,22 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let startFirstSegment = startArcX;
 
-    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
 
-    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
-    let startSecondSegment = endFirstSegment + labelWidth;
+    let arcSize = Math.abs(endArcX - startArcX);
+    let circleVisible = labelWidth >= arcSize || textWidth == 0;
 
-    if (labelWidth > arcSize) {
-      // let semiWidth = labelWidth/2;
-      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    if (circleVisible) {
+      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
+
+    let signChange = isFromLeftToRight ? 1 : -1;
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+    let labelStartX = Math.min(startSecondSegment, endFirstSegment);
+    let labelEndX = Math.max(startSecondSegment, endFirstSegment);
+    let startXText = startFirstSegment + signChange * arcCenter
 
     let yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
@@ -747,16 +757,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
         end: endSecondSegment
       },
       label: {
-        start: endFirstSegment,
-        end: startSecondSegment,
+        start: labelStartX,
+        end: labelEndX,
         width: labelWidth,
         text: labelText,
-        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        startXText: startXText,
         yArcLabel: yLabel
       },
       relation: r,
       relationId: r.relation.id,
-      type: arcType
+      type: arcType,
+      circleVisible: circleVisible
     }
 
     return arc;
@@ -769,8 +780,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
     let startArcX = xPositionRes.startArcX;
     let endArcX = xPositionRes.endArcX;
-
-    let arcSize = Math.abs(endArcX - startArcX);
 
     // ElaborateArcLabel
     let arcLabelRes = this.elaborateArcLabel(r.relation.name)
@@ -790,15 +799,22 @@ export class WorkspaceTextWindowComponent implements OnInit {
       endSecondSegment += this.visualConfig.arcAngleOffset;
     }
 
-    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
 
-    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
-    let startSecondSegment = endFirstSegment + labelWidth;
+    let arcSize = Math.abs(endArcX - startArcX);
+    let circleVisible = labelWidth >= arcSize || textWidth == 0;
 
-    if (labelWidth > arcSize) {
-      // let semiWidth = labelWidth/2;
-      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    if (circleVisible) {
+      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
+
+    let signChange = isFromLeftToRight ? 1 : -1;
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+    let labelStartX = Math.min(startSecondSegment, endFirstSegment);
+    let labelEndX = Math.max(startSecondSegment, endFirstSegment);
+    let startXText = startFirstSegment + signChange * arcCenter
 
     let yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
@@ -830,16 +846,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
         end: endSecondSegment
       },
       label: {
-        start: endFirstSegment,
-        end: startSecondSegment,
+        start: labelStartX,
+        end: labelEndX,
         width: labelWidth,
         text: labelText,
-        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        startXText: startXText,
         yArcLabel: yLabel
       },
       relation: r,
       relationId: r.relation.id,
-      type: arcType
+      type: arcType,
+      circleVisible: circleVisible
     }
 
     return arc;
@@ -852,8 +869,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
     let startArcX = xPositionRes.startArcX;
     let endArcX = xPositionRes.endArcX;
-
-    let arcSize = Math.abs(endArcX - startArcX);
 
     // ElaborateArcLabel
     let arcLabelRes = this.elaborateArcLabel(r.relation.name)
@@ -873,16 +888,23 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let startFirstSegment = startArcX;
     let endSecondSegment = endArcX;
 
-    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
 
-    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
-    let startSecondSegment = endFirstSegment + labelWidth;
+    let arcSize = Math.abs(endArcX - startArcX);
+    let circleVisible = labelWidth >= arcSize || textWidth == 0;
 
-    if (labelWidth > arcSize) {
-      // let semiWidth = labelWidth/2;
-      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    if (circleVisible) {
+      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
 
+    let signChange = isFromLeftToRight ? 1 : -1;
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+    let labelStartX = Math.min(startSecondSegment, endFirstSegment);
+    let labelEndX = Math.max(startSecondSegment, endFirstSegment);
+    let startXText = startFirstSegment + signChange * arcCenter
+    startXText = startFirstSegment + signChange * arcCenter
     let yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
     // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
@@ -913,16 +935,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
         end: endSecondSegment
       },
       label: {
-        start: endFirstSegment,
-        end: startSecondSegment,
+        start: labelStartX,
+        end: labelEndX,
         width: labelWidth,
         text: labelText,
-        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        startXText: startXText,
         yArcLabel: yLabel
       },
       relation: r,
       relationId: r.relation.id,
-      type: arcType
+      type: arcType,
+      circleVisible: circleVisible
     }
 
     return arc;
@@ -935,8 +958,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
     let startArcX = xPositionRes.startArcX;
     let endArcX = xPositionRes.endArcX;
-
-    let arcSize = Math.abs(endArcX - startArcX);
 
     // ElaborateArcLabel
     let arcLabelRes = this.elaborateArcLabel(r.relation.name)
@@ -959,15 +980,27 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let endSecondSegment = endArcX;
 
-    let arcCenter = (endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
 
-    let endFirstSegment = startFirstSegment + (startFirstSegment - arcCenter - labelWidth/2);
-    let startSecondSegment = endFirstSegment + labelWidth;
+    let arcSize = Math.abs(endArcX - startArcX);
+    let circleVisible = labelWidth >= arcSize || textWidth == 0;
 
-    if (labelWidth > arcSize) {
-      // let semiWidth = labelWidth/2;
-      // startFirstSegment = startArcX + (endArcX - startArcX)/2
+    if (circleVisible) {
+      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
+
+    let signChange = isFromLeftToRight ? 1 : -1;
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+    if (startSecondSegment < this.visualConfig.stdTextOffsetX) {
+      startSecondSegment = this.visualConfig.stdTextOffsetX;
+      endSecondSegment = this.visualConfig.stdTextOffsetX - 1;
+    }
+
+    let labelStartX = Math.min(startSecondSegment, endFirstSegment);
+    let labelEndX = Math.max(startSecondSegment, endFirstSegment);
+    let startXText = startFirstSegment + signChange * arcCenter
 
     let yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
@@ -999,16 +1032,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
         end: endSecondSegment
       },
       label: {
-        start: endFirstSegment,
-        end: startSecondSegment,
+        start: labelStartX,
+        end: labelEndX,
         width: labelWidth,
         text: labelText,
-        startXText: endFirstSegment + this.visualConfig.labelPaddingXAxis,
+        startXText: startXText,
         yArcLabel: yLabel
       },
       relation: r,
       relationId: r.relation.id,
-      type: arcType
+      type: arcType,
+      circleVisible: circleVisible
     }
 
     return arc;
@@ -1045,42 +1079,54 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     switch (ar.type) {
       case "includedArc": {
-        let move = "M " + ar.start.x + " " + ar.start.y;
-        let firstSegment = "L " + ar.firstSegment.start + " " + (ar.yArcOffset + ar.yAnnOffset);
-        let mainSegment = "L " + ar.secondSegment.end + " " +  (ar.yArcOffset + ar.yAnnOffset);
-        let secondSegment = "L " + ar.end.x + " " + ar.end.y;
+        let moveToArcStart = "M " + ar.start.x + " " + ar.start.y;
+        let moveToFirstStart = "L " + ar.firstSegment.start + " " + ar.yArcOffset;
+        let lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
 
-        firstArcSegment = move + " " + firstSegment + " " + mainSegment + " " + secondSegment;
-        secondArcSegment = move + " " + firstSegment + " " + mainSegment + " " + secondSegment;
+        let moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+        let lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+        let moveToArcEnd = "L " + ar.end.x + " " + ar.end.y;
+
+        firstArcSegment = moveToArcStart + " " + moveToFirstStart + " " + lineFirstSegment;
+        secondArcSegment = moveToSecondStart + " " + lineSecondSegment + " " + moveToArcEnd;
         break;
       }
 
       case "startedArc": {
-        let move = "M " + ar.start.x + " " + ar.start.y;
-        let firstSegment = "L " + ar.firstSegment.start + " " + (ar.yArcOffset + ar.yAnnOffset);
-        let secondSegment = "L " + ar.end.x + " " + (ar.yArcOffset + ar.yAnnOffset);
+        let moveToArcStart = "M " + ar.start.x + " " + ar.start.y;
+        let moveToFirstStart = "L " + ar.firstSegment.start + " " + ar.yArcOffset;
+        let lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
 
-        firstArcSegment = move + " " + firstSegment + " " + secondSegment;
-        secondArcSegment = move + " " + firstSegment + " " + secondSegment;
+        let moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+        let lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+
+        firstArcSegment = moveToArcStart + " " + moveToFirstStart + " " + lineFirstSegment;
+        secondArcSegment = moveToSecondStart + " " + lineSecondSegment;
         break;
       }
 
       case "endedArc": {
-        let move = "M " + ar.start.x + " " + (ar.yArcOffset + ar.yAnnOffset);
-        let firstSegment = "L " + ar.secondSegment.end + " " + (ar.yArcOffset + ar.yAnnOffset);
-        let secondSegment = "L " + ar.end.x + " " + ar.end.y;
+        let moveToFirstStart = "M " + ar.firstSegment.start + " " + ar.yArcOffset;
+        let lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
 
-        firstArcSegment = move + " " + firstSegment + " " + secondSegment;
-        secondArcSegment = move + " " + firstSegment + " " + secondSegment;
+        let moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+        let lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+        let moveToArcEnd = "L " + ar.end.x + " " + ar.end.y;
+
+        firstArcSegment = moveToFirstStart + " " + lineFirstSegment;
+        secondArcSegment = moveToSecondStart + " " + lineSecondSegment + " " + moveToArcEnd;
         break;
       }
 
       case "passingArc": {
-        let move = "M " + ar.start.x + " " + (ar.yArcOffset + ar.yAnnOffset);
-        let mainSegment = "L " + ar.secondSegment.end + " " + (ar.yArcOffset + ar.yAnnOffset);
+        let moveToFirstStart = "M " + ar.firstSegment.start + " " + ar.yArcOffset;
+        let lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
 
-        firstArcSegment = move + " " + mainSegment;
-        secondArcSegment = move + " " + mainSegment;
+        let moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+        let lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+
+        firstArcSegment = moveToFirstStart + " " + lineFirstSegment;
+        secondArcSegment = moveToSecondStart + " " + lineSecondSegment;
         break;
       }
 
@@ -1226,7 +1272,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
           borderColor: '#808080',
           text: layer?.id,
           textCoordinates: {
-            x: Math.ceil(startX + w/2 - textAnnLenght/2),
+            x: Math.ceil(startX + w/2),
             y: 0
           },
           startX: startX,
@@ -1371,7 +1417,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
       a.sourceAnn.span.start - b.sourceAnn.span.start
     );
 
-    relationsStartedInLine.reverse();
+    //relationsStartedInLine.reverse();
 
     relationsEndedInLine.sort((a: any, b: any) => a.leftToRight ?
       a.targetAnn.span.start - b.targetAnn.span.start :

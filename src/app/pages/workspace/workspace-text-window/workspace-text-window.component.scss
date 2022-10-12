@@ -58,9 +58,14 @@
 .span text {
   font-size: var(--annotation-font-size);
   text-anchor: middle;
-  // font-family: 'PT Sans Caption', sans-serif;
   font-family: var(--annotation-font-family);
   pointer-events: none;
+}
+
+.arc text {
+  font-size: var(--arc-font-size);
+  text-anchor: middle;
+  font-family: var(--arc-font-family);
 }
 
 .highlight rect {
@@ -75,7 +80,8 @@
   /* stroke: grey; */
   stroke-width: 0.5;
 }
-.span path {
+
+.span path, .arc path {
   fill: none;
 }
 

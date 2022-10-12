@@ -95,10 +95,14 @@
             </ng-template> -->
           </g>
           <g *ngFor="let row of rows">
-            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
-              <g *ngFor="let arc of line.arcs" >
-                <path [attr.d]="arc.firstSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
-                <rect [attr.x]="arc.circleStartX" [attr.y]="arc.circleStartY" [attr.height]="arc.circleHeight" [attr.width]="arc.circleWidth" fill="black" stroke="black" stroke-width="0.5px" rx="3px" ry="3px" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)"></rect>
+            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="arc">
+              <g *ngFor="let arc of line.arcs">
+                <rect *ngIf="arc.circleVisible; else elseBlock" [attr.x]="arc.circleStartX" [attr.y]="arc.circleStartY" [attr.height]="arc.circleHeight" [attr.width]="arc.circleWidth" fill="black" stroke="black" stroke-width="0.5px" rx="3px" ry="3px" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)"></rect>
+                <ng-template #elseBlock>
+                  <text [attr.x]="arc.label.startXText" [attr.y]="arc.label.yArcLabel" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)">{{arc.label.text}}</text>
+                </ng-template>
+                <path [attr.d]="arc.firstSegmentPath" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
+                <path [attr.d]="arc.secondSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
               </g>
             </g>
           </g>
