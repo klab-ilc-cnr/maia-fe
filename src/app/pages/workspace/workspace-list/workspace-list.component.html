@@ -81,10 +81,13 @@
             <label class="form-label">Nome *</label>
             <div class="p-fluid">
               <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="workspace.name"
-                required autofocus maxlength="300" placeholder="Nome workspace">
+                required autofocus maxlength="300" placeholder="Nome workspace" appWhitespacesValidator>
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
                   Il nome è obbligatorio
+                </div>
+                <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                  Il nome del workspace non può contenere solo spazi vuoti
                 </div>
               </div>
             </div>
@@ -113,29 +116,5 @@
     </div>
   </div>
 </div>
-
-<!-- <p-dialog [(visible)]="workspaceDialog" [style]="{width: '450px'}" header="Dettagli workspce" [modal]="true"
-    styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="form-group">
-            <label for="name">Nome</label>
-            <input class="form-control" type="text" pInputText id="name" [(ngModel)]="workspace.name" required
-                autofocus />
-            <small class="p-invalid" *ngIf="submitted && !workspace.name">Il nome è obbligatorio.</small>
-        </div>
-        <div class="form-group">
-            <label for="description">Note</label>
-            <textarea class="form-control" id="description" pInputTextarea [(ngModel)]="workspace.note" required
-                rows="3" cols="20"></textarea>
-        </div>
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annulla" icon="pi pi-times" class="p-button-text"
-            (click)="hideDialog()"></button>
-        <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text"
-            (click)="saveWorkspace()"></button>
-    </ng-template>
-</p-dialog> -->
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

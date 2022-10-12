@@ -52,6 +52,7 @@ import { TagsetsListComponent } from './pages/tagsets/tagsets-list/tagsets-list.
 import { TagsetCreateEditComponent } from './pages/tagsets/tagset-create-edit/tagset-create-edit.component';
 import { TagsetValueNotDuplicateNameDirective } from './validators/tagset-value-not-duplicate-name.directive';
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
+import { WhitespacesValidatorDirective } from './validators/whitespaces-validator.directive';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { RelationEditorComponent } from './controllers/editors/relation-editor/r
     TagsetsListComponent,
     TagsetCreateEditComponent,
     TagsetValueNotDuplicateNameDirective,
-    RelationEditorComponent
+    RelationEditorComponent,
+    WhitespacesValidatorDirective
   ],
   imports: [
     BrowserModule,

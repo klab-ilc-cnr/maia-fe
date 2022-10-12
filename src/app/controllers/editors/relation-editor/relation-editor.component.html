@@ -30,10 +30,13 @@
           <label class="form-label">Nome *</label>
           <div class="p-fluid">
             <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="relationModel.name"
-              required maxlength="300" placeholder="Nome relazione">
+              required maxlength="300" placeholder="Nome relazione" appWhitespacesValidator>
             <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
               <div *ngIf="name.errors?.['required']">
                 Necessario inserire il nome della relazione
+              </div>
+              <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                Il nome della relazione non può contenere solo spazi vuoti
               </div>
             </div>
           </div>

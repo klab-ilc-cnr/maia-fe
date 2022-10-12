@@ -172,10 +172,13 @@
           <div class="form-group">
             <label class="form-label">Nome nuova cartella *</label>
             <input #nfName="ngModel" type="text" name="nfName" class="form-control" [(ngModel)]="newFolderName"
-              required maxlength="300" placeholder="Nome nuova cartella">
+              required maxlength="300" placeholder="Nome nuova cartella" appWhitespacesValidator>
             <div *ngIf="nfName.invalid && (nfName.touched || nfName.dirty)" class="invalid-feedback">
               <div *ngIf="nfName.errors?.['required']">
                 Necessario inserire il nome della nuova cartella
+              </div>
+              <div *ngIf="nfName.errors?.['isNotOnlyWhitespaces']">
+                Il nome della nuova cartella non può contenere solo spazi vuoti
               </div>
             </div>
           </div>
@@ -235,10 +238,13 @@
           <div class="form-group">
             <label class="form-label">Nuovo nome *</label>
             <input #newElementName="ngModel" type="text" name="newElementName" class="form-control" [(ngModel)]="newName"
-              required maxlength="300" placeholder="Nuovo nome">
+              required maxlength="300" placeholder="Nuovo nome" appWhitespacesValidator>
             <div *ngIf="newElementName.invalid && (newElementName.touched || newElementName.dirty)" class="invalid-feedback">
               <div *ngIf="newElementName.errors?.['required']">
                 Necessario inserire il nuovo nome
+              </div>
+              <div *ngIf="newElementName.errors?.['isNotOnlyWhitespaces']">
+                Il nuovo nome non può contenere solo spazi vuoti
               </div>
             </div>
           </div>

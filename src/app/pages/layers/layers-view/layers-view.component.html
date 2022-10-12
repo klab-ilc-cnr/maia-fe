@@ -96,10 +96,13 @@
             <label class="form-label">Nome *</label>
             <div class="p-fluid">
               <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="featureModel.name"
-                required maxlength="300" placeholder="Nome feature">
+                required maxlength="300" placeholder="Nome feature" appWhitespacesValidator>
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
                   Necessario inserire il nome della feature
+                </div>
+                <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                  Il nome della feature non può contenere solo spazi vuoti
                 </div>
               </div>
             </div>

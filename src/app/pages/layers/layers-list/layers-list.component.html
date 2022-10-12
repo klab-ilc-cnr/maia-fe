@@ -88,10 +88,13 @@
             <label class="form-label">Nome *</label>
             <div class="p-fluid">
               <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="layer.name"
-                required autofocus maxlength="300" placeholder="Nome layer">
+                required autofocus maxlength="300" placeholder="Nome layer" appWhitespacesValidator>
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
                   Il nome è obbligatorio
+                </div>
+                <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                  Il nome del layer non può contenere solo spazi vuoti
                 </div>
               </div>
             </div>
