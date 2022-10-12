@@ -125,6 +125,11 @@ export class AnnotationEditorComponent implements OnInit {
     this.onCancel.emit();
   }
 
+  onClearBtn() {
+    this.annotationForm.form.reset();
+    this.saveWithFormErrors();
+  }
+
   onSubmit(form: NgForm): void {
     if (this.annotationForm.invalid) {
       return this.saveWithFormErrors();

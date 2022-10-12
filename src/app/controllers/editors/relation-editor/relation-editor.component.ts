@@ -77,7 +77,6 @@ export class RelationEditorComponent implements OnInit {
   get sourceAnn(): Annotation { return this._sourceAnn; }
   set sourceAnn(sourceAnn: Annotation) {
     this._sourceAnn = sourceAnn;
-    // this.loadData();
   }
   private _sourceAnn: Annotation = new Annotation();
 
@@ -85,7 +84,6 @@ export class RelationEditorComponent implements OnInit {
   get targetAnn(): Annotation { return this._targetAnn; }
   set targetAnn(targetAnn: Annotation) {
     this._targetAnn = targetAnn;
-    // this.loadData();
   }
   private _targetAnn: Annotation = new Annotation();
 
@@ -120,13 +118,6 @@ export class RelationEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // if (!this.layerId) {
-    //   return;
-    // }
-
-    // console.log(this.layerId)
-
-    // this.loadData();
   }
 
   ngOnDestroy(): void {
@@ -161,21 +152,6 @@ export class RelationEditorComponent implements OnInit {
 
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement((this.relationModel?.id || "")), this.relationModel.id);
   }
-
-  // private loadData() {
-  //   this.loaderService.show();
-  //   this.layerService.retrieveLayers()
-  //     .subscribe((data) => {
-  //       this.layersList = data;
-
-  //       if (this.sourceAnn.id && this.targetAnn.id) {
-  //         this.sourceLayer = this.layersList.find(l => l.id == Number.parseInt(this.sourceAnn.layer))
-  //         this.targetLayer = this.layersList.find(l => l.id == Number.parseInt(this.targetAnn.layer))
-  //       }
-
-  //       this.loaderService.hide();
-  //     });
-  // }
 
   private save(): void {
     if (!this.relationModel) {
