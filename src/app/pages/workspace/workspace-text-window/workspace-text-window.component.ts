@@ -519,7 +519,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
     let adjustOffset = yOffset == yBaseOffset ? yOffset : 0;
-    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 3/spaceFactor;
+    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2/spaceFactor;
 
     if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
       yOffset = newPossibleOffset;
@@ -625,7 +625,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         }
 
         default: {
-          return;
+          break;
         }
       }
 
@@ -1416,8 +1416,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
       a.sourceAnn.span.end - b.sourceAnn.span.end :
       a.sourceAnn.span.start - b.sourceAnn.span.start
     );
-
-    //relationsStartedInLine.reverse();
 
     relationsEndedInLine.sort((a: any, b: any) => a.leftToRight ?
       a.targetAnn.span.start - b.targetAnn.span.start :
