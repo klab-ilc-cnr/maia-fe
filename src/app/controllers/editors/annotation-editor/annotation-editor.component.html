@@ -23,23 +23,54 @@
             <input type="hidden" [ngModel]="(annotationModel.value)" #value="ngModel" name="value">
           </div>
         </div>
-        <!-- <div class="form-group row">
-            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitOfMeasure' | translate}}</label>
-            <div class="col-sm-6">
-                <div class="p-fluid">
-                    <p-dropdown #unitOfMeasure="ngModel" name="unitOfMeasure" [(ngModel)]="model.value.unitOfMeasure"
-                        placeholder="{{'assetCategory.labels.unitOfMeasureSelection' | translate}}" [options]="unitsOfMeasureOptions" filter="true" showClear="true" required>
-                    </p-dropdown>
-                    <div *ngIf="unitOfMeasure.invalid && (unitOfMeasure.touched || unitOfMeasure.dirty)"
-                        class="invalid-feedback">
-                        <div *ngIf="unitOfMeasure.errors.required">
-                            {{'assetCategory.messages.errors.unitOfMeasureRequired' | translate}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <hr />
+        <label class="w-100 text-center">Feature</label>
+        <div *ngIf="emptyFeatures; else elseBlock" class="none py-3 mb-3">
+          Nessuna feature
         </div>
-        <div class="form-group row">
+        <ng-template #elseBlock>
+          <div class="form-group" *ngFor="let feature of features">
+              <label class="form-label">{{ feature.name }}</label>
+              <div [ngSwitch]="feature.type" class="p-fluid">
+                <div *ngSwitchCase="featureTypes.STRING">
+                  STRING
+                </div>
+                <div *ngSwitchCase="featureTypes.TAGSET">
+                  TAGSET
+                </div>
+                <div *ngSwitchCase="featureTypes.URI">
+                  URI
+                </div>
+              </div>
+              <!-- <div class="p-fluid">
+
+                <p-dropdown #type="ngModel" name="type" [(ngModel)]="featureModel.type"
+                  placeholder="Tipo feature" [options]="featureTypeOptions" [filter]="true" [showClear]="true" [required]="true" (onChange)="featureTypeChange($event)">
+                </p-dropdown>
+                <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">
+                  <div *ngIf="type.errors?.['required']">
+                    Necessario inserire il tipo della feature
+                  </div>
+                </div>
+              </div> -->
+              <!-- <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitOfMeasure' | translate}}</label>
+              <div class="col-sm-6">
+                  <div class="p-fluid">
+                      <p-dropdown #unitOfMeasure="ngModel" name="unitOfMeasure" [(ngModel)]="model.value.unitOfMeasure"
+                          placeholder="{{'assetCategory.labels.unitOfMeasureSelection' | translate}}" [options]="unitsOfMeasureOptions" filter="true" showClear="true" required>
+                      </p-dropdown>
+                      <div *ngIf="unitOfMeasure.invalid && (unitOfMeasure.touched || unitOfMeasure.dirty)"
+                          class="invalid-feedback">
+                          <div *ngIf="unitOfMeasure.errors.required">
+                              {{'assetCategory.messages.errors.unitOfMeasureRequired' | translate}}
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+          </div>
+        </ng-template>
+
+        <!-- <div class="form-group row">
             <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitPrice' | translate}}</label>
             <div class="col-sm-6">
                 <div class="p-fluid">

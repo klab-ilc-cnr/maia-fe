@@ -1,0 +1,26 @@
+[
+  {
+    "id": 5,
+    "layerId": 4,
+    "name": "PoS",
+    "type": "TAGSET",
+    "tagsetId": 1,
+    "description": null
+  },
+  {
+    "id": 6,
+    "layerId": 4,
+    "name": "Feature di tipo string",
+    "type": "STRING",
+    "tagsetId": null,
+    "description": null
+  },
+  {
+    "id": 7,
+    "layerId": 4,
+    "name": "Feature di tipo URI",
+    "type": "URI",
+    "tagsetId": null,
+    "description": null
+  }
+]

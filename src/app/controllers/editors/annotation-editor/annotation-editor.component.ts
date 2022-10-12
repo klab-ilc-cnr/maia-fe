@@ -1,3 +1,4 @@
+import { Feature } from 'src/app/models/feature/feature';
 import { LoaderService } from 'src/app/services/loader.service';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -13,6 +14,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 import { FeatureService } from 'src/app/services/feature.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { Roles } from 'src/app/models/roles';
+import { FeatureType } from 'src/app/models/feature/feature-type';
 
 @Component({
   selector: 'app-annotation-editor',
@@ -46,10 +48,17 @@ export class AnnotationEditorComponent implements OnInit {
   set annotationModel(annotation: Annotation) {
     this._annotation = annotation;
 
+    let layerId = Number.parseInt(annotation.layer);
+    if (!layerId || isNaN(layerId)) {
+      this.features = [];
+
+      return;
+    }
+
     // Da modificare
-    this.featureService.retrieveFeaturesByLayerId(Number.parseInt(annotation.layer)).subscribe({
+    this.featureService.retrieveFeaturesByLayerId(layerId).subscribe({
       next: (data) => {
-        console.log(data)
+        this.features = data;
       }
     })
     // this.loadData();
@@ -61,6 +70,11 @@ export class AnnotationEditorComponent implements OnInit {
   @Output() onCancel = new EventEmitter<any>();
   @Output() onDelete = new EventEmitter<any>();
   @Output() onSave = new EventEmitter<any>();
+
+
+  public get emptyFeatures(): boolean {
+    return this.features.length == 0;
+  }
 
   public get isEditing(): boolean {
     if (this.annotationModel && this.annotationModel.id) {
@@ -88,6 +102,8 @@ export class AnnotationEditorComponent implements OnInit {
   };
 
   currentUserId: string | undefined;
+  features: Feature[] = [];
+  featureTypes = FeatureType;
 
   @ViewChild(NgForm) public annotationForm!: NgForm;
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
