@@ -17,6 +17,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { v4 as uuidv4 } from 'uuid';
 import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
+import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -290,6 +291,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     this.annotation.attributes = {};
     this.annotation.attributes["relations"] = relations;
+    this.annotation.attributes["metadata"] = new AnnotationMetadata();
 
     this.annotation.value = text;
 

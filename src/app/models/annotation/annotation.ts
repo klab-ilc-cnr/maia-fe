@@ -5,7 +5,7 @@ export class Annotation {
   layerName: string | undefined
   value: string | undefined
   imported: boolean | undefined
-  attributes: Record<string, any> | undefined
+  attributes: Record<string, any> = {}
   spans: Array<SpanCoordinates> | undefined
   id!: number
 }

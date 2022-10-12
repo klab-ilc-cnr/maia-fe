@@ -11,6 +11,8 @@ import { WorkspaceService } from 'src/app/services/workspace.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 import { FeatureService } from 'src/app/services/feature.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { Roles } from 'src/app/models/roles';
 
 @Component({
   selector: 'app-annotation-editor',
@@ -72,12 +74,28 @@ export class AnnotationEditorComponent implements OnInit {
     return (!this.annotationModel || !this.annotationModel?.layer || this.annotationModel?.layer == -1 || !this.annotationModel.spans);
   }
 
+  public get shouldBeEditable(): boolean {
+    if (!this.isEditing) {
+      return true;
+    }
+
+    if ((this.currentUserId && this.annotationModel.attributes['metadata'] && this.annotationModel.attributes['metadata'].createdBy && this.annotationModel.attributes['metadata'].createdBy == this.currentUserId) ||
+      this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE) {
+      return true;
+    }
+
+    return false;
+  };
+
+  currentUserId: string | undefined;
+
   @ViewChild(NgForm) public annotationForm!: NgForm;
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   constructor(
     private annotationService: AnnotationService,
     private workspaceService: WorkspaceService,
+    private loggedUserService : LoggedUserService,
     private loaderService: LoaderService,
     private layerService: LayerService,
     private featureService: FeatureService,
@@ -86,6 +104,7 @@ export class AnnotationEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentUserId = this.loggedUserService.currentUser?.id;
     // if (!this.layerId) {
     //   return;
     // }
@@ -137,10 +156,25 @@ export class AnnotationEditorComponent implements OnInit {
 
     if (this.isEditing) {
       msgSuccess = "Annotazione modificata con successo";
+
+      if (this.annotationModel.attributes['metadata'] && this.currentUserId) {
+        this.annotationModel.attributes['metadata'].editedBy = this.currentUserId;
+        this.annotationModel.attributes['metadata'].lastModificationDate = new Date().toUTCString();
+      }
+
       apiCall = this.annotationService.update(this.annotationModel);
     }
     else {
       msgSuccess = "Annotazione creata con successo";
+
+      if (this.annotationModel.attributes['metadata'] && this.currentUserId) {
+        let now = new Date().toUTCString();
+        this.annotationModel.attributes['metadata'].createdBy = this.currentUserId;
+        this.annotationModel.attributes['metadata'].creationDate = now;
+        this.annotationModel.attributes['metadata'].editedBy = this.currentUserId;
+        this.annotationModel.attributes['metadata'].lastModificationDate = now;
+      }
+
       apiCall = this.annotationService.create(this.fileId, this.annotationModel);
     }
 

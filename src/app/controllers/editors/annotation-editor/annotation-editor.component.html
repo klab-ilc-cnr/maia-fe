@@ -12,15 +12,15 @@
         <div class="form-group">
           <label>Layer</label>
           <div class="">
-            <input class="form-control" type="text" [value]="annotationModel?.layerName" disabled readonly>
-            <input type="hidden" [ngModel]="(annotationModel?.layer)" #layer="ngModel" name="layer">
+            <input class="form-control" type="text" [value]="annotationModel.layerName" disabled readonly>
+            <input type="hidden" [ngModel]="(annotationModel.layer)" #layer="ngModel" name="layer">
           </div>
         </div>
         <div class="form-group">
           <label class="">Testo</label>
           <div class="">
-            <input class="form-control" type="text" [value]="annotationModel?.value" disabled>
-            <input type="hidden" [ngModel]="(annotationModel?.value)" #value="ngModel" name="value">
+            <input class="form-control" type="text" [value]="annotationModel.value" disabled>
+            <input type="hidden" [ngModel]="(annotationModel.value)" #value="ngModel" name="value">
           </div>
         </div>
         <!-- <div class="form-group row">
@@ -72,7 +72,7 @@
                     class="form-control" (ngModel)="(model.value.description)"></textarea>
             </div>
         </div> -->
-        <div class="d-block">
+        <div class="d-block" *ngIf="shouldBeEditable">
           <button pButton pRipple type="button" icon="pi pi-save" label="Salva" class="w-100 mb-2 p-button-sm" (click)="onSubmit(annotationForm)"></button>
           <button pButton pRipple type="button" icon="pi pi-times" label="Annulla" class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>
           <button pButton pRipple type="button" icon="fa-solid fa-eraser" label="Pulisci" class="w-100 mb-2 p-button-sm p-button-help"></button>
