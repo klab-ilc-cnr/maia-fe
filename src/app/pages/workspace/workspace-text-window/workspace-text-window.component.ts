@@ -47,6 +47,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     annotationFont: "10px 'PT Sans Caption'",
     arcFont: "10px 'PT Sans Caption'",
     labelMaxLenght: 10,
+    labelEllipsisText: "...",
     labelPaddingXAxis: 3,
     arcAngleOffset: 3,
     arcSpacing: 10,
@@ -672,7 +673,15 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private elaborateArcLabel(name: string) {
-    let labelText = name.trim().substring(0, this.visualConfig.labelMaxLenght);
+    let labelText = "";
+
+    if (name.trim().length > this.visualConfig.labelMaxLenght) {
+      labelText = name.trim().substring(0, this.visualConfig.labelMaxLenght - this.visualConfig.labelEllipsisText.length) + this.visualConfig.labelEllipsisText;
+    }
+    else {
+      labelText = name.trim().substring(0, this.visualConfig.labelMaxLenght);
+    }
+
     let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
     let labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
 
