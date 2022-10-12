@@ -37,32 +37,5 @@ export class LayerService {
 
   //FEATURES
 
-  public retrieveFeaturesByLayerId(layerId: number): Observable<Feature[]> {
-    //return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
 
-    return this.http.get<Feature[]>(`${this.featureUrl}/${layerId}`);
-  }
-
-  public createFeature(item: any): Observable<Feature> {
-    // return this.http.get<any>(`assets/mock/featuresCreate.json`);
-
-    // QUI SARà UNA CHIAMATA POST
-    return this.http.post<Feature>(`${this.featureUrl}`, item);
-  }
-
-  public updateFeature(item: any): Observable<Feature> {
-    // return this.http.get<any>(`assets/mock/features.json`);
-
-    // QUI SARà UNA CHIAMATA PUT
-    return this.http.put<Feature>(`${this.featureUrl}`, item);
-  }
-
-  public canBeDeleted(layerId: number, featureId: number): Observable<boolean> {
-
-    return this.http.get<boolean>(`${this.featureUrl}/canbedeleted/${layerId}/${featureId}`);
-  }
-
-  public deleteFeature(layerId: number, featureId: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.featureUrl}/${layerId}/${featureId}`);
-  }
 }

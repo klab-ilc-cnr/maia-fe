@@ -53,5 +53,4 @@ export class TagsetService {
   public retrieveCanBeDeleted(id: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.tagsetUrl}/canbedeleted/${id}`);
   }
-
 }

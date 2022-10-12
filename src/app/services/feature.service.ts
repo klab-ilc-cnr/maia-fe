@@ -35,4 +35,9 @@ export class FeatureService {
   public deleteFeature(layerId: number, featureId: number): Observable<void> {
     return this.http.delete<void>(`${this.featureUrl}/${layerId}/${featureId}`);
   }
+
+  public retrieveCanBeDeleted(layerId: number, featureId: number): Observable<boolean> {
+
+    return this.http.get<boolean>(`${this.featureUrl}/canbedeleted/${layerId}/${featureId}`);
+  }
 }
