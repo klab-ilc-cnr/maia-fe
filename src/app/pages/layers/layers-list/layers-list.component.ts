@@ -27,8 +27,13 @@ export class LayersListComponent implements OnInit {
         .deleteLayer(id)
         .subscribe({
           next: (result) => {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            Swal.close();
+            if (result) {
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              Swal.close();
+            }
+            else {
+              this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+            }
             this.loadData();
           },
           error: () => {
@@ -140,8 +145,9 @@ export class LayersListComponent implements OnInit {
   }
 
   private save(): void {
+    let errorMsg = "Errore durante il salvataggio!";
     if (!this.layer) {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
       return;
     }
 
@@ -150,16 +156,16 @@ export class LayersListComponent implements OnInit {
       || this.layer.color === null
       || this.layer.color.trim().length <= 0 )
       {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
         return;
       }
 
-    let msgSuccess = "Operazione effettuata con successo";
+    let successMsg = "Operazione effettuata con successo";
 
     this.loaderService.show();
 
     if (this.isEditing && this.layer.name?.trim() && this.layer.id) {
-      msgSuccess = "Layer modificato con successo";
+      successMsg = "Layer modificato con successo";
 
       this.layerService
         .updateLayer(this.layer)
@@ -170,20 +176,20 @@ export class LayersListComponent implements OnInit {
             this.layers[this.findIndexById(layer.id!)] = { ...layer }; // NON SERVE PIU' SECONDO ME
 
             this.loaderService.hide();
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
             this.saveLayerCompleted();
             this.loadData();
           },
           error: (err: string) => {
             $('#layerModal').modal('hide');
             this.loaderService.hide();
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
             this.saveLayerCompleted();
           }
         });
     }
     else {
-      msgSuccess = "Layer creato con successo";
+      successMsg = "Layer creato con successo";
 
       this.layerService
         .createLayer(this.layer)
@@ -195,7 +201,7 @@ export class LayersListComponent implements OnInit {
             this.layers.push(this.layer); // NON SERVE PIU' SECONDO ME
 
             this.loaderService.hide();
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
             this.saveLayerCompleted();
 
             this.viewLayerFeatures(layer);
@@ -203,7 +209,7 @@ export class LayersListComponent implements OnInit {
           error: (err: string) => {
             $('#layerModal').modal('hide');
             this.loaderService.hide();
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
             this.saveLayerCompleted();
           }
         });

@@ -141,15 +141,15 @@ export class WorkspaceListComponent implements OnInit {
       return;
     }
 
-    let msgSuccess = "Operazione effettuata con successo";
+    let successMsg = "Operazione effettuata con successo";
     let apiCall;
 
     if (this.isEditing && this.workspace.name?.trim() && this.workspace.id) {
-      msgSuccess = "Workspace modificato con successo";
+      successMsg = "Workspace modificato con successo";
       apiCall = this.workspaceService.updateWorkspace(this.workspace);
     }
     else {
-      msgSuccess = "Workspace creato con successo";
+      successMsg = "Workspace creato con successo";
       apiCall = this.workspaceService.createWorkspace(this.workspace);
     }
 
@@ -160,7 +160,7 @@ export class WorkspaceListComponent implements OnInit {
 
         this.saveWorkspaceCompleted();
         this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         this.loadData();
       },
       error: (err: string) => {

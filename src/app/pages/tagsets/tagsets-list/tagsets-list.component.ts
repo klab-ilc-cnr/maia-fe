@@ -25,8 +25,14 @@ export class TagsetsListComponent implements OnInit {
         .delete(id)
         .subscribe({
           next: (result) => {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            Swal.close();
+            if (result) {
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              Swal.close();
+            }
+            else {
+              console.log('hi')
+              this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+            }
             this.loadData();
           },
           error: () => {

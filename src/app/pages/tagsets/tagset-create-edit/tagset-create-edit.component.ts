@@ -29,8 +29,13 @@ export class TagsetCreateEditComponent implements OnInit {
         .delete(id)
         .subscribe({
           next: (result) => {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            Swal.close();
+            if (result) {
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              Swal.close();
+            }
+            else {
+              this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+            }
             this.backToList();
           },
           error: () => {

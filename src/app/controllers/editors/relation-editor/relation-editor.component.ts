@@ -159,7 +159,7 @@ export class RelationEditorComponent implements OnInit {
       return;
     }
 
-    let msgSuccess = "Operazione effettuata con successo";
+    let successMsg = "Operazione effettuata con successo";
 
     // INIZIO INIZIALIZZAZIONE
     if (!this.sourceAnn.attributes) {
@@ -180,7 +180,7 @@ export class RelationEditorComponent implements OnInit {
     // FINE INIZIALIZZAZIONE
 
     if (this.isEditing) {
-      msgSuccess = "Relazione modificata con successo";
+      successMsg = "Relazione modificata con successo";
 
       let sIndex = this.sourceAnn.attributes['relations'].out.findIndex((r: Relation) => r.id == this.relationModel?.id);
       let tIndex = this.targetAnn.attributes['relations'].in.findIndex((r: Relation) => r.id == this.relationModel?.id);
@@ -197,7 +197,7 @@ export class RelationEditorComponent implements OnInit {
       this.targetAnn.attributes['relations'].in.splice(tIndex, 1);
     }
     else {
-      msgSuccess = "Relazione creata con successo";
+      successMsg = "Relazione creata con successo";
       this.relationModel.id = uuidv4();
     }
 
@@ -211,7 +211,7 @@ export class RelationEditorComponent implements OnInit {
         this.annotationService.update(this.targetAnn).subscribe({
           next: () => {
             this.loaderService.hide();
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
             this.onSave.emit();
           },
           error: (err: string) => {

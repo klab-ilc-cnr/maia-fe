@@ -14,7 +14,6 @@ import { TextLine } from 'src/app/models/text/text-line';
 import { forkJoin } from 'rxjs';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { v4 as uuidv4 } from 'uuid';
 import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
@@ -1259,6 +1258,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let lineHighlights = new Array<TextHighlight>();
 
     let localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
+
+    // Da completare la gestione delle annotazioni su più linee
+    // let localAnns = this.simplifiedAnns.filter((a: any) =>
+    //   (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
+    //   (a.span.start < (startIndex || 0) && a.span.end >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
+    //   (a.span.start >= (startIndex || 0) && a.span.start <= (endIndex || 0) && a.span.end > (endIndex || 0)));
+
     localAnns.sort((a: any, b: any) => (a.span.end - a.span.start) - (b.span.end - b.span.start));
 
     let towers = this.sortFragmentsIntoTowers(localAnns);
