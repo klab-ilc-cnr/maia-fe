@@ -1,6 +1,6 @@
-import { FeatureWithTagsets } from "./feature-with-tagsets";
+import { Feature } from "./feature";
 
-export class FeatureForAnnotation extends FeatureWithTagsets{
+export class FeatureForAnnotation extends Feature{
   placeholder: string | undefined
   dropdownOptions: Array<any> = []
   modelPropName: string | undefined

@@ -1,3 +1,4 @@
+import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -12,7 +13,11 @@ export class AnnotationService {
 
   constructor(private http: HttpClient) {
     this.annotationUrl = environment.annotationUrl;
-   }
+  }
+
+  public createAnnotationFeature(annFeature: AnnotationFeature): Observable<any> {
+    return this.http.post<any>(`${this.annotationUrl}`, annFeature);
+  }
 
   // INIZIO CHIAMATE CASH SERVER
 

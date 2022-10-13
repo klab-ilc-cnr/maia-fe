@@ -1,11 +1,11 @@
-import { FeatureForAnnotation } from './../../../models/feature/feature-for-annotation';
+import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
+import { FeatureForAnnotation } from 'src/app/models/feature/feature-for-annotation';
 import { Feature } from 'src/app/models/feature/feature';
 import { LoaderService } from 'src/app/services/loader.service';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Annotation } from 'src/app/models/annotation/annotation';
-import { LayerWithFeatures } from 'src/app/models/layer/layer-with-features';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -56,12 +56,12 @@ export class AnnotationEditorComponent implements OnInit {
       return;
     }
 
-    this.featureService.retrieveCompletedFeaturesByLayerId(layerId).subscribe({
+    this.featureService.retrieveFeaturesByLayerId(layerId).subscribe({
       next: (data) => {
         data.forEach(feature => {
           let newFeature: FeatureForAnnotation = JSON.parse(JSON.stringify(feature));
 
-          if (feature.tagsetId != null && feature.tagset && feature.tagset.values) {
+          if (feature.tagset && feature.tagset.values) {
             newFeature.dropdownOptions = feature.tagset.values.map(item => ({ label: item.name, value: item.id }));
           }
 
@@ -240,10 +240,30 @@ export class AnnotationEditorComponent implements OnInit {
 
     this.loaderService.show();
     apiCall.subscribe({
-      next: () => {
+      next: (res) => {
         this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        this.onSave.emit();
+
+        if (this.isEditing) {
+          // TO COMPLETE
+        }
+        else {
+          let annFeatures = new AnnotationFeature();
+          annFeatures.annotationId = res.annotation.id;
+          annFeatures.features = this.features.map(f => f.id!);
+
+          this.loaderService.show();
+          this.annotationService.createAnnotationFeature(annFeatures).subscribe({
+            next: () => {
+              this.loaderService.hide();
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              this.onSave.emit();
+            },
+            error: (err: string) => {
+              this.loaderService.hide();
+              this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+            }
+          })
+        }
       },
       error: (err: string) => {
         this.loaderService.hide();

@@ -1,11 +1,10 @@
-import { Tagset } from "../tagset/tagset"
 import { FeatureType } from "./feature-type"
 
-export class Feature {
+export class CreateFeature {
   id: number | undefined
   layerId: number | undefined
   name: string | undefined
   type: FeatureType | undefined
-  tagset: Tagset | undefined
+  tagsetId: number | undefined
   description: string | undefined
 }

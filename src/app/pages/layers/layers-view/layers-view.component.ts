@@ -13,6 +13,7 @@ import { FeatureType } from 'src/app/models/feature/feature-type';
 import { Tagset } from 'src/app/models/tagset/tagset';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
+import { CreateFeature } from 'src/app/models/feature/create-feature';
 
 declare var $: any;
 
@@ -88,8 +89,10 @@ export class LayersViewComponent implements OnInit {
   layerId!: number;
   layerInfo: Layer | undefined;
   features: Feature[] = [];
-  featureModel: Feature = new Feature();
+  featureModel: CreateFeature = new CreateFeature();
+
   featureTypeOptions = new Array<SelectItem>();
+  tagsetList: Tagset[] = [];
   tagsetOptions = new Array<SelectItem>();
 
   @ViewChild(NgForm) public featureForm!: NgForm;
@@ -109,7 +112,7 @@ export class LayersViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       var id = params.get('id');
-
+      console.log('hi')
       if (id != null) {
         this.layerId = Number.parseInt(id);
         this.loadDetails(this.layerId);
@@ -162,6 +165,10 @@ export class LayersViewComponent implements OnInit {
     this.resetForm();
     this.featureModel = JSON.parse(JSON.stringify(feature));
 
+    if (feature.tagset) {
+      this.featureModel.tagsetId = feature.tagset.id;
+    }
+
     $('#featureModal').modal('show');
   }
 
@@ -194,6 +201,7 @@ export class LayersViewComponent implements OnInit {
       .retrieve()
       .subscribe({
         next: (data: Tagset[]) => {
+          this.tagsetList = data;
           this.tagsetOptions = data.map(item => ({ label: item.name, value: item.id }));
           this.loaderService.hide();
         },
@@ -205,7 +213,7 @@ export class LayersViewComponent implements OnInit {
   }
 
   private resetForm() {
-    this.featureModel = new Feature();
+    this.featureModel = new CreateFeature();
     this.featureForm.form.markAsUntouched();
     this.featureForm.form.markAsPristine();
   }
@@ -217,11 +225,17 @@ export class LayersViewComponent implements OnInit {
     }
 
     let msgSuccess = "Operazione effettuata con successo";
+    let item: any;
     let apiCall;
 
     if (this.isEditing) {
+      item = JSON.parse(JSON.stringify(this.featureModel));
+      if (item.tagsetId) {
+        item.tagset = this.tagsetList.find(t => t.id == item.tagsetId);
+      }
+
       msgSuccess = "Feature modificata con successo";
-      apiCall = this.featureService.updateFeature(this.featureModel);
+      apiCall = this.featureService.updateFeature(item);
     }
     else {
       msgSuccess = "Feature creata con successo";
