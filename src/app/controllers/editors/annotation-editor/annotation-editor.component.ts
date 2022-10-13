@@ -49,9 +49,10 @@ export class AnnotationEditorComponent implements OnInit {
     this._annotation = annotation;
 
     let layerId = Number.parseInt(annotation.layer);
-    if (!layerId || isNaN(layerId)) {
-      this.features = [];
 
+    this.features = [];
+
+    if (!layerId || isNaN(layerId)) {
       return;
     }
 
@@ -117,12 +118,22 @@ export class AnnotationEditorComponent implements OnInit {
     return (!this.annotationModel || !this.annotationModel?.layer || this.annotationModel?.layer == -1 || !this.annotationModel.spans);
   }
 
+  public get shouldBeDisabled(): boolean {
+    if (!this.isEditing) {
+      return true;
+    }
+
+    return this.annotationModel.attributes["relations"] &&
+            (this.annotationModel.attributes["relations"].in.length != 0 ||
+            this.annotationModel.attributes["relations"].out.length != 0);
+  }
+
   public get shouldBeEditable(): boolean {
     if (!this.isEditing) {
       return true;
     }
 
-    if ((this.currentUserId && this.annotationModel.attributes['metadata'] && this.annotationModel.attributes['metadata'].createdBy && this.annotationModel.attributes['metadata'].createdBy == this.currentUserId) ||
+    if ((this.currentUserId && this.annotationModel.attributes["metadata"] && this.annotationModel.attributes["metadata"].createdBy && this.annotationModel.attributes["metadata"].createdBy == this.currentUserId) ||
       this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE) {
       return true;
     }
@@ -200,28 +211,28 @@ export class AnnotationEditorComponent implements OnInit {
     console.log('poipo', simplifiedFeatures)
     this.annotationModel.attributes['features'] = simplifiedFeatures;
 
-    let msgSuccess = "Operazione effettuata con successo";
+    let successMsg = "Operazione effettuata con successo";
     let apiCall;
 
     if (this.isEditing) {
-      msgSuccess = "Annotazione modificata con successo";
+      successMsg = "Annotazione modificata con successo";
 
-      if (this.annotationModel.attributes['metadata'] && this.currentUserId) {
-        this.annotationModel.attributes['metadata'].editedBy = this.currentUserId;
-        this.annotationModel.attributes['metadata'].lastModificationDate = new Date().toUTCString();
+      if (this.annotationModel.attributes["metadata"] && this.currentUserId) {
+        this.annotationModel.attributes["metadata"].editedBy = this.currentUserId;
+        this.annotationModel.attributes["metadata"].lastModificationDate = new Date().toUTCString();
       }
 
       apiCall = this.annotationService.update(this.annotationModel);
     }
     else {
-      msgSuccess = "Annotazione creata con successo";
+      successMsg = "Annotazione creata con successo";
 
-      if (this.annotationModel.attributes['metadata'] && this.currentUserId) {
+      if (this.annotationModel.attributes["metadata"] && this.currentUserId) {
         let now = new Date().toUTCString();
-        this.annotationModel.attributes['metadata'].createdBy = this.currentUserId;
-        this.annotationModel.attributes['metadata'].creationDate = now;
-        this.annotationModel.attributes['metadata'].editedBy = this.currentUserId;
-        this.annotationModel.attributes['metadata'].lastModificationDate = now;
+        this.annotationModel.attributes["metadata"].createdBy = this.currentUserId;
+        this.annotationModel.attributes["metadata"].creationDate = now;
+        this.annotationModel.attributes["metadata"].editedBy = this.currentUserId;
+        this.annotationModel.attributes["metadata"].lastModificationDate = now;
       }
 
       apiCall = this.annotationService.create(this.fileId, this.annotationModel);
@@ -231,7 +242,7 @@ export class AnnotationEditorComponent implements OnInit {
     apiCall.subscribe({
       next: () => {
         this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         this.onSave.emit();
       },
       error: (err: string) => {
