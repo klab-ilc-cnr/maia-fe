@@ -5,7 +5,6 @@ const VALIDATOR_ERROR = { 'notDuplicateName': true };
 
 export function nameDuplicateValidator(options: string[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    console.log('hi')
       if ((!options)) {
         return null;
       }

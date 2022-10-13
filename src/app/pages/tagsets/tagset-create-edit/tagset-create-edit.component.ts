@@ -226,20 +226,21 @@ export class TagsetCreateEditComponent implements OnInit {
   }
 
   private save(): void {
+    let errorMsg = "Errore durante il salvataggio!";
     if (!this.tagsetModel) {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
       return;
     }
 
-    let msgSuccess = "Operazione effettuata con successo";
+    let successMsg = "Operazione effettuata con successo";
     let apiCall;
 
     if (this.isEditing) {
-      msgSuccess = "Tagset modificato con successo";
+      successMsg = "Tagset modificato con successo";
       apiCall = this.tagsetService.update(this.tagsetModel);
     }
     else {
-      msgSuccess = "Tagset creato con successo";
+      successMsg = "Tagset creato con successo";
       apiCall = this.tagsetService.create(this.tagsetModel);
     }
 
@@ -248,11 +249,16 @@ export class TagsetCreateEditComponent implements OnInit {
       next: () => {
         this.loaderService.hide();
         this.backToList();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       },
-      error: (err: string) => {
+      error: (err) => {
         this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+        console.log(err)
+        if (err.status == 418) {
+          errorMsg == "Esiste già un tagset con questo nome!"
+        }
+
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
       }
     });
   }
