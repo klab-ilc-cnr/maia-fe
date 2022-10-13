@@ -37,6 +37,14 @@ export class LayersListComponent implements OnInit {
         })
   }
 
+  public get isEditing(): boolean {
+    if (this.layer && this.layer.id) {
+      return true;
+    }
+
+    return false;
+  }
+
   public get layerModalTitle(): string {
     if (((!this.layerForm) || (!this.layerForm.value)) || (!this.layerForm.value.name)) {
       return "Nuovo layer";
@@ -45,12 +53,14 @@ export class LayersListComponent implements OnInit {
     return this.layerForm.value.name;
   }
 
-  public get isEditing(): boolean {
-    if (this.layer && this.layer.id) {
-      return true;
+  public get filteredLayerNames(): string[] {
+    let filteredLayers = this.layers;
+
+    if (this.layer.id) {
+      filteredLayers = this.layers.filter(l => l.id != this.layer.id);
     }
 
-    return false;
+    return filteredLayers.map(l => l.name!);
   }
 
   layer: Layer = new Layer();
