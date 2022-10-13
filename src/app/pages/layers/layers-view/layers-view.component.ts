@@ -112,7 +112,7 @@ export class LayersViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       var id = params.get('id');
-      console.log('hi')
+
       if (id != null) {
         this.layerId = Number.parseInt(id);
         this.loadDetails(this.layerId);
@@ -132,14 +132,12 @@ export class LayersViewComponent implements OnInit {
   }
 
   featureTypeChange(event: any) {
-    console.log(event, this.featureForm)
     if (!this.featureType) {
       this.featureModel.tagsetId = undefined;
     }
   }
 
   onSubmitFeatureModal(form: NgForm): void {
-    console.log('feature', this.featureForm)
     if (this.featureForm.invalid) {
       return this.saveWithFormErrors();
     }

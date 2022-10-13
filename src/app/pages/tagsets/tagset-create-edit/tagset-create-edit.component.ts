@@ -212,8 +212,6 @@ export class TagsetCreateEditComponent implements OnInit {
             this.tagsetModel.values?.push({ ...v, originalName: v.name })
           })
 
-          console.log(this.tagsetModel)
-
           this.loaderService.hide();
         }
       })
@@ -258,7 +256,7 @@ export class TagsetCreateEditComponent implements OnInit {
       },
       error: (err) => {
         this.loaderService.hide();
-        console.log(err)
+
         if (err.status == 418) {
           errorMsg == "Esiste già un tagset con questo nome!"
         }

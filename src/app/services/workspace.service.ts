@@ -10,6 +10,7 @@ import { Workspace } from '../models/workspace.model';
 import { combineLatest, of } from 'rxjs';
 import { DocumentSystem } from '../models/corpus/document-system';
 import { ElementType } from '../models/corpus/element-type';
+import { v4 as uuidv4 } from 'uuid';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -95,22 +96,22 @@ export class WorkspaceService {
   baseUrl = "http://localhost:8443"
   // baseUrl = "https://lari2.ilc.cnr.it/"
   public retrieveCorpus(): Observable<DocumentSystem> {
-    let uuid = "12345678"
+    let uuid = uuidv4();
 
-    return this.http.get<DocumentSystem>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`)
+    return this.http.get<DocumentSystem>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`);
     //return this.http.get<DocumentSystem>('assets/mock/files.json')
   }
 
   public uploadFile(element_id: number, file: File): Observable<any> {
-    let uuid = "12345678"
+    let uuid = uuidv4();
 
     let formData: FormData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>(`${this.baseUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData)
+    return this.http.post<any>(`${this.baseUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
   }
 
   public renameElement(element_id: number, rename_string: string, type: ElementType): Observable<any> {
-    let uuid = "12345678"
+    let uuid = uuidv4();
 
     let payload = {
       "uuid": uuid,
@@ -119,17 +120,17 @@ export class WorkspaceService {
       "rename-string": rename_string
     }
 
-    let operationUrl = "renameFolder"
+    let operationUrl = "renameFolder";
 
     if (type == ElementType.File) {
-      operationUrl = "renameFile"
+      operationUrl = "renameFile";
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
+    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload);
   }
 
   public removeElement(element_id: number, type: ElementType): Observable<any> {
-    let uuid = "12345678"
+    let uuid = uuidv4();
 
     let payload = {
       "uuid": uuid,
@@ -137,23 +138,22 @@ export class WorkspaceService {
       "element-id": element_id
     }
 
-    let operationUrl = "removeFolder"
+    let operationUrl = "removeFolder";
 
     if (type == ElementType.File) {
-      operationUrl = "removeFile"
+      operationUrl = "removeFile";
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
+    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload);
   }
 
   public moveElement(element_id: number, target_id: number, type: ElementType): Observable<any> {
-    let uuid = "12345678"
+    let uuid = uuidv4();
 
-    let realTargetId = target_id
-    console.log(realTargetId)
+    let realTargetId = target_id;
     // To be able to move to the root it is necessary to change the target id from 0 to 1 (which in the db appears to be the root)
     if (realTargetId == 0) {
-      realTargetId = 1
+      realTargetId = 1;
     }
 
     let payload = {
@@ -163,17 +163,17 @@ export class WorkspaceService {
       "target-id": realTargetId
     }
 
-    let operationUrl = "moveFolder"
+    let operationUrl = "moveFolder";
 
     if (type == ElementType.File) {
-      operationUrl = "moveFileTo"
+      operationUrl = "moveFileTo";
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload)
+    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload);
   }
 
   public addFolder(element_id: number): Observable<any> {
-    let uuid = "12345678"
+    let uuid = uuidv4();
 
     let payload = {
       "uuid": uuid,
@@ -181,7 +181,7 @@ export class WorkspaceService {
       "element-id": element_id
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/addFolder`, payload)
+    return this.http.post<any>(`${this.baseUrl}/api/crud/addFolder`, payload);
   }
   // FINE CHIAMATE CASH SERVER
 

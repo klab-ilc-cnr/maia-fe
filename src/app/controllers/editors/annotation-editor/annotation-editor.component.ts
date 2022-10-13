@@ -84,7 +84,7 @@ export class AnnotationEditorComponent implements OnInit {
               }
             }
 
-            if (feature.type == FeatureType.STRING) {
+            if (elem && feature.type == FeatureType.STRING) {
               newFeature.value = elem.value;
             }
           }
@@ -207,8 +207,6 @@ export class AnnotationEditorComponent implements OnInit {
     }
 
     let simplifiedFeatures = this.features.map(({id, value}) => ({ id, value }))
-
-    console.log('poipo', simplifiedFeatures)
     this.annotationModel.attributes['features'] = simplifiedFeatures;
 
     let successMsg = "Operazione effettuata con successo";
@@ -245,6 +243,8 @@ export class AnnotationEditorComponent implements OnInit {
 
         if (this.isEditing) {
           // TO COMPLETE
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.onSave.emit();
         }
         else {
           let annFeatures = new AnnotationFeature();

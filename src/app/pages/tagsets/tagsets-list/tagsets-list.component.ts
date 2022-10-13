@@ -30,7 +30,6 @@ export class TagsetsListComponent implements OnInit {
               Swal.close();
             }
             else {
-              console.log('hi')
               this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
             }
             this.loadData();
