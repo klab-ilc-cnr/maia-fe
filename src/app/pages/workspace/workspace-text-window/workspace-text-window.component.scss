@@ -25,26 +25,12 @@
   }
 }
 
-.text-container {
-  overflow-y: scroll;
-  border: 1px solid $redPalette7;
+.arc text {
+  font-size: var(--arc-font-size);
+  text-anchor: middle;
+  font-family: var(--arc-font-family);
 }
 
-/* ANNOTATION */
-.text-editor {
-  width: 100%;
-
-  rect.background {
-    width: 100%;
-  }
-}
-
-.annotation-container {
-  overflow-y: auto;
-  border: 1px solid $redPalette7;
-}
-
-// BACKGROUND STRIPED
 .background0 {
   stroke: none;
   fill: #ffffff;
@@ -55,17 +41,17 @@
   fill: #eeeeee;
 }
 
-.span text {
-  font-size: var(--annotation-font-size);
-  text-anchor: middle;
-  font-family: var(--annotation-font-family);
-  pointer-events: none;
+.drag_stroke {
+  stroke: black;
 }
 
-.arc text {
-  font-size: var(--arc-font-size);
-  text-anchor: middle;
-  font-family: var(--arc-font-family);
+.editor-container {
+  overflow-y: auto;
+  border: 1px solid $redPalette7;
+}
+
+.filtered {
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,.8));
 }
 
 .highlight rect {
@@ -85,12 +71,24 @@
   fill: none;
 }
 
-.drag_stroke {
-  stroke: black;
+.span text {
+  font-size: var(--annotation-font-size);
+  text-anchor: middle;
+  font-family: var(--annotation-font-family);
+  pointer-events: none;
 }
 
-path {
-  pointer-events: none;
+.text-container {
+  overflow-y: scroll;
+  border: 1px solid $redPalette7;
+}
+
+.text-editor {
+  width: 100%;
+
+  rect.background {
+    width: 100%;
+  }
 }
 
 .sentnum {
@@ -110,6 +108,19 @@ path {
   font-size: var(--text-font-size);
 }
 
+.text-container {
+  overflow-y: scroll;
+  border: 1px solid $redPalette7;
+}
+
+.text-editor {
+  width: 100%;
+
+  rect.background {
+    width: 100%;
+  }
+}
+
 .unselectable {
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
@@ -119,7 +130,9 @@ path {
   cursor: default;
 }
 
-/* fine ANNOTATION */
+path {
+  pointer-events: none;
+}
 
 :host ::ng-deep .multiselect-custom {
   .p-multiselect-label {
@@ -149,6 +162,3 @@ path {
   }
 }
 
-.filtered {
-  filter: drop-shadow(1px 1px 1px rgba(0,0,0,.8));
-}

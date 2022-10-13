@@ -1,3 +1,4 @@
+import { FeatureForAnnotation } from './../../../models/feature/feature-for-annotation';
 import { Feature } from 'src/app/models/feature/feature';
 import { LoaderService } from 'src/app/services/loader.service';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
@@ -42,7 +43,6 @@ export class AnnotationEditorComponent implements OnInit {
         })
   }
 
-  // @Input() annotationModel: Annotation | undefined;
   @Input()
   get annotationModel(): Annotation { return this._annotation; }
   set annotationModel(annotation: Annotation) {
@@ -55,13 +55,43 @@ export class AnnotationEditorComponent implements OnInit {
       return;
     }
 
-    // Da modificare
-    this.featureService.retrieveFeaturesByLayerId(layerId).subscribe({
+    this.featureService.retrieveCompletedFeaturesByLayerId(layerId).subscribe({
       next: (data) => {
-        this.features = data;
+        data.forEach(feature => {
+          let newFeature: FeatureForAnnotation = JSON.parse(JSON.stringify(feature));
+
+          if (feature.tagsetId != null && feature.tagset && feature.tagset.values) {
+            newFeature.dropdownOptions = feature.tagset.values.map(item => ({ label: item.name, value: item.id }));
+          }
+
+          if (feature.type == FeatureType.URI) {
+            // TO COMPLETE
+            newFeature.dropdownOptions = [];
+          }
+
+          newFeature.placeholder = feature.name;
+          newFeature.modelPropName = `${feature.name}`;
+
+          if (annotation.attributes['features']) {
+            let elem = annotation.attributes['features'].find((f: any) => f.id == feature.id);
+
+            if (elem && (feature.type == FeatureType.TAGSET || feature.type == FeatureType.URI)) {
+              let option = newFeature.dropdownOptions.find(o => o.value == elem.value);
+
+              if (option) {
+                newFeature.value = option.value;
+              }
+            }
+
+            if (feature.type == FeatureType.STRING) {
+              newFeature.value = elem.value;
+            }
+          }
+
+          this.features.push(newFeature);
+        })
       }
     })
-    // this.loadData();
   }
   private _annotation: Annotation = new Annotation();
 
@@ -70,7 +100,6 @@ export class AnnotationEditorComponent implements OnInit {
   @Output() onCancel = new EventEmitter<any>();
   @Output() onDelete = new EventEmitter<any>();
   @Output() onSave = new EventEmitter<any>();
-
 
   public get emptyFeatures(): boolean {
     return this.features.length == 0;
@@ -102,7 +131,7 @@ export class AnnotationEditorComponent implements OnInit {
   };
 
   currentUserId: string | undefined;
-  features: Feature[] = [];
+  features: FeatureForAnnotation[] = [];
   featureTypes = FeatureType;
 
   @ViewChild(NgForm) public annotationForm!: NgForm;
@@ -121,16 +150,6 @@ export class AnnotationEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUserId = this.loggedUserService.currentUser?.id;
-    // if (!this.layerId) {
-    //   return;
-    // }
-
-    // console.log(this.layerId)
-
-    // this.layerService.retrieveLayerById(this.layerId)
-    //   .subscribe((data: LayerWithFeatures) => {
-
-    //   });
   }
 
   ngOnDestroy(): void {
@@ -167,10 +186,19 @@ export class AnnotationEditorComponent implements OnInit {
   }
 
   private save(): void {
-    if (!this.fileId || !this.annotationModel) {
+    if (!this.fileId || !this.annotationModel || !this.features) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
       return;
     }
+
+    if (!this.annotationModel.attributes['features']) {
+      this.annotationModel.attributes['features'] = [];
+    }
+
+    let simplifiedFeatures = this.features.map(({id, value}) => ({ id, value }))
+
+    console.log('poipo', simplifiedFeatures)
+    this.annotationModel.attributes['features'] = simplifiedFeatures;
 
     let msgSuccess = "Operazione effettuata con successo";
     let apiCall;

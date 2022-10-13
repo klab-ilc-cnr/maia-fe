@@ -5,7 +5,24 @@
     "name": "PoS",
     "type": "TAGSET",
     "tagsetId": 1,
-    "description": null
+    "description": null,
+    "tagset": {
+      "id": 1,
+      "name": "Parti del discorso",
+      "description": null,
+      "values": [
+        {
+          "id": 4,
+          "name": "Aggettivo",
+          "description": null
+        },
+        {
+          "id": 5,
+          "name": "Nome",
+          "description": null
+        }
+      ]
+    }
   },
   {
     "id": 6,
@@ -16,9 +33,50 @@
     "description": null
   },
   {
+    "id": 15,
+    "layerId": 4,
+    "name": "Tagset 3",
+    "type": "TAGSET",
+    "tagsetId": 6,
+    "description": null,
+    "tagset": {
+      "id": 6,
+      "name": "Tagset 3",
+      "description": null,
+      "values": [
+        {
+          "id": 6,
+          "name": "Valore ts 3.2",
+          "description": null
+        },
+        {
+          "id": 7,
+          "name": "Valore ts 3.1E",
+          "description": null
+        }
+      ]
+    }
+  },
+  {
     "id": 7,
     "layerId": 4,
     "name": "Feature di tipo URI",
+    "type": "URI",
+    "tagsetId": null,
+    "description": null
+  },
+  {
+    "id": 16,
+    "layerId": 4,
+    "name": "Feature di tipo string 2",
+    "type": "STRING",
+    "tagsetId": null,
+    "description": null
+  },
+  {
+    "id": 17,
+    "layerId": 4,
+    "name": "Feature di tipo URI 2",
     "type": "URI",
     "tagsetId": null,
     "description": null

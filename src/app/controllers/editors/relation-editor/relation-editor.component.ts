@@ -204,6 +204,7 @@ export class RelationEditorComponent implements OnInit {
     this.sourceAnn.attributes['relations'].out.push(JSON.parse(JSON.stringify(this.relationModel)));
     this.targetAnn.attributes['relations'].in.push(JSON.parse(JSON.stringify(this.relationModel)));
 
+    // @TODO: queste chiamate andranno sostituite con una unica al nostro backend che gestirà la creazione delle relazioni
     this.loaderService.show();
     this.annotationService.update(this.sourceAnn).subscribe({
       next: () => {

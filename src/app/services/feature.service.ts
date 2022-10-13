@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Feature } from '../models/feature/feature';
+import { FeatureWithTagsets } from '../models/feature/feature-with-tagsets';
 import { LayerWithFeatures } from '../models/layer/layer-with-features';
 
 @Injectable({
@@ -23,6 +24,12 @@ export class FeatureService {
     return this.http.get<Feature[]>(`${this.featureUrl}/${layerId}`);
   }
   // FINE METODI MOCKATI
+
+  public retrieveCompletedFeaturesByLayerId(layerId: number): Observable<FeatureWithTagsets[]> {
+    //return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
+
+    return this.http.get<FeatureWithTagsets[]>(`assets/mock/annotationfeatures.json`);
+  }
 
   public createFeature(item: any): Observable<Feature> {
     return this.http.post<Feature>(`${this.featureUrl}`, item);

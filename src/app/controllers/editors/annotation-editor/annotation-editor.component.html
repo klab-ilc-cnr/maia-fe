@@ -33,76 +33,39 @@
               <label class="form-label">{{ feature.name }}</label>
               <div [ngSwitch]="feature.type" class="p-fluid">
                 <div *ngSwitchCase="featureTypes.STRING">
-                  STRING
+                  <input #featureRef="ngModel" type="text" name="{{ feature.name }}" class="form-control" [(ngModel)]="feature.value"
+                    maxlength="300" placeholder="{{ feature.placeholder }}" appWhitespacesValidator>
+                  <div *ngIf="featureRef.invalid && (featureRef.touched || featureRef.dirty)" class="invalid-feedback">
+                    <div *ngIf="featureRef.errors?.['isNotOnlyWhitespaces']">
+                      {{ feature.name }} non può contenere solo spazi vuoti
+                    </div>
+                  </div>
                 </div>
                 <div *ngSwitchCase="featureTypes.TAGSET">
-                  TAGSET
+                  <p-dropdown #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"
+                    placeholder="{{ feature.placeholder }}" [options]="feature.dropdownOptions" [filter]="true" [showClear]="true" [required]="false">
+                    <ng-template pTemplate="empty">
+                      Nessun elemento da selezione
+                    </ng-template>
+                    <ng-template pTemplate="emptyfilter">
+                      Nessun elemento trovato
+                    </ng-template>
+                  </p-dropdown>
                 </div>
                 <div *ngSwitchCase="featureTypes.URI">
-                  URI
+                  <p-dropdown #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"
+                    placeholder="{{ feature.placeholder }}" [options]="feature.dropdownOptions" [filter]="true" [showClear]="true" [required]="false">
+                    <ng-template pTemplate="empty">
+                      Nessun elemento da selezione
+                    </ng-template>
+                    <ng-template pTemplate="emptyfilter">
+                      Nessun elemento trovato
+                    </ng-template>
+                  </p-dropdown>
                 </div>
               </div>
-              <!-- <div class="p-fluid">
-
-                <p-dropdown #type="ngModel" name="type" [(ngModel)]="featureModel.type"
-                  placeholder="Tipo feature" [options]="featureTypeOptions" [filter]="true" [showClear]="true" [required]="true" (onChange)="featureTypeChange($event)">
-                </p-dropdown>
-                <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">
-                  <div *ngIf="type.errors?.['required']">
-                    Necessario inserire il tipo della feature
-                  </div>
-                </div>
-              </div> -->
-              <!-- <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitOfMeasure' | translate}}</label>
-              <div class="col-sm-6">
-                  <div class="p-fluid">
-                      <p-dropdown #unitOfMeasure="ngModel" name="unitOfMeasure" [(ngModel)]="model.value.unitOfMeasure"
-                          placeholder="{{'assetCategory.labels.unitOfMeasureSelection' | translate}}" [options]="unitsOfMeasureOptions" filter="true" showClear="true" required>
-                      </p-dropdown>
-                      <div *ngIf="unitOfMeasure.invalid && (unitOfMeasure.touched || unitOfMeasure.dirty)"
-                          class="invalid-feedback">
-                          <div *ngIf="unitOfMeasure.errors.required">
-                              {{'assetCategory.messages.errors.unitOfMeasureRequired' | translate}}
-                          </div>
-                      </div>
-                  </div>
-              </div> -->
           </div>
         </ng-template>
-
-        <!-- <div class="form-group row">
-            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.unitPrice' | translate}}</label>
-            <div class="col-sm-6">
-                <div class="p-fluid">
-                    <div class="p-inputgroup">
-                        <span class="p-inputgroup-addon">
-                            <app-icon-price></app-icon-price>
-                        </span>
-                        <p-inputNumber #unitPrice="ngModel" name="unitPrice" class="p-inputnumber"
-                            [(ngModel)]="model.value.unitPrice" mode="decimal" locale="it-IT"
-                            [showButtons]="true" maxValue  minValue="0" [step]="0.01"
-                            [min]="0" [minFractionDigits]="2" [maxFractionDigits]="2" required>
-                        </p-inputNumber>
-                    </div>
-                    <div *ngIf="unitPrice.invalid && (unitPrice.touched || unitPrice.dirty)"
-                        class="invalid-feedback">
-                        <div *ngIf="unitPrice.errors.required">
-                            {{'assetCategory.messages.errors.unitPriceRequired' | translate}}
-                        </div>
-                        <div *ngIf="unitPrice.errors.maxValue">
-                            {{'common.messages.errors.maxValue' | translate}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">{{'assetCategory.properties.description' | translate}}</label>
-            <div class="col-sm-6">
-                <textarea rows="4" #description="ngModel" type="text" name="description"
-                    class="form-control" (ngModel)="(model.value.description)"></textarea>
-            </div>
-        </div> -->
         <div class="d-block" *ngIf="shouldBeEditable">
           <button pButton pRipple type="button" icon="pi pi-save" label="Salva" class="w-100 mb-2 p-button-sm" (click)="onSubmit(annotationForm)"></button>
           <button pButton pRipple type="button" icon="pi pi-times" label="Annulla" class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>

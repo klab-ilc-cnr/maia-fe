@@ -266,8 +266,7 @@ export class TagsetCreateEditComponent implements OnInit {
       let i = this.tagsetModel.values!.findIndex((item: any) => item.originalName == this.tagsetValueModel.originalName);
 
       if (!this.tagsetModel.values || i < 0) {
-        // messaggio di errore
-
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig("Non esiste un valore del tagset con questo nome"));
         $('#tagsetValueModal').modal('hide');
         return;
       }
@@ -281,8 +280,7 @@ export class TagsetCreateEditComponent implements OnInit {
       let v = this.findTagsetValueByName(this.tagsetValueModel.name || "");
 
       if (v) {
-        // messaggio di errore nome già esistente
-
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig("Esiste già un valore del tagset con questo nome"));
         $('#tagsetValueModal').modal('hide');
         return;
       }
