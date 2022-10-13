@@ -42,6 +42,14 @@ export class LayersViewComponent implements OnInit {
         })
   }
 
+  public get isEditing(): boolean {
+    if (this.featureModel && this.featureModel.id) {
+      return true;
+    }
+
+    return false;
+  }
+
   public get featureModalTitle(): string {
     if (((!this.featureForm) || (!this.featureForm.value)) || (!this.featureForm.value.name)) {
       return "Nuova feature";
@@ -54,12 +62,14 @@ export class LayersViewComponent implements OnInit {
     return this.featureModel.type == FeatureType.TAGSET;
   }
 
-  public get isEditing(): boolean {
-    if (this.featureModel && this.featureModel.id) {
-      return true;
+  public get filteredFeatureNames(): string[] {
+    let filteredFeatures = this.features;
+
+    if (this.featureModel.id) {
+      filteredFeatures = this.features.filter(f => f.id != this.featureModel.id);
     }
 
-    return false;
+    return filteredFeatures.map(f => f.name!);
   }
 
   public get title(): string {

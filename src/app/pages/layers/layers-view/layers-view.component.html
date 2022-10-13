@@ -3,9 +3,7 @@
     <div class="card">
       <div class="page-header">
         <h5 [ngStyle]="{'background-color': layerInfo?.color+'4D'}" style="border-radius: 3px">
-          <!-- <div *ngIf="isEditUser(); else elseBlock">Dettaglio utente</div>
-          <ng-template #elseBlock>Nuovo utente</ng-template> -->
-          {{title}}
+          {{ title }}
         </h5>
         <div class="button-group-actions">
           <button pButton pRipple label="Torna alla lista" icon="pi pi-arrow-left" class="p-button-secondary" (click)="back()"></button>
@@ -15,7 +13,7 @@
         <div class="row row-cols-1 row-cols-md-3">
           <div class="col">
             <label class="header-label">Nome</label>
-            <p>{{layerInfo?.name}}</p>
+            <p>{{ layerInfo?.name }}</p>
           </div>
           <div class="col">
             <label class="header-label">Colore</label>
@@ -25,7 +23,7 @@
           </div>
           <div class="col">
             <label class="header-label">Descrizione</label>
-            <p>{{layerInfo?.description}}</p>
+            <p>{{ layerInfo?.description }}</p>
           </div>
         </div>
       </div>
@@ -51,9 +49,9 @@
           </ng-template>
           <ng-template pTemplate="body" let-feature let-i="rowIndex">
             <tr>
-              <td>{{feature.name}}</td>
-              <td>{{feature.type}}</td>
-              <td>{{feature.description}}</td>
+              <td>{{ feature.name }}</td>
+              <td>{{ feature.type }}</td>
+              <td>{{ feature.description }}</td>
               <td>
                 <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="showEditFeatureModal(feature)"></button>
                 <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="showDeleteFeatureModal(feature)"></button>
@@ -83,7 +81,7 @@
       >
         <input type="hidden" #layerId="ngModel" name="layerId" [(ngModel)]="featureModel.layerId">
         <div class="modal-header">
-          <h5 class="modal-title" id="featureModalLabel">{{featureModalTitle}}</h5>
+          <h5 class="modal-title" id="featureModalLabel">{{ featureModalTitle }}</h5>
           <button
             type="button"
             class="btn-close"
@@ -96,13 +94,16 @@
             <label class="form-label">Nome *</label>
             <div class="p-fluid">
               <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="featureModel.name"
-                required maxlength="300" placeholder="Nome feature" appWhitespacesValidator>
+                required maxlength="300" placeholder="Nome feature" appWhitespacesValidator [appNotDuplicateName]="filteredFeatureNames">
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
                   Necessario inserire il nome della feature
                 </div>
                 <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
                   Il nome della feature non può contenere solo spazi vuoti
+                </div>
+                <div *ngIf="name.errors?.['notDuplicateName']">
+                  Esiste già una feature con questo nome
                 </div>
               </div>
             </div>
