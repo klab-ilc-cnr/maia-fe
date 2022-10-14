@@ -36,7 +36,8 @@ export const environment = {
   layersUrl: allowedUrls + '/layers',
   featureUrl: allowedUrls + '/features',
   tagsetUrl: allowedUrls + '/tagsets',
-  annotationUrl: allowedUrls +'/annotations'
+  annotationUrl: allowedUrls +'/annotations',
+  relationUrl: allowedUrls +'/relations'
 };
 
 /*
