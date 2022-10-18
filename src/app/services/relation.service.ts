@@ -15,7 +15,19 @@ export class RelationService {
     this.relationUrl = environment.relationUrl;
   }
 
-  public retrieveById(id: number): Observable<Relation> {
-    return this.http.get<Relation>(`${this.relationUrl}/${id}`);
+  public retrieveByTextId(textId: number): Observable<Relation[]> {
+    return this.http.get<Relation[]>(`${this.relationUrl}/${textId}`);
+  }
+
+  public create(relation: Relation): Observable<Relation> {
+    return this.http.post<Relation>(`${this.relationUrl}`, relation);
+  }
+
+  public update(relation: Relation): Observable<Relation> {
+    return this.http.put<Relation>(`${this.relationUrl}`, relation);
+  }
+
+  public delete(id: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.relationUrl}/${id}`);
   }
 }

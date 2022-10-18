@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 import { v4 as uuidv4 } from 'uuid';
 import { Relations } from 'src/app/models/relation/relations';
+import { RelationService } from 'src/app/services/relation.service';
 
 @Component({
   selector: 'app-relation-editor',
@@ -114,7 +115,8 @@ export class RelationEditorComponent implements OnInit {
     private loaderService: LoaderService,
     private layerService: LayerService,
     private messageService: MessageService,
-    private msgConfService: MessageConfigurationService
+    private msgConfService: MessageConfigurationService,
+    private relationService: RelationService
   ) { }
 
   ngOnInit(): void {
@@ -162,69 +164,98 @@ export class RelationEditorComponent implements OnInit {
     let successMsg = "Operazione effettuata con successo";
 
     // INIZIO INIZIALIZZAZIONE
-    if (!this.sourceAnn.attributes) {
-      this.sourceAnn.attributes = {};
-    }
-
-    if (!this.targetAnn.attributes) {
-      this.targetAnn.attributes = {};
-    }
-
-    if (!this.sourceAnn.attributes['relations']) {
-      this.sourceAnn.attributes['relations'] = new Relations();
-    }
-
-    if (!this.targetAnn.attributes['relations']) {
-      this.targetAnn.attributes['relations'] = new Relations();
-    }
-    // FINE INIZIALIZZAZIONE
-
-    if (this.isEditing) {
-      successMsg = "Relazione modificata con successo";
-
-      let sIndex = this.sourceAnn.attributes['relations'].out.findIndex((r: Relation) => r.id == this.relationModel?.id);
-      let tIndex = this.targetAnn.attributes['relations'].in.findIndex((r: Relation) => r.id == this.relationModel?.id);
-
-      if (sIndex < 0) {
-        return;
-      }
-
-      if (tIndex < 0) {
-        return;
-      }
-
-      this.sourceAnn.attributes['relations'].out.splice(sIndex, 1);
-      this.targetAnn.attributes['relations'].in.splice(tIndex, 1);
-    }
-    else {
-      successMsg = "Relazione creata con successo";
-      this.relationModel.id = uuidv4();
-    }
-
-    this.sourceAnn.attributes['relations'].out.push(JSON.parse(JSON.stringify(this.relationModel)));
-    this.targetAnn.attributes['relations'].in.push(JSON.parse(JSON.stringify(this.relationModel)));
-
-    // @TODO: queste chiamate andranno sostituite con una unica al nostro backend che gestirà la creazione delle relazioni
-    this.loaderService.show();
-    this.annotationService.update(this.sourceAnn).subscribe({
-      next: () => {
-        this.annotationService.update(this.targetAnn).subscribe({
+    /*     if (!this.sourceAnn.attributes) {
+          this.sourceAnn.attributes = {};
+        }
+    
+        if (!this.targetAnn.attributes) {
+          this.targetAnn.attributes = {};
+        }
+    
+        if (!this.sourceAnn.attributes['relations']) {
+          this.sourceAnn.attributes['relations'] = new Relations();
+        }
+    
+        if (!this.targetAnn.attributes['relations']) {
+          this.targetAnn.attributes['relations'] = new Relations();
+        }
+        // FINE INIZIALIZZAZIONE
+    
+        if (this.isEditing) {
+          successMsg = "Relazione modificata con successo";
+    
+          let sIndex = this.sourceAnn.attributes['relations'].out.findIndex((r: Relation) => r.id == this.relationModel?.id);
+          let tIndex = this.targetAnn.attributes['relations'].in.findIndex((r: Relation) => r.id == this.relationModel?.id);
+    
+          if (sIndex < 0) {
+            return;
+          }
+    
+          if (tIndex < 0) {
+            return;
+          }
+    
+          this.sourceAnn.attributes['relations'].out.splice(sIndex, 1);
+          this.targetAnn.attributes['relations'].in.splice(tIndex, 1);
+        }
+        else {
+          successMsg = "Relazione creata con successo";
+          this.relationModel.id = uuidv4();
+        }
+    
+        this.sourceAnn.attributes['relations'].out.push(JSON.parse(JSON.stringify(this.relationModel)));
+        this.targetAnn.attributes['relations'].in.push(JSON.parse(JSON.stringify(this.relationModel)));
+    
+        // @TODO: queste chiamate andranno sostituite con una unica al nostro backend che gestirà la creazione delle relazioni
+        this.loaderService.show();
+         this.annotationService.update(this.sourceAnn).subscribe({
           next: () => {
-            this.loaderService.hide();
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            this.onSave.emit();
+            this.annotationService.update(this.targetAnn).subscribe({
+              next: () => {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+                this.onSave.emit();
+              },
+              error: (err: string) => {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+              }
+            });
           },
           error: (err: string) => {
             this.loaderService.hide();
             this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
           }
-        });
-      },
-      error: (err: string) => {
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
-      }
-    });
+        }); */
+        this.sourceAnn.attributes[""]
+    if (this.isEditing) {
+      successMsg = "Relazione modificata con successo";
+      this.relationService.update(this.relationModel).subscribe({
+        next: (response: Relation) => {
+          console.log(response);
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.onSave.emit();
+        },
+        error: (err: string) => {
+          console.log(err);
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+        }
+      })
+    }
+    else {
+      successMsg = "Relazione creata con successo";
+      this.relationService.create(this.relationModel).subscribe({
+        next: (response: Relation) => {
+          console.log(response);
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.onSave.emit();
+        },
+        error: (err: string) => {
+          console.log(err);
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+        }
+      })
+    }
   }
 
   private saveWithFormErrors(): void {

@@ -6,4 +6,5 @@ export class Relation {
   srcAnnId: number | undefined
   targetAnnId: number | undefined
   description: string | undefined
+  textId: number | undefined
 }

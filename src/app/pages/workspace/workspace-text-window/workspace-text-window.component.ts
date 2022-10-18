@@ -17,6 +17,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
+import { RelationService } from 'src/app/services/relation.service';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -79,8 +80,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
   sourceAnn = new Annotation();
   sourceLayer = new Layer();
   svgHeight: number = 0;
-  targetAnn =  new Annotation();
-  targetLayer =  new Layer();
+  targetAnn = new Annotation();
+  targetLayer = new Layer();
   textContainerHeight: number = window.innerHeight / 2;
   textId: number | undefined;
   textRes: any;
@@ -94,7 +95,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private layerService: LayerService,
     private messageService: MessageService,
-    private msgConfService: MessageConfigurationService
+    private msgConfService: MessageConfigurationService,
+    private relationService: RelationService
   ) { }
 
   ngOnInit(): void {
@@ -127,9 +129,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
     forkJoin([
       this.layerService.retrieveLayers(),
       this.annotationService.retrieveText(this.textId),
-      this.annotationService.retrieveByNodeId(this.textId)
+      this.annotationService.retrieveByNodeId(this.textId),
+      this.relationService.retrieveByTextId(this.textId)
     ]).subscribe({
-      next: ([layersResponse, textResponse, annotationsResponse]) => {
+      next: ([layersResponse, textResponse, annotationsResponse, relationsResponse]) => {
         this.layersList = layersResponse;
 
         if (!this.selectedLayers) {
@@ -172,7 +175,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         this.annotationsRes.annotations.forEach((a: Annotation) => {
           if (a.spans && layersIndex.includes(a.layer)) {
             let sAnn = a.spans.map((sc: SpanCoordinates) => {
-              let {spans, ...newAnn} = a;
+              let { spans, ...newAnn } = a;
               return {
                 ...newAnn,
                 span: sc
@@ -182,14 +185,16 @@ export class WorkspaceTextWindowComponent implements OnInit {
             this.simplifiedAnns.push(...sAnn);
           }
 
-          if (a.attributes && a.attributes["relations"]) {
+/*           if (a.attributes && a.attributes["relations"]) {
             let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-              if(!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
+              if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
                 this.simplifiedArcs.push(r);
               }
             })
-          }
+          } */
         })
+
+        this.simplifiedArcs = relationsResponse;
 
         this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
 
@@ -321,7 +326,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     // }
 
-    this.annotation = {...ann}
+    this.annotation = { ...ann }
     this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
 
     //this._editIsLocked = true;
@@ -344,7 +349,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
-    this.relation = {...rel};
+    this.relation = { ...rel };
     this.sourceAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.srcAnnId);
     this.targetAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.targetAnnId);
 
@@ -405,8 +410,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     this.dragArrow.sourceAnn = ann;
     this.dragArrow.isDrawing = true;
-    this.dragArrow.m = "M " + (annotation.startX + (annotation.endX - annotation.startX)/2) + " " + annotation.y + ", "
-    this.dragArrow.x1 = annotation.startX + annotation.width/2;
+    this.dragArrow.m = "M " + (annotation.startX + (annotation.endX - annotation.startX) / 2) + " " + annotation.y + ", "
+    this.dragArrow.x1 = annotation.startX + annotation.width / 2;
     this.dragArrow.y1 = annotation.y - this.visualConfig.draggedArcHeight;
 
     this.clearSelection();
@@ -466,6 +471,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     relation.srcLayerId = Number.parseInt(this.dragArrow.sourceAnn.layer);
     relation.targetAnnId = this.dragArrow.targetAnn.id;
     relation.targetLayerId = Number.parseInt(this.dragArrow.targetAnn.layer);
+    relation.textId = this.textId;
 
     this.relation = relation;
 
@@ -521,7 +527,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
     let adjustOffset = yOffset == yBaseOffset ? yOffset : 0;
-    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2/spaceFactor;
+    let newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2 / spaceFactor;
 
     if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
       yOffset = newPossibleOffset;
@@ -590,8 +596,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
       switch (ar.type) {
         case "includedArc": {
-          ar.start.y = sAnn.y + this.visualConfig.annotationHeight/2;
-          ar.end.y = tAnn.y + this.visualConfig.annotationHeight/2;
+          ar.start.y = sAnn.y + this.visualConfig.annotationHeight / 2;
+          ar.end.y = tAnn.y + this.visualConfig.annotationHeight / 2;
 
           let diffH = yAnnotation - Math.max(ar.start.y, ar.end.y)
           ar.yArcOffset = yAnnotation + diffH - ar.yArcOffset;
@@ -600,8 +606,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
         }
 
         case "startedArc": {
-          ar.start.y = sAnn.y + this.visualConfig.annotationHeight/2;
-          ar.end.y = sAnn.y + this.visualConfig.annotationHeight/2;
+          ar.start.y = sAnn.y + this.visualConfig.annotationHeight / 2;
+          ar.end.y = sAnn.y + this.visualConfig.annotationHeight / 2;
 
           let diffH = yAnnotation - Math.max(ar.start.y, ar.end.y)
           ar.yArcOffset = yAnnotation + diffH - ar.yArcOffset;
@@ -610,8 +616,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
         }
 
         case "endedArc": {
-          ar.start.y = tAnn.y + this.visualConfig.annotationHeight/2;
-          ar.end.y = tAnn.y + this.visualConfig.annotationHeight/2;
+          ar.start.y = tAnn.y + this.visualConfig.annotationHeight / 2;
+          ar.end.y = tAnn.y + this.visualConfig.annotationHeight / 2;
 
           let diffH = yAnnotation - Math.max(ar.start.y, ar.end.y)
           ar.yArcOffset = yAnnotation + diffH - ar.yArcOffset;
@@ -637,8 +643,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
       ar.secondSegmentPath = paths.secondSegmentPath;
 
       if (ar.circleVisible) {
-        ar.circleStartX = Math.min(ar.firstSegment.start, ar.secondSegment.end) + Math.abs(ar.firstSegment.start - ar.secondSegment.end)/2 - this.visualConfig.arcCircleLabelPlaceholderWidth/2;
-        ar.circleStartY = ar.yArcOffset + ar.yAnnOffset - this.visualConfig.arcCircleLabelPlaceholderHeight/2;
+        ar.circleStartX = Math.min(ar.firstSegment.start, ar.secondSegment.end) + Math.abs(ar.firstSegment.start - ar.secondSegment.end) / 2 - this.visualConfig.arcCircleLabelPlaceholderWidth / 2;
+        ar.circleStartY = ar.yArcOffset + ar.yAnnOffset - this.visualConfig.arcCircleLabelPlaceholderHeight / 2;
         ar.circleHeight = this.visualConfig.arcCircleLabelPlaceholderHeight;
         ar.circleWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
       }
@@ -720,7 +726,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let startFirstSegment = startArcX;
 
-    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
 
     let arcSize = Math.abs(endArcX - startArcX);
     let circleVisible = labelWidth >= arcSize || textWidth == 0;
@@ -730,7 +736,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
 
     let signChange = isFromLeftToRight ? 1 : -1;
-    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
     let startSecondSegment = endFirstSegment + signChange * labelWidth;
 
     let labelStartX = Math.min(startSecondSegment, endFirstSegment);
@@ -809,7 +815,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
       endSecondSegment += this.visualConfig.arcAngleOffset;
     }
 
-    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
 
     let arcSize = Math.abs(endArcX - startArcX);
     let circleVisible = labelWidth >= arcSize || textWidth == 0;
@@ -819,7 +825,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
 
     let signChange = isFromLeftToRight ? 1 : -1;
-    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
     let startSecondSegment = endFirstSegment + signChange * labelWidth;
 
     let labelStartX = Math.min(startSecondSegment, endFirstSegment);
@@ -898,7 +904,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let startFirstSegment = startArcX;
     let endSecondSegment = endArcX;
 
-    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
 
     let arcSize = Math.abs(endArcX - startArcX);
     let circleVisible = labelWidth >= arcSize || textWidth == 0;
@@ -908,7 +914,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
 
     let signChange = isFromLeftToRight ? 1 : -1;
-    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
     let startSecondSegment = endFirstSegment + signChange * labelWidth;
 
     let labelStartX = Math.min(startSecondSegment, endFirstSegment);
@@ -990,7 +996,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let endSecondSegment = endArcX;
 
-    let arcCenter = Math.abs(endSecondSegment - startFirstSegment)/2;
+    let arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
 
     let arcSize = Math.abs(endArcX - startArcX);
     let circleVisible = labelWidth >= arcSize || textWidth == 0;
@@ -1000,7 +1006,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
 
     let signChange = isFromLeftToRight ? 1 : -1;
-    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth/2);
+    let endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
     let startSecondSegment = endFirstSegment + signChange * labelWidth;
 
     if (startSecondSegment < this.visualConfig.stdTextOffsetX) {
@@ -1153,8 +1159,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
   private generateCurlyPath(ann: any): string {
     let y = (ann.y + this.visualConfig.annotationHeight + 2)
-    let move = "M " + ann.startX + " " + (y + this.visualConfig.curlyHeight) ;
-    let x = ann.startX + (ann.endX - ann.startX)/2
+    let move = "M " + ann.startX + " " + (y + this.visualConfig.curlyHeight);
+    let x = ann.startX + (ann.endX - ann.startX) / 2
     let curve1 = "C " + ann.startX + " " + y + ", " + x + " " + (y + this.visualConfig.curlyHeight) + ", " + x + " " + y
     let curve2 = "C " + x + " " + (y + this.visualConfig.curlyHeight) + ", " + ann.endX + " " + y + ", " + ann.endX + " " + (y + this.visualConfig.curlyHeight)
 
@@ -1213,8 +1219,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private getMaxArcOffsetInRange(array: Array<any>, startX: number, endX: number) {
-    let min = Math.min (startX, endX);
-    let max = Math.max (startX, endX);
+    let min = Math.min(startX, endX);
+    let max = Math.max(startX, endX);
 
     let filteredArcs = array.filter((ar: any) => (ar.start.x >= min && ar.end.x <= max) ||
       (ar.start.x < min && ar.end.x >= min && ar.end.x <= max) ||
@@ -1289,7 +1295,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
           borderColor: '#808080',
           text: layer?.id,
           textCoordinates: {
-            x: Math.ceil(startX + w/2),
+            x: Math.ceil(startX + w / 2),
             y: 0
           },
           startX: startX,
@@ -1320,7 +1326,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
       yOffset = minorTowers.reduce((acc: any, o: any) => acc + o.towerHeight, 0);
 
-      let minorTowersGroupedByYtowerOffset = minorTowers.reduce((a, { yTowerOffset,...rest }) => {
+      let minorTowersGroupedByYtowerOffset = minorTowers.reduce((a, { yTowerOffset, ...rest }) => {
         const key = `${yTowerOffset}`;
         a[key] = a[key] || { yTowerOffset, towers: [] };
         a[key]["towers"].push(rest)
@@ -1376,51 +1382,51 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
       if (sourceAnn.span.start >= startIndex && sourceAnn.span.start <= endIndex &&
         targetAnn.span.end >= startIndex && targetAnn.span.end <= endIndex && sourceTower && targetTower) {
-          relationsIncludedInLine.push({
-            relation: ar,
-            sourceAnn: sourceAnn,
-            targetAnn: targetAnn,
-            sourceTower: sourceTower,
-            targetTower: targetTower,
-            leftToRight: sourceAnn.span.start <= targetAnn.span.start
-          });
+        relationsIncludedInLine.push({
+          relation: ar,
+          sourceAnn: sourceAnn,
+          targetAnn: targetAnn,
+          sourceTower: sourceTower,
+          targetTower: targetTower,
+          leftToRight: sourceAnn.span.start <= targetAnn.span.start
+        });
       }
 
       if (sourceAnn.span.start >= startIndex && sourceAnn.span.start <= endIndex &&
         (targetAnn.span.end < startIndex || targetAnn.span.end > endIndex) && sourceTower) {
-          relationsStartedInLine.push({
-            relation: ar,
-            sourceAnn: sourceAnn,
-            targetAnn: targetAnn,
-            sourceTower: sourceTower,
-            targetTower: targetTower,
-            leftToRight: sourceAnn.span.start <= targetAnn.span.start
-          });
+        relationsStartedInLine.push({
+          relation: ar,
+          sourceAnn: sourceAnn,
+          targetAnn: targetAnn,
+          sourceTower: sourceTower,
+          targetTower: targetTower,
+          leftToRight: sourceAnn.span.start <= targetAnn.span.start
+        });
       }
 
       if (targetAnn.span.end >= startIndex && targetAnn.span.end <= endIndex &&
         (sourceAnn.span.start < startIndex || sourceAnn.span.start > endIndex) && targetTower) {
-          relationsEndedInLine.push({
-            relation: ar,
-            sourceAnn: sourceAnn,
-            targetAnn: targetAnn,
-            sourceTower: sourceTower,
-            targetTower: targetTower,
-            leftToRight: sourceAnn.span.start <= targetAnn.span.start
-          });
+        relationsEndedInLine.push({
+          relation: ar,
+          sourceAnn: sourceAnn,
+          targetAnn: targetAnn,
+          sourceTower: sourceTower,
+          targetTower: targetTower,
+          leftToRight: sourceAnn.span.start <= targetAnn.span.start
+        });
       }
 
       if (((sourceAnn.span.start < startIndex && sourceAnn.span.start < startIndex && targetAnn.span.start > endIndex && targetAnn.span.end > endIndex) ||
         (sourceAnn.span.start > endIndex && sourceAnn.span.start > endIndex && targetAnn.span.start < startIndex && targetAnn.span.end < startIndex))
-          && !sourceTower && !targetTower) {
-          relationsPassignThroughLine.push({
-            relation: ar,
-            sourceAnn: sourceAnn,
-            targetAnn: targetAnn,
-            sourceTower: sourceTower,
-            targetTower: targetTower,
-            leftToRight: sourceAnn.span.start <= targetAnn.span.start
-          });
+        && !sourceTower && !targetTower) {
+        relationsPassignThroughLine.push({
+          relation: ar,
+          sourceAnn: sourceAnn,
+          targetAnn: targetAnn,
+          sourceTower: sourceTower,
+          targetTower: targetTower,
+          leftToRight: sourceAnn.span.start <= targetAnn.span.start
+        });
       }
     }
 
@@ -1549,7 +1555,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
       lineBuilder.startLine = start;
 
-      if (sWidth/width > 1) {
+      if (sWidth / width > 1) {
         let wordAddedCounter = 0;
         lineBuilder.line = new TextLine();
         let lineWidth = 0;
@@ -1624,7 +1630,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         id: row_id + 1,
         height: rowHeight,
         lines: sLinesCopy,
-        yBG:  yStartRow,
+        yBG: yStartRow,
         xText: this.visualConfig.stdTextOffsetX,
         yText: sLinesCopy[0].yText - this.visualConfig.spaceAfterTextLine,
         xSentnum: this.visualConfig.stdSentnumOffsetX,
@@ -1667,7 +1673,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private sortFragmentsIntoTowers(annotations: any[]) {
-    let towers = annotations.reduce((a, { span,...rest }) => {
+    let towers = annotations.reduce((a, { span, ...rest }) => {
       const key = `${span.start}-${span.end}`;
       a[key] = a[key] || { span, anns: [] };
       a[key]["anns"].push(rest)
