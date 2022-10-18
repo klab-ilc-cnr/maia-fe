@@ -162,7 +162,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         this.annotationsRes = annotationsResponse;
 
         this.simplifiedAnns = [];
-        this.simplifiedArcs = [];
+        this.simplifiedArcs = relationsResponse;
 
         let layersIndex = new Array<string>();
 
@@ -193,8 +193,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
             })
           } */
         })
-
-        this.simplifiedArcs = relationsResponse;
 
         this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
 
@@ -350,8 +348,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
 
     this.relation = { ...rel };
-    this.sourceAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.srcAnnId);
-    this.targetAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.targetAnnId);
+    this.sourceAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.srcAnnotationId);
+    this.targetAnn = this.annotationsRes.annotations.find((a: any) => a.id == rel?.targetAnnotationId);
 
     let sLayer = this.layersList.find(l => l.id == Number.parseInt(this.sourceAnn.layer));
     let tLayer = this.layersList.find(l => l.id == Number.parseInt(this.targetAnn.layer));
@@ -367,34 +365,34 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.showEditorAndHideOthers(EditorType.Relation);
   }
 
-  overEnterRelation(id: string) {
+  overEnterRelation(id: number) {
     $('*[data-relation-id="' + id + '"]').addClass("filtered");
 
     let arc = this.simplifiedArcs.find(ar => ar.id == id);
 
-    if (!arc || !arc.srcAnnId || !arc.targetAnnId) {
+    if (!arc || !arc.srcAnnotationId || !arc.targetAnnotationId) {
       return;
     }
 
-    $('#' + arc.srcAnnId + '').addClass("filtered");
-    $('#' + arc.targetAnnId + '').addClass("filtered");
-    $('#' + this.generateHighlightId(arc.srcAnnId) + '').addClass("over");
-    $('#' + this.generateHighlightId(arc.targetAnnId) + '').addClass("over");
+    $('#' + arc.srcAnnotationId + '').addClass("filtered");
+    $('#' + arc.targetAnnotationId + '').addClass("filtered");
+    $('#' + this.generateHighlightId(arc.srcAnnotationId) + '').addClass("over");
+    $('#' + this.generateHighlightId(arc.targetAnnotationId) + '').addClass("over");
   }
 
-  overLeaveRelation(id: string) {
+  overLeaveRelation(id: number) {
     $('*[data-relation-id="' + id + '"]').removeClass("filtered");
 
     let arc = this.simplifiedArcs.find(ar => ar.id == id);
 
-    if (!arc || !arc.srcAnnId || !arc.targetAnnId) {
+    if (!arc || !arc.srcAnnotationId || !arc.targetAnnotationId) {
       return;
     }
 
-    $('#' + arc.srcAnnId + '').removeClass("filtered");
-    $('#' + arc.targetAnnId + '').removeClass("filtered");
-    $('#' + this.generateHighlightId(arc.srcAnnId) + '').removeClass("over");
-    $('#' + this.generateHighlightId(arc.targetAnnId) + '').removeClass("over");
+    $('#' + arc.srcAnnotationId + '').removeClass("filtered");
+    $('#' + arc.targetAnnotationId + '').removeClass("filtered");
+    $('#' + this.generateHighlightId(arc.srcAnnotationId) + '').removeClass("over");
+    $('#' + this.generateHighlightId(arc.targetAnnotationId) + '').removeClass("over");
   }
 
   startDrawing(event: any, annotation: any) {
@@ -467,9 +465,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let relation = new Relation();
 
     relation.name = "Relation";
-    relation.srcAnnId = this.dragArrow.sourceAnn.id;
+    relation.srcAnnotationId = this.dragArrow.sourceAnn.id;
     relation.srcLayerId = Number.parseInt(this.dragArrow.sourceAnn.layer);
-    relation.targetAnnId = this.dragArrow.targetAnn.id;
+    relation.targetAnnotationId = this.dragArrow.targetAnn.id;
     relation.targetLayerId = Number.parseInt(this.dragArrow.targetAnn.layer);
     relation.textId = this.textId;
 
@@ -1366,15 +1364,15 @@ export class WorkspaceTextWindowComponent implements OnInit {
     let relationsPassignThroughLine = new Array();
 
     for (let ar of this.simplifiedArcs) {
-      if (!ar.srcAnnId || !ar.targetAnnId) {
+      if (!ar.srcAnnotationId || !ar.targetAnnotationId) {
         break;
       }
 
-      let sourceAnn = this.findAnnotationById(ar.srcAnnId);
-      let targetAnn = this.findAnnotationById(ar.targetAnnId);
+      let sourceAnn = this.findAnnotationById(ar.srcAnnotationId);
+      let targetAnn = this.findAnnotationById(ar.targetAnnotationId);
 
-      let sourceTower = this.findTowerByAnnotationId(ar.srcAnnId, lineTowers);
-      let targetTower = this.findTowerByAnnotationId(ar.targetAnnId, lineTowers);
+      let sourceTower = this.findTowerByAnnotationId(ar.srcAnnotationId, lineTowers);
+      let targetTower = this.findTowerByAnnotationId(ar.targetAnnotationId, lineTowers);
 
       if (!sourceAnn || !targetAnn) {
         break;

@@ -21,48 +21,63 @@ import { RelationService } from 'src/app/services/relation.service';
   styleUrls: ['./relation-editor.component.scss']
 })
 export class RelationEditorComponent implements OnInit {
-  private deleteElement = (id: string): void => {
+
+  private deleteElement = (id: number): void => {
     this.showOperationInProgress('Sto cancellando');
 
     let errorMsg = 'Errore nell\'eliminare la relazione'
     let successMsg = 'Relazione eliminata con successo'
 
-    if (id == "" || id == undefined || id == null || !this.sourceAnn.attributes || !this.targetAnn.attributes) {
+    if (id == undefined || id == null || !this.targetAnn.attributes) {
       this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
       return;
     }
 
-    let sIndex = this.sourceAnn.attributes['relations'].out.findIndex((r: Relation) => r.id == this.relationModel?.id);
-    let tIndex = this.targetAnn.attributes['relations'].in.findIndex((r: Relation) => r.id == this.relationModel?.id);
-
-    if (sIndex < 0) {
-      this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
-      return;
-    }
-
-    if (tIndex < 0) {
-      this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
-      return;
-    }
-
-    this.sourceAnn.attributes['relations'].out.splice(sIndex, 1);
-    this.targetAnn.attributes['relations'].in.splice(tIndex, 1);
-
-    this.loaderService.show();
-    this.annotationService.update(this.sourceAnn).subscribe({
-      next: () => {
-        this.annotationService.update(this.targetAnn).subscribe({
+    /*     let sIndex = this.sourceAnn.attributes['relations'].out.findIndex((r: Relation) => r.id == this.relationModel?.id);
+        let tIndex = this.targetAnn.attributes['relations'].in.findIndex((r: Relation) => r.id == this.relationModel?.id);
+    
+        if (sIndex < 0) {
+          this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
+          return;
+        }
+    
+        if (tIndex < 0) {
+          this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
+          return;
+        }
+    
+        this.sourceAnn.attributes['relations'].out.splice(sIndex, 1);
+        this.targetAnn.attributes['relations'].in.splice(tIndex, 1);
+    
+        this.loaderService.show();
+        this.annotationService.update(this.sourceAnn).subscribe({
           next: () => {
-            this.loaderService.hide();
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            Swal.close();
-            this.onDelete.emit();
+            this.annotationService.update(this.targetAnn).subscribe({
+              next: () => {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+                Swal.close();
+                this.onDelete.emit();
+              },
+              error: (err: string) => {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+              }
+            });
           },
           error: (err: string) => {
             this.loaderService.hide();
             this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
           }
-        });
+        }); */
+
+    this.loaderService.show();
+    this.relationService.delete(this.relationModel.id!).subscribe({
+      next: () => {
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        Swal.close();
+        this.onDelete.emit();
       },
       error: (err: string) => {
         this.loaderService.hide();
@@ -152,7 +167,7 @@ export class RelationEditorComponent implements OnInit {
 
     this.popupDeleteItem.confirmMessage = confirmMsg;
 
-    this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement((this.relationModel?.id || "")), this.relationModel.id);
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement((this.relationModel.id!)), this.relationModel.id);
   }
 
   private save(): void {
@@ -227,7 +242,7 @@ export class RelationEditorComponent implements OnInit {
             this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
           }
         }); */
-        this.sourceAnn.attributes[""]
+    this.sourceAnn.attributes[""]
     if (this.isEditing) {
       successMsg = "Relazione modificata con successo";
       this.relationService.update(this.relationModel).subscribe({
