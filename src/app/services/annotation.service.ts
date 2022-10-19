@@ -16,10 +16,6 @@ export class AnnotationService {
     this.annotationUrl = environment.annotationUrl;
   }
 
-  public createAnnotationFeature(annFeature: AnnotationFeature): Observable<any> {
-    return this.http.post<any>(`${this.annotationUrl}`, annFeature);
-  }
-
   // INIZIO CHIAMATE CASH SERVER
 
   baseUrl = "http://localhost:8443"
@@ -69,4 +65,18 @@ export class AnnotationService {
 
   // FINE CHIAMATE CASH SERVER
 
+  //INIZIO CHIAMATE NOSTRO BACKEND
+
+  public createAnnotationFeature(annFeature: AnnotationFeature): Observable<any> {
+    return this.http.post<any>(`${this.annotationUrl}`, annFeature);
+  }
+
+  //non necessario al momento
+/*   public updateAnnotationFeature(annFeatures: AnnotationFeature): Observable<AnnotationFeature> {
+    return this.http.put<AnnotationFeature>(`${this.annotationUrl}`, annFeatures);
+  } */
+
+  public deleteAnnotationFeature(id: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.annotationUrl}/${id}`);
+  }
 }

@@ -23,6 +23,7 @@ import { FeatureType } from 'src/app/models/feature/feature-type';
   styleUrls: ['./annotation-editor.component.scss']
 })
 export class AnnotationEditorComponent implements OnInit {
+
   private deleteElement = (id: number): void => {
     this.showOperationInProgress('Sto cancellando');
 
@@ -30,17 +31,30 @@ export class AnnotationEditorComponent implements OnInit {
     let successMsg = 'Annotazione eliminata con successo'
 
     this.annotationService
-        .delete(id)
-        .subscribe({
-          next: (result) => {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            Swal.close();
-            this.onDelete.emit()
-          },
-          error: () => {
-            this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
-          }
-        })
+      .delete(id)
+      .subscribe({
+        next: (result) => {
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          Swal.close();
+          this.onDelete.emit()
+          this.annotationService.deleteAnnotationFeature(id).subscribe({
+            next: (result: boolean) => {
+              if (result) {
+                console.log("AnnotationFeature salvata correttamento sul db");
+              }
+              else {
+                console.log("Errore durante il salvataggio di AnnotationFeature");
+              }
+            },
+            error: () => {
+              console.log("Errore durante il salvataggio di AnnotationFeature");
+            }
+          })
+        },
+        error: () => {
+          this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
+        }
+      })
   }
 
   @Input()
@@ -124,8 +138,8 @@ export class AnnotationEditorComponent implements OnInit {
     }
 
     return this.annotationModel.attributes["relations"] &&
-            (this.annotationModel.attributes["relations"].in.length != 0 ||
-            this.annotationModel.attributes["relations"].out.length != 0);
+      (this.annotationModel.attributes["relations"].in.length != 0 ||
+        this.annotationModel.attributes["relations"].out.length != 0);
   }
 
   public get shouldBeEditable(): boolean {
@@ -151,7 +165,7 @@ export class AnnotationEditorComponent implements OnInit {
   constructor(
     private annotationService: AnnotationService,
     private workspaceService: WorkspaceService,
-    private loggedUserService : LoggedUserService,
+    private loggedUserService: LoggedUserService,
     private loaderService: LoaderService,
     private layerService: LayerService,
     private featureService: FeatureService,
@@ -206,7 +220,7 @@ export class AnnotationEditorComponent implements OnInit {
       this.annotationModel.attributes['features'] = [];
     }
 
-    let simplifiedFeatures = this.features.map(({id, value}) => ({ id, value }))
+    let simplifiedFeatures = this.features.map(({ id, value }) => ({ id, value }))
     this.annotationModel.attributes['features'] = simplifiedFeatures;
 
     let successMsg = "Operazione effettuata con successo";
@@ -241,17 +255,30 @@ export class AnnotationEditorComponent implements OnInit {
       next: (res) => {
         this.loaderService.hide();
 
+        let annFeatures = new AnnotationFeature();
+        annFeatures.annotationId = res.annotation.id;
+        annFeatures.featureIds = this.features.map(f => f.id!);
+        annFeatures.layerId = Number.parseInt(this.annotationModel.layer);
+        this.loaderService.show();
+
         if (this.isEditing) {
-          // TO COMPLETE
+          this.loaderService.hide();
           this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
           this.onSave.emit();
+          //per il momento non c'è ragione di aggiornare il nostro backend
+          /*           this.annotationService.updateAnnotationFeature(annFeatures).subscribe({
+                      next: () => {
+                        this.loaderService.hide();
+                        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+                        this.onSave.emit();
+                      },
+                      error: (err: string) => {
+                        this.loaderService.hide();
+                        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+                      }
+                    }) */
         }
         else {
-          let annFeatures = new AnnotationFeature();
-          annFeatures.annotationId = res.annotation.id;
-          annFeatures.features = this.features.map(f => f.id!);
-
-          this.loaderService.show();
           this.annotationService.createAnnotationFeature(annFeatures).subscribe({
             next: () => {
               this.loaderService.hide();
