@@ -56,7 +56,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   @ViewChild('panelsContainer') public container!: ElementRef;
   @ViewChild('workspaceMenuContainer') public wsMenuContainer!: ElementRef;
 
-    // @HostListener allows us to also guard against browser refresh, close, etc.
+  // @HostListener allows us to also guard against browser refresh, close, etc.
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
     // insert logic to check if there are pending changes here;
@@ -149,7 +149,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
         this.loaderService.show();
         this.layerService.retrieveLayers().subscribe({
-          next: (layers: Layer[]) =>{
+          next: (layers: Layer[]) => {
             this.visibleLayers = layers;
             this.loaderService.hide();
 
@@ -172,7 +172,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
               return;
             }
           }
-      })
+        })
       }
     });
 
@@ -267,23 +267,27 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       },
       addContent: function (tile: Tile<TextTileContent>, workspaceComponent: WorkspaceComponent) {
         //this rappresenta l'elemento jsPanel
+        workspaceComponent.loaderService.show();
         switch (tile.type as TileType) {
           case TileType.TEXT:
             let el = document.createElement('p');
-            this.loaderService.show();
-            workspaceComponent.workspaceService.retrieveText(tile.content?.id!).subscribe({
-              next: (data) => {
-                el.textContent = data.text ?? '';
-                this.content.append(el);
-
-                this.addToTileMap(tile);
-                this.loaderService.hide();
-              }
-            })
+            let textTileComponent = workspaceComponent.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle);
+            this.content.append(textTileComponent.panelConfig.content);
+            this.addToTileMap(tile);
+            this.addComponentToList(tile.tileConfig.id, tile, tile.type);
+            break;
+          case TileType.CORPUS:
+            console.log("corupus");
+            let res = workspaceComponent.generateCorpusExplorerPanelConfiguration(tile.tileConfig.id);
+            this.content.append(res.panelConfig.content);
+            this.addToTileMap(tile);
+            this.addComponentToList(tile.tileConfig.id, tile, tile.type);
+            //workspaceComponent.openExploreCorpusPanel(true);
             break;
           default:
             console.error("type " + tile.type + " not implemented");
         }
+        workspaceComponent.loaderService.hide();
       }
     })
   }
@@ -318,15 +322,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       })
       .reposition();
     //.addToPanelsMap();
-    const {content, ...text} = corpusExplorerTileConfig;
+    const { content, ...text } = corpusExplorerTileConfig;
+
+    corpusExplorerTileConfig.content = undefined;
 
     let tileObject: Tile<CorpusTileContent> = {
       id: undefined,
       workspaceId: this.workspaceId,
-      content: {},
-      tileConfig: {},
+      content: undefined,
+      tileConfig: corpusExplorerTileConfig,
       type: TileType.CORPUS
     };
+
 
     corpusTileElement.addToTileMap(tileObject);
     corpusTileElement.addComponentToList(res.id, res.component, res.tileType);
@@ -357,7 +364,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       })
       .reposition();
 
-    const {content, ...text} = tileConfig;
+    const { content, ...text } = tileConfig;
 
     let tileObject: Tile<any> = {
       id: undefined,
@@ -429,12 +436,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         width: window.innerWidth / 3 * 2
       })
       .reposition();
-      const {content, ...text} = textTileConfig;
+    const { content, ...text } = textTileConfig;
+
+    textTileConfig.content = undefined;
+
+    let txtTileContent : TextTileContent = { contentId: textId };
 
     let tileObject: Tile<TextTileContent> = {
-      id: panelId,
+      id: undefined,
       workspaceId: this.workspaceId,
-      content: { id: textId, text: "" },
+      content: txtTileContent,
       tileConfig: textTileConfig,
       type: TileType.TEXT
     };
@@ -459,47 +470,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     // };
 
     // textTileElement.addContent(tileObject, this);
-  }
-
-  openTextPanelCarmelo(textId: string, title: string) {
-    //this.openPanels.get('modalTextSelect').close();
-    jsPanel.getPanels(function (this: any) {
-      return this.classList.contains('jsPanel-modal');
-    })
-      .find((x: { id: string; }) => x.id === 'modalTextSelect')
-      .close();
-
-    let textTileConfig = {
-      id: this.textTilePrefix + textId,
-      container: this.workspaceContainer,
-      headerTitle: 'testo - ' + title.toLowerCase(),
-      maximizedMargin: 5,
-      dragit: { snap: true },
-      syncMargins: true,
-      onclosed: function (this: any, panel: any, closedByUser: boolean) {
-        //currentWorkspaceInstance.openPanels.delete(panel.id);
-        this.deleteTileContent(panel.id, TileType.TEXT);
-      }
-    };
-
-    let textTileElement = jsPanel.create(textTileConfig);
-    //.addToPanelsMap();
-
-    // textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
-    //   currentWorkspaceInstance.openPanels.delete(panel.id);
-    //   this.deleteTileContent(panel.id, TileType.TEXT);
-    // });
-
-    let tileObject: Tile<TextTileContent> =
-    {
-      id: undefined,
-      workspaceId: this.workspaceId,
-      content: { id: Number(textId), text: '' },
-      tileConfig: textTileConfig,
-      type: TileType.TEXT
-    };
-
-    textTileElement.addContent(tileObject, this);
   }
 
   restoreTiles(workspaceStatus: Workspace) {
@@ -656,7 +626,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
-        let panelIDs = jsPanel.getPanels(function() {
+        let panelIDs = jsPanel.getPanels(function () {
           return panel.classList.contains('jsPanel-standard');
         }).map((panel: any) => panel.id);
         console.log(panelIDs)
@@ -691,7 +661,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
-        let panelIDs = jsPanel.getPanels(function() {
+        let panelIDs = jsPanel.getPanels(function () {
           return panel.classList.contains('jsPanel-standard');
         }).map((panel: any) => panel.id);
         console.log(panelIDs)
