@@ -88,6 +88,14 @@ export class AnnotationEditorComponent implements OnInit {
           newFeature.modelPropName = `${feature.name}`;
 
           if (annotation.attributes['features']) {
+            //GESTIONE BUG SULLE API CASH
+            //non viene restituito un array di feature nel caso ci sia una sola feature
+            //ma solo un elemento feature
+            if(!Array.isArray(annotation.attributes['features']))
+            {
+              annotation.attributes['features'] = new Array(annotation.attributes['features']);
+            }
+            
             let elem = annotation.attributes['features'].find((f: any) => f.id == feature.id);
 
             if (elem && (feature.type == FeatureType.TAGSET || feature.type == FeatureType.URI)) {
@@ -220,7 +228,16 @@ export class AnnotationEditorComponent implements OnInit {
       this.annotationModel.attributes['features'] = [];
     }
 
-    let simplifiedFeatures = this.features.map(({ id, value }) => ({ id, value }))
+    this.features.forEach(f => {
+      if (f.type == FeatureType.TAGSET && f.tagset) {
+        f.valueLabel = f.tagset.values?.find(v => v.id == f.value)?.name;
+      }
+      else {
+        f.valueLabel = undefined;
+      }
+    })
+
+    let simplifiedFeatures = this.features.map(({ id, value, valueLabel }) => ({ id, value, valueLabel }))
     this.annotationModel.attributes['features'] = simplifiedFeatures;
 
     let successMsg = "Operazione effettuata con successo";
