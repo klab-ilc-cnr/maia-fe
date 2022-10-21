@@ -185,13 +185,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
             this.simplifiedAnns.push(...sAnn);
           }
 
-/*           if (a.attributes && a.attributes["relations"]) {
-            let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-              if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
-                this.simplifiedArcs.push(r);
-              }
-            })
-          } */
+          /*           if (a.attributes && a.attributes["relations"]) {
+                      let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
+                        if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
+                          this.simplifiedArcs.push(r);
+                        }
+                      })
+                    } */
         })
 
         this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
@@ -682,6 +682,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
       labelText = layer?.name || layer?.id as unknown as string || "";
     }
     else {
+      //GESTIONE BUG SULLE API CASH
+      //non viene restituito un array di feature nel caso ci sia una sola feature
+      //ma solo un elemento feature
+      if (!Array.isArray(annotation.attributes['features'])) {
+        annotation.attributes['features'] = new Array(annotation.attributes['features']);
+      }
+
       let features = annotation.attributes['features'];
       let stringsToJoin = new Array<string>();
       features.forEach((f: any) => {
