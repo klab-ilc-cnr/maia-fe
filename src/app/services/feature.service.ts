@@ -16,13 +16,10 @@ export class FeatureService {
     this.featureUrl = environment.featureUrl;
   }
 
-  // METODI MOCKATI
   public retrieveFeaturesByLayerId(layerId: number): Observable<Feature[]> {
-    //return this.http.get<any>(`assets/mock/features/features${layerId}.json`);
 
     return this.http.get<Feature[]>(`${this.featureUrl}/${layerId}`);
   }
-  // FINE METODI MOCKATI
 
   public createFeature(item: any): Observable<any> {
     return this.http.post<any>(`${this.featureUrl}`, item);
