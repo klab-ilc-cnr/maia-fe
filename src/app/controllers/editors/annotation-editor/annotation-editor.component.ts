@@ -220,7 +220,16 @@ export class AnnotationEditorComponent implements OnInit {
       this.annotationModel.attributes['features'] = [];
     }
 
-    let simplifiedFeatures = this.features.map(({ id, value }) => ({ id, value }))
+    this.features.forEach(f => {
+      if (f.type == FeatureType.TAGSET && f.tagset) {
+        f.valueLabel = f.tagset.values?.find(v => v.id == f.value)?.name;
+      }
+      else {
+        f.valueLabel = undefined;
+      }
+    })
+
+    let simplifiedFeatures = this.features.map(({ id, value, valueLabel }) => ({ id, value, valueLabel }))
     this.annotationModel.attributes['features'] = simplifiedFeatures;
 
     let successMsg = "Operazione effettuata con successo";

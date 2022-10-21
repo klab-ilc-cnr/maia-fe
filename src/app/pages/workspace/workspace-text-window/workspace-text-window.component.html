@@ -89,11 +89,6 @@
             <!-- <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="37" [attr.height]="row.height" (mouseup)="selectionchange($event)">{{row.text}}</text> -->
           </g>
           <!-- Generare n gruppi per archi e annotazioni -->
-          <g>
-            <!-- <ng-template ngFor let-arc [ngForOf]="arcs" let-i="index">
-
-            </ng-template> -->
-          </g>
           <g *ngFor="let row of rows">
             <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="arc">
               <g *ngFor="let arc of line.arcs">
@@ -116,9 +111,6 @@
                 <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>
               </g>
             </g>
-          </g>
-          <g>
-
           </g>
           <!-- -->
           <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />

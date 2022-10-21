@@ -5,4 +5,5 @@ export class FeatureForAnnotation extends Feature{
   dropdownOptions: Array<any> = []
   modelPropName: string | undefined
   value: any
+  valueLabel: string | undefined
 }

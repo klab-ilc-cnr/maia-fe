@@ -46,7 +46,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     curlyHeight: 4,
     annotationFont: "10px 'PT Sans Caption'",
     arcFont: "10px 'PT Sans Caption'",
-    labelMaxLenght: 10,
+    labelMaxLength: 10,
     labelEllipsisText: "...",
     labelPaddingXAxis: 3,
     arcAngleOffset: 3,
@@ -675,14 +675,55 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return line;
   }
 
+  private elaborateAnnotationLabel(layer: Layer | undefined, annotation: any, maxLengthComputed: number) {
+    let labelText = "";
+
+    if (!annotation || !annotation.attributes || !annotation.attributes['features']) {
+      labelText = layer?.name || layer?.id as unknown as string || "";
+    }
+    else {
+      let features = annotation.attributes['features'];
+      let stringsToJoin = new Array<string>();
+      features.forEach((f: any) => {
+        if (f.value && !f.valueLabel) {
+          stringsToJoin.push(f.value as unknown as string);
+        }
+        else if (f.value && f.valueLabel) {
+          stringsToJoin.push(f.valueLabel as unknown as string);
+        }
+        else {
+          stringsToJoin.push(" ");
+        }
+      })
+      labelText = stringsToJoin.join(" | ");
+    }
+
+    labelText = labelText.trim();
+
+    let labelLength = this.getComputedTextLength(labelText, this.visualConfig.annotationFont);
+    let oneCharW = this.getComputedTextLength('.', this.visualConfig.annotationFont);
+
+    let counter = 0;
+    if (labelLength > maxLengthComputed) {
+      while (labelLength > maxLengthComputed) {
+        counter++;
+        labelLength -= oneCharW;
+      }
+
+      labelText = labelText.substring(0, labelText.length - counter - this.visualConfig.labelEllipsisText.length) + this.visualConfig.labelEllipsisText;
+    }
+
+    return labelText;
+  }
+
   private elaborateArcLabel(name: string) {
     let labelText = "";
 
-    if (name.trim().length > this.visualConfig.labelMaxLenght) {
-      labelText = name.trim().substring(0, this.visualConfig.labelMaxLenght - this.visualConfig.labelEllipsisText.length) + this.visualConfig.labelEllipsisText;
+    if (name.trim().length > this.visualConfig.labelMaxLength) {
+      labelText = name.trim().substring(0, this.visualConfig.labelMaxLength - this.visualConfig.labelEllipsisText.length) + this.visualConfig.labelEllipsisText;
     }
     else {
-      labelText = name.trim().substring(0, this.visualConfig.labelMaxLenght);
+      labelText = name.trim().substring(0, this.visualConfig.labelMaxLength);
     }
 
     let textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
@@ -1062,10 +1103,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return arc;
   }
 
-  private elaborateTextLabel(layer: Layer | undefined, annotation: any) {
-    return layer?.id as unknown as string || ""; //layer?.name || ""; // il testo dell'annotazione dovrebbe essere le sue features separate dal carattere '|' ?
-  }
-
   private findAnnotationById(id: number) {
     return this.simplifiedAnns.find((an: any) => an.id == id);
   }
@@ -1280,10 +1317,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
       t.anns.forEach((ann: any) => {
         let layer = this.layersList.find(l => l.id == Number.parseInt(ann.layer));
         let startX = this.getComputedTextLength(this.randomString(t.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        let text = this.elaborateTextLabel(layer, ann);
-        let textAnnLenght = this.getComputedTextLength(text, this.visualConfig.annotationFont);
         let w = this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
         let endX = startX + w;
+        let text = this.elaborateAnnotationLabel(layer, ann, w);
+        let textAnnLenght = this.getComputedTextLength(text, this.visualConfig.annotationFont);
 
         // console.log(w, startX + (w/2) - (textAnnLenght/2), this.randomString(t.span.end - t.span.start))
 
@@ -1291,7 +1328,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
           color: '#000',
           bgColor: layer?.color,
           borderColor: '#808080',
-          text: layer?.id,
+          text: text,
           textCoordinates: {
             x: Math.ceil(startX + w / 2),
             y: 0
