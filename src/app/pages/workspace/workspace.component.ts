@@ -110,9 +110,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         items: [
           // { label: 'Apri', id: 'OPEN', command: (event) => { this.openTextChoicePanel(event) } },
           // { separator: true },
-          { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } },
-          // { separator: true },
-          // { label: 'Gestione layers', id: 'LayersManager', command: (event) => { this.openLayersManagerPanel(event) } },
+          { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } }
         ]
       },
       {
@@ -264,30 +262,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       },
       getComponentsList: function () {
         return this.componentsList;
-      },
-      addContent: function (tile: Tile<TextTileContent>, workspaceComponent: WorkspaceComponent) {
-        //this rappresenta l'elemento jsPanel
-        workspaceComponent.loaderService.show();
-        switch (tile.type as TileType) {
-          case TileType.TEXT:
-            let el = document.createElement('p');
-            let textTileComponent = workspaceComponent.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle);
-            this.content.append(textTileComponent.panelConfig.content);
-            this.addToTileMap(tile);
-            this.addComponentToList(tile.tileConfig.id, tile, tile.type);
-            break;
-          case TileType.CORPUS:
-            console.log("corupus");
-            let res = workspaceComponent.generateCorpusExplorerPanelConfiguration(tile.tileConfig.id);
-            this.content.append(res.panelConfig.content);
-            this.addToTileMap(tile);
-            this.addComponentToList(tile.tileConfig.id, tile, tile.type);
-            //workspaceComponent.openExploreCorpusPanel(true);
-            break;
-          default:
-            console.error("type " + tile.type + " not implemented");
-        }
-        workspaceComponent.loaderService.hide();
       }
     })
   }
@@ -339,70 +313,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     corpusTileElement.addComponentToList(res.id, res.component, res.tileType);
   }
 
-  openLayersManagerPanel(event: any) {
-    var panelId = 'layersManagerPanel'
-
-    var panelExist = jsPanel.getPanels().find(
-      (x: { id: string; }) => x.id === panelId
-    );
-
-    if (panelExist) {
-      panelExist.front()
-      return;
-    }
-
-    let res = this.generateLayersManagerPanelConfiguration(panelId);
-
-    let tileConfig = res.panelConfig;
-
-    let layersPanel = jsPanel.create(tileConfig);
-
-    layersPanel
-      .resize({
-        height: window.innerHeight / 2,
-        width: 260
-      })
-      .reposition();
-
-    const { content, ...text } = tileConfig;
-
-    let tileObject: Tile<any> = {
-      id: undefined,
-      workspaceId: this.workspaceId,
-      content: {},
-      tileConfig: {},
-      type: TileType.CORPUS
-    };
-
-    layersPanel.addToTileMap(tileObject);
-    layersPanel.addComponentToList(res.id, res.component, res.tileType);
-  }
-
-  openTextChoicePanel(event: any) {
-
-    const textList = this.retrieveTextList();
-
-    const element = this.workspaceTextSelectorComponentToHtml(textList);
-    //this.mainPanel.content.append(element);
-
-    var modal = jsPanel.modal.create({
-      id: 'modalTextSelect',
-      theme: 'filleddark',
-      headerTitle: '',
-      content: element,
-      onclosed: function (panel: any, closedByUser: boolean) {
-        //currentWorkspaceInstance.openPanels.delete(panel.id);
-      }
-    })
-      .resize({
-        width: window.innerWidth / 2,
-        height: window.innerHeight / 2
-      })
-      .reposition(); // reposition panel in order to maintain centered position
-    //.addToPanelsMap();
-    //this.panels.set(modal.id, modal);
-  }
-
   openTextPanel(textId: number, title: string) {
     let modalTextSelect = jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');
@@ -440,7 +350,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     textTileConfig.content = undefined;
 
-    let txtTileContent : TextTileContent = { contentId: textId };
+    let txtTileContent: TextTileContent = { contentId: textId };
 
     let tileObject: Tile<TextTileContent> = {
       id: undefined,
@@ -453,27 +363,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     textTileElement.addToTileMap(tileObject);
     textTileElement.addComponentToList(res.id, res.component, res.tileType);
 
-    //.addToPanelsMap();
-
     // textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
     //   currentWorkspaceInstance.openPanels.delete(panel.id);
     //   this.deleteTileContent(panel.id, TileType.TEXT);
     // });
-
-    // let tileObject: Tile<TextTileContent> =
-    // {
-    //   id: undefined,
-    //   workspaceId: this.workspaceId,
-    //   content: { id: Number(textId), text: '' },
-    //   tileConfig: textTileConfig,
-    //   type: TileType.TEXT
-    // };
-
-    // textTileElement.addContent(tileObject, this);
   }
 
   restoreTiles(workspaceStatus: Workspace) {
     console.log('restore');
+    this.loaderService.show();
 
     let storedData: any = workspaceStatus.layout;
     let storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
@@ -483,44 +381,61 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const tilesConfigs: any = {};
-
+    let currPanelElement;
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
     for (const [index, tile] of storedTiles.entries()) {
       switch (tile.type as TileType) {
         case TileType.TEXT:
-          tilesConfigs[this.textTilePrefix + index] = tile.tileConfig;
+          var textTileComponent = this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle);
 
+          //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
+          //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
+          let mergedConfig = { ...textTileComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfig,
+            storagename: this.storageName
+          });
+          //currPanelElement = jsPanel.create(mergedConfig);
+
+          currPanelElement.addToTileMap(tile);
+          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
+
         case TileType.CORPUS:
-          tilesConfigs['corpus' + index] = tile.tileConfig;
+          let corupusComponent = this.generateCorpusExplorerPanelConfiguration(tile.tileConfig.id);
+          let mergedConfigCorpus = { ...corupusComponent.panelConfig, ...tile.tileConfig };
 
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigCorpus,
+            storagename: this.storageName
+          });
+
+          currPanelElement.addToTileMap(tile);
+          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
+
         default:
           console.error("type " + tile.type + " not implemented");
       }
-      // tilesConfigs[this.textTilePrefix + index] = tile.tileConfig;
     }
-
-    console.log('tiles configs', tilesConfigs);
 
     //Ripristino i dati nel localstorage, che verrà letto successivamente da jsPanel
     localStorage.setItem(this.storageName, storedData)
 
-    //Ripristino le tile
-    jsPanel.layout.restore({
-      configs: tilesConfigs,
-      storagename: this.storageName
-    });
-
-    //Ripristino il contenuto delle tile
-    for (const [tileId, tile] of storedTiles.entries()) {
+    /* for (const [tileId, tile] of storedTiles.entries()) {
       let currPanelElement = jsPanel.getPanels().find(
         (x: { id: string; }) => x.id === tile.tileConfig.id
       );
 
       currPanelElement.addContent(tile, this);
-    };
+    }; */
+
+    this.loaderService.hide();
   }
 
   retrieveTextList(): TextChoice[] {
@@ -576,7 +491,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
   //Componente creato in maniera dinamica,
   //con gestione manuale degli input e degli eventi
-  workspaceTextSelectorComponentToHtml(textList: Array<any>) {
+  workspaceTextSelectorComponentToHtml(textList: Array<any>, workspaceComponent: any) {
     const componentRef = this.vcr.createComponent(WorkspaceTextSelectorComponent);
 
     componentRef.instance.textChoiceList = textList;
@@ -641,41 +556,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private generateLayersManagerPanelConfiguration(panelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceLayersVisibilityManagerComponent);
-
-    const element = componentRef.location.nativeElement;
-
-    let config = {
-      id: panelId,
-      container: this.workspaceContainer,
-      content: element,
-      headerTitle: 'Visibilità layers',
-      maximizedMargin: 5,
-      dragit: { snap: true },
-      syncMargins: true,
-      onclosed: function (this: any, panel: any, closedByUser: boolean) {
-        //currentWorkspaceInstance.openPanels.delete(panel.id);
-        this.removeFromTileMap(panel.id, TileType.CORPUS);
-        this.removeComponentFromList(panel.id);
-      },
-      onfronted: function (this: any, panel: any, status: any) {
-        //componentRef.instance.reload()
-        let panelIDs = jsPanel.getPanels(function () {
-          return panel.classList.contains('jsPanel-standard');
-        }).map((panel: any) => panel.id);
-        console.log(panelIDs)
-      }
-    }
-
-    return {
-      id: panelId,
-      component: componentRef,
-      panelConfig: config,
-      tileType: TileType.LAYERS_LIST
-    };
-  }
-
   private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string) {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
@@ -684,11 +564,28 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     const element = componentRef.location.nativeElement;
 
-    let config = {
+    let config = this.generateTextTileConfig(panelId, title, element, componentRef)
+
+    return {
+      id: panelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.TEXT
+    };
+  }
+
+  private resizeContainerHeight() {
+    let height = window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
+    this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
+  }
+
+  private generateTextTileConfig(panelId: string, title: string, textWindowComponent: any, componentRef: any) {
+    let config =
+    {
       id: panelId,
       container: this.workspaceContainer,
       headerTitle: 'testo - ' + title.toLowerCase(),
-      content: element,
+      content: textWindowComponent,
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
@@ -733,19 +630,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
           componentRef.instance.updateTextEditorSize();
         }
       }
-    }
-
-    return {
-      id: panelId,
-      component: componentRef,
-      panelConfig: config,
-      tileType: TileType.TEXT
     };
-  }
-
-  private resizeContainerHeight() {
-    let height = window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
-    this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
+    return config;
   }
 }
 
