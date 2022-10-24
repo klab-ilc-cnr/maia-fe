@@ -381,6 +381,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    //IMPORTANTE Ripristino i dati nel localstorage PRIMA di fare restore, 
+    //il localstorage verrà letto dalla funzione jsPanel.layout.restore()
+    localStorage.setItem(this.storageName, storedData)
+
     let currPanelElement;
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
     for (const [index, tile] of storedTiles.entries()) {
@@ -415,6 +419,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
             storagename: this.storageName
           });
 
+          //currPanelElement = jsPanel.create(mergedConfigCorpus);
+
           currPanelElement.addToTileMap(tile);
           currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
@@ -423,9 +429,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
           console.error("type " + tile.type + " not implemented");
       }
     }
-
-    //Ripristino i dati nel localstorage, che verrà letto successivamente da jsPanel
-    localStorage.setItem(this.storageName, storedData)
 
     /* for (const [tileId, tile] of storedTiles.entries()) {
       let currPanelElement = jsPanel.getPanels().find(

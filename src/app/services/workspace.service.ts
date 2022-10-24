@@ -47,6 +47,11 @@ export class WorkspaceService {
     for (const [tileId, tile] of openTiles.entries()) {
       //tile.tileConfig = JSON.stringify(tile.tileConfig); //passo le configurazioni come stringa
 
+      if (tile.tileConfig.resizeit) //BUG FIX resizeit viene salvato ma non dovrebbe
+      {
+        delete tile.tileConfig.resizeit;
+      }
+
       let newTile = new Tile(tile.id!, tile.workspaceId!, tile.content, JSON.stringify(tile.tileConfig), tile.type!)
       tiles.push(newTile);
     }
