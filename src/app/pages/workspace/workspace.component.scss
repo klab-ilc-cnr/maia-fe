@@ -10,3 +10,8 @@ body,
 #panelsContainer {
     position: absolute;
 }
+
+.workspace-menu-infront{
+    z-index: 1000;
+    position: relative;
+}
