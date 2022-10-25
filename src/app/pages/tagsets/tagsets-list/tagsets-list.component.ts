@@ -19,6 +19,7 @@ export class TagsetsListComponent implements OnInit {
     this.showOperationInProgress('Sto cancellando');
 
     let errorMsg = 'Errore nell\'eliminare il tagset \'' + name + '\'';
+    let failMsg = 'Il tagset \'' + name + '\' è parte di una feature';
     let successMsg = 'Tagset \'' + name + '\' eliminato con successo';
 
     this.tagsetService
@@ -30,7 +31,7 @@ export class TagsetsListComponent implements OnInit {
               Swal.close();
             }
             else {
-              this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+              this.showOperationFailed('Cancellazione Fallita: ' + failMsg);
             }
             this.loadData();
           },

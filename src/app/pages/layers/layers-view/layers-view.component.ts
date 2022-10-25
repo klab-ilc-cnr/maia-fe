@@ -26,7 +26,8 @@ export class LayersViewComponent implements OnInit {
   private deleteFeature = (id: number, name: string): void => {
     this.showOperationInProgress('Sto cancellando');
 
-    let errorMsg = 'Errore nell\'eliminare la feature tagset \'' + name + '\'';
+    let errorMsg = 'Errore nell\'eliminare la feature \'' + name + '\'';
+    let failMsg = 'La feature \'' + name + '\' è parte di un\'annotazione';
     let successMsg = 'Feature \'' + name + '\' eliminato con successo';
 
     this.featureService
@@ -38,7 +39,7 @@ export class LayersViewComponent implements OnInit {
               Swal.close();
             }
             else {
-              this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+              this.showOperationFailed('Cancellazione Fallita: ' + failMsg);
             }
             this.loadDetails(this.layerId);
           },

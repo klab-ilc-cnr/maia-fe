@@ -21,6 +21,7 @@ export class LayersListComponent implements OnInit {
     this.showOperationInProgress('Sto cancellando');
 
     let errorMsg = 'Errore nell\'eliminare il layer \'' + name + '\'';
+    let failMsg = 'Il layer \'' + name + '\' è parte di un\'annotazione e/o di una relazione';
     let successMsg = 'Layer \'' + name + '\' eliminato con successo';
 
     this.layerService
@@ -32,7 +33,7 @@ export class LayersListComponent implements OnInit {
               Swal.close();
             }
             else {
-              this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+              this.showOperationFailed('Cancellazione Fallita: ' + failMsg);
             }
             this.loadData();
           },
