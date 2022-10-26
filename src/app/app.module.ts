@@ -54,6 +54,8 @@ import { TagsetValueNotDuplicateNameDirective } from './validators/tagset-value-
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
 import { WhitespacesValidatorDirective } from './validators/whitespaces-validator.directive';
 import { NotDuplicateNameDirective } from './validators/not-duplicate-name.directive';
+import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
+import {TreeTableModule} from 'primeng/treetable';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,8 @@ import { NotDuplicateNameDirective } from './validators/not-duplicate-name.direc
     TagsetValueNotDuplicateNameDirective,
     RelationEditorComponent,
     WhitespacesValidatorDirective,
-    NotDuplicateNameDirective
+    NotDuplicateNameDirective,
+    WorkspaceLexiconTileComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +110,8 @@ import { NotDuplicateNameDirective } from './validators/not-duplicate-name.direc
     TooltipModule,
     ContextMenuModule,
     TreeSelectModule,
-    CheckboxModule
+    CheckboxModule,
+    TreeTableModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

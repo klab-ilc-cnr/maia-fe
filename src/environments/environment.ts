@@ -37,7 +37,8 @@ export const environment = {
   featureUrl: allowedUrls + '/features',
   tagsetUrl: allowedUrls + '/tagsets',
   annotationUrl: allowedUrls +'/annotations',
-  relationUrl: allowedUrls +'/relations'
+  relationUrl: allowedUrls +'/relations',
+  lexoUrl : "https://licodemo.ilc.cnr.it/LexO-backend-beta/service/"
 };
 
 /*

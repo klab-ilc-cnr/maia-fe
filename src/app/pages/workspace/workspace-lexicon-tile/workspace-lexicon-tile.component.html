@@ -1,0 +1,172 @@
+<p-treeTable #tt [value]="results" [columns]="cols">
+    <ng-template pTemplate="caption">
+      <div style="text-align: center">
+        <span class="p-input-icon-right">
+          <i class="pi pi-search"></i>
+          <input
+            type="text"
+            pInputText
+            size="50"
+            placeholder="Cerca"
+            (input)="tt.filterGlobal(($any($event.target).value), 'contains')"
+            style="width:auto"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of cols">
+          {{ col.header }}
+        </th>
+      </tr>
+      <tr>
+        <th *ngFor="let col of cols">
+          <input
+            pInputText
+            type="text"
+            class="w-full"
+            (input)="
+              tt.filter(($any($event.target).value), col.field, col.filterMatchMode)
+            "
+          />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr>
+        <td *ngFor="let col of cols; let i = index">
+          <p-treeTableToggler
+            [rowNode]="rowNode"
+            *ngIf="i == 0"
+          ></p-treeTableToggler>
+          {{ rowData[col.field] }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="cols.length">Nessun risultato</td>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+
+  <form [formGroup]="filterForm">
+    <div class="input-group col-md-12 mt-3">
+        <input formControlName="text" id="filterLexicalEntry" name="text" type="text" class="form-control"
+            placeholder="Search" />
+        <div class="input-group-append">
+            <span class="input-group-text loading_icon_append" id="basic-addon2">
+                <div class="spinner-border spinner-border-sm m-1" role="status" *ngIf="searchIconSpinner">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </span>
+        </div>
+        <div id="buttons-container" class="input-group-append">
+            <button class="btn btn-info btn-block filter-button" type="button" data-toggle="popover"
+                data-placement="bottom" data-trigger="hover"><i class="fa fa-question"></i></button>
+            <button class="btn btn-secondary btn-block filter-button" type="button" value="Filter" title="Filter"
+                data-toggle="collapse" data-target="#filterCollapse" aria-expanded="false"
+                aria-controls="filterCollapse"><i class="fa fa-filter"></i></button>
+            <button class="btn btn-danger btn-block reset-button" type="button" value="Reset" title="Reset"
+                (click)="resetFields();" style="border-top-right-radius: .25rem; border-bottom-right-radius: .25rem;"><i
+                    class="fa fa-times"></i></button>
+            <button class="btn btn-block counter-button" type="button"><span
+                    class="font-weight-bold font-italic text-muted">{{counter}}</span></button>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap mt-3">
+        <div class="col-md-3 col-sm-3">
+            <div class="form-check">
+                <input formControlName="searchMode" class="form-check-input" type="radio" name="searchMode"
+                    id="equalsRadio" value="equals">
+                <label class="form-check-label" for="equalsRadio">
+                    Equals
+                </label>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-3">
+            <div class="form-check">
+                <input formControlName="searchMode" class="form-check-input" type="radio" name="searchMode"
+                    id="startRadio" value="startsWith">
+                <label class="form-check-label" for="startRadio">
+                    Starts
+                </label>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-3">
+            <div class="form-check">
+                <input formControlName="searchMode" class="form-check-input" type="radio" name="searchMode"
+                    id="containsRadio" value="contains">
+                <label class="form-check-label" for="containsRadio">
+                    Contains
+                </label>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-3">
+            <div class="form-check">
+                <input formControlName="searchMode" class="form-check-input" type="radio" name="searchMode"
+                    id="endRadio" value="end">
+                <label class="form-check-label" for="endRadio">
+                    Ends
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row mx-0 px-0">
+        <div class="col-sm-12">
+            <div class="col-md-4 col-sm-12">
+                <p-dropdown #layer="ngModel" name="type" appendTo="body" [(ngModel)]="selectedType"
+                placeholder="Type" [options]="types" [filter]="true" [showClear]="true">
+              </p-dropdown>
+                <select formControlName="type" class="form-control" id="type" name="type">
+                    <option value="">Type</option>
+                    <option *ngFor="let type of types" [value]="type.label">{{type.label}} - {{type.count}}</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="d-md-none mt-3"></div>
+                <select formControlName="pos" class="form-control" id="pos" name="pos">
+                    <option value="">Pos</option>
+                    <option *ngFor="let ps of partOfSpeech" [value]="ps.label">{{ps.label}} - {{ps.count}} </option>
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="d-md-none mt-3"></div>
+                <select formControlName="formType" class="form-control" id="formType" name="formType">
+                    <option value="entry">entry</option>
+                    <option value="flexed">flexed</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap mt-3">
+            <div class="col-md-4 col-sm-12">
+                <div class="d-md-none mt-3"></div>
+                <select formControlName="author" class="form-control" id="author" name="author">
+                    <option value="">Author</option>
+                    <option *ngFor="let auth of authors" [value]="auth.label">{{auth.label}} - {{auth.count}}</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="d-md-none mt-3"></div>
+                <select formControlName="lang" class="form-control" id="lang" name="lang">
+                    <option value="">Language</option>
+                    <option *ngFor="let lang of languages" [value]="lang.label">{{lang.label}} - {{lang.count}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="d-md-none mt-3"></div>
+                <select formControlName="status" class="form-control" id="status" name="status">
+                    <option value="">Status</option>
+                    <option value="working">working</option>
+                    <option value="completed">completed</option>
+                    <option value="reviewed">reviewed</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>

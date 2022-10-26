@@ -24,6 +24,8 @@ import { MessageService } from 'primeng/api';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LoaderService } from 'src/app/services/loader.service';
+import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
+import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 //var currentWorkspaceInstance: any;
@@ -116,7 +118,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       {
         label: 'Lessico',
         items: [
-          { label: 'Lessico 1', id: 'LEX' },
+          { label: 'Apri', id: 'LEXICON', command: (event) => { this.openLexiconPanel(event) } },
           { label: 'Lessico 2' }
         ]
       },
@@ -188,16 +190,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         console.log(tile)
         switch (tile.type as TileType) {
           case TileType.TEXT:
-            this.tileMap.set(this.id, tile);
-            console.log('Added ', this.getTileMap())
-            break;
-
           case TileType.CORPUS:
-            this.tileMap.set(this.id, tile);
-            console.log('Added ', this.getTileMap())
-            break;
-
           case TileType.LAYERS_LIST:
+          case TileType.LEXICON:
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
             break;
@@ -367,6 +362,47 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     //   currentWorkspaceInstance.openPanels.delete(panel.id);
     //   this.deleteTileContent(panel.id, TileType.TEXT);
     // });
+  }
+
+  openLexiconPanel(event: any) {
+    var lexiconPanelId = 'lexiconTile'
+
+    var panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === lexiconPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    let result = this.generateLexiconPanelConfiguration(lexiconPanelId);
+
+    let lexiconTileConfig = result.panelConfig;
+
+    let lexiconTileElement = jsPanel.create(lexiconTileConfig);
+
+    lexiconTileElement
+      .resize({
+        height: window.innerHeight / 2
+      })
+      .reposition();
+
+    const { content, ...text } = lexiconTileConfig;
+
+    lexiconTileConfig.content = undefined;
+
+    let tileObject: Tile<LexiconTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: lexiconTileConfig,
+      type: TileType.LEXICON
+    };
+
+
+    lexiconTileElement.addToTileMap(tileObject);
+    lexiconTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
   restoreTiles(workspaceStatus: Workspace) {
@@ -635,6 +671,51 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       }
     };
     return config;
+  }
+
+  private generateLexiconPanelConfiguration(lexiconPanelId: string) {
+    const componentRef = this.vcr.createComponent(WorkspaceLexiconTileComponent);
+
+    /*     componentRef.instance.onTextSelectEvent
+          .subscribe({
+            next: (event: any) => {
+              console.log("qui", event);
+    
+              let textId = event.node.data?.['element-id'];
+              let title = event.node.label;
+    
+              this.openTextPanel(textId, title.toLowerCase())
+            }
+          }); */
+
+    const element = componentRef.location.nativeElement;
+
+    let config = {
+      id: lexiconPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Lessico',
+      maximizedMargin: 5,
+      dragit: { snap: true },
+      syncMargins: true,
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.CORPUS);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        let panelIDs = jsPanel.getPanels(function () {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+        console.log(panelIDs)
+      }
+    };
+
+    return {
+      id: lexiconPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.CORPUS
+    };
   }
 }
 
