@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { LexicalEntry } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
 
 @Component({
@@ -137,10 +137,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             label: val['lexicalEntryInstanceName'],
             creator: val['creator'],
             creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-            lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString(): '',
-            status: val['status']
+            lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+            status: val['status'],
+            type: LexicalEntryType.LEXICAL_ENTRY
           },
-          children:[{data:{label:'form (0)'}}, {data:{label:'sense (0)'}}]
+          children: [{
+            data: {
+              label: 'form (0)',
+              type: LexicalEntryType.FORM
+            }
+          },
+          {
+            data: {
+              label: 'sense (0)',
+              type: LexicalEntryType.SENSE
+            }
+          }]
         }))
         this.counter = data['totalHits'];
       },
@@ -150,6 +162,38 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     })
 
     this.initSelectFields();
+  }
+
+  onNodeExpand(event: any): void {
+    switch (event.node.data.type) {
+      case LexicalEntryType.LEXICAL_ENTRY:
+        this.lexiconService.getElements(event.node.data.label).subscribe({
+          next: (data: any) => {
+            let formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORM);
+            let senseCildNode = event.node.children.find((el: any) => el.data.label === LexicalEntryType.SENSE);
+            let countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
+            let countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
+
+            formCildNode.data.label = `form (${countFormChildren})`;
+
+            if (countFormChildren > 0) {
+              formCildNode.children = [{ data: { label: '' } }];
+            }
+
+            senseCildNode.data.label = `sense (${countSenseChildren})`;
+
+            if (countSenseChildren > 0) {
+              senseCildNode.children = [{ data: { label: '' } }];
+            }
+          },
+          error: (error: any) => { }
+        });
+        break;
+      case LexicalEntryType.FORM:
+        break;
+      case LexicalEntryType.SENSE:
+        break;
+    }
   }
 
   public resetFields() {

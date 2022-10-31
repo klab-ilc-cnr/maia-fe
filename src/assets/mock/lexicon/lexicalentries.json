@@ -2,6 +2,33 @@
 	"totalHits": 72101,
 	"list": [
 		{
+			"creator": "user1",
+			"lastUpdate": "2021-06-08T08:56:10.548+02:00",
+			"creationDate": "2021-06-08T08:56:10.548+02:00",
+			"confidence": -1.0,
+			"status": "reviewed",
+			"revisor": "reviewer1",
+			"type": [
+				"Word"
+			],
+			"pos": "verb",
+			"label": "accedere",
+			"language": "it",
+			"author": "user9",
+			"note": "questa è una nota di prova",
+			"hasChildren": true,
+			"lexicalEntry": "http://lexica/mylexicon#MUSaccedereVERB",
+			"lexicalEntryInstanceName": "MUSaccedereVERB",
+			"morphology": [
+				{
+					"trait": "partOfSpeech",
+					"value": "verb"
+				}
+			],
+			"completionDate": "2021-06-08T08:56:10.547+02:00",
+			"revisionDate": "2021-06-08T08:56:10.547+02:00"
+		},
+		{
 			"creator": "user3",
 			"lastUpdate": "2021-06-08T08:56:11.016+02:00",
 			"creationDate": "2021-06-08T08:56:11.016+02:00",
@@ -2614,33 +2641,6 @@
 			],
 			"completionDate": "2021-06-08T08:56:10.546+02:00",
 			"revisionDate": "2021-06-08T08:56:10.546+02:00"
-		},
-		{
-			"creator": "user1",
-			"lastUpdate": "2021-06-08T08:56:10.548+02:00",
-			"creationDate": "2021-06-08T08:56:10.548+02:00",
-			"confidence": -1.0,
-			"status": "reviewed",
-			"revisor": "reviewer1",
-			"type": [
-				"Word"
-			],
-			"pos": "verb",
-			"label": "abbacchiare",
-			"language": "it",
-			"author": "user9",
-			"note": "questa è una nota di prova",
-			"hasChildren": true,
-			"lexicalEntry": "http://lexica/mylexicon#MUSabbacchiareVERB",
-			"lexicalEntryInstanceName": "MUSabbacchiareVERB",
-			"morphology": [
-				{
-					"trait": "partOfSpeech",
-					"value": "verb"
-				}
-			],
-			"completionDate": "2021-06-08T08:56:10.547+02:00",
-			"revisionDate": "2021-06-08T08:56:10.547+02:00"
 		},
 		{
 			"creator": "user1",

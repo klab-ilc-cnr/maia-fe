@@ -4,6 +4,12 @@ export class LexicalEntry {
     creationDate?: string
     lastUpdate?: string
     status?: string
-/*     forms: Array<string>=[]
-    senses: Array<string>=[] */
+    type?: LexicalEntryType
+}
+
+
+export enum LexicalEntryType{
+    LEXICAL_ENTRY,
+    FORM,
+    SENSE
 }
