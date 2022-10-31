@@ -1,6 +1,9 @@
 export class LexicalEntry {
-    creator: string | undefined
-    creationDate: string | undefined
-    lastUpdate: string | undefined
-    status: string | undefined
+    label?: string
+    creator?: string
+    creationDate?: string
+    lastUpdate?: string
+    status?: string
+/*     forms: Array<string>=[]
+    senses: Array<string>=[] */
 }

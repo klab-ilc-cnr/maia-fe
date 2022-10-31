@@ -27,9 +27,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public partOfSpeech: any;
   public selectedType: any;
   public cols!: any[];
-  public internalColType!: any[];
-  public internalColForm!: any[];
-  public internalColSense!: any[];
+
   public results: TreeNode<LexicalEntry>[] = [];
 
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
@@ -40,28 +38,18 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
+      { field: 'label', header: '' },
       { field: 'creator', header: 'Autore' },
       { field: 'creationDate', header: 'Data creazione' },
       { field: 'lastUpdate', header: 'Data modifica' },
       { field: 'status', header: 'Stato' },
     ];
 
-    this.internalColType = [
-      { field: 'Type', header: '' }
-    ];
-
-    this.internalColForm = [
-      { field: 'formInstanceName', header: '' }
-    ];
-
-    this.internalColSense = [
-      { field: 'senseInstanceName', header: '' }
-    ];
-    
     this.results =
       [
         {
           data: {
+            label: 'Lexical entry',
             creator: "Carmelo",
             creationDate: "25/12/21",
             lastUpdate: "30/12/21",
@@ -70,23 +58,39 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           children: [
             {
               data: {
-                type: "form",
+                label: 'Form(tot.form)',
+                creator: "Carmelo",
+                creationDate: "25/12/21",
+                lastUpdate: "30/12/21",
+                status: ""
               },
               children: [
                 {
                   data: {
-                    formInstanceName: "MUSabbacchiareVERB_PHUabbacchi_S1CP",
+                    label: 'MUSabbacchiareVERB_PHUabbacchi_S1CP',
+                    creator: "Carmelo",
+                    creationDate: "25/12/21",
+                    lastUpdate: "30/12/21",
+                    status: ""
                   }
                 }]
             },
             {
               data: {
-                type: "sense"
+                label: 'Sense(tot.sense)',
+                creator: "Carmelo",
+                creationDate: "25/12/21",
+                lastUpdate: "30/12/21",
+                status: ""
               },
               children: [
                 {
                   data: {
-                    senseInstanceName: "USemTH75accedere"
+                    label: 'USemTH75accedere',
+                    creator: "Carmelo",
+                    creationDate: "25/12/21",
+                    lastUpdate: "30/12/21",
+                    status: ""
                   }
                 }]
             }
@@ -123,6 +127,27 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       offset: this.offset,
       limit: this.limit
     }
+
+    this.lexiconService.getLexicalEntriesList(this.parameters).subscribe({
+      next: (data: any) => {
+        console.log(data)
+        this.results = [];
+        this.results = data['list'].map((val: any) => ({
+          data: {
+            label: val['lexicalEntryInstanceName'],
+            creator: val['creator'],
+            creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+            lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString(): '',
+            status: val['status']
+          },
+          children:[{data:{label:'form (0)'}}, {data:{label:'sense (0)'}}]
+        }))
+        this.counter = data['totalHits'];
+      },
+      error: (error: any) => {
+
+      }
+    })
 
     this.initSelectFields();
   }

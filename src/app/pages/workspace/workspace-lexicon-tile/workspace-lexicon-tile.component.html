@@ -20,18 +20,6 @@
           {{ col.header }}
         </th>
       </tr>
-      <tr>
-        <th *ngFor="let col of cols">
-          <input
-            pInputText
-            type="text"
-            class="w-full"
-            (input)="
-              tt.filter(($any($event.target).value), col.field, col.filterMatchMode)
-            "
-          />
-        </th>
-      </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
       <tr>
@@ -51,7 +39,7 @@
     </ng-template>
   </p-treeTable>
 
-  <form [formGroup]="filterForm">
+<!--   <form [formGroup]="filterForm">
     <div class="input-group col-md-12 mt-3">
         <input formControlName="text" id="filterLexicalEntry" name="text" type="text" class="form-control"
             placeholder="Search" />
@@ -169,4 +157,4 @@
             </div>
         </div>
     </div>
-</form>
+</form> -->

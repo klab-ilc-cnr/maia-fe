@@ -16,7 +16,11 @@ export class LexiconService {
   }
 
   getLexicalEntriesList(parameters: any): Observable<any> {
-    return this.http.post(this.lexoUrl + "lexicon/data/lexicalEntries", parameters);
+    // MOCK
+    return this.http.get<any>(`assets/mock/lexicalentries.json`);
+    // FINE MOCK
+    
+    //return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
   getLanguages(): Observable<any> {
