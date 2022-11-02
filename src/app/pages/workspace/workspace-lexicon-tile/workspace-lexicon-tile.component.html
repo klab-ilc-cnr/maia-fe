@@ -1,42 +1,50 @@
-<p-treeTable #tt [value]="results" [columns]="cols" (onNodeExpand)="onNodeExpand($event)">
-    <ng-template pTemplate="caption">
-      <div style="text-align: center">
-        <span class="p-input-icon-right">
-          <i class="pi pi-search"></i>
-          <input
-            type="text"
-            pInputText
-            size="50"
-            placeholder="Cerca"
-            (input)="tt.filterGlobal(($any($event.target).value), 'contains')"
-            style="width:auto"
-          />
-        </span>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th *ngFor="let col of cols">
-          {{ col.header }}
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-      <tr>
-        <td *ngFor="let col of cols; let i = index">
-          <p-treeTableToggler
-            [rowNode]="rowNode"
-            *ngIf="i == 0"
-          ></p-treeTableToggler>
-          {{ rowData[col.field] }}
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td [attr.colspan]="cols.length">Nessun risultato</td>
-      </tr>
-    </ng-template>
+<p-treeTable #tt 
+    selectionMode="single"
+    dataKey="instanceName"
+    [(selection)]="selectedNode"
+    [value]="results"
+    [columns]="cols"
+    (onNodeSelect)="onNodeSelect($event)"
+    (onNodeUnselect)="onNodeUnselect($event)"
+    (onNodeExpand)="onNodeExpand($event)">
+        <ng-template pTemplate="caption">
+        <div style="text-align: center">
+            <span class="p-input-icon-right">
+            <i class="pi pi-search"></i>
+            <input
+                type="text"
+                pInputText
+                size="50"
+                placeholder="Cerca"
+                (input)="tt.filterGlobal(($any($event.target).value), 'contains')"
+                style="width:auto"
+            />
+            </span>
+        </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of cols">
+            {{ col.header }}
+            </th>
+        </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+        <tr [ttSelectableRow]="rowNode">
+            <td *ngFor="let col of cols; let i = index">
+            <p-treeTableToggler
+                [rowNode]="rowNode"
+                *ngIf="i == 0"
+            ></p-treeTableToggler>
+            {{ rowData[col.field] }}
+            </td>
+        </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+        <tr>
+            <td [attr.colspan]="cols.length">Nessun risultato</td>
+        </tr>
+        </ng-template>
   </p-treeTable>
 
 <!--   <form [formGroup]="filterForm">

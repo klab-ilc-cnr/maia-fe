@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
+import { TreeTable } from 'primeng/treetable';
 import { LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -27,14 +28,23 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public partOfSpeech: any;
   public selectedType: any;
   public cols!: any[];
+  public selectedNode?: TreeNode;
 
   public results: TreeNode<LexicalEntry>[] = [];
 
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
-  //@ViewChild('svg') public element!: ElementRef;
+  /* @ViewChild('tt') public tt!: TreeTable; */
 
   constructor(private element: ElementRef,
     private lexiconService: LexiconService) { }
+
+/*     ngAfterViewInit()
+    {
+      this.tt.onNodeSelect
+      .subscribe((event:any) => {
+  
+      })
+    } */
 
   ngOnInit(): void {
     this.cols = [
@@ -45,58 +55,58 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { field: 'status', header: 'Stato' },
     ];
 
-    this.results =
-      [
-        {
-          data: {
-            name: 'Lexical entry',
-            creator: "Carmelo",
-            creationDate: "25/12/21",
-            lastUpdate: "30/12/21",
-            status: "Ok"
-          },
-          children: [
+    /*     this.results =
+          [
             {
               data: {
-                name: 'Form(tot.form)',
+                name: 'Lexical entry',
                 creator: "Carmelo",
                 creationDate: "25/12/21",
                 lastUpdate: "30/12/21",
-                status: ""
+                status: "Ok"
               },
               children: [
                 {
                   data: {
-                    name: 'MUSabbacchiareVERB_PHUabbacchi_S1CP',
+                    name: 'Form(tot.form)',
                     creator: "Carmelo",
                     creationDate: "25/12/21",
                     lastUpdate: "30/12/21",
                     status: ""
-                  }
-                }]
-            },
-            {
-              data: {
-                name: 'Sense(tot.sense)',
-                creator: "Carmelo",
-                creationDate: "25/12/21",
-                lastUpdate: "30/12/21",
-                status: ""
-              },
-              children: [
+                  },
+                  children: [
+                    {
+                      data: {
+                        name: 'MUSabbacchiareVERB_PHUabbacchi_S1CP',
+                        creator: "Carmelo",
+                        creationDate: "25/12/21",
+                        lastUpdate: "30/12/21",
+                        status: ""
+                      }
+                    }]
+                },
                 {
                   data: {
-                    name: 'USemTH75accedere',
+                    name: 'Sense(tot.sense)',
                     creator: "Carmelo",
                     creationDate: "25/12/21",
                     lastUpdate: "30/12/21",
                     status: ""
-                  }
-                }]
+                  },
+                  children: [
+                    {
+                      data: {
+                        name: 'USemTH75accedere',
+                        creator: "Carmelo",
+                        creationDate: "25/12/21",
+                        lastUpdate: "30/12/21",
+                        status: ""
+                      }
+                    }]
+                }
+              ]
             }
-          ]
-        }
-      ];
+          ]; */
 
     this.filterForm = new FormGroup({
       text: new FormControl(''),
@@ -130,7 +140,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
     this.lexiconService.getLexicalEntriesList(this.parameters).subscribe({
       next: (data: any) => {
-        console.log(data)
         this.results = [];
         this.results = data['list'].map((val: any) => ({
           data: {
@@ -141,6 +150,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
             lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
             status: val['status'],
+            uri: val['lexicalEntry'],
             type: LexicalEntryType.LEXICAL_ENTRY
           },
           children: [{
@@ -157,7 +167,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           }]
         }))
         this.counter = data['totalHits'];
-        console.log(this.results);
       },
       error: (error: any) => {
 
@@ -195,7 +204,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryType.FORM:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            console.log(data);
             event.node.children = data.map((val: any) => ({
               data: {
                 name: val['label'],
@@ -205,6 +213,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
                 lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
                 status: val['status'],
+                uri: val['form'],
                 type: LexicalEntryType.FORM
               }
             }));
@@ -217,7 +226,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryType.SENSE:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            console.log(data);
             event.node.children = data.map((val: any) => ({
               data: {
                 name: val['label'],
@@ -227,6 +235,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
                 lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
                 status: val['status'],
+                uri: val['sense'],
                 type: LexicalEntryType.SENSE
               }
             }));
@@ -256,6 +265,16 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.lexicalEntryTree.sizeChanged();
       $('.lexical-tooltip').tooltip();
     }, 1000);
+  }
+
+  onNodeSelect(event: any) {
+    //TODO L'EVENTO NON VIENE SCATENATO
+    console.log('Selected ' + event.node.data.uri);
+  }
+
+  onNodeUnselect(event: any) {
+    //TODO EVENTO NON VIENE SCATENATO
+    console.log('Unselected ' + event.node.data.uri);
   }
 
   private initSelectFields() {
@@ -299,10 +318,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     let parameters = newPar;
     parameters['offset'] = this.offset;
     parameters['limit'] = this.limit;
-    console.log(parameters)
     this.lexiconService.getLexicalEntriesList(newPar).subscribe({
       next: (data: any) => {
-        console.log(data)
         if (data['list'].length > 0) {
           this.show = false;
         } else {

@@ -7,6 +7,7 @@ export class LexicalEntry {
     lastUpdate?: string
     status?: string
     type?: LexicalEntryType
+    uri?: string
 }
 
 
