@@ -29,6 +29,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectedType: any;
   public cols!: any[];
   public selectedNode?: TreeNode;
+  public loading: boolean = false;
 
   public results: TreeNode<LexicalEntry>[] = [];
 
@@ -138,6 +139,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       limit: this.limit
     }
 
+    this.initSelectFields();
+  }
+
+  loadNodes(event:any){
+    this.loading = true;
+    
     this.lexiconService.getLexicalEntriesList(this.parameters).subscribe({
       next: (data: any) => {
         this.results = [];
@@ -167,16 +174,18 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           }]
         }))
         this.counter = data['totalHits'];
+
+        this.loading = false;
       },
       error: (error: any) => {
 
       }
     })
-
-    this.initSelectFields();
   }
 
   onNodeExpand(event: any): void {
+    this.loading = true;
+
     switch (event.node.data.type) {
       case LexicalEntryType.LEXICAL_ENTRY:
         this.lexiconService.getElements(event.node.data.instanceName).subscribe({
@@ -197,6 +206,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             if (countSenseChildren > 0) {
               senseCildNode.children = [{ data: { name: '' } }];
             }
+
+            this.loading = false;
           },
           error: (error: any) => { }
         });
@@ -219,6 +230,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             }));
             //refresh the data
             this.results = [...this.results];
+
+            this.loading = false;
           },
           error: () => { }
         })
@@ -241,6 +254,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             }));
             //refresh the data
             this.results = [...this.results];
+
+            this.loading = false;
           },
           error: () => { }
         })

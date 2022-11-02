@@ -4,6 +4,9 @@
     [(selection)]="selectedNode"
     [value]="results"
     [columns]="cols"
+    [lazy]="true" 
+    (onLazyLoad)="loadNodes($event)"
+    [loading]="loading"
     (onNodeSelect)="onNodeSelect($event)"
     (onNodeUnselect)="onNodeUnselect($event)"
     (onNodeExpand)="onNodeExpand($event)">
