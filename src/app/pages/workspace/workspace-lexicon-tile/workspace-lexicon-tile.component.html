@@ -9,21 +9,27 @@
     [loading]="loading"
     (onNodeSelect)="onNodeSelect($event)"
     (onNodeUnselect)="onNodeUnselect($event)"
-    (onNodeExpand)="onNodeExpand($event)">
+    (onNodeExpand)="onNodeExpand($event)"
+    [scrollable]="true">
         <ng-template pTemplate="caption">
-        <div style="text-align: center">
-            <span class="p-input-icon-right">
-            <i class="pi pi-search"></i>
-            <input
-                type="text"
-                pInputText
-                size="50"
-                placeholder="Cerca"
-                (input)="tt.filterGlobal(($any($event.target).value), 'contains')"
-                style="width:auto"
-            />
-            </span>
-        </div>
+            <div style="text-align: left">
+                <button (click)="alternateLabelInstanceName()">
+                    <i class="pi pi-tag"></i>
+                </button>
+            </div>
+            <div style="text-align: center">
+                <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input
+                    type="text"
+                    pInputText
+                    size="50"
+                    placeholder="Cerca"
+                    (input)="tt.filterGlobal(($any($event.target).value), 'contains')"
+                    style="width:auto"
+                />
+                </span>
+            </div>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
         <tr>

@@ -39,13 +39,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   constructor(private element: ElementRef,
     private lexiconService: LexiconService) { }
 
-/*     ngAfterViewInit()
-    {
-      this.tt.onNodeSelect
-      .subscribe((event:any) => {
-  
-      })
-    } */
+  /*     ngAfterViewInit()
+      {
+        this.tt.onNodeSelect
+        .subscribe((event:any) => {
+    
+        })
+      } */
 
   ngOnInit(): void {
     this.cols = [
@@ -142,9 +142,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.initSelectFields();
   }
 
-  loadNodes(event:any){
+  loadNodes(event: any) {
     this.loading = true;
-    
+
     this.lexiconService.getLexicalEntriesList(this.parameters).subscribe({
       next: (data: any) => {
         this.results = [];
@@ -181,6 +181,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
       }
     })
+  }
+
+  alternateLabelInstanceName() {
+    this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
   }
 
   onNodeExpand(event: any): void {
@@ -290,6 +294,21 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   onNodeUnselect(event: any) {
     //TODO EVENTO NON VIENE SCATENATO
     console.log('Unselected ' + event.node.data.uri);
+  }
+
+  private treeTraversalAlternateLabelInstanceName(node: TreeNode): void {
+    if (node.data?.name === node.data?.label) {
+      node.data!.name = node.data?.instanceName;
+    }
+    else if (node.data?.name === node.data?.instanceName) {
+      node.data!.name = node.data?.label;
+    }
+
+    if (node.children) {
+      node.children.forEach(childNode => {
+        this.treeTraversalAlternateLabelInstanceName(childNode);
+      });
+    }
   }
 
   private initSelectFields() {
