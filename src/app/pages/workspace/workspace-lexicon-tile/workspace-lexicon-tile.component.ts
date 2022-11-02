@@ -135,7 +135,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.results = data['list'].map((val: any) => ({
           data: {
             name: val['label'],
-            lexicalEntryInstanceName: val['lexicalEntryInstanceName'],
+            instanceName: val['lexicalEntryInstanceName'],
             label: val['label'],
             creator: val['creator'],
             creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
@@ -145,13 +145,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           },
           children: [{
             data: {
-              label: 'form (0)',
+              name: 'form (0)',
               type: LexicalEntryType.FORM
             }
           },
           {
             data: {
-              label: 'sense (0)',
+              name: 'sense (0)',
               type: LexicalEntryType.SENSE
             }
           }]
@@ -170,7 +170,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   onNodeExpand(event: any): void {
     switch (event.node.data.type) {
       case LexicalEntryType.LEXICAL_ENTRY:
-        this.lexiconService.getElements(event.node.data.lexicalEntryInstanceName).subscribe({
+        this.lexiconService.getElements(event.node.data.instanceName).subscribe({
           next: (data: any) => {
             let formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORM);
             let senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSE);
@@ -193,8 +193,48 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         });
         break;
       case LexicalEntryType.FORM:
+        this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            event.node.children = data.map((val: any) => ({
+              data: {
+                name: val['label'],
+                instanceName: val['formInstanceName'],
+                label: val['label'],
+                creator: val['creator'],
+                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+                status: val['status'],
+                type: LexicalEntryType.FORM
+              }
+            }));
+            //refresh the data
+            this.results = [...this.results];
+          },
+          error: () => { }
+        })
         break;
       case LexicalEntryType.SENSE:
+        this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            event.node.children = data.map((val: any) => ({
+              data: {
+                name: val['label'],
+                instanceName: val['senseInstanceName'],
+                label: val['label'],
+                creator: val['creator'],
+                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+                status: val['status'],
+                type: LexicalEntryType.SENSE
+              }
+            }));
+            //refresh the data
+            this.results = [...this.results];
+          },
+          error: () => { }
+        })
         break;
     }
   }
