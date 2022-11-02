@@ -38,7 +38,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'label', header: '' },
+      { field: 'name', header: '' },
       { field: 'creator', header: 'Autore' },
       { field: 'creationDate', header: 'Data creazione' },
       { field: 'lastUpdate', header: 'Data modifica' },
@@ -49,7 +49,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       [
         {
           data: {
-            label: 'Lexical entry',
+            name: 'Lexical entry',
             creator: "Carmelo",
             creationDate: "25/12/21",
             lastUpdate: "30/12/21",
@@ -58,7 +58,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           children: [
             {
               data: {
-                label: 'Form(tot.form)',
+                name: 'Form(tot.form)',
                 creator: "Carmelo",
                 creationDate: "25/12/21",
                 lastUpdate: "30/12/21",
@@ -67,7 +67,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
               children: [
                 {
                   data: {
-                    label: 'MUSabbacchiareVERB_PHUabbacchi_S1CP',
+                    name: 'MUSabbacchiareVERB_PHUabbacchi_S1CP',
                     creator: "Carmelo",
                     creationDate: "25/12/21",
                     lastUpdate: "30/12/21",
@@ -77,7 +77,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             },
             {
               data: {
-                label: 'Sense(tot.sense)',
+                name: 'Sense(tot.sense)',
                 creator: "Carmelo",
                 creationDate: "25/12/21",
                 lastUpdate: "30/12/21",
@@ -86,7 +86,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
               children: [
                 {
                   data: {
-                    label: 'USemTH75accedere',
+                    name: 'USemTH75accedere',
                     creator: "Carmelo",
                     creationDate: "25/12/21",
                     lastUpdate: "30/12/21",
@@ -134,7 +134,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.results = [];
         this.results = data['list'].map((val: any) => ({
           data: {
-            label: val['lexicalEntryInstanceName'],
+            name: val['label'],
+            lexicalEntryInstanceName: val['lexicalEntryInstanceName'],
+            label: val['label'],
             creator: val['creator'],
             creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
             lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
@@ -155,6 +157,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           }]
         }))
         this.counter = data['totalHits'];
+        console.log(this.results);
       },
       error: (error: any) => {
 
@@ -167,23 +170,23 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   onNodeExpand(event: any): void {
     switch (event.node.data.type) {
       case LexicalEntryType.LEXICAL_ENTRY:
-        this.lexiconService.getElements(event.node.data.label).subscribe({
+        this.lexiconService.getElements(event.node.data.lexicalEntryInstanceName).subscribe({
           next: (data: any) => {
             let formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORM);
-            let senseCildNode = event.node.children.find((el: any) => el.data.label === LexicalEntryType.SENSE);
+            let senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSE);
             let countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
             let countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
 
-            formCildNode.data.label = `form (${countFormChildren})`;
+            formCildNode.data.name = `form (${countFormChildren})`;
 
             if (countFormChildren > 0) {
-              formCildNode.children = [{ data: { label: '' } }];
+              formCildNode.children = [{ data: { name: '' } }];
             }
 
-            senseCildNode.data.label = `sense (${countSenseChildren})`;
+            senseCildNode.data.name = `sense (${countSenseChildren})`;
 
             if (countSenseChildren > 0) {
-              senseCildNode.children = [{ data: { label: '' } }];
+              senseCildNode.children = [{ data: { name: '' } }];
             }
           },
           error: (error: any) => { }
