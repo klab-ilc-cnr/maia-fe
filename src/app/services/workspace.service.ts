@@ -63,12 +63,12 @@ export class WorkspaceService {
       workspace
     );
 
-    let layoutSave$ = this.http.put<boolean>(
+/*     let layoutSave$ = this.http.put<boolean>(
       `${this.workspacesUrl}/layout`,
       workspace
     );
 
-    return layoutSave$;
+    return layoutSave$; */
 
     /*     let tilesSave$ = this.http.post<boolean>(`${this.workspacesUrl}/tiles/${workspaceId}`, tiles);
         return tilesSave$.pipe(combineLatestWith(layoutSave$)); //esegue entrambi i servizi */

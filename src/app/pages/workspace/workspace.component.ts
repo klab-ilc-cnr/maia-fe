@@ -463,6 +463,22 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
           currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
 
+          case TileType.LEXICON:
+            let lexiconComponent = this.generateLexiconPanelConfiguration(tile.tileConfig.id);
+            let mergedConfigLexicon = { ...lexiconComponent.panelConfig, ...tile.tileConfig };
+  
+            //Ripristino il layout della tile
+            currPanelElement = jsPanel.layout.restoreId({
+              id: tile.tileConfig.id,
+              config: mergedConfigLexicon,
+              storagename: this.storageName
+            });
+    
+            currPanelElement.addToTileMap(tile);
+            currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+            
+            break;
+
         default:
           console.error("type " + tile.type + " not implemented");
       }
