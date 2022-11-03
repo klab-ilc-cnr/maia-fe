@@ -1,10 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { TreeTable } from 'primeng/treetable';
+import { Subscription } from 'rxjs';
 import { LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { WorkspaceComponent } from '../workspace.component';
 
 @Component({
   selector: 'app-workspace-lexicon-tile',
@@ -13,6 +16,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
 
+  private subscription!: Subscription;
   private parameters: LexicalEntryRequest | undefined;
   private offset: number | undefined;
   private limit: number | undefined;
@@ -37,15 +41,20 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /* @ViewChild('tt') public tt!: TreeTable; */
 
   constructor(private element: ElementRef,
-    private lexiconService: LexiconService) { }
+    private lexiconService: LexiconService,
+    private vcr: ViewContainerRef,
+    private commonService: CommonService) { }
 
-  /*     ngAfterViewInit()
-      {
-        this.tt.onNodeSelect
-        .subscribe((event:any) => {
-    
-        })
-      } */
+/*   ngAfterViewInit() {
+    this.tt.onNodeSelect
+      .subscribe((event: any) => {
+
+      })
+  } */
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.cols = [
@@ -55,6 +64,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { field: 'lastUpdate', header: 'Data modifica' },
       { field: 'status', header: 'Stato' },
     ];
+
+    this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
+      if (res.hasOwnProperty('option') && res.option === 'tag_clicked') {
+        this.alternateLabelInstanceName();
+      }
+    });
 
     /*     this.results =
           [
@@ -287,12 +302,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   }
 
   onNodeSelect(event: any) {
-    //TODO L'EVENTO NON VIENE SCATENATO
     console.log('Selected ' + event.node.data.uri);
   }
 
   onNodeUnselect(event: any) {
-    //TODO EVENTO NON VIENE SCATENATO
     console.log('Unselected ' + event.node.data.uri);
   }
 

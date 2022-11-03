@@ -56,6 +56,7 @@ import { WhitespacesValidatorDirective } from './validators/whitespaces-validato
 import { NotDuplicateNameDirective } from './validators/not-duplicate-name.directive';
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import {TreeTableModule} from 'primeng/treetable';
+import { CommonService } from './services/common.service';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,7 @@ import {TreeTableModule} from 'primeng/treetable';
     CheckboxModule,
     TreeTableModule
   ],
-  providers: [PendingChangesGuard, MessageService, ConfirmationService],
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

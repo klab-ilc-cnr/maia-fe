@@ -3,7 +3,7 @@ import { WorkspaceLayersVisibilityManagerComponent } from './workspace-layers-vi
 import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 import { style } from '@angular/animations';
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, OnInit, Renderer2, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, HostListener, OnInit, Output, Renderer2, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
@@ -26,6 +26,7 @@ import { Layer } from 'src/app/models/layer/layer.model';
 import { LoaderService } from 'src/app/services/loader.service';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
+import { CommonService } from 'src/app/services/common.service';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 //var currentWorkspaceInstance: any;
@@ -102,7 +103,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     private vcr: ViewContainerRef,
     private messageService: MessageService,
     private workspaceService: WorkspaceService,
-    private renderer: Renderer2) { }
+    private renderer: Renderer2,
+    private commonService: CommonService) { }
 
   ngOnInit(): void {
 
@@ -698,6 +700,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            this.commonService.notifyOther({option: 'tag_clicked', value: 'clicked'});
+          }
+        }
+      },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.CORPUS);
         this.removeComponentFromList(panel.id);
