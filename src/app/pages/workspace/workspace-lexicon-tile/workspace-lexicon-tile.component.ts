@@ -34,6 +34,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public cols!: any[];
   public selectedNode?: TreeNode;
   public loading: boolean = false;
+  public showLabelName?: boolean;
 
   public results: TreeNode<LexicalEntry>[] = [];
 
@@ -68,6 +69,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
       if (res.hasOwnProperty('option') && res.option === 'tag_clicked') {
         this.alternateLabelInstanceName();
+        this.showLabelName = !this.showLabelName;
       }
     });
 
@@ -140,6 +142,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.limit = 500;
     this.show = false;
     this.counter = 0;
+    this.showLabelName = true;
 
     this.parameters = {
       text: "",
@@ -165,7 +168,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.results = [];
         this.results = data['list'].map((val: any) => ({
           data: {
-            name: val['label'],
+            name: this.showLabelName ? val['label'] : val['lexicalEntryInstanceName'],
             instanceName: val['lexicalEntryInstanceName'],
             label: val['label'],
             creator: val['creator'],
@@ -236,7 +239,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           next: (data: any) => {
             event.node.children = data.map((val: any) => ({
               data: {
-                name: val['label'],
+                name: this.showLabelName ? val['label'] : val['formInstanceName'],
                 instanceName: val['formInstanceName'],
                 label: val['label'],
                 creator: val['creator'],
@@ -260,7 +263,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           next: (data: any) => {
             event.node.children = data.map((val: any) => ({
               data: {
-                name: val['label'],
+                name: this.showLabelName ? val['label'] : val['senseInstanceName'],
                 instanceName: val['senseInstanceName'],
                 label: val['label'],
                 creator: val['creator'],
