@@ -1,3 +1,48 @@
+<p-panel iconPos="left" header="Ricerca" [toggleable]="true">
+    <div class="row">
+        <div style="text-align: center">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input
+                    type="text"
+                    pInputText
+                    size="50"
+                    placeholder="Cerca"
+                    (input)="tt.filterGlobal(($any($event.target).value), 'contains')"
+                    style="width:auto"
+                />
+            </span>
+            <p>{{counter}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="p-field-radiobutton">
+            <p-radioButton name="searchMode" value="equals" [(ngModel)]="searchMode" inputId="equals"></p-radioButton>
+            <label for="equals">Equals</label>
+        </div>
+        <div class="p-field-radiobutton">
+            <p-radioButton name="searchMode" value="startsWith" [(ngModel)]="searchMode" inputId="startsWith"></p-radioButton>
+            <label for="startsWith">startsWith</label>
+        </div>
+        <div class="p-field-radiobutton">
+            <p-radioButton name="searchMode" value="contains" [(ngModel)]="searchMode" inputId="contains"></p-radioButton>
+            <label for="contains">Contains</label>
+        </div>
+        <div class="p-field-radiobutton">
+            <p-radioButton name="searchMode" value="end" [(ngModel)]="searchMode" inputId="end"></p-radioButton>
+            <label for="end">End</label>
+        </div>
+    </div>
+    <div class="row">
+        <p-dropdown [options]="lazyTypes" [(ngModel)]="selectedType" placeholder="Select Type" [virtualScroll]="true" [virtualScrollItemSize]="38" [lazy]="true" (onLazyLoad)="onLazyTypeLoad($event)" [virtualScrollOptions]="{ showLoader: true, loading: loading, delay: 250 }">
+            <ng-template pTemplate="loader" let-options="options">
+                <div class="flex align-items-center py-2 px-3" style="height: 38px">
+                    <p-skeleton [width]="options.even ? '60%' : '50%'" height="1rem"></p-skeleton>
+                </div>
+            </ng-template>
+        </p-dropdown>
+    </div>
+</p-panel>
 <p-treeTable #tt 
     selectionMode="single"
     dataKey="instanceName"
@@ -11,21 +56,6 @@
     (onNodeUnselect)="onNodeUnselect($event)"
     (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true">
-        <ng-template pTemplate="caption">
-            <div style="text-align: center">
-                <span class="p-input-icon-right">
-                <i class="pi pi-search"></i>
-                <input
-                    type="text"
-                    pInputText
-                    size="50"
-                    placeholder="Cerca"
-                    (input)="tt.filterGlobal(($any($event.target).value), 'contains')"
-                    style="width:auto"
-                />
-                </span>
-            </div>
-        </ng-template>
         <ng-template pTemplate="header" let-columns>
         <tr>
             <th *ngFor="let col of cols">

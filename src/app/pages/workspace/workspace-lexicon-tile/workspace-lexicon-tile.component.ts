@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TreeNode } from 'primeng/api';
+import { SelectItem, TreeNode } from 'primeng/api';
 import { TreeTable } from 'primeng/treetable';
 import { Subscription } from 'rxjs';
 import { LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
@@ -35,6 +35,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectedNode?: TreeNode;
   public loading: boolean = false;
   public showLabelName?: boolean;
+  public searchMode: string ='';
+  public lazyTypes!: SelectItem[];
 
   public results: TreeNode<LexicalEntry>[] = [];
 
@@ -143,9 +145,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.show = false;
     this.counter = 0;
     this.showLabelName = true;
+    this.searchMode = 'startsWith'
 
     this.parameters = {
-      text: "",
+      text: "*",
       searchMode: searchModeEnum.startsWith,
       type: "",
       pos: "",
@@ -326,6 +329,26 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       });
     }
   }
+
+  public onLazyTypeLoad(event:any) {
+    this.loading = true;
+
+    this.lexiconService.getTypes().subscribe({
+      next: (data: any) => {
+        const { first, last } = event;
+        const lazyTypes = [...this.lazyTypes];
+
+        for (let i = first; i < last; i++) {
+          lazyTypes[i] = { label: `Item #${i}`, value: i };
+      }
+
+      this.lazyTypes = lazyTypes;
+
+        this.loading = false;
+      },
+      error: () => { }
+    });
+}
 
   private initSelectFields() {
     this.lexiconService.getLanguages().subscribe({

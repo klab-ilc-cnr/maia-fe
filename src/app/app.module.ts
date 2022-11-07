@@ -57,6 +57,9 @@ import { NotDuplicateNameDirective } from './validators/not-duplicate-name.direc
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import {TreeTableModule} from 'primeng/treetable';
 import { CommonService } from './services/common.service';
+import { PanelModule } from 'primeng/panel';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -112,7 +115,10 @@ import { CommonService } from './services/common.service';
     ContextMenuModule,
     TreeSelectModule,
     CheckboxModule,
-    TreeTableModule
+    TreeTableModule,
+    PanelModule,
+    RadioButtonModule,
+    SkeletonModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
