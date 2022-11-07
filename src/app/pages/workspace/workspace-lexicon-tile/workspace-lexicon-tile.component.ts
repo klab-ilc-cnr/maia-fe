@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { SelectItem, TreeNode } from 'primeng/api';
 import { TreeTable } from 'primeng/treetable';
 import { Subscription } from 'rxjs';
@@ -128,15 +128,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             }
           ]; */
 
-    this.filterForm = new FormGroup({
-      text: new FormControl(''),
-      searchMode: new FormControl('startsWith'),
-      type: new FormControl(''),
-      pos: new FormControl(''),
-      formType: new FormControl('entry'),
-      author: new FormControl(''),
-      lang: new FormControl(''),
-      status: new FormControl('')
+    this.filterForm = new UntypedFormGroup({
+      text: new UntypedFormControl(''),
+      searchMode: new UntypedFormControl('startsWith'),
+      type: new UntypedFormControl(''),
+      pos: new UntypedFormControl(''),
+      formType: new UntypedFormControl('entry'),
+      author: new UntypedFormControl(''),
+      lang: new UntypedFormControl(''),
+      status: new UntypedFormControl('')
     });
 
     this.searchIconSpinner = false;
