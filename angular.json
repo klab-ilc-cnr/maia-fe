@@ -33,15 +33,15 @@
 							"src/assets"
 						],
 						"styles": [
-                            "node_modules/primeicons/primeicons.css",
+							"node_modules/primeicons/primeicons.css",
 							"node_modules/primeng/resources/themes/lara-light-blue/theme.css",
 							"node_modules/primeng/resources/primeng.min.css",
 							"node_modules/bootstrap/dist/css/bootstrap.min.css",
 							"src/styles.scss"
 						],
 						"scripts": [
-                            "node_modules/jquery/dist/jquery.min.js",
-                            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+							"node_modules/jquery/dist/jquery.min.js",
+							"node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
 							"node_modules/jspanel4/dist/jspanel.js",
 							"node_modules/jspanel4/dist/extensions/contextmenu/jspanel.contextmenu.js",
 							"node_modules/jspanel4/dist/extensions/hint/jspanel.hint.js",
@@ -86,6 +86,10 @@
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "projectxFE:build",
+						"proxyConfig": "src/proxy.conf.json"
+					},
 					"configurations": {
 						"production": {
 							"browserTarget": "projectxFE:build:production"
@@ -130,5 +134,5 @@
 				}
 			}
 		}
-  }
+	}
 }
