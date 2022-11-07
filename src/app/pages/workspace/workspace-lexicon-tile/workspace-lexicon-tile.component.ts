@@ -20,23 +20,27 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   private parameters: LexicalEntryRequest | undefined;
   private offset: number | undefined;
   private limit: number | undefined;
-  private show: boolean | undefined;
-  private nodes: any;
 
   public counter: number | undefined;
   public filterForm: any;
   public searchIconSpinner: boolean = false;
-  public languages: any;
-  public types: any;
-  public authors: any;
-  public partOfSpeech: any;
+  public selectLanguages!: SelectItem[];
+  public selectTypes!: SelectItem[];
+  public selectAuthors!: SelectItem[];
+  public selectPartOfSpeech!: SelectItem[];
+  public selectStatuses!: SelectItem[];
+  public selectEntries!: SelectItem[];
+  public selectedLanguage: any;
   public selectedType: any;
+  public selectedAuthor: any;
+  public selectedPartOfSpeech: any;
+  public selectedStatus: any;
+  public selectedEntry: any;
   public cols!: any[];
   public selectedNode?: TreeNode;
   public loading: boolean = false;
   public showLabelName?: boolean;
   public searchMode: string ='';
-  public lazyTypes!: SelectItem[];
 
   public results: TreeNode<LexicalEntry>[] = [];
 
@@ -142,7 +146,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.searchIconSpinner = false;
     this.offset = 0;
     this.limit = 500;
-    this.show = false;
     this.counter = 0;
     this.showLabelName = true;
     this.searchMode = 'startsWith'
@@ -288,25 +291,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
   }
 
-  public resetFields() {
-    this.filterForm.value.text = '';
-    this.filterForm.reset(this.filterForm.value);
-    setTimeout(() => {
-      this.filterForm.get('text').setValue('', { eventEmit: false });
-      this.lexicalEntriesFilter(this.parameters);
-      this.lexicalEntryTree.treeModel.update();
-      this.updateTreeView();
-    }, 500);
-  }
-
-  public updateTreeView() {
-
-    setTimeout(() => {
-      this.lexicalEntryTree.sizeChanged();
-      $('.lexical-tooltip').tooltip();
-    }, 1000);
-  }
-
   onNodeSelect(event: any) {
     console.log('Selected ' + event.node.data.uri);
   }
@@ -330,27 +314,71 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
   }
 
-  public onLazyTypeLoad(event:any) {
-    this.loading = true;
+private initSelectFields() {
+  this.lexiconService.getLanguages().subscribe({
+    next: (languages: any) => {
+      this.selectLanguages = [];
+      languages.sort((a:any, b:any) => a.label.localeCompare(b.label))
 
-    this.lexiconService.getTypes().subscribe({
-      next: (data: any) => {
-        const { first, last } = event;
-        const lazyTypes = [...this.lazyTypes];
-
-        for (let i = first; i < last; i++) {
-          lazyTypes[i] = { label: `Item #${i}`, value: i };
+      for (let i = 0; i < languages.length; i++) {
+        this.selectLanguages.push({ label: `${languages[i].label}`, value: languages[i].label });
       }
+    },
+    error: () => { }
+  });
 
-      this.lazyTypes = lazyTypes;
+  this.lexiconService.getTypes().subscribe({
+    next: (types: any) => {
+      this.selectTypes = [];
+      types.sort((a:any, b:any) => a.label.localeCompare(b.label))
 
-        this.loading = false;
-      },
-      error: () => { }
-    });
+      for (let i = 0; i < types.length; i++) {
+        this.selectTypes.push({ label: `${types[i].label}`, value: types[i].label});
+    }
+    },
+    error: () => { }
+  });
+
+  this.lexiconService.getAuthors().subscribe({
+    next: (authors: any) => {
+      this.selectAuthors = [];
+      authors.sort((a:any, b:any) => a.label.localeCompare(b.label))
+
+      for (let i = 0; i < authors.length; i++) {
+        this.selectAuthors.push({ label: `${authors[i].label}`, value: authors[i].label });
+      }
+    },
+    error: () => { }
+  });
+
+  this.lexiconService.getPos().subscribe({
+    next: (partOfSpeech: any) => {
+      this.selectPartOfSpeech = [];
+      partOfSpeech.sort((a:any, b:any) => a.label.localeCompare(b.label))
+
+      for (let i = 0; i < partOfSpeech.length; i++) {
+        this.selectPartOfSpeech.push({ label: `${partOfSpeech[i].label}`, value: partOfSpeech[i].label });
+      }
+    },
+    error: () => { }
+  })
+
+  this.lexiconService.getStatus().subscribe({
+    next: (statuses: any) => {
+      this.selectStatuses = [];
+      statuses.sort((a:any, b:any) => a.label.localeCompare(b.label))
+
+      for (let i = 0; i < statuses.length; i++) {
+        this.selectStatuses.push({ label: `${statuses[i].label}`, value: statuses[i].label });
+      }
+    },
+    error: () => { }
+  })
+
+  this.selectEntries = [{ label: 'entry', value: 'entry' }, { label: 'flexed', value: 'flexed' }]
 }
 
-  private initSelectFields() {
+/*   private initSelectFields() {
     this.lexiconService.getLanguages().subscribe({
       next: (data: any) => {
         this.languages = data;
@@ -378,35 +406,5 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       },
       error: () => { }
     })
-  }
-
-  private lexicalEntriesFilter(newPar: any) {
-
-    setTimeout(() => {
-      const viewPort_prova = this.element.nativeElement.querySelector('tree-viewport') as HTMLElement;
-      viewPort_prova.scrollTop = 0
-    }, 300);
-
-    this.searchIconSpinner = true;
-    let parameters = newPar;
-    parameters['offset'] = this.offset;
-    parameters['limit'] = this.limit;
-    this.lexiconService.getLexicalEntriesList(newPar).subscribe({
-      next: (data: any) => {
-        if (data['list'].length > 0) {
-          this.show = false;
-        } else {
-          this.show = true;
-        }
-        this.nodes = data['list'];
-        this.counter = data['totalHits'];
-        this.lexicalEntryTree.treeModel.update();
-        this.updateTreeView();
-        this.searchIconSpinner = false;
-      },
-      error: () => {
-
-      }
-    })
-  }
+  } */
 }

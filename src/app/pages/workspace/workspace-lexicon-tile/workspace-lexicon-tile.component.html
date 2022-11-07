@@ -34,13 +34,24 @@
         </div>
     </div>
     <div class="row">
-        <p-dropdown [options]="lazyTypes" [(ngModel)]="selectedType" placeholder="Select Type" [virtualScroll]="true" [virtualScrollItemSize]="38" [lazy]="true" (onLazyLoad)="onLazyTypeLoad($event)" [virtualScrollOptions]="{ showLoader: true, loading: loading, delay: 250 }">
-            <ng-template pTemplate="loader" let-options="options">
-                <div class="flex align-items-center py-2 px-3" style="height: 38px">
-                    <p-skeleton [width]="options.even ? '60%' : '50%'" height="1rem"></p-skeleton>
-                </div>
-            </ng-template>
-        </p-dropdown>
+        <p-dropdown [options]="selectTypes" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="row">
+        <p-dropdown [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos" [showClear]="true"
+        [filter]="true" filterBy="label"></p-dropdown>
+    </div>
+    <div class="row">
+        <p-dropdown [options]="selectLanguages" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="row">
+        <p-dropdown [options]="selectAuthors" [(ngModel)]="selectedAuthor" placeholder="Authors" [showClear]="true"
+        [filter]="true" filterBy="label"></p-dropdown>
+    </div>
+    <div class="row">
+        <p-dropdown [options]="selectStatuses" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true"></p-dropdown>
+    </div>
+    <div class="row">
+        <p-dropdown [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true"></p-dropdown>
     </div>
 </p-panel>
 <p-treeTable #tt 
