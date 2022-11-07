@@ -17,10 +17,10 @@ export class LexiconService {
 
   getLexicalEntriesList(parameters: any): Observable<any> {
     // MOCK
-    return this.http.get<any>(`assets/mock/lexicon/lexicalentries.json`);
+    //return this.http.get<any>(`assets/mock/lexicon/lexicalentries.json`);
     // FINE MOCK
     
-    //return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
+    return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
   getElements(lexicalEntryId: string): Observable<any> {
@@ -53,5 +53,9 @@ export class LexiconService {
 
   getPos(): Observable<any> {
     return this.http.get(`${this.lexoUrl}lexicon/statistics/pos?key=${this.key}`);
+  }
+
+  getStatus(): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.key}`);
   }
 }
