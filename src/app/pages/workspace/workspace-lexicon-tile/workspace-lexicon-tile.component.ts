@@ -3,7 +3,7 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { SelectItem, TreeNode } from 'primeng/api';
 import { TreeTable } from 'primeng/treetable';
 import { Subscription } from 'rxjs';
-import { LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -18,8 +18,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   private subscription!: Subscription;
   private parameters: LexicalEntryRequest | undefined;
-  private offset: number | undefined;
-  private limit: number | undefined;
+  private offset!: number;
+  private limit!: number;
 
   public counter: number | undefined;
   public filterForm: any;
@@ -35,29 +35,30 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectedAuthor: any;
   public selectedPartOfSpeech: any;
   public selectedStatus: any;
-  public selectedEntry: any;
+  public selectedEntry!: formTypeEnum;
   public cols!: any[];
   public selectedNode?: TreeNode;
   public loading: boolean = false;
   public showLabelName?: boolean;
-  public searchMode: string ='';
+  public searchMode!: searchModeEnum;
+  public display: boolean = false;
+  public checked!: boolean;
+  public searchTextInput!: string;
 
   public results: TreeNode<LexicalEntry>[] = [];
 
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
   /* @ViewChild('tt') public tt!: TreeTable; */
 
-  constructor(private element: ElementRef,
-    private lexiconService: LexiconService,
-    private vcr: ViewContainerRef,
+  constructor(private lexiconService: LexiconService,
     private commonService: CommonService) { }
 
-/*   ngAfterViewInit() {
-    this.tt.onNodeSelect
-      .subscribe((event: any) => {
-
-      })
-  } */
+  /*   ngAfterViewInit() {
+      this.tt.onNodeSelect
+        .subscribe((event: any) => {
+  
+        })
+    } */
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -132,38 +133,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             }
           ]; */
 
-    this.filterForm = new UntypedFormGroup({
-      text: new UntypedFormControl(''),
-      searchMode: new UntypedFormControl('startsWith'),
-      type: new UntypedFormControl(''),
-      pos: new UntypedFormControl(''),
-      formType: new UntypedFormControl('entry'),
-      author: new UntypedFormControl(''),
-      lang: new UntypedFormControl(''),
-      status: new UntypedFormControl('')
-    });
-
     this.searchIconSpinner = false;
-    this.offset = 0;
-    this.limit = 500;
-    this.counter = 0;
     this.showLabelName = true;
-    this.searchMode = 'startsWith'
 
-    this.parameters = {
-      text: "*",
-      searchMode: searchModeEnum.startsWith,
-      type: "",
-      pos: "",
-      formType: "entry",
-      author: "",
-      lang: "",
-      status: "",
-      offset: this.offset,
-      limit: this.limit
-    }
-
+    this.resetFilters();
     this.initSelectFields();
+    this.initParameters();
+
   }
 
   loadNodes(event: any) {
@@ -299,6 +275,70 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     console.log('Unselected ' + event.node.data.uri);
   }
 
+  showDialog() {
+    this.display = true;
+  }
+
+  handleButtonChange(event: any) {
+    if (event.checked) {
+      this.resetFilters();
+      this.onChangeFilter();
+    }
+
+    this.search();
+  }
+
+  search() {
+    this.loadNodes(undefined);
+  }
+
+  onChangeFilter() {
+    this.checked = true;
+
+    this.parameters = {
+      text: this.searchTextInput ?? '*',
+      searchMode: this.searchMode,
+      type: this.selectedType ?? '',
+      pos: this.selectedPartOfSpeech ?? '',
+      formType: this.selectedEntry ?? '',
+      author: this.selectedAuthor ?? '',
+      lang: this.selectedLanguage ?? '',
+      status: this.selectedStatus ?? '',
+      offset: this.offset,
+      limit: this.limit
+    }
+  }
+
+  private resetFilters() {
+    this.counter = 0;
+    this.offset = 0;
+    this.limit = 500;
+    this.searchTextInput = '';
+    this.searchMode = searchModeEnum.equals;
+    this.selectedLanguage = undefined;
+    this.selectedType = undefined;
+    this.selectedAuthor = undefined;
+    this.selectedPartOfSpeech = undefined;
+    this.selectedStatus = undefined;
+    this.selectedEntry = formTypeEnum.entry;
+    this.checked = this.searchTextInput ? false : true;
+  }
+
+  private initParameters() {
+    this.parameters = {
+      text: this.searchTextInput ?? '*',
+      searchMode: this.searchMode,
+      type: "",
+      pos: "",
+      formType: this.selectedEntry,
+      author: "",
+      lang: "",
+      status: "",
+      offset: this.offset,
+      limit: this.limit
+    }
+  }
+
   private treeTraversalAlternateLabelInstanceName(node: TreeNode): void {
     if (node.data?.name === node.data?.label) {
       node.data!.name = node.data?.instanceName;
@@ -314,97 +354,100 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
   }
 
-private initSelectFields() {
-  this.lexiconService.getLanguages().subscribe({
-    next: (languages: any) => {
-      this.selectLanguages = [];
-      languages.sort((a:any, b:any) => a.label.localeCompare(b.label))
-
-      for (let i = 0; i < languages.length; i++) {
-        this.selectLanguages.push({ label: `${languages[i].label}`, value: languages[i].label });
-      }
-    },
-    error: () => { }
-  });
-
-  this.lexiconService.getTypes().subscribe({
-    next: (types: any) => {
-      this.selectTypes = [];
-      types.sort((a:any, b:any) => a.label.localeCompare(b.label))
-
-      for (let i = 0; i < types.length; i++) {
-        this.selectTypes.push({ label: `${types[i].label}`, value: types[i].label});
-    }
-    },
-    error: () => { }
-  });
-
-  this.lexiconService.getAuthors().subscribe({
-    next: (authors: any) => {
-      this.selectAuthors = [];
-      authors.sort((a:any, b:any) => a.label.localeCompare(b.label))
-
-      for (let i = 0; i < authors.length; i++) {
-        this.selectAuthors.push({ label: `${authors[i].label}`, value: authors[i].label });
-      }
-    },
-    error: () => { }
-  });
-
-  this.lexiconService.getPos().subscribe({
-    next: (partOfSpeech: any) => {
-      this.selectPartOfSpeech = [];
-      partOfSpeech.sort((a:any, b:any) => a.label.localeCompare(b.label))
-
-      for (let i = 0; i < partOfSpeech.length; i++) {
-        this.selectPartOfSpeech.push({ label: `${partOfSpeech[i].label}`, value: partOfSpeech[i].label });
-      }
-    },
-    error: () => { }
-  })
-
-  this.lexiconService.getStatus().subscribe({
-    next: (statuses: any) => {
-      this.selectStatuses = [];
-      statuses.sort((a:any, b:any) => a.label.localeCompare(b.label))
-
-      for (let i = 0; i < statuses.length; i++) {
-        this.selectStatuses.push({ label: `${statuses[i].label}`, value: statuses[i].label });
-      }
-    },
-    error: () => { }
-  })
-
-  this.selectEntries = [{ label: 'entry', value: 'entry' }, { label: 'flexed', value: 'flexed' }]
-}
-
-/*   private initSelectFields() {
+  private initSelectFields() {
     this.lexiconService.getLanguages().subscribe({
-      next: (data: any) => {
-        this.languages = data;
+      next: (languages: any) => {
+        this.selectLanguages = [];
+        languages.sort((a: any, b: any) => a.label.localeCompare(b.label))
+
+        for (let i = 0; i < languages.length; i++) {
+          this.selectLanguages.push({ label: `${languages[i].label}`, value: languages[i].label });
+        }
       },
       error: () => { }
     });
 
     this.lexiconService.getTypes().subscribe({
-      next: (data: any) => {
-        this.types = data;
+      next: (types: any) => {
+        this.selectTypes = [];
+        types.sort((a: any, b: any) => a.label.localeCompare(b.label))
+
+        for (let i = 0; i < types.length; i++) {
+          this.selectTypes.push({ label: `${types[i].label}`, value: types[i].label });
+        }
       },
       error: () => { }
     });
 
     this.lexiconService.getAuthors().subscribe({
-      next: (data: any) => {
-        this.authors = data;
+      next: (authors: any) => {
+        this.selectAuthors = [];
+        authors.sort((a: any, b: any) => a.label.localeCompare(b.label))
+
+        for (let i = 0; i < authors.length; i++) {
+          this.selectAuthors.push({ label: `${authors[i].label}`, value: authors[i].label });
+        }
       },
       error: () => { }
     });
 
     this.lexiconService.getPos().subscribe({
-      next: (data: any) => {
-        this.partOfSpeech = data;
+      next: (partOfSpeech: any) => {
+        this.selectPartOfSpeech = [];
+        partOfSpeech.sort((a: any, b: any) => a.label.localeCompare(b.label))
+
+        for (let i = 0; i < partOfSpeech.length; i++) {
+          this.selectPartOfSpeech.push({ label: `${partOfSpeech[i].label}`, value: partOfSpeech[i].label });
+        }
       },
       error: () => { }
     })
-  } */
+
+    this.lexiconService.getStatus().subscribe({
+      next: (statuses: any) => {
+        this.selectStatuses = [];
+        statuses.sort((a: any, b: any) => a.label.localeCompare(b.label))
+
+        for (let i = 0; i < statuses.length; i++) {
+          this.selectStatuses.push({ label: `${statuses[i].label}`, value: statuses[i].label });
+        }
+      },
+      error: () => { }
+    })
+
+    this.selectEntries = [
+      { label: formTypeEnum.entry, value: formTypeEnum.entry },
+      { label: formTypeEnum.flexed, value: formTypeEnum.flexed }
+    ]
+  }
+
+  /*   private initSelectFields() {
+      this.lexiconService.getLanguages().subscribe({
+        next: (data: any) => {
+          this.languages = data;
+        },
+        error: () => { }
+      });
+  
+      this.lexiconService.getTypes().subscribe({
+        next: (data: any) => {
+          this.types = data;
+        },
+        error: () => { }
+      });
+  
+      this.lexiconService.getAuthors().subscribe({
+        next: (data: any) => {
+          this.authors = data;
+        },
+        error: () => { }
+      });
+  
+      this.lexiconService.getPos().subscribe({
+        next: (data: any) => {
+          this.partOfSpeech = data;
+        },
+        error: () => { }
+      })
+    } */
 }

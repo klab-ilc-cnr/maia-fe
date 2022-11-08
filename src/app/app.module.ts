@@ -60,6 +60,7 @@ import { CommonService } from './services/common.service';
 import { PanelModule } from 'primeng/panel';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { SkeletonModule } from 'primeng/skeleton';
+import {ToggleButtonModule} from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { SkeletonModule } from 'primeng/skeleton';
     TreeTableModule,
     PanelModule,
     RadioButtonModule,
-    SkeletonModule
+    SkeletonModule,
+    ToggleButtonModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]

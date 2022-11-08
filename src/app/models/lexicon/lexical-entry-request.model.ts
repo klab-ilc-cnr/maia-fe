@@ -12,7 +12,7 @@ You should have received a copy of the GNU General Public License along with Epi
 export interface LexicalEntryRequest {
     text: string,
     searchMode: searchModeEnum,
-    type: typeEnum | string,
+    type: string,
     pos: string,
     formType: formTypeEnum | string,
     author: string,
@@ -27,12 +27,6 @@ export interface LexicalEntryRequest {
     startsWith = "startsWith",
     contains = "contains",
     endsWith = "endsWith"
-  }
-  
-  export enum typeEnum {
-    word = "word",
-    multi = "multi-word expression",
-    affix = "affix"
   }
   
   export enum formTypeEnum {
