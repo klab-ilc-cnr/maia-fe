@@ -11,8 +11,12 @@ export class LexicalEntry {
 }
 
 
-export enum LexicalEntryType{
-    LEXICAL_ENTRY,
-    FORM,
-    SENSE
+
+
+export enum LexicalEntryType {
+  LEXICAL_ENTRY,
+  FORM,
+  SENSE,
+  FORMS_ROOT,
+  SENSES_ROOT
 }

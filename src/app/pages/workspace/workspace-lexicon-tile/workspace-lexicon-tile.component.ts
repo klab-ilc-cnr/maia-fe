@@ -44,6 +44,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public display: boolean = false;
   public checked!: boolean;
   public searchTextInput!: string;
+  public LexicalEntryType = LexicalEntryType;
 
   public results: TreeNode<LexicalEntry>[] = [];
 
@@ -66,11 +67,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'name', header: '', width: '35%' },
-      { field: 'creator', header: 'Autore', width: '15%' },
-      { field: 'creationDate', header: 'Data creazione', width: '20%' },
-      { field: 'lastUpdate', header: 'Data modifica', width: '20%' },
-      { field: 'status', header: 'Stato', width: '10%' },
+      { field: 'name', header: '', width: '35%', display:'true'},
+      { field: 'creator', header: 'Autore', width: '15%', display:'true'},
+      { field: 'creationDate', header: 'Data creazione', width: '20%', display:'true'},
+      { field: 'lastUpdate', header: 'Data modifica', width: '20%', display:'true'},
+      { field: 'status', header: 'Stato', width: '10%', display:'true'},
+      { field: 'type', display:'false'}
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
@@ -163,13 +165,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           children: [{
             data: {
               name: 'form (0)',
-              type: LexicalEntryType.FORM
+              type: LexicalEntryType.FORMS_ROOT
             }
           },
           {
             data: {
               name: 'sense (0)',
-              type: LexicalEntryType.SENSE
+              type: LexicalEntryType.SENSES_ROOT
             }
           }]
         }))
@@ -195,8 +197,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryType.LEXICAL_ENTRY:
         this.lexiconService.getElements(event.node.data.instanceName).subscribe({
           next: (data: any) => {
-            let formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORM);
-            let senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSE);
+            let formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORMS_ROOT);
+            let senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSES_ROOT);
             let countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
             let countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
 
@@ -217,7 +219,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           error: (error: any) => { }
         });
         break;
-      case LexicalEntryType.FORM:
+      case LexicalEntryType.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
             event.node.children = data.map((val: any) => ({
@@ -241,7 +243,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           error: () => { }
         })
         break;
-      case LexicalEntryType.SENSE:
+      case LexicalEntryType.SENSES_ROOT:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
             event.node.children = data.map((val: any) => ({

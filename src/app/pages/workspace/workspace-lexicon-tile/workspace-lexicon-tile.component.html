@@ -64,7 +64,7 @@
     [scrollable]="true">
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
-                <col *ngFor="let col of columns" [style.width]="col.width">
+                <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
             </colgroup>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
@@ -81,9 +81,14 @@
                 [rowNode]="rowNode"
                 *ngIf="i == 0"
             ></p-treeTableToggler>
-                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'working'" styleClass="mr-2" severity="danger">{{ rowData[col.field] }}</p-tag>
-                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'completed'" styleClass="mr-2" severity="warning">{{ rowData[col.field] }}</p-tag>
-                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'reviewed'" styleClass="mr-2" severity="success">{{ rowData[col.field] }}</p-tag>
+                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'working'"
+                    styleClass="mr-2" severity="danger">{{ rowData[col.field] }}</p-tag>
+                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'completed'"
+                    styleClass="mr-2" severity="warning">{{ rowData[col.field] }}</p-tag>
+                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'reviewed'"
+                    styleClass="mr-2" severity="success">{{ rowData[col.field] }}</p-tag>
+                <button *ngIf="col.field === 'name' && (rowData['type'] == LexicalEntryType.FORM || rowData['type'] == LexicalEntryType.SENSE)" 
+                    pButton pRipple type="button" icon="pi pi-copy" class="p-button-rounded mr-1 "></button>
                 <span *ngIf="col.field !== 'status'">{{ rowData[col.field] }}</span>
             </td>
         </tr>
