@@ -176,7 +176,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.counter = data['totalHits'];
 
         this.loading = false;
-        this.checked = true;
+        this.checked = false;
       },
       error: (error: any) => {
 
