@@ -20,19 +20,19 @@
             </div>
         </div>
         <div class="flex flex-row">
-            <div class="flex align-items-center justify-content-center m-2 field-radiobutton">
+            <div class="flex align-items-center justify-content-center m-3 field-radiobutton">
                 <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode" inputId="equals"></p-radioButton>
                 <label for="equals">Equals</label>
             </div>
-            <div class="flex align-items-center justify-content-center m-2  field-radiobutton">
+            <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
                 <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode" inputId="startsWith"></p-radioButton>
                 <label for="startsWith">StartsWith</label>
             </div>
-            <div class="flex align-items-center justify-content-center m-2  field-radiobutton">
+            <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
                 <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode" inputId="contains"></p-radioButton>
                 <label for="contains">Contains</label>
             </div>
-            <div class="flex align-items-center justify-content-center m-2  field-radiobutton">
+            <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
                 <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode" inputId="end"></p-radioButton>
                 <label for="end">End</label>
             </div>
@@ -62,6 +62,11 @@
     (onNodeUnselect)="onNodeUnselect($event)"
     (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true">
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+        </ng-template>
         <ng-template pTemplate="header" let-columns>
         <tr>
             <th *ngFor="let col of cols">

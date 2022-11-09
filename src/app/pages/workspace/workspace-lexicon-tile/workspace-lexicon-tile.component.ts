@@ -66,11 +66,11 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'name', header: '' },
-      { field: 'creator', header: 'Autore' },
-      { field: 'creationDate', header: 'Data creazione' },
-      { field: 'lastUpdate', header: 'Data modifica' },
-      { field: 'status', header: 'Stato' },
+      { field: 'name', header: '', width: '35%' },
+      { field: 'creator', header: 'Autore', width: '15%' },
+      { field: 'creationDate', header: 'Data creazione', width: '20%' },
+      { field: 'lastUpdate', header: 'Data modifica', width: '20%' },
+      { field: 'status', header: 'Stato', width: '10%' },
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
