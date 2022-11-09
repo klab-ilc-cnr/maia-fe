@@ -1,11 +1,12 @@
 <p-panel iconPos="left" header="Filtri" [toggleable]="true">
     <div class="card">
         <div class="grid p-fluid">
-            <div class="col-12 md:col-4">
+            <div class="flex card-container w-full">
                 <div class="p-inputgroup">
-                    <button pButton type="button" (click)="showDialog()" icon="pi pi-info-circle" ></button>    
+                    <button class="flex-none flex" pButton type="button" (click)="showDialog()" icon="pi pi-info-circle" ></button>    
                     <input
                     id="searchInput"
+                    class="flex-grow-1 flex align-items-center justify-content-center"
                     [(ngModel)]="searchTextInput"
                     type="text"
                     pInputText
@@ -13,40 +14,38 @@
                     placeholder="*"
                     (keyup)="onChangeFilter()"
                 />
-                    <p-toggleButton [(ngModel)]="checked" (onChange)="handleButtonChange($event)" onLabel="Filtra" offLabel="Reset" onIcon="pi pi-search" offIcon="pi pi-times"></p-toggleButton>
-                    <span class="font-weight-bold font-italic text-muted">{{counter}}</span>
+                    <p-toggleButton id="toggleFilter" class="flex-none flex" [(ngModel)]="checked" (onChange)="handleButtonChange($event)" onLabel="Filtra" offLabel="Reset" onIcon="pi pi-search" offIcon="pi pi-times"></p-toggleButton>
+                    <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic text-muted">{{counter}}</span>
                 </div>
             </div>
         </div>
-        <div class="inline-block w-4rem h-4rem p-field-radiobutton">
-            <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode" inputId="equals"></p-radioButton>
-            <label for="equals">Equals</label>
+        <div class="flex flex-row">
+            <div class="flex align-items-center justify-content-center m-2 field-radiobutton">
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode" inputId="equals"></p-radioButton>
+                <label for="equals">Equals</label>
+            </div>
+            <div class="flex align-items-center justify-content-center m-2  field-radiobutton">
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode" inputId="startsWith"></p-radioButton>
+                <label for="startsWith">StartsWith</label>
+            </div>
+            <div class="flex align-items-center justify-content-center m-2  field-radiobutton">
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode" inputId="contains"></p-radioButton>
+                <label for="contains">Contains</label>
+            </div>
+            <div class="flex align-items-center justify-content-center m-2  field-radiobutton">
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode" inputId="end"></p-radioButton>
+                <label for="end">End</label>
+            </div>
         </div>
-        <div class="inline-block w-4rem h-4rem p-field-radiobutton">
-            <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode" inputId="startsWith"></p-radioButton>
-            <label for="startsWith">startsWith</label>
-        </div>
-        <div class="inline-block w-4rem h-4rem p-field-radiobutton">
-            <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode" inputId="contains"></p-radioButton>
-            <label for="contains">Contains</label>
-        </div>
-        <div class="inline-block w-4rem h-4rem p-field-radiobutton">
-            <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode" inputId="end"></p-radioButton>
-            <label for="end">End</label>
-        </div>
-        <div class="inline-block w-4rem h-4rem">
-            <p-dropdown (onChange)="onChangeFilter()" [options]="selectTypes" [(ngModel)]="selectedType" placeholder="Tipo" [showClear]="true"></p-dropdown>
-            <p-dropdown (onChange)="onChangeFilter()" [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos" [showClear]="true"
+        <div class="flex flex-row">
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectTypes" [(ngModel)]="selectedType" placeholder="Tipo" [showClear]="true"></p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos" [showClear]="true"
             [filter]="true" filterBy="label"></p-dropdown>
-        </div>
-        <div class="inline-block w-4rem h-4rem">
-            <p-dropdown (onChange)="onChangeFilter()" [options]="selectLanguages" [(ngModel)]="selectedLanguage" placeholder="Lingua" [showClear]="true"></p-dropdown>
-            <p-dropdown (onChange)="onChangeFilter()" [options]="selectAuthors" [(ngModel)]="selectedAuthor" placeholder="Autore" [showClear]="true"
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectLanguages" [(ngModel)]="selectedLanguage" placeholder="Lingua" [showClear]="true"></p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectAuthors" [(ngModel)]="selectedAuthor" placeholder="Autore" [showClear]="true"
             [filter]="true" filterBy="label"></p-dropdown>
-        </div>
-        <div class="inline-block w-4rem h-4rem">
-            <p-dropdown (onChange)="onChangeFilter()" [options]="selectStatuses" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true"></p-dropdown>
-            <p-dropdown (onChange)="onChangeFilter()" [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true"></p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectStatuses" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true"></p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true"></p-dropdown>
         </div>
     </div>
 </p-panel>

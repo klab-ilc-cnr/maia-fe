@@ -176,6 +176,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.counter = data['totalHits'];
 
         this.loading = false;
+        this.checked = true;
       },
       error: (error: any) => {
 
@@ -295,18 +296,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   onChangeFilter() {
     this.checked = true;
 
-    this.parameters = {
-      text: this.searchTextInput ?? '*',
-      searchMode: this.searchMode,
-      type: this.selectedType ?? '',
-      pos: this.selectedPartOfSpeech ?? '',
-      formType: this.selectedEntry ?? '',
-      author: this.selectedAuthor ?? '',
-      lang: this.selectedLanguage ?? '',
-      status: this.selectedStatus ?? '',
-      offset: this.offset,
-      limit: this.limit
-    }
+    this.initParameters();
   }
 
   private resetFilters() {
@@ -321,19 +311,19 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.selectedPartOfSpeech = undefined;
     this.selectedStatus = undefined;
     this.selectedEntry = formTypeEnum.entry;
-    this.checked = this.searchTextInput ? false : true;
+    this.checked = false;
   }
 
   private initParameters() {
     this.parameters = {
       text: this.searchTextInput ?? '*',
       searchMode: this.searchMode,
-      type: "",
-      pos: "",
-      formType: this.selectedEntry,
-      author: "",
-      lang: "",
-      status: "",
+      type: this.selectedType ?? '',
+      pos: this.selectedPartOfSpeech ?? '',
+      formType: this.selectedEntry ?? '',
+      author: this.selectedAuthor ?? '',
+      lang: this.selectedLanguage ?? '',
+      status: this.selectedStatus ?? '',
       offset: this.offset,
       limit: this.limit
     }

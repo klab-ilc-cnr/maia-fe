@@ -463,21 +463,25 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
           currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
 
-          case TileType.LEXICON:
-            let lexiconComponent = this.generateLexiconPanelConfiguration(tile.tileConfig.id);
-            let mergedConfigLexicon = { ...lexiconComponent.panelConfig, ...tile.tileConfig };
-  
-            //Ripristino il layout della tile
-            currPanelElement = jsPanel.layout.restoreId({
-              id: tile.tileConfig.id,
-              config: mergedConfigLexicon,
-              storagename: this.storageName
-            });
-    
-            currPanelElement.addToTileMap(tile);
-            currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
-            
-            break;
+        case TileType.LEXICON:
+          let lexiconComponent = this.generateLexiconPanelConfiguration(tile.tileConfig.id);
+          let mergedConfigLexicon = { ...lexiconComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigLexicon,
+            storagename: this.storageName
+          });
+
+          /*             currPanelElement.options.headerControls.add.handler = function(panel: any, control: any){
+                        this.commonService.notifyOther({option: 'tag_clicked', value: 'clicked'});
+                      } */
+
+          currPanelElement.addToTileMap(tile);
+          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+
+          break;
 
         default:
           console.error("type " + tile.type + " not implemented");
@@ -694,18 +698,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   private generateLexiconPanelConfiguration(lexiconPanelId: string) {
     const componentRef = this.vcr.createComponent(WorkspaceLexiconTileComponent);
 
-    /*     componentRef.instance.onTextSelectEvent
-          .subscribe({
-            next: (event: any) => {
-              console.log("qui", event);
-    
-              let textId = event.node.data?.['element-id'];
-              let title = event.node.label;
-    
-              this.openTextPanel(textId, title.toLowerCase())
-            }
-          }); */
-
     const element = componentRef.location.nativeElement;
 
     let config = {
@@ -716,12 +708,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      panelSize: {
+        width: () => window.innerWidth * 0.5,
+        height: '60vh'
+      },
       headerControls: {
         add: {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
           handler: (panel: any, control: any) => {
-            this.commonService.notifyOther({option: 'tag_clicked', value: 'clicked'});
+            this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
           }
         }
       },
