@@ -61,6 +61,7 @@ import { PanelModule } from 'primeng/panel';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { SkeletonModule } from 'primeng/skeleton';
 import {ToggleButtonModule} from 'primeng/togglebutton';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,8 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
     PanelModule,
     RadioButtonModule,
     SkeletonModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    TagModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
