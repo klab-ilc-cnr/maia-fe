@@ -3,6 +3,7 @@
         <div class="grid p-fluid">
             <div class="flex card-container w-full">
                 <div class="p-inputgroup">
+                    <p-button pTooltip="aggiorna risultati" class="mr-2" icon="pi pi-spinner" [loading]="loading" (onClick)="loadNodes()"></p-button>
                     <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)" icon="pi pi-info-circle" ></button>    
                     <input
                     id="searchInput"
@@ -16,7 +17,7 @@
                 />
                     <button pButton [disabled]="!pendingFilters" label="Filtra" icon="pi pi-search" [loading]="loading" (click)="filter()"></button>
                     <button pButton pRipple type="button" icon="pi pi-filter-slash" label="Reset" class="p-button-secondary" (click)="reset()"></button>
-                    <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic text-muted">
+                    <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic">
                         {{counter}}</span>
                 </div>
             </div>
@@ -127,6 +128,7 @@
   <p-overlayPanel #op [dismissable]="true">
     <ng-template pTemplate>
         <h3>Search examples</h3>
+        <br>
         <span><b>Multiple character wildcard search:</b></span> 
         <span><i>te*</i></span>
         <br><span><b>Single character wildcard search:</b></span>
