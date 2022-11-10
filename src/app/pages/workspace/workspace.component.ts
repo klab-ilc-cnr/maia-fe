@@ -29,7 +29,7 @@ import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.mod
 import { CommonService } from 'src/app/services/common.service';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
-//var currentWorkspaceInstance: any;
+var currentWorkspaceInstance: any;
 
 @Component({
   selector: 'app-workspace',
@@ -264,7 +264,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    //currentWorkspaceInstance = this;
+    currentWorkspaceInstance = this;
 
     this.resizeContainerHeight()
   }
@@ -474,10 +474,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
             storagename: this.storageName
           });
 
-          /*             currPanelElement.options.headerControls.add.handler = function(panel: any, control: any){
-                        this.commonService.notifyOther({option: 'tag_clicked', value: 'clicked'});
-                      } */
+          /*           let callBackTag = function(panel: any, control: any){
+                      currentWorkspaceInstance.commonService.notifyOther({option: 'tag_clicked', value: 'clicked'});
+                    };
+          
+                    currPanelElement.setControlStatus('tag', undefined, callBackTag); */
 
+          currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
+            currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+          }
+          
           currPanelElement.addToTileMap(tile);
           currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
 
