@@ -38,7 +38,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public loading: boolean = false;
   public showLabelName?: boolean;
   public searchMode!: searchModeEnum;
-  public checked!: boolean;
+  public pendingFilters!: boolean;
   public searchTextInput!: string;
   public LexicalEntryType = LexicalEntryType;
 
@@ -85,11 +85,11 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
     this.resetFilters();
     this.initSelectFields();
-    this.initParameters();
+    this.updateFilterParameters();
 
   }
 
-  loadNodes(event: any) {
+  loadNodes() {
     this.loading = true;
 
     this.lexiconService.getLexicalEntriesList(this.parameters).subscribe({
@@ -123,7 +123,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.counter = data['totalHits'];
 
         this.loading = false;
-        this.checked = false;
+        this.pendingFilters = false;
       },
       error: (error: any) => {
 
@@ -223,23 +223,20 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     console.log('Unselected ' + event.node.data.uri);
   }
 
-  handleButtonChange(event: any) {
-    if (event.checked) {
-      this.resetFilters();
-      this.onChangeFilter();
-    }
+  filter() {
+    this.updateFilterParameters();
 
-    this.search();
+    this.loadNodes();
   }
 
-  search() {
-    this.loadNodes(undefined);
+  reset(){
+    this.resetFilters();
+
+    this.pendingFilters=true;
   }
 
   onChangeFilter() {
-    this.checked = true;
-
-    this.initParameters();
+    this.pendingFilters = true;
   }
 
   copyUri(uri:any){
@@ -266,7 +263,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   }
 
   private resetFilters() {
-    this.counter = 0;
+    //this.counter = 0;
     this.offset = 0;
     this.limit = 500;
     this.searchTextInput = '';
@@ -277,10 +274,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.selectedPartOfSpeech = undefined;
     this.selectedStatus = undefined;
     this.selectedEntry = formTypeEnum.entry;
-    this.checked = false;
+    this.pendingFilters = false;
   }
 
-  private initParameters() {
+  private updateFilterParameters() {
     this.parameters = {
       text: this.searchTextInput ?? '*',
       searchMode: this.searchMode,
