@@ -72,7 +72,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { field: 'creationDate', header: 'Data creazione', width: '20%', display:'true'},
       { field: 'lastUpdate', header: 'Data modifica', width: '20%', display:'true'},
       { field: 'status', header: 'Stato', width: '10%', display:'true'},
-      { field: 'type', display:'false'}
+      { field: 'type', display:'false'},
+      { field: 'uri', display:'false'}
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
@@ -81,59 +82,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.showLabelName = !this.showLabelName;
       }
     });
-
-    /*     this.results =
-          [
-            {
-              data: {
-                name: 'Lexical entry',
-                creator: "Carmelo",
-                creationDate: "25/12/21",
-                lastUpdate: "30/12/21",
-                status: "Ok"
-              },
-              children: [
-                {
-                  data: {
-                    name: 'Form(tot.form)',
-                    creator: "Carmelo",
-                    creationDate: "25/12/21",
-                    lastUpdate: "30/12/21",
-                    status: ""
-                  },
-                  children: [
-                    {
-                      data: {
-                        name: 'MUSabbacchiareVERB_PHUabbacchi_S1CP',
-                        creator: "Carmelo",
-                        creationDate: "25/12/21",
-                        lastUpdate: "30/12/21",
-                        status: ""
-                      }
-                    }]
-                },
-                {
-                  data: {
-                    name: 'Sense(tot.sense)',
-                    creator: "Carmelo",
-                    creationDate: "25/12/21",
-                    lastUpdate: "30/12/21",
-                    status: ""
-                  },
-                  children: [
-                    {
-                      data: {
-                        name: 'USemTH75accedere',
-                        creator: "Carmelo",
-                        creationDate: "25/12/21",
-                        lastUpdate: "30/12/21",
-                        status: ""
-                      }
-                    }]
-                }
-              ]
-            }
-          ]; */
 
     this.searchIconSpinner = false;
     this.showLabelName = true;
@@ -299,6 +247,26 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.checked = true;
 
     this.initParameters();
+  }
+
+  copyUri(uri:any){
+    const el = document.createElement("textarea");
+    el.value = uri;
+    el.setAttribute("readonly", "");
+    el.style.position = "absolute";
+    el.style.left = "-9999px";
+    document.body.appendChild(el);
+    const selected =
+      document.getSelection()!.rangeCount > 0
+        ? document.getSelection()!.getRangeAt(0)
+        : false;
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    if (selected) {
+      document.getSelection()!.removeAllRanges();
+      document.getSelection()!.addRange(selected);
+    }
   }
 
   private resetFilters() {

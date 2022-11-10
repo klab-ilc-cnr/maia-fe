@@ -14,8 +14,12 @@
                     placeholder="*"
                     (keyup)="onChangeFilter()"
                 />
-                    <p-toggleButton id="toggleFilter" class="flex-none flex" [(ngModel)]="checked" (onChange)="handleButtonChange($event)" onLabel="Filtra" offLabel="Reset" onIcon="pi pi-search" offIcon="pi pi-times"></p-toggleButton>
-                    <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic text-muted">{{counter}}</span>
+                    <p-toggleButton id="toggleFilter" class="flex-none flex" 
+                        [(ngModel)]="checked" (onChange)="handleButtonChange($event)" 
+                        onLabel="Filtra" offLabel="Reset" onIcon="pi pi-search" offIcon="pi pi-times">
+                    </p-toggleButton>
+                    <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic text-muted">
+                        {{counter}}</span>
                 </div>
             </div>
         </div>
@@ -38,14 +42,30 @@
             </div>
         </div>
         <div class="flex flex-row">
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectTypes" [(ngModel)]="selectedType" placeholder="Tipo" [showClear]="true"></p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos" [showClear]="true"
-            [filter]="true" filterBy="label"></p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectLanguages" [(ngModel)]="selectedLanguage" placeholder="Lingua" [showClear]="true"></p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectAuthors" [(ngModel)]="selectedAuthor" placeholder="Autore" [showClear]="true"
-            [filter]="true" filterBy="label"></p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectStatuses" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true"></p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()" [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true"></p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
+                (onChange)="onChangeFilter()" [options]="selectTypes" [(ngModel)]="selectedType" 
+                placeholder="Tipo" [showClear]="true">
+            </p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
+                (onChange)="onChangeFilter()" [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech"
+                placeholder="Pos" [showClear]="true" [filter]="true" filterBy="label">
+            </p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
+                (onChange)="onChangeFilter()" [options]="selectLanguages" [(ngModel)]="selectedLanguage" 
+                placeholder="Lingua" [showClear]="true">
+            </p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 "
+                (onChange)="onChangeFilter()" [options]="selectAuthors" [(ngModel)]="selectedAuthor" 
+                placeholder="Autore" [showClear]="true" [filter]="true" filterBy="label">
+            </p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
+                (onChange)="onChangeFilter()" [options]="selectStatuses" [(ngModel)]="selectedStatus" 
+                placeholder="Status" [showClear]="true">
+            </p-dropdown>
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
+                (onChange)="onChangeFilter()" [options]="selectEntries" [(ngModel)]="selectedEntry" 
+                placeholder="Entry" [showClear]="true">
+            </p-dropdown>
         </div>
     </div>
 </p-panel>
@@ -82,13 +102,19 @@
                 *ngIf="i == 0"
             ></p-treeTableToggler>
                 <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'working'"
-                    styleClass="mr-2" severity="danger">{{ rowData[col.field] }}</p-tag>
+                    styleClass="mr-2" severity="danger">{{ rowData[col.field] }}
+                </p-tag>
                 <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'completed'"
-                    styleClass="mr-2" severity="warning">{{ rowData[col.field] }}</p-tag>
+                    styleClass="mr-2" severity="warning">{{ rowData[col.field] }}
+                </p-tag>
                 <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'reviewed'"
-                    styleClass="mr-2" severity="success">{{ rowData[col.field] }}</p-tag>
+                    styleClass="mr-2" severity="success">{{ rowData[col.field] }}
+                </p-tag>
                 <button *ngIf="col.field === 'name' && (rowData['type'] == LexicalEntryType.FORM || rowData['type'] == LexicalEntryType.SENSE)" 
-                    pButton pRipple type="button" icon="pi pi-copy" class="p-button-rounded mr-1 "></button>
+                    pButton pRipple type="button" icon="pi pi-copy" class="p-button-rounded mr-1"
+                    pTooltip="Copia uri negli appunti"
+                    (click)="copyUri(rowData['uri'])">
+                </button>
                 <span *ngIf="col.field !== 'status'">{{ rowData[col.field] }}</span>
             </td>
         </tr>
