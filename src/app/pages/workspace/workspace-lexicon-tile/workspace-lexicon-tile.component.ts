@@ -1,13 +1,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { SelectItem, TreeNode } from 'primeng/api';
-import { TreeTable } from 'primeng/treetable';
+import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
-import { WorkspaceComponent } from '../workspace.component';
 
 @Component({
   selector: 'app-workspace-lexicon-tile',
@@ -51,7 +48,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
   /* @ViewChild('tt') public tt!: TreeTable; */
 
-  constructor(private lexiconService: LexiconService,
+  constructor(private messageService: MessageService,
+    private lexiconService: LexiconService,
     private commonService: CommonService) { }
 
   /*   ngAfterViewInit() {
@@ -267,6 +265,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       document.getSelection()!.removeAllRanges();
       document.getSelection()!.addRange(selected);
     }
+
+    this.messageService.add({ severity: 'success', summary: 'Copiato', detail: '', life: 3000 });
+
   }
 
   private resetFilters() {
