@@ -62,6 +62,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import { SkeletonModule } from 'primeng/skeleton';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import { TagModule } from 'primeng/tag';
+import { UriValidator } from './validators/uri-validator.directive';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { TagModule } from 'primeng/tag';
     RelationEditorComponent,
     WhitespacesValidatorDirective,
     NotDuplicateNameDirective,
-    WorkspaceLexiconTileComponent
+    WorkspaceLexiconTileComponent,
+    UriValidator
   ],
   imports: [
     BrowserModule,

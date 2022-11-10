@@ -79,11 +79,6 @@ export class AnnotationEditorComponent implements OnInit {
             newFeature.dropdownOptions = feature.tagset.values.map(item => ({ label: item.name, value: item.id }));
           }
 
-          if (feature.type == FeatureType.URI) {
-            // TO COMPLETE
-            newFeature.dropdownOptions = [];
-          }
-
           newFeature.placeholder = feature.name;
           newFeature.modelPropName = `${feature.name}`;
 
@@ -98,7 +93,7 @@ export class AnnotationEditorComponent implements OnInit {
             
             let elem = annotation.attributes['features'].find((f: any) => f.id == feature.id);
 
-            if (elem && (feature.type == FeatureType.TAGSET || feature.type == FeatureType.URI)) {
+            if (elem && feature.type == FeatureType.TAGSET ) {
               let option = newFeature.dropdownOptions.find(o => o.value == elem.value);
 
               if (option) {
@@ -106,7 +101,7 @@ export class AnnotationEditorComponent implements OnInit {
               }
             }
 
-            if (elem && feature.type == FeatureType.STRING) {
+            if (elem && (feature.type == FeatureType.STRING || feature.type == FeatureType.URI)) {
               newFeature.value = elem.value;
             }
           }
