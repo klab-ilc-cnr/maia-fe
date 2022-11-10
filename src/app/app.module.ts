@@ -63,6 +63,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import { TagModule } from 'primeng/tag';
 import { UriValidator } from './validators/uri-validator.directive';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { UriValidator } from './validators/uri-validator.directive';
     RadioButtonModule,
     SkeletonModule,
     ToggleButtonModule,
-    TagModule
+    TagModule,
+    OverlayPanelModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]

@@ -3,7 +3,7 @@
         <div class="grid p-fluid">
             <div class="flex card-container w-full">
                 <div class="p-inputgroup">
-                    <button class="flex-none flex" pButton type="button" (click)="showDialog()" icon="pi pi-info-circle" ></button>    
+                    <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)" icon="pi pi-info-circle" ></button>    
                     <input
                     id="searchInput"
                     class="flex-grow-1 flex align-items-center justify-content-center"
@@ -115,7 +115,7 @@
                     pTooltip="Copia uri negli appunti"
                     (click)="copyUri(rowData['uri'])">
                 </button>
-                <span *ngIf="col.field !== 'status'">{{ rowData[col.field] }}</span>
+                <span *ngIf="col.field !== 'status' && col.field !== 'type' && col.field !== 'uri'">{{ rowData[col.field] }}</span>
             </td>
         </tr>
         </ng-template>
@@ -126,13 +126,16 @@
         </ng-template>
   </p-treeTable>
 
-  <p-dialog header="Search examples" [(visible)]="display" [modal]="true">
-    <span><b>Multiple character wildcard search:</b></span> 
-    <span><i>te*</i></span>
-    <br><span><b>Single character wildcard search:</b></span>
-    <span><i>te?t</i></span><br>
-     <b>Fuzzy search:</b>
-      <span><i>test~</i></span>
-      <br><b>Weighted fuzzy search:</b>
-      <span><i>test~0.8</i></span>
-  </p-dialog>
+  <p-overlayPanel #op [dismissable]="true">
+    <ng-template pTemplate>
+        <h3>Search examples</h3>
+        <span><b>Multiple character wildcard search:</b></span> 
+        <span><i>te*</i></span>
+        <br><span><b>Single character wildcard search:</b></span>
+        <span><i>te?t</i></span><br>
+         <b>Fuzzy search:</b>
+          <span><i>test~</i></span>
+          <br><b>Weighted fuzzy search:</b>
+          <span><i>test~0.8</i></span>
+    </ng-template>
+</p-overlayPanel>

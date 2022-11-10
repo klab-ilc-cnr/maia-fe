@@ -38,7 +38,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public loading: boolean = false;
   public showLabelName?: boolean;
   public searchMode!: searchModeEnum;
-  public display: boolean = false;
   public checked!: boolean;
   public searchTextInput!: string;
   public LexicalEntryType = LexicalEntryType;
@@ -222,10 +221,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   onNodeUnselect(event: any) {
     console.log('Unselected ' + event.node.data.uri);
-  }
-
-  showDialog() {
-    this.display = true;
   }
 
   handleButtonChange(event: any) {
