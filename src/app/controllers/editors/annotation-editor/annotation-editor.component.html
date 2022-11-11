@@ -66,7 +66,7 @@
                     maxlength="300" placeholder="{{ feature.placeholder }}" appUriValidator>
                   <div *ngIf="featureRef.invalid && (featureRef.touched || featureRef.dirty)" class="invalid-feedback">
                     <div *ngIf="featureRef.errors?.['isValidUri']">
-                      {{ feature.name }} non è un'uri valida
+                      {{ feature.name }} non contiene un'uri valida
                     </div>
                   </div>
                 </div>

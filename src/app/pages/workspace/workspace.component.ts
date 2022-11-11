@@ -474,16 +474,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
             storagename: this.storageName
           });
 
-          /*           let callBackTag = function(panel: any, control: any){
-                      currentWorkspaceInstance.commonService.notifyOther({option: 'tag_clicked', value: 'clicked'});
-                    };
-          
-                    currPanelElement.setControlStatus('tag', undefined, callBackTag); */
-
+          //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // è necessario reinserirlo manualmente
           currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
             currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
           }
-          
+          /*           currPanelElement.setControlStatus('tag', undefined, function (panel: any, control: any) {
+                      currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+                    }); */
+
           currPanelElement.addToTileMap(tile);
           currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
 
