@@ -9,7 +9,7 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
 import { LoginOptions } from 'angular-oauth2-oidc';
 import { MenuItem } from 'primeng/api';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { Tile } from 'src/app/models/tile/tile.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
@@ -27,6 +27,9 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
 import { CommonService } from 'src/app/services/common.service';
+import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
+import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
+import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 var currentWorkspaceInstance: any;
@@ -41,17 +44,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   private newId = 'new';
   private newWorkspace = false;
   private workspaceId: string | undefined = undefined;
-
   private textTilePrefix: string = 'textTile_';
-
   private workSaved = false;
-  //private mainPanel: any;
-  //private openPanels: Map<string, any> = new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
   private workspaceContainer = "#panelsContainer";
-
-  //private storedData: any;
-  //private storedTiles: Map<string, Tile<any>> = new Map();
   private storageName = "storedTiles";
+  private subscription!: Subscription;
 
   public items: MenuItem[] = [];
   public visibleLayers: Layer[] = [];
@@ -107,6 +104,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     private commonService: CommonService) { }
 
   ngOnInit(): void {
+
+    this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
+      if (res.hasOwnProperty('option') && res.option === 'onLexiconTreeElementDoubleClickEvent') {
+        res.value;
+        this.openLexiconEditTile(res.value.data.type);
+      }
+    });
 
     this.items = [
       {
@@ -405,6 +409,47 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     lexiconTileElement.addToTileMap(tileObject);
     lexiconTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
+  openLexiconEditTile(type: LexicalEntryType) {
+    var lexiconEditTileId = 'lexiconEditTile'
+
+    var panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === lexiconEditTileId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    let result = this.generateLexiconEditTileConfiguration(lexiconEditTileId, type);
+
+    let lexiconEditTileConfig = result.panelConfig;
+
+    let lexiconEditTileElement = jsPanel.create(lexiconEditTileConfig);
+
+    lexiconEditTileElement
+      .resize({
+        height: window.innerHeight / 2
+      })
+      .reposition();
+
+    const { content, ...text } = lexiconEditTileConfig;
+
+    lexiconEditTileConfig.content = undefined;
+
+    let tileObject: Tile<LexiconEditTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: lexiconEditTileConfig,
+      type: TileType.LEXICON_EDIT
+    };
+
+
+    lexiconEditTileElement.addToTileMap(tileObject);
+    lexiconEditTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
   restoreTiles(workspaceStatus: Workspace) {
@@ -727,7 +772,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
         }
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
-        this.removeFromTileMap(panel.id, TileType.CORPUS);
+        this.removeFromTileMap(panel.id, TileType.LEXICON);
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
@@ -742,7 +787,55 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       id: lexiconPanelId,
       component: componentRef,
       panelConfig: config,
-      tileType: TileType.CORPUS
+      tileType: TileType.LEXICON
+    };
+  }
+
+  private generateLexiconEditTileConfiguration(lexiconEditTileId: string, type: LexicalEntryType) {
+    switch (type) {
+      case LexicalEntryType.LEXICAL_ENTRY:
+        console.log('lexical entry opened');
+        break;
+      case LexicalEntryType.FORM:
+        console.log('form opened');
+        break;
+      case LexicalEntryType.SENSE:
+        console.log('sense opened');
+        break;
+    }
+    const componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent);
+
+    const element = componentRef.location.nativeElement;
+
+    let config = {
+      id: lexiconEditTileId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Gestione lessico',
+      maximizedMargin: 5,
+      dragit: { snap: true },
+      syncMargins: true,
+      panelSize: {
+        width: () => window.innerWidth * 0.5,
+        height: '60vh'
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.LEXICON_EDIT);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        let panelIDs = jsPanel.getPanels(function () {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+        console.log(panelIDs)
+      }
+    };
+
+    return {
+      id: lexiconEditTileId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.LEXICON_EDIT
     };
   }
 }

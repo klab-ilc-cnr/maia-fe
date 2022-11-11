@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
@@ -17,6 +17,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   private parameters: LexicalEntryRequest | undefined;
   private offset!: number;
   private limit!: number;
+  private clickCount = 0;
 
   public counter: number | undefined;
   public filterForm: any;
@@ -35,6 +36,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectedEntry!: formTypeEnum;
   public cols!: any[];
   public selectedNode?: TreeNode;
+  public oldSelectedNode?: TreeNode;
   public loading: boolean = false;
   public showLabelName?: boolean;
   public searchMode!: searchModeEnum;
@@ -64,13 +66,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'name', header: '', width: '35%', display:'true'},
-      { field: 'creator', header: 'Autore', width: '15%', display:'true'},
-      { field: 'creationDate', header: 'Data creazione', width: '20%', display:'true'},
-      { field: 'lastUpdate', header: 'Data modifica', width: '20%', display:'true'},
-      { field: 'status', header: 'Stato', width: '10%', display:'true'},
-      { field: 'type', display:'false'},
-      { field: 'uri', display:'false'}
+      { field: 'name', header: '', width: '35%', display: 'true' },
+      { field: 'creator', header: 'Autore', width: '15%', display: 'true' },
+      { field: 'creationDate', header: 'Data creazione', width: '20%', display: 'true' },
+      { field: 'lastUpdate', header: 'Data modifica', width: '20%', display: 'true' },
+      { field: 'status', header: 'Stato', width: '10%', display: 'true' },
+      { field: 'type', display: 'false' },
+      { field: 'uri', display: 'false' }
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
@@ -216,7 +218,20 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   }
 
   onNodeSelect(event: any) {
-    console.log('Selected ' + event.node.data.uri);
+    console.log('Selected ' + event.node.data);
+    this.oldSelectedNode = this.selectedNode;
+  }
+
+  lexicalEntryDoubleClickHandler(event: any) {
+    console.log(LexicalEntryType.FORMS_ROOT.toString());
+
+    if (this.oldSelectedNode?.data?.type === LexicalEntryType.FORMS_ROOT ||
+      this.oldSelectedNode?.data?.type === LexicalEntryType.SENSES_ROOT) {
+        this.oldSelectedNode!.expanded = !event.node.expanded;
+    }
+    else {
+      this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: this.oldSelectedNode });
+    }
   }
 
   onNodeUnselect(event: any) {
@@ -229,17 +244,17 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.loadNodes();
   }
 
-  reset(){
+  reset() {
     this.resetFilters();
 
-    this.pendingFilters=true;
+    this.pendingFilters = true;
   }
 
   onChangeFilter() {
     this.pendingFilters = true;
   }
 
-  copyUri(uri:any){
+  copyUri(uri: any) {
     const el = document.createElement("textarea");
     el.value = uri;
     el.setAttribute("readonly", "");

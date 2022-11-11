@@ -64,6 +64,7 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
 import { TagModule } from 'primeng/tag';
 import { UriValidator } from './validators/uri-validator.directive';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     WhitespacesValidatorDirective,
     NotDuplicateNameDirective,
     WorkspaceLexiconTileComponent,
-    UriValidator
+    UriValidator,
+    WorkspaceLexiconEditTileComponent
   ],
   imports: [
     BrowserModule,

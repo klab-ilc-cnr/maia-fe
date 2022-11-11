@@ -76,6 +76,7 @@
     [columns]="cols"
     [lazy]="true" 
     (onLazyLoad)="loadNodes()"
+    (dblclick)="lexicalEntryDoubleClickHandler($event)"
     [loading]="loading"
     (onNodeSelect)="onNodeSelect($event)"
     (onNodeUnselect)="onNodeUnselect($event)"
