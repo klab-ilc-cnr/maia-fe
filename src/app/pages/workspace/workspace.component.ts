@@ -796,7 +796,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     const componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent);
 
 
-    componentRef.instance.selectedType = selectedSubTree.data!.type;
+    componentRef.instance.selectedType = selectedSubTree.data!.type!;
     componentRef.instance.selectedNode = selectedSubTree;
 
     switch (selectedSubTree.data!.type) {
@@ -824,7 +824,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       dragit: { snap: true },
       syncMargins: true,
       panelSize: {
-        width: () => window.innerWidth * 0.5,
+        width: () => window.innerWidth * 0.7,
         height: '60vh'
       },
       headerControls: {

@@ -13,18 +13,21 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 export class WorkspaceLexiconEditTileComponent implements OnInit {
   private subscription!: Subscription;
 
-  public selectedType?: LexicalEntryType;
-  public selectedNode?: TreeNode;
-  public lexicalEntryTree: TreeNode<LexicalEntry>[] = [];
+  public selectedType!: LexicalEntryType; //il set viene effettuato dal workspace component
+  public selectedNode!: TreeNode; //il set viene effettuato dal workspace component
+  public lexicalEntryTree!: TreeNode<LexicalEntry>[]; //il set viene effettuato dal workspace component
   public cols!: any[];
   public loading: boolean = false;
-  public showLabelName?: boolean;
+  public showLabelName!: boolean; //il set viene effettuato dal workspace component
+  public showLexicalEntryEditor = false;
+  public showSenseEditor = false;
+  public showFormEntryEditor = false;
 
   constructor(private lexiconService: LexiconService,
     private commonService: CommonService) { }
 
   ngOnInit(): void {
-    this.selectedType //il set viene effettuato dal workspace component
+    this.refreshEditorView(this.selectedType)
 
     this.cols = [
       { field: 'name', header: '', width: '35%', display: 'true' },
@@ -42,6 +45,24 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
         this.showLabelName = !this.showLabelName;
       }
     });
+  }
+
+  refreshEditorView(type: LexicalEntryType) {
+    this.showLexicalEntryEditor = false;
+    this.showSenseEditor = false;
+    this.showFormEntryEditor = false;
+
+    switch (type) {
+      case LexicalEntryType.LEXICAL_ENTRY:
+        this.showFormEntryEditor = true;
+        break;
+      case LexicalEntryType.FORM:
+        this.showFormEntryEditor = true;
+        break;
+      case LexicalEntryType.SENSE:
+        this.showSenseEditor = true;
+        break;
+    }
   }
 
   alternateLabelInstanceName() {
@@ -145,6 +166,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
 
   onNodeSelect(event: any) {
     console.log('Selected ' + event.node.data);
+    this.refreshEditorView(this.selectedType);
   }
 
   onNodeUnselect(event: any) {

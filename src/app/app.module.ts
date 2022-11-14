@@ -65,6 +65,10 @@ import { TagModule } from 'primeng/tag';
 import { UriValidator } from './validators/uri-validator.directive';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
+import {SplitterModule} from 'primeng/splitter';
+import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
+import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
+import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +96,10 @@ import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-l
     NotDuplicateNameDirective,
     WorkspaceLexiconTileComponent,
     UriValidator,
-    WorkspaceLexiconEditTileComponent
+    WorkspaceLexiconEditTileComponent,
+    LexicalEntryEditorComponent,
+    FormEditorComponent,
+    SenseEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -128,7 +135,8 @@ import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-l
     SkeletonModule,
     ToggleButtonModule,
     TagModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    SplitterModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]

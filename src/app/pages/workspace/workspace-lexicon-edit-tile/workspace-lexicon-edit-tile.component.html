@@ -1,50 +1,59 @@
-<p-treeTable #tt 
-    selectionMode="single"
-    dataKey="instanceName"
-    [(selection)]="selectedNode"
-    [value]="lexicalEntryTree"
-    [columns]="cols"
-    [lazy]="true" 
-    [loading]="loading"
-    (onNodeSelect)="onNodeSelect($event)"
-    (onNodeUnselect)="onNodeUnselect($event)"
-    (onNodeExpand)="onNodeExpand($event)"
-    [scrollable]="true">
-        <ng-template pTemplate="colgroup" let-columns>
-            <colgroup>
-                <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
-            </colgroup>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-        <tr>
-            <th *ngFor="let col of cols">
-            {{ col.header }}
-            </th>
-        </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-        <tr [ttSelectableRow]="rowNode">
-            <td *ngFor="let col of cols; let i = index">
-            <p-treeTableToggler
-                [rowNode]="rowNode"
-                *ngIf="i == 0"
-            ></p-treeTableToggler>
-                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'working'"
-                    styleClass="mr-2" severity="danger">{{ rowData[col.field] }}
-                </p-tag>
-                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'completed'"
-                    styleClass="mr-2" severity="warning">{{ rowData[col.field] }}
-                </p-tag>
-                <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'reviewed'"
-                    styleClass="mr-2" severity="success">{{ rowData[col.field] }}
-                </p-tag>
-                <span *ngIf="col.field !== 'status' && col.field !== 'type' && col.field !== 'uri'">{{ rowData[col.field] }}</span>
-            </td>
-        </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-        <tr>
-            <td [attr.colspan]="cols.length">Nessun risultato</td>
-        </tr>
-        </ng-template>
-  </p-treeTable>
+<p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[70,30]" [minSizes]="[40,20]">
+    <ng-template pTemplate>
+        <p-treeTable #tt 
+            selectionMode="single"
+            dataKey="instanceName"
+            [(selection)]="selectedNode"
+            [value]="lexicalEntryTree"
+            [columns]="cols"
+            [lazy]="true" 
+            [loading]="loading"
+            (onNodeSelect)="onNodeSelect($event)"
+            (onNodeUnselect)="onNodeUnselect($event)"
+            (onNodeExpand)="onNodeExpand($event)"
+            [scrollable]="true">
+                <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of cols">
+                    {{ col.header }}
+                    </th>
+                </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                <tr [ttSelectableRow]="rowNode">
+                    <td *ngFor="let col of cols; let i = index">
+                    <p-treeTableToggler
+                        [rowNode]="rowNode"
+                        *ngIf="i == 0"
+                    ></p-treeTableToggler>
+                        <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'working'"
+                            styleClass="mr-2" severity="danger">{{ rowData[col.field] }}
+                        </p-tag>
+                        <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'completed'"
+                            styleClass="mr-2" severity="warning">{{ rowData[col.field] }}
+                        </p-tag>
+                        <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'reviewed'"
+                            styleClass="mr-2" severity="success">{{ rowData[col.field] }}
+                        </p-tag>
+                        <span *ngIf="col.field !== 'status' && col.field !== 'type' && col.field !== 'uri'">{{ rowData[col.field] }}</span>
+                    </td>
+                </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td [attr.colspan]="cols.length">Nessun risultato</td>
+                </tr>
+                </ng-template>
+        </p-treeTable>
+    </ng-template>
+    <ng-template pTemplate>
+        <app-lexical-entry-editor *ngIf="showLexicalEntryEditor"></app-lexical-entry-editor>
+        <app-form-editor *ngIf="showFormEntryEditor"></app-form-editor>
+        <app-sense-editor *ngIf="showSenseEditor"></app-sense-editor>
+    </ng-template>
+</p-splitter>
