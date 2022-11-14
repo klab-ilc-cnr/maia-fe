@@ -36,7 +36,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectedEntry!: formTypeEnum;
   public cols!: any[];
   public selectedNode?: TreeNode;
-  public oldSelectedNode?: TreeNode;
+  public selectedSubTree?: TreeNode<LexicalEntry>;
   public loading: boolean = false;
   public showLabelName?: boolean;
   public searchMode!: searchModeEnum;
@@ -219,18 +219,18 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   onNodeSelect(event: any) {
     console.log('Selected ' + event.node.data);
-    this.oldSelectedNode = this.selectedNode;
+    this.selectedSubTree = event.node;
   }
 
   lexicalEntryDoubleClickHandler(event: any) {
     console.log(LexicalEntryType.FORMS_ROOT.toString());
 
-    if (this.oldSelectedNode?.data?.type === LexicalEntryType.FORMS_ROOT ||
-      this.oldSelectedNode?.data?.type === LexicalEntryType.SENSES_ROOT) {
-        this.oldSelectedNode!.expanded = !event.node.expanded;
+    if (this.selectedSubTree?.data?.type === LexicalEntryType.FORMS_ROOT ||
+      this.selectedSubTree?.data?.type === LexicalEntryType.SENSES_ROOT) {
+        this.selectedSubTree!.expanded = !event.node.expanded;
     }
     else {
-      this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: this.oldSelectedNode });
+      this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [this.selectedSubTree, this.showLabelName]} );
     }
   }
 

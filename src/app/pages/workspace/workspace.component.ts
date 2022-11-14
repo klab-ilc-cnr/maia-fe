@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { faPlaneSlash } from '@fortawesome/free-solid-svg-icons';
 import { LoginOptions } from 'angular-oauth2-oidc';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, TreeNode } from 'primeng/api';
 import { Observable, Subscription } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -29,7 +29,7 @@ import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.mod
 import { CommonService } from 'src/app/services/common.service';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
-import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 var currentWorkspaceInstance: any;
@@ -107,8 +107,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
       if (res.hasOwnProperty('option') && res.option === 'onLexiconTreeElementDoubleClickEvent') {
-        res.value;
-        this.openLexiconEditTile(res.value.data.type);
+        let selectedSubTree = structuredClone(res.value[0]);
+        let showLabelName = structuredClone(res.value[1]);
+        this.openLexiconEditTile(selectedSubTree, showLabelName);
       }
     });
 
@@ -411,7 +412,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     lexiconTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
-  openLexiconEditTile(type: LexicalEntryType) {
+  openLexiconEditTile(selectedSubTree: TreeNode<LexicalEntry>, showLabelName: boolean) {
     var lexiconEditTileId = 'lexiconEditTile'
 
     var panelExist = jsPanel.getPanels().find(
@@ -423,7 +424,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    let result = this.generateLexiconEditTileConfiguration(lexiconEditTileId, type);
+    let result = this.generateLexiconEditTileConfiguration(lexiconEditTileId, selectedSubTree, showLabelName);
 
     let lexiconEditTileConfig = result.panelConfig;
 
@@ -791,19 +792,29 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private generateLexiconEditTileConfiguration(lexiconEditTileId: string, type: LexicalEntryType) {
-    switch (type) {
+  private generateLexiconEditTileConfiguration(lexiconEditTileId: string, selectedSubTree: TreeNode<LexicalEntry>, showLabelName: boolean) {
+    const componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent);
+
+    switch (selectedSubTree.data!.type) {
       case LexicalEntryType.LEXICAL_ENTRY:
         console.log('lexical entry opened');
+        componentRef.instance.selectedType = selectedSubTree.data!.type;
+        componentRef.instance.lexicalEntryTree = [selectedSubTree];
+        componentRef.instance.showLabelName = showLabelName;
         break;
       case LexicalEntryType.FORM:
         console.log('form opened');
+        componentRef.instance.selectedType = selectedSubTree.data!.type;
+        componentRef.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
+        componentRef.instance.showLabelName = showLabelName;
         break;
       case LexicalEntryType.SENSE:
         console.log('sense opened');
+        componentRef.instance.selectedType = selectedSubTree.data!.type;
+        componentRef.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
+        componentRef.instance.showLabelName = showLabelName;
         break;
     }
-    const componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent);
 
     const element = componentRef.location.nativeElement;
 
@@ -818,6 +829,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       panelSize: {
         width: () => window.innerWidth * 0.5,
         height: '60vh'
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            this.commonService.notifyOther({ option: 'tag_clicked_edit_tile', value: 'clicked' });
+          }
+        }
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.LEXICON_EDIT);
