@@ -795,22 +795,19 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
   private generateLexiconEditTileConfiguration(lexiconEditTileId: string, selectedSubTree: TreeNode<LexicalEntry>, showLabelName: boolean) {
     const componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent);
 
+
+    componentRef.instance.selectedType = selectedSubTree.data!.type;
+    componentRef.instance.selectedNode = selectedSubTree;
+
     switch (selectedSubTree.data!.type) {
       case LexicalEntryType.LEXICAL_ENTRY:
         console.log('lexical entry opened');
-        componentRef.instance.selectedType = selectedSubTree.data!.type;
+        selectedSubTree.expanded = false;
         componentRef.instance.lexicalEntryTree = [selectedSubTree];
         componentRef.instance.showLabelName = showLabelName;
         break;
       case LexicalEntryType.FORM:
-        console.log('form opened');
-        componentRef.instance.selectedType = selectedSubTree.data!.type;
-        componentRef.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
-        componentRef.instance.showLabelName = showLabelName;
-        break;
       case LexicalEntryType.SENSE:
-        console.log('sense opened');
-        componentRef.instance.selectedType = selectedSubTree.data!.type;
         componentRef.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
         componentRef.instance.showLabelName = showLabelName;
         break;
