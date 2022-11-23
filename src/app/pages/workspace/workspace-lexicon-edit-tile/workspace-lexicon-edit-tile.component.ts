@@ -48,19 +48,21 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
   }
 
   refreshEditorView(type: LexicalEntryType) {
-    this.showLexicalEntryEditor = false;
-    this.showSenseEditor = false;
-    this.showFormEntryEditor = false;
-
     switch (type) {
       case LexicalEntryType.LEXICAL_ENTRY:
-        this.showFormEntryEditor = true;
+        this.showLexicalEntryEditor = true;
+        this.showSenseEditor = false;
+        this.showFormEntryEditor = false;
         break;
       case LexicalEntryType.FORM:
         this.showFormEntryEditor = true;
+        this.showLexicalEntryEditor = false;
+        this.showSenseEditor = false;
         break;
       case LexicalEntryType.SENSE:
         this.showSenseEditor = true;
+        this.showLexicalEntryEditor = false;
+        this.showFormEntryEditor = false;
         break;
     }
   }
@@ -166,6 +168,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
 
   onNodeSelect(event: any) {
     console.log('Selected ' + event.node.data);
+    this.selectedType = event.node.data.type;
     this.refreshEditorView(this.selectedType);
   }
 
