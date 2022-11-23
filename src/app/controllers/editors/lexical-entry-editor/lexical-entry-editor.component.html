@@ -1,1 +1,38 @@
-<p>lexical-entry-editor works!</p>
+<div class="card" [style]="{'height':'100%'}">
+    <div class="formgrid grid">
+        <div class="field col-12">
+            <label for="label">Label</label>
+            <input id="label" [(ngModel)]="labelForm" type="text"
+                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12">
+            <label for="uncertain">Uncertain</label>
+            <p-selectButton id="uncertain" [options]="uncertainOptions" [(ngModel)]="uncertainForm" optionLabel="label"
+                optionValue="value"></p-selectButton>
+        </div>
+        <div class="field col-12">
+            <label for="type">Type</label>
+            <p-dropdown id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name"
+                [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="field col-12">
+            <label for="partOfSpeech">Part-of-speech</label>
+            <p-dropdown id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechForm"
+                optionLabel="name" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="field col-12">
+            <label for="language">Language</label>
+            <p-dropdown id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name"
+                [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="field col-12">
+            <label for="note">Note</label>
+            <textarea id="note" [(ngModel)]="noteForm" type="text" rows="4"
+                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+        </div>
+        <div class="field col-12">
+            <label for="attestations">Attestations</label>
+            <p-listbox [listStyle]="{'max-height':'250px'}" [readonly]="true" [options]="attestationsForm" optionLabel="name"></p-listbox>
+        </div>
+    </div>
+</div>

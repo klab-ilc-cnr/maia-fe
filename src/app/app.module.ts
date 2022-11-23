@@ -69,6 +69,7 @@ import {SplitterModule} from 'primeng/splitter';
 import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
 import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
+import {SelectButtonModule} from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-e
     ToggleButtonModule,
     TagModule,
     OverlayPanelModule,
-    SplitterModule
+    SplitterModule,
+    SelectButtonModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
