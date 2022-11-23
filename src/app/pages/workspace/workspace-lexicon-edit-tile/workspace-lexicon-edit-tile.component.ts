@@ -64,6 +64,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
         this.showLexicalEntryEditor = false;
         this.showFormEntryEditor = false;
         break;
+      case LexicalEntryType.FORMS_ROOT:
+      case LexicalEntryType.SENSES_ROOT:
+        break;
     }
   }
 
