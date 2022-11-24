@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { elementAt, Subscription } from 'rxjs';
+import { LexicalEntry } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexiconService } from 'src/app/services/lexicon.service';
 
 @Component({
   selector: 'app-lexical-entry-editor',
@@ -6,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lexical-entry-editor.component.scss']
 })
 export class LexicalEntryEditorComponent implements OnInit {
+  private subscription!: Subscription;
+  private loading: boolean = false;
+
   uncertainOptions: any[] = [];
   uncertainForm?: string;
   labelForm?: string;
@@ -18,44 +24,95 @@ export class LexicalEntryEditorComponent implements OnInit {
   noteForm?: string;
   attestationsForm: any[] = [];
 
-  constructor() { }
+  @Input() instanceName!: string;
+
+  constructor(private lexiconService: LexiconService) { }
 
   ngOnInit(): void {
+    this.loadData();
+
     this.uncertainOptions = [
       { label: 'Off', value: 'off' },
       { label: 'On', value: 'on' },
     ];
     this.uncertainForm = 'off';
-
-    this.typesForm = [
-      { name: 'Type1', code: 'c1' },
-      { name: 'Type2', code: 'c2' }
-    ];
-
-    this.attestationsForm = [
-      {name: 'New York', code: 'NY'},
-      {name: 'Rome', code: 'RM'},
-      {name: 'London', code: 'LDN'},
-      {name: 'Istanbul', code: 'IST'},
-      {name: 'Paris', code: 'PRS'},
-      {name: 'New York', code: 'NY'},
-      {name: 'Rome', code: 'RM'},
-      {name: 'London', code: 'LDN'},
-      {name: 'Istanbul', code: 'IST'},
-      {name: 'Paris', code: 'PRS'},
-      {name: 'New York', code: 'NY'},
-      {name: 'Rome', code: 'RM'},
-      {name: 'London', code: 'LDN'},
-      {name: 'Istanbul', code: 'IST'},
-      {name: 'Paris', code: 'PRS'},
-      {name: 'New York', code: 'NY'},
-      {name: 'Rome', code: 'RM'},
-      {name: 'London', code: 'LDN'},
-      {name: 'Istanbul', code: 'IST'},
-      {name: 'Paris', code: 'PRS'},
-  ];
   }
 
+  loadData() {
+    this.loading = true;
+
+    this.loadLexicalEntryTypes();
+  }
+
+  loadLexicalEntryTypes() {
+    this.lexiconService.getLexicalEntryTypes().subscribe({
+      next: (data: any) => {
+        this.typesForm = data.map((val: any) => ({
+          name: val['valueLabel'],
+          code: val['valueId']
+        }));
+
+        this.loadPartOfSpeech();
+      },
+      error: (error: any) => { }
+    })
+  }
+
+  loadPartOfSpeech() {
+    this.lexiconService.getMorphology().subscribe({
+      next: (data: any) => {
+        this.partOfSpeechesForm = data.find((el: any) => el.propertyId === 'partOfSpeech')
+          .propertyValues.map((propValue: any) => ({
+            name: propValue['valueLabel'],
+            code: propValue['valueId']
+          }))
+
+        this.loadLanguages();
+      },
+      error: (error: any) => { }
+    })
+  }
+
+  loadLanguages() {
+    this.lexiconService.getLexicalEntriesLanguages().subscribe({
+      next: (data: any) => {
+        this.languagesForm = data.map((lang: any) => ({
+          name: lang['label'],
+          code: lang['lexvo']
+        }))
+
+        this.loadLexicalEntry();
+      },
+      error: (error: any) => {
+
+      }
+    })
+  }
+
+  loadLexicalEntry() {
+    this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
+      next: (data: any) => {
+        this.labelForm = data.label;
+        this.selectedTypeForm = this.typesForm.find(el => el.code === data.type[0]);
+        this.selectedPartOfSpeechForm = this.partOfSpeechesForm.find(el => el.code === data.pos);
+        this.selectedLanguageForm = this.languagesForm.find(el => el.code === data.language);
+        this.noteForm = data.note;
+        this.attestationsForm = data.links.find((el: any) => el.type === 'Attestation').elements.map((att: any) => ({
+          name: att['label'],
+          code: att['label']
+        }))
+
+        this.loading = false;
+      },
+      error: (error: any) => {
+
+      }
+    })
+  }
+
+  handleSave(event: any) {
+    //execute action
+  }
 }
 
 interface DropdownField {

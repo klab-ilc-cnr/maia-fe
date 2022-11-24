@@ -52,8 +52,8 @@
         </p-treeTable>
     </ng-template>
     <ng-template pTemplate>
-        <app-lexical-entry-editor *ngIf="showLexicalEntryEditor"></app-lexical-entry-editor>
-        <app-form-editor *ngIf="showFormEntryEditor"></app-form-editor>
-        <app-sense-editor *ngIf="showSenseEditor"></app-sense-editor>
+        <app-lexical-entry-editor *ngIf="showLexicalEntryEditor" [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor>
+        <app-form-editor *ngIf="showFormEntryEditor" [instanceName]="formInstanceName"></app-form-editor>
+        <app-sense-editor *ngIf="showSenseEditor" [instanceName]="senseInstanceName"></app-sense-editor>
     </ng-template>
 </p-splitter>

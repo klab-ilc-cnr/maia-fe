@@ -12,8 +12,9 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 })
 export class WorkspaceLexiconEditTileComponent implements OnInit {
   private subscription!: Subscription;
+  private selectedInstanceName!: any;
 
-  public selectedType!: LexicalEntryType; //il set viene effettuato dal workspace component
+  public selectedType!: LexicalEntryType; //il set viene effettuato la prima volta dal workspace component
   public selectedNode!: TreeNode; //il set viene effettuato dal workspace component
   public lexicalEntryTree!: TreeNode<LexicalEntry>[]; //il set viene effettuato dal workspace component
   public cols!: any[];
@@ -22,12 +23,16 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
   public showLexicalEntryEditor = false;
   public showSenseEditor = false;
   public showFormEntryEditor = false;
+  public lexicalEntryInstanceName = '';
+  public formInstanceName = '';
+  public senseInstanceName = '';
 
   constructor(private lexiconService: LexiconService,
     private commonService: CommonService) { }
 
   ngOnInit(): void {
-    this.refreshEditorView(this.selectedType)
+    this.selectedInstanceName = this.selectedNode.data.instanceName;
+    this.refreshEditorView(this.selectedType, this.selectedInstanceName)
 
     this.cols = [
       { field: 'name', header: '', width: '35%', display: 'true' },
@@ -47,22 +52,28 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
     });
   }
 
-  refreshEditorView(type: LexicalEntryType) {
+  refreshEditorView(type: LexicalEntryType, instanceName: any) {
     switch (type) {
       case LexicalEntryType.LEXICAL_ENTRY:
         this.showLexicalEntryEditor = true;
         this.showSenseEditor = false;
         this.showFormEntryEditor = false;
+        this.lexicalEntryInstanceName = instanceName;
+        //this.commonService.notifyOther({ option: 'lexical_entry_selected', value: instanceName }); //FIXME MANCATA NOTIFICA BUG AL PRIMO AVVIO
         break;
       case LexicalEntryType.FORM:
         this.showFormEntryEditor = true;
         this.showLexicalEntryEditor = false;
         this.showSenseEditor = false;
+        this.formInstanceName = instanceName;
+        //this.commonService.notifyOther({ option: 'form_selected', value: instanceName });
         break;
       case LexicalEntryType.SENSE:
         this.showSenseEditor = true;
         this.showLexicalEntryEditor = false;
         this.showFormEntryEditor = false;
+        this.senseInstanceName = instanceName;
+        //this.commonService.notifyOther({ option: 'sense_selected', value: instanceName });
         break;
       case LexicalEntryType.FORMS_ROOT:
       case LexicalEntryType.SENSES_ROOT:
@@ -171,8 +182,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
 
   onNodeSelect(event: any) {
     console.log('Selected ' + event.node.data);
+    this.selectedInstanceName = event.node.data.instanceName;
     this.selectedType = event.node.data.type;
-    this.refreshEditorView(this.selectedType);
+    this.refreshEditorView(this.selectedType, event.node.data.instanceName);
   }
 
   onNodeUnselect(event: any) {

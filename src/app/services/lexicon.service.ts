@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class LexiconService {
-
   private lexoUrl: string;
   private key = "lexodemo"
 
@@ -19,15 +18,31 @@ export class LexiconService {
     // MOCK
     //return this.http.get<any>(`assets/mock/lexicon/lexicalentries.json`);
     // FINE MOCK
-    
+
     return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
+  }
+
+  getLexicalEntry(lexicalEntryId: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/lexicalEntry?key=${this.key}&aspect=core`)
+  }
+
+  getLexicalEntryTypes(): Observable<any> {
+    return this.http.get(`${this.lexoUrl}ontolex/data/lexicalEntryType`)
+  }
+
+  getLexicalEntriesLanguages(): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/data/languages`)
+  }
+
+  getMorphology(): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexinfo/data/morphology`)
   }
 
   getElements(lexicalEntryId: string): Observable<any> {
     // MOCK
     //return this.http.get<any>(`assets/mock/lexicon/elements.json`);
     // FINE MOCK
-    
+
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.key}`);
   }
 
