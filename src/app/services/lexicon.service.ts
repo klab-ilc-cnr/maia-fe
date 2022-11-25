@@ -2,7 +2,7 @@ import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UpdateLexiconRelation } from '../models/lexicon/update-lexicon-relation.model';
+import { UpdateRelation } from '../models/lexicon/update-lexicon-relation.model';
 import { LoggedUserService } from '../services/logged-user.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class LexiconService {
     return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
-  updateLexicalEntry(lexicalEntryId: string, updateLexiconRelation: UpdateLexiconRelation): Observable<any> {
+  updateLexicalEntry(lexicalEntryId: string, updateLexiconRelation: UpdateRelation): Observable<any> {
     let userLabel = `${this.loggedUserService.currentUser?.name} ${this.loggedUserService.currentUser?.surname}<${this.loggedUserService.currentUser?.email}>`
 
     return this.http.post(
@@ -57,12 +57,28 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/${formInstanceName}/form/?key=${this.readKey}&aspect=core`);
   }
 
+  updateForm(formInstanceName: string, updateRelation: UpdateRelation): Observable<any> {
+    let userLabel = `${this.loggedUserService.currentUser?.name} ${this.loggedUserService.currentUser?.surname}<${this.loggedUserService.currentUser?.email}>`
+
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/${formInstanceName}/form?key=${this.writeKey}&user=${userLabel}`,
+      updateRelation);
+  }
+
   getLexicalEntrySenses(lexicalEntryInstanceName: any): Observable<any> {
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/senses`);
   }
 
   getSense(senseInstanceName: string): Observable<any> {
     return this.http.get(`${this.lexoUrl}lexicon/data/${senseInstanceName}/lexicalSense/?key=${this.readKey}&aspect=core`);
+  }
+
+  updateSense(senseInstanceName: string, updateRelation: UpdateRelation) {
+    let userLabel = `${this.loggedUserService.currentUser?.name} ${this.loggedUserService.currentUser?.surname}<${this.loggedUserService.currentUser?.email}>`
+
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/${senseInstanceName}/lexicalSense?key=${this.writeKey}&user=${userLabel}`,
+      updateRelation);
   }
 
   getLanguages(): Observable<any> {

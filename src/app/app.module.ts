@@ -70,6 +70,7 @@ import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry
 import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
 import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
 import {SelectButtonModule} from 'primeng/selectbutton';
+import {FieldsetModule} from 'primeng/fieldset';
 
 @NgModule({
   declarations: [
@@ -138,7 +139,8 @@ import {SelectButtonModule} from 'primeng/selectbutton';
     TagModule,
     OverlayPanelModule,
     SplitterModule,
-    SelectButtonModule
+    SelectButtonModule,
+    FieldsetModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { elementAt, Subscription } from 'rxjs';
 import { LexicalEntry } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
-import { UpdateLexiconRelation } from 'src/app/models/lexicon/update-lexicon-relation.model';
+import { UpdateRelation } from 'src/app/models/lexicon/update-lexicon-relation.model';
 
 @Component({
   selector: 'app-lexical-entry-editor',
@@ -119,12 +119,12 @@ export class LexicalEntryEditorComponent implements OnInit {
   }
 
   handleSave(event: any) {
-    let labelUpdate: UpdateLexiconRelation = { relation: "label", value: this.labelForm };
+    let labelUpdate: UpdateRelation = { relation: "label", value: this.labelForm };
     /* let uncertainUpdate: UpdateLexiconRelation = { relation: "uncertain", value: this.uncertainForm }; TODO*/
-    let typesUpdate: UpdateLexiconRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
-    let posUpdate: UpdateLexiconRelation = { relation: "pos", value: this.selectedPartOfSpeechForm?.code };
-    let languageUpdate: UpdateLexiconRelation = { relation: "language", value: this.selectedLanguageForm?.code };
-    let noteUpdate: UpdateLexiconRelation = { relation: "note", value: this.noteForm };
+    let typesUpdate: UpdateRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
+    let posUpdate: UpdateRelation = { relation: "pos", value: this.selectedPartOfSpeechForm?.code };
+    let languageUpdate: UpdateRelation = { relation: "language", value: this.selectedLanguageForm?.code };
+    let noteUpdate: UpdateRelation = { relation: "note", value: this.noteForm };
 
     this.lexiconService.updateLexicalEntry(this.instanceName, labelUpdate).subscribe({
       next: (data: any) => { },

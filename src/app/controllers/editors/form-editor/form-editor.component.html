@@ -4,7 +4,7 @@
         <div class="field col-12">
             <label for="type">Type</label>
             <p-dropdown id="type" [options]="typesDropdownList" [(ngModel)]="selectedType" optionLabel="name"
-            [style]="{'width':'100%'}"></p-dropdown>
+                [style]="{'width':'100%'}"></p-dropdown>
         </div>
         <div class="field col-12">
             <label for="writtenRepresentation">Written representation</label>
@@ -20,6 +20,24 @@
             <label for="attestations">Attestations</label>
             <p-listbox [listStyle]="{'max-height':'250px'}" [readonly]="true" [options]="attestationsList"
                 optionLabel="name" emptyMessage="No attestantion found"></p-listbox>
+        </div>
+        <div class="field col-12">
+            <p-fieldset legend="Morphological traits">
+                <div class="p-inputgroup flex align-items-center justify-content-center mt-5">
+                    <label for="morphologyName1">name</label>
+                    <p-dropdown id="morphology1" [options]=" morphologyDropdownList1" [(ngModel)]="selectedMorphology1"
+                        optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"></p-dropdown>
+                    <button pButton pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-danger"></button>
+                </div>
+                <div class="p-inputgroup flex align-items-center justify-content-center mt-5">
+                    <label for="morphologyName2">name2</label>
+                    <p-dropdown id="morphology2" [options]=" morphologyDropdownList1" [(ngModel)]="selectedMorphology1"
+                        optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"></p-dropdown>
+                    <button pButton pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-danger"></button>
+                </div>
+            </p-fieldset>
         </div>
         <div class="field col-12">
             <button pButton type="button" class="w-full" label="Save" (click)="handleSave($event)"></button>

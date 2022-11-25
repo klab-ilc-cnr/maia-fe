@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { UpdateRelation as UpdateRelation } from 'src/app/models/lexicon/update-lexicon-relation.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 
@@ -10,13 +11,16 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 })
 export class FormEditorComponent implements OnInit {
   private subscription!: Subscription;
-  
+
   writtenRepresentationInput?: string;
   typesDropdownList: DropdownField[] = [];
   selectedType?: DropdownField;
   noteInput?: string;
   attestationsList: any[] = [];
   loading?: boolean;
+
+  morphologyDropdownList1: DropdownField[] = [];
+  selectedMorphology1?: DropdownField;
 
   @Input() instanceName!: string;
 
@@ -66,6 +70,10 @@ export class FormEditorComponent implements OnInit {
           code: att['label']
         }))
 
+        data.morphology.forEach((element:any) => {
+          
+        });
+
         this.loading = false;
       },
       error: (error: any) => {
@@ -75,33 +83,22 @@ export class FormEditorComponent implements OnInit {
   }
 
   handleSave(event: any) {
-    /*     let labelUpdate: UpdateLexiconRelation = { relation: "label", value: this.labelForm };
-        let typesUpdate: UpdateLexiconRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
-        let posUpdate: UpdateLexiconRelation = { relation: "pos", value: this.selectedPartOfSpeechForm?.code };
-        let languageUpdate: UpdateLexiconRelation = { relation: "language", value: this.selectedLanguageForm?.code };
-        let noteUpdate: UpdateLexiconRelation = { relation: "note", value: this.noteForm };
-    
-        this.lexiconService.updateLexicalEntry(this.instanceName, labelUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, typesUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, posUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, languageUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, noteUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-      } */
+    let writtenRep: UpdateRelation = { relation: "writtenRep", value: this.writtenRepresentationInput };
+    //let typesUpdate: UpdateRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
+    let noteUpdate: UpdateRelation = { relation: "note", value: this.noteInput };
+
+    this.lexiconService.updateForm(this.instanceName, writtenRep).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
+    /*         this.lexiconService.updateForm(this.instanceName, typesUpdate).subscribe({
+              next: (data: any) => { },
+              error: (error: any) => { }
+            }) */
+    this.lexiconService.updateForm(this.instanceName, noteUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
   }
 }
 

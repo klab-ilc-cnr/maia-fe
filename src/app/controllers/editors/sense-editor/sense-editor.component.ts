@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { UpdateRelation } from 'src/app/models/lexicon/update-lexicon-relation.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 
@@ -8,8 +9,9 @@ import { LexiconService } from 'src/app/services/lexicon.service';
   templateUrl: './sense-editor.component.html',
   styleUrls: ['./sense-editor.component.scss']
 })
-export class SenseEditorComponent implements OnInit {private subscription!: Subscription;
-  
+export class SenseEditorComponent implements OnInit {
+    private subscription!: Subscription;
+
   noteInput?: string;
   definitionInput?: string;
   referenceInput?: string;
@@ -58,33 +60,22 @@ export class SenseEditorComponent implements OnInit {private subscription!: Subs
   }
 
   handleSave(event: any) {
-    /*     let labelUpdate: UpdateLexiconRelation = { relation: "label", value: this.labelForm };
-        let typesUpdate: UpdateLexiconRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
-        let posUpdate: UpdateLexiconRelation = { relation: "pos", value: this.selectedPartOfSpeechForm?.code };
-        let languageUpdate: UpdateLexiconRelation = { relation: "language", value: this.selectedLanguageForm?.code };
-        let noteUpdate: UpdateLexiconRelation = { relation: "note", value: this.noteForm };
-    
-        this.lexiconService.updateLexicalEntry(this.instanceName, labelUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, typesUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, posUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, languageUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-        this.lexiconService.updateLexicalEntry(this.instanceName, noteUpdate).subscribe({
-          next: (data: any) => { },
-          error: (error: any) => { }
-        })
-      } */
+    let definitionUpdate: UpdateRelation = { relation: "definition", value: this.definitionInput };
+    //let referenceUpdate: UpdateRelation = { relation: "references", value: this.referenceInput };
+    let noteUpdate: UpdateRelation = { relation: "note", value: this.noteInput };
+
+    this.lexiconService.updateSense(this.instanceName, definitionUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
+/*     this.lexiconService.updateLexicalEntry(this.instanceName, referenceUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    }) */
+    this.lexiconService.updateSense(this.instanceName, noteUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
   }
 }
 

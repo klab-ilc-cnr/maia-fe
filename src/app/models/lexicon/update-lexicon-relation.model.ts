@@ -1,4 +1,4 @@
-export interface UpdateLexiconRelation {
+export interface UpdateRelation {
     relation: string,
     value: any
   }
