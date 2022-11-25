@@ -53,8 +53,16 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/forms`);
   }
 
+  getForm(formInstanceName: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/data/${formInstanceName}/form/?key=${this.readKey}&aspect=core`);
+  }
+
   getLexicalEntrySenses(lexicalEntryInstanceName: any): Observable<any> {
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/senses`);
+  }
+
+  getSense(senseInstanceName: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/data/${senseInstanceName}/lexicalSense/?key=${this.readKey}&aspect=core`);
   }
 
   getLanguages(): Observable<any> {

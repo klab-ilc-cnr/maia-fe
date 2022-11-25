@@ -59,21 +59,21 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
         this.showSenseEditor = false;
         this.showFormEntryEditor = false;
         this.lexicalEntryInstanceName = instanceName;
-        //this.commonService.notifyOther({ option: 'lexical_entry_selected', value: instanceName }); //FIXME MANCATA NOTIFICA BUG AL PRIMO AVVIO
+        //this.commonService.notifyOther({ option: 'lexical_entry_selected', value: instanceName });
         break;
       case LexicalEntryType.FORM:
         this.showFormEntryEditor = true;
         this.showLexicalEntryEditor = false;
         this.showSenseEditor = false;
         this.formInstanceName = instanceName;
-        //this.commonService.notifyOther({ option: 'form_selected', value: instanceName });
+        this.commonService.notifyOther({ option: 'form_selected', value: instanceName });
         break;
       case LexicalEntryType.SENSE:
         this.showSenseEditor = true;
         this.showLexicalEntryEditor = false;
         this.showFormEntryEditor = false;
         this.senseInstanceName = instanceName;
-        //this.commonService.notifyOther({ option: 'sense_selected', value: instanceName });
+        this.commonService.notifyOther({ option: 'sense_selected', value: instanceName });
         break;
       case LexicalEntryType.FORMS_ROOT:
       case LexicalEntryType.SENSES_ROOT:
