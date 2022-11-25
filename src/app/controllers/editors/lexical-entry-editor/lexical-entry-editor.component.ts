@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { elementAt, Subscription } from 'rxjs';
 import { LexicalEntry } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { UpdateLexiconRelation } from 'src/app/models/lexicon/update-lexicon-relation.model';
 
 @Component({
   selector: 'app-lexical-entry-editor',
@@ -10,19 +11,19 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 })
 export class LexicalEntryEditorComponent implements OnInit {
   private subscription!: Subscription;
-  private loading: boolean = false;
-
+  
   uncertainOptions: any[] = [];
   uncertainForm?: string;
   labelForm?: string;
   typesForm: DropdownField[] = [];
-  selectedTypeForm?: DropdownField;
+  selectedTypesForm?: DropdownField[] = [];
   partOfSpeechesForm: DropdownField[] = [];
   selectedPartOfSpeechForm?: DropdownField;
   languagesForm: DropdownField[] = [];
   selectedLanguageForm?: DropdownField;
   noteForm?: string;
   attestationsForm: any[] = [];
+  loading?: boolean;
 
   @Input() instanceName!: string;
 
@@ -93,7 +94,14 @@ export class LexicalEntryEditorComponent implements OnInit {
     this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
       next: (data: any) => {
         this.labelForm = data.label;
-        this.selectedTypeForm = this.typesForm.find(el => el.code === data.type[0]);
+        //this.uncertainForm = TRUE o FALSE; TODO capire dove prendere questo dato
+
+        this.selectedTypesForm = [];
+        data.type.forEach((typeCode: string) => {
+          this.selectedTypesForm!.push(this.typesForm.find(el => el.code === typeCode)!);
+        });
+        //this.selectedTypeForm = this.typesForm.filter(el => el.code === data.type[0]);
+
         this.selectedPartOfSpeechForm = this.partOfSpeechesForm.find(el => el.code === data.pos);
         this.selectedLanguageForm = this.languagesForm.find(el => el.code === data.language);
         this.noteForm = data.note;
@@ -111,7 +119,33 @@ export class LexicalEntryEditorComponent implements OnInit {
   }
 
   handleSave(event: any) {
-    //execute action
+    let labelUpdate: UpdateLexiconRelation = { relation: "label", value: this.labelForm };
+    /* let uncertainUpdate: UpdateLexiconRelation = { relation: "uncertain", value: this.uncertainForm }; TODO*/
+    let typesUpdate: UpdateLexiconRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
+    let posUpdate: UpdateLexiconRelation = { relation: "pos", value: this.selectedPartOfSpeechForm?.code };
+    let languageUpdate: UpdateLexiconRelation = { relation: "language", value: this.selectedLanguageForm?.code };
+    let noteUpdate: UpdateLexiconRelation = { relation: "note", value: this.noteForm };
+
+    this.lexiconService.updateLexicalEntry(this.instanceName, labelUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
+    this.lexiconService.updateLexicalEntry(this.instanceName, typesUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
+    this.lexiconService.updateLexicalEntry(this.instanceName, posUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
+    this.lexiconService.updateLexicalEntry(this.instanceName, languageUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
+    this.lexiconService.updateLexicalEntry(this.instanceName, noteUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
   }
 }
 

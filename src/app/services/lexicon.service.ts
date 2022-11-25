@@ -2,28 +2,35 @@ import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { UpdateLexiconRelation } from '../models/lexicon/update-lexicon-relation.model';
+import { LoggedUserService } from '../services/logged-user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LexiconService {
   private lexoUrl: string;
-  private key = "lexodemo"
+  private readKey = "lexodemo";
+  private writeKey = "PRINitant19";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private loggedUserService: LoggedUserService) {
     this.lexoUrl = environment.lexoUrl;
   }
 
   getLexicalEntriesList(parameters: any): Observable<any> {
-    // MOCK
-    //return this.http.get<any>(`assets/mock/lexicon/lexicalentries.json`);
-    // FINE MOCK
-
     return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
+  updateLexicalEntry(lexicalEntryId: string, updateLexiconRelation: UpdateLexiconRelation): Observable<any> {
+    let userLabel = `${this.loggedUserService.currentUser?.name} ${this.loggedUserService.currentUser?.surname}<${this.loggedUserService.currentUser?.email}>`
+
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/${lexicalEntryId}/lexicalEntry?key=${this.writeKey}&user=${userLabel}`,
+      updateLexiconRelation);
+  }
+
   getLexicalEntry(lexicalEntryId: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/lexicalEntry?key=${this.key}&aspect=core`)
+    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/lexicalEntry?key=${this.readKey}&aspect=core`)
   }
 
   getLexicalEntryTypes(): Observable<any> {
@@ -39,11 +46,7 @@ export class LexiconService {
   }
 
   getElements(lexicalEntryId: string): Observable<any> {
-    // MOCK
-    //return this.http.get<any>(`assets/mock/lexicon/elements.json`);
-    // FINE MOCK
-
-    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.readKey}`);
   }
 
   getLexicalEntryForms(lexicalEntryInstanceName: any): Observable<any> {
@@ -55,22 +58,22 @@ export class LexiconService {
   }
 
   getLanguages(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/languages?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/languages?key=${this.readKey}`);
   }
 
   getTypes(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/types?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/types?key=${this.readKey}`);
   }
 
   getAuthors(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/authors?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/authors?key=${this.readKey}`);
   }
 
   getPos(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/pos?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/pos?key=${this.readKey}`);
   }
 
   getStatus(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.readKey}`);
   }
 }
