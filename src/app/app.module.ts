@@ -71,6 +71,7 @@ import { FormEditorComponent } from './controllers/editors/form-editor/form-edit
 import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {FieldsetModule} from 'primeng/fieldset';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
 
 @NgModule({
   declarations: [
@@ -140,7 +141,8 @@ import {FieldsetModule} from 'primeng/fieldset';
     OverlayPanelModule,
     SplitterModule,
     SelectButtonModule,
-    FieldsetModule
+    FieldsetModule,
+    ScrollPanelModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
