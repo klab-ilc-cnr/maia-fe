@@ -5,6 +5,7 @@
 import { LanguageService } from "src/app/services/language.service";
 
 let clientid = "projectx-fe";
+let appName = "/projectx-fe"
 let issuer = "http://localhost:8080/realms/princnr";
 let allowedUrls = 'http://localhost:9000/projectx/api';
 
@@ -13,7 +14,7 @@ export const environment = {
   envName: 'local',
   keycloak: {
     issuer: issuer,
-    redirectUri: window.location.origin + '/usersManagement/users',
+    redirectUri: window.location.origin + appName,
     clientId: clientid,
     scope: 'openid profile email offline_access',
     responseType: 'code',
