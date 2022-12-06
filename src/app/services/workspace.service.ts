@@ -21,9 +21,11 @@ export class WorkspaceService {
 
 
   private workspacesUrl: string;
+  private cashUrl: string;
 
   constructor(private http: HttpClient) {
     this.workspacesUrl = environment.workspacesUrl;
+    this.cashUrl = environment.cashUrl;
   }
 
   //WORKSPACE
@@ -98,12 +100,12 @@ export class WorkspaceService {
 
   // INIZIO CHIAMATE CASH SERVER
 
-  baseUrl = "http://localhost:8443"
+  //baseUrl = "http://localhost:8443"
   // baseUrl = "https://lari2.ilc.cnr.it/"
   public retrieveCorpus(): Observable<DocumentSystem> {
     let uuid = uuidv4();
 
-    return this.http.get<DocumentSystem>(`${this.baseUrl}/api/getDocumentSystem?requestUUID=${uuid}`);
+    return this.http.get<DocumentSystem>(`${this.cashUrl}/api/getDocumentSystem?requestUUID=${uuid}`);
     //return this.http.get<DocumentSystem>('assets/mock/files.json')
   }
 
@@ -112,7 +114,7 @@ export class WorkspaceService {
 
     let formData: FormData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>(`${this.baseUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
+    return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
   }
 
   public renameElement(element_id: number, rename_string: string, type: ElementType): Observable<any> {
@@ -131,7 +133,7 @@ export class WorkspaceService {
       operationUrl = "renameFile";
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload);
+    return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
   public removeElement(element_id: number, type: ElementType): Observable<any> {
@@ -149,7 +151,7 @@ export class WorkspaceService {
       operationUrl = "removeFile";
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload);
+    return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
   public moveElement(element_id: number, target_id: number, type: ElementType): Observable<any> {
@@ -174,7 +176,7 @@ export class WorkspaceService {
       operationUrl = "moveFileTo";
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/${operationUrl}`, payload);
+    return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
   public addFolder(element_id: number): Observable<any> {
@@ -186,7 +188,7 @@ export class WorkspaceService {
       "element-id": element_id
     }
 
-    return this.http.post<any>(`${this.baseUrl}/api/crud/addFolder`, payload);
+    return this.http.post<any>(`${this.cashUrl}/api/crud/addFolder`, payload);
   }
   // FINE CHIAMATE CASH SERVER
 

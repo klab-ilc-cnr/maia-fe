@@ -28,7 +28,8 @@ export const environment = {
   tagsetUrl: allowedUrls + '/tagsets',
   annotationUrl: allowedUrls +'/annotations',
   relationUrl: allowedUrls +'/relations',
-  lexoUrl : "/LexO-backend-beta/service/"
+  lexoUrl : "/LexO-backend-beta/service/",
+  cashUrl : "https://xeel.openskills.it/cash"
 };
 
 /*
