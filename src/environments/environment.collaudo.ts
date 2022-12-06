@@ -1,12 +1,13 @@
 let clientid = "projectx-fe";
-let issuer = "https:///realms/princnr";
-let allowedUrls = 'https:///projectx/api';
+let appName = "/projectx-fe"
+let issuer = "https://xeel.openskills.it/auth/realms/princnr";
+let allowedUrls = 'https://xeel.openskills.it/projectx/api';
 
 export const environment = {
   production: true,
   keycloak: {
     issuer: issuer,
-    redirectUri: window.location.origin + '/usersManagement/users',
+    redirectUri: window.location.origin + appName,
     clientId: clientid,
     scope: 'openid profile email offline_access',
     responseType: 'code',
@@ -27,7 +28,8 @@ export const environment = {
   tagsetUrl: allowedUrls + '/tagsets',
   annotationUrl: allowedUrls +'/annotations',
   relationUrl: allowedUrls +'/relations',
-  lexoUrl : "/LexO-backend-beta/service/"
+  lexoUrl : "/LexO-backend-beta/service/",
+  cashUrl : "https://xeel.openskills.it/cash"
 };
 
 /*
