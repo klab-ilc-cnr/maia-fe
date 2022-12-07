@@ -57,6 +57,10 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/${formInstanceName}/form/?key=${this.readKey}&aspect=core`);
   }
 
+  getFormTypes() : Observable<any> {
+    return this.http.get(`${this.lexoUrl}ontolex/data/formType`)
+  }
+
   updateForm(formInstanceName: string, updateRelation: UpdateRelation): Observable<any> {
     let userLabel = `${this.loggedUserService.currentUser?.name} ${this.loggedUserService.currentUser?.surname}<${this.loggedUserService.currentUser?.email}>`
 

@@ -45,11 +45,11 @@ export class FormEditorComponent implements OnInit {
   loadData() {
     this.loading = true;
 
-    this.loadLexicalEntryTypes();
+    this.loadFormTypes();
   }
 
-  loadLexicalEntryTypes() {
-    this.lexiconService.getLexicalEntryTypes().subscribe({
+  loadFormTypes() {
+    this.lexiconService.getFormTypes().subscribe({
       next: (data: any) => {
         this.typesDropdownList = data.map((val: any) => ({
           name: val['valueLabel'],
@@ -89,17 +89,17 @@ export class FormEditorComponent implements OnInit {
 
   handleSave(event: any) {
     let writtenRep: UpdateRelation = { relation: "writtenRep", value: this.writtenRepresentationInput };
-    //let typesUpdate: UpdateRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
+    let typesUpdate: UpdateRelation = { relation: "type", value: this.selectedType?.code };
     let noteUpdate: UpdateRelation = { relation: "note", value: this.noteInput };
 
     this.lexiconService.updateForm(this.instanceName, writtenRep).subscribe({
       next: (data: any) => { },
       error: (error: any) => { }
     })
-    /*         this.lexiconService.updateForm(this.instanceName, typesUpdate).subscribe({
-              next: (data: any) => { },
-              error: (error: any) => { }
-            }) */
+    this.lexiconService.updateForm(this.instanceName, typesUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
     this.lexiconService.updateForm(this.instanceName, noteUpdate).subscribe({
       next: (data: any) => { },
       error: (error: any) => { }
