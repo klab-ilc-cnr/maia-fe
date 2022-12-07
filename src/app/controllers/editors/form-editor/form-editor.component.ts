@@ -19,8 +19,10 @@ export class FormEditorComponent implements OnInit {
   attestationsList: any[] = [];
   loading?: boolean;
 
-  morphologyDropdownList1: DropdownField[] = [];
-  selectedMorphology1?: DropdownField;
+  traitsDropdown: DropdownField[] = [];
+  selectedTrait?: DropdownField;
+  propertiesDropdown: DropdownField[] = [];
+  selectedProperty?: DropdownField;
 
   @Input() instanceName!: string;
 

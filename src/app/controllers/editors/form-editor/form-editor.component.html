@@ -27,20 +27,16 @@
             <div class="field col-12">
                 <p-fieldset legend="Morphological traits">
                     <div class="p-inputgroup flex align-items-center justify-content-center mt-5">
-                        <label for="morphologyName1">name</label>
-                        <p-dropdown id="morphology1" [options]=" morphologyDropdownList1"
-                            [(ngModel)]="selectedMorphology1" optionLabel="name" [style]="{'width':'100%'}"
-                            class="ml-4 mr-2"></p-dropdown>
+                        <p-dropdown id="trait1" [options]=" traitsDropdown" [(ngModel)]="selectedTrait"
+                            optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"></p-dropdown>
+                        <p-dropdown id="property1" [options]=" propertiesDropdown" [(ngModel)]="selectedProperty"
+                            optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"></p-dropdown>
                         <button pButton pRipple type="button" icon="pi pi-times"
-                            class="p-button-rounded p-button-danger"></button>
+                            class="p-button-rounded p-button-danger p-button-text"></button>
                     </div>
                     <div class="p-inputgroup flex align-items-center justify-content-center mt-5">
-                        <label for="morphologyName2" class="min-w-2">name2</label>
-                        <p-dropdown id="morphology2" [options]=" morphologyDropdownList1"
-                            [(ngModel)]="selectedMorphology1" optionLabel="name" [style]="{'width':'100%'}"
-                            class="ml-4 mr-2"></p-dropdown>
-                        <button pButton pRipple type="button" icon="pi pi-times"
-                            class="p-button-rounded p-button-danger"></button>
+                        <button pButton pRipple type="button" icon="pi pi-plus"
+                            class="p-button-rounded p-button-outlined"></button>
                     </div>
                 </p-fieldset>
             </div>
