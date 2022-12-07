@@ -10,7 +10,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
   styleUrls: ['./sense-editor.component.scss']
 })
 export class SenseEditorComponent implements OnInit {
-    private subscription!: Subscription;
+  private subscription!: Subscription;
 
   noteInput?: string;
   definitionInput?: string;
@@ -23,13 +23,16 @@ export class SenseEditorComponent implements OnInit {
   constructor(private lexiconService: LexiconService,
     private commonService: CommonService) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
       if (res.hasOwnProperty('option') && res.option === 'sense_selected') {
+        this.instanceName = res.value;
         this.loadData();
       }
     });
+  }
 
+  ngOnInit(): void {
     this.loadData();
   }
 
@@ -68,10 +71,10 @@ export class SenseEditorComponent implements OnInit {
       next: (data: any) => { },
       error: (error: any) => { }
     })
-/*     this.lexiconService.updateLexicalEntry(this.instanceName, referenceUpdate).subscribe({
-      next: (data: any) => { },
-      error: (error: any) => { }
-    }) */
+    /*     this.lexiconService.updateLexicalEntry(this.instanceName, referenceUpdate).subscribe({
+          next: (data: any) => { },
+          error: (error: any) => { }
+        }) */
     this.lexiconService.updateSense(this.instanceName, noteUpdate).subscribe({
       next: (data: any) => { },
       error: (error: any) => { }

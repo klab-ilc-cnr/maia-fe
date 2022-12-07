@@ -27,13 +27,16 @@ export class FormEditorComponent implements OnInit {
   constructor(private lexiconService: LexiconService,
     private commonService: CommonService) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
       if (res.hasOwnProperty('option') && res.option === 'form_selected') {
+        this.instanceName = res.value;
         this.loadData();
       }
     });
+  }
 
+  ngOnInit(): void {
     this.loadData();
   }
 
@@ -70,8 +73,8 @@ export class FormEditorComponent implements OnInit {
           code: att['label']
         }))
 
-        data.morphology.forEach((element:any) => {
-          
+        data.morphology.forEach((element: any) => {
+
         });
 
         this.loading = false;

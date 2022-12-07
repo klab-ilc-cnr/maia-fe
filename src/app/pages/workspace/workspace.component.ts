@@ -391,7 +391,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     lexiconTileElement
       .resize({
-        height: window.innerHeight / 2
+        height: window.innerHeight / 1.5
       })
       .reposition();
 
@@ -432,7 +432,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     lexiconEditTileElement
       .resize({
-        height: window.innerHeight / 2
+        height: window.innerHeight / 1.5
       })
       .reposition();
 
