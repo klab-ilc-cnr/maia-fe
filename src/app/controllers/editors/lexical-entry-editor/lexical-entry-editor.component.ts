@@ -12,8 +12,8 @@ import { UpdateRelation } from 'src/app/models/lexicon/update-lexicon-relation.m
 export class LexicalEntryEditorComponent implements OnInit {
   private subscription!: Subscription;
 
-  uncertainOptions: any[] = [];
-  uncertainForm?: string;
+  confidenceOptions: any[] = [];
+  confidenceForm?: string;
   labelForm?: string;
   typesForm: DropdownField[] = [];
   selectedTypeForm?: DropdownField;
@@ -32,11 +32,11 @@ export class LexicalEntryEditorComponent implements OnInit {
   ngOnInit(): void {
     this.loadData();
 
-    this.uncertainOptions = [
-      { label: 'Off', value: 'off' },
-      { label: 'On', value: 'on' },
+    this.confidenceOptions = [
+      { label: '0', value: '0' },
+      { label: '1', value: '1' },
     ];
-    this.uncertainForm = 'off';
+    //this.confidenceForm = '0';
   }
 
   loadData() {
@@ -95,7 +95,7 @@ export class LexicalEntryEditorComponent implements OnInit {
     this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
       next: (data: any) => {
         this.labelForm = data.label;
-        //this.uncertainForm = TRUE o FALSE; TODO capire dove prendere questo dato
+        this.confidenceForm = data.confidence === 1 ? '1' : '0';
 
         this.selectedTypeForm = this.typesForm.find(el => el.code === data.type[0]);
 
@@ -117,13 +117,17 @@ export class LexicalEntryEditorComponent implements OnInit {
 
   handleSave(event: any) {
     let labelUpdate: UpdateRelation = { relation: "label", value: this.labelForm };
-    /* let uncertainUpdate: UpdateLexiconRelation = { relation: "uncertain", value: this.uncertainForm }; TODO*/
+    let confidenceUpdate: UpdateRelation = { relation: "confidence", value: this.confidenceForm };
     let typesUpdate: UpdateRelation = { relation: "type", value: this.selectedTypeForm?.code };
     let posUpdate: UpdateRelation = { relation: "pos", value: this.selectedPartOfSpeechForm?.code };
     let languageUpdate: UpdateRelation = { relation: "language", value: this.selectedLanguageForm?.code };
     let noteUpdate: UpdateRelation = { relation: "note", value: this.noteForm };
 
     this.lexiconService.updateLexicalEntry(this.instanceName, labelUpdate).subscribe({
+      next: (data: any) => { },
+      error: (error: any) => { }
+    })
+    this.lexiconService.updateLexicalEntry(this.instanceName, confidenceUpdate).subscribe({
       next: (data: any) => { },
       error: (error: any) => { }
     })
