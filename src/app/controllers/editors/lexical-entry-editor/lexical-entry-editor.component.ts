@@ -75,11 +75,12 @@ export class LexicalEntryEditorComponent implements OnInit {
   }
 
   loadLanguages() {
-    this.lexiconService.getLexicalEntriesLanguages().subscribe({
+    this.lexiconService.getLanguages().subscribe({
       next: (data: any) => {
         this.languagesForm = data.map((lang: any) => ({
           name: lang['label'],
-          code: lang['lexvo']
+          code: lang['label']
+          //code: lang['lexvo']
         }))
 
         this.loadLexicalEntry();
