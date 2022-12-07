@@ -11,12 +11,12 @@ import { UpdateRelation } from 'src/app/models/lexicon/update-lexicon-relation.m
 })
 export class LexicalEntryEditorComponent implements OnInit {
   private subscription!: Subscription;
-  
+
   uncertainOptions: any[] = [];
   uncertainForm?: string;
   labelForm?: string;
   typesForm: DropdownField[] = [];
-  selectedTypesForm?: DropdownField[] = [];
+  selectedTypeForm?: DropdownField;
   partOfSpeechesForm: DropdownField[] = [];
   selectedPartOfSpeechForm?: DropdownField;
   languagesForm: DropdownField[] = [];
@@ -96,11 +96,7 @@ export class LexicalEntryEditorComponent implements OnInit {
         this.labelForm = data.label;
         //this.uncertainForm = TRUE o FALSE; TODO capire dove prendere questo dato
 
-        this.selectedTypesForm = [];
-        data.type.forEach((typeCode: string) => {
-          this.selectedTypesForm!.push(this.typesForm.find(el => el.code === typeCode)!);
-        });
-        //this.selectedTypeForm = this.typesForm.filter(el => el.code === data.type[0]);
+        this.selectedTypeForm = this.typesForm.find(el => el.code === data.type[0]);
 
         this.selectedPartOfSpeechForm = this.partOfSpeechesForm.find(el => el.code === data.pos);
         this.selectedLanguageForm = this.languagesForm.find(el => el.code === data.language);
@@ -121,7 +117,7 @@ export class LexicalEntryEditorComponent implements OnInit {
   handleSave(event: any) {
     let labelUpdate: UpdateRelation = { relation: "label", value: this.labelForm };
     /* let uncertainUpdate: UpdateLexiconRelation = { relation: "uncertain", value: this.uncertainForm }; TODO*/
-    let typesUpdate: UpdateRelation = { relation: "type", value: this.selectedTypesForm?.map(type => type.code) };
+    let typesUpdate: UpdateRelation = { relation: "type", value: this.selectedTypeForm?.code };
     let posUpdate: UpdateRelation = { relation: "pos", value: this.selectedPartOfSpeechForm?.code };
     let languageUpdate: UpdateRelation = { relation: "language", value: this.selectedLanguageForm?.code };
     let noteUpdate: UpdateRelation = { relation: "note", value: this.noteForm };
