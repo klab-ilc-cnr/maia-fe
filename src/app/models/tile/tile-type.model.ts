@@ -1,3 +1,7 @@
+/**
+ * Enumerazione dei tipi di tile previsti 
+ * @example LEXICON = "LEXICON"
+ */
 export enum TileType {
     TEXT = "TEXT",
     ONTOLOGY = "ONTOLOGY",

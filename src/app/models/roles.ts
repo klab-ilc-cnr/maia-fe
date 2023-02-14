@@ -1,3 +1,4 @@
+/**Enumerazione dei ruoli previsti per un utente */
 export enum Roles {
     AMMINISTRATORE="AMMINISTRATORE",
     SUPERVISORE="SUPERVISORE",
