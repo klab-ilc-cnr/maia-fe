@@ -1,0 +1,2482 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  TagsetCreateEditComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-tagset-create-edit</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./tagset-create-edit.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./tagset-create-edit.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#areTagsetValuesChanged" >areTagsetValuesChanged</a>
+                            </li>
+                            <li>
+                                <a href="#canBeDeleted" >canBeDeleted</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteTagset" >deleteTagset</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteValue" >deleteValue</a>
+                            </li>
+                            <li>
+                                <a href="#newId" >newId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#tagsetForm" >tagsetForm</a>
+                            </li>
+                            <li>
+                                <a href="#tagsetModel" >tagsetModel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#tagsetValueForm" >tagsetValueForm</a>
+                            </li>
+                            <li>
+                                <a href="#tagsetValueModel" >tagsetValueModel</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#backToList" >backToList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#findTagsetValueByName" >findTagsetValueByName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadData" >loadData</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitTagsetForm" >onSubmitTagsetForm</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitTagsetValueModal" >onSubmitTagsetValueModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resetForm" >resetForm</a>
+                            </li>
+                            <li>
+                                <a href="#retrieveCanBeDeleted" >retrieveCanBeDeleted</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#save" >save</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveTagsetValue" >saveTagsetValue</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveTagsetValueWithFormErrors" >saveTagsetValueWithFormErrors</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveWithFormErrors" >saveWithFormErrors</a>
+                            </li>
+                            <li>
+                                <a href="#showDeleteModal" >showDeleteModal</a>
+                            </li>
+                            <li>
+                                <a href="#showDeleteValueModal" >showDeleteValueModal</a>
+                            </li>
+                            <li>
+                                <a href="#showEditValueModal" >showEditValueModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                            <li>
+                                <a href="#showTagsetValueModal" >showTagsetValueModal</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#isEditing" >isEditing</a>
+                                </li>
+                                <li>
+                                    <a href="#isTagsetValueEditing" >isTagsetValueEditing</a>
+                                </li>
+                                <li>
+                                    <a href="#tagsetValueModalTitle" >tagsetValueModalTitle</a>
+                                </li>
+                                <li>
+                                    <a href="#title" >title</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, tagsetService: <a href="../injectables/TagsetService.html" target="_self">TagsetService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, activeRoute: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:107</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>tagsetService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/TagsetService.html" target="_self" >TagsetService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>activeRoute</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="backToList"></a>
+                    <span class="name">
+                        <span ><b>backToList</b></span>
+                        <a href="#backToList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>backToList()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:140</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTagsetValueByName"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>findTagsetValueByName</b></span>
+                        <a href="#findTagsetValueByName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTagsetValueByName(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="189"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:189</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>name</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadData"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>loadData</b></span>
+                        <a href="#loadData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadData(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="195"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:195</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:136</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="118"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:118</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitTagsetForm"></a>
+                    <span class="name">
+                        <span ><b>onSubmitTagsetForm</b></span>
+                        <a href="#onSubmitTagsetForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitTagsetForm(form: <a href="https://angular.io/api/forms/NgForm" target="_blank">NgForm</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>form</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitTagsetValueModal"></a>
+                    <span class="name">
+                        <span ><b>onSubmitTagsetValueModal</b></span>
+                        <a href="#onSubmitTagsetValueModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitTagsetValueModal(form: <a href="https://angular.io/api/forms/NgForm" target="_blank">NgForm</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="181"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:181</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>form</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>resetForm</b></span>
+                        <a href="#resetForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="225"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:225</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveCanBeDeleted"></a>
+                    <span class="name">
+                        <span ><b>retrieveCanBeDeleted</b></span>
+                        <a href="#retrieveCanBeDeleted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>retrieveCanBeDeleted(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:144</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="save"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>save</b></span>
+                        <a href="#save"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>save()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="231"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:231</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveTagsetValue"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveTagsetValue</b></span>
+                        <a href="#saveTagsetValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveTagsetValue()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="269"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:269</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveTagsetValueWithFormErrors"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveTagsetValueWithFormErrors</b></span>
+                        <a href="#saveTagsetValueWithFormErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveTagsetValueWithFormErrors()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="310"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:310</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveWithFormErrors"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveWithFormErrors</b></span>
+                        <a href="#saveWithFormErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveWithFormErrors()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="306"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:306</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDeleteModal"></a>
+                    <span class="name">
+                        <span ><b>showDeleteModal</b></span>
+                        <a href="#showDeleteModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDeleteModal(tagset: <a href="../classes/Tagset.html" target="_self">Tagset</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="148"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:148</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tagset</td>
+                                    <td>
+                                                <code><a href="../classes/Tagset.html" target="_self" >Tagset</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDeleteValueModal"></a>
+                    <span class="name">
+                        <span ><b>showDeleteValueModal</b></span>
+                        <a href="#showDeleteValueModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDeleteValueModal(value: <a href="../classes/TagsetValue.html" target="_self">TagsetValue</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="155"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:155</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="../classes/TagsetValue.html" target="_self" >TagsetValue</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showEditValueModal"></a>
+                    <span class="name">
+                        <span ><b>showEditValueModal</b></span>
+                        <a href="#showEditValueModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showEditValueModal(value: <a href="../classes/TagsetValue.html" target="_self">TagsetValue</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:162</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="../classes/TagsetValue.html" target="_self" >TagsetValue</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="314"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:314</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="322"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:322</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showTagsetValueModal"></a>
+                    <span class="name">
+                        <span ><b>showTagsetValueModal</b></span>
+                        <a href="#showTagsetValueModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showTagsetValueModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="168"
+                            class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:168</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="areTagsetValuesChanged"></a>
+                    <span class="name">
+                        <span ><b>areTagsetValuesChanged</b></span>
+                        <a href="#areTagsetValuesChanged"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canBeDeleted"></a>
+                    <span class="name">
+                        <span ><b>canBeDeleted</b></span>
+                        <a href="#canBeDeleted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteTagset"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteTagset</b></span>
+                        <a href="#deleteTagset"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteValue"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteValue</b></span>
+                        <a href="#deleteValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newId"></a>
+                    <span class="name">
+                        <span ><b>newId</b></span>
+                        <a href="#newId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;new&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:100</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsetForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>tagsetForm</b></span>
+                        <a href="#tagsetForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;tagsetForm&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:106</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsetModel"></a>
+                    <span class="name">
+                        <span ><b>tagsetModel</b></span>
+                        <a href="#tagsetModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Tagset.html" target="_self" >Tagset</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Tagset()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsetValueForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>tagsetValueForm</b></span>
+                        <a href="#tagsetValueForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;tagsetValueForm&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsetValueModel"></a>
+                    <span class="name">
+                        <span ><b>tagsetValueModel</b></span>
+                        <a href="#tagsetValueModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/TagsetValue.html" target="_self" >TagsetValue</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new TagsetValue()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isEditing"></a>
+                        <span class="name"><b>isEditing</b><a href="#isEditing"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isEditing()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:67</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isTagsetValueEditing"></a>
+                        <span class="name"><b>isTagsetValueEditing</b><a href="#isTagsetValueEditing"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isTagsetValueEditing()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:75</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="tagsetValueModalTitle"></a>
+                        <span class="name"><b>tagsetValueModalTitle</b><a href="#tagsetValueModalTitle"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>tagsetValueModalTitle()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:83</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="title"></a>
+                        <span class="name"><b>title</b><a href="#title"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>title()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">src/app/pages/tagsets/tagset-create-edit/tagset-create-edit.component.ts:91</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
+import { Tagset } from &#x27;src/app/models/tagset/tagset&#x27;;
+import { TagsetValue } from &#x27;src/app/models/tagset/tagset-value&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { TagsetService } from &#x27;src/app/services/tagset.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+
+declare var $: any;
+
+@Component({
+  selector: &#x27;app-tagset-create-edit&#x27;,
+  templateUrl: &#x27;./tagset-create-edit.component.html&#x27;,
+  styleUrls: [&#x27;./tagset-create-edit.component.scss&#x27;]
+})
+export class TagsetCreateEditComponent implements OnInit {
+  private deleteTagset &#x3D; (id: number, name: string): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
+
+    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare il tagset \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+    let successMsg &#x3D; &#x27;Tagset \&#x27;&#x27; + name + &#x27;\&#x27; eliminato con successo&#x27;;
+
+    this.tagsetService
+        .delete(id)
+        .subscribe({
+          next: (result) &#x3D;&gt; {
+            if (result) {
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              Swal.close();
+            }
+            else {
+              this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg);
+            }
+            this.backToList();
+          },
+          error: () &#x3D;&gt; {
+            this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg);
+          }
+        })
+  }
+
+  private deleteValue &#x3D; (name: string): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
+
+    let errorMsg &#x3D; &#x27;Errore nel rimuovere il valore \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+    let successMsg &#x3D; &#x27;Valore \&#x27;&#x27; + name + &#x27;\&#x27; rimosso con successo&#x27;;
+
+    let i &#x3D; this.tagsetModel.values!.findIndex((item: any) &#x3D;&gt; item.originalName &#x3D;&#x3D; name);
+
+    if (!this.tagsetModel.values || i &lt; 0) {
+      this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg);
+      Swal.close();
+      return;
+    }
+
+    this.areTagsetValuesChanged &#x3D; true;
+
+    this.tagsetModel.values.splice(i, 1);
+    Swal.close();
+  }
+
+  public get isEditing(): boolean {
+    if (this.tagsetModel &amp;&amp; this.tagsetModel.id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public get isTagsetValueEditing(): boolean {
+    if (this.tagsetValueModel &amp;&amp; this.tagsetValueModel.originalName &amp;&amp; this.tagsetValueModel.name) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public get tagsetValueModalTitle(): string {
+    if (((!this.tagsetValueForm) || (!this.tagsetValueForm.value)) || (!this.tagsetValueForm.value.tvName)) {
+      return &quot;Nuovo valore del tagset&quot;;
+    }
+
+    return this.tagsetValueForm.value.tvName;
+  }
+
+  public get title(): string {
+    if (((!this.tagsetForm) || (!this.tagsetForm.value)) || (!this.tagsetForm.value.name)) {
+      return &quot;Nuovo tagset&quot;;
+    }
+
+    return this.tagsetForm.value.name;
+  }
+
+  canBeDeleted: boolean &#x3D; false;
+  newId: string &#x3D; &quot;new&quot;
+  tagsetModel: Tagset &#x3D; new Tagset();
+  tagsetValueModel: TagsetValue &#x3D; new TagsetValue();
+  areTagsetValuesChanged: boolean &#x3D; false;
+
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+  @ViewChild(&quot;tagsetForm&quot;) public tagsetForm!: NgForm;
+  @ViewChild(&quot;tagsetValueForm&quot;) public tagsetValueForm!: NgForm;
+
+  constructor(
+    private loaderService: LoaderService,
+    private tagsetService: TagsetService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private activeRoute: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    this.activeRoute.paramMap.subscribe({
+      next: (params) &#x3D;&gt; {
+        const id &#x3D; params.get(&#x27;id&#x27;);
+
+        if (id &#x3D;&#x3D; null) {
+          this.backToList();
+        }
+        else if (id !&#x3D; this.newId) {
+          this.loadData(Number.parseInt(id));
+        }
+        else {
+          this.tagsetModel.values &#x3D; [];
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
+  }
+
+  backToList() {
+    this.router.navigate([&quot;../&quot;], { relativeTo: this.activeRoute });
+  }
+
+  retrieveCanBeDeleted(id: number): Observable&lt;boolean&gt; {
+    return this.tagsetService.retrieveCanBeDeleted(id);
+  }
+
+  showDeleteModal(tagset: Tagset): void {
+    let confirmMsg &#x3D; &#x27;Stai per cancellare il tagset \&#x27;&#x27; + tagset.name + &#x27;\&#x27;&#x27;;
+
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteTagset(tagset.id, (tagset.name || &quot;&quot;)), tagset.id, tagset.name);
+  }
+
+  showDeleteValueModal(value: TagsetValue): void {
+    let confirmMsg &#x3D; &#x27;Stai per cancellare il valore \&#x27;&#x27; + value.originalName + &#x27;\&#x27;&#x27;;
+
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteValue((value.originalName || &quot;&quot;)), value.originalName);
+  }
+
+  showEditValueModal(value: TagsetValue): void {
+    this.resetForm();
+    this.tagsetValueModel &#x3D; JSON.parse(JSON.stringify(value));
+    $(&#x27;#tagsetValueModal&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  showTagsetValueModal() {
+    this.resetForm();
+    $(&#x27;#tagsetValueModal&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  onSubmitTagsetForm(form: NgForm): void {
+    if (this.tagsetForm.invalid) {
+      return this.saveWithFormErrors();
+    }
+
+    this.save();
+  }
+
+  onSubmitTagsetValueModal(form: NgForm): void {
+    if (this.tagsetValueForm.invalid) {
+      return this.saveTagsetValueWithFormErrors();
+    }
+
+    this.saveTagsetValue();
+  }
+
+  private findTagsetValueByName(name: string) {
+    let v &#x3D; this.tagsetModel.values?.find((item: any) &#x3D;&gt; item.name &#x3D;&#x3D; name)
+
+    return v;
+  }
+
+  private loadData(id: number) {
+    this.loaderService.show();
+    this.tagsetService.retrieveById(id)
+      .subscribe({
+        next: (tagset) &#x3D;&gt; {
+          var model &#x3D; Object.assign(new Tagset(), tagset);
+          this.tagsetModel &#x3D; model;
+
+          if (!this.tagsetModel.values) {
+            this.tagsetModel.values &#x3D; [];
+          }
+
+          let valuesCopy &#x3D; JSON.parse(JSON.stringify(this.tagsetModel.values));
+
+          this.tagsetModel.values &#x3D; [];
+
+          valuesCopy.forEach((v: any) &#x3D;&gt; {
+            this.tagsetModel.values?.push({ ...v, originalName: v.name })
+          })
+
+          this.loaderService.hide();
+        }
+      })
+
+      this.retrieveCanBeDeleted(id)
+        .subscribe({
+          next: (canBeDeleted) &#x3D;&gt; this.canBeDeleted &#x3D; canBeDeleted
+        })
+  }
+
+  private resetForm() {
+    this.tagsetValueModel &#x3D; new TagsetValue();
+    this.tagsetValueForm.form.markAsUntouched();
+    this.tagsetValueForm.form.markAsPristine();
+  }
+
+  private save(): void {
+    let errorMsg &#x3D; &quot;Errore durante il salvataggio!&quot;;
+    if (!this.tagsetModel) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+      return;
+    }
+
+    let successMsg &#x3D; &quot;Operazione effettuata con successo&quot;;
+    let apiCall;
+
+    if (this.isEditing) {
+      successMsg &#x3D; &quot;Tagset modificato con successo&quot;;
+      apiCall &#x3D; this.tagsetService.update(this.tagsetModel);
+    }
+    else {
+      successMsg &#x3D; &quot;Tagset creato con successo&quot;;
+      apiCall &#x3D; this.tagsetService.create(this.tagsetModel);
+    }
+
+    this.loaderService.show();
+    apiCall.subscribe({
+      next: () &#x3D;&gt; {
+        this.loaderService.hide();
+        this.backToList();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      },
+      error: (err) &#x3D;&gt; {
+        this.loaderService.hide();
+
+        if (err.status &#x3D;&#x3D; 418) {
+          errorMsg &#x3D;&#x3D; &quot;Esiste già un tagset con questo nome!&quot;
+        }
+
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+      }
+    });
+  }
+
+  private saveTagsetValue(): void {
+    if (!this.tagsetValueModel) {
+      return;
+    }
+
+    if (this.isTagsetValueEditing) {
+      let i &#x3D; this.tagsetModel.values!.findIndex((item: any) &#x3D;&gt; item.originalName &#x3D;&#x3D; this.tagsetValueModel.originalName);
+
+      if (!this.tagsetModel.values || i &lt; 0) {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Non esiste un valore del tagset con questo nome&quot;));
+        $(&#x27;#tagsetValueModal&#x27;).modal(&#x27;hide&#x27;);
+        return;
+      }
+
+      this.tagsetValueModel.originalName &#x3D; this.tagsetValueModel.name;
+
+      this.areTagsetValuesChanged &#x3D; true;
+      this.tagsetModel.values[i] &#x3D; {...this.tagsetValueModel};
+    }
+    else {
+      let v &#x3D; this.findTagsetValueByName(this.tagsetValueModel.name || &quot;&quot;);
+
+      if (v) {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Esiste già un valore del tagset con questo nome&quot;));
+        $(&#x27;#tagsetValueModal&#x27;).modal(&#x27;hide&#x27;);
+        return;
+      }
+
+      this.tagsetValueModel.originalName &#x3D; this.tagsetValueModel.name;
+
+      this.areTagsetValuesChanged &#x3D; true;
+      this.tagsetModel.values?.push(JSON.parse(JSON.stringify(this.tagsetValueModel)));
+    }
+
+    $(&#x27;#tagsetValueModal&#x27;).modal(&#x27;hide&#x27;);
+  }
+
+  private saveWithFormErrors(): void {
+    this.tagsetForm.form.markAllAsTouched();
+  }
+
+  private saveTagsetValueWithFormErrors(): void {
+    this.tagsetValueForm.form.markAllAsTouched();
+  }
+
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;per favore attendere&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;form
+  (ngSubmit)&#x3D;&quot;onSubmitTagsetForm(tagsetForm)&quot;
+  #tagsetForm&#x3D;&quot;ngForm&quot;
+  id&#x3D;&quot;tagsetForm&quot;
+  class&#x3D;&quot;validated&quot;
+&gt;
+  &lt;div class&#x3D;&quot;grid&quot;&gt;
+    &lt;div class&#x3D;&quot;col-12&quot;&gt;
+      &lt;div class&#x3D;&quot;card&quot;&gt;
+        &lt;div class&#x3D;&quot;page-header mb-0&quot;&gt;
+          &lt;h5&gt;{{title}}&lt;/h5&gt;
+          &lt;div class&#x3D;&quot;button-group-actions&quot;&gt;
+            &lt;button pButton pRipple type&#x3D;&quot;button&quot; label&#x3D;&quot;Salva&quot; icon&#x3D;&quot;pi pi-save&quot; (click)&#x3D;&quot;onSubmitTagsetForm(tagsetForm)&quot;&gt;&lt;/button&gt;
+            &lt;button pButton pRipple type&#x3D;&quot;button&quot; label&#x3D;&quot;Annulla&quot; icon&#x3D;&quot;pi pi-times&quot; class&#x3D;&quot;p-button-secondary&quot; (click)&#x3D;&quot;backToList()&quot;&gt;&lt;/button&gt;
+            &lt;button *ngIf&#x3D;&quot;isEditing&quot; pButton pRipple type&#x3D;&quot;button&quot; label&#x3D;&quot;Elimina&quot; icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-danger&quot; (click)&#x3D;&quot;showDeleteModal(tagsetModel)&quot; [disabled]&#x3D;&quot;canBeDeleted&quot;&gt;&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;card-body p-fluid&quot;&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;row px-0&quot;&gt;
+    &lt;div class&#x3D;&quot;col-4&quot;&gt;
+      &lt;div class&#x3D;&quot;card&quot;&gt;
+        &lt;div class&#x3D;&quot;card-body p-fluid&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Nome *&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;input #name&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;name&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;tagsetModel.name&quot;
+                required maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Nome tagset&quot; appWhitespacesValidator&gt;
+              &lt;div *ngIf&#x3D;&quot;name.invalid &amp;&amp; (name.touched || name.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+                &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;required&#x27;]&quot;&gt;
+                  Necessario inserire il nome del tagset
+                &lt;/div&gt;
+                &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
+                  Il nome del tagset non può contenere solo spazi vuoti
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Descrizione&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;textarea rows&#x3D;&quot;3&quot; #description&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;description&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;tagsetModel.description&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;col-8&quot;&gt;
+      &lt;div class&#x3D;&quot;card&quot;&gt;
+        &lt;div class&#x3D;&quot;card-body p-fluid&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex align-items-center justify-content-between mb-2 w-auto&quot;&gt;
+              &lt;label class&#x3D;&quot;form-label&quot;&gt;Valori&lt;/label&gt;
+              &lt;div *ngIf&#x3D;&quot;areTagsetValuesChanged&quot; class&#x3D;&quot;text-warning text-center&quot;&gt;
+                I valori del tagset sono cambiati, ricordati di salvare le modifiche.
+              &lt;/div&gt;
+              &lt;button pButton pRipple type&#x3D;&quot;button&quot; label&#x3D;&quot;Nuovo valore&quot; icon&#x3D;&quot;pi pi-plus&quot; class&#x3D;&quot;w-auto&quot; (click)&#x3D;&quot;showTagsetValueModal()&quot;&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;p-table #dt [value]&#x3D;&quot;tagsetModel.values!&quot; [rows]&#x3D;&quot;10&quot; [paginator]&#x3D;&quot;true&quot; [rowHover]&#x3D;&quot;true&quot; dataKey&#x3D;&quot;id&quot;
+                currentPageReportTemplate&#x3D;&quot;Elementi da {first} a {last} per un totale di {totalRecords} elementi&quot;
+                [responsive]&#x3D;&quot;true&quot; responsiveLayout&#x3D;&quot;scroll&quot; [showCurrentPageReport]&#x3D;&quot;true&quot;&gt;
+                  &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+                    &lt;tr&gt;
+                      &lt;th pSortableColumn&#x3D;&quot;name&quot;&gt;Nome&lt;p-sortIcon field&#x3D;&quot;name&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+                      &lt;th pSortableColumn&#x3D;&quot;description&quot;&gt;Descrizione&lt;p-sortIcon field&#x3D;&quot;description&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+                      &lt;th&gt;&lt;/th&gt;
+                    &lt;/tr&gt;
+                  &lt;/ng-template&gt;
+                  &lt;ng-template pTemplate&#x3D;&quot;body&quot; let-value let-i&#x3D;&quot;rowIndex&quot;&gt;
+                    &lt;tr&gt;
+                      &lt;td&gt;{{value.name}}&lt;/td&gt;
+                      &lt;td&gt;{{value.description}}&lt;/td&gt;
+                      &lt;td&gt;
+                        &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-pencil&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot; (click)&#x3D;&quot;showEditValueModal(value)&quot;&gt;&lt;/button&gt;
+                        &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-rounded p-button-danger mx-2&quot; (click)&#x3D;&quot;showDeleteValueModal(value)&quot;&gt;&lt;/button&gt;
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                  &lt;/ng-template&gt;
+              &lt;/p-table&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;
+
+&lt;div
+  class&#x3D;&quot;modal fade&quot;
+  id&#x3D;&quot;tagsetValueModal&quot;
+  tabindex&#x3D;&quot;-1&quot;
+  aria-labelledby&#x3D;&quot;tagsetValueModalLabel&quot;
+  aria-hidden&#x3D;&quot;true&quot;
+&gt;
+  &lt;div class&#x3D;&quot;modal-dialog modal-dialog-centered&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;form
+        #tagsetValueForm&#x3D;&quot;ngForm&quot;
+        id&#x3D;&quot;tagsetValueForm&quot;
+        class&#x3D;&quot;validated&quot;
+        [appTagsetValueNotDuplicateName]&#x3D;&quot;tagsetModel.values!&quot;
+      &gt;
+        &lt;input type&#x3D;&quot;hidden&quot; #tvOriginalName&#x3D;&quot;ngModel&quot; name&#x3D;&quot;tvOriginalName&quot; [(ngModel)]&#x3D;&quot;tagsetValueModel.originalName&quot;&gt;
+        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+          &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;tagsetValueModalLabel&quot;&gt;{{tagsetValueModalTitle}}&lt;/h5&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn-close&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+            aria-label&#x3D;&quot;Close&quot;
+          &gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+          &lt;div class&#x3D;&quot;cross-validation&quot;
+            [class.cross-validation-error]&#x3D;&quot;tagsetValueForm.errors?.[&#x27;tagsetValueNotDuplicateName&#x27;] &amp;&amp; (tagsetValueForm.touched || tagsetValueForm.dirty)&quot;&gt;
+            &lt;div class&#x3D;&quot;form-group&quot;&gt;
+              &lt;label class&#x3D;&quot;form-label&quot;&gt;Nome *&lt;/label&gt;
+              &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+                &lt;input #tvName&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;tvName&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;tagsetValueModel.name&quot;
+                  required maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Nome del valore del tagset&quot; appWhitespacesValidator&gt;
+                &lt;div *ngIf&#x3D;&quot;tvName.invalid &amp;&amp; (tvName.touched || tvName.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+                  &lt;div *ngIf&#x3D;&quot;tvName.errors?.[&#x27;required&#x27;]&quot;&gt;
+                    Necessario inserire il nome del valore del tagset
+                  &lt;/div&gt;
+                  &lt;div *ngIf&#x3D;&quot;tvName.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
+                    Il nome del valore del tagset non può contenere solo spazi vuoti
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div *ngIf&#x3D;&quot;tagsetValueForm.errors?.[&#x27;tagsetValueNotDuplicateName&#x27;]&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+                  Esiste già un valore con questo nome
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Descrizione&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;textarea rows&#x3D;&quot;3&quot; #tvDescription&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;tvDescription&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;tagsetValueModel.description&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-secondary&quot; data-bs-dismiss&#x3D;&quot;modal&quot;&gt;
+            Annulla
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot; (click)&#x3D;&quot;onSubmitTagsetValueModal(tagsetValueForm)&quot;&gt;
+            &lt;span *ngIf&#x3D;&quot;isTagsetValueEditing; else elseBlock&quot;&gt;
+              Aggiorna
+            &lt;/span&gt;
+            &lt;ng-template #elseBlock&gt;
+              &lt;span&gt;Aggiungi&lt;/span&gt;
+            &lt;/ng-template&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./tagset-create-edit.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><form  (ngSubmit)="onSubmitTagsetForm(tagsetForm)"  #tagsetForm="ngForm"  id="tagsetForm"  class="validated">  <div class="grid">    <div class="col-12">      <div class="card">        <div class="page-header mb-0">          <h5>{{title}}</h5>          <div class="button-group-actions">            <button pButton pRipple type="button" label="Salva" icon="pi pi-save" (click)="onSubmitTagsetForm(tagsetForm)"></button>            <button pButton pRipple type="button" label="Annulla" icon="pi pi-times" class="p-button-secondary" (click)="backToList()"></button>            <button *ngIf="isEditing" pButton pRipple type="button" label="Elimina" icon="pi pi-trash" class="p-button-danger" (click)="showDeleteModal(tagsetModel)" [disabled]="canBeDeleted"></button>          </div>        </div>        <div class="card-body p-fluid">        </div>      </div>    </div>  </div>  <div class="row px-0">    <div class="col-4">      <div class="card">        <div class="card-body p-fluid">          <div class="form-group">            <label class="form-label">Nome *</label>            <div class="p-fluid">              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="tagsetModel.name"                required maxlength="300" placeholder="Nome tagset" appWhitespacesValidator>              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">                <div *ngIf="name.errors?.[\'required\']">                  Necessario inserire il nome del tagset                </div>                <div *ngIf="name.errors?.[\'isNotOnlyWhitespaces\']">                  Il nome del tagset non può contenere solo spazi vuoti                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Descrizione</label>            <div class="p-fluid">              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="tagsetModel.description"></textarea>            </div>          </div>        </div>      </div>    </div>    <div class="col-8">      <div class="card">        <div class="card-body p-fluid">          <div class="form-group">            <div class="d-flex align-items-center justify-content-between mb-2 w-auto">              <label class="form-label">Valori</label>              <div *ngIf="areTagsetValuesChanged" class="text-warning text-center">                I valori del tagset sono cambiati, ricordati di salvare le modifiche.              </div>              <button pButton pRipple type="button" label="Nuovo valore" icon="pi pi-plus" class="w-auto" (click)="showTagsetValueModal()"></button>            </div>            <div class="p-fluid">              <p-table #dt [value]="tagsetModel.values!" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"                currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">                  <ng-template pTemplate="header">                    <tr>                      <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon></th>                      <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon></th>                      <th></th>                    </tr>                  </ng-template>                  <ng-template pTemplate="body" let-value let-i="rowIndex">                    <tr>                      <td>{{value.name}}</td>                      <td>{{value.description}}</td>                      <td>                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="showEditValueModal(value)"></button>                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="showDeleteValueModal(value)"></button>                      </td>                    </tr>                  </ng-template>              </p-table>            </div>          </div>        </div>      </div>    </div>  </div></form><div  class="modal fade"  id="tagsetValueModal"  tabindex="-1"  aria-labelledby="tagsetValueModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        #tagsetValueForm="ngForm"        id="tagsetValueForm"        class="validated"        [appTagsetValueNotDuplicateName]="tagsetModel.values!"      >        <input type="hidden" #tvOriginalName="ngModel" name="tvOriginalName" [(ngModel)]="tagsetValueModel.originalName">        <div class="modal-header">          <h5 class="modal-title" id="tagsetValueModalLabel">{{tagsetValueModalTitle}}</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="cross-validation"            [class.cross-validation-error]="tagsetValueForm.errors?.[\'tagsetValueNotDuplicateName\'] && (tagsetValueForm.touched || tagsetValueForm.dirty)">            <div class="form-group">              <label class="form-label">Nome *</label>              <div class="p-fluid">                <input #tvName="ngModel" type="text" name="tvName" class="form-control" [(ngModel)]="tagsetValueModel.name"                  required maxlength="300" placeholder="Nome del valore del tagset" appWhitespacesValidator>                <div *ngIf="tvName.invalid && (tvName.touched || tvName.dirty)" class="invalid-feedback">                  <div *ngIf="tvName.errors?.[\'required\']">                    Necessario inserire il nome del valore del tagset                  </div>                  <div *ngIf="tvName.errors?.[\'isNotOnlyWhitespaces\']">                    Il nome del valore del tagset non può contenere solo spazi vuoti                  </div>                </div>                <div *ngIf="tagsetValueForm.errors?.[\'tagsetValueNotDuplicateName\']" class="invalid-feedback">                  Esiste già un valore con questo nome                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Descrizione</label>            <div class="p-fluid">              <textarea rows="3" #tvDescription="ngModel" type="text" name="tvDescription" class="form-control" [(ngModel)]="tagsetValueModel.description"></textarea>            </div>          </div>        </div>        <div class="modal-footer">          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">            Annulla          </button>          <button type="button" class="btn btn-primary" (click)="onSubmitTagsetValueModal(tagsetValueForm)">            <span *ngIf="isTagsetValueEditing; else elseBlock">              Aggiorna            </span>            <ng-template #elseBlock>              <span>Aggiungi</span>            </ng-template>          </button>        </div>      </form>    </div>  </div></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'TagsetCreateEditComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'TagsetCreateEditComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

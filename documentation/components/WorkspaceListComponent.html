@@ -1,0 +1,1947 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  WorkspaceListComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/workspace/workspace-list/workspace-list.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-workspace-list</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./workspace-list.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./workspace-list.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#delete" >delete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                <a href="#submitted" >submitted</a>
+                            </li>
+                            <li>
+                                <a href="#workspace" >workspace</a>
+                            </li>
+                            <li>
+                                <a href="#workspaceDialog" >workspaceDialog</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#workspaceForm" >workspaceForm</a>
+                            </li>
+                            <li>
+                                <a href="#workspaces" >workspaces</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#goToNewWorkspace" >goToNewWorkspace</a>
+                            </li>
+                            <li>
+                                <a href="#goToWorkspace" >goToWorkspace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadData" >loadData</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitWorkspaceModal" >onSubmitWorkspaceModal</a>
+                            </li>
+                            <li>
+                                <a href="#openWorkspace" >openWorkspace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resetForm" >resetForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#save" >save</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveWithFormErrors" >saveWithFormErrors</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveWorkspaceCompleted" >saveWorkspaceCompleted</a>
+                            </li>
+                            <li>
+                                <a href="#showDeleteWorkspaceModal" >showDeleteWorkspaceModal</a>
+                            </li>
+                            <li>
+                                <a href="#showEditWorkspaceModal" >showEditWorkspaceModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                            <li>
+                                <a href="#showWorkspaceModal" >showWorkspaceModal</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#workspaceModalTitle" >workspaceModalTitle</a>
+                                </li>
+                                <li>
+                                    <a href="#isEditing" >isEditing</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, activeRoute: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, workspaceService: <a href="../injectables/WorkspaceService.html" target="_self">WorkspaceService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, confirmationService: ConfirmationService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:61</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>activeRoute</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>workspaceService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WorkspaceService.html" target="_self" >WorkspaceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>confirmationService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfirmationService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToNewWorkspace"></a>
+                    <span class="name">
+                        <span ><b>goToNewWorkspace</b></span>
+                        <a href="#goToNewWorkspace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToNewWorkspace()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:79</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToWorkspace"></a>
+                    <span class="name">
+                        <span ><b>goToWorkspace</b></span>
+                        <a href="#goToWorkspace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToWorkspace(workspaceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="83"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:83</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>workspaceId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadData"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>loadData</b></span>
+                        <a href="#loadData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadData()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="121"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:121</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:75</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:71</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitWorkspaceModal"></a>
+                    <span class="name">
+                        <span ><b>onSubmitWorkspaceModal</b></span>
+                        <a href="#onSubmitWorkspaceModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitWorkspaceModal(form: <a href="https://angular.io/api/forms/NgForm" target="_blank">NgForm</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:87</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>form</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openWorkspace"></a>
+                    <span class="name">
+                        <span ><b>openWorkspace</b></span>
+                        <a href="#openWorkspace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openWorkspace(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>resetForm</b></span>
+                        <a href="#resetForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="132"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:132</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="save"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>save</b></span>
+                        <a href="#save"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>save()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:138</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveWithFormErrors"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveWithFormErrors</b></span>
+                        <a href="#saveWithFormErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveWithFormErrors()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="176"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:176</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveWorkspaceCompleted"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveWorkspaceCompleted</b></span>
+                        <a href="#saveWorkspaceCompleted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveWorkspaceCompleted()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="180"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:180</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDeleteWorkspaceModal"></a>
+                    <span class="name">
+                        <span ><b>showDeleteWorkspaceModal</b></span>
+                        <a href="#showDeleteWorkspaceModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDeleteWorkspaceModal(workspace: <a href="../classes/WorkspaceChoice.html" target="_self">WorkspaceChoice</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:101</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>workspace</td>
+                                    <td>
+                                                <code><a href="../classes/WorkspaceChoice.html" target="_self" >WorkspaceChoice</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showEditWorkspaceModal"></a>
+                    <span class="name">
+                        <span ><b>showEditWorkspaceModal</b></span>
+                        <a href="#showEditWorkspaceModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showEditWorkspaceModal(workspace: <a href="../classes/WorkspaceChoice.html" target="_self">WorkspaceChoice</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:108</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>workspace</td>
+                                    <td>
+                                                <code><a href="../classes/WorkspaceChoice.html" target="_self" >WorkspaceChoice</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="188"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:188</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="196"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:196</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showWorkspaceModal"></a>
+                    <span class="name">
+                        <span ><b>showWorkspaceModal</b></span>
+                        <a href="#showWorkspaceModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showWorkspaceModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:115</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delete"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>delete</b></span>
+                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitted"></a>
+                    <span class="name">
+                        <span ><b>submitted</b></span>
+                        <a href="#submitted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workspace"></a>
+                    <span class="name">
+                        <span ><b>workspace</b></span>
+                        <a href="#workspace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/WorkspaceChoice.html" target="_self" >WorkspaceChoice</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new WorkspaceChoice</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workspaceDialog"></a>
+                    <span class="name">
+                        <span ><b>workspaceDialog</b></span>
+                        <a href="#workspaceDialog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workspaceForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>workspaceForm</b></span>
+                        <a href="#workspaceForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(NgForm)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workspaces"></a>
+                    <span class="name">
+                        <span ><b>workspaces</b></span>
+                        <a href="#workspaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>WorkspaceChoice[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="workspaceModalTitle"></a>
+                        <span class="name"><b>workspaceModalTitle</b><a href="#workspaceModalTitle"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>workspaceModalTitle()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:37</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isEditing"></a>
+                        <span class="name"><b>isEditing</b><a href="#isEditing"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isEditing()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/workspace/workspace-list/workspace-list.component.ts:45</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { Component, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { WorkspaceChoice } from &#x27;src/app/models/workspace-choice.model&#x27;;
+import { WorkspaceService } from &#x27;src/app/services/workspace.service&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { ConfirmationService } from &#x27;primeng/api&#x27;;
+import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
+
+@Component({
+  selector: &#x27;app-workspace-list&#x27;,
+  templateUrl: &#x27;./workspace-list.component.html&#x27;,
+  styleUrls: [&#x27;./workspace-list.component.scss&#x27;],
+})
+export class WorkspaceListComponent implements OnInit {
+  private delete &#x3D; (id: number, name: string): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
+
+    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare il workspace \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+    let successMsg &#x3D; &#x27;Workspace \&#x27;&#x27; + name + &#x27;\&#x27; eliminato con successo&#x27;;
+
+    this.workspaceService.deleteWorkspace(id).subscribe({
+      next: (data) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        Swal.close();
+        this.loadData();
+      },
+      error: () &#x3D;&gt; {
+        this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg)
+      }
+    })
+  }
+
+  public get workspaceModalTitle(): string {
+    if (((!this.workspaceForm) || (!this.workspaceForm.value)) || (!this.workspaceForm.value.name)) {
+      return &quot;Nuovo workspace&quot;;
+    }
+
+    return this.workspaceForm.value.name;
+  }
+
+  public get isEditing(): boolean {
+    if (this.workspace &amp;&amp; this.workspace.id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  workspaces: WorkspaceChoice[] &#x3D; [];
+
+  workspace: WorkspaceChoice &#x3D; new WorkspaceChoice;
+
+  workspaceDialog: boolean &#x3D; false;
+  submitted: boolean &#x3D; false;
+
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+  @ViewChild(NgForm) public workspaceForm!: NgForm;
+
+  constructor(private router: Router,
+    private activeRoute: ActivatedRoute,
+    private loaderService: LoaderService,
+    private workspaceService: WorkspaceService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private confirmationService: ConfirmationService) { }
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
+  }
+
+  goToNewWorkspace() {
+    this.router.navigate([&quot;/workspace&quot;, &quot;new&quot;], { relativeTo: this.activeRoute });
+  }
+
+  goToWorkspace(workspaceId: string) {
+    this.router.navigate([&quot;/workspace&quot;, workspaceId], { relativeTo: this.activeRoute });
+  }
+
+  onSubmitWorkspaceModal(form: NgForm): void {
+    if (this.workspaceForm.invalid) {
+      return this.saveWithFormErrors();
+    }
+
+    this.save();
+  }
+
+  openWorkspace(event: any) {
+    if (event.data.id) {
+      this.goToWorkspace(event.data.id)
+    }
+  }
+
+  showDeleteWorkspaceModal(workspace: WorkspaceChoice) {
+    let confirmMsg &#x3D; &#x27;Stai per cancellare il workspace \&#x27;&#x27; + workspace.name + &#x27;\&#x27;&#x27;;
+
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.delete(workspace.id!, (workspace.name || &quot;&quot;)), workspace.id, workspace.name);
+  }
+
+  showEditWorkspaceModal(workspace: WorkspaceChoice) {
+    this.resetForm();
+    this.workspace &#x3D; JSON.parse(JSON.stringify(workspace));
+
+    $(&#x27;#workspaceModal&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  showWorkspaceModal() {
+    this.resetForm();
+
+    $(&#x27;#workspaceModal&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  private loadData() {
+    this.loaderService.show();
+    this.workspaceService.retrieveWorkspaceChoiceList()
+      .subscribe({
+        next: (data: WorkspaceChoice[]) &#x3D;&gt; {
+          this.workspaces &#x3D; data;
+          this.loaderService.hide();
+        }
+      });
+  }
+
+  private resetForm() {
+    this.workspace &#x3D; new WorkspaceChoice();
+    this.workspaceForm.form.markAsUntouched();
+    this.workspaceForm.form.markAsPristine();
+  }
+
+  private save(): void {
+    if (!this.workspace) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Errore durante il salvataggio!&quot;));
+      return;
+    }
+
+    let successMsg &#x3D; &quot;Operazione effettuata con successo&quot;;
+    let apiCall;
+
+    if (this.isEditing &amp;&amp; this.workspace.name?.trim() &amp;&amp; this.workspace.id) {
+      successMsg &#x3D; &quot;Workspace modificato con successo&quot;;
+      apiCall &#x3D; this.workspaceService.updateWorkspace(this.workspace);
+    }
+    else {
+      successMsg &#x3D; &quot;Workspace creato con successo&quot;;
+      apiCall &#x3D; this.workspaceService.createWorkspace(this.workspace);
+    }
+
+    this.loaderService.show();
+    apiCall.subscribe({
+      next: () &#x3D;&gt; {
+        $(&#x27;#workspaceModal&#x27;).modal(&#x27;hide&#x27;);
+
+        this.saveWorkspaceCompleted();
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.loadData();
+      },
+      error: (err: string) &#x3D;&gt; {
+        $(&#x27;#workspaceModal&#x27;).modal(&#x27;hide&#x27;);
+
+        this.saveWorkspaceCompleted();
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+      }
+    });
+  }
+
+  private saveWithFormErrors(): void {
+    this.workspaceForm.form.markAllAsTouched();
+  }
+
+  private saveWorkspaceCompleted() {
+    this.workspaces &#x3D; [...this.workspaces];
+    this.workspaceDialog &#x3D; false;
+
+    this.loaderService.hide();
+    this.loadData();
+  }
+
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;per favore attendere&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;p-toast&gt;&lt;/p-toast&gt;
+
+&lt;div class&#x3D;&quot;grid&quot;&gt;
+    &lt;div class&#x3D;&quot;col-12&quot;&gt;
+        &lt;div class&#x3D;&quot;card&quot;&gt;
+            &lt;div class&#x3D;&quot;page-header&quot;&gt;
+                &lt;h5&gt;Workspace&lt;/h5&gt;
+                &lt;p-button label&#x3D;&quot;Nuovo workspace&quot; icon&#x3D;&quot;pi pi-desktop&quot; styleClass&#x3D;&quot;p-button-danger&quot; (click)&#x3D;&quot;showWorkspaceModal()&quot;
+                    class&#x3D;&quot;ms-start&quot;&gt;&lt;/p-button&gt;
+            &lt;/div&gt;
+            &lt;p-table #dt [value]&#x3D;&quot;workspaces&quot; [rows]&#x3D;&quot;10&quot; [paginator]&#x3D;&quot;true&quot; [rowHover]&#x3D;&quot;true&quot; dataKey&#x3D;&quot;id&quot;
+                currentPageReportTemplate&#x3D;&quot;Elementi da {first} a {last} per un totale di {totalRecords} elementi&quot;
+                [responsive]&#x3D;&quot;true&quot; responsiveLayout&#x3D;&quot;scroll&quot; [showCurrentPageReport]&#x3D;&quot;true&quot;
+                selectionMode&#x3D;&quot;single&quot;
+                (onRowSelect)&#x3D;&quot;openWorkspace($event)&quot;&gt;
+                &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+                    &lt;tr&gt;
+                        &lt;th pSortableColumn&#x3D;&quot;name&quot;&gt;Nome&lt;p-sortIcon field&#x3D;&quot;name&quot;&gt;&lt;/p-sortIcon&gt;
+                        &lt;/th&gt;
+                        &lt;th pSortableColumn&#x3D;&quot;note&quot;&gt;Note&lt;p-sortIcon field&#x3D;&quot;note&quot;&gt;&lt;/p-sortIcon&gt;
+                        &lt;/th&gt;
+                        &lt;th pSortableColumn&#x3D;&quot;updated&quot;&gt;Ultimo accesso&lt;p-sortIcon field&#x3D;&quot;updated&quot;&gt;&lt;/p-sortIcon&gt;
+                        &lt;/th&gt;
+                        &lt;th&gt;&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/ng-template&gt;
+                &lt;ng-template pTemplate&#x3D;&quot;body&quot; let-workspace&gt;
+                    &lt;tr [pSelectableRow]&#x3D;&quot;workspace&quot;&gt;
+                        &lt;td&gt;{{workspace.name}}&lt;/td&gt;
+                        &lt;td&gt;{{workspace.note}}&lt;/td&gt;
+                        &lt;td&gt;{{workspace.updated | date: &#x27;dd-MM-yyyy HH:mm:ss&#x27;}}&lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;button pButton pRipple icon&#x3D;&quot;pi pi-desktop&quot;
+                                class&#x3D;&quot;p-button-rounded mx-2&quot;
+                                (click)&#x3D;&quot;goToWorkspace(workspace.id)&quot;&gt;&lt;/button&gt;
+                            &lt;button pButton pRipple icon&#x3D;&quot;pi pi-pencil&quot;
+                                class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot;
+                                (click)&#x3D;&quot;showEditWorkspaceModal(workspace)&quot;&gt;&lt;/button&gt;
+                            &lt;button pButton pRipple icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-rounded p-button-danger mx-2&quot;
+                                (click)&#x3D;&quot;showDeleteWorkspaceModal(workspace)&quot;&gt;&lt;/button&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/ng-template&gt;
+                &lt;ng-template pTemplate&#x3D;&quot;summary&quot;&gt;
+                    &lt;div class&#x3D;&quot;p-d-flex p-ai-center p-jc-between&quot;&gt;
+                        In totale ci sono {{workspaces ? workspaces.length : 0 }} workspace.
+                    &lt;/div&gt;
+                &lt;/ng-template&gt;
+            &lt;/p-table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div
+  class&#x3D;&quot;modal fade&quot;
+  id&#x3D;&quot;workspaceModal&quot;
+  tabindex&#x3D;&quot;-1&quot;
+  aria-labelledby&#x3D;&quot;workspaceModalLabel&quot;
+  aria-hidden&#x3D;&quot;true&quot;
+&gt;
+  &lt;div class&#x3D;&quot;modal-dialog modal-dialog-centered&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;form
+        (ngSubmit)&#x3D;&quot;onSubmitWorkspaceModal(workspaceForm)&quot;
+        #workspaceForm&#x3D;&quot;ngForm&quot;
+        id&#x3D;&quot;workspaceForm&quot;
+        class&#x3D;&quot;validated&quot;
+      &gt;
+        &lt;input type&#x3D;&quot;hidden&quot; #id&#x3D;&quot;ngModel&quot; name&#x3D;&quot;id&quot; [(ngModel)]&#x3D;&quot;workspace.id&quot;&gt;
+        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+          &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;workspaceModalLabel&quot;&gt;{{workspaceModalTitle}}&lt;/h5&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn-close&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+            aria-label&#x3D;&quot;Close&quot;
+          &gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Nome *&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;input #name&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;name&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;workspace.name&quot;
+                required autofocus maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Nome workspace&quot; appWhitespacesValidator&gt;
+              &lt;div *ngIf&#x3D;&quot;name.invalid &amp;&amp; (name.touched || name.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+                &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;required&#x27;]&quot;&gt;
+                  Il nome è obbligatorio
+                &lt;/div&gt;
+                &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
+                  Il nome del workspace non può contenere solo spazi vuoti
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Note&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;textarea rows&#x3D;&quot;3&quot; #note&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;note&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;workspace.note&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-secondary&quot; data-bs-dismiss&#x3D;&quot;modal&quot;&gt;
+            Annulla
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot; (click)&#x3D;&quot;onSubmitWorkspaceModal(workspaceForm)&quot;&gt;
+            &lt;span *ngIf&#x3D;&quot;isEditing; else elseBlock&quot;&gt;
+              Aggiorna
+            &lt;/span&gt;
+            &lt;ng-template #elseBlock&gt;
+              &lt;span&gt;Aggiungi&lt;/span&gt;
+            &lt;/ng-template&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./workspace-list.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><p-toast></p-toast><div class="grid">    <div class="col-12">        <div class="card">            <div class="page-header">                <h5>Workspace</h5>                <p-button label="Nuovo workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"                    class="ms-start"></p-button>            </div>            <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"                currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"                selectionMode="single"                (onRowSelect)="openWorkspace($event)">                <ng-template pTemplate="header">                    <tr>                        <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>                        </th>                        <th pSortableColumn="note">Note<p-sortIcon field="note"></p-sortIcon>                        </th>                        <th pSortableColumn="updated">Ultimo accesso<p-sortIcon field="updated"></p-sortIcon>                        </th>                        <th></th>                    </tr>                </ng-template>                <ng-template pTemplate="body" let-workspace>                    <tr [pSelectableRow]="workspace">                        <td>{{workspace.name}}</td>                        <td>{{workspace.note}}</td>                        <td>{{workspace.updated | date: \'dd-MM-yyyy HH:mm:ss\'}}</td>                        <td>                            <button pButton pRipple icon="pi pi-desktop"                                class="p-button-rounded mx-2"                                (click)="goToWorkspace(workspace.id)"></button>                            <button pButton pRipple icon="pi pi-pencil"                                class="p-button-rounded p-button-success mx-2"                                (click)="showEditWorkspaceModal(workspace)"></button>                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"                                (click)="showDeleteWorkspaceModal(workspace)"></button>                        </td>                    </tr>                </ng-template>                <ng-template pTemplate="summary">                    <div class="p-d-flex p-ai-center p-jc-between">                        In totale ci sono {{workspaces ? workspaces.length : 0 }} workspace.                    </div>                </ng-template>            </p-table>        </div>    </div></div><div  class="modal fade"  id="workspaceModal"  tabindex="-1"  aria-labelledby="workspaceModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        (ngSubmit)="onSubmitWorkspaceModal(workspaceForm)"        #workspaceForm="ngForm"        id="workspaceForm"        class="validated"      >        <input type="hidden" #id="ngModel" name="id" [(ngModel)]="workspace.id">        <div class="modal-header">          <h5 class="modal-title" id="workspaceModalLabel">{{workspaceModalTitle}}</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="form-group">            <label class="form-label">Nome *</label>            <div class="p-fluid">              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="workspace.name"                required autofocus maxlength="300" placeholder="Nome workspace" appWhitespacesValidator>              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">                <div *ngIf="name.errors?.[\'required\']">                  Il nome è obbligatorio                </div>                <div *ngIf="name.errors?.[\'isNotOnlyWhitespaces\']">                  Il nome del workspace non può contenere solo spazi vuoti                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Note</label>            <div class="p-fluid">              <textarea rows="3" #note="ngModel" type="text" name="note" class="form-control" [(ngModel)]="workspace.note"></textarea>            </div>          </div>        </div>        <div class="modal-footer">          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">            Annulla          </button>          <button type="button" class="btn btn-primary" (click)="onSubmitWorkspaceModal(workspaceForm)">            <span *ngIf="isEditing; else elseBlock">              Aggiorna            </span>            <ng-template #elseBlock>              <span>Aggiungi</span>            </ng-template>          </button>        </div>      </form>    </div>  </div></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'WorkspaceListComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'WorkspaceListComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

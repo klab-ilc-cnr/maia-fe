@@ -1,0 +1,1982 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  AnnotationEditorComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/controllers/editors/annotation-editor/annotation-editor.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-annotation-editor</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./annotation-editor.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./annotation-editor.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_annotation" >_annotation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#annotationForm" >annotationForm</a>
+                            </li>
+                            <li>
+                                <a href="#currentUserId" >currentUserId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteElement" >deleteElement</a>
+                            </li>
+                            <li>
+                                <a href="#features" >features</a>
+                            </li>
+                            <li>
+                                <a href="#featureTypes" >featureTypes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onCancelBtn" >onCancelBtn</a>
+                            </li>
+                            <li>
+                                <a href="#onClearBtn" >onClearBtn</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#save" >save</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveWithFormErrors" >saveWithFormErrors</a>
+                            </li>
+                            <li>
+                                <a href="#showDeleteModal" >showDeleteModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#annotationModel" >annotationModel</a>
+                            </li>
+                            <li>
+                                <a href="#fileId" >fileId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#onCancel" >onCancel</a>
+                            </li>
+                            <li>
+                                <a href="#onDelete" >onDelete</a>
+                            </li>
+                            <li>
+                                <a href="#onSave" >onSave</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#annotationModel" >annotationModel</a>
+                                </li>
+                                <li>
+                                    <a href="#emptyFeatures" >emptyFeatures</a>
+                                </li>
+                                <li>
+                                    <a href="#isEditing" >isEditing</a>
+                                </li>
+                                <li>
+                                    <a href="#noneAnnotationIsSelected" >noneAnnotationIsSelected</a>
+                                </li>
+                                <li>
+                                    <a href="#shouldBeDisabled" >shouldBeDisabled</a>
+                                </li>
+                                <li>
+                                    <a href="#shouldBeEditable" >shouldBeEditable</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(annotationService: <a href="../injectables/AnnotationService.html" target="_self">AnnotationService</a>, workspaceService: <a href="../injectables/WorkspaceService.html" target="_self">WorkspaceService</a>, loggedUserService: <a href="../injectables/LoggedUserService.html" target="_self">LoggedUserService</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, layerService: <a href="../injectables/LayerService.html" target="_self">LayerService</a>, featureService: <a href="../injectables/FeatureService.html" target="_self">FeatureService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="166" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:166</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>annotationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AnnotationService.html" target="_self" >AnnotationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>workspaceService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WorkspaceService.html" target="_self" >WorkspaceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loggedUserService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoggedUserService.html" target="_self" >LoggedUserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>layerService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LayerService.html" target="_self" >LayerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>featureService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FeatureService.html" target="_self" >FeatureService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="annotationModel"></a>
+                        <b>annotationModel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:61</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="fileId"></a>
+                        <b>fileId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:116</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onCancel"></a>
+                        <b>onCancel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:118</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onDelete"></a>
+                        <b>onDelete</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="119" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:119</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onSave"></a>
+                        <b>onSave</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:120</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:183</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="179"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:179</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCancelBtn"></a>
+                    <span class="name">
+                        <span ><b>onCancelBtn</b></span>
+                        <a href="#onCancelBtn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCancelBtn()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="187"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:187</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onClearBtn"></a>
+                    <span class="name">
+                        <span ><b>onClearBtn</b></span>
+                        <a href="#onClearBtn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onClearBtn()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="191"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:191</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit(form: <a href="https://angular.io/api/forms/NgForm" target="_blank">NgForm</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="196"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:196</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>form</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="save"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>save</b></span>
+                        <a href="#save"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>save()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="216"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:216</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveWithFormErrors"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveWithFormErrors</b></span>
+                        <a href="#saveWithFormErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveWithFormErrors()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="314"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:314</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDeleteModal"></a>
+                    <span class="name">
+                        <span ><b>showDeleteModal</b></span>
+                        <a href="#showDeleteModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDeleteModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="204"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:204</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="318"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:318</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="326"
+                            class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:326</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_annotation"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_annotation</b></span>
+                        <a href="#_annotation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Annotation()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:114</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="annotationForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>annotationForm</b></span>
+                        <a href="#annotationForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(NgForm)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="165" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentUserId"></a>
+                    <span class="name">
+                        <span ><b>currentUserId</b></span>
+                        <a href="#currentUserId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="161" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:161</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteElement"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteElement</b></span>
+                        <a href="#deleteElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="features"></a>
+                    <span class="name">
+                        <span ><b>features</b></span>
+                        <a href="#features"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FeatureForAnnotation[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="162" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:162</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="featureTypes"></a>
+                    <span class="name">
+                        <span ><b>featureTypes</b></span>
+                        <a href="#featureTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>FeatureType</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="163" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:163</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="166" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:166</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="annotationModel"></a>
+                        <span class="name"><b>annotationModel</b><a href="#annotationModel"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>annotationModel()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:61</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>annotationModel(annotation: <a href="../classes/Annotation.html" target="_self">Annotation</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:62</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>annotation</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="emptyFeatures"></a>
+                        <span class="name"><b>emptyFeatures</b><a href="#emptyFeatures"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>emptyFeatures()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:122</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isEditing"></a>
+                        <span class="name"><b>isEditing</b><a href="#isEditing"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isEditing()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:126</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="noneAnnotationIsSelected"></a>
+                        <span class="name"><b>noneAnnotationIsSelected</b><a href="#noneAnnotationIsSelected"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>noneAnnotationIsSelected()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="134" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:134</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="shouldBeDisabled"></a>
+                        <span class="name"><b>shouldBeDisabled</b><a href="#shouldBeDisabled"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>shouldBeDisabled()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:138</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="shouldBeEditable"></a>
+                        <span class="name"><b>shouldBeEditable</b><a href="#shouldBeEditable"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>shouldBeEditable()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/app/controllers/editors/annotation-editor/annotation-editor.component.ts:148</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AnnotationFeature } from &#x27;src/app/models/annotation/annotation-feature&#x27;;
+import { FeatureForAnnotation } from &#x27;src/app/models/feature/feature-for-annotation&#x27;;
+import { Feature } from &#x27;src/app/models/feature/feature&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from &#x27;@angular/core&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { Annotation } from &#x27;src/app/models/annotation/annotation&#x27;;
+import { AnnotationService } from &#x27;src/app/services/annotation.service&#x27;;
+import { LayerService } from &#x27;src/app/services/layer.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { WorkspaceService } from &#x27;src/app/services/workspace.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
+import { FeatureService } from &#x27;src/app/services/feature.service&#x27;;
+import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
+import { Roles } from &#x27;src/app/models/roles&#x27;;
+import { FeatureType } from &#x27;src/app/models/feature/feature-type&#x27;;
+
+@Component({
+  selector: &#x27;app-annotation-editor&#x27;,
+  templateUrl: &#x27;./annotation-editor.component.html&#x27;,
+  styleUrls: [&#x27;./annotation-editor.component.scss&#x27;]
+})
+export class AnnotationEditorComponent implements OnInit {
+
+  private deleteElement &#x3D; (id: number): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
+
+    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare l\&#x27;annotazione&#x27;
+    let successMsg &#x3D; &#x27;Annotazione eliminata con successo&#x27;
+
+    this.annotationService
+      .delete(id)
+      .subscribe({
+        next: (result) &#x3D;&gt; {
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          Swal.close();
+          this.onDelete.emit()
+          this.annotationService.deleteAnnotationFeature(id).subscribe({
+            next: (result: boolean) &#x3D;&gt; {
+              if (result) {
+                console.log(&quot;AnnotationFeature salvata correttamento sul db&quot;);
+              }
+              else {
+                console.log(&quot;Errore durante il salvataggio di AnnotationFeature&quot;);
+              }
+            },
+            error: () &#x3D;&gt; {
+              console.log(&quot;Errore durante il salvataggio di AnnotationFeature&quot;);
+            }
+          })
+        },
+        error: () &#x3D;&gt; {
+          this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg)
+        }
+      })
+  }
+
+  @Input()
+  get annotationModel(): Annotation { return this._annotation; }
+  set annotationModel(annotation: Annotation) {
+    this._annotation &#x3D; annotation;
+
+    let layerId &#x3D; Number.parseInt(annotation.layer);
+
+    this.features &#x3D; [];
+
+    if (!layerId || isNaN(layerId)) {
+      return;
+    }
+
+    this.featureService.retrieveFeaturesByLayerId(layerId).subscribe({
+      next: (data) &#x3D;&gt; {
+        data.forEach(feature &#x3D;&gt; {
+          let newFeature: FeatureForAnnotation &#x3D; JSON.parse(JSON.stringify(feature));
+
+          if (feature.tagset &amp;&amp; feature.tagset.values) {
+            newFeature.dropdownOptions &#x3D; feature.tagset.values.map(item &#x3D;&gt; ({ label: item.name, value: item.id }));
+          }
+
+          newFeature.placeholder &#x3D; feature.name;
+          newFeature.modelPropName &#x3D; &#x60;${feature.name}&#x60;;
+
+          if (annotation.attributes[&#x27;features&#x27;]) {
+            //GESTIONE BUG SULLE API CASH
+            //non viene restituito un array di feature nel caso ci sia una sola feature
+            //ma solo un elemento feature
+            if(!Array.isArray(annotation.attributes[&#x27;features&#x27;]))
+            {
+              annotation.attributes[&#x27;features&#x27;] &#x3D; new Array(annotation.attributes[&#x27;features&#x27;]);
+            }
+            
+            let elem &#x3D; annotation.attributes[&#x27;features&#x27;].find((f: any) &#x3D;&gt; f.id &#x3D;&#x3D; feature.id);
+
+            if (elem &amp;&amp; feature.type &#x3D;&#x3D; FeatureType.TAGSET ) {
+              let option &#x3D; newFeature.dropdownOptions.find(o &#x3D;&gt; o.value &#x3D;&#x3D; elem.value);
+
+              if (option) {
+                newFeature.value &#x3D; option.value;
+              }
+            }
+
+            if (elem &amp;&amp; (feature.type &#x3D;&#x3D; FeatureType.STRING || feature.type &#x3D;&#x3D; FeatureType.URI)) {
+              newFeature.value &#x3D; elem.value;
+            }
+          }
+
+          this.features.push(newFeature);
+        })
+      }
+    })
+  }
+  private _annotation: Annotation &#x3D; new Annotation();
+
+  @Input() fileId: number | undefined;
+
+  @Output() onCancel &#x3D; new EventEmitter&lt;any&gt;();
+  @Output() onDelete &#x3D; new EventEmitter&lt;any&gt;();
+  @Output() onSave &#x3D; new EventEmitter&lt;any&gt;();
+
+  public get emptyFeatures(): boolean {
+    return this.features.length &#x3D;&#x3D; 0;
+  }
+
+  public get isEditing(): boolean {
+    if (this.annotationModel &amp;&amp; this.annotationModel.id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public get noneAnnotationIsSelected(): boolean {
+    return (!this.annotationModel || !this.annotationModel?.layer || this.annotationModel?.layer &#x3D;&#x3D; -1 || !this.annotationModel.spans);
+  }
+
+  public get shouldBeDisabled(): boolean {
+    if (!this.isEditing) {
+      return true;
+    }
+
+    return this.annotationModel.attributes[&quot;relations&quot;] &amp;&amp;
+      (this.annotationModel.attributes[&quot;relations&quot;].in.length !&#x3D; 0 ||
+        this.annotationModel.attributes[&quot;relations&quot;].out.length !&#x3D; 0);
+  }
+
+  public get shouldBeEditable(): boolean {
+    if (!this.isEditing) {
+      return true;
+    }
+
+    if ((this.currentUserId &amp;&amp; this.annotationModel.attributes[&quot;metadata&quot;] &amp;&amp; this.annotationModel.attributes[&quot;metadata&quot;].createdBy &amp;&amp; this.annotationModel.attributes[&quot;metadata&quot;].createdBy &#x3D;&#x3D; this.currentUserId) ||
+      this.loggedUserService.currentUser?.role &#x3D;&#x3D; Roles.AMMINISTRATORE) {
+      return true;
+    }
+
+    return false;
+  };
+
+  currentUserId: string | undefined;
+  features: FeatureForAnnotation[] &#x3D; [];
+  featureTypes &#x3D; FeatureType;
+
+  @ViewChild(NgForm) public annotationForm!: NgForm;
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
+  constructor(
+    private annotationService: AnnotationService,
+    private workspaceService: WorkspaceService,
+    private loggedUserService: LoggedUserService,
+    private loaderService: LoaderService,
+    private layerService: LayerService,
+    private featureService: FeatureService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
+  ) { }
+
+  ngOnInit(): void {
+    this.currentUserId &#x3D; this.loggedUserService.currentUser?.id;
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
+  }
+
+  onCancelBtn() {
+    this.onCancel.emit();
+  }
+
+  onClearBtn() {
+    this.annotationForm.form.reset();
+    this.saveWithFormErrors();
+  }
+
+  onSubmit(form: NgForm): void {
+    if (this.annotationForm.invalid) {
+      return this.saveWithFormErrors();
+    }
+
+    this.save();
+  }
+
+  showDeleteModal(): void {
+    if (!this.annotationModel) {
+      return;
+    }
+
+    let confirmMsg &#x3D; &#x27;Stai per cancellare un\&#x27;annotazione&#x27;;
+
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteElement((this.annotationModel?.id || 0)), this.annotationModel.id);
+  }
+
+  private save(): void {
+    if (!this.fileId || !this.annotationModel || !this.features) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Errore durante il salvataggio!&quot;));
+      return;
+    }
+
+    if (!this.annotationModel.attributes[&#x27;features&#x27;]) {
+      this.annotationModel.attributes[&#x27;features&#x27;] &#x3D; [];
+    }
+
+    this.features.forEach(f &#x3D;&gt; {
+      if (f.type &#x3D;&#x3D; FeatureType.TAGSET &amp;&amp; f.tagset) {
+        f.valueLabel &#x3D; f.tagset.values?.find(v &#x3D;&gt; v.id &#x3D;&#x3D; f.value)?.name;
+      }
+      else {
+        f.valueLabel &#x3D; undefined;
+      }
+    })
+
+    let simplifiedFeatures &#x3D; this.features.map(({ id, value, valueLabel }) &#x3D;&gt; ({ id, value, valueLabel }))
+    this.annotationModel.attributes[&#x27;features&#x27;] &#x3D; simplifiedFeatures;
+
+    let successMsg &#x3D; &quot;Operazione effettuata con successo&quot;;
+    let apiCall;
+
+    if (this.isEditing) {
+      successMsg &#x3D; &quot;Annotazione modificata con successo&quot;;
+
+      if (this.annotationModel.attributes[&quot;metadata&quot;] &amp;&amp; this.currentUserId) {
+        this.annotationModel.attributes[&quot;metadata&quot;].editedBy &#x3D; this.currentUserId;
+        this.annotationModel.attributes[&quot;metadata&quot;].lastModificationDate &#x3D; new Date().toUTCString();
+      }
+
+      apiCall &#x3D; this.annotationService.update(this.annotationModel);
+    }
+    else {
+      successMsg &#x3D; &quot;Annotazione creata con successo&quot;;
+
+      if (this.annotationModel.attributes[&quot;metadata&quot;] &amp;&amp; this.currentUserId) {
+        let now &#x3D; new Date().toUTCString();
+        this.annotationModel.attributes[&quot;metadata&quot;].createdBy &#x3D; this.currentUserId;
+        this.annotationModel.attributes[&quot;metadata&quot;].creationDate &#x3D; now;
+        this.annotationModel.attributes[&quot;metadata&quot;].editedBy &#x3D; this.currentUserId;
+        this.annotationModel.attributes[&quot;metadata&quot;].lastModificationDate &#x3D; now;
+      }
+
+      apiCall &#x3D; this.annotationService.create(this.fileId, this.annotationModel);
+    }
+
+    this.loaderService.show();
+    apiCall.subscribe({
+      next: (res) &#x3D;&gt; {
+        this.loaderService.hide();
+
+        let annFeatures &#x3D; new AnnotationFeature();
+        annFeatures.annotationId &#x3D; res.annotation.id;
+        annFeatures.featureIds &#x3D; this.features.map(f &#x3D;&gt; f.id!);
+        annFeatures.layerId &#x3D; Number.parseInt(this.annotationModel.layer);
+        this.loaderService.show();
+
+        if (this.isEditing) {
+          this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.onSave.emit();
+          //per il momento non c&#x27;è ragione di aggiornare il nostro backend
+          /*           this.annotationService.updateAnnotationFeature(annFeatures).subscribe({
+                      next: () &#x3D;&gt; {
+                        this.loaderService.hide();
+                        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+                        this.onSave.emit();
+                      },
+                      error: (err: string) &#x3D;&gt; {
+                        this.loaderService.hide();
+                        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+                      }
+                    }) */
+        }
+        else {
+          this.annotationService.createAnnotationFeature(annFeatures).subscribe({
+            next: () &#x3D;&gt; {
+              this.loaderService.hide();
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              this.onSave.emit();
+            },
+            error: (err: string) &#x3D;&gt; {
+              this.loaderService.hide();
+              this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+            }
+          })
+        }
+      },
+      error: (err: string) &#x3D;&gt; {
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+      }
+    });
+  }
+
+  private saveWithFormErrors(): void {
+    this.annotationForm.form.markAllAsTouched();
+  }
+
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;per favore attendere&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;px-2 h-100 w-100&quot;&gt;
+  &lt;div class&#x3D;&quot;border-bottom mb-2 py-2&quot;&gt;
+    Annotazione
+  &lt;/div&gt;
+  &lt;div *ngIf&#x3D;&quot;noneAnnotationIsSelected; else elseBlock&quot; class&#x3D;&quot;annotation-area none&quot;&gt;
+    Nessuna annotazione selezionata
+    &lt;!-- Nessuna annotazione selezionata {{ annotationModel?.layer }} --&gt;
+  &lt;/div&gt;
+  &lt;ng-template #elseBlock&gt;
+    &lt;div class&#x3D;&quot;annotation-area&quot;&gt;
+      &lt;form #annotationForm&#x3D;&quot;ngForm&quot; class&#x3D;&quot;validated&quot; (ngSubmit)&#x3D;&quot;onSubmit(annotationForm)&quot;&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;label&gt;Layer&lt;/label&gt;
+          &lt;div class&#x3D;&quot;&quot;&gt;
+            &lt;input class&#x3D;&quot;form-control&quot; type&#x3D;&quot;text&quot; [value]&#x3D;&quot;annotationModel.layerName&quot; disabled readonly&gt;
+            &lt;input type&#x3D;&quot;hidden&quot; [ngModel]&#x3D;&quot;(annotationModel.layer)&quot; #layer&#x3D;&quot;ngModel&quot; name&#x3D;&quot;layer&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;label class&#x3D;&quot;&quot;&gt;Testo&lt;/label&gt;
+          &lt;div class&#x3D;&quot;&quot;&gt;
+            &lt;input class&#x3D;&quot;form-control&quot; type&#x3D;&quot;text&quot; [value]&#x3D;&quot;annotationModel.value&quot; disabled&gt;
+            &lt;input type&#x3D;&quot;hidden&quot; [ngModel]&#x3D;&quot;(annotationModel.value)&quot; #value&#x3D;&quot;ngModel&quot; name&#x3D;&quot;value&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;hr /&gt;
+        &lt;label class&#x3D;&quot;w-100 text-center&quot;&gt;Feature&lt;/label&gt;
+        &lt;div *ngIf&#x3D;&quot;emptyFeatures; else elseBlock&quot; class&#x3D;&quot;none py-3 mb-3&quot;&gt;
+          Nessuna feature
+        &lt;/div&gt;
+        &lt;ng-template #elseBlock&gt;
+          &lt;div class&#x3D;&quot;form-group&quot; *ngFor&#x3D;&quot;let feature of features&quot;&gt;
+              &lt;label class&#x3D;&quot;form-label&quot;&gt;{{ feature.name }}&lt;/label&gt;
+              &lt;div [ngSwitch]&#x3D;&quot;feature.type&quot; class&#x3D;&quot;p-fluid&quot;&gt;
+                &lt;div *ngSwitchCase&#x3D;&quot;featureTypes.STRING&quot;&gt;
+                  &lt;input #featureRef&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;{{ feature.name }}&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;feature.value&quot;
+                    maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;{{ feature.placeholder }}&quot; appWhitespacesValidator&gt;
+                  &lt;div *ngIf&#x3D;&quot;featureRef.invalid &amp;&amp; (featureRef.touched || featureRef.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+                    &lt;div *ngIf&#x3D;&quot;featureRef.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
+                      {{ feature.name }} non può contenere solo spazi vuoti
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div *ngSwitchCase&#x3D;&quot;featureTypes.TAGSET&quot;&gt;
+                  &lt;p-dropdown #featureRef&#x3D;&quot;ngModel&quot; name&#x3D;&quot;{{ feature.name }}&quot; [(ngModel)]&#x3D;&quot;feature.value&quot;
+                    placeholder&#x3D;&quot;{{ feature.placeholder }}&quot; [options]&#x3D;&quot;feature.dropdownOptions&quot; [filter]&#x3D;&quot;true&quot; [showClear]&#x3D;&quot;true&quot; [required]&#x3D;&quot;false&quot;&gt;
+                    &lt;ng-template pTemplate&#x3D;&quot;empty&quot;&gt;
+                      Nessun elemento da selezione
+                    &lt;/ng-template&gt;
+                    &lt;ng-template pTemplate&#x3D;&quot;emptyfilter&quot;&gt;
+                      Nessun elemento trovato
+                    &lt;/ng-template&gt;
+                  &lt;/p-dropdown&gt;
+                &lt;/div&gt;
+                &lt;div *ngSwitchCase&#x3D;&quot;featureTypes.URI&quot;&gt;
+&lt;!--                   &lt;p-dropdown #featureRef&#x3D;&quot;ngModel&quot; name&#x3D;&quot;{{ feature.name }}&quot; [(ngModel)]&#x3D;&quot;feature.value&quot;
+                    placeholder&#x3D;&quot;{{ feature.placeholder }}&quot; [options]&#x3D;&quot;feature.dropdownOptions&quot; [filter]&#x3D;&quot;true&quot; [showClear]&#x3D;&quot;true&quot; [required]&#x3D;&quot;false&quot;&gt;
+                    &lt;ng-template pTemplate&#x3D;&quot;empty&quot;&gt;
+                      Nessun elemento da selezione
+                    &lt;/ng-template&gt;
+                    &lt;ng-template pTemplate&#x3D;&quot;emptyfilter&quot;&gt;
+                      Nessun elemento trovato
+                    &lt;/ng-template&gt;
+                  &lt;/p-dropdown&gt; --&gt;
+                  &lt;input #featureRef&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;{{ feature.name }}&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;feature.value&quot;
+                    maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;{{ feature.placeholder }}&quot; appUriValidator&gt;
+                  &lt;div *ngIf&#x3D;&quot;featureRef.invalid &amp;&amp; (featureRef.touched || featureRef.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+                    &lt;div *ngIf&#x3D;&quot;featureRef.errors?.[&#x27;isValidUri&#x27;]&quot;&gt;
+                      {{ feature.name }} non contiene un&#x27;uri valida
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ng-template&gt;
+        &lt;div class&#x3D;&quot;d-block&quot; *ngIf&#x3D;&quot;shouldBeEditable&quot;&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-save&quot; label&#x3D;&quot;Salva&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm&quot; (click)&#x3D;&quot;onSubmit(annotationForm)&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-times&quot; label&#x3D;&quot;Annulla&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm p-button-secondary&quot; (click)&#x3D;&quot;onCancelBtn()&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;fa-solid fa-eraser&quot; label&#x3D;&quot;Pulisci&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm p-button-help&quot; (click)&#x3D;&quot;onClearBtn()&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-trash&quot; label&#x3D;&quot;Elimina&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm p-button-danger&quot; [disabled]&#x3D;&quot;shouldBeDisabled&quot; (click)&#x3D;&quot;showDeleteModal()&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/ng-template&gt;
+&lt;/div&gt;
+
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./annotation-editor.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.annotation-area {
+  width: 100%;
+  height: calc(100% - 45px);
+  overflow: auto;
+}
+
+.none {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,.09);
+  color: #6c757d;
+}
+
+hr {
+  opacity: 1;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="px-2 h-100 w-100">  <div class="border-bottom mb-2 py-2">    Annotazione  </div>  <div *ngIf="noneAnnotationIsSelected; else elseBlock" class="annotation-area none">    Nessuna annotazione selezionata    <!-- Nessuna annotazione selezionata {{ annotationModel?.layer }} -->  </div>  <ng-template #elseBlock>    <div class="annotation-area">      <form #annotationForm="ngForm" class="validated" (ngSubmit)="onSubmit(annotationForm)">        <div class="form-group">          <label>Layer</label>          <div class="">            <input class="form-control" type="text" [value]="annotationModel.layerName" disabled readonly>            <input type="hidden" [ngModel]="(annotationModel.layer)" #layer="ngModel" name="layer">          </div>        </div>        <div class="form-group">          <label class="">Testo</label>          <div class="">            <input class="form-control" type="text" [value]="annotationModel.value" disabled>            <input type="hidden" [ngModel]="(annotationModel.value)" #value="ngModel" name="value">          </div>        </div>        <hr />        <label class="w-100 text-center">Feature</label>        <div *ngIf="emptyFeatures; else elseBlock" class="none py-3 mb-3">          Nessuna feature        </div>        <ng-template #elseBlock>          <div class="form-group" *ngFor="let feature of features">              <label class="form-label">{{ feature.name }}</label>              <div [ngSwitch]="feature.type" class="p-fluid">                <div *ngSwitchCase="featureTypes.STRING">                  <input #featureRef="ngModel" type="text" name="{{ feature.name }}" class="form-control" [(ngModel)]="feature.value"                    maxlength="300" placeholder="{{ feature.placeholder }}" appWhitespacesValidator>                  <div *ngIf="featureRef.invalid && (featureRef.touched || featureRef.dirty)" class="invalid-feedback">                    <div *ngIf="featureRef.errors?.[\'isNotOnlyWhitespaces\']">                      {{ feature.name }} non può contenere solo spazi vuoti                    </div>                  </div>                </div>                <div *ngSwitchCase="featureTypes.TAGSET">                  <p-dropdown #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"                    placeholder="{{ feature.placeholder }}" [options]="feature.dropdownOptions" [filter]="true" [showClear]="true" [required]="false">                    <ng-template pTemplate="empty">                      Nessun elemento da selezione                    </ng-template>                    <ng-template pTemplate="emptyfilter">                      Nessun elemento trovato                    </ng-template>                  </p-dropdown>                </div>                <div *ngSwitchCase="featureTypes.URI"><!--                   <p-dropdown #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"                    placeholder="{{ feature.placeholder }}" [options]="feature.dropdownOptions" [filter]="true" [showClear]="true" [required]="false">                    <ng-template pTemplate="empty">                      Nessun elemento da selezione                    </ng-template>                    <ng-template pTemplate="emptyfilter">                      Nessun elemento trovato                    </ng-template>                  </p-dropdown> -->                  <input #featureRef="ngModel" type="text" name="{{ feature.name }}" class="form-control" [(ngModel)]="feature.value"                    maxlength="300" placeholder="{{ feature.placeholder }}" appUriValidator>                  <div *ngIf="featureRef.invalid && (featureRef.touched || featureRef.dirty)" class="invalid-feedback">                    <div *ngIf="featureRef.errors?.[\'isValidUri\']">                      {{ feature.name }} non contiene un\'uri valida                    </div>                  </div>                </div>              </div>          </div>        </ng-template>        <div class="d-block" *ngIf="shouldBeEditable">          <button pButton pRipple type="button" icon="pi pi-save" label="Salva" class="w-100 mb-2 p-button-sm" (click)="onSubmit(annotationForm)"></button>          <button pButton pRipple type="button" icon="pi pi-times" label="Annulla" class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>          <button pButton pRipple type="button" icon="fa-solid fa-eraser" label="Pulisci" class="w-100 mb-2 p-button-sm p-button-help" (click)="onClearBtn()"></button>          <button pButton pRipple type="button" icon="pi pi-trash" label="Elimina" class="w-100 mb-2 p-button-sm p-button-danger" [disabled]="shouldBeDisabled" (click)="showDeleteModal()"></button>        </div>      </form>    </div>  </ng-template></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'AnnotationEditorComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AnnotationEditorComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

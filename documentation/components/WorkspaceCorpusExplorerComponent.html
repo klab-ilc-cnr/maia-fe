@@ -1,0 +1,3915 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  WorkspaceCorpusExplorerComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-workspace-corpus-explorer</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./workspace-corpus-explorer.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./workspace-corpus-explorer.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#addFolderForm" >addFolderForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#clickCount" >clickCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteElement" >deleteElement</a>
+                            </li>
+                            <li>
+                                <a href="#files" >files</a>
+                            </li>
+                            <li>
+                                <a href="#fileUploaded" >fileUploaded</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#fileUploader" >fileUploader</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#fileUploaderForm" >fileUploaderForm</a>
+                            </li>
+                            <li>
+                                <a href="#foldersAvailableToAddFolder" >foldersAvailableToAddFolder</a>
+                            </li>
+                            <li>
+                                <a href="#foldersAvailableToFileUpload" >foldersAvailableToFileUpload</a>
+                            </li>
+                            <li>
+                                <a href="#foldersAvailableToMoveElementIn" >foldersAvailableToMoveElementIn</a>
+                            </li>
+                            <li>
+                                <a href="#isFileSizeExceed" >isFileSizeExceed</a>
+                            </li>
+                            <li>
+                                <a href="#isFileUploaded" >isFileUploaded</a>
+                            </li>
+                            <li>
+                                <a href="#isFileUploaderTouched" >isFileUploaderTouched</a>
+                            </li>
+                            <li>
+                                <a href="#items" >items</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#moveForm" >moveForm</a>
+                            </li>
+                            <li>
+                                <a href="#newFolderName" >newFolderName</a>
+                            </li>
+                            <li>
+                                <a href="#newName" >newName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                <a href="#rawData" >rawData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#renameForm" >renameForm</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDocument" >selectedDocument</a>
+                            </li>
+                            <li>
+                                <a href="#selectedFolderNode" >selectedFolderNode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#tree" >tree</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#documentsToTreeNodes" >documentsToTreeNodes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#documentToTreeNode" >documentToTreeNode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateContextMenu" >generateContextMenu</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#nodeSelect" >nodeSelect</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#omitFiles" >omitFiles</a>
+                            </li>
+                            <li>
+                                <a href="#onFileUpload" >onFileUpload</a>
+                            </li>
+                            <li>
+                                <a href="#onFileUploaderTouch" >onFileUploaderTouch</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitAddFolderModal" >onSubmitAddFolderModal</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitFileUploaderModal" >onSubmitFileUploaderModal</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitMoveModal" >onSubmitMoveModal</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitRenameModal" >onSubmitRenameModal</a>
+                            </li>
+                            <li>
+                                <a href="#onTreeContextMenuSelect" >onTreeContextMenuSelect</a>
+                            </li>
+                            <li>
+                                <a href="#reload" >reload</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resetAddFolderForm" >resetAddFolderForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resetFileUploaderForm" >resetFileUploaderForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resetMoveForm" >resetMoveForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resetRenameForm" >resetRenameForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveUploadFileWithFormErrors" >saveUploadFileWithFormErrors</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#searchNodeByElementId" >searchNodeByElementId</a>
+                            </li>
+                            <li>
+                                <a href="#showAddFolderModal" >showAddFolderModal</a>
+                            </li>
+                            <li>
+                                <a href="#showDeleteModal" >showDeleteModal</a>
+                            </li>
+                            <li>
+                                <a href="#showMoveModal" >showMoveModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                            <li>
+                                <a href="#showRenameModal" >showRenameModal</a>
+                            </li>
+                            <li>
+                                <a href="#showUploadFileModal" >showUploadFileModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateDocumentSystem" >updateDocumentSystem</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#onTextSelectEvent" >onTextSelectEvent</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#shouldDeleteBeDisplayed" >shouldDeleteBeDisplayed</a>
+                                </li>
+                                <li>
+                                    <a href="#shouldRMBeDisabled" >shouldRMBeDisabled</a>
+                                </li>
+                                <li>
+                                    <a href="#shouldUploadFileBeDisabled" >shouldUploadFileBeDisabled</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(loggedUserService: <a href="../injectables/LoggedUserService.html" target="_self">LoggedUserService</a>, workspaceService: <a href="../injectables/WorkspaceService.html" target="_self">WorkspaceService</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:115</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>loggedUserService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoggedUserService.html" target="_self" >LoggedUserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>workspaceService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WorkspaceService.html" target="_self" >WorkspaceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onTextSelectEvent"></a>
+                        <b>onTextSelectEvent</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:57</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="documentsToTreeNodes"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>documentsToTreeNodes</b></span>
+                        <a href="#documentsToTreeNodes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>documentsToTreeNodes(docs: <a href="../classes/DocumentElement.html" target="_self">DocumentElement[]</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="475"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:475</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>docs</td>
+                                    <td>
+                                                <code><a href="../classes/DocumentElement.html" target="_self" >DocumentElement[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="documentToTreeNode"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>documentToTreeNode</b></span>
+                        <a href="#documentToTreeNode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>documentToTreeNode(doc: <a href="../classes/DocumentElement.html" target="_self">DocumentElement</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="485"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:485</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>doc</td>
+                                    <td>
+                                                <code><a href="../classes/DocumentElement.html" target="_self" >DocumentElement</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>TreeNode</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateContextMenu"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>generateContextMenu</b></span>
+                        <a href="#generateContextMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateContextMenu(node: TreeNode)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="507"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:507</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>node</td>
+                                    <td>
+                                            <code>TreeNode</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="129"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:129</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:125</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nodeSelect"></a>
+                    <span class="name">
+                        <span ><b>nodeSelect</b></span>
+                        <a href="#nodeSelect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>nodeSelect(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="133"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:133</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="omitFiles"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>omitFiles</b></span>
+                        <a href="#omitFiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>omitFiles(docs: any[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="555"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:555</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>docs</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFileUpload"></a>
+                    <span class="name">
+                        <span ><b>onFileUpload</b></span>
+                        <a href="#onFileUpload"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFileUpload(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="150"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:150</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFileUploaderTouch"></a>
+                    <span class="name">
+                        <span ><b>onFileUploaderTouch</b></span>
+                        <a href="#onFileUploaderTouch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFileUploaderTouch()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:169</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitAddFolderModal"></a>
+                    <span class="name">
+                        <span ><b>onSubmitAddFolderModal</b></span>
+                        <a href="#onSubmitAddFolderModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitAddFolderModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitFileUploaderModal"></a>
+                    <span class="name">
+                        <span ><b>onSubmitFileUploaderModal</b></span>
+                        <a href="#onSubmitFileUploaderModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitFileUploaderModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="242"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:242</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitMoveModal"></a>
+                    <span class="name">
+                        <span ><b>onSubmitMoveModal</b></span>
+                        <a href="#onSubmitMoveModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitMoveModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="288"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:288</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitRenameModal"></a>
+                    <span class="name">
+                        <span ><b>onSubmitRenameModal</b></span>
+                        <a href="#onSubmitRenameModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitRenameModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="342"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:342</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onTreeContextMenuSelect"></a>
+                    <span class="name">
+                        <span ><b>onTreeContextMenuSelect</b></span>
+                        <a href="#onTreeContextMenuSelect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onTreeContextMenuSelect(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cm: ContextMenu)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="394"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:394</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>cm</td>
+                                    <td>
+                                            <code>ContextMenu</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reload"></a>
+                    <span class="name">
+                        <span ><b>reload</b></span>
+                        <a href="#reload"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>reload()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="398"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:398</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetAddFolderForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>resetAddFolderForm</b></span>
+                        <a href="#resetAddFolderForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetAddFolderForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="568"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:568</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetFileUploaderForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>resetFileUploaderForm</b></span>
+                        <a href="#resetFileUploaderForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetFileUploaderForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="574"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:574</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetMoveForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>resetMoveForm</b></span>
+                        <a href="#resetMoveForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetMoveForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="582"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:582</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetRenameForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>resetRenameForm</b></span>
+                        <a href="#resetRenameForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetRenameForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="588"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:588</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveUploadFileWithFormErrors"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveUploadFileWithFormErrors</b></span>
+                        <a href="#saveUploadFileWithFormErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveUploadFileWithFormErrors()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="592"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:592</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchNodeByElementId"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>searchNodeByElementId</b></span>
+                        <a href="#searchNodeByElementId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>searchNodeByElementId(source: any[], element: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="622"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:622</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>source</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>element</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showAddFolderModal"></a>
+                    <span class="name">
+                        <span ><b>showAddFolderModal</b></span>
+                        <a href="#showAddFolderModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showAddFolderModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="402"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:402</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDeleteModal"></a>
+                    <span class="name">
+                        <span ><b>showDeleteModal</b></span>
+                        <a href="#showDeleteModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDeleteModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="416"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:416</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showMoveModal"></a>
+                    <span class="name">
+                        <span ><b>showMoveModal</b></span>
+                        <a href="#showMoveModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showMoveModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="434"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:434</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="601"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:601</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="609"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:609</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showRenameModal"></a>
+                    <span class="name">
+                        <span ><b>showRenameModal</b></span>
+                        <a href="#showRenameModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showRenameModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="451"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:451</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showUploadFileModal"></a>
+                    <span class="name">
+                        <span ><b>showUploadFileModal</b></span>
+                        <a href="#showUploadFileModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showUploadFileModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="461"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:461</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateDocumentSystem"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>updateDocumentSystem</b></span>
+                        <a href="#updateDocumentSystem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateDocumentSystem()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="640"
+                            class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:640</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addFolderForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>addFolderForm</b></span>
+                        <a href="#addFolderForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;addFolderForm&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="110" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:110</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clickCount"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>clickCount</b></span>
+                        <a href="#clickCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteElement"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteElement</b></span>
+                        <a href="#deleteElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="files"></a>
+                    <span class="name">
+                        <span ><b>files</b></span>
+                        <a href="#files"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DocumentElement.html" target="_self" >TreeNode&lt;DocumentElement&gt;[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fileUploaded"></a>
+                    <span class="name">
+                        <span ><b>fileUploaded</b></span>
+                        <a href="#fileUploaded"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>undefined</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fileUploader"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>fileUploader</b></span>
+                        <a href="#fileUploader"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;fileUploader&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fileUploaderForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>fileUploaderForm</b></span>
+                        <a href="#fileUploaderForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;fileUploaderForm&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:111</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="foldersAvailableToAddFolder"></a>
+                    <span class="name">
+                        <span ><b>foldersAvailableToAddFolder</b></span>
+                        <a href="#foldersAvailableToAddFolder"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DocumentElement.html" target="_self" >TreeNode&lt;DocumentElement&gt;[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="foldersAvailableToFileUpload"></a>
+                    <span class="name">
+                        <span ><b>foldersAvailableToFileUpload</b></span>
+                        <a href="#foldersAvailableToFileUpload"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DocumentElement.html" target="_self" >TreeNode&lt;DocumentElement&gt;[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="foldersAvailableToMoveElementIn"></a>
+                    <span class="name">
+                        <span ><b>foldersAvailableToMoveElementIn</b></span>
+                        <a href="#foldersAvailableToMoveElementIn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DocumentElement.html" target="_self" >TreeNode&lt;DocumentElement&gt;[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFileSizeExceed"></a>
+                    <span class="name">
+                        <span ><b>isFileSizeExceed</b></span>
+                        <a href="#isFileSizeExceed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:96</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFileUploaded"></a>
+                    <span class="name">
+                        <span ><b>isFileUploaded</b></span>
+                        <a href="#isFileUploaded"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFileUploaderTouched"></a>
+                    <span class="name">
+                        <span ><b>isFileUploaderTouched</b></span>
+                        <a href="#isFileUploaderTouched"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:98</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="items"></a>
+                    <span class="name">
+                        <span ><b>items</b></span>
+                        <a href="#items"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MenuItem[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:100</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="moveForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>moveForm</b></span>
+                        <a href="#moveForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;moveForm&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:112</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newFolderName"></a>
+                    <span class="name">
+                        <span ><b>newFolderName</b></span>
+                        <a href="#newFolderName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newName"></a>
+                    <span class="name">
+                        <span ><b>newName</b></span>
+                        <a href="#newName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:115</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rawData"></a>
+                    <span class="name">
+                        <span ><b>rawData</b></span>
+                        <a href="#rawData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renameForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>renameForm</b></span>
+                        <a href="#renameForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;renameForm&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:113</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedDocument"></a>
+                    <span class="name">
+                        <span ><b>selectedDocument</b></span>
+                        <a href="#selectedDocument"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DocumentElement.html" target="_self" >TreeNode&lt;DocumentElement&gt; | undefined</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:104</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedFolderNode"></a>
+                    <span class="name">
+                        <span ><b>selectedFolderNode</b></span>
+                        <a href="#selectedFolderNode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DocumentElement.html" target="_self" >TreeNode&lt;DocumentElement&gt; | undefined</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tree"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>tree</b></span>
+                        <a href="#tree"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;tree&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:108</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="shouldDeleteBeDisplayed"></a>
+                        <span class="name"><b>shouldDeleteBeDisplayed</b><a href="#shouldDeleteBeDisplayed"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>shouldDeleteBeDisplayed()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:61</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="shouldRMBeDisabled"></a>
+                        <span class="name"><b>shouldRMBeDisabled</b><a href="#shouldRMBeDisabled"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>shouldRMBeDisabled()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:65</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="shouldUploadFileBeDisabled"></a>
+                        <span class="name"><b>shouldUploadFileBeDisabled</b><a href="#shouldUploadFileBeDisabled"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>shouldUploadFileBeDisabled()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component.ts:78</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { ContextMenu } from &#x27;primeng/contextmenu&#x27;;
+import { DocumentElement } from &#x27;src/app/models/corpus/document-element&#x27;;
+import { ElementType } from &#x27;src/app/models/corpus/element-type&#x27;;
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from &#x27;@angular/core&#x27;;
+import { MenuItem, MessageService, TreeNode } from &#x27;primeng/api&#x27;;
+import { WorkspaceService } from &#x27;src/app/services/workspace.service&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
+import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { Roles } from &#x27;src/app/models/roles&#x27;;
+
+declare var $: any;
+
+@Component({
+  selector: &#x27;app-workspace-corpus-explorer&#x27;,
+  templateUrl: &#x27;./workspace-corpus-explorer.component.html&#x27;,
+  styleUrls: [&#x27;./workspace-corpus-explorer.component.scss&#x27;]
+})
+export class WorkspaceCorpusExplorerComponent implements OnInit {
+  private deleteElement &#x3D; (id: number, name: string, type: ElementType): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
+
+    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare la cartella \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+    let successMsg &#x3D; &#x27;Cartella \&#x27;&#x27; + name + &#x27;\&#x27; eliminata con successo&#x27;;
+
+    if (type &#x3D;&#x3D; ElementType.File) {
+      errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare il file \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+      successMsg &#x3D; &#x27;File \&#x27;&#x27; + name + &#x27;\&#x27; eliminato con successo&#x27;;
+    }
+
+    this.workspaceService
+        .removeElement(id, type)
+        .subscribe({
+          next: (result) &#x3D;&gt; {
+            if (result.responseStatus &#x3D;&#x3D; 0) {
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              Swal.close();
+            }
+            else if (result.responseStatus &#x3D;&#x3D; 1) {
+              this.showOperationFailed(&#x27;Utente non autorizzato&#x27;);
+            }
+            else {
+              this.showOperationFailed(errorMsg);
+            }
+
+            this.updateDocumentSystem();
+          },
+          error: () &#x3D;&gt; {
+            this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg);
+          }
+        })
+  }
+
+  @Output() onTextSelectEvent &#x3D; new EventEmitter&lt;any&gt;();
+
+  private clickCount &#x3D; 0;
+
+  public get shouldDeleteBeDisplayed(): boolean {
+    return this.loggedUserService.currentUser?.role &#x3D;&#x3D; Roles.AMMINISTRATORE;
+  };
+
+  public get shouldRMBeDisabled(): boolean {
+    if (this.selectedDocument) {
+      if (this.selectedDocument.label &#x3D;&#x3D; &quot;Corpus&quot;) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  public get shouldUploadFileBeDisabled(): boolean {
+    if (this.selectedDocument) {
+      if (this.selectedDocument.label &#x3D;&#x3D; &quot;Corpus&quot;) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+    return false;
+  };
+
+  files: TreeNode&lt;DocumentElement&gt;[] &#x3D; [];
+  fileUploaded: any &#x3D; undefined;
+  foldersAvailableToAddFolder: TreeNode&lt;DocumentElement&gt;[] &#x3D; [];
+  foldersAvailableToFileUpload: TreeNode&lt;DocumentElement&gt;[] &#x3D; [];
+  foldersAvailableToMoveElementIn: TreeNode&lt;DocumentElement&gt;[] &#x3D; [];
+  isFileSizeExceed: boolean &#x3D; false;
+  isFileUploaded: boolean &#x3D; false;
+  isFileUploaderTouched: boolean &#x3D; false;
+  items: MenuItem[] &#x3D; [];
+  loading: boolean &#x3D; false;
+  newFolderName: string | undefined;
+  newName: string | undefined;
+  rawData: any;
+  selectedDocument: TreeNode&lt;DocumentElement&gt; | undefined;
+  selectedFolderNode: TreeNode&lt;DocumentElement&gt; | undefined;
+
+  @ViewChild(&#x27;fileUploader&#x27;) public fileUploader!: ElementRef;
+  @ViewChild(&#x27;tree&#x27;) public tree: any;
+
+  @ViewChild(&#x27;addFolderForm&#x27;) public addFolderForm!: NgForm;
+  @ViewChild(&#x27;fileUploaderForm&#x27;) public fileUploaderForm!: NgForm;
+  @ViewChild(&#x27;moveForm&#x27;) public moveForm!: NgForm;
+  @ViewChild(&#x27;renameForm&#x27;) public renameForm!: NgForm;
+
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
+  constructor(
+    private loggedUserService : LoggedUserService,
+    private workspaceService: WorkspaceService,
+    private loaderService: LoaderService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
+  ) { }
+
+  ngOnInit(): void {
+    this.updateDocumentSystem()
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
+  }
+
+  nodeSelect(event: any): void {
+    this.clickCount++;
+
+    setTimeout(() &#x3D;&gt; {
+      if (this.clickCount &#x3D;&#x3D;&#x3D; 1) {
+      } else if (this.clickCount &#x3D;&#x3D;&#x3D; 2) {
+        if (event.node.data?.type &#x3D;&#x3D; ElementType.File) {
+          this.onTextSelectEvent.emit(event)
+        }
+        else if (event.node.data?.type &#x3D;&#x3D; ElementType.Directory) {
+          event.node.expanded &#x3D; !event.node.expanded;
+        }
+      }
+      this.clickCount &#x3D; 0;
+    }, 250)
+  }
+
+  onFileUpload(event: any): void {
+    if (event.target.files.length &#x3D;&#x3D; 0) {
+      this.fileUploaded &#x3D; undefined;
+      return;
+    }
+
+    if (event.target.files[0].size &gt; 10 * 1024 * 1024) {
+      this.fileUploaded &#x3D; undefined;
+      this.isFileUploaded &#x3D; false;
+      this.isFileSizeExceed &#x3D; true;
+      return;
+    }
+
+    this.fileUploaded &#x3D; event.target.files[0];
+
+    this.isFileUploaded &#x3D; true;
+    this.isFileSizeExceed &#x3D; false;
+  }
+
+  onFileUploaderTouch(): void {
+    this.isFileUploaderTouched &#x3D; true;
+  }
+
+  onSubmitAddFolderModal(): void {
+    if (this.addFolderForm.invalid) {
+      this.addFolderForm.form.markAllAsTouched();
+      return ;
+    }
+
+    let element_id &#x3D; this.addFolderForm.form.value.folderToAdd.data?.[&#x27;element-id&#x27;];
+    let name &#x3D; this.addFolderForm.form.value.nfName;
+
+    this.loaderService.show();
+    this.workspaceService.addFolder(element_id).subscribe({
+      next: (result) &#x3D;&gt; {
+        if (result[&#x27;response-status&#x27;] &#x3D;&#x3D; 0) {
+          let newId &#x3D; result.node[&#x27;element-id&#x27;];
+
+          this.workspaceService.renameElement(newId, name, ElementType.Directory).subscribe({
+            next: (result) &#x3D;&gt; {
+              $(&#x27;#addFolderModal&#x27;).modal(&#x27;hide&#x27;);
+
+              if (result.responseStatus &#x3D;&#x3D; 0) {
+                this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x27;Cartella \&#x27;&#x27; + name + &#x27;\&#x27; creata con successo&#x27;));
+              }
+              else {
+                this.workspaceService.removeElement(newId, ElementType.Directory).subscribe({
+                  next: (result) &#x3D;&gt; {
+                    this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Errore nella creazione della cartella \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;));
+                  },
+                  error: () &#x3D;&gt; {
+                    this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Errore nella creazione della cartella \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;));
+                  }
+                })
+              }
+
+              this.loaderService.hide();
+
+              this.updateDocumentSystem();
+            },
+            error: () &#x3D;&gt; {
+              $(&#x27;#addFolderModal&#x27;).modal(&#x27;hide&#x27;);
+              this.loaderService.hide();
+              this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Errore nella creazione della cartella \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;));
+            }
+          })
+        }
+        else if (result[&#x27;response-status&#x27;] &#x3D;&#x3D; 1) {
+          $(&#x27;#addFolderModal&#x27;).modal(&#x27;hide&#x27;);
+          this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Utente non autorizzato&#x27;));
+        }
+        else {
+          $(&#x27;#addFolderModal&#x27;).modal(&#x27;hide&#x27;);
+          this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Errore nella creazione della cartella \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;));
+        }
+
+        $(&#x27;#addFolderModal&#x27;).modal(&#x27;hide&#x27;);
+
+        this.updateDocumentSystem();
+      },
+      error: (err) &#x3D;&gt; {
+        $(&#x27;#addFolderModal&#x27;).modal(&#x27;hide&#x27;);
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Errore nella creazione della cartella \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;));
+      }
+    })
+
+    $(&#x27;#addFolderModal&#x27;).modal(&#x27;hide&#x27;);
+  }
+
+  onSubmitFileUploaderModal(): void {
+    if (this.fileUploaderForm.invalid || !this.fileUploaded) {
+      return this.saveUploadFileWithFormErrors();
+    }
+
+    if (this.fileUploaded &amp;&amp; this.selectedFolderNode) {
+      let element_id &#x3D; this.fileUploaderForm.form.value.folderToUpload.data[&quot;element-id&quot;];
+      let name &#x3D; this.fileUploaded.name;
+      let folderName &#x3D; this.fileUploaderForm.form.value.folderToUpload.data.name;
+
+      let errorMsg &#x3D; &#x27;Errore nel caricare il file \&#x27;&#x27; + name + &#x27;\&#x27; in \&#x27;&#x27; + folderName + &#x27;\&#x27;&#x27;;
+      let successMsg &#x3D; &#x27;File \&#x27;&#x27; + name + &#x27;\&#x27; caricato con successo in \&#x27;&#x27; + folderName + &#x27;\&#x27;&#x27;;
+
+      this.loaderService.show();
+      this.workspaceService.uploadFile(element_id, this.fileUploaded).subscribe({
+        next: (result) &#x3D;&gt; {
+          $(&#x27;#uploadFileModal&#x27;).modal(&#x27;hide&#x27;);
+
+          if (result[&#x27;response-status&#x27;] &#x3D;&#x3D; 0) {
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          }
+          else if (result[&#x27;response-status&#x27;] &#x3D;&#x3D; 1) {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Utente non autorizzato&#x27;));
+          }
+          else {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+          }
+
+          this.loaderService.hide();
+
+          this.updateDocumentSystem();
+        },
+        error: () &#x3D;&gt; {
+          $(&#x27;#uploadFileModal&#x27;).modal(&#x27;hide&#x27;);
+          this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+        }
+      })
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Errore nell&#x27;operazione di caricamento file&quot;));
+    }
+
+    $(&#x27;#uploadFileModal&#x27;).modal(&#x27;hide&#x27;);
+  }
+
+  onSubmitMoveModal(): void {
+    if (this.moveForm.invalid) {
+      this.moveForm.form.markAllAsTouched();
+      return;
+    }
+
+    if (this.selectedDocument &amp;&amp; this.selectedDocument.data) {
+      let element_id &#x3D; this.selectedDocument.data[&#x27;element-id&#x27;];
+      let name &#x3D; this.selectedDocument.data.name;
+      let newParentName &#x3D; this.moveForm.form.value.folderToMoveIn.data.name;
+      let target_id &#x3D; this.moveForm.form.value.folderToMoveIn.data[&quot;element-id&quot;];
+      let type &#x3D; this.selectedDocument.data.type;
+
+      let errorMsg &#x3D; &#x27;Errore nello spostare la cartella \&#x27;&#x27; + name + &#x27;\&#x27; in \&#x27;&#x27; + newParentName + &#x27;\&#x27;&#x27;;
+      let successMsg &#x3D; &#x27;Cartella \&#x27;&#x27; + name + &#x27;\&#x27; spostata con successo&#x27;;
+
+      if (type &#x3D;&#x3D; ElementType.File) {
+        errorMsg &#x3D; &#x27;Errore nello spostare il file \&#x27;&#x27; + name + &#x27;\&#x27; in \&#x27;&#x27; + newParentName + &#x27;\&#x27;&#x27;;
+        successMsg &#x3D; &#x27;File \&#x27;&#x27; + name + &#x27;\&#x27; spostato con successo&#x27;;
+      }
+
+      this.loaderService.show();
+      this.workspaceService.moveElement(element_id, target_id, type).subscribe({
+        next: (result) &#x3D;&gt; {
+          $(&#x27;#moveModal&#x27;).modal(&#x27;hide&#x27;);
+
+          if (result.responseStatus &#x3D;&#x3D; 0) {
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          }
+          else if (result.responseStatus &#x3D;&#x3D; 1) {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Utente non autorizzato&#x27;));
+          }
+          else {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+          }
+
+          this.loaderService.hide();
+
+          this.updateDocumentSystem();
+        },
+        error: () &#x3D;&gt; {
+          $(&#x27;#moveModal&#x27;).modal(&#x27;hide&#x27;);
+          this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+        }
+      })
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Errore nell&#x27;operazione di spostamento&quot;));
+    }
+
+    $(&#x27;#moveModal&#x27;).modal(&#x27;hide&#x27;);
+  }
+
+  onSubmitRenameModal(): void {
+    if (this.renameForm.invalid) {
+      this.renameForm.form.markAllAsTouched();
+      return;
+    }
+
+    if (this.selectedDocument &amp;&amp; this.selectedDocument.data) {
+      let element_id &#x3D; this.selectedDocument.data[&#x27;element-id&#x27;];
+      let newName &#x3D; this.renameForm.form.value.newElementName;
+      let oldName &#x3D; this.selectedDocument.data.name;
+      let type &#x3D; this.selectedDocument.data.type;
+
+      let errorMsg &#x3D; &#x27;Errore nel rinominare la cartella \&#x27;&#x27; + oldName + &#x27;\&#x27; in \&#x27;&#x27; + newName + &#x27;\&#x27;&#x27;;
+      let successMsg &#x3D; &#x27;Cartella \&#x27;&#x27; + newName + &#x27;\&#x27; rinominata con successo&#x27;;
+
+      if (type &#x3D;&#x3D; ElementType.File) {
+        errorMsg &#x3D; &#x27;Errore nel rinominare il file \&#x27;&#x27; + oldName + &#x27;\&#x27; in \&#x27;&#x27; + newName + &#x27;\&#x27;&#x27;;
+        successMsg &#x3D; &#x27;File \&#x27;&#x27; + newName + &#x27;\&#x27; rinominato con successo&#x27;;
+      }
+
+      this.loaderService.show();
+      this.workspaceService.renameElement(element_id, newName, type).subscribe({
+        next: (result) &#x3D;&gt; {
+          $(&#x27;#renameModal&#x27;).modal(&#x27;hide&#x27;);
+
+          if (result.responseStatus &#x3D;&#x3D; 0) {
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          }
+          else if (result.responseStatus &#x3D;&#x3D; 1) {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Utente non autorizzato&#x27;));
+          }
+          else {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+          }
+
+          this.loaderService.hide();
+          this.updateDocumentSystem();
+        },
+        error: () &#x3D;&gt; {
+          $(&#x27;#renameModal&#x27;).modal(&#x27;hide&#x27;);
+          this.loaderService.hide();
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+        }
+      })
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Errore nell&#x27;operazione di rinominazione&quot;));
+    }
+
+    $(&#x27;#renameModal&#x27;).modal(&#x27;hide&#x27;);
+  }
+
+  onTreeContextMenuSelect(event: any, cm: ContextMenu): void {
+    this.generateContextMenu(event.node);
+  }
+
+  reload(): void {
+    this.updateDocumentSystem();
+  }
+
+  showAddFolderModal(): void {
+    this.resetAddFolderForm();
+
+    if (this.selectedDocument &amp;&amp; this.selectedDocument.data?.type &#x3D;&#x3D; ElementType.Directory) {
+      var node &#x3D; this.searchNodeByElementId(this.foldersAvailableToAddFolder, this.selectedDocument);
+
+      if (node) {
+        this.selectedFolderNode &#x3D; node;
+      }
+    }
+
+    $(&#x27;#addFolderModal&#x27;).appendTo(&#x27;body&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  showDeleteModal(): void {
+    if (this.selectedDocument &amp;&amp; this.selectedDocument.data) {
+      let element_id &#x3D; this.selectedDocument.data[&#x27;element-id&#x27;];
+      let name &#x3D; this.selectedDocument.data.name || &quot;&quot;;
+      let type &#x3D; this.selectedDocument.data.type;
+
+      let confirmMsg &#x3D; &#x27;Stai per cancellare la cartella \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+
+      if (type &#x3D;&#x3D; ElementType.File) {
+        confirmMsg &#x3D; &#x27;Stai per cancellare il file \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+      }
+
+      this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+
+      this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteElement(element_id, name, type), element_id, name, type);
+    }
+  }
+
+  showMoveModal(): void {
+    this.resetMoveForm();
+
+    this.foldersAvailableToMoveElementIn &#x3D; [];
+
+    if (this.selectedDocument) {
+      if (this.selectedDocument.data?.type &#x3D;&#x3D; ElementType.Directory){
+        this.foldersAvailableToMoveElementIn &#x3D; this.foldersAvailableToAddFolder;
+      }
+      else {
+        this.foldersAvailableToMoveElementIn &#x3D; this.foldersAvailableToFileUpload;
+      }
+    }
+
+    $(&#x27;#moveModal&#x27;).appendTo(&#x27;body&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  showRenameModal(): void {
+    this.resetRenameForm();
+
+    if (this.selectedDocument) {
+      this.newName &#x3D; this.selectedDocument?.label;
+    }
+
+    $(&#x27;#renameModal&#x27;).appendTo(&#x27;body&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  showUploadFileModal(): void {
+    this.resetFileUploaderForm();
+
+    if (this.selectedDocument &amp;&amp; this.selectedDocument.data?.type &#x3D;&#x3D; ElementType.Directory) {
+      var node &#x3D; this.searchNodeByElementId(this.foldersAvailableToFileUpload, this.selectedDocument);
+
+      if (node) {
+        this.selectedFolderNode &#x3D; node;
+      }
+    }
+
+    $(&#x27;#uploadFileModal&#x27;).appendTo(&#x27;body&#x27;).modal(&#x27;show&#x27;);
+  }
+
+  private documentsToTreeNodes(docs: DocumentElement[]) {
+    var dataParsed &#x3D; [];
+
+    for (let d of docs) {
+      dataParsed.push(this.documentToTreeNode(d));
+    }
+
+    return dataParsed;
+  }
+
+  private documentToTreeNode(doc: DocumentElement): TreeNode {
+    var node: TreeNode&lt;DocumentElement&gt; &#x3D; {};
+
+    if (doc.children) {
+      node.children &#x3D;  this.documentsToTreeNodes(doc.children);
+    }
+
+    if (doc.type &#x3D;&#x3D; ElementType.Directory) {
+      node.expandedIcon &#x3D; &quot;pi pi-folder-open&quot;;
+      node.collapsedIcon &#x3D; &quot;pi pi-folder&quot;;
+    }
+    else if (doc.type &#x3D;&#x3D; ElementType.File) {
+      node.icon &#x3D; &quot;pi pi-file&quot;;
+      node.leaf &#x3D; true;
+    }
+
+    node.label &#x3D; doc.name;
+    node.data &#x3D; doc;
+
+    return node;
+  }
+
+  private generateContextMenu(node: TreeNode): void {
+    var menuAddFolder &#x3D; {
+      label: &#x27;Aggiungi cartella&#x27;,
+      icon: &#x27;fa-solid fa-folder-plus&#x27;,
+      command: (event: any) &#x3D;&gt; {
+        this.showAddFolderModal()
+      }
+    }
+
+    if (node.data.name &#x3D;&#x3D; &quot;Corpus&quot;) {
+      this.items &#x3D; [menuAddFolder];
+      return;
+    }
+
+    let cmItems &#x3D; [
+      {
+        label: &#x27;Sposta&#x27;,
+        icon: &#x27;fa-solid fa-sync&#x27;,
+        command: (event: any) &#x3D;&gt; {
+          this.showMoveModal()
+        }
+      },
+      {
+        label: &#x27;Elimina&#x27;,
+        icon: &#x27;pi pi-trash&#x27;,
+        command: (event: any) &#x3D;&gt; {
+          this.showDeleteModal()
+        }
+      }
+    ];
+
+    let menuRename &#x3D; {
+      label: &#x27;Rinomina&#x27;,
+      icon: &#x27;fa-solid fa-pen&#x27;,
+      command: (event: any) &#x3D;&gt; {
+        this.showRenameModal()
+      }
+    }
+
+    cmItems.unshift(menuRename);
+
+    if (node.data.type &#x3D;&#x3D; ElementType.Directory) {
+      cmItems.unshift(menuAddFolder);
+    }
+
+    this.items &#x3D; cmItems;
+  }
+
+  private omitFiles(docs: any[]) {
+    var dataParsed: TreeNode&lt;any&gt;[] &#x3D; [];
+
+    docs.forEach((obj) &#x3D;&gt; {
+      if (obj.data.type !&#x3D; ElementType.File) {
+        obj.children &#x3D; this.omitFiles(obj.children);
+        dataParsed.push(obj);
+      }
+    })
+
+    return dataParsed;
+  }
+
+  private resetAddFolderForm(): void {
+    $(&#x27;#addFolderForm&#x27;).trigger(&quot;reset&quot;);
+
+    this.selectedFolderNode &#x3D; undefined;
+  }
+
+  private resetFileUploaderForm(): void {
+    $(&#x27;#fileUploaderForm&#x27;).trigger(&quot;reset&quot;);
+
+    this.isFileUploaded &#x3D; false;
+    this.isFileUploaderTouched &#x3D; false;
+    this.selectedFolderNode &#x3D; undefined;
+  }
+
+  private resetMoveForm(): void {
+    $(&#x27;#moveForm&#x27;).trigger(&quot;reset&quot;);
+
+    this.selectedFolderNode &#x3D; undefined;
+  }
+
+  private resetRenameForm(): void {
+    $(&#x27;#renameForm&#x27;).trigger(&quot;reset&quot;);
+  }
+
+  private saveUploadFileWithFormErrors(): void {
+    this.fileUploaderForm.form.markAllAsTouched();
+
+    if (!this.fileUploaded) {
+      this.isFileUploaded &#x3D; false;
+      this.isFileUploaderTouched &#x3D; true;
+    }
+  }
+
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;per favore attendere&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
+  private searchNodeByElementId(source: any[], element: any): any {
+    for (let el of source) {
+      if (el.data?.[&#x27;element-id&#x27;] &#x3D;&#x3D; element.data?.[&#x27;element-id&#x27;]) {
+        return el;
+      }
+
+      if (el.children &amp;&amp; el.children.lenght !&#x3D; 0) {
+        let node &#x3D; this.searchNodeByElementId(el.children, element);
+
+        if (node) {
+          return node;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  private updateDocumentSystem() {
+    this.loading &#x3D; true;
+    this.loaderService.show();
+
+    this.workspaceService.retrieveCorpus().subscribe({
+      next: (data) &#x3D;&gt; {
+        if (data.documentSystem) {
+          this.rawData &#x3D; JSON.parse(JSON.stringify(data.documentSystem))
+          let rootNode &#x3D; {
+            path: &quot;/root/&quot;,
+            name: &quot;Corpus&quot;,
+            type: ElementType.Directory,
+            &#x27;element-id&#x27;: 0,
+            metadata: {},
+            children: this.rawData
+          }
+
+          let fileTree &#x3D; [];
+          fileTree.push(rootNode);
+
+          this.files &#x3D; this.documentsToTreeNodes(fileTree);
+
+          if (this.files.length &gt; 0) {
+            this.files[0].expanded &#x3D; true;
+            this.files[0].draggable &#x3D; false;
+            this.files[0].droppable &#x3D; true;
+          }
+
+          var filesDeepCopy &#x3D; JSON.parse(JSON.stringify(this.files))
+
+          var docSystemWithoutFiles &#x3D; this.omitFiles(filesDeepCopy);
+          this.foldersAvailableToAddFolder &#x3D; JSON.parse(JSON.stringify(docSystemWithoutFiles));
+
+          if (docSystemWithoutFiles.length &gt; 0) {
+            docSystemWithoutFiles[0].selectable &#x3D; false;
+          }
+
+          this.foldersAvailableToFileUpload &#x3D; docSystemWithoutFiles;
+        }
+
+        this.tree.resetFilter();
+        this.loaderService.hide();
+        this.loading &#x3D; false;
+      }
+    })
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;button-group-actions mb-3&quot;&gt;
+  &lt;button
+    class&#x3D;&quot;btn btn-outline-success rounded-circle&quot;
+    pTooltip&#x3D;&quot;Carica file&quot;
+    tooltipPosition&#x3D;&quot;bottom&quot;
+    (click)&#x3D;&quot;showUploadFileModal()&quot;
+    [disabled]&#x3D;&quot;shouldUploadFileBeDisabled&quot;
+  &gt;
+    &lt;app-icon-upload-file style&#x3D;&quot;margin-right: 0.3rem&quot;&gt;&lt;/app-icon-upload-file&gt;
+  &lt;/button&gt;
+  &lt;button
+    class&#x3D;&quot;btn btn-outline-primary rounded-circle&quot;
+    pTooltip&#x3D;&quot;Aggiungi cartella&quot;
+    tooltipPosition&#x3D;&quot;bottom&quot;
+    (click)&#x3D;&quot;showAddFolderModal()&quot;
+  &gt;
+    &lt;app-icon-add-folder&gt;&lt;/app-icon-add-folder&gt;
+  &lt;/button&gt;
+  &lt;button
+    class&#x3D;&quot;btn btn-outline-primary rounded-circle&quot;
+    pTooltip&#x3D;&quot;Rinomina&quot;
+    tooltipPosition&#x3D;&quot;bottom&quot;
+    (click)&#x3D;&quot;showRenameModal()&quot;
+    [disabled]&#x3D;&quot;shouldRMBeDisabled&quot;
+  &gt;
+    &lt;app-icon-rename&gt;&lt;/app-icon-rename&gt;
+  &lt;/button&gt;
+  &lt;button
+    class&#x3D;&quot;btn btn-outline-primary rounded-circle&quot;
+    pTooltip&#x3D;&quot;Sposta&quot;
+    tooltipPosition&#x3D;&quot;bottom&quot;
+    (click)&#x3D;&quot;showMoveModal()&quot;
+    [disabled]&#x3D;&quot;shouldRMBeDisabled&quot;
+  &gt;
+    &lt;app-icon-move&gt;&lt;/app-icon-move&gt;
+  &lt;/button&gt;
+  &lt;button
+    *ngIf&#x3D;&quot;shouldDeleteBeDisplayed&quot;
+    class&#x3D;&quot;btn btn-outline-danger rounded-circle&quot;
+    pTooltip&#x3D;&quot;Elimina&quot;
+    tooltipPosition&#x3D;&quot;bottom&quot;
+    (click)&#x3D;&quot;showDeleteModal()&quot;
+  &gt;
+    &lt;i class&#x3D;&quot;pi pi-trash&quot;&gt;&lt;/i&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;p-tree
+  [value]&#x3D;&quot;files&quot;
+  selectionMode&#x3D;&quot;single&quot;
+  [(selection)]&#x3D;&quot;selectedDocument&quot;
+  [contextMenu]&#x3D;&quot;cm&quot;
+  (onNodeSelect)&#x3D;&quot;nodeSelect($event)&quot;
+  (onNodeContextMenuSelect)&#x3D;&quot;onTreeContextMenuSelect($event, cm)&quot;
+  [filter]&#x3D;&quot;true&quot;
+  [loading]&#x3D;&quot;loading&quot;
+  scrollHeight&#x3D;&quot;250px&quot;
+  #tree
+&gt;&lt;/p-tree&gt;
+
+&lt;div class&#x3D;&quot;d-flex justify-content-center m-3&quot;&gt;
+  &lt;button
+    class&#x3D;&quot;btn btn-secondary&quot;
+    id&#x3D;&quot;btnReload&quot;
+    (click)&#x3D;&quot;reload()&quot;
+  &gt;
+    Aggiorna Corpus
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;p-contextMenu #cm appendTo&#x3D;&quot;body&quot; [model]&#x3D;&quot;items&quot;&gt;&lt;/p-contextMenu&gt;
+
+&lt;div
+  class&#x3D;&quot;modal fade&quot;
+  id&#x3D;&quot;uploadFileModal&quot;
+  tabindex&#x3D;&quot;-1&quot;
+  aria-labelledby&#x3D;&quot;uploadFileModalLabel&quot;
+  aria-hidden&#x3D;&quot;true&quot;
+&gt;
+  &lt;div class&#x3D;&quot;modal-dialog modal-dialog-centered&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;form
+        (ngSubmit)&#x3D;&quot;onSubmitFileUploaderModal()&quot;
+        #fileUploaderForm&#x3D;&quot;ngForm&quot;
+        id&#x3D;&quot;fileUploaderForm&quot;
+        class&#x3D;&quot;validated&quot;
+      &gt;
+        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+          &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;uploadFileModalLabel&quot;&gt;Importa nuovo file&lt;/h5&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn-close&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+            aria-label&#x3D;&quot;Close&quot;
+          &gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Scegli un file *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;file&quot;
+              class&#x3D;&quot;form-control&quot;
+              [ngClass]&#x3D;&quot;{&#x27;is-invalid&#x27;: !isFileUploaded &amp;&amp; (isFileUploaderTouched || isFileSizeExceed)}&quot;
+              aria-label&#x3D;&quot;file example&quot;
+              id&#x3D;&quot;fileUploader&quot;
+              type&#x3D;&quot;file&quot;
+              accept&#x3D;&quot;text/plain, .xml, .reg, .bat, .pls, .m3u, .m3u8, .srt, .ies, .air, .stp, .xspf, .dix, .sfm, .theme, .torrent&quot;
+              required
+              (change)&#x3D;&quot;onFileUpload($event)&quot;
+              (click)&#x3D;&quot;onFileUploaderTouch()&quot;
+            /&gt;
+            &lt;div *ngIf&#x3D;&quot;!isFileUploaded &amp;&amp; isFileUploaderTouched&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+              Necessario selezionare un file plain text
+            &lt;/div&gt;
+            &lt;div *ngIf&#x3D;&quot;!isFileUploaded &amp;&amp; isFileSizeExceed&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+              Le dimensioni del file superano i 10MB consentiti
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Seleziona cartella *&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;p-treeSelect #folderToUpload&#x3D;&quot;ngModel&quot; name&#x3D;&quot;folderToUpload&quot; [(ngModel)]&#x3D;&quot;selectedFolderNode&quot; [options]&#x3D;&quot;foldersAvailableToFileUpload&quot; placeholder&#x3D;&quot;Seleziona cartella&quot; required&gt;&lt;/p-treeSelect&gt;
+              &lt;div *ngIf&#x3D;&quot;folderToUpload.invalid &amp;&amp; (folderToUpload.touched || folderToUpload.dirty)&quot;
+                class&#x3D;&quot;invalid-feedback&quot;&gt;
+                &lt;div *ngIf&#x3D;&quot;folderToUpload.errors?.[&#x27;required&#x27;]&quot;&gt;
+                  Necessario selezionare una cartella
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn btn-secondary&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+          &gt;
+            Annulla
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;Conferma&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div
+  class&#x3D;&quot;modal fade&quot;
+  id&#x3D;&quot;addFolderModal&quot;
+  tabindex&#x3D;&quot;-1&quot;
+  aria-labelledby&#x3D;&quot;addFolderModalLabel&quot;
+  aria-hidden&#x3D;&quot;true&quot;
+&gt;
+  &lt;div class&#x3D;&quot;modal-dialog modal-dialog-centered&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;form
+        (ngSubmit)&#x3D;&quot;onSubmitAddFolderModal()&quot;
+        #addFolderForm&#x3D;&quot;ngForm&quot;
+        id&#x3D;&quot;addFolderForm&quot;
+        class&#x3D;&quot;validated&quot;
+      &gt;
+        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+          &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;addFolderModalLabel&quot;&gt;Aggiungi cartella&lt;/h5&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn-close&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+            aria-label&#x3D;&quot;Close&quot;
+          &gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Nome nuova cartella *&lt;/label&gt;
+            &lt;input #nfName&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;nfName&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;newFolderName&quot;
+              required maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Nome nuova cartella&quot; appWhitespacesValidator&gt;
+            &lt;div *ngIf&#x3D;&quot;nfName.invalid &amp;&amp; (nfName.touched || nfName.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;nfName.errors?.[&#x27;required&#x27;]&quot;&gt;
+                Necessario inserire il nome della nuova cartella
+              &lt;/div&gt;
+              &lt;div *ngIf&#x3D;&quot;nfName.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
+                Il nome della nuova cartella non può contenere solo spazi vuoti
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Seleziona cartella *&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;p-treeSelect #folderToAdd&#x3D;&quot;ngModel&quot; name&#x3D;&quot;folderToAdd&quot; [(ngModel)]&#x3D;&quot;selectedFolderNode&quot; [options]&#x3D;&quot;foldersAvailableToAddFolder&quot; placeholder&#x3D;&quot;Seleziona cartella&quot; required&gt;&lt;/p-treeSelect&gt;
+              &lt;div *ngIf&#x3D;&quot;folderToAdd.invalid &amp;&amp; (folderToAdd.touched || folderToAdd.dirty)&quot;
+                class&#x3D;&quot;invalid-feedback&quot;&gt;
+                &lt;div *ngIf&#x3D;&quot;folderToAdd.errors?.[&#x27;required&#x27;]&quot;&gt;
+                  Necessario selezionare una cartella
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn btn-secondary&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+          &gt;
+            Annulla
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;Conferma&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div
+  class&#x3D;&quot;modal fade&quot;
+  id&#x3D;&quot;renameModal&quot;
+  tabindex&#x3D;&quot;-1&quot;
+  aria-labelledby&#x3D;&quot;renameModalLabel&quot;
+  aria-hidden&#x3D;&quot;true&quot;
+&gt;
+  &lt;div class&#x3D;&quot;modal-dialog modal-dialog-centered&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;form
+        (ngSubmit)&#x3D;&quot;onSubmitRenameModal()&quot;
+        #renameForm&#x3D;&quot;ngForm&quot;
+        id&#x3D;&quot;renameForm&quot;
+        class&#x3D;&quot;validated&quot;
+      &gt;
+        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+          &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;renameModalLabel&quot;&gt;Rinomina {{ selectedDocument?.label }}&lt;/h5&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn-close&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+            aria-label&#x3D;&quot;Close&quot;
+          &gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Nuovo nome *&lt;/label&gt;
+            &lt;input #newElementName&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;newElementName&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;newName&quot;
+              required maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Nuovo nome&quot; appWhitespacesValidator&gt;
+            &lt;div *ngIf&#x3D;&quot;newElementName.invalid &amp;&amp; (newElementName.touched || newElementName.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;newElementName.errors?.[&#x27;required&#x27;]&quot;&gt;
+                Necessario inserire il nuovo nome
+              &lt;/div&gt;
+              &lt;div *ngIf&#x3D;&quot;newElementName.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
+                Il nuovo nome non può contenere solo spazi vuoti
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn btn-secondary&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+          &gt;
+            Annulla
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;Conferma&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div
+  class&#x3D;&quot;modal fade&quot;
+  id&#x3D;&quot;moveModal&quot;
+  tabindex&#x3D;&quot;-1&quot;
+  aria-labelledby&#x3D;&quot;moveModalLabel&quot;
+  aria-hidden&#x3D;&quot;true&quot;
+&gt;
+  &lt;div class&#x3D;&quot;modal-dialog modal-dialog-centered&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;form
+        (ngSubmit)&#x3D;&quot;onSubmitMoveModal()&quot;
+        #moveForm&#x3D;&quot;ngForm&quot;
+        id&#x3D;&quot;moveForm&quot;
+        class&#x3D;&quot;validated&quot;
+      &gt;
+        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+          &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;moveModalLabel&quot;&gt;Sposta {{ selectedDocument?.label }}&lt;/h5&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn-close&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+            aria-label&#x3D;&quot;Close&quot;
+          &gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Seleziona cartella di destinazione *&lt;/label&gt;
+            &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+              &lt;p-treeSelect #folderToMoveIn&#x3D;&quot;ngModel&quot; name&#x3D;&quot;folderToMoveIn&quot; [(ngModel)]&#x3D;&quot;selectedFolderNode&quot; [options]&#x3D;&quot;foldersAvailableToMoveElementIn&quot; placeholder&#x3D;&quot;Seleziona cartella&quot; required&gt;&lt;/p-treeSelect&gt;
+              &lt;div *ngIf&#x3D;&quot;folderToMoveIn.invalid &amp;&amp; (folderToMoveIn.touched || folderToMoveIn.dirty)&quot;
+                class&#x3D;&quot;invalid-feedback&quot;&gt;
+                &lt;div *ngIf&#x3D;&quot;folderToMoveIn.errors?.[&#x27;required&#x27;]&quot;&gt;
+                  Necessario selezionare una cartella di destinazione
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn btn-secondary&quot;
+            data-bs-dismiss&#x3D;&quot;modal&quot;
+          &gt;
+            Annulla
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;Conferma&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./workspace-corpus-explorer.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">:host ::ng-deep {
+  .p-tree {
+    margin: 0 1rem;
+  }
+
+  .p-tree-container p-treenode .pi.pi-trash:before {
+    color: #dc3545;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="button-group-actions mb-3">  <button    class="btn btn-outline-success rounded-circle"    pTooltip="Carica file"    tooltipPosition="bottom"    (click)="showUploadFileModal()"    [disabled]="shouldUploadFileBeDisabled"  >    <app-icon-upload-file style="margin-right: 0.3rem"></app-icon-upload-file>  </button>  <button    class="btn btn-outline-primary rounded-circle"    pTooltip="Aggiungi cartella"    tooltipPosition="bottom"    (click)="showAddFolderModal()"  >    <app-icon-add-folder></app-icon-add-folder>  </button>  <button    class="btn btn-outline-primary rounded-circle"    pTooltip="Rinomina"    tooltipPosition="bottom"    (click)="showRenameModal()"    [disabled]="shouldRMBeDisabled"  >    <app-icon-rename></app-icon-rename>  </button>  <button    class="btn btn-outline-primary rounded-circle"    pTooltip="Sposta"    tooltipPosition="bottom"    (click)="showMoveModal()"    [disabled]="shouldRMBeDisabled"  >    <app-icon-move></app-icon-move>  </button>  <button    *ngIf="shouldDeleteBeDisplayed"    class="btn btn-outline-danger rounded-circle"    pTooltip="Elimina"    tooltipPosition="bottom"    (click)="showDeleteModal()"  >    <i class="pi pi-trash"></i>  </button></div><p-tree  [value]="files"  selectionMode="single"  [(selection)]="selectedDocument"  [contextMenu]="cm"  (onNodeSelect)="nodeSelect($event)"  (onNodeContextMenuSelect)="onTreeContextMenuSelect($event, cm)"  [filter]="true"  [loading]="loading"  scrollHeight="250px"  #tree></p-tree><div class="d-flex justify-content-center m-3">  <button    class="btn btn-secondary"    id="btnReload"    (click)="reload()"  >    Aggiorna Corpus  </button></div><p-contextMenu #cm appendTo="body" [model]="items"></p-contextMenu><div  class="modal fade"  id="uploadFileModal"  tabindex="-1"  aria-labelledby="uploadFileModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        (ngSubmit)="onSubmitFileUploaderModal()"        #fileUploaderForm="ngForm"        id="fileUploaderForm"        class="validated"      >        <div class="modal-header">          <h5 class="modal-title" id="uploadFileModalLabel">Importa nuovo file</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="form-group">            <label class="form-label">Scegli un file *</label>            <input              type="file"              class="form-control"              [ngClass]="{\'is-invalid\': !isFileUploaded && (isFileUploaderTouched || isFileSizeExceed)}"              aria-label="file example"              id="fileUploader"              type="file"              accept="text/plain, .xml, .reg, .bat, .pls, .m3u, .m3u8, .srt, .ies, .air, .stp, .xspf, .dix, .sfm, .theme, .torrent"              required              (change)="onFileUpload($event)"              (click)="onFileUploaderTouch()"            />            <div *ngIf="!isFileUploaded && isFileUploaderTouched" class="invalid-feedback">              Necessario selezionare un file plain text            </div>            <div *ngIf="!isFileUploaded && isFileSizeExceed" class="invalid-feedback">              Le dimensioni del file superano i 10MB consentiti            </div>          </div>          <div class="form-group">            <label class="form-label">Seleziona cartella *</label>            <div class="p-fluid">              <p-treeSelect #folderToUpload="ngModel" name="folderToUpload" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToFileUpload" placeholder="Seleziona cartella" required></p-treeSelect>              <div *ngIf="folderToUpload.invalid && (folderToUpload.touched || folderToUpload.dirty)"                class="invalid-feedback">                <div *ngIf="folderToUpload.errors?.[\'required\']">                  Necessario selezionare una cartella                </div>              </div>            </div>          </div>        </div>        <div class="modal-footer">          <button            type="button"            class="btn btn-secondary"            data-bs-dismiss="modal"          >            Annulla          </button>          <button type="submit" class="btn btn-primary">Conferma</button>        </div>      </form>    </div>  </div></div><div  class="modal fade"  id="addFolderModal"  tabindex="-1"  aria-labelledby="addFolderModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        (ngSubmit)="onSubmitAddFolderModal()"        #addFolderForm="ngForm"        id="addFolderForm"        class="validated"      >        <div class="modal-header">          <h5 class="modal-title" id="addFolderModalLabel">Aggiungi cartella</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="form-group">            <label class="form-label">Nome nuova cartella *</label>            <input #nfName="ngModel" type="text" name="nfName" class="form-control" [(ngModel)]="newFolderName"              required maxlength="300" placeholder="Nome nuova cartella" appWhitespacesValidator>            <div *ngIf="nfName.invalid && (nfName.touched || nfName.dirty)" class="invalid-feedback">              <div *ngIf="nfName.errors?.[\'required\']">                Necessario inserire il nome della nuova cartella              </div>              <div *ngIf="nfName.errors?.[\'isNotOnlyWhitespaces\']">                Il nome della nuova cartella non può contenere solo spazi vuoti              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Seleziona cartella *</label>            <div class="p-fluid">              <p-treeSelect #folderToAdd="ngModel" name="folderToAdd" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToAddFolder" placeholder="Seleziona cartella" required></p-treeSelect>              <div *ngIf="folderToAdd.invalid && (folderToAdd.touched || folderToAdd.dirty)"                class="invalid-feedback">                <div *ngIf="folderToAdd.errors?.[\'required\']">                  Necessario selezionare una cartella                </div>              </div>            </div>          </div>        </div>        <div class="modal-footer">          <button            type="button"            class="btn btn-secondary"            data-bs-dismiss="modal"          >            Annulla          </button>          <button type="submit" class="btn btn-primary">Conferma</button>        </div>      </form>    </div>  </div></div><div  class="modal fade"  id="renameModal"  tabindex="-1"  aria-labelledby="renameModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        (ngSubmit)="onSubmitRenameModal()"        #renameForm="ngForm"        id="renameForm"        class="validated"      >        <div class="modal-header">          <h5 class="modal-title" id="renameModalLabel">Rinomina {{ selectedDocument?.label }}</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="form-group">            <label class="form-label">Nuovo nome *</label>            <input #newElementName="ngModel" type="text" name="newElementName" class="form-control" [(ngModel)]="newName"              required maxlength="300" placeholder="Nuovo nome" appWhitespacesValidator>            <div *ngIf="newElementName.invalid && (newElementName.touched || newElementName.dirty)" class="invalid-feedback">              <div *ngIf="newElementName.errors?.[\'required\']">                Necessario inserire il nuovo nome              </div>              <div *ngIf="newElementName.errors?.[\'isNotOnlyWhitespaces\']">                Il nuovo nome non può contenere solo spazi vuoti              </div>            </div>          </div>        </div>        <div class="modal-footer">          <button            type="button"            class="btn btn-secondary"            data-bs-dismiss="modal"          >            Annulla          </button>          <button type="submit" class="btn btn-primary">Conferma</button>        </div>      </form>    </div>  </div></div><div  class="modal fade"  id="moveModal"  tabindex="-1"  aria-labelledby="moveModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        (ngSubmit)="onSubmitMoveModal()"        #moveForm="ngForm"        id="moveForm"        class="validated"      >        <div class="modal-header">          <h5 class="modal-title" id="moveModalLabel">Sposta {{ selectedDocument?.label }}</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="form-group">            <label class="form-label">Seleziona cartella di destinazione *</label>            <div class="p-fluid">              <p-treeSelect #folderToMoveIn="ngModel" name="folderToMoveIn" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToMoveElementIn" placeholder="Seleziona cartella" required></p-treeSelect>              <div *ngIf="folderToMoveIn.invalid && (folderToMoveIn.touched || folderToMoveIn.dirty)"                class="invalid-feedback">                <div *ngIf="folderToMoveIn.errors?.[\'required\']">                  Necessario selezionare una cartella di destinazione                </div>              </div>            </div>          </div>        </div>        <div class="modal-footer">          <button            type="button"            class="btn btn-secondary"            data-bs-dismiss="modal"          >            Annulla          </button>          <button type="submit" class="btn btn-primary">Conferma</button>        </div>      </form>    </div>  </div></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'WorkspaceCorpusExplorerComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'WorkspaceCorpusExplorerComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

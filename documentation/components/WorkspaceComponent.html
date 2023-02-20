@@ -1,0 +1,2816 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  WorkspaceComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/workspace/workspace.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-workspace</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./workspace.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./workspace.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#container" >container</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#items" >items</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#newId" >newId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#newWorkspace" >newWorkspace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#storageName" >storageName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#textTilePrefix" >textTilePrefix</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#visibleLayers" >visibleLayers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#workSaved" >workSaved</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#workspaceContainer" >workspaceContainer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#workspaceId" >workspaceId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#wsMenuContainer" >wsMenuContainer</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#canDeactivate" >canDeactivate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateCorpusExplorerPanelConfiguration" >generateCorpusExplorerPanelConfiguration</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateLexiconPanelConfiguration" >generateLexiconPanelConfiguration</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateTextTileConfig" >generateTextTileConfig</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateTextTilePanelConfiguration" >generateTextTilePanelConfiguration</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onResize" >onResize</a>
+                            </li>
+                            <li>
+                                <a href="#openExploreCorpusPanel" >openExploreCorpusPanel</a>
+                            </li>
+                            <li>
+                                <a href="#openLexiconPanel" >openLexiconPanel</a>
+                            </li>
+                            <li>
+                                <a href="#openTextPanel" >openTextPanel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resizeContainerHeight" >resizeContainerHeight</a>
+                            </li>
+                            <li>
+                                <a href="#restoreTiles" >restoreTiles</a>
+                            </li>
+                            <li>
+                                <a href="#retrieveTextList" >retrieveTextList</a>
+                            </li>
+                            <li>
+                                <a href="#saveWork" >saveWork</a>
+                            </li>
+                            <li>
+                                <a href="#workspaceTextSelectorComponentToHtml" >workspaceTextSelectorComponentToHtml</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>HostListeners</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#window:beforeunload" >window:beforeunload</a>
+                            </li>
+                            <li>
+                                <a href="#window:resize" >window:resize</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, activeRoute: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, layerService: <a href="../injectables/LayerService.html" target="_self">LayerService</a>, userService: <a href="../injectables/UserService.html" target="_self">UserService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>, vcr: <a href="https://angular.io/api/core/ViewContainerRef" target="_blank">ViewContainerRef</a>, messageService: MessageService, workspaceService: <a href="../injectables/WorkspaceService.html" target="_self">WorkspaceService</a>, renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>, commonService: <a href="../injectables/CommonService.html" target="_self">CommonService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:94</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>activeRoute</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>layerService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LayerService.html" target="_self" >LayerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cd</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>vcr</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/ViewContainerRef" target="_blank" >ViewContainerRef</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>workspaceService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WorkspaceService.html" target="_self" >WorkspaceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>renderer</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>commonService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommonService.html" target="_self" >CommonService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+    <section>
+    <h3>HostListeners</h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="window:beforeunload"></a>
+                    <span class="name">
+                        <span ><b>window:beforeunload</b></span>
+                        <a href="#window:beforeunload"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>window:beforeunload()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:64</a></div>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="window:resize"></a>
+                    <span class="name">
+                        <span ><b>window:resize</b></span>
+                        <a href="#window:resize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <i>Arguments : </i><code>'$event' </code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>window:resize(event: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:87</a></div>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canDeactivate"></a>
+                    <span class="name">
+                        <span ><b>canDeactivate</b></span>
+                        <a href="#canDeactivate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>canDeactivate()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@HostListener(&#x27;window:beforeunload&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:64</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable | boolean</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateCorpusExplorerPanelConfiguration"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>generateCorpusExplorerPanelConfiguration</b></span>
+                        <a href="#generateCorpusExplorerPanelConfiguration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateCorpusExplorerPanelConfiguration(ecPanelId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="578"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:578</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ecPanelId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >{ id: string; component: any; panelConfig: { id: string; container: string; content: any; headerTitle: string; maximizedMargin: number; dragit: { snap: boolean; }; syncMargins: boolean; onclosed: (this: any, panel: any, closedByUser: boolean) &#x3D;&gt; void; onfronted: (this: any, panel: any, status: any) &#x3D;&gt; void; }; tileT...</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateLexiconPanelConfiguration"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>generateLexiconPanelConfiguration</b></span>
+                        <a href="#generateLexiconPanelConfiguration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateLexiconPanelConfiguration(lexiconPanelId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="703"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:703</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexiconPanelId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >{ id: string; component: any; panelConfig: { id: string; container: string; content: any; headerTitle: string; maximizedMargin: number; dragit: { snap: boolean; }; syncMargins: boolean; panelSize: { width: () &#x3D;&gt; number; height: string; }; headerControls: { ...; }; onclosed: (this: any, panel: any, closedByUser: bool...</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateTextTileConfig"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>generateTextTileConfig</b></span>
+                        <a href="#generateTextTileConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateTextTileConfig(panelId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, textWindowComponent: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, componentRef: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="648"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:648</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>panelId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>title</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>textWindowComponent</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>componentRef</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >{ id: string; container: string; headerTitle: string; content: any; maximizedMargin: number; dragit: { snap: boolean; }; syncMargins: boolean; onclosed: (this: any, panel: any, closedByUser: boolean) &#x3D;&gt; void; ... 6 more ...; resizeit: { ...; }; }</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateTextTilePanelConfiguration"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>generateTextTilePanelConfiguration</b></span>
+                        <a href="#generateTextTilePanelConfiguration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateTextTilePanelConfiguration(panelId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, textId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="625"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:625</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>panelId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>textId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>title</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >{ id: string; component: any; panelConfig: { id: string; container: string; headerTitle: string; content: any; maximizedMargin: number; dragit: { snap: boolean; }; syncMargins: boolean; onclosed: (this: any, panel: any, closedByUser: boolean) &#x3D;&gt; void; ... 6 more ...; resizeit: { ...; }; }; tileType: any; }</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="266"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:266</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="109"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:109</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onResize"></a>
+                    <span class="name">
+                        <span ><b>onResize</b></span>
+                        <a href="#onResize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onResize(event: literal type)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@HostListener(&#x27;window:resize&#x27;, [&#x27;$event&#x27;])<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:87</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openExploreCorpusPanel"></a>
+                    <span class="name">
+                        <span ><b>openExploreCorpusPanel</b></span>
+                        <a href="#openExploreCorpusPanel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openExploreCorpusPanel(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="272"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:272</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openLexiconPanel"></a>
+                    <span class="name">
+                        <span ><b>openLexiconPanel</b></span>
+                        <a href="#openLexiconPanel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openLexiconPanel(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="369"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:369</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openTextPanel"></a>
+                    <span class="name">
+                        <span ><b>openTextPanel</b></span>
+                        <a href="#openTextPanel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openTextPanel(textId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="313"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:313</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>textId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>title</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resizeContainerHeight"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>resizeContainerHeight</b></span>
+                        <a href="#resizeContainerHeight"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resizeContainerHeight()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="643"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:643</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="restoreTiles"></a>
+                    <span class="name">
+                        <span ><b>restoreTiles</b></span>
+                        <a href="#restoreTiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>restoreTiles(workspaceStatus: <a href="../classes/Workspace.html" target="_self">Workspace</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="410"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:410</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>workspaceStatus</td>
+                                    <td>
+                                                <code><a href="../classes/Workspace.html" target="_self" >Workspace</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveTextList"></a>
+                    <span class="name">
+                        <span ><b>retrieveTextList</b></span>
+                        <a href="#retrieveTextList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>retrieveTextList()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="507"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:507</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/TextChoice.html" target="_self" >TextChoice[]</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveWork"></a>
+                    <span class="name">
+                        <span ><b>saveWork</b></span>
+                        <a href="#saveWork"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveWork(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="524"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:524</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workspaceTextSelectorComponentToHtml"></a>
+                    <span class="name">
+                        <span ><b>workspaceTextSelectorComponentToHtml</b></span>
+                        <a href="#workspaceTextSelectorComponentToHtml"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>workspaceTextSelectorComponentToHtml(textList: Array<any>, workspaceComponent: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="560"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:560</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>textList</td>
+                                    <td>
+                                            <code>Array&lt;any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>workspaceComponent</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="container"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>container</b></span>
+                        <a href="#container"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;panelsContainer&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="items"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>items</b></span>
+                        <a href="#items"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MenuItem[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>newId</b></span>
+                        <a href="#newId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;new&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newWorkspace"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>newWorkspace</b></span>
+                        <a href="#newWorkspace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="storageName"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>storageName</b></span>
+                        <a href="#storageName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;storedTiles&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="textTilePrefix"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>textTilePrefix</b></span>
+                        <a href="#textTilePrefix"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;textTile_&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="visibleLayers"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>visibleLayers</b></span>
+                        <a href="#visibleLayers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Layer.html" target="_self" >Layer[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workSaved"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>workSaved</b></span>
+                        <a href="#workSaved"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workspaceContainer"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>workspaceContainer</b></span>
+                        <a href="#workspaceContainer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;#panelsContainer&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="workspaceId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>workspaceId</b></span>
+                        <a href="#workspaceId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>undefined</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="wsMenuContainer"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>wsMenuContainer</b></span>
+                        <a href="#wsMenuContainer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;workspaceMenuContainer&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { LayerService } from &#x27;src/app/services/layer.service&#x27;;
+import { WorkspaceLayersVisibilityManagerComponent } from &#x27;./workspace-layers-visibility-manager/workspace-layers-visibility-manager.component&#x27;;
+import { CorpusTileContent } from &#x27;./../../models/tile/corpus-tile-content&#x27;;
+import { WorkspaceTextWindowComponent } from &#x27;./workspace-text-window/workspace-text-window.component&#x27;;
+import { style } from &#x27;@angular/animations&#x27;;
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, HostListener, OnInit, Output, Renderer2, Type, ViewChild, ViewContainerRef } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { text } from &#x27;@fortawesome/fontawesome-svg-core&#x27;;
+import { faPlaneSlash } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
+import { LoginOptions } from &#x27;angular-oauth2-oidc&#x27;;
+import { MenuItem } from &#x27;primeng/api&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { TextChoice } from &#x27;src/app/models/tile/text-choice-element.model&#x27;;
+import { Tile } from &#x27;src/app/models/tile/tile.model&#x27;;
+import { TileType } from &#x27;src/app/models/tile/tile-type.model&#x27;;
+import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import { WorkspaceService } from &#x27;src/app/services/workspace.service&#x27;;
+// import { WorkspaceMenuComponent } from &#x27;../workspace-menu/workspace-menu.component&#x27;;
+import { WorkspaceTextSelectorComponent } from &#x27;./workspace-text-selector/workspace-text-selector.component&#x27;;
+import { TextTileContent } from &#x27;src/app/models/tile/text-tile-content.model&#x27;;
+import { ThisReceiver } from &#x27;@angular/compiler&#x27;;
+import { Workspace } from &#x27;src/app/models/workspace.model&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { WorkspaceCorpusExplorerComponent } from &#x27;./workspace-corpus-explorer/workspace-corpus-explorer.component&#x27;;
+import { Layer } from &#x27;src/app/models/layer/layer.model&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { WorkspaceLexiconTileComponent } from &#x27;./workspace-lexicon-tile/workspace-lexicon-tile.component&#x27;;
+import { LexiconTileContent } from &#x27;src/app/models/tile/lexicon-tile-content.model&#x27;;
+import { CommonService } from &#x27;src/app/services/common.service&#x27;;
+// import { CorpusTileContent } from &#x27;../models/tileContent/corpus-tile-content&#x27;;
+
+var currentWorkspaceInstance: any;
+
+@Component({
+  selector: &#x27;app-workspace&#x27;,
+  templateUrl: &#x27;./workspace.component.html&#x27;,
+  styleUrls: [&#x27;./workspace.component.scss&#x27;]
+})
+export class WorkspaceComponent implements OnInit, AfterViewInit {
+
+  private newId &#x3D; &#x27;new&#x27;;
+  private newWorkspace &#x3D; false;
+  private workspaceId: string | undefined &#x3D; undefined;
+
+  private textTilePrefix: string &#x3D; &#x27;textTile_&#x27;;
+
+  private workSaved &#x3D; false;
+  //private mainPanel: any;
+  //private openPanels: Map&lt;string, any&gt; &#x3D; new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
+  private workspaceContainer &#x3D; &quot;#panelsContainer&quot;;
+
+  //private storedData: any;
+  //private storedTiles: Map&lt;string, Tile&lt;any&gt;&gt; &#x3D; new Map();
+  private storageName &#x3D; &quot;storedTiles&quot;;
+
+  public items: MenuItem[] &#x3D; [];
+  public visibleLayers: Layer[] &#x3D; [];
+
+  @ViewChild(&#x27;panelsContainer&#x27;) public container!: ElementRef;
+  @ViewChild(&#x27;workspaceMenuContainer&#x27;) public wsMenuContainer!: ElementRef;
+
+  // @HostListener allows us to also guard against browser refresh, close, etc.
+  @HostListener(&#x27;window:beforeunload&#x27;)
+  canDeactivate(): Observable&lt;boolean&gt; | boolean {
+    // insert logic to check if there are pending changes here;
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+    //this.mainPanel.close();
+    //this.openPanels.forEach((panel, id) &#x3D;&gt; panel.close());
+
+    if (this.workSaved) {
+
+      //Chiudo tutti i pannelli aperti anche i modal
+      jsPanel
+        .getPanels(function (this: any) {
+          return this.classList.contains(&#x27;jsPanel&#x27;);
+        })
+        .forEach((panel: { close: () &#x3D;&gt; any; }) &#x3D;&gt; panel.close());
+
+      localStorage.removeItem(this.storageName)
+    }
+
+    return this.workSaved;
+  }
+
+  @HostListener(&#x27;window:resize&#x27;, [&#x27;$event&#x27;])
+  onResize(event: { target: any; }) {
+    //this.mainPanel.maximize();
+    console.log(&#x27;Mappa panels&#x27;);
+    //console.log(this.openPanels);
+    console.log(jsPanel.getPanels());
+
+    this.resizeContainerHeight()
+  }
+
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private loaderService: LoaderService,
+    private layerService: LayerService,
+    private userService: UserService,
+    private cd: ChangeDetectorRef,
+    private vcr: ViewContainerRef,
+    private messageService: MessageService,
+    private workspaceService: WorkspaceService,
+    private renderer: Renderer2,
+    private commonService: CommonService) { }
+
+  ngOnInit(): void {
+
+    this.items &#x3D; [
+      {
+        label: &#x27;Testo&#x27;,
+        items: [
+          // { label: &#x27;Apri&#x27;, id: &#x27;OPEN&#x27;, command: (event) &#x3D;&gt; { this.openTextChoicePanel(event) } },
+          // { separator: true },
+          { label: &#x27;Esplora Corpus&#x27;, id: &#x27;CORPUS&#x27;, command: (event) &#x3D;&gt; { this.openExploreCorpusPanel(event) } }
+        ]
+      },
+      {
+        label: &#x27;Lessico&#x27;,
+        items: [
+          { label: &#x27;Apri&#x27;, id: &#x27;LEXICON&#x27;, command: (event) &#x3D;&gt; { this.openLexiconPanel(event) } },
+          { label: &#x27;Lessico 2&#x27; }
+        ]
+      },
+      {
+        label: &#x27;Ontologia&#x27;,
+        items: [
+          { label: &#x27;Ontologia 1&#x27;, id: &#x27;ONTOLOGIA1&#x27; },
+          { label: &#x27;Ontologia 2&#x27; },
+          { label: &#x27;Ontologia 3&#x27; }
+        ]
+      },
+      {
+        label: &#x27;Salva modifiche&#x27;, id: &#x27;SAVE&#x27;, command: (event) &#x3D;&gt; { this.saveWork(event) }
+      }/*,
+      {
+        label: &#x27;Ripristina&#x27;, id: &#x27;RESTORE&#x27;, command: (event) &#x3D;&gt; { this.restoreTiles(event) }
+      } */
+    ];
+
+    this.activeRoute.paramMap.subscribe({
+      next: (params) &#x3D;&gt; {
+        this.workspaceId &#x3D; params.get(&#x27;id&#x27;) ?? undefined;
+
+        if (!this.workspaceId) {
+          this.router.navigate([&#x27;workspaces&#x27;]);
+          return;
+        }
+
+        this.loaderService.show();
+        this.layerService.retrieveLayers().subscribe({
+          next: (layers: Layer[]) &#x3D;&gt; {
+            this.visibleLayers &#x3D; layers;
+            this.loaderService.hide();
+
+            if (this.workspaceId &#x3D;&#x3D;&#x3D; this.newId) {
+              this.newWorkspace &#x3D; true;
+              return;
+            }
+
+            if (this.workspaceId !&#x3D; null &amp;&amp; this.workspaceId !&#x3D; undefined) {
+              this.newWorkspace &#x3D; false;
+              this.loaderService.show();
+              this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).subscribe({
+                next: (data) &#x3D;&gt; {
+                  console.log(data)
+                  data.tiles?.forEach(tile &#x3D;&gt; tile.tileConfig &#x3D; JSON.parse(tile.tileConfig));
+                  this.restoreTiles(data);
+                  this.loaderService.hide();
+                }
+              });
+              return;
+            }
+          }
+        })
+      }
+    });
+
+    jsPanel.extend({
+      //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
+      textTileMap: new Map&lt;number, Tile&lt;TextTileContent&gt;&gt;(),
+      tileMap: new Map&lt;number, Tile&lt;any&gt;&gt;(),
+      componentsList: new Array&lt;any&gt;(),
+      // addToPanelsMap: function () {
+      //   currentWorkspaceInstance.openPanels.set(this.id, this);
+
+      //   return this;
+      // },
+      addToTileMap: function (tile: Tile&lt;any&gt;) {
+        console.log(tile)
+        switch (tile.type as TileType) {
+          case TileType.TEXT:
+          case TileType.CORPUS:
+          case TileType.LAYERS_LIST:
+          case TileType.LEXICON:
+            this.tileMap.set(this.id, tile);
+            console.log(&#x27;Added &#x27;, this.getTileMap())
+            break;
+
+          default:
+            console.error(&quot;type &quot; + tile.type + &quot; not implemented&quot;);
+        }
+
+        return this;
+      },
+      removeFromTileMap: function (panelId: number, type: TileType) {
+        switch (type) {
+          case TileType.TEXT:
+            this.tileMap.delete(panelId);
+            console.log(&#x27;Deleted &#x27;, this.getTileMap());
+            break;
+
+          case TileType.CORPUS:
+            this.tileMap.delete(panelId);
+            console.log(&#x27;Deleted &#x27;, this.getTileMap());
+            break;
+
+          case TileType.LAYERS_LIST:
+            this.tileMap.delete(panelId);
+            console.log(&#x27;Deleted &#x27;, this.getTileMap());
+            break;
+
+          default:
+            console.error(&quot;type &quot; + type + &quot; not implemented&quot;);
+        }
+
+        return this;
+      },
+      addComponentToList: function (panelId: string, componentRef: ComponentRef&lt;any&gt;, tileType: TileType) {
+        this.componentsList.push({
+          id: panelId,
+          component: componentRef,
+          tileType: tileType
+        });
+      },
+      removeComponentFromList: function (panelId: string) {
+        let index &#x3D; this.componentsList.findIndex((item: any) &#x3D;&gt; item.id &#x3D;&#x3D; panelId);
+        this.componentsList.splice(index, 1);
+      },
+      deleteTileContent: function (panelId: number, type: TileType) {
+        switch (type) {
+          case TileType.TEXT:
+            this.textTileMap.delete(panelId);
+            console.log(&#x27;Deleted &#x27;, this.getTextTileMap());
+            break;
+          default:
+            console.error(&quot;type ${type} not implemented&quot;);
+        }
+
+        return this;
+      },
+      getTextTileMap: function () {
+        return this.textTileMap;
+      },
+      getTileMap: function () {
+        return this.tileMap;
+      },
+      getComponentsList: function () {
+        return this.componentsList;
+      }
+    })
+  }
+
+  ngAfterViewInit(): void {
+    currentWorkspaceInstance &#x3D; this;
+
+    this.resizeContainerHeight()
+  }
+
+  openExploreCorpusPanel(event: any) {
+    var ecPanelId &#x3D; &#x27;corpusExplorerTile&#x27;
+
+    var panelExist &#x3D; jsPanel.getPanels().find(
+      (x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; ecPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    let res &#x3D; this.generateCorpusExplorerPanelConfiguration(ecPanelId);
+
+    let corpusExplorerTileConfig &#x3D; res.panelConfig;
+
+    let corpusTileElement &#x3D; jsPanel.create(corpusExplorerTileConfig);
+
+    corpusTileElement
+      .resize({
+        height: window.innerHeight / 2
+      })
+      .reposition();
+    //.addToPanelsMap();
+    const { content, ...text } &#x3D; corpusExplorerTileConfig;
+
+    corpusExplorerTileConfig.content &#x3D; undefined;
+
+    let tileObject: Tile&lt;CorpusTileContent&gt; &#x3D; {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: corpusExplorerTileConfig,
+      type: TileType.CORPUS
+    };
+
+
+    corpusTileElement.addToTileMap(tileObject);
+    corpusTileElement.addComponentToList(res.id, res.component, res.tileType);
+  }
+
+  openTextPanel(textId: number, title: string) {
+    let modalTextSelect &#x3D; jsPanel.getPanels(function (this: any) {
+      return this.classList.contains(&#x27;jsPanel-modal&#x27;);
+    })
+      .find((x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; &#x27;modalTextSelect&#x27;)
+
+    if (modalTextSelect) {
+      modalTextSelect.close();
+    }
+
+    var panelId &#x3D; this.textTilePrefix + textId
+
+    var panelExist &#x3D; jsPanel.getPanels().find(
+      (x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; panelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    let res &#x3D; this.generateTextTilePanelConfiguration(panelId, textId, title);
+
+    let textTileConfig &#x3D; res.panelConfig;
+
+    let textTileElement &#x3D; jsPanel.create(textTileConfig);
+
+    textTileElement
+      .resize({
+        height: window.innerHeight / 3 * 2,
+        width: window.innerWidth / 3 * 2
+      })
+      .reposition();
+    const { content, ...text } &#x3D; textTileConfig;
+
+    textTileConfig.content &#x3D; undefined;
+
+    let txtTileContent: TextTileContent &#x3D; { contentId: textId };
+
+    let tileObject: Tile&lt;TextTileContent&gt; &#x3D; {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: txtTileContent,
+      tileConfig: textTileConfig,
+      type: TileType.TEXT
+    };
+
+    textTileElement.addToTileMap(tileObject);
+    textTileElement.addComponentToList(res.id, res.component, res.tileType);
+
+    // textTile.options.onclosed.push(function (this: any, panel: any, closedByUser: boolean) {
+    //   currentWorkspaceInstance.openPanels.delete(panel.id);
+    //   this.deleteTileContent(panel.id, TileType.TEXT);
+    // });
+  }
+
+  openLexiconPanel(event: any) {
+    var lexiconPanelId &#x3D; &#x27;lexiconTile&#x27;
+
+    var panelExist &#x3D; jsPanel.getPanels().find(
+      (x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; lexiconPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    let result &#x3D; this.generateLexiconPanelConfiguration(lexiconPanelId);
+
+    let lexiconTileConfig &#x3D; result.panelConfig;
+
+    let lexiconTileElement &#x3D; jsPanel.create(lexiconTileConfig);
+
+    lexiconTileElement
+      .resize({
+        height: window.innerHeight / 2
+      })
+      .reposition();
+
+    const { content, ...text } &#x3D; lexiconTileConfig;
+
+    lexiconTileConfig.content &#x3D; undefined;
+
+    let tileObject: Tile&lt;LexiconTileContent&gt; &#x3D; {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: lexiconTileConfig,
+      type: TileType.LEXICON
+    };
+
+
+    lexiconTileElement.addToTileMap(tileObject);
+    lexiconTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
+  restoreTiles(workspaceStatus: Workspace) {
+    console.log(&#x27;restore&#x27;);
+    this.loaderService.show();
+
+    let storedData: any &#x3D; workspaceStatus.layout;
+    let storedTiles: Array&lt;Tile&lt;any&gt;&gt; &#x3D; workspaceStatus.tiles!;
+    console.log(&#x27;restored layout&#x27;, storedData, storedTiles, workspaceStatus);
+
+    if (storedTiles.length &#x3D;&#x3D; 0) {
+      return;
+    }
+
+    //IMPORTANTE Ripristino i dati nel localstorage PRIMA di fare restore, 
+    //il localstorage verrà letto dalla funzione jsPanel.layout.restore()
+    localStorage.setItem(this.storageName, storedData)
+
+    let currPanelElement;
+    //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
+    for (const [index, tile] of storedTiles.entries()) {
+      switch (tile.type as TileType) {
+        case TileType.TEXT:
+          var textTileComponent &#x3D; this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle);
+
+          //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
+          //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
+          let mergedConfig &#x3D; { ...textTileComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement &#x3D; jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfig,
+            storagename: this.storageName
+          });
+          //currPanelElement &#x3D; jsPanel.create(mergedConfig);
+
+          currPanelElement.addToTileMap(tile);
+          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+          break;
+
+        case TileType.CORPUS:
+          let corupusComponent &#x3D; this.generateCorpusExplorerPanelConfiguration(tile.tileConfig.id);
+          let mergedConfigCorpus &#x3D; { ...corupusComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement &#x3D; jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigCorpus,
+            storagename: this.storageName
+          });
+
+          //currPanelElement &#x3D; jsPanel.create(mergedConfigCorpus);
+
+          currPanelElement.addToTileMap(tile);
+          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+          break;
+
+        case TileType.LEXICON:
+          let lexiconComponent &#x3D; this.generateLexiconPanelConfiguration(tile.tileConfig.id);
+          let mergedConfigLexicon &#x3D; { ...lexiconComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement &#x3D; jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigLexicon,
+            storagename: this.storageName
+          });
+
+          //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // è necessario reinserirlo manualmente
+          currPanelElement.options.headerControls.add.handler &#x3D; function (panel: any, control: any) {
+            currentWorkspaceInstance.commonService.notifyOther({ option: &#x27;tag_clicked&#x27;, value: &#x27;clicked&#x27; });
+          }
+          /*           currPanelElement.setControlStatus(&#x27;tag&#x27;, undefined, function (panel: any, control: any) {
+                      currentWorkspaceInstance.commonService.notifyOther({ option: &#x27;tag_clicked&#x27;, value: &#x27;clicked&#x27; });
+                    }); */
+
+          currPanelElement.addToTileMap(tile);
+          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+
+          break;
+
+        default:
+          console.error(&quot;type &quot; + tile.type + &quot; not implemented&quot;);
+      }
+    }
+
+    /* for (const [tileId, tile] of storedTiles.entries()) {
+      let currPanelElement &#x3D; jsPanel.getPanels().find(
+        (x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; tile.tileConfig.id
+      );
+
+      currPanelElement.addContent(tile, this);
+    }; */
+
+    this.loaderService.hide();
+  }
+
+  retrieveTextList(): TextChoice[] {
+    var textList: Array&lt;TextChoice&gt; &#x3D; [];
+
+    this.loaderService.show();
+    this.workspaceService.retrieveTextChoiceList().subscribe({
+      next: (data) &#x3D;&gt; {
+        //data.forEach(el &#x3D;&gt; textList.push({title:el.title, status:el.status, createdBy: el.createdBy, updatedOn:el.updatedOn}))
+        //textList&#x3D;data;
+        //textList &#x3D; JSON.parse(JSON.stringify(data));
+        data.forEach(el &#x3D;&gt; textList.push(el));
+        this.loaderService.hide();
+      }
+    });
+
+    return textList;
+  }
+
+  saveWork(event: any) {
+    //console.log(this.openPanels);
+    //this.workSaved &#x3D; true;
+
+    // save panel layout
+    let storedData &#x3D; jsPanel.layout.save({
+      selector: &#x27;.jsPanel-standard&#x27;,
+      storagename: this.storageName
+    });
+
+    //this.storedTiles &#x3D; new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
+
+    let openTiles &#x3D; jsPanel.extensions.getTileMap();
+    this.loaderService.show();
+    this.workspaceService
+      .saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles)
+      .subscribe({
+        next: () &#x3D;&gt; {
+          this.workSaved &#x3D; true;
+          this.loaderService.hide();
+          this.messageService.add({ severity: &#x27;success&#x27;, summary: &#x27;Successo&#x27;, detail: &#x27;Workspace salvato&#x27;, life: 3000 });
+        }
+      });
+
+    // close panels, here we simply close all panels in the document
+    // for (const panel of jsPanel.getPanels()) {
+    //   panel.close();
+    // }
+
+    // for demo purpose only log stored data to the console
+    // or use your browser&#x27;s dev tools to inspect localStorage
+    console.log(&#x27;stored data&#x27;, storedData);
+  }
+
+  //Componente creato in maniera dinamica,
+  //con gestione manuale degli input e degli eventi
+  workspaceTextSelectorComponentToHtml(textList: Array&lt;any&gt;, workspaceComponent: any) {
+    const componentRef &#x3D; this.vcr.createComponent(WorkspaceTextSelectorComponent);
+
+    componentRef.instance.textChoiceList &#x3D; textList;
+
+    componentRef.instance.onTextSelectEvent
+      .subscribe(event &#x3D;&gt; {
+        console.log(event.target.getAttribute(&#x27;data-type&#x27;));
+
+        let textId &#x3D; event.target.parentElement.id;
+        let title &#x3D; event.target.parentElement.querySelector(&quot;[data-type&#x3D;&#x27;title&#x27;]&quot;).textContent;
+        this.openTextPanel(textId, title)
+      });
+
+    const element &#x3D; componentRef.location.nativeElement;
+    return element;
+  }
+
+  private generateCorpusExplorerPanelConfiguration(ecPanelId: string) {
+    const componentRef &#x3D; this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
+
+    componentRef.instance.onTextSelectEvent
+      .subscribe({
+        next: (event: any) &#x3D;&gt; {
+          console.log(&quot;qui&quot;, event);
+
+          let textId &#x3D; event.node.data?.[&#x27;element-id&#x27;];
+          let title &#x3D; event.node.label;
+
+          this.openTextPanel(textId, title.toLowerCase())
+        }
+      });
+
+    const element &#x3D; componentRef.location.nativeElement;
+
+    let config &#x3D; {
+      id: ecPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: &#x27;Esplora Corpus&#x27;,
+      maximizedMargin: 5,
+      dragit: { snap: true },
+      syncMargins: true,
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        //currentWorkspaceInstance.openPanels.delete(panel.id);
+        this.removeFromTileMap(panel.id, TileType.CORPUS);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        //componentRef.instance.reload()
+        let panelIDs &#x3D; jsPanel.getPanels(function () {
+          return panel.classList.contains(&#x27;jsPanel-standard&#x27;);
+        }).map((panel: any) &#x3D;&gt; panel.id);
+        console.log(panelIDs)
+      }
+    };
+
+    return {
+      id: ecPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.CORPUS
+    };
+  }
+
+  private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string) {
+    const componentRef &#x3D; this.vcr.createComponent(WorkspaceTextWindowComponent);
+    componentRef.instance.textId &#x3D; textId;
+    componentRef.instance.height &#x3D; window.innerHeight / 3 * 2;
+    componentRef.instance.visibleLayers &#x3D; this.visibleLayers;
+
+    const element &#x3D; componentRef.location.nativeElement;
+
+    let config &#x3D; this.generateTextTileConfig(panelId, title, element, componentRef)
+
+    return {
+      id: panelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.TEXT
+    };
+  }
+
+  private resizeContainerHeight() {
+    let height &#x3D; window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
+    this.renderer.setStyle(this.container.nativeElement, &#x27;height&#x27;, &#x60;${height}px&#x60;);
+  }
+
+  private generateTextTileConfig(panelId: string, title: string, textWindowComponent: any, componentRef: any) {
+    let config &#x3D;
+    {
+      id: panelId,
+      container: this.workspaceContainer,
+      headerTitle: &#x27;testo - &#x27; + title.toLowerCase(),
+      content: textWindowComponent,
+      maximizedMargin: 5,
+      dragit: { snap: true },
+      syncMargins: true,
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        //currentWorkspaceInstance.openPanels.delete(panel.id);
+        //this.deleteTileContent(panel.id, TileType.TEXT);
+        console.log(this, panel, closedByUser)
+        this.removeFromTileMap(panel.id, TileType.TEXT);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        //componentRef.instance.reload()
+        console.log(&#x27;panel&#x27;, this, panel, status)
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        let panelH &#x3D; Number.parseFloat(panel.style.height.split(&#x27;px&#x27;)[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        let panelH &#x3D; Number.parseFloat(panel.style.height.split(&#x27;px&#x27;)[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        let panelH &#x3D; Number.parseFloat(panel.style.height.split(&#x27;px&#x27;)[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        let panelH &#x3D; Number.parseFloat(panel.style.height.split(&#x27;px&#x27;)[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        let panelH &#x3D; Number.parseFloat(panel.style.height.split(&#x27;px&#x27;)[0]);
+        componentRef.instance.updateComponentSize(panelH);
+      },
+      resizeit: {
+        resize: (panel: any, paneldata: any, event: any) &#x3D;&gt; {
+          console.log(&#x27;hi&#x27;)
+          componentRef.instance.updateHeight(paneldata.height)
+          console.log(panel, paneldata, event)
+        },
+        stop: (panel: any, paneldata: any, event: any) &#x3D;&gt; {
+          componentRef.instance.updateTextEditorSize();
+        }
+      }
+    };
+    return config;
+  }
+
+  private generateLexiconPanelConfiguration(lexiconPanelId: string) {
+    const componentRef &#x3D; this.vcr.createComponent(WorkspaceLexiconTileComponent);
+
+    const element &#x3D; componentRef.location.nativeElement;
+
+    let config &#x3D; {
+      id: lexiconPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: &#x27;Lessico&#x27;,
+      maximizedMargin: 5,
+      dragit: { snap: true },
+      syncMargins: true,
+      panelSize: {
+        width: () &#x3D;&gt; window.innerWidth * 0.5,
+        height: &#x27;60vh&#x27;
+      },
+      headerControls: {
+        add: {
+          html: &#x27;&lt;span class&#x3D;&quot;pi pi-tag&quot;&gt;&lt;/span&gt;&#x27;,
+          name: &#x27;tag&#x27;,
+          handler: (panel: any, control: any) &#x3D;&gt; {
+            this.commonService.notifyOther({ option: &#x27;tag_clicked&#x27;, value: &#x27;clicked&#x27; });
+          }
+        }
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.CORPUS);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        let panelIDs &#x3D; jsPanel.getPanels(function () {
+          return panel.classList.contains(&#x27;jsPanel-standard&#x27;);
+        }).map((panel: any) &#x3D;&gt; panel.id);
+        console.log(panelIDs)
+      }
+    };
+
+    return {
+      id: lexiconPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.CORPUS
+    };
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;span #workspaceMenuContainer&gt;
+    &lt;app-workspace-menu class&#x3D;&quot;workspace-menu-infront&quot; [itemsInput]&#x3D;&quot;items&quot;&gt;&lt;/app-workspace-menu&gt;
+&lt;/span&gt;
+&lt;div id&#x3D;&quot;panelsContainer&quot; #panelsContainer&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./workspace.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">html,
+body,
+#panelsContainer {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#panelsContainer {
+    position: absolute;
+}
+
+.workspace-menu-infront{
+    z-index: 1000;
+    position: relative;
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><span #workspaceMenuContainer>    <app-workspace-menu class="workspace-menu-infront" [itemsInput]="items"></app-workspace-menu></span><div id="panelsContainer" #panelsContainer></div></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'WorkspaceComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'WorkspaceComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

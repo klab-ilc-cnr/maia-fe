@@ -1,0 +1,815 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  UserListComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/usersManagement/user-list/user-list.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-user-list</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./user-list.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./user-list.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#dt" >dt</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#roleOptions" >roleOptions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#users" >users</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#goToEditUser" >goToEditUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#goToEditUserById" >goToEditUserById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#goToNewUser" >goToNewUser</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, activeRoute: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, userService: <a href="../injectables/UserService.html" target="_self">UserService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:19</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>activeRoute</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToEditUser"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>goToEditUser</b></span>
+                        <a href="#goToEditUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>goToEditUser(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="39"
+                            class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:39</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToEditUserById"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>goToEditUserById</b></span>
+                        <a href="#goToEditUserById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>goToEditUserById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:43</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToNewUser"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>goToNewUser</b></span>
+                        <a href="#goToNewUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>goToNewUser()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="47"
+                            class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:47</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="27"
+                            class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:27</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dt"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>dt</b></span>
+                        <a href="#dt"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Table | undefined</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;dt&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="roleOptions"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>roleOptions</b></span>
+                        <a href="#roleOptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Array&lt;string&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:18</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="users"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>users</b></span>
+                        <a href="#users"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Array&lt;User&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/usersManagement/user-list/user-list.component.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { Roles } from &#x27;src/app/models/roles&#x27;;
+import { Table } from &#x27;primeng/table&#x27;;
+import { User } from &#x27;src/app/models/user&#x27;;
+import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+
+@Component({
+  selector: &#x27;app-user-list&#x27;,
+  templateUrl: &#x27;./user-list.component.html&#x27;,
+  styleUrls: [&#x27;./user-list.component.scss&#x27;]
+})
+export class UserListComponent implements OnInit {
+
+  @ViewChild(&#x27;dt&#x27;) public dt: Table | undefined
+
+  public roleOptions &#x3D; Array&lt;string&gt;();
+  public users &#x3D; new Array&lt;User&gt;();
+
+  constructor(
+    private router: Router,
+    private loaderService: LoaderService,
+    private activeRoute: ActivatedRoute,
+    private userService: UserService) { }
+
+  ngOnInit() {
+    this.loaderService.show();
+    this.userService.findAll().subscribe({
+      next: (data) &#x3D;&gt; {
+        this.users &#x3D; data;
+        this.loaderService.hide();
+      }
+    });
+
+    this.roleOptions &#x3D; Object.keys(Roles);
+  }
+
+  public goToEditUser(event: any) {
+    this.router.navigate([&quot;../&quot;, &quot;userDetails&quot;, event.data.id], { relativeTo: this.activeRoute });
+  }
+
+  public goToEditUserById(id: string) {
+    this.router.navigate([&quot;../&quot;, &quot;userDetails&quot;, id], { relativeTo: this.activeRoute });
+  }
+
+  public goToNewUser() {
+    this.router.navigate([&quot;../&quot;, &quot;userDetails&quot;, &quot;new&quot;], { relativeTo: this.activeRoute });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;grid&quot;&gt;
+	&lt;div class&#x3D;&quot;col-12&quot;&gt;
+		&lt;div class&#x3D;&quot;card&quot;&gt;
+      &lt;div class&#x3D;&quot;page-header&quot;&gt;
+        &lt;h5&gt;Anagrafiche&lt;/h5&gt;
+        &lt;p-button label&#x3D;&quot;Nuovo utente&quot; icon&#x3D;&quot;pi pi-user-plus&quot; styleClass&#x3D;&quot;p-button-danger&quot; (click)&#x3D;&quot;goToNewUser()&quot; class&#x3D;&quot;ms-start&quot;&gt;&lt;/p-button&gt;
+      &lt;/div&gt;
+      &lt;p-table #dt [value]&#x3D;&quot;users&quot; [rowHover]&#x3D;&quot;true&quot; [responsive]&#x3D;&quot;true&quot; [scrollable]&#x3D;&quot;false&quot;
+        [paginator]&#x3D;&quot;true&quot; [rows]&#x3D;&quot;5&quot; [rowsPerPageOptions]&#x3D;&quot;[5,10,20]&quot; selectionMode&#x3D;&quot;single&quot; dataKey&#x3D;&quot;id&quot; styleClass&#x3D;&quot;p-datatable-striped&quot;
+        responsiveLayout&#x3D;&quot;scroll&quot; (onRowSelect)&#x3D;&quot;goToEditUser($event)&quot;&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+          &lt;tr&gt;
+            &lt;th&gt;#&lt;/th&gt;
+            &lt;th pSortableColumn&#x3D;&quot;name&quot;&gt;Nome &lt;p-sortIcon field&#x3D;&quot;name&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+            &lt;th pSortableColumn&#x3D;&quot;surname&quot;&gt;Cognome &lt;p-sortIcon field&#x3D;&quot;surname&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+            &lt;th pSortableColumn&#x3D;&quot;email&quot;&gt;Email &lt;p-sortIcon field&#x3D;&quot;email&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+            &lt;th pSortableColumn&#x3D;&quot;role&quot;&gt;Ruolo &lt;p-sortIcon field&#x3D;&quot;role&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+            &lt;th pSortableColumn&#x3D;&quot;status&quot;&gt;Stato &lt;p-sortIcon field&#x3D;&quot;status&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+            &lt;th class&#x3D;&quot;text-center&quot;&gt;Dettagli&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/ng-template&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;body&quot; let-user columns&#x3D;&quot;col&quot; let-i&#x3D;&quot;rowIndex&quot;&gt;
+          &lt;tr [pSelectableRow]&#x3D;&quot;user&quot;&gt;
+            &lt;td&gt;{{ i+1 }}&lt;/td&gt;
+            &lt;td&gt;{{ user.name }}&lt;/td&gt;
+            &lt;td&gt;{{ user.surname }}&lt;/td&gt;
+            &lt;td&gt;&lt;a href&#x3D;&quot;mailto:{{ user.email }}&quot;&gt;{{ user.email }}&lt;/a&gt;&lt;/td&gt;
+            &lt;td&gt;{{ user.role }}&lt;/td&gt;
+            &lt;td&gt;{{ user.active ? &#x27;ATTIVO&#x27; : &#x27;NON ATTIVO&#x27; }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;text-center&quot;&gt;
+              &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-user-edit&quot;
+                class&#x3D;&quot;p-button-rounded p-button-danger p-button-text&quot;
+                (click)&#x3D;&quot;goToEditUserById(user.id)&quot;&gt;
+              &lt;/button&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/ng-template&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;emptymessage&quot;&gt;
+					&lt;tr&gt;
+						&lt;td colspan&#x3D;&quot;7&quot;&gt;Nesssun utente trovato.&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/ng-template&gt;
+      &lt;/p-table&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./user-list.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="grid">	<div class="col-12">		<div class="card">      <div class="page-header">        <h5>Anagrafiche</h5>        <p-button label="Nuovo utente" icon="pi pi-user-plus" styleClass="p-button-danger" (click)="goToNewUser()" class="ms-start"></p-button>      </div>      <p-table #dt [value]="users" [rowHover]="true" [responsive]="true" [scrollable]="false"        [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" styleClass="p-datatable-striped"        responsiveLayout="scroll" (onRowSelect)="goToEditUser($event)">        <ng-template pTemplate="header">          <tr>            <th>#</th>            <th pSortableColumn="name">Nome <p-sortIcon field="name"></p-sortIcon></th>            <th pSortableColumn="surname">Cognome <p-sortIcon field="surname"></p-sortIcon></th>            <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>            <th pSortableColumn="role">Ruolo <p-sortIcon field="role"></p-sortIcon></th>            <th pSortableColumn="status">Stato <p-sortIcon field="status"></p-sortIcon></th>            <th class="text-center">Dettagli</th>          </tr>        </ng-template>        <ng-template pTemplate="body" let-user columns="col" let-i="rowIndex">          <tr [pSelectableRow]="user">            <td>{{ i+1 }}</td>            <td>{{ user.name }}</td>            <td>{{ user.surname }}</td>            <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>            <td>{{ user.role }}</td>            <td>{{ user.active ? \'ATTIVO\' : \'NON ATTIVO\' }}</td>            <td class="text-center">              <button pButton pRipple type="button" icon="pi pi-user-edit"                class="p-button-rounded p-button-danger p-button-text"                (click)="goToEditUserById(user.id)">              </button>            </td>          </tr>        </ng-template>        <ng-template pTemplate="emptymessage">					<tr>						<td colspan="7">Nesssun utente trovato.</td>					</tr>				</ng-template>      </p-table>		</div>	</div></div></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'UserListComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'UserListComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
