@@ -5,6 +5,7 @@ import { PROJECTX_ROUTES } from './routes/projectx.routes'
 import { WORKSPACES_ROUTES } from './routes/workspaces.routes';
 import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
 
+/**Route iniziali */
 const routes: Routes = [
   {
     path: '',

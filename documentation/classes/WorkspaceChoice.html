@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Modello per i workspace da visualizzare nella lista (sono le scelte di workspace)</p>
+
+            </p>
 
 
 
@@ -132,10 +139,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="2" class="link-to-prism">src/app/models/workspace-choice.model.ts:2</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/workspace-choice.model.ts:4</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -158,10 +171,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="3" class="link-to-prism">src/app/models/workspace-choice.model.ts:3</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/workspace-choice.model.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nome del workspace</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -184,10 +203,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/workspace-choice.model.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/workspace-choice.model.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Eventuali note</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -210,10 +235,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/workspace-choice.model.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/workspace-choice.model.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Data di ultimo aggiornamento</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -230,9 +261,13 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class WorkspaceChoice {
+    /**Identificativo numerico */
     id: number | undefined;
+    /**Nome del workspace */
     name: string | undefined
+    /**Eventuali note */
     note: string | undefined;
+    /**Data di ultimo aggiornamento */
     updated: Date | undefined;
 }
 </code></pre>

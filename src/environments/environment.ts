@@ -40,7 +40,7 @@ export const environment = {
   annotationUrl: allowedUrls +'/annotations',
   relationUrl: allowedUrls +'/relations',
   lexoUrl : "/LexO-backend-beta/service/",
-  cashUrl : "http://localhost:9001/cash"
+  cashUrl : "http://localhost:8085"
 };
 
 /*
