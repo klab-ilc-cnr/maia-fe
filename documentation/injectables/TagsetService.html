@@ -205,8 +205,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/app/services/tagset.service.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/app/services/tagset.service.ts:40</a></div>
                 </td>
             </tr>
 
@@ -276,8 +276,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/app/services/tagset.service.ts:49</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/app/services/tagset.service.ts:53</a></div>
                 </td>
             </tr>
 
@@ -347,17 +347,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/app/services/tagset.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="22"
+                            class="link-to-prism">src/app/services/tagset.service.ts:22</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET che recupera l&#39;elenco completo dei tagset</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="../classes/Tagset.html" target="_self" >Observable&lt;Tagset[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable della lista di tagset</p>
 
                     </div>
                 </td>
@@ -386,8 +394,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="27"
-                            class="link-to-prism">src/app/services/tagset.service.ts:27</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/app/services/tagset.service.ts:31</a></div>
                 </td>
             </tr>
 
@@ -457,8 +465,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="53"
-                            class="link-to-prism">src/app/services/tagset.service.ts:53</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/app/services/tagset.service.ts:57</a></div>
                 </td>
             </tr>
 
@@ -528,8 +536,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="45"
-                            class="link-to-prism">src/app/services/tagset.service.ts:45</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">src/app/services/tagset.service.ts:49</a></div>
                 </td>
             </tr>
 
@@ -633,6 +641,10 @@ export class TagsetService {
     this.tagsetUrl &#x3D; environment.tagsetUrl;
   }
 
+  /**
+   * GET che recupera l&#x27;elenco completo dei tagset
+   * @returns {Observable&lt;Tagset[]&gt;} observable della lista di tagset
+   */
   public retrieve(): Observable&lt;Tagset[]&gt; {
     // MOCK
     // return this.http.get&lt;Tagset[]&gt;(&#x60;assets/mock/tagsets.json&#x60;);

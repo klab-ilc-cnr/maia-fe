@@ -15,6 +15,10 @@ export class TagsetService {
     this.tagsetUrl = environment.tagsetUrl;
   }
 
+  /**
+   * GET che recupera l'elenco completo dei tagset
+   * @returns {Observable<Tagset[]>} observable della lista di tagset
+   */
   public retrieve(): Observable<Tagset[]> {
     // MOCK
     // return this.http.get<Tagset[]>(`assets/mock/tagsets.json`);

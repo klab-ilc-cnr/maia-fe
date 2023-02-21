@@ -62,6 +62,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe dei servizi relativi alle feature</p>
+
+            </p>
 
 
 
@@ -136,12 +143,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/services/feature.service.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/feature.service.ts:15</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per FeatureService</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -150,6 +159,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -164,6 +174,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>effettua le chiamate HTTP</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -201,14 +215,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="24"
-                            class="link-to-prism">src/app/services/feature.service.ts:24</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/app/services/feature.service.ts:40</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>POST che richiede la creazione di una nuova feature</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -219,6 +235,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -233,6 +250,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>la feature in creazione</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -244,7 +265,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable della feature in creazione</p>
+
                     </div>
                 </td>
             </tr>
@@ -272,14 +294,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="32"
-                            class="link-to-prism">src/app/services/feature.service.ts:32</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/app/services/feature.service.ts:59</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>DELETE per l&#39;eliminazione di una feature da un layer</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -290,6 +314,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -304,6 +329,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo del layer di appartenenza</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>featureId</td>
@@ -316,6 +345,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo della feature</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -327,7 +360,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable dell&#39;esito dell&#39;operazione</p>
+
                     </div>
                 </td>
             </tr>
@@ -355,14 +389,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/app/services/feature.service.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="69"
+                            class="link-to-prism">src/app/services/feature.service.ts:69</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET che richiede se la feature di un layer può essere rimossa</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -373,6 +409,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -387,6 +424,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo numerico del layer</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>featureId</td>
@@ -399,6 +440,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo numerico della feature</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -410,7 +455,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable del booleano che definisce se la feature di un layer può essere cancellata</p>
+
                     </div>
                 </td>
             </tr>
@@ -438,14 +484,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/app/services/feature.service.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/app/services/feature.service.ts:30</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET che recupera la lista di feature associate a un layer</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -456,6 +504,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -470,6 +519,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo numerico del layer</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -481,7 +534,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable della lista di feature associate al layer</p>
+
                     </div>
                 </td>
             </tr>
@@ -509,14 +563,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/app/services/feature.service.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">src/app/services/feature.service.ts:49</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>PUT che richiede la modifica dei dati di una feature</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -527,6 +583,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -541,6 +598,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>feature modificata</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -552,7 +613,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable della feature modificata</p>
+
                     </div>
                 </td>
             </tr>
@@ -584,10 +646,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/services/feature.service.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/feature.service.ts:15</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Url per le richieste relative alle feature</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -604,34 +672,67 @@ import { Observable } from &#x27;rxjs&#x27;;
 import { environment } from &#x27;src/environments/environment&#x27;;
 import { Feature } from &#x27;../models/feature/feature&#x27;;
 
+/**Classe dei servizi relativi alle feature */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class FeatureService {
 
+  /**Url per le richieste relative alle feature */
   private featureUrl: string;
 
+  /**
+   * Costruttore per FeatureService
+   * @param http {HttpClient} effettua le chiamate HTTP
+   */
   constructor(private http: HttpClient) {
     this.featureUrl &#x3D; environment.featureUrl;
   }
 
+  /**
+   * GET che recupera la lista di feature associate a un layer
+   * @param layerId {number} identificativo numerico del layer
+   * @returns {Observable&lt;Feature[]&gt;} observable della lista di feature associate al layer
+   */
   public retrieveFeaturesByLayerId(layerId: number): Observable&lt;Feature[]&gt; {
 
     return this.http.get&lt;Feature[]&gt;(&#x60;${this.featureUrl}/${layerId}&#x60;);
   }
 
+  /**
+   * POST che richiede la creazione di una nuova feature
+   * @param item {any} la feature in creazione
+   * @returns {Observable&lt;any&gt;} observable della feature in creazione
+   */
   public createFeature(item: any): Observable&lt;any&gt; {
     return this.http.post&lt;any&gt;(&#x60;${this.featureUrl}&#x60;, item);
   }
 
+  /**
+   * PUT che richiede la modifica dei dati di una feature
+   * @param item {any} feature modificata
+   * @returns {Observable&lt;any&gt;} observable della feature modificata
+   */
   public updateFeature(item: any): Observable&lt;any&gt; {
     return this.http.put&lt;any&gt;(&#x60;${this.featureUrl}&#x60;, item);
   }
 
+  /**
+   * DELETE per l&#x27;eliminazione di una feature da un layer
+   * @param layerId {number} identificativo del layer di appartenenza
+   * @param featureId {number} identificativo della feature
+   * @returns {Observable&lt;boolean&gt;} observable dell&#x27;esito dell&#x27;operazione
+   */
   public deleteFeature(layerId: number, featureId: number): Observable&lt;boolean&gt; {
     return this.http.delete&lt;boolean&gt;(&#x60;${this.featureUrl}/${layerId}/${featureId}&#x60;);
   }
 
+  /**
+   * GET che richiede se la feature di un layer può essere rimossa
+   * @param layerId {number} identificativo numerico del layer
+   * @param featureId {number} identificativo numerico della feature
+   * @returns {Observable&lt;boolean&gt;} observable del booleano che definisce se la feature di un layer può essere cancellata
+   */
   public retrieveCanBeDeleted(layerId: number, featureId: number): Observable&lt;boolean&gt; {
 
     return this.http.get&lt;boolean&gt;(&#x60;${this.featureUrl}/canbedeleted/${layerId}/${featureId}&#x60;);

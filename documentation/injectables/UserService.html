@@ -62,6 +62,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe dei servizi relativi agli utenti</p>
+
+            </p>
 
 
 
@@ -136,12 +143,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/user.service.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/user.service.ts:14</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per UserService</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -150,6 +159,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -164,6 +174,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>effettua le chiamate HTTP</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -201,17 +215,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/app/services/user.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="28"
+                            class="link-to-prism">src/app/services/user.service.ts:28</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET per il recupero della lista di tutti gli utenti</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >Observable&lt;User[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable della lista completa degli utenti</p>
 
                     </div>
                 </td>
@@ -240,14 +262,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="22"
-                            class="link-to-prism">src/app/services/user.service.ts:22</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/app/services/user.service.ts:37</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET che recupera i dati di un dato utente utilizzando il suo id</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -258,6 +282,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -272,6 +297,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo dell&#39;utente</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -283,7 +312,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable dell&#39;utente recuperato</p>
+
                     </div>
                 </td>
             </tr>
@@ -311,17 +341,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/app/services/user.service.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/app/services/user.service.ts:45</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET per il recupero dei dati dell&#39;utente loggato</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >Observable&lt;User&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable dei dati dell&#39;utente loggato</p>
 
                     </div>
                 </td>
@@ -350,14 +388,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="30"
-                            class="link-to-prism">src/app/services/user.service.ts:30</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="54"
+                            class="link-to-prism">src/app/services/user.service.ts:54</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>POST per la creazione di un nuovo utente</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -368,6 +408,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -382,6 +423,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>nuovo utente</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -393,7 +438,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable del nuovo utente</p>
+
                     </div>
                 </td>
             </tr>
@@ -421,14 +467,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="34"
-                            class="link-to-prism">src/app/services/user.service.ts:34</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">src/app/services/user.service.ts:63</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>PUT che aggiorna i dati di un utente</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -439,6 +487,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -453,6 +502,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>utente con i dati aggiornati</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -464,7 +517,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>utente aggiornato</p>
+
                     </div>
                 </td>
             </tr>
@@ -496,10 +550,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/user.service.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/user.service.ts:14</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Url per le chiamate relative agli utenti</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -515,33 +575,62 @@ import { User } from &#x27;../models/user&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
 import { environment } from &#x27;../../environments/environment&#x27;;
 
+/**Classe dei servizi relativi agli utenti */
 @Injectable({
   providedIn: &#x27;root&#x27;,
 })
 export class UserService {
 
+  /**Url per le chiamate relative agli utenti */
   private usersUrl: string;
 
+  /**
+   * Costruttore per UserService
+   * @param http {HttpClient} effettua le chiamate HTTP
+   */
   constructor(private http: HttpClient) {
-    this.usersUrl &#x3D; environment.usersUrl;
+    this.usersUrl &#x3D; environment.usersUrl; //recupero l&#x27;url dall&#x27;environment
   }
 
+  /**
+   * GET per il recupero della lista di tutti gli utenti
+   * @returns {Observable&lt;User[]&gt;} observable della lista completa degli utenti
+   */
   public findAll(): Observable&lt;User[]&gt; {
     return this.http.get&lt;User[]&gt;(this.usersUrl);
   }
 
+  /**
+   * GET che recupera i dati di un dato utente utilizzando il suo id
+   * @param id {string} identificativo dell&#x27;utente
+   * @returns {Observable&lt;User&gt;} observable dell&#x27;utente recuperato
+   */
   public retrieveById(id: string): Observable&lt;User&gt; {
     return this.http.get&lt;User&gt;(&#x60;${this.usersUrl}/${id}&#x60;);
   }
 
+  /**
+   * GET per il recupero dei dati dell&#x27;utente loggato
+   * @returns {Observable&lt;User&gt;} observable dei dati dell&#x27;utente loggato
+   */
   public retrieveCurrentUser(): Observable&lt;User&gt; {
     return this.http.get&lt;User&gt;(&#x60;${this.usersUrl}/current&#x60;);
   }
 
+  /**
+   * POST per la creazione di un nuovo utente
+   * @param user {User} nuovo utente
+   * @returns {Observable&lt;User&gt;} observable del nuovo utente
+   */
   public save(user: User) {
     return this.http.post&lt;User&gt;(this.usersUrl, user);
   }
 
+  /**
+   * PUT che aggiorna i dati di un utente
+   * @param user {User} utente con i dati aggiornati
+   * @returns {Observable&lt;User&gt;} utente aggiornato
+   */
   public update(user: User) {
     return this.http.put&lt;User&gt;(this.usersUrl, user);
   }
