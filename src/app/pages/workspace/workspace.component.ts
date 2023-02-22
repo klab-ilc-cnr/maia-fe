@@ -29,8 +29,10 @@ import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.mod
 import { CommonService } from 'src/app/services/common.service';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
-var currentWorkspaceInstance: any;
+/**Variabile dell'istanza corrente del workspace */
+var currentWorkspaceInstance: any; //TODO verificare effettivo utilizzo
 
+/**Componente base del workspace */
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
@@ -38,28 +40,66 @@ var currentWorkspaceInstance: any;
 })
 export class WorkspaceComponent implements OnInit, AfterViewInit {
 
+  /**
+   * @private
+   * Identificativo per un nuovo workspace
+   */
   private newId = 'new';
+
+  /**
+   * @private
+   * Definisce se è un nuovo workspace
+   */
   private newWorkspace = false;
+  /**
+   * @private
+   * Identificativo del workspace
+   */
   private workspaceId: string | undefined = undefined;
 
+  /**
+   * @private
+   * Prefisso del titolo di un tile di testo
+   */
   private textTilePrefix: string = 'textTile_';
 
+  /**
+   * @private
+   * Definisce il lavoro è stato salvato
+   */
   private workSaved = false;
   //private mainPanel: any;
   //private openPanels: Map<string, any> = new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
+  /**
+   * @private
+   * Id del contenitore dei pannelli nel template
+   */
   private workspaceContainer = "#panelsContainer";
 
   //private storedData: any;
   //private storedTiles: Map<string, Tile<any>> = new Map();
+  /**
+   * @private
+   * Nome della proprietà del localstorage che memorizza i tile
+   */
   private storageName = "storedTiles";
 
+  /**Lista degli elementi di menu di primeng */
   public items: MenuItem[] = [];
+  /**Lista dei layer visibili */
   public visibleLayers: Layer[] = [];
 
+  /**Riferimento al contenitore die pannelli */
   @ViewChild('panelsContainer') public container!: ElementRef;
+  /**Riferimento al contenitore del menu del workspace */
   @ViewChild('workspaceMenuContainer') public wsMenuContainer!: ElementRef;
 
   // @HostListener allows us to also guard against browser refresh, close, etc.
+  /**
+   * Metodo che verifica la presenza di modifiche pendenti, se non ve ne sono è possibile navigare altrove direttamente, altrimenti viene visualizzato un popup di conferma.
+   * L'hostlistener permette di intercettare anche refresh, chiusura e altri eventi del browser
+   * @returns {Observable<boolean>|boolean} definisce se ci sono modifiche pendenti
+   */
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
     // insert logic to check if there are pending changes here;
@@ -83,6 +123,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return this.workSaved;
   }
 
+  /**
+   * Metodo che intercetta il ridimensionamento della finestra e richiama la modifica delle dimensioni del contenitore
+   * @param event {{target:any}} evento 
+   */
   @HostListener('window:resize', ['$event'])
   onResize(event: { target: any; }) {
     //this.mainPanel.maximize();
@@ -93,6 +137,20 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     this.resizeContainerHeight()
   }
 
+  /**
+   * Costruttore per WorkspaceComponent
+   * @param router {Router} servizi per la navigazione fra le viste
+   * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
+   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
+   * @param layerService {LayerService} servizi relativi ai layer
+   * @param userService {UserService} servizi relativi agli utenti //TODO verificare se possiamo rimuovere
+   * @param cd {ChangeDetectorRef} fornisce funzionalità di verifica di modifiche per la visualizzazione //TODO verificare se possiamo rimuovere
+   * @param vcr {ViewContainerRef} contenitore dove un o più view possono essere attaccate a un componente
+   * @param messageService {MessageService} servizi per la gestione dei messaggi
+   * @param workspaceService {WorkspaceService} servizi relativi ai workspace
+   * @param renderer {Renderer2} classe che può essere estesa per implementare renderizzazioni personalizzate
+   * @param commonService {CommonService} servizi comuni
+   */
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
@@ -106,6 +164,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     private commonService: CommonService) { }
 
+  /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
 
     this.items = [
@@ -263,22 +322,28 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     })
   }
 
+  /**Metodo dell'interfaccia AfterViewInit, utilizzato per inizializzare il currentWorkspaceInstance e ridimensioare il contenitore */
   ngAfterViewInit(): void {
     currentWorkspaceInstance = this;
 
     this.resizeContainerHeight()
   }
 
+  /**
+   * Metodo che visualizza il pannello di esplorazione del corpus
+   * @param event {any} evento di click su esplora corpus
+   * @returns {void}
+   */
   openExploreCorpusPanel(event: any) {
     var ecPanelId = 'corpusExplorerTile'
 
-    var panelExist = jsPanel.getPanels().find(
+    var panelExist = jsPanel.getPanels().find( //verifica se il panel è già presente
       (x: { id: string; }) => x.id === ecPanelId
     );
 
     if (panelExist) {
-      panelExist.front()
-      return;
+      panelExist.front() //presumibilmente sposta la vista in primo piano
+      return; //esce senza eseguire ulteriori azioni, pannello unico non sono possibili pannelli multipli
     }
 
     let res = this.generateCorpusExplorerPanelConfiguration(ecPanelId);
@@ -310,6 +375,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     corpusTileElement.addComponentToList(res.id, res.component, res.tileType);
   }
 
+  /**
+   * Metodo che apre il pannello di annotazione di un testo
+   * @param textId {number} identificativo numerico del testo
+   * @param title {string} titolo del testo
+   * @returns {void}
+   */
   openTextPanel(textId: number, title: string) {
     let modalTextSelect = jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');
@@ -326,7 +397,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       (x: { id: string; }) => x.id === panelId
     );
 
-    if (panelExist) {
+    if (panelExist) { //caso di pannello già presente
       panelExist.front()
       return;
     }
@@ -335,7 +406,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     let textTileConfig = res.panelConfig;
 
-    let textTileElement = jsPanel.create(textTileConfig);
+    let textTileElement = jsPanel.create(textTileConfig); //crea il pannello di annotazione del testo
 
     textTileElement
       .resize({
@@ -366,6 +437,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     // });
   }
 
+  /**
+   * Metodo che gestisce l'apertura di un pannello di esplorazione del lessico
+   * @param event {any} evento di clic su apri pannello di esplorazione del lessico
+   * @returns {void}
+   */
   openLexiconPanel(event: any) {
     var lexiconPanelId = 'lexiconTile'
 
@@ -373,7 +449,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       (x: { id: string; }) => x.id === lexiconPanelId
     );
 
-    if (panelExist) {
+    if (panelExist) { //caso pannello di esplorazione del lessico esistente
       panelExist.front()
       return;
     }
@@ -407,6 +483,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     lexiconTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
+  /**
+   * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
+   * @param workspaceStatus {Workspace} status del workspace
+   * @returns {void}
+   */
   restoreTiles(workspaceStatus: Workspace) {
     console.log('restore');
     this.loaderService.show();
@@ -504,6 +585,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     this.loaderService.hide();
   }
 
+  /**
+   * Metodo che recupera la lista dei testi come elementi per la scelta
+   * @returns {TextChoice[]} lista dei testi come elementi selezionabili
+   */
   retrieveTextList(): TextChoice[] {
     var textList: Array<TextChoice> = [];
 
@@ -521,6 +606,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return textList;
   }
 
+  /**
+   * Metodo che esegue il salvataggio dello stato del workspace
+   * @param event {any} evento di click sul salvataggio
+   */
   saveWork(event: any) {
     //console.log(this.openPanels);
     //this.workSaved = true;
@@ -555,8 +644,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     console.log('stored data', storedData);
   }
 
-  //Componente creato in maniera dinamica,
-  //con gestione manuale degli input e degli eventi
+  //TODO verificare perché non sembra sia utilizzato
+  /**
+   * Componente creato in maniera dinamica, con gestione manuale degli input e degli eventi
+   * @param textList {Array<any>} lista dei testi
+   * @param workspaceComponent {any} ?
+   * @returns {any} elemento html del selettore di testo
+   */
   workspaceTextSelectorComponentToHtml(textList: Array<any>, workspaceComponent: any) {
     const componentRef = this.vcr.createComponent(WorkspaceTextSelectorComponent);
 
@@ -575,10 +669,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return element;
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione per il panel explorer corpus incluso il componente
+   * @param ecPanelId {string} identificativo del pannello explorer corpus
+   * @returns configurazione del pannello
+   */
   private generateCorpusExplorerPanelConfiguration(ecPanelId: string) {
     const componentRef = this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
 
-    componentRef.instance.onTextSelectEvent
+    componentRef.instance.onTextSelectEvent //mappa l'evento di selezione di un testo nell'ec
       .subscribe({
         next: (event: any) => {
           console.log("qui", event);
@@ -622,6 +722,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     };
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione del pannello di annotazione di un testo, incluso il componente relativo
+   * @param panelId {string} identificativo del pannello
+   * @param textId {number} identificativo numerico del testo
+   * @param title {string} titolo del testo
+   * @returns configurazione del pannello di annotazione di un testo
+   */
   private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string) {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
@@ -640,11 +748,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     };
   }
 
+  /**
+   * @private
+   * Metodo che ridimensiona l'altezza del contenitore del workspace 
+   */
   private resizeContainerHeight() {
     let height = window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
     this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione del tile di testo
+   * @param panelId {string} identificativo del pannello
+   * @param title {string} titolo del testo
+   * @param textWindowComponent {any} accesso diretto al native element 
+   * @param componentRef {any} componentRef di WorkspaceTextWindowComponent
+   * @returns configurazione del tile di testo
+   */
   private generateTextTileConfig(panelId: string, title: string, textWindowComponent: any, componentRef: any) {
     let config =
     {
@@ -700,6 +821,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return config;
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione del pannello di esplorazione del lessico
+   * @param lexiconPanelId {string} identificativo del pannello di esplorazione del lessico
+   * @returns configurazione del pannello di esplorazione del lessico
+   */
   private generateLexiconPanelConfiguration(lexiconPanelId: string) {
     const componentRef = this.vcr.createComponent(WorkspaceLexiconTileComponent);
 

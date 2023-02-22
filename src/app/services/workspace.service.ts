@@ -30,20 +30,42 @@ export class WorkspaceService {
 
   //WORKSPACE
 
+  /**
+   * PUT che modifica i dati di un workspace di tipo choice
+   * @param workspace {WorkspaceChoice} workspace con i dati usati in lista
+   * @returns {Observable<WorkspaceChoice>} observable del workspace modificato
+   */
   public updateWorkspace(workspace: WorkspaceChoice): Observable<WorkspaceChoice> {
     return this.http.put<WorkspaceChoice>(`${this.workspacesUrl}`, workspace);
   }
 
+  /**
+   * DELETE che richiede la rimozione di un workspace
+   * @param workspaceId {number} identificativo numerico del workspace
+   * @returns {Observable<number>} observable del (id del workspace se elimiato?) //TODO controllare quale valore restituisce
+   */
   public deleteWorkspace(workspaceId: number | undefined): Observable<number> {
     return this.http.delete<number>(`${this.workspacesUrl}/${workspaceId}`);
   }
 
+  /**
+   * POST di creazione di un nuovo workspace di tipo choice
+   * @param workspace {WorkspaceChoice} nuovo workspace di tipo choice
+   * @returns {Observable<WorkspaceChoice>} observable del workspace choice (come quelli della lista)
+   */
   public createWorkspace(workspace: WorkspaceChoice): Observable<WorkspaceChoice> {
     return this.http.post<WorkspaceChoice>(`${this.workspacesUrl}`, workspace);
   }
 
   //TILE
 
+  /**
+   * PUT che aggiorna lo stato del workspace in termini di pannelli e tile aperti
+   * @param workspaceId {number} identificativo numerico del workspace
+   * @param localStorageData {any} dati del workspace e dei suoi pannelli e tile salvati nel localstorage
+   * @param openTiles {Map<string, Tile<any>>} mapping dei tile aperti
+   * @returns {Observable<boolean>} observable dell'esito (positivo/negativo) del salvataggio
+   */
   public saveWorkspaceStatus(workspaceId: number, localStorageData: any, openTiles: Map<string, Tile<any>>): Observable<boolean> {
     let tiles: Array<Tile<any>> = [];
     for (const [tileId, tile] of openTiles.entries()) {
@@ -78,6 +100,10 @@ export class WorkspaceService {
 
   //WORKSPACECHOICE
 
+  /**
+   * GET che richiama la lista dei workspace di tipo choice (visualizzati nella tabella)
+   * @returns {Observable<Array<WorkspaceChoice>>} onservable della lista dei workspace di tipo choice
+   */
   public retrieveWorkspaceChoiceList(): Observable<Array<WorkspaceChoice>> {
     return this.http.get<Array<WorkspaceChoice>>(`${this.workspacesUrl}/workspaceChoiceList`);
   }
@@ -88,6 +114,10 @@ export class WorkspaceService {
 
   //TEXTCHOICE
 
+  /**
+   * GET che richiama la lista di testi selezionabili
+   * @returns {Observable<Array<TextChoice>>} observable della lista dei testi come elementi selezionabili
+   */
   public retrieveTextChoiceList(): Observable<Array<TextChoice>> {
     return this.http.get<Array<TextChoice>>(`${this.workspacesUrl}/textChoiceList`);
   }

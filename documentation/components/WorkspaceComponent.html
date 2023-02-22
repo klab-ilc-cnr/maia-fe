@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente base del workspace</p>
+
+    </p>
 
 
     <p class="comment">
@@ -283,12 +290,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:94</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:138</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per WorkspaceComponent</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -297,6 +306,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -311,6 +321,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi per la navigazione fra le viste</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>activeRoute</td>
@@ -323,6 +337,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>fornisce l&#39;accesso alle informazioni di una route associata con un componente caricato in un outlet</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>loaderService</td>
@@ -335,6 +353,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi per la gestione del segnale di caricamento</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>layerService</td>
@@ -347,6 +369,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi ai layer</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>userService</td>
@@ -359,6 +385,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi agli utenti //TODO verificare se possiamo rimuovere</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>cd</td>
@@ -371,6 +401,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>fornisce funzionalità di verifica di modifiche per la visualizzazione //TODO verificare se possiamo rimuovere</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>vcr</td>
@@ -383,6 +417,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>contenitore dove un o più view possono essere attaccate a un componente</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>messageService</td>
@@ -395,6 +433,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi per la gestione dei messaggi</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>workspaceService</td>
@@ -407,6 +449,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi ai workspace</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>renderer</td>
@@ -419,6 +465,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>classe che può essere estesa per implementare renderizzazioni personalizzate</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>commonService</td>
@@ -431,6 +481,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi comuni</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -465,12 +519,22 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="64"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:64</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:104</a></div>
                 </td>
             </tr>
 
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che verifica la presenza di modifiche pendenti, se non ve ne sono è possibile navigare altrove direttamente, altrimenti viene visualizzato un popup di conferma.
+L&#39;hostlistener permette di intercettare anche refresh, chiusura e altri eventi del browser</p>
+</div>
+
+                    <div>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
@@ -498,12 +562,49 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="87"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:87</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:131</a></div>
                 </td>
             </tr>
 
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che intercetta il ridimensionamento della finestra e richiama la modifica delle dimensioni del contenitore</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>evento</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>
@@ -539,17 +640,26 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="64"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:64</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:104</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che verifica la presenza di modifiche pendenti, se non ve ne sono è possibile navigare altrove direttamente, altrimenti viene visualizzato un popup di conferma.
+L&#39;hostlistener permette di intercettare anche refresh, chiusura e altri eventi del browser</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>Observable | boolean</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>definisce se ci sono modifiche pendenti</p>
 
                     </div>
                 </td>
@@ -578,14 +688,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="578"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:578</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="678"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:678</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che genera la configurazione per il panel explorer corpus incluso il componente</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -596,6 +708,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -610,6 +723,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo del pannello explorer corpus</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -621,7 +738,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>configurazione del pannello</p>
+
                     </div>
                 </td>
             </tr>
@@ -649,14 +767,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="703"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:703</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="830"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:830</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che genera la configurazione del pannello di esplorazione del lessico</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -667,6 +787,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -681,6 +802,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo del pannello di esplorazione del lessico</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -692,7 +817,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>configurazione del pannello di esplorazione del lessico</p>
+
                     </div>
                 </td>
             </tr>
@@ -720,14 +846,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="648"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:648</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="769"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:769</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che genera la configurazione del tile di testo</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -738,6 +866,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -752,6 +881,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo del pannello</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>title</td>
@@ -764,6 +897,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>titolo del testo</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>textWindowComponent</td>
@@ -776,6 +913,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>accesso diretto al native element</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>componentRef</td>
@@ -788,6 +929,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>componentRef di WorkspaceTextWindowComponent</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -799,7 +944,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>configurazione del tile di testo</p>
+
                     </div>
                 </td>
             </tr>
@@ -827,14 +973,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="625"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:625</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="733"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:733</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che genera la configurazione del pannello di annotazione di un testo, incluso il componente relativo</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -845,6 +993,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -859,6 +1008,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo del pannello</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>textId</td>
@@ -871,6 +1024,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo numerico del testo</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>title</td>
@@ -883,6 +1040,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>titolo del testo</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -894,7 +1055,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>configurazione del pannello di annotazione di un testo</p>
+
                     </div>
                 </td>
             </tr>
@@ -920,14 +1082,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="266"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:266</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="326"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:326</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia AfterViewInit, utilizzato per inizializzare il currentWorkspaceInstance e ridimensioare il contenitore</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -957,14 +1121,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="109"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:109</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="168"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:168</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -1001,14 +1167,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="87"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:87</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:131</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che intercetta il ridimensionamento della finestra e richiama la modifica delle dimensioni del contenitore</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1019,6 +1187,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1033,6 +1202,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>evento</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1070,14 +1243,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="272"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:272</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="337"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:337</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il pannello di esplorazione del corpus</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1088,6 +1263,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1102,6 +1278,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>evento di click su esplora corpus</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1139,14 +1319,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="369"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:369</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="445"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:445</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce l&#39;apertura di un pannello di esplorazione del lessico</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1157,6 +1339,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1171,6 +1354,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>evento di clic su apri pannello di esplorazione del lessico</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1208,14 +1395,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="313"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:313</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="384"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:384</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che apre il pannello di annotazione di un testo</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1226,6 +1415,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1240,6 +1430,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo numerico del testo</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>title</td>
@@ -1252,6 +1446,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>titolo del testo</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1291,18 +1489,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="643"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:643</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="755"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:755</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che ridimensiona l&#39;altezza del contenitore del workspace</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -1328,14 +1533,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="410"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:410</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="491"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:491</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1346,6 +1553,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1360,6 +1568,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>status del workspace</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1397,17 +1609,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="507"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:507</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="592"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:592</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che recupera la lista dei testi come elementi per la scelta</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="../classes/TextChoice.html" target="_self" >TextChoice[]</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>lista dei testi come elementi selezionabili</p>
 
                     </div>
                 </td>
@@ -1434,14 +1654,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="524"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:524</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="613"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:613</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che esegue il salvataggio dello stato del workspace</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1452,6 +1674,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1466,6 +1689,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>evento di click sul salvataggio</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1503,14 +1730,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="560"
-                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:560</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="654"
+                            class="link-to-prism">src/app/pages/workspace/workspace.component.ts:654</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Componente creato in maniera dinamica, con gestione manuale degli input e degli eventi</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1521,6 +1750,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1535,6 +1765,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>lista dei testi</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>workspaceComponent</td>
@@ -1547,6 +1781,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>?</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1558,7 +1796,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>elemento html del selettore di testo</p>
+
                     </div>
                 </td>
             </tr>
@@ -1599,10 +1838,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:59</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:93</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al contenitore die pannelli</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1631,10 +1876,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:56</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:88</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista degli elementi di menu di primeng</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1663,10 +1914,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:41</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:47</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo per un nuovo workspace</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1689,10 +1946,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:53</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se è un nuovo workspace</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1721,10 +1984,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:54</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:85</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nome della proprietà del localstorage che memorizza i tile</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1753,10 +2022,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:64</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Prefisso del titolo di un tile di testo</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1785,10 +2060,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:57</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:90</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista dei layer visibili</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1811,10 +2092,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:47</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:70</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce il lavoro è stato salvato</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1843,10 +2130,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:50</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:77</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Id del contenitore dei pannelli nel template</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1875,10 +2168,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:43</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:58</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo del workspace</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1911,10 +2210,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/pages/workspace/workspace.component.ts:95</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al contenitore del menu del workspace</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1955,8 +2260,10 @@ import { LexiconTileContent } from &#x27;src/app/models/tile/lexicon-tile-conten
 import { CommonService } from &#x27;src/app/services/common.service&#x27;;
 // import { CorpusTileContent } from &#x27;../models/tileContent/corpus-tile-content&#x27;;
 
-var currentWorkspaceInstance: any;
+/**Variabile dell&#x27;istanza corrente del workspace */
+var currentWorkspaceInstance: any; //TODO verificare effettivo utilizzo
 
+/**Componente base del workspace */
 @Component({
   selector: &#x27;app-workspace&#x27;,
   templateUrl: &#x27;./workspace.component.html&#x27;,
@@ -1964,28 +2271,66 @@ var currentWorkspaceInstance: any;
 })
 export class WorkspaceComponent implements OnInit, AfterViewInit {
 
+  /**
+   * @private
+   * Identificativo per un nuovo workspace
+   */
   private newId &#x3D; &#x27;new&#x27;;
+
+  /**
+   * @private
+   * Definisce se è un nuovo workspace
+   */
   private newWorkspace &#x3D; false;
+  /**
+   * @private
+   * Identificativo del workspace
+   */
   private workspaceId: string | undefined &#x3D; undefined;
 
+  /**
+   * @private
+   * Prefisso del titolo di un tile di testo
+   */
   private textTilePrefix: string &#x3D; &#x27;textTile_&#x27;;
 
+  /**
+   * @private
+   * Definisce il lavoro è stato salvato
+   */
   private workSaved &#x3D; false;
   //private mainPanel: any;
   //private openPanels: Map&lt;string, any&gt; &#x3D; new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
+  /**
+   * @private
+   * Id del contenitore dei pannelli nel template
+   */
   private workspaceContainer &#x3D; &quot;#panelsContainer&quot;;
 
   //private storedData: any;
   //private storedTiles: Map&lt;string, Tile&lt;any&gt;&gt; &#x3D; new Map();
+  /**
+   * @private
+   * Nome della proprietà del localstorage che memorizza i tile
+   */
   private storageName &#x3D; &quot;storedTiles&quot;;
 
+  /**Lista degli elementi di menu di primeng */
   public items: MenuItem[] &#x3D; [];
+  /**Lista dei layer visibili */
   public visibleLayers: Layer[] &#x3D; [];
 
+  /**Riferimento al contenitore die pannelli */
   @ViewChild(&#x27;panelsContainer&#x27;) public container!: ElementRef;
+  /**Riferimento al contenitore del menu del workspace */
   @ViewChild(&#x27;workspaceMenuContainer&#x27;) public wsMenuContainer!: ElementRef;
 
   // @HostListener allows us to also guard against browser refresh, close, etc.
+  /**
+   * Metodo che verifica la presenza di modifiche pendenti, se non ve ne sono è possibile navigare altrove direttamente, altrimenti viene visualizzato un popup di conferma.
+   * L&#x27;hostlistener permette di intercettare anche refresh, chiusura e altri eventi del browser
+   * @returns {Observable&lt;boolean&gt;|boolean} definisce se ci sono modifiche pendenti
+   */
   @HostListener(&#x27;window:beforeunload&#x27;)
   canDeactivate(): Observable&lt;boolean&gt; | boolean {
     // insert logic to check if there are pending changes here;
@@ -2009,6 +2354,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return this.workSaved;
   }
 
+  /**
+   * Metodo che intercetta il ridimensionamento della finestra e richiama la modifica delle dimensioni del contenitore
+   * @param event {{target:any}} evento 
+   */
   @HostListener(&#x27;window:resize&#x27;, [&#x27;$event&#x27;])
   onResize(event: { target: any; }) {
     //this.mainPanel.maximize();
@@ -2019,6 +2368,20 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     this.resizeContainerHeight()
   }
 
+  /**
+   * Costruttore per WorkspaceComponent
+   * @param router {Router} servizi per la navigazione fra le viste
+   * @param activeRoute {ActivatedRoute} fornisce l&#x27;accesso alle informazioni di una route associata con un componente caricato in un outlet
+   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
+   * @param layerService {LayerService} servizi relativi ai layer
+   * @param userService {UserService} servizi relativi agli utenti //TODO verificare se possiamo rimuovere
+   * @param cd {ChangeDetectorRef} fornisce funzionalità di verifica di modifiche per la visualizzazione //TODO verificare se possiamo rimuovere
+   * @param vcr {ViewContainerRef} contenitore dove un o più view possono essere attaccate a un componente
+   * @param messageService {MessageService} servizi per la gestione dei messaggi
+   * @param workspaceService {WorkspaceService} servizi relativi ai workspace
+   * @param renderer {Renderer2} classe che può essere estesa per implementare renderizzazioni personalizzate
+   * @param commonService {CommonService} servizi comuni
+   */
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
@@ -2032,6 +2395,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     private commonService: CommonService) { }
 
+  /**Metodo dell&#x27;interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
 
     this.items &#x3D; [
@@ -2189,22 +2553,28 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     })
   }
 
+  /**Metodo dell&#x27;interfaccia AfterViewInit, utilizzato per inizializzare il currentWorkspaceInstance e ridimensioare il contenitore */
   ngAfterViewInit(): void {
     currentWorkspaceInstance &#x3D; this;
 
     this.resizeContainerHeight()
   }
 
+  /**
+   * Metodo che visualizza il pannello di esplorazione del corpus
+   * @param event {any} evento di click su esplora corpus
+   * @returns {void}
+   */
   openExploreCorpusPanel(event: any) {
     var ecPanelId &#x3D; &#x27;corpusExplorerTile&#x27;
 
-    var panelExist &#x3D; jsPanel.getPanels().find(
+    var panelExist &#x3D; jsPanel.getPanels().find( //verifica se il panel è già presente
       (x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; ecPanelId
     );
 
     if (panelExist) {
-      panelExist.front()
-      return;
+      panelExist.front() //presumibilmente sposta la vista in primo piano
+      return; //esce senza eseguire ulteriori azioni, pannello unico non sono possibili pannelli multipli
     }
 
     let res &#x3D; this.generateCorpusExplorerPanelConfiguration(ecPanelId);
@@ -2236,6 +2606,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     corpusTileElement.addComponentToList(res.id, res.component, res.tileType);
   }
 
+  /**
+   * Metodo che apre il pannello di annotazione di un testo
+   * @param textId {number} identificativo numerico del testo
+   * @param title {string} titolo del testo
+   * @returns {void}
+   */
   openTextPanel(textId: number, title: string) {
     let modalTextSelect &#x3D; jsPanel.getPanels(function (this: any) {
       return this.classList.contains(&#x27;jsPanel-modal&#x27;);
@@ -2252,7 +2628,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       (x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; panelId
     );
 
-    if (panelExist) {
+    if (panelExist) { //caso di pannello già presente
       panelExist.front()
       return;
     }
@@ -2261,7 +2637,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
 
     let textTileConfig &#x3D; res.panelConfig;
 
-    let textTileElement &#x3D; jsPanel.create(textTileConfig);
+    let textTileElement &#x3D; jsPanel.create(textTileConfig); //crea il pannello di annotazione del testo
 
     textTileElement
       .resize({
@@ -2292,6 +2668,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     // });
   }
 
+  /**
+   * Metodo che gestisce l&#x27;apertura di un pannello di esplorazione del lessico
+   * @param event {any} evento di clic su apri pannello di esplorazione del lessico
+   * @returns {void}
+   */
   openLexiconPanel(event: any) {
     var lexiconPanelId &#x3D; &#x27;lexiconTile&#x27;
 
@@ -2299,7 +2680,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
       (x: { id: string; }) &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; lexiconPanelId
     );
 
-    if (panelExist) {
+    if (panelExist) { //caso pannello di esplorazione del lessico esistente
       panelExist.front()
       return;
     }
@@ -2333,6 +2714,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     lexiconTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
+  /**
+   * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
+   * @param workspaceStatus {Workspace} status del workspace
+   * @returns {void}
+   */
   restoreTiles(workspaceStatus: Workspace) {
     console.log(&#x27;restore&#x27;);
     this.loaderService.show();
@@ -2430,6 +2816,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     this.loaderService.hide();
   }
 
+  /**
+   * Metodo che recupera la lista dei testi come elementi per la scelta
+   * @returns {TextChoice[]} lista dei testi come elementi selezionabili
+   */
   retrieveTextList(): TextChoice[] {
     var textList: Array&lt;TextChoice&gt; &#x3D; [];
 
@@ -2447,6 +2837,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return textList;
   }
 
+  /**
+   * Metodo che esegue il salvataggio dello stato del workspace
+   * @param event {any} evento di click sul salvataggio
+   */
   saveWork(event: any) {
     //console.log(this.openPanels);
     //this.workSaved &#x3D; true;
@@ -2481,8 +2875,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     console.log(&#x27;stored data&#x27;, storedData);
   }
 
-  //Componente creato in maniera dinamica,
-  //con gestione manuale degli input e degli eventi
+  //TODO verificare perché non sembra sia utilizzato
+  /**
+   * Componente creato in maniera dinamica, con gestione manuale degli input e degli eventi
+   * @param textList {Array&lt;any&gt;} lista dei testi
+   * @param workspaceComponent {any} ?
+   * @returns {any} elemento html del selettore di testo
+   */
   workspaceTextSelectorComponentToHtml(textList: Array&lt;any&gt;, workspaceComponent: any) {
     const componentRef &#x3D; this.vcr.createComponent(WorkspaceTextSelectorComponent);
 
@@ -2501,10 +2900,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return element;
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione per il panel explorer corpus incluso il componente
+   * @param ecPanelId {string} identificativo del pannello explorer corpus
+   * @returns configurazione del pannello
+   */
   private generateCorpusExplorerPanelConfiguration(ecPanelId: string) {
     const componentRef &#x3D; this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
 
-    componentRef.instance.onTextSelectEvent
+    componentRef.instance.onTextSelectEvent //mappa l&#x27;evento di selezione di un testo nell&#x27;ec
       .subscribe({
         next: (event: any) &#x3D;&gt; {
           console.log(&quot;qui&quot;, event);
@@ -2548,6 +2953,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     };
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione del pannello di annotazione di un testo, incluso il componente relativo
+   * @param panelId {string} identificativo del pannello
+   * @param textId {number} identificativo numerico del testo
+   * @param title {string} titolo del testo
+   * @returns configurazione del pannello di annotazione di un testo
+   */
   private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string) {
     const componentRef &#x3D; this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId &#x3D; textId;
@@ -2566,11 +2979,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     };
   }
 
+  /**
+   * @private
+   * Metodo che ridimensiona l&#x27;altezza del contenitore del workspace 
+   */
   private resizeContainerHeight() {
     let height &#x3D; window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
     this.renderer.setStyle(this.container.nativeElement, &#x27;height&#x27;, &#x60;${height}px&#x60;);
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione del tile di testo
+   * @param panelId {string} identificativo del pannello
+   * @param title {string} titolo del testo
+   * @param textWindowComponent {any} accesso diretto al native element 
+   * @param componentRef {any} componentRef di WorkspaceTextWindowComponent
+   * @returns configurazione del tile di testo
+   */
   private generateTextTileConfig(panelId: string, title: string, textWindowComponent: any, componentRef: any) {
     let config &#x3D;
     {
@@ -2626,6 +3052,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit {
     return config;
   }
 
+  /**
+   * @private
+   * Metodo che genera la configurazione del pannello di esplorazione del lessico
+   * @param lexiconPanelId {string} identificativo del pannello di esplorazione del lessico
+   * @returns configurazione del pannello di esplorazione del lessico
+   */
   private generateLexiconPanelConfiguration(lexiconPanelId: string) {
     const componentRef &#x3D; this.vcr.createComponent(WorkspaceLexiconTileComponent);
 

@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente del menu del workspace</p>
+
+    </p>
 
 
     <p class="comment">
@@ -205,10 +212,16 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:18</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per WorkspaceMenuComponent</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -236,9 +249,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:11</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:13</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Input della lista degli elementi del menu</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -260,9 +279,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:12</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:15</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Evento emesso al click su una voce di menu</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -293,14 +318,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="21"
-                            class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:21</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:31</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che emette l&#39;evento di click su una voce di menu</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -311,6 +338,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -325,6 +353,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>stringa emessa al click su una voce di menu</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -362,14 +394,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:24</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -403,10 +437,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/workspace/workspace-menu/workspace-menu.component.ts:18</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Icona fortawesome per uscire dal workspace</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -420,22 +460,32 @@
 import { MenuItem } from &#x27;primeng/api&#x27;;
 import { faHouseDamage } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
 
+/**Componente del menu del workspace */
 @Component({
   selector: &#x27;app-workspace-menu&#x27;,
   templateUrl: &#x27;./workspace-menu.component.html&#x27;,
   styleUrls: [&#x27;./workspace-menu.component.scss&#x27;]
 })
 export class WorkspaceMenuComponent implements OnInit {
+  /**Input della lista degli elementi del menu */
   @Input() itemsInput: MenuItem[] &#x3D; [];
+  /**Evento emesso al click su una voce di menu */
   @Output() menuClickEvent &#x3D; new EventEmitter&lt;string&gt;();
 
+  /**Icona fortawesome per uscire dal workspace */
   faHouseDamage &#x3D; faHouseDamage;
 
+  /**Costruttore per WorkspaceMenuComponent */
   constructor() { }
 
+  /**Metodo dell&#x27;interfaccia OnInit */ //TODO verificare se rimuovere
   ngOnInit() {
   }
 
+  /**
+   * Metodo che emette l&#x27;evento di click su una voce di menu
+   * @param event {any} stringa emessa al click su una voce di menu
+   */
   menuClick(event: any) {
 
     // let node;
