@@ -3,6 +3,7 @@ import { LayerService } from 'src/app/services/layer.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Layer } from 'src/app/models/layer/layer.model';
 
+//TODO verificare stato del componente, non appare in uso in alcun punto
 @Component({
   selector: 'app-workspace-layers-visibility-manager',
   templateUrl: './workspace-layers-visibility-manager.component.html',

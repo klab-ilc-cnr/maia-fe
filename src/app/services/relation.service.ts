@@ -15,6 +15,11 @@ export class RelationService {
     this.relationUrl = environment.relationUrl;
   }
 
+  /**
+   * GET che richiede la lista di relazioni associate a un testo
+   * @param textId {number} identificativo numerico del testo
+   * @returns {Observable<Relation[]>} observable della lista di relazioni
+   */
   public retrieveByTextId(textId: number): Observable<Relation[]> {
     return this.http.get<Relation[]>(`${this.relationUrl}/${textId}`);
   }

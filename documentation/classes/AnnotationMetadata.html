@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta i metadati di un&#39;annotazione</p>
+
+            </p>
 
 
 
@@ -132,10 +139,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="2" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:2</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:4</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico del creatore</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -158,10 +171,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Data di creazione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -184,10 +203,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Data di ultima modifica</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -210,10 +235,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="3" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:3</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/annotation/annotation-metadata.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico dell&#39;ultimo che ha apportato modifiche</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -230,9 +261,13 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class AnnotationMetadata {
+  /**Identificativo numerico del creatore */
   createdBy: number | undefined
+  /**Identificativo numerico dell&#x27;ultimo che ha apportato modifiche */
   modifiedBy: number | undefined
+  /**Data di creazione */
   creationDate: Date | undefined
+  /**Data di ultima modifica */
   lastModificationDate: Date | undefined
 }
 </code></pre>

@@ -26,9 +26,13 @@ import { RelationService } from 'src/app/services/relation.service';
 })
 export class WorkspaceTextWindowComponent implements OnInit {
 
+  /**Indice di inizio selezione */
   private selectionStart?: number;
+  /**Indice di fine selezione */
   private selectionEnd?: number;
+  /**Definisce se la modifica è bloccata */ //TODO non in uso, verificare
   private _editIsLocked: boolean = false;
+  /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
     spaceBeforeTextLine: 8,
@@ -55,8 +59,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
     arcCircleLabelPlaceholderWidth: 7
   }
 
+  /**Annotazione in lavorazione */
   annotation = new Annotation();
+  /**Annotation response */
   annotationsRes: any;
+  /**Freccia di relazione */
   dragArrow: any = {
     m: "",
     c: "",
@@ -65,30 +72,61 @@ export class WorkspaceTextWindowComponent implements OnInit {
     sourceAnn: new Annotation(),
     targetAnn: new Annotation()
   };
+  /**Altezza del pannello di testo */
   height: number = window.innerHeight / 2;
+  /**Lista delle opzioni layer */
   layerOptions = new Array<SelectItem>();
+  /**Lista dei layer */
   layersList: Layer[] = [];
+  /**Relazione in lavorazione */
   relation = new Relation();
+  /**Righe di testo */
   rows: TextRow[] = [];
+  /**Layer selezionato */
   selectedLayer: any;
+  /**Lista di layer selezionati */
   selectedLayers: Layer[] | undefined;
+
   sentnumVerticalLine: string = "M 0 0";
+  /**Definisce se visualizzare l'editor di annotazione */
   showAnnotationEditor: boolean = false;
+  /**Definisce se visualizzare l'editor delle relazioni */
   showRelationEditor: boolean = false;
+  /**Annotazioni semplificate */
   simplifiedAnns: any;
+  /**Lista di archi di relazione semplificati */
   simplifiedArcs: Array<Relation> = [];
+  /**Annotazione sorgente della relazione */
   sourceAnn = new Annotation();
+  /**Layer sorgente dell'annotazione */
   sourceLayer = new Layer();
   svgHeight: number = 0;
+  /**Annotazione target della relazione */
   targetAnn = new Annotation();
+  /**Layer target della relazione */
   targetLayer = new Layer();
+  /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
+  /**Identificativo numerico del testo */
   textId: number | undefined;
+  /**Text response */
   textRes: any;
+  /**Lista dei layer visibili */
   visibleLayers: Layer[] = [];
 
+  /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
 
+  /**
+   * Costruttore per WorkspaceTextWindowComponent
+   * @param annotationService {AnnotationService} servizi relativi alle annotazioni
+   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
+   * @param workspaceService {WorkspaceService} servizi relativi ai workspace //TODO valutare rimozione per mancato utilizzo
+   * @param layerService {LayerService} servizi relativi ai layer
+   * @param messageService {MessageService} servizi per la gestione dei messaggi
+   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
+   * @param relationService {RelationService} servizi relativi alle relazioni
+   */
   constructor(
     private annotationService: AnnotationService,
     private loaderService: LoaderService,
@@ -99,6 +137,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     private relationService: RelationService
   ) { }
 
+  /**Metodo dell'interfaccia OnInit, utilizzato per caricare i dati iniziali del componente */
   ngOnInit(): void {
     if (!this.textId) {
       return;
@@ -111,11 +150,19 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.loadData();
   }
 
+  /**
+   * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
+   * @param event {any} evento di variazione dei layer visibili
+   */
   changeVisibleLayers(event: any) {
     this.visibleLayers = this.selectedLayers || [];
     this.loadData();
   }
 
+  /**
+   * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
+   * @returns {void}
+   */
   loadData() {
     if (!this.textId) {
       return;
@@ -135,14 +182,14 @@ export class WorkspaceTextWindowComponent implements OnInit {
       next: ([layersResponse, textResponse, annotationsResponse, relationsResponse]) => {
         this.layersList = layersResponse;
 
-        if (!this.selectedLayers) {
+        if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
           this.visibleLayers = this.selectedLayers = this.layersList;
         }
         else {
           this.visibleLayers = this.selectedLayers;
         }
 
-        this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id }));
+        this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
 
         this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
 
@@ -172,8 +219,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
           }
         })
 
-        this.annotationsRes.annotations.forEach((a: Annotation) => {
-          if (a.spans && layersIndex.includes(a.layer)) {
+        this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
+          if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
             let sAnn = a.spans.map((sc: SpanCoordinates) => {
               let { spans, ...newAnn } = a;
               return {
@@ -205,8 +252,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
     });
   }
 
+  /**
+   * Metodo che gestisce il movimento del mouse nel trascinamento
+   * @param event {any} evento di trascinamento del mouse
+   * @returns {void}
+   */
   mouseMoved(event: any) {
-    if (this.dragArrow.isDrawing) {
+    if (this.dragArrow.isDrawing) { //traccia solo il caso di freccia di trascinamento che sta disegnando
       this.dragArrow.visibility = "visible";
       this.svg.nativeElement.classList.add('unselectable');
 
@@ -220,46 +272,58 @@ export class WorkspaceTextWindowComponent implements OnInit {
     }
   }
 
+  /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
     this.annotation = new Annotation();
   }
 
+  /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationDeleted() {
     this.annotation = new Annotation();
     this.loadData();
   }
 
+  /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
     this.annotation = new Annotation();
     this.loadData();
   }
 
+  /**Metodo che intercetta il cambio di layer selezionato */ //TODO sembra avere unicamente funzioni di debugging, vedere se eliminare
   onChangeLayerSelection(event: any) {
     console.log('hello', this.selectedLayer, event)
   }
 
+  /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
   onRelationCancel() {
     this.relation = new Relation();
     this.annotation = new Annotation();
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
 
+  /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
   onRelationDeleted() {
     this.relation = new Relation();
     this.showEditorAndHideOthers(EditorType.Annotation);
     this.loadData();
   }
 
+  /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
   onRelationSaved() {
     this.relation = new Relation();
     this.showEditorAndHideOthers(EditorType.Annotation);
     this.loadData();
   }
 
+  /**
+   * Metodo che gestisce le variazioni di selezione sul testo
+   * @param event {any} evento di mouse up
+   * @returns {void}
+   */
   onSelectionChange(event: any): void {
     const selection = this.getCurrentTextSelection();
 
-    if (!selection) {
+    if (!selection) { //caso senza selezione, esco dal metodo
       return;
     }
 
@@ -267,9 +331,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
-    let text = this.textRes.text.substring(startIndex, endIndex);
+    let text = this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato
 
-    if (!this.onlySpaces(text)) {
+    if (!this.onlySpaces(text)) { 
       let originalLength = text.length;
       let newText = text.trimStart();
       let newLength = newText.length;
@@ -301,19 +365,24 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
 
+  /**
+   * Metodo che apre l'annotazione selezionata nell'editor
+   * @param id {number} identificativo numerico di un'annotazione
+   * @returns {void}
+   */
   openAnnotation(id: number) {
-    if (this.dragArrow.isDrawing) {
+    if (this.dragArrow.isDrawing) { //se sto disegnando una relazione non faccio niente
       return;
     }
 
-    if (!id) {
+    if (!id) { //se non ho un id per l'annotazione genero errore ed esco
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Impossibile visualizzare l\'annotazione selezionata'));
       return;
     }
 
-    this.showEditorAndHideOthers(EditorType.Annotation);
+    this.showEditorAndHideOthers(EditorType.Annotation); //visualizzo l'editor di annotazione
 
-    let ann = this.annotationsRes.annotations.find((a: any) => a.id == id);
+    let ann = this.annotationsRes.annotations.find((a: any) => a.id == id); //cerca fra le annotazioni quella corrente attraverso l'id
 
     if (!ann) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Annotazione non trovata'));
@@ -330,6 +399,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
     //this._editIsLocked = true;
   }
 
+  /**
+   * Metodo che apre la relazione selezionata nell'editor
+   * @param id {string} identificativo della relazione
+   * @returns {void}
+   */
   openRelation(id: string) {
     if (this.dragArrow.isDrawing) {
       return;
@@ -365,6 +439,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.showEditorAndHideOthers(EditorType.Relation);
   }
 
+  /**
+   * Metodo che evidenzia una relazione (e il suo arco) quando vi si entra con il mouse
+   * @param id {number} identificativo numerico di una relazione
+   * @returns {void}
+   */
   overEnterRelation(id: number) {
     $('*[data-relation-id="' + id + '"]').addClass("filtered");
 
@@ -380,6 +459,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
     $('#' + this.generateHighlightId(arc.targetAnnotationId) + '').addClass("over");
   }
 
+  /**
+   * Metodo che rimuove l'evidenziazione di una relazione quando il mouse esce dalla stessa
+   * @param id {number} identificativo numerico di una relazione
+   * @returns {void}
+   */
   overLeaveRelation(id: number) {
     $('*[data-relation-id="' + id + '"]').removeClass("filtered");
 
@@ -395,6 +479,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
     $('#' + this.generateHighlightId(arc.targetAnnotationId) + '').removeClass("over");
   }
 
+  /**
+   * Metodo che avvia il disegno di una relazione a partire da una annotazion
+   * @param event {any} evento di mousedown //TODO valutare rimozione per mancato uso
+   * @param annotation {any} annotazione sulla quale avviene il mousedown
+   * @returns {void}
+   */
   startDrawing(event: any, annotation: any) {
     if (!annotation.id) {
       return;
@@ -415,6 +505,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.clearSelection();
   }
 
+  /**
+   * Metodo che conclude il disegno di una relazione su mouseup al di fuori di un'annotazione (non crea la relazione)
+   * @param event {any} evento di mouseup //TODO valutare rimozione per mancato uso
+   * @returns {void}
+   */
   endDrawing(event: any) {
     if (!this.dragArrow.isDrawing) {
       return;
@@ -429,6 +524,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.clearSelection();
   }
 
+  /**
+   * Metodo che conclude il disegno di una relazione su mouseup su un'annotazione e richiede la creazione della relazione
+   * @param event {any} evento di mouseup su una annotazione
+   * @param annotation {Annotation} annotazione sulla quale avviene il mouseup
+   * @returns {void}
+   */
   endDrawingAndCreateRelation(event: any, annotation: Annotation) {
     if (!this.dragArrow.isDrawing) {
       return;
@@ -478,20 +579,33 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.endDrawing(event)
   }
 
+  /**
+   * Metodo che aggiorna le dimensioni del componente
+   * @param newHeight {any} nuova altezza
+   */
   updateComponentSize(newHeight: any) {
     this.updateHeight(newHeight);
     this.updateTextEditorSize();
   }
 
+  /**
+   * Metodo che aggiorna l'altezza del pannello e del container del testo
+   * @param newHeight {any} nuova altezza
+   */
   updateHeight(newHeight: any) {
     this.height = newHeight - Math.ceil(this.visualConfig.jsPanelHeaderBarHeight);
     this.textContainerHeight = this.height - Math.ceil(this.visualConfig.layerSelectHeightAndMargin + this.visualConfig.paddingAfterTextEditor);
   }
 
+  /**Metodo che aggiorna le dimensioni dell'editor di testo */
   updateTextEditorSize() {
     this.renderData();
   }
 
+  /**
+   * @private
+   * Metodo che rimuove la selezione testuale
+   */
   private clearSelection() {
     const selection = window.getSelection();
 
@@ -675,6 +789,14 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return line;
   }
 
+  /**
+   * @private
+   * Metodo che calcola la label da assegnare a un'annotazione
+   * @param layer {Layer|undefined} layer dell'annotazione
+   * @param annotation {any} annotazione della quale creare la label
+   * @param maxLengthComputed {number} massima lunghezza possibile della label
+   * @returns {string} label dell'annotazione
+   */
   private elaborateAnnotationLabel(layer: Layer | undefined, annotation: any, maxLengthComputed: number) {
     let labelText = "";
 
@@ -723,6 +845,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return labelText;
   }
 
+  /**
+   * @private
+   * Metodo che calcola la label da assegnare a un arco di relazione
+   * @param name {string} nome della relazione
+   * @returns {{labelText: string, textWidth: number, labelWidth: number}} dati per la label dell'arco
+   */
   private elaborateArcLabel(name: string) {
     let labelText = "";
 
@@ -1110,10 +1238,23 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return arc;
   }
 
+  /**
+   * @private
+   * Metodo che recupera un'annotazione fra quelle semplificate sulla base dell'id
+   * @param id {number} identificativo dell'annotazione
+   * @returns {any} annotazione estratta dalle annotazioni semplificate
+   */
   private findAnnotationById(id: number) {
     return this.simplifiedAnns.find((an: any) => an.id == id);
   }
 
+  /**
+   * @private
+   * Metodo che recupera un'annotazione dalle tower utilizzando l'id
+   * @param id {number} identificativo numerico dell'annotazione
+   * @param lineTowers {Array<any>} lista ?
+   * @returns {any} annotazione corrispondente nella tower ?
+   */
   private findAnnotationInTowers(id: number, lineTowers: Array<any>) {
     var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
 
@@ -1126,6 +1267,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return ann;
   }
 
+  /**
+   * @private
+   * Metodo che recupera la tower contenente una data annotazione
+   * @param id {number} identificativo numerico dell'annotazione
+   * @param lineTowers {Array<any>} lista ?
+   * @returns {any} tower contenente l'annotazione
+   */
   private findTowerByAnnotationId(id: number, lineTowers: Array<any>) {
     var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
     return t;
@@ -1209,6 +1357,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return move + " " + curve1 + " " + curve2;
   }
 
+  /**
+   * @private
+   * Metodo che dato un id numerico calcola l'id per la sua evidenziazione
+   * @param id {number} identificativo numerico
+   * @returns {string} identificativo per evidenziazione
+   */
   private generateHighlightId(id: number) {
     return "h-" + id;
   }
@@ -1231,6 +1385,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return context.measureText(text).width;
   }
 
+  /**
+   * @private
+   * Metodo che recupera gli indici della selezione sul testo
+   * @returns {{startIndex: number, endIndex: number}|undefined} indici iniziale e finale della selezione se presente
+   */
   private getCurrentTextSelection() {
     const selection = window.getSelection();
 
@@ -1288,6 +1447,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return this.visualConfig.spaceBeforeTextLine + this.visualConfig.spaceAfterTextLine + this.visualConfig.stdTextLineHeight;
   }
 
+  /**
+   * @private
+   * Metodo che data una stringa verifica se è composta da soli spazi
+   * @param str {string} stringa da modificare
+   * @returns {boolean} definisce se la stringa è composta da soli spazi
+   */
   private onlySpaces(str: string) {
     return str.trim().length === 0;
   }
@@ -1301,6 +1466,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return text;
   }
 
+  /**
+   * @private
+   * Metodo che gestisce la renderizzazione delle annotazioni per una line
+   * @param startIndex {number} indice iniziale
+   * @param endIndex {number} indice finale
+   * @returns {{lineTowers: any[], lineHighLights:TextHighlight[]}} dati delle annotazioni per la line
+   */
   private renderAnnotationsForLine(startIndex: number, endIndex: number) {
     let lineTowers = new Array();
     let lineHighlights = new Array<TextHighlight>();
@@ -1400,6 +1572,14 @@ export class WorkspaceTextWindowComponent implements OnInit {
     };
   }
 
+  /**
+   * @private
+   * Metodo che gestisce la renderizzazione degli archi per una line
+   * @param startIndex {number} indice iniziale
+   * @param endIndex {number} indice finale
+   * @param lineTowers {Array<any>} lista ?
+   * @returns {any[]} lista degli archi per la line
+   */
   private renderArcsForLine(startIndex: number, endIndex: number, lineTowers: Array<any>) {
     let lineArcs = new Array();
     let relationsIncludedInLine = new Array();
@@ -1561,6 +1741,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
     return lineArcs;
   }
 
+  /**
+   * @private
+   * Metodo che gestisce la renderizzazione del testo annotato
+   */
   private renderData() {
     this.rows = [];
 
@@ -1692,6 +1876,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.sentnumVerticalLine = this.generateSentnumVerticalLine();
   }
 
+  /**
+   * @private
+   * Metodo che visualizza il tipo di editor richiesto e nasconde eventuali altri editor
+   * @param name {EditorType} nome del tipo di editor
+   * @returns {void}
+   */
   private showEditorAndHideOthers(name: EditorType) {
     switch (name) {
       case EditorType.Annotation: {

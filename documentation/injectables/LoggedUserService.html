@@ -174,17 +174,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="27"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:27</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:35</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che valuta se l&#39;utente è autorizzato alla gestione dei layer</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>definisce se l&#39;utente può gestire i layer</p>
 
                     </div>
                 </td>
@@ -213,17 +221,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="48"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:48</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che valuta se l&#39;utente è autorizzato alla gestione dei tagset</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>definisce se l&#39;utente può gestire i tagset</p>
 
                     </div>
                 </td>
@@ -252,17 +268,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="22"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:22</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che valuta se l&#39;utente è autorizzato alla gestione utenze</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>definisce se l&#39;utente può gestire le utenze</p>
 
                     </div>
                 </td>
@@ -291,8 +315,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="45"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:45</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:57</a></div>
                 </td>
             </tr>
 
@@ -362,8 +386,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:49</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:61</a></div>
                 </td>
             </tr>
 
@@ -401,8 +425,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:71</a></div>
                 </td>
             </tr>
 
@@ -500,6 +524,10 @@ export class LoggedUserService {
     return this.retrieveUserFromStorage();
   }
 
+  /**
+   * Metodo che valuta se l&#x27;utente è autorizzato alla gestione utenze
+   * @returns {boolean} definisce se l&#x27;utente può gestire le utenze
+   */
   public canManageUsers(): boolean{
     let user &#x3D; this.currentUser;
     if(user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined)
@@ -509,6 +537,10 @@ export class LoggedUserService {
     return (user?.role &#x3D;&#x3D;&#x3D; (Roles.AMMINISTRATORE));
   }
 
+  /**
+   * Metodo che valuta se l&#x27;utente è autorizzato alla gestione dei layer
+   * @returns {boolean} definisce se l&#x27;utente può gestire i layer
+   */
   public canManageLayers(): boolean{
     let user &#x3D; this.currentUser;
     if(user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined)
@@ -518,6 +550,10 @@ export class LoggedUserService {
     return (user?.role &#x3D;&#x3D;&#x3D; (Roles.AMMINISTRATORE));
   }
 
+  /**
+   * Metodo che valuta se l&#x27;utente è autorizzato alla gestione dei tagset
+   * @returns {boolean} definisce se l&#x27;utente può gestire i tagset
+   */
   public canManageTagsets(): boolean{
     let user &#x3D; this.currentUser;
     if(user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined)

@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta le relazioni di un elemento</p>
+
+            </p>
 
 
 
@@ -131,10 +138,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/relation/relations.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/relation/relations.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di relazioni in ingresso</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -162,10 +175,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/relation/relations.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/relation/relations.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di relazioni in uscita</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -183,8 +202,11 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Relation } from &quot;./relation&quot;
 
+/**Classe che rappresenta le relazioni di un elemento */
 export class Relations {
+  /**Lista di relazioni in ingresso */
   in: Array&lt;Relation&gt; &#x3D; []
+  /**Lista di relazioni in uscita */
   out: Array&lt;Relation&gt; &#x3D; []
 }
 </code></pre>

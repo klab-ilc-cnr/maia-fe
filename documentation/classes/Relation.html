@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta una relazione tra annotazioni</p>
+
+            </p>
 
 
 
@@ -144,10 +151,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/relation/relation.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/models/relation/relation.ts:16</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Descrizione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -170,10 +183,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="2" class="link-to-prism">src/app/models/relation/relation.ts:2</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/relation/relation.ts:4</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico della relazione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -196,10 +215,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="3" class="link-to-prism">src/app/models/relation/relation.ts:3</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/relation/relation.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nome della relazione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -222,10 +247,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/relation/relation.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/models/relation/relation.ts:12</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico dell&#39;annotazione sorgente</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -248,10 +279,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/relation/relation.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/relation/relation.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico del layer sorgente</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -274,10 +311,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/relation/relation.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/models/relation/relation.ts:14</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico dell&#39;annotazione target</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -300,10 +343,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/relation/relation.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/relation/relation.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico del layer target</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -326,10 +375,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/models/relation/relation.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/models/relation/relation.ts:18</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico del testo</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -346,13 +401,21 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class Relation {
+  /**Identificativo numerico della relazione */
   id: number | undefined
+  /**Nome della relazione */
   name: string | undefined
+  /**Identificativo numerico del layer sorgente */
   srcLayerId: number | undefined
+  /**Identificativo numerico del layer target */
   targetLayerId: number | undefined
+  /**Identificativo numerico dell&#x27;annotazione sorgente */
   srcAnnotationId: number | undefined
+  /**Identificativo numerico dell&#x27;annotazione target */
   targetAnnotationId: number | undefined
+  /**Descrizione */
   description: string | undefined
+  /**Identificativo numerico del testo */
   textId: number | undefined
 }
 </code></pre>

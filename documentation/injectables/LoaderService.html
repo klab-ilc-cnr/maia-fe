@@ -188,17 +188,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="21"
-                            class="link-to-prism">src/app/services/loader.service.ts:21</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/app/services/loader.service.ts:25</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che restituisce lo status di caricamento</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>Observable&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable che definisce se è in corso il loading o meno</p>
 
                     </div>
                 </td>
@@ -225,8 +233,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="25"
-                            class="link-to-prism">src/app/services/loader.service.ts:25</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/app/services/loader.service.ts:29</a></div>
                 </td>
             </tr>
 
@@ -262,8 +270,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">src/app/services/loader.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">src/app/services/loader.service.ts:33</a></div>
                 </td>
             </tr>
 
@@ -337,6 +345,10 @@ export class LoaderService {
     )
   }
 
+  /**
+   * Metodo che restituisce lo status di caricamento
+   * @returns {Observable&lt;boolean&gt;} observable che definisce se è in corso il loading o meno
+   */
   getStatus() : Observable&lt;boolean&gt; {
     return this.isLoading.asObservable()
   }

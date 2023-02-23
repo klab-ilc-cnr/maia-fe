@@ -132,6 +132,10 @@ export class WorkspaceService {
 
   //baseUrl = "http://localhost:8443"
   // baseUrl = "https://lari2.ilc.cnr.it/"
+  /**
+   * GET che recupera il sistema documentale
+   * @returns {Observable<DocumentSystem>} observable del sistema documentale
+   */
   public retrieveCorpus(): Observable<DocumentSystem> {
     let uuid = uuidv4();
 
@@ -139,6 +143,12 @@ export class WorkspaceService {
     //return this.http.get<DocumentSystem>('assets/mock/files.json')
   }
 
+  /**
+   * POST che esegue l'upload di un file nel sistema documentale
+   * @param element_id {number} identificativo numerico del file
+   * @param file {File} il file da caricare
+   * @returns {Observable<any>} observable del file caricato nel sistema documentale
+   */
   public uploadFile(element_id: number, file: File): Observable<any> {
     let uuid = uuidv4();
 
@@ -147,6 +157,13 @@ export class WorkspaceService {
     return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
   }
 
+  /**
+   * POST che richiede l'aggiornamento del nome dell'elemento documentale
+   * @param element_id {number} identificativo numerico dell'elemento documentale
+   * @param rename_string {string} nome da dare
+   * @param type {ElementType} tipo di elemento documentale (file o folder)
+   * @returns {Observable<any>} observable dell'elemento documentale aggiornato
+   */
   public renameElement(element_id: number, rename_string: string, type: ElementType): Observable<any> {
     let uuid = uuidv4();
 
@@ -166,6 +183,12 @@ export class WorkspaceService {
     return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
+  /**
+   * POST che esegue la cancellazione di file o di una cartella del corpus
+   * @param element_id {number} identificativo numerico dell'elemento
+   * @param type {ElementType} tipo di elemento da eliminare
+   * @returns {Observable<any>} observable dell'esito della cancellazione
+   */
   public removeElement(element_id: number, type: ElementType): Observable<any> {
     let uuid = uuidv4();
 
@@ -184,6 +207,13 @@ export class WorkspaceService {
     return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
+  /**
+   * POST che richiede lo spostamento di un elemento documentale
+   * @param element_id {number} identificativo numerico dell'elemento
+   * @param target_id {number} identificativo numerico del folder di destinazione
+   * @param type {ElementType} tipo di elemento documentale
+   * @returns {Observable<any>} observable dell'elemento documentale modificato
+   */
   public moveElement(element_id: number, target_id: number, type: ElementType): Observable<any> {
     let uuid = uuidv4();
 
@@ -209,6 +239,11 @@ export class WorkspaceService {
     return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
+  /**
+   * POST che richiede l'inserimento di una nuova cartella
+   * @param element_id {number} identificativo numerico dell'elemento
+   * @returns {Observable<any>} observable della nuova cartella inserita
+   */
   public addFolder(element_id: number): Observable<any> {
     let uuid = uuidv4();
 

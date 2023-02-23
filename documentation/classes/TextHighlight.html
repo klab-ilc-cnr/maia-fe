@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta un&#39;evidenziazione nel testo</p>
+
+            </p>
 
 
 
@@ -135,10 +142,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/text/text-highlight.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/models/text/text-highlight.ts:9</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Colore di background</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -161,10 +174,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="2" class="link-to-prism">src/app/models/text/text-highlight.ts:2</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/text/text-highlight.ts:4</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Coordinate iniziali di evidenziazione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -187,10 +206,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/text/text-highlight.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/models/text/text-highlight.ts:13</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Altezza dell&#39;evidenziazione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -213,10 +238,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/models/text/text-highlight.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/models/text/text-highlight.ts:15</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo dell&#39;evidenziazione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -239,10 +270,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/text/text-highlight.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/models/text/text-highlight.ts:11</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Larghezza dell&#39;evidenziazione</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -259,13 +296,18 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class TextHighlight {
+  /**Coordinate iniziali di evidenziazione */
   coordinates!: {
     x: number | undefined
     y: number | undefined
   }
+  /**Colore di background */
   bgColor: string | undefined
+  /**Larghezza dell&#x27;evidenziazione */
   width: number | undefined
+  /**Altezza dell&#x27;evidenziazione */
   height: number | undefined
+  /**Identificativo dell&#x27;evidenziazione */
   id: string | undefined
 }
 </code></pre>

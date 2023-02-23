@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente della grafica di loading</p>
+
+    </p>
 
 
     <p class="comment">
@@ -181,12 +188,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:16</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per LoaderComponent</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -195,6 +204,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -209,6 +219,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi al loading</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -248,14 +262,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="23"
-                            class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:23</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:32</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -285,14 +301,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:25</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per richiedere lo status di loading</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -327,10 +345,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:14</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se il loading è in corso</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -354,10 +378,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/controllers/page-controllers/loader/loader.component.ts:16</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Sottoscrizione al servizio</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -371,6 +401,7 @@
 import { Subscription } from &#x27;rxjs&#x27;;
 import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
 
+/**Componente della grafica di loading */
 @Component({
   selector: &#x27;app-loader&#x27;,
   templateUrl: &#x27;./loader.component.html&#x27;,
@@ -378,17 +409,25 @@ import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
 })
 export class LoaderComponent implements OnInit {
 
+  /**Definisce se il loading è in corso */
   isLoading!: boolean
+  /**Sottoscrizione al servizio */
   private serviceSubscription!: Subscription
 
+  /**
+   * Costruttore per LoaderComponent
+   * @param loaderService {LoaderService} servizi relativi al loading
+   */
   constructor(private loaderService: LoaderService) { }
 
+  /**Metodo dell&#x27;interfaccia OnInit, utilizzato per richiedere lo status di loading */
   ngOnInit(): void {
     this.serviceSubscription &#x3D; this.loaderService.getStatus().subscribe(
       loadingStatus &#x3D;&gt; { this.isLoading &#x3D; loadingStatus }
     )
   }
 
+  /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy(): void {
     this.serviceSubscription.unsubscribe()
   }

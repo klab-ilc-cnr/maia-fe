@@ -69,6 +69,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interfaccia che rappresenta i filtri della richiesta di un&#39;entrata lessicale</p>
+
+            </p>
 
 
         <section>
@@ -185,6 +192,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Autore dell&#39;entrata</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -218,6 +231,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Tipo di forma (entrata o forma flessa)</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -251,6 +270,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Lingua dell&#39;entrata</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -284,6 +309,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Limite dei risultati</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -317,6 +348,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>offset</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -350,6 +387,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>POS</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -383,6 +426,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Modalità di ricerca</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -416,6 +465,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Stato di lavorazione</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -449,6 +504,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Testo da cercare</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -482,6 +543,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Tipo</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -490,18 +557,29 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface LexicalEntryRequest {
+    /**Testo da cercare */
     text: string,
+    /**Modalità di ricerca */
     searchMode: searchModeEnum,
+    /**Tipo */
     type: string,
+    /**POS */
     pos: string,
+    /**Tipo di forma (entrata o forma flessa) */
     formType: formTypeEnum | string,
+    /**Autore dell&#x27;entrata */
     author: string,
+    /**Lingua dell&#x27;entrata */
     lang: string,
+    /**Stato di lavorazione */
     status: string,
+    /**offset */
     offset: number,
+    /**Limite dei risultati */
     limit: number
   }
   
+  /**Enum delle tipologie di ricerca disponibili */
   export enum searchModeEnum {
     equals &#x3D; &quot;equals&quot;,
     startsWith &#x3D; &quot;startsWith&quot;,
@@ -509,6 +587,7 @@
     endsWith &#x3D; &quot;endsWith&quot;
   }
   
+  /**Enum delle tipologie di forme disponibili */
   export enum formTypeEnum {
     flexed &#x3D; &quot;flexed&quot;,
     entry &#x3D; &quot;entry&quot;

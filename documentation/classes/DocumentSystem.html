@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta il sistema documentale</p>
+
+            </p>
 
 
 
@@ -129,10 +136,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/corpus/document-system.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/models/corpus/document-system.ts:13</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista degli elementi nel sistema documentale</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -155,10 +168,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/corpus/document-system.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/corpus/document-system.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>UUID di richiesta</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -181,10 +200,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/corpus/document-system.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/models/corpus/document-system.ts:11</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numero di esiti ottenuti</p>
+<div><pre class="line-numbers"><code class="language-html"></code></pre></div></div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -202,9 +227,16 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { DocumentElement } from &quot;./document-element&quot;
 
+/**Classe che rappresenta il sistema documentale */
 export class DocumentSystem {
+  /**UUID di richiesta */
   requestUUID: string | undefined
+  /**
+   * Numero di esiti ottenuti
+   * @example result:2 indica due cartelle nel corpus
+   */
   result: string | undefined
+  /**Lista degli elementi nel sistema documentale */
   documentSystem: DocumentElement[] | undefined
 }
 </code></pre>

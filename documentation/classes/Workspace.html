@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta un workspace</p>
+
+            </p>
 
 
 
@@ -115,12 +122,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/workspace.model.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/models/workspace.model.ts:11</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per Workspace</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -129,6 +138,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -143,6 +153,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>identificativo numerico del workspace</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>tiles</td>
@@ -155,6 +169,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>lista dei tile del workspace</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>layout</td>
@@ -167,6 +185,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>layout</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -201,10 +223,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/workspace.model.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/workspace.model.ts:7</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico del workspace</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -227,10 +255,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/workspace.model.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/models/workspace.model.ts:11</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Layout</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -253,10 +287,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/workspace.model.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/models/workspace.model.ts:9</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista dei tile contenuti</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -275,11 +315,21 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { TextTileContent } from &quot;./tile/text-tile-content.model&quot;;
 import { Tile } from &quot;./tile/tile.model&quot;;
 
+/**Classe che rappresenta un workspace */
 export class Workspace {
+    /**Identificativo numerico del workspace */
     id: number | undefined;
+    /**Lista dei tile contenuti */
     tiles: Array&lt;Tile&lt;TextTileContent&gt;&gt; | undefined;
+    /**Layout */
     layout: any | undefined;
 
+    /**
+     * Costruttore per Workspace
+     * @param id {number} identificativo numerico del workspace
+     * @param tiles {Array&lt;Tile&lt;TextTileContent&gt;&gt;} lista dei tile del workspace
+     * @param layout {any} layout
+     */
     constructor(id: number, tiles: Array&lt;Tile&lt;TextTileContent&gt;&gt;, layout: any)
     {
         this.id &#x3D; id;

@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta una annotazione</p>
+
+            </p>
 
 
 
@@ -146,10 +153,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/annotation/annotation.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/models/annotation/annotation.ts:14</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Eventuali attributi</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -172,10 +185,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/annotation/annotation.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/models/annotation/annotation.ts:18</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo numerico</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -198,10 +217,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/annotation/annotation.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/models/annotation/annotation.ts:12</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se è importata</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -224,10 +249,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/annotation/annotation.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/annotation/annotation.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Layer di riferimento</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -250,10 +281,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/annotation/annotation.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/annotation/annotation.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nome del layer</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -276,10 +313,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/models/annotation/annotation.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/models/annotation/annotation.ts:16</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista degli span coinvolti</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -302,10 +345,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/annotation/annotation.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/annotation/annotation.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Valore</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -323,13 +372,21 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SpanCoordinates } from &quot;./span-coordinates&quot;
 
+/**Classe che rappresenta una annotazione */
 export class Annotation {
+  /**Layer di riferimento */
   layer: any
+  /**Nome del layer */
   layerName: string | undefined
+  /**Valore */
   value: string | undefined
+  /**Definisce se è importata */
   imported: boolean | undefined
+  /**Eventuali attributi */
   attributes: Record&lt;string, any&gt; &#x3D; {}
+  /**Lista degli span coinvolti */
   spans: Array&lt;SpanCoordinates&gt; | undefined
+  /**Identificativo numerico */
   id!: number
 }
 </code></pre>

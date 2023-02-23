@@ -1,3 +1,5 @@
+//TODO verificare, sembra non esserci corrispondenza con i dati poi lavorati
+/**Classe che rappresenta un'entrata lessicale */
 export class LexicalEntry {
     name?: string
     instanceName?: string
@@ -12,7 +14,7 @@ export class LexicalEntry {
 
 
 
-
+/**Enum delle tipologie di entrata lesscale */
 export enum LexicalEntryType {
   LEXICAL_ENTRY,
   FORM,

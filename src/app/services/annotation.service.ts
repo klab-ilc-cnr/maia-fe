@@ -22,7 +22,11 @@ export class AnnotationService {
 
   //baseUrl = "http://localhost:8443"
   // baseUrl = "https://lari2.ilc.cnr.it/"
-
+  /**
+   * GET che recupera le annotazioni dato l'id del nodo
+   * @param nodeId {number} identificativo numerico del nodo
+   * @returns {Observable<any>} observable delle annotazioni
+   */
   public retrieveByNodeId(nodeId: number): Observable<any> {
     let uuid = uuidv4();
 
@@ -47,6 +51,11 @@ export class AnnotationService {
     return this.http.get<any>(`${this.cashUrl}/api/v1/token?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
 
+  /**
+   * GET che recupera un testo sulla base dell'id
+   * @param nodeId {identificativo numerico del nodo testo}
+   * @returns {Observable<any>} observable del testo
+   */
   public retrieveText(nodeId: number): Observable<any> {
     let uuid = uuidv4();
 

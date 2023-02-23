@@ -15,6 +15,10 @@ export class LoggedUserService {
     return this.retrieveUserFromStorage();
   }
 
+  /**
+   * Metodo che valuta se l'utente è autorizzato alla gestione utenze
+   * @returns {boolean} definisce se l'utente può gestire le utenze
+   */
   public canManageUsers(): boolean{
     let user = this.currentUser;
     if(user === null && user === undefined)
@@ -24,6 +28,10 @@ export class LoggedUserService {
     return (user?.role === (Roles.AMMINISTRATORE));
   }
 
+  /**
+   * Metodo che valuta se l'utente è autorizzato alla gestione dei layer
+   * @returns {boolean} definisce se l'utente può gestire i layer
+   */
   public canManageLayers(): boolean{
     let user = this.currentUser;
     if(user === null && user === undefined)
@@ -33,6 +41,10 @@ export class LoggedUserService {
     return (user?.role === (Roles.AMMINISTRATORE));
   }
 
+  /**
+   * Metodo che valuta se l'utente è autorizzato alla gestione dei tagset
+   * @returns {boolean} definisce se l'utente può gestire i tagset
+   */
   public canManageTagsets(): boolean{
     let user = this.currentUser;
     if(user === null && user === undefined)

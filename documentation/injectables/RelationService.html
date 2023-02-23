@@ -197,8 +197,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="22"
-                            class="link-to-prism">src/app/services/relation.service.ts:22</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="27"
+                            class="link-to-prism">src/app/services/relation.service.ts:27</a></div>
                 </td>
             </tr>
 
@@ -268,8 +268,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="30"
-                            class="link-to-prism">src/app/services/relation.service.ts:30</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/app/services/relation.service.ts:35</a></div>
                 </td>
             </tr>
 
@@ -339,14 +339,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/app/services/relation.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="23"
+                            class="link-to-prism">src/app/services/relation.service.ts:23</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET che richiede la lista di relazioni associate a un testo</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -357,6 +359,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -371,6 +374,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>identificativo numerico del testo</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -382,7 +389,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable della lista di relazioni</p>
+
                     </div>
                 </td>
             </tr>
@@ -410,8 +418,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/app/services/relation.service.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/app/services/relation.service.ts:31</a></div>
                 </td>
             </tr>
 
@@ -515,6 +523,11 @@ export class RelationService {
     this.relationUrl &#x3D; environment.relationUrl;
   }
 
+  /**
+   * GET che richiede la lista di relazioni associate a un testo
+   * @param textId {number} identificativo numerico del testo
+   * @returns {Observable&lt;Relation[]&gt;} observable della lista di relazioni
+   */
   public retrieveByTextId(textId: number): Observable&lt;Relation[]&gt; {
     return this.http.get&lt;Relation[]&gt;(&#x60;${this.relationUrl}/${textId}&#x60;);
   }

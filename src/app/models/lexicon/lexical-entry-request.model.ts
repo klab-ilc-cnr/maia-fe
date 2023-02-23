@@ -9,19 +9,32 @@ EpiLexo is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 
 You should have received a copy of the GNU General Public License along with EpiLexo. If not, see <https://www.gnu.org/licenses/>.
 */
+
+/**Interfaccia che rappresenta i filtri della richiesta di un'entrata lessicale */
 export interface LexicalEntryRequest {
+    /**Testo da cercare */
     text: string,
+    /**Modalità di ricerca */
     searchMode: searchModeEnum,
+    /**Tipo */
     type: string,
+    /**POS */
     pos: string,
+    /**Tipo di forma (entrata o forma flessa) */
     formType: formTypeEnum | string,
+    /**Autore dell'entrata */
     author: string,
+    /**Lingua dell'entrata */
     lang: string,
+    /**Stato di lavorazione */
     status: string,
+    /**offset */
     offset: number,
+    /**Limite dei risultati */
     limit: number
   }
   
+  /**Enum delle tipologie di ricerca disponibili */
   export enum searchModeEnum {
     equals = "equals",
     startsWith = "startsWith",
@@ -29,6 +42,7 @@ export interface LexicalEntryRequest {
     endsWith = "endsWith"
   }
   
+  /**Enum delle tipologie di forme disponibili */
   export enum formTypeEnum {
     flexed = "flexed",
     entry = "entry"

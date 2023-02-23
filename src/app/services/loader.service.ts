@@ -18,6 +18,10 @@ export class LoaderService {
     )
   }
 
+  /**
+   * Metodo che restituisce lo status di caricamento
+   * @returns {Observable<boolean>} observable che definisce se è in corso il loading o meno
+   */
   getStatus() : Observable<boolean> {
     return this.isLoading.asObservable()
   }
