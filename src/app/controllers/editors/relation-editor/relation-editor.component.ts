@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Relations } from 'src/app/models/relation/relations';
 import { RelationService } from 'src/app/services/relation.service';
 
+/**Classe dell'editor delle relazioni */
 @Component({
   selector: 'app-relation-editor',
   templateUrl: './relation-editor.component.html',
@@ -22,6 +23,12 @@ import { RelationService } from 'src/app/services/relation.service';
 })
 export class RelationEditorComponent implements OnInit {
 
+  /**
+   * @private
+   * Effettua la cancellazione di una relazione
+   * @param id {number} identificativo numerico della relazione
+   * @returns {void}
+   */
   private deleteElement = (id: number): void => {
     this.showOperationInProgress('Sto cancellando');
 
@@ -86,27 +93,43 @@ export class RelationEditorComponent implements OnInit {
     });
   }
 
+  /**Relazione in lavorazione */
   @Input() relationModel: Relation = new Relation();
+  /**Layer sorgente */
   @Input() sourceLayer: Layer | undefined;
+  /**Layer target */
   @Input() targetLayer: Layer | undefined;
+
+  /**Annotazione sorgente */
   @Input()
+  /**Getter dell'annotazione sorgente */
   get sourceAnn(): Annotation { return this._sourceAnn; }
+  /**Setter dell'annotazione sorgente */
   set sourceAnn(sourceAnn: Annotation) {
     this._sourceAnn = sourceAnn;
   }
+  /**Annotazione sorgente */
   private _sourceAnn: Annotation = new Annotation();
 
+  /**Annotazione target */
   @Input()
+  /**Getter dell'annotazione target */
   get targetAnn(): Annotation { return this._targetAnn; }
+  /**Setter dell'annotazione target */
   set targetAnn(targetAnn: Annotation) {
     this._targetAnn = targetAnn;
   }
+  /**Annotazione target */
   private _targetAnn: Annotation = new Annotation();
 
+  /**Emettitore per l'annullamento */
   @Output() onCancel = new EventEmitter<any>();
+  /**Emettitore per la cancellazione */
   @Output() onDelete = new EventEmitter<any>();
+  /**Emettitore per il salvataggio */
   @Output() onSave = new EventEmitter<any>();
 
+  /**Getter che definisce se siamo in modalità di modifica */
   public get isEditing(): boolean {
     if (this.relationModel && this.relationModel.id) {
       return true;
@@ -115,41 +138,64 @@ export class RelationEditorComponent implements OnInit {
     return false;
   }
 
+  /**Getter che definisce se non vi sono relazioni selezionate */
   public get noneRelationIsSelected(): boolean {
     return (!this.relationModel || !this.sourceAnn || !this.sourceLayer || !this.targetAnn || !this.targetLayer);
   }
 
+  /**Lista dei layer */
   layersList: Layer[] = [];
 
+  /**Riferimento al form della relazione */
   @ViewChild(NgForm) public relationForm!: NgForm;
+  /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
+  /**
+   * Costruttore per RelationEditorComponent
+   * @param annotationService {AnnotationService} servizi relativi alle annotazioni //TODO verificare cancellazione per mancato uso
+   * @param workspaceService {WorkspaceService} servizi relativi ai workspace  //TODO verificare cancellazione per mancato uso
+   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
+   * @param layerService {LayerService} servizi relativi ai layer  //TODO verificare cancellazione per mancato uso 
+   * @param messageService {MessageService} servizi per la gestione dei messaggi
+   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
+   * @param relationService {RelationService} servizi relativi alle relazioni
+   */
   constructor(
-    private annotationService: AnnotationService,
-    private workspaceService: WorkspaceService,
+    private annotationService: AnnotationService, //TODO verificare cancellazione per mancato uso
+    private workspaceService: WorkspaceService, //TODO verificare cancellazione per mancato uso
     private loaderService: LoaderService,
-    private layerService: LayerService,
+    private layerService: LayerService, //TODO verificare cancellazione per mancato uso
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private relationService: RelationService
   ) { }
 
+  /**Metodo dell'interfaccia OnInit */ //TODO verificare cancellazione per mancato uso
   ngOnInit(): void {
   }
 
+  /**Metodo dell'interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal */
   ngOnDestroy(): void {
     Swal.close();
   }
 
+  /**Metodo che esegue l'emissione dell'evento di annullamento */
   onCancelBtn() {
     this.onCancel.emit();
   }
 
+  /**Metodo che resetta il form */
   onClearBtn() {
     this.relationForm.form.reset();
     this.saveWithFormErrors();
   }
 
+  /**
+   * Metodo che sottomette il salvataggio del form che rappresenta la relazione
+   * @param form {NgForm} form della relazione
+   * @returns {void}
+   */
   onSubmit(form: NgForm): void {
     if (this.relationForm.invalid) {
       return this.saveWithFormErrors();
@@ -158,6 +204,10 @@ export class RelationEditorComponent implements OnInit {
     this.save();
   }
 
+  /**
+   * Metodo che visualizza il modale di conferma della cancellazione ed eventualmente richiama la cancellazione stessa
+   * @returns {void}
+   */
   showDeleteModal(): void {
     if (!this.relationModel) {
       return;
@@ -170,6 +220,11 @@ export class RelationEditorComponent implements OnInit {
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement((this.relationModel.id!)), this.relationModel.id);
   }
 
+  /**
+   * @private
+   * Metodo che esegue il salvataggio della relazione
+   * @returns {void}
+   */
   private save(): void {
     if (!this.relationModel) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
@@ -243,7 +298,7 @@ export class RelationEditorComponent implements OnInit {
           }
         }); */
     this.sourceAnn.attributes[""]
-    if (this.isEditing) {
+    if (this.isEditing) { //caso di modifica di una relazione esistente
       successMsg = "Relazione modificata con successo";
       this.relationService.update(this.relationModel).subscribe({
         next: (response: Relation) => {
@@ -257,7 +312,7 @@ export class RelationEditorComponent implements OnInit {
         }
       })
     }
-    else {
+    else { //caso inserimento di una nuova relazione
       successMsg = "Relazione creata con successo";
       this.relationService.create(this.relationModel).subscribe({
         next: (response: Relation) => {
@@ -273,10 +328,19 @@ export class RelationEditorComponent implements OnInit {
     }
   }
 
+  /**
+   * @private
+   * Metodo che marca tutti i campi del form come touched per segnalare errori
+   */
   private saveWithFormErrors(): void {
     this.relationForm.form.markAllAsTouched();
   }
 
+  /**
+   * @private
+   * Metodo che visualizza il popup di operazione fallita
+   * @param errorMessage {string} messaggio di errore
+   */
   private showOperationFailed(errorMessage: string): void {
     Swal.fire({
       icon: 'error',
@@ -285,6 +349,11 @@ export class RelationEditorComponent implements OnInit {
     });
   }
 
+  /**
+   * @private
+   * Metodo che visualizza il popup di operazione in corso
+   * @param message {string} messaggio da visualizzare
+   */
   private showOperationInProgress(message: string): void {
     Swal.fire({
       icon: 'warning',

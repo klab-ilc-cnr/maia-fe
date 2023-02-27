@@ -394,14 +394,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="75"
-                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:75</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="80"
+                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:80</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che dato un url verifica se questo è attivo (tutte le sue parti sono presenti nel path corrente)</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -412,6 +414,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -426,6 +429,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>url da verificare</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -437,7 +444,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>definisce se il percorso è attivo</p>
+
                     </div>
                 </td>
             </tr>
@@ -504,14 +512,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="87"
-                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:87</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:96</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che rimuove eventuali slash iniziali e/o finali dall&#39;url verso cui navigare</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -522,6 +532,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -536,6 +547,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>url verso cui navigare</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -875,6 +890,11 @@ export class SideMenuComponent implements OnInit {
     return isActive;
   }
 
+  /**
+   * Metodo che dato un url verifica se questo è attivo (tutte le sue parti sono presenti nel path corrente)
+   * @param url {string} url da verificare
+   * @returns {boolean} definisce se il percorso è attivo 
+   */
   public isActiveInternal(url: string): boolean {
     const requiredPath &#x3D; url.split(&quot;/&quot;) || [&#x27;&#x27;];
     for (let i &#x3D; 0; i &lt; requiredPath.length; i++) {
@@ -887,6 +907,10 @@ export class SideMenuComponent implements OnInit {
     return true;
   }
 
+  /**
+   * Metodo che rimuove eventuali slash iniziali e/o finali dall&#x27;url verso cui navigare
+   * @param url {string} url verso cui navigare
+   */
   public onNavigate(url: string) {
     const withoutLeadingSlash &#x3D; url.startsWith(&quot;/&quot;) ? url.substr(1) : url;
     const withoutLeadingEndingSlash &#x3D; url.endsWith(&quot;/&quot;) ? url.slice(0, -1) : withoutLeadingSlash;

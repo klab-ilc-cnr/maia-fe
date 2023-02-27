@@ -72,6 +72,11 @@ export class SideMenuComponent implements OnInit {
     return isActive;
   }
 
+  /**
+   * Metodo che dato un url verifica se questo è attivo (tutte le sue parti sono presenti nel path corrente)
+   * @param url {string} url da verificare
+   * @returns {boolean} definisce se il percorso è attivo 
+   */
   public isActiveInternal(url: string): boolean {
     const requiredPath = url.split("/") || [''];
     for (let i = 0; i < requiredPath.length; i++) {
@@ -84,6 +89,10 @@ export class SideMenuComponent implements OnInit {
     return true;
   }
 
+  /**
+   * Metodo che rimuove eventuali slash iniziali e/o finali dall'url verso cui navigare
+   * @param url {string} url verso cui navigare
+   */
   public onNavigate(url: string) {
     const withoutLeadingSlash = url.startsWith("/") ? url.substr(1) : url;
     const withoutLeadingEndingSlash = url.endsWith("/") ? url.slice(0, -1) : withoutLeadingSlash;

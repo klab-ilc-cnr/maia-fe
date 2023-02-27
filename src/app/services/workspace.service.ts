@@ -12,19 +12,26 @@ import { DocumentSystem } from '../models/corpus/document-system';
 import { ElementType } from '../models/corpus/element-type';
 import { v4 as uuidv4 } from 'uuid';
 
-const headers = new HttpHeaders().set('Content-Type', 'application/json');
+const headers = new HttpHeaders().set('Content-Type', 'application/json'); //TODO verificare rimozione per mancato uso
 
+/**Classe dei servizi per i workspace */
 @Injectable({
   providedIn: 'root'
 })
 export class WorkspaceService {
 
 
+  /**Url per chiamate relative ai workspace */
   private workspacesUrl: string;
+  /**Url per le chiamate a cash */
   private cashUrl: string;
 
+  /**
+   * Costruttore per WorkspaceService
+   * @param http {HttpClient} effettua le chiamate HTTP
+   */
   constructor(private http: HttpClient) {
-    this.workspacesUrl = environment.workspacesUrl;
+    this.workspacesUrl = environment.workspacesUrl; //inizializzo i due url dall'environment
     this.cashUrl = environment.cashUrl;
   }
 
@@ -108,6 +115,11 @@ export class WorkspaceService {
     return this.http.get<Array<WorkspaceChoice>>(`${this.workspacesUrl}/workspaceChoiceList`);
   }
 
+  /**
+   * GET che recupera i dati relativi a un workspace utilizzando il suo ID
+   * @param workspaceId {number} identificativo numerico del workspace
+   * @returns {Observable<Workspace>} observable del workspace
+   */
   public loadWorkspaceStatus(workspaceId: number): Observable<Workspace> {
     return this.http.get<Workspace>(`${this.workspacesUrl}/status/${workspaceId}`);
   }
@@ -124,6 +136,11 @@ export class WorkspaceService {
 
   //TEXT
 
+  /**
+   * GET che recupera un tile di testo sulla base del suo ID
+   * @param textId {number} identificativo numerico del testo
+   * @returns {Observable<TextTileContent>} observable del tile di testo
+   */
   public retrieveText(textId: number) {
     return this.http.get<TextTileContent>(`${this.workspacesUrl}/texts/${textId}`);
   }

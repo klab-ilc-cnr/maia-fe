@@ -5,14 +5,21 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 
+/**Classe dei servizi per le annotazioni */
 @Injectable({
   providedIn: 'root'
 })
 export class AnnotationService {
 
+  /**Url per le chiamate relative alle annotazioni */
   private annotationUrl: string;
+  /**Url per le chiamate a cash */
   private cashUrl: string;
 
+  /**
+   * Costruttore per AnnotationService
+   * @param http {HttpClient} effettua le chiamate HTTP
+   */
   constructor(private http: HttpClient) {
     this.annotationUrl = environment.annotationUrl;
     this.cashUrl = environment.cashUrl;
@@ -33,18 +40,34 @@ export class AnnotationService {
     return this.http.get<any>(`${this.cashUrl}/api/v1/annotation?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
 
+  /**
+   * POST che effettua la creazione di una nuova annotazione
+   * @param nodeId {number} identificativo numerico del file
+   * @param item {any} la nuova annotazione
+   * @returns {Observable<any>} observable della nuova annotazione
+   */
   public create(nodeId: number, item: any): Observable<any> {
     let uuid = uuidv4();
 
     return this.http.post<any>(`${this.cashUrl}/api/v1/annotation?requestUUID=${uuid}&nodeid=${nodeId}`, item);
   }
 
+  /**
+   * PUT che aggiorna i dati di un'annotazione
+   * @param item {any} un'annotazione modificata
+   * @returns {Observable<any>} observable dell'annotazione modificata
+   */
   public update(item: any) {
     let uuid = uuidv4();
 
     return this.http.put<any>(`${this.cashUrl}/api/v1/annotation?requestUUID=${uuid}`, item);
   }
 
+  /**
+   * GET che recupera i token dato l'id di un nodo (testuale?) //TODO verificare sullo swagger di cash
+   * @param nodeId {number} identificativo numerico
+   * @returns {Observable<any>} observable dell'esito
+   */
   public retrieveTokens(nodeId: number): Observable<any> {
     let uuid = uuidv4();
 
@@ -62,12 +85,22 @@ export class AnnotationService {
     return this.http.get<any>(`${this.cashUrl}/api/v1/gettext?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
 
+  /**
+   * GET che recupera il contenuto dato l'id di un nodo (testuale?) //TODO verificare sullo swagger di cash
+   * @param nodeId {number} identificativo numerico
+   * @returns {Observable<any>} observable dell'esito
+   */
   public retreiveContent(nodeId: number) {
     let uuid = uuidv4();
 
     return this.http.get<any>(`${this.cashUrl}/api/v1/getcontent?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
 
+  /**
+   * DELETE che esegue la cancellazione di una annotazione sulla base del suo ID
+   * @param annotationId {number} identificativo numerico dell'annotazione
+   * @returns {Observable<any>} observable dell'esito
+   */
   public delete(annotationId: number): Observable<any> {
     let uuid = uuidv4();
 
@@ -78,6 +111,11 @@ export class AnnotationService {
 
   //INIZIO CHIAMATE NOSTRO BACKEND
 
+  /**
+   * POST che effettua la creazione di una nuova feature per un'annotazione
+   * @param annFeature {AnnotationFeature} feature dell'annotazione
+   * @returns {Observable<any>} observable della nuova feature dell'annotazione
+   */
   public createAnnotationFeature(annFeature: AnnotationFeature): Observable<any> {
     return this.http.post<any>(`${this.annotationUrl}`, annFeature);
   }
@@ -87,6 +125,11 @@ export class AnnotationService {
     return this.http.put<AnnotationFeature>(`${this.annotationUrl}`, annFeatures);
   } */
 
+  /**
+   * DELETE che rimuove le feature di una annotazione dato il suo ID
+   * @param id {number} identificativo numerico dell'annotazione
+   * @returns {Observable<boolean>} observable dell'esito della cancellazione
+   */
   public deleteAnnotationFeature(id: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.annotationUrl}/${id}`);
   }

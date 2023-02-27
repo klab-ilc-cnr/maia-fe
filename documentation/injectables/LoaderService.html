@@ -62,6 +62,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe dei servizi per l&#39;elemento di loading</p>
+
+            </p>
 
 
 
@@ -125,12 +132,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/services/loader.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/loader.service.ts:12</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per LoaderService</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -139,6 +148,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -153,6 +163,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi per la navigazione fra le viste</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -188,8 +202,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="25"
-                            class="link-to-prism">src/app/services/loader.service.ts:25</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/app/services/loader.service.ts:31</a></div>
                 </td>
             </tr>
 
@@ -233,14 +247,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">src/app/services/loader.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">src/app/services/loader.service.ts:36</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che causa un&#39;emissione del subject di fine loading (nascondi elemento)</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -270,14 +286,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="33"
-                            class="link-to-prism">src/app/services/loader.service.ts:33</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/app/services/loader.service.ts:41</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che causa un&#39;emissione del subject di inizio caricamento (mostra elemento)</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -312,10 +330,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/services/loader.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/loader.service.ts:12</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject che definisce se sta caricando</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -329,13 +353,19 @@
 import { NavigationEnd, Router } from &#x27;@angular/router&#x27;;
 import { Observable, Subject } from &#x27;rxjs&#x27;;
 
+/**Classe dei servizi per l&#x27;elemento di loading */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class LoaderService {
 
+  /**Subject che definisce se sta caricando */
   private isLoading &#x3D; new Subject&lt;boolean&gt;()
 
+  /**
+   * Costruttore per LoaderService
+   * @param router {Router} servizi per la navigazione fra le viste
+   */
   constructor(private router: Router) {
     router.events.subscribe(
       event &#x3D;&gt; {
@@ -353,10 +383,12 @@ export class LoaderService {
     return this.isLoading.asObservable()
   }
 
+  /**Metodo che causa un&#x27;emissione del subject di fine loading (nascondi elemento) */
   hide() {
     this.isLoading.next(false)
   }
 
+  /**Metodo che causa un&#x27;emissione del subject di inizio caricamento (mostra elemento) */
   show() {
     this.isLoading.next(true)
   }
