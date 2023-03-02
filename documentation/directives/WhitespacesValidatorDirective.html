@@ -61,6 +61,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Direttiva di validazione che controlla se un input è costituito unicamente da spazi</p>
+
+            </p>
 
 
             <p class="comment">
@@ -154,14 +161,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="21"
-                            class="link-to-prism">src/app/validators/whitespaces-validator.directive.ts:21</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/app/validators/whitespaces-validator.directive.ts:32</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia Validator che controlla se un input è costituito unicamente da spazi</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -172,6 +181,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -186,6 +196,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>campo da validare</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -197,7 +211,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>eventuali errori</p>
+
                     </div>
                 </td>
             </tr>
@@ -213,6 +228,11 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive } from &#x27;@angular/core&#x27;;
 import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors } from &#x27;@angular/forms&#x27;;
 
+/**
+ * Funzione di validazione che verifica se il valore di un input è costituito unicamente da spazi
+ * @param control {AbstractControl} controllo da validare
+ * @returns {ValidationErrors|null} eventuali errori
+ */
 export const whitespacesValidator: ValidatorFn &#x3D; (control: AbstractControl): ValidationErrors | null &#x3D;&gt; {
   if (!control || !control.value) { return null; }
   const error &#x3D; { &#x27;isNotOnlyWhitespaces&#x27;: true };
@@ -223,6 +243,7 @@ export const whitespacesValidator: ValidatorFn &#x3D; (control: AbstractControl)
   return null;
 }
 
+/**Direttiva di validazione che controlla se un input è costituito unicamente da spazi */
 @Directive({
   selector: &#x27;[appWhitespacesValidator]&#x27;,
   providers: [
@@ -230,6 +251,11 @@ export const whitespacesValidator: ValidatorFn &#x3D; (control: AbstractControl)
   ]
 })
 export class WhitespacesValidatorDirective implements Validator {
+  /**
+   * Metodo dell&#x27;interfaccia Validator che controlla se un input è costituito unicamente da spazi
+   * @param control {AbstactControl} campo da validare
+   * @returns {ValidationErrors|null} eventuali errori
+   */
   public validate(control: AbstractControl): ValidationErrors | null {
     return whitespacesValidator(control)
   }

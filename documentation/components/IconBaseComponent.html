@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Classe del componente di base per le icone</p>
+
+    </p>
 
 
     <p class="comment">
@@ -188,10 +195,16 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:16</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per IconBaseComponent</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -214,9 +227,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:11</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:14</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Input per il componente base delle icone</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -248,14 +267,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="16"
-                            class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:16</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="22"
+                            class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:22</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -290,10 +311,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/controllers/icons/icon-base/icon-base.component.ts:16</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Icona da visualizzare</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -306,18 +333,24 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit } from &#x27;@angular/core&#x27;;
 import { IconDefinition, SizeProp } from &#x27;@fortawesome/fontawesome-svg-core&#x27;;
 
+/**Classe del componente di base per le icone */
 @Component({
   selector: &#x27;app-icon-base&#x27;,
   templateUrl: &#x27;./icon-base.component.html&#x27;,
   styleUrls: [&#x27;./icon-base.component.scss&#x27;]
 })
 export class IconBaseComponent implements OnInit {
+  /**Input per il componente base delle icone */
   @Input()
+  /**Dimensioni dell&#x27;icon */
   size! : SizeProp
+  /**Icona da visualizzare */
   icon! : IconDefinition
 
+  /**Costruttore per IconBaseComponent */
   constructor() { }
 
+  /**Metodo dell&#x27;interfaccia OnInit */
   ngOnInit(): void {
   }
 

@@ -61,6 +61,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Direttiva di validazione del nome di un valore di un tagset affinché non costituisca un duplicato</p>
+
+            </p>
 
 
 
@@ -153,9 +160,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/validators/tagset-value-not-duplicate-name.directive.ts:31</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/validators/tagset-value-not-duplicate-name.directive.ts:39</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Lista di valori di un tagset sui quali effettuare il controllo</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -187,14 +200,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="33"
-                            class="link-to-prism">src/app/validators/tagset-value-not-duplicate-name.directive.ts:33</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/app/validators/tagset-value-not-duplicate-name.directive.ts:46</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia Validator che verifica se il nome di un valore di un tagset costituisce un duplicato</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -205,6 +220,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,6 +235,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>campo di input da validare</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -230,7 +250,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>eventuale errore di duplicazione</p>
+
                     </div>
                 </td>
             </tr>
@@ -247,8 +268,14 @@
 import { TagsetValue } from &#x27;../models/tagset/tagset-value&#x27;;
 import { AbstractControl, NG_VALIDATORS, ValidatorFn } from &#x27;@angular/forms&#x27;;
 
+/**Errore di duplicazione del nome di un valore di un tagset */
 const VALIDATOR_ERROR &#x3D; { &#x27;tagsetValueNotDuplicateName&#x27;: true };
 
+/**
+ * Funzione che valuta se il nome del valore di un tagset è un duplicato
+ * @param options {TagsetValue[]} lista di valori di un tagset
+ * @returns {ValidatorFn} restituisce eventuali errori di duplicazione
+ */
 export function TagsetValueNameDuplicateValidator(options: TagsetValue[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null &#x3D;&gt; {
       if ((!options)) {
@@ -265,6 +292,7 @@ export function TagsetValueNameDuplicateValidator(options: TagsetValue[]): Valid
   };
 }
 
+/**Direttiva di validazione del nome di un valore di un tagset affinché non costituisca un duplicato */
 @Directive({
   selector: &#x27;[appTagsetValueNotDuplicateName]&#x27;,
   providers: [
@@ -272,9 +300,15 @@ export function TagsetValueNameDuplicateValidator(options: TagsetValue[]): Valid
   ]
 })
 export class TagsetValueNotDuplicateNameDirective {
+  /**Lista di valori di un tagset sui quali effettuare il controllo */
   @Input(&#x27;appTagsetValueNotDuplicateName&#x27;)
   options: TagsetValue[] &#x3D; [];
 
+  /**
+   * Metodo dell&#x27;interfaccia Validator che verifica se il nome di un valore di un tagset costituisce un duplicato
+   * @param control {AbstractControl} campo di input da validare
+   * @returns {{ [key: string]: any } | null} eventuale errore di duplicazione
+   */
   validate(control: AbstractControl): { [key: string]: any } | null {
     return this.options ? TagsetValueNameDuplicateValidator(this.options)(control)
         : null;

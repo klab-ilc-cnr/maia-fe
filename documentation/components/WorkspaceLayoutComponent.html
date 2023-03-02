@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Classe del layout del workspace</p>
+
+    </p>
 
 
     <p class="comment">
@@ -160,10 +167,16 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/layouts/workspace-layout/workspace-layout.component.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/layouts/workspace-layout/workspace-layout.component.ts:9</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per WorkspaceLayoutComponent</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -197,14 +210,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/app/layouts/workspace-layout/workspace-layout.component.ts:12</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="15"
+                            class="link-to-prism">src/app/layouts/workspace-layout/workspace-layout.component.ts:15</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -222,6 +237,7 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
 
+/**Classe del layout del workspace */
 @Component({
   selector: &#x27;app-workspace-layout&#x27;,
   templateUrl: &#x27;./workspace-layout.component.html&#x27;,
@@ -229,8 +245,10 @@
 })
 export class WorkspaceLayoutComponent implements OnInit {
 
+  /**Costruttore per WorkspaceLayoutComponent */
   constructor() { }
 
+  /**Metodo dell&#x27;interfaccia OnInit */
   ngOnInit(): void {
   }
 

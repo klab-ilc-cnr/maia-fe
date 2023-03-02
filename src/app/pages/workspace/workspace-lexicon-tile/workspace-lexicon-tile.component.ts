@@ -13,40 +13,75 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
 
+  /**Sottoscrizione usata per la gestione del click sull'icona tag */
   private subscription!: Subscription;
+  /**Parametri di richiesta di un'entrata lessicale */
   private parameters: LexicalEntryRequest | undefined;
+
   private offset!: number;
+  /**Numero massimo di elementi */
   private limit!: number;
 
+  /**Numero totale entrate lessicali */
   public counter: number | undefined;
+  /**Form dei filtri */ //TODO verificare perché non ne trovo l'uso
   public filterForm: any;
+  /**Definisce se c'è lo spinner di ricerca in corso */
   public searchIconSpinner: boolean = false;
+  /**Lista delle lingue selezionabili */
   public selectLanguages!: SelectItem[];
+  /**Lista dei tipi selezionabili */
   public selectTypes!: SelectItem[];
+  /**Lista degli autori selezionabili */
   public selectAuthors!: SelectItem[];
+  /**Lista delle POS selezionabili */
   public selectPartOfSpeech!: SelectItem[];
+  /**Lista degli status di lavorazione selezionabili */
   public selectStatuses!: SelectItem[];
+  /**Lista del tipo di entrate selezionabili */
   public selectEntries!: SelectItem[];
+  /**Lingua selezionata */
   public selectedLanguage: any;
+  /**Tipo selezionato */
   public selectedType: any;
+  /**Autore selezionato */
   public selectedAuthor: any;
+  /**POS selezionata */
   public selectedPartOfSpeech: any;
+  /**Status selezionato */
   public selectedStatus: any;
+  /**Tipo di entrata selezionato */
   public selectedEntry!: formTypeEnum;
+  /**Lista di colonne della tabella */
   public cols!: any[];
+  /**Nodo dell'albero selezionato */
   public selectedNode?: TreeNode;
+  /**Definisce se è in corso il caricamento */
   public loading: boolean = false;
+  /**Definisce se mostrare l'etichetta o il nome dell'entrata */
   public showLabelName?: boolean;
+  /**Modalità di ricerca (equals, etc) */
   public searchMode!: searchModeEnum;
+  /**Definisce se ci sono filtri pendenti */
   public pendingFilters!: boolean;
+  /**Testo cercato */
   public searchTextInput!: string;
+  /**Tipo di entrata lessicale */
   public LexicalEntryType = LexicalEntryType;
 
+  /**Lista dei nodi entrata lessicale */
   public results: TreeNode<LexicalEntry>[] = [];
 
+  /**Riferimento all'entrata lessicale nell'albero */ //TODO verificare perché non è chiaro dove sia richiamata
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
   /* @ViewChild('tt') public tt!: TreeTable; */
 
+  /**
+   * Costruttore per WorkspaceLexiconTileComponent
+   * @param messageService {MessageService} servizi per la gestione dei messaggi
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param commonService {CommonService} servizi di uso comune
+   */
   constructor(private messageService: MessageService,
     private lexiconService: LexiconService,
     private commonService: CommonService) { }
@@ -58,10 +93,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         })
     } */
 
+  /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
+  /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
     this.cols = [
       { field: 'name', header: '', width: '35%', display:'true'},
@@ -131,6 +168,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     })
   }
 
+  /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
   alternateLabelInstanceName() {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
   }
@@ -262,6 +300,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   }
 
+  /**
+   * @private
+   * Metodo che resetta i filtri applicati alla ricerca di entrate lessicali
+   */
   private resetFilters() {
     //this.counter = 0;
     this.offset = 0;
@@ -292,6 +334,11 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
   }
 
+  /**
+   * @private
+   * Metodo che modifica il valore del name di un modo passando da label a instanceName o viceversa
+   * @param node {TreeNode} nodo dell'albero delle entrate lessicali
+   */
   private treeTraversalAlternateLabelInstanceName(node: TreeNode): void {
     if (node.data?.name === node.data?.label) {
       node.data!.name = node.data?.instanceName;

@@ -4,29 +4,47 @@ import {filter} from 'rxjs/operators';
 import { LoggedUserService } from '../services/logged-user.service';
 import { UserService } from '../services/user.service';
 
+/**Classe dei servizi di configurazione dell'autenticazione */
 @Injectable()
 export class AuthConfigService {
 
+  /**Access token decodificato */
   private _decodedAccessToken: any;
+  /**ID token decodificato */
   private _decodedIDToken: any;
+  /**Jwt parsato */
   private _parsedJwt: any;
 
+  /**Getter che restituisce l'access token decodificato */
   get decodedAccessToken() {
     return this._decodedAccessToken;
   }
 
+  /**Getter che restituisce l'ID token decodificato */
   get decodedIDToken() {
     return this._decodedIDToken;
   }
 
+  /**
+   * Metodo che recupera il Jwt parsato
+   * @returns {any} il Jwt parsato
+   */
   public parsedJwt(){
     return this._parsedJwt;
   }
 
+  /**Metodo che invoca il logout */
   logout() {
     this.oauthService.logOut();
   }
 
+  /**
+   * Costruttore per AuthConfigService
+   * @param oauthService {OAuthService} servizio per il login e logout con OIDC e OAuth2
+   * @param authConfig {AuthConfig} configurazione di autenticazione
+   * @param loggedUserService {LoggedUserService} servizi per l'utente loggato
+   * @param userService {UserService} servizi per gli utenti
+   */
   constructor(
     private readonly oauthService: OAuthService,
     private readonly authConfig: AuthConfig,
@@ -35,6 +53,10 @@ export class AuthConfigService {
   ) {
   }
 
+  /**
+   * Metodo che inizializza l'autenticazione
+   * @returns {Promise<any>} ?
+   */
   async initAuth(): Promise<any> {
     return new Promise<void>((resolveFn, rejectFn) => {
       // setup oauthService
@@ -77,6 +99,10 @@ export class AuthConfigService {
     });
   }
 
+  /**
+   * @private
+   * Metodo per la gestione di un nuovo token
+   */
   private handleNewToken() {
     this._decodedAccessToken = this.oauthService.getAccessToken();
     this._decodedIDToken = this.oauthService.getIdToken();
@@ -93,6 +119,12 @@ export class AuthConfigService {
     )
   }
 
+  /**
+   * @private
+   * Metodo che esegue il parsing del Jwt
+   * @param token {string} token
+   * @returns {any} Jwt parsato
+   */
   private parseJwt (token: string) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

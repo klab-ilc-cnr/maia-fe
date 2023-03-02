@@ -61,6 +61,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Direttiva per la validazione di un uri</p>
+
+            </p>
 
 
             <p class="comment">
@@ -154,14 +161,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="21"
-                            class="link-to-prism">src/app/validators/uri-validator.directive.ts:21</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/app/validators/uri-validator.directive.ts:32</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia Validator che verifica che un uri sia correttamente formato</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -172,6 +181,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -186,6 +196,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>campo di input da validare</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -197,7 +211,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>eventuale errore di validazione</p>
+
                     </div>
                 </td>
             </tr>
@@ -213,6 +228,11 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive } from &#x27;@angular/core&#x27;;
 import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors, Validators } from &#x27;@angular/forms&#x27;;
 
+/**
+ * Funzione di validazione che controlla che l&#x27;uri sia correttamente formato
+ * @param control {AbstractControl} campo di input da validare
+ * @returns {ValidatorFn} restituisce eventuali errori di validazione
+ */
 export const uriValidator: ValidatorFn &#x3D; (control: AbstractControl): ValidationErrors | null &#x3D;&gt; {
     if (!control || !control.value) { return null; }
     const error &#x3D; { &#x27;isValidUri&#x27;: true };
@@ -223,6 +243,7 @@ export const uriValidator: ValidatorFn &#x3D; (control: AbstractControl): Valida
     return error;
 }
 
+/**Direttiva per la validazione di un uri */
 @Directive({
     selector: &#x27;[appUriValidator]&#x27;,
     providers: [
@@ -230,6 +251,11 @@ export const uriValidator: ValidatorFn &#x3D; (control: AbstractControl): Valida
     ]
 })
 export class UriValidator implements Validator {
+    /**
+     * Metodo dell&#x27;interfaccia Validator che verifica che un uri sia correttamente formato
+     * @param control {AbstractControl} campo di input da validare
+     * @returns {ValidationErrors|null} eventuale errore di validazione
+     */
     public validate(control: AbstractControl): ValidationErrors | null {
         return uriValidator(control)
     }

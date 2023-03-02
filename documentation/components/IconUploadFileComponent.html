@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Classe dell&#39;icona upload-file</p>
+
+    </p>
 
     <p class="comment">
         <h3>Extends</h3>
@@ -209,10 +216,16 @@
                             </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:11</a></code>
+                                    <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:14</a></code>
 </div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Input per il componente base delle icone</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -252,7 +265,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:12</a></code>
+                        <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:16</a></code>
 </div>
                 </td>
             </tr>
@@ -260,6 +273,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per inizializzare l&#39;icona visualizzata</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -300,11 +315,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:12</a></code>
+                                <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:16</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Icona da visualizzare</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -318,14 +339,18 @@
 import { faFileImport } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
 import { IconBaseComponent } from &#x27;../icon-base/icon-base.component&#x27;;
 
+/**
+ * Classe dell&#x27;icona upload-file
+ * @extends IconBaseComponent
+ */
 @Component({
   selector: &#x27;app-icon-upload-file&#x27;,
   templateUrl: &#x27;../icon-base/icon-base.component.html&#x27;,
   styleUrls: [&#x27;../icon-base/icon-base.component.scss&#x27;]
 })
 export class IconUploadFileComponent extends IconBaseComponent implements OnInit {
-
-  override ngOnInit(): void {
+ /**Metodo dell&#x27;interfaccia OnInit, utilizzato per inizializzare l&#x27;icona visualizzata */
+ override ngOnInit(): void {
     this.icon &#x3D; faFileImport;
   }
 

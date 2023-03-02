@@ -61,6 +61,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Direttiva di validazione, definisce se un valore di input è già presente in una lista di stringhe</p>
+
+            </p>
 
 
 
@@ -153,9 +160,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/validators/not-duplicate-name.directive.ts:28</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/validators/not-duplicate-name.directive.ts:36</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Lista di stringhe sulle quali effettuale la validazione</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -187,14 +200,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="30"
-                            class="link-to-prism">src/app/validators/not-duplicate-name.directive.ts:30</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">src/app/validators/not-duplicate-name.directive.ts:43</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia Validator che verifica se il valore di un campo di input è già presente in una lista di stringhe</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -205,6 +220,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,6 +235,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>campo di input da validare</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -230,7 +250,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>eventuale errore di duplicazione nomi</p>
+
                     </div>
                 </td>
             </tr>
@@ -246,8 +267,14 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive, Input } from &#x27;@angular/core&#x27;;
 import { AbstractControl, NG_VALIDATORS, ValidatorFn } from &#x27;@angular/forms&#x27;;
 
+/**Errore di validazione sulla duplicazione dei nomi */
 const VALIDATOR_ERROR &#x3D; { &#x27;notDuplicateName&#x27;: true };
 
+/**
+ * Funzione che valuta se il valore di un campo di input è già presente in una lista di stringhe
+ * @param options {string[]} nomi sui quali valutare duplicazione
+ * @returns {ValidatorFn} restituisce un eventuale errore di validazione della duplicazione
+ */
 export function nameDuplicateValidator(options: string[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null &#x3D;&gt; {
       if ((!options)) {
@@ -262,6 +289,7 @@ export function nameDuplicateValidator(options: string[]): ValidatorFn {
   };
 }
 
+/**Direttiva di validazione, definisce se un valore di input è già presente in una lista di stringhe */
 @Directive({
   selector: &#x27;[appNotDuplicateName]&#x27;,
   providers: [
@@ -269,9 +297,15 @@ export function nameDuplicateValidator(options: string[]): ValidatorFn {
   ]
 })
 export class NotDuplicateNameDirective {
+  /**Lista di stringhe sulle quali effettuale la validazione */
   @Input(&#x27;appNotDuplicateName&#x27;)
   options: string[] &#x3D; [];
 
+  /**
+   * Metodo dell&#x27;interfaccia Validator che verifica se il valore di un campo di input è già presente in una lista di stringhe
+   * @param control {AbstractControl} campo di input da validare
+   * @returns {{ [key: string]: any } | null} eventuale errore di duplicazione nomi
+   */
   validate(control: AbstractControl): { [key: string]: any } | null {
     return this.options ? nameDuplicateValidator(this.options)(control)
       : null;
