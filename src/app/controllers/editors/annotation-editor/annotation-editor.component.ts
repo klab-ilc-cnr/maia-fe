@@ -1,6 +1,5 @@
 import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
 import { FeatureForAnnotation } from 'src/app/models/feature/feature-for-annotation';
-import { Feature } from 'src/app/models/feature/feature';
 import { LoaderService } from 'src/app/services/loader.service';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';

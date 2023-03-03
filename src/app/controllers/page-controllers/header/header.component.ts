@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/models/user';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { AuthConfigService } from 'src/app/config/authconfig.service';
 import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';

@@ -1,13 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { combineLatestAll, combineLatestWith, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TextChoice as TextChoice } from '../models/tile/text-choice-element.model';
 import { TextTileContent } from '../models/tile/text-tile-content.model';
 import { Tile } from '../models/tile/tile.model';
 import { WorkspaceChoice } from '../models/workspace-choice.model';
 import { Workspace } from '../models/workspace.model';
-import { combineLatest, of } from 'rxjs';
 import { DocumentSystem } from '../models/corpus/document-system';
 import { ElementType } from '../models/corpus/element-type';
 import { v4 as uuidv4 } from 'uuid';
