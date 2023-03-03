@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
@@ -266,21 +266,21 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param event {any} evento di selezione di un nodo
    */
   onNodeSelect(event: any) {
-    console.log('Selected ' + event.node.data.uri);
+    console.info('Selected ' + event.node.data.uri);
     this.selectedSubTree = event.node;
   }
 
+  /**
+   * Metodo che gestisce il doppio click dell'albero con apertura del pannello di edit
+   * @param event {any} evento di doppio click sull'albero
+   */
   lexicalEntryDoubleClickHandler(event: any) {
-    console.group('lexicalEntryDoubleClickHandler')
-    console.info(event)
-    console.info(this.selectedSubTree)
-    console.groupEnd()
-    if (this.selectedSubTree?.data?.type === LexicalEntryType.FORMS_ROOT ||
+/*     if (this.selectedSubTree?.data?.type === LexicalEntryType.FORMS_ROOT ||
       this.selectedSubTree?.data?.type === LexicalEntryType.SENSES_ROOT) {
-      this.selectedSubTree!.expanded = !event.node.expanded;
+       this.selectedSubTree!.expanded = !event.node.expanded;//BUG presente nel branch lessico, non funziona perché event non ha node expanded
     } else {
-      this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [this.selectedSubTree, this.showLabelName] });
-    }
+ */      this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [this.selectedSubTree, this.showLabelName] });
+    // }
   }
 
   /**
