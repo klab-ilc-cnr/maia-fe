@@ -57,6 +57,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public cols!: any[];
   /**Nodo dell'albero selezionato */
   public selectedNode?: TreeNode;
+  /**Sottonodo dell'albero selezionato */
+  public selectedSubTree?: TreeNode<LexicalEntry>;
   /**Definisce se è in corso il caricamento */
   public loading: boolean = false;
   /**Definisce se mostrare l'etichetta o il nome dell'entrata */
@@ -264,7 +266,21 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param event {any} evento di selezione di un nodo
    */
   onNodeSelect(event: any) {
-    console.log('Selected ' + event.node.data.uri); //TODO vedi branch lexicon
+    console.log('Selected ' + event.node.data.uri);
+    this.selectedSubTree = event.node;
+  }
+
+  lexicalEntryDoubleClickHandler(event: any) {
+    console.group('lexicalEntryDoubleClickHandler')
+    console.info(event)
+    console.info(this.selectedSubTree)
+    console.groupEnd()
+    if (this.selectedSubTree?.data?.type === LexicalEntryType.FORMS_ROOT ||
+      this.selectedSubTree?.data?.type === LexicalEntryType.SENSES_ROOT) {
+      this.selectedSubTree!.expanded = !event.node.expanded;
+    } else {
+      this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [this.selectedSubTree, this.showLabelName] });
+    }
   }
 
   /**
