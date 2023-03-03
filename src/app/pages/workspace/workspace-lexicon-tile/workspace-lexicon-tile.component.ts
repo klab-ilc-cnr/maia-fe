@@ -18,6 +18,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Parametri di richiesta di un'entrata lessicale */
   private parameters: LexicalEntryRequest | undefined;
 
+  /**? */
   private offset!: number;
   /**Numero massimo di elementi */
   private limit!: number;
@@ -126,6 +127,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   }
 
+  /**Metodo che esegue il caricamento dei nodi */
   loadNodes() {
     this.loading = true;
 
@@ -173,6 +175,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
   }
 
+  /**
+   * Metodo che gestisce l'espansione di un nodo e il recupero dei sottonodi
+   * @param event {any} evento di espansione di un nodo
+   */
   onNodeExpand(event: any): void {
     this.loading = true;
 
@@ -253,30 +259,45 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
   }
 
+  /**
+   * Metodo che gestisce la selezione di un nodo
+   * @param event {any} evento di selezione di un nodo
+   */
   onNodeSelect(event: any) {
-    console.log('Selected ' + event.node.data.uri);
+    console.log('Selected ' + event.node.data.uri); //TODO vedi branch lexicon
   }
 
+  /**
+   * Metodo che gestisce la deselezione di un nodo
+   * @param event {any} evento di deselezione di un nodo
+   */
   onNodeUnselect(event: any) {
-    console.log('Unselected ' + event.node.data.uri);
+    console.log('Unselected ' + event.node.data.uri); //TODO vedi branch lexicon
   }
 
+  /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */
   filter() {
     this.updateFilterParameters();
 
     this.loadNodes();
   }
 
+  /**Metodo che resetta i filtri e segnala come siano presenti filtri pendenti (abilitando il bottone di filtro) */
   reset(){
     this.resetFilters();
 
     this.pendingFilters=true;
   }
 
+  /**Metodo che segnala la presenza di filtri pendenti abilitando il bottone di filtro */
   onChangeFilter() {
     this.pendingFilters = true;
   }
 
+  /**
+   * Metodo che gestisce la copia dell'uri di un'entrata lessicale per un successivo utilizzo
+   * @param uri {any} l'uri dell'entrata lessicale
+   */
   copyUri(uri:any){
     const el = document.createElement("textarea");
     el.value = uri;
@@ -319,6 +340,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.pendingFilters = false;
   }
 
+  /**
+   * @private
+   * Metodo che aggiorna i valori dei campi di filtro, inizializzando ai valori di eventuali selezioni salvate
+   */
   private updateFilterParameters() {
     this.parameters = {
       text: this.searchTextInput ?? '*',
@@ -354,6 +379,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
   }
 
+  /**
+   * @private
+   * Metodo che inizializza i valori dei campi select
+   */
   private initSelectFields() {
     this.lexiconService.getLanguages().subscribe({
       next: (languages: any) => {
