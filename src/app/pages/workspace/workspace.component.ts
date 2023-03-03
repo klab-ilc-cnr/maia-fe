@@ -262,6 +262,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.LEXICON:
+          case TileType.LEXICON_EDIT:
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
             break;
