@@ -104,13 +104,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
     this.cols = [
-      { field: 'name', header: '', width: '35%', display:'true'},
-      { field: 'creator', header: 'Autore', width: '15%', display:'true'},
-      { field: 'creationDate', header: 'Data creazione', width: '20%', display:'true'},
-      { field: 'lastUpdate', header: 'Data modifica', width: '20%', display:'true'},
+      { field: 'name', header: '', width: '70%', display:'true'},
+      { field: 'note', width: '10%', display: 'true' },
+      { field: 'creator', header: 'Autore', width: '10%', display:'true'},
+      { field: 'creationDate', header: 'Data creazione', display:'false'},
+      { field: 'lastUpdate', header: 'Data modifica',display:'false'},
       { field: 'status', header: 'Stato', width: '10%', display:'true'},
       { field: 'type', display:'false'},
-      { field: 'uri', display:'false'}
+      { field: 'uri', display:'false'},
+      { field: 'sub', display:'false' }
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
@@ -141,12 +143,14 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             name: this.showLabelName ? val['label'] : val['lexicalEntryInstanceName'],
             instanceName: val['lexicalEntryInstanceName'],
             label: val['label'],
+            note: val['note'],
             creator: val['creator'],
             creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
             lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
             status: val['status'],
             uri: val['lexicalEntry'],
-            type: LexicalEntryType.LEXICAL_ENTRY
+            type: LexicalEntryType.LEXICAL_ENTRY,
+            sub: val['pos']
           },
           children: [{
             data: {
@@ -218,12 +222,14 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 name: this.showLabelName ? val['label'] : val['formInstanceName'],
                 instanceName: val['formInstanceName'],
                 label: val['label'],
+                note: val['note'],
                 creator: val['creator'],
                 creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
                 lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
                 status: val['status'],
                 uri: val['form'],
-                type: LexicalEntryType.FORM
+                type: LexicalEntryType.FORM,
+                sub: this.lexiconService.concatenateMorphology(val['morphology'])
               }
             }));
             //refresh the data
@@ -242,6 +248,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 name: this.showLabelName ? val['label'] : val['senseInstanceName'],
                 instanceName: val['senseInstanceName'],
                 label: val['label'],
+                note: val['note'],
                 creator: val['creator'],
                 creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
                 lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',

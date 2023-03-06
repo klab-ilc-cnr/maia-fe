@@ -1,3 +1,7 @@
 #searchInput{
     width:auto
 }
+
+td:has(sub) {
+    overflow-x: clip;
+}

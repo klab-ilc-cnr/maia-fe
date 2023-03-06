@@ -98,4 +98,9 @@ export class LexiconService {
   getStatus(): Observable<any> {
     return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.key}`);
   }
+
+  concatenateMorphology(morphology: any[]): string {
+    let values = morphology.map(m => m['value']);
+    return values.join(',')
+  }
 }
