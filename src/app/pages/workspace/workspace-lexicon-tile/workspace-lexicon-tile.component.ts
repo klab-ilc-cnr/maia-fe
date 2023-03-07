@@ -282,11 +282,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param event {any} evento di doppio click sull'albero
    */
   lexicalEntryDoubleClickHandler(event: any) {
-/*     if (this.selectedSubTree?.data?.type === LexicalEntryType.FORMS_ROOT ||
-      this.selectedSubTree?.data?.type === LexicalEntryType.SENSES_ROOT) {
-       this.selectedSubTree!.expanded = !event.node.expanded;//BUG presente nel branch lessico, non funziona perché event non ha node expanded
-    } else {
- */      this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [this.selectedSubTree, this.showLabelName] });
+    /*     if (this.selectedSubTree?.data?.type === LexicalEntryType.FORMS_ROOT ||
+          this.selectedSubTree?.data?.type === LexicalEntryType.SENSES_ROOT) {
+           this.selectedSubTree!.expanded = !event.node.expanded;//BUG presente nel branch lessico, non funziona perché event non ha node expanded
+        } else {
+     */
+    if (this.selectedSubTree?.data?.type === undefined || (this.selectedSubTree?.data?.type == LexicalEntryType.FORMS_ROOT || this.selectedSubTree?.data?.type == LexicalEntryType.SENSES_ROOT)) {
+      return;
+    }
+    this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [this.selectedSubTree, this.showLabelName] });
     // }
   }
 
@@ -321,7 +325,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * Metodo che gestisce la copia dell'uri di un'entrata lessicale per un successivo utilizzo
    * @param uri {any} l'uri dell'entrata lessicale
    */
-  copyUri(uri:any){
+/*   copyUri(uri:any){
     const el = document.createElement("textarea");
     el.value = uri;
     el.setAttribute("readonly", "");
@@ -343,7 +347,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Copiato', detail: '', life: 3000 });
 
   }
-
+ */
   /**
    * @private
    * Metodo che resetta i filtri applicati alla ricerca di entrate lessicali

@@ -21,7 +21,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
 import { CommonService } from 'src/app/services/common.service';
-import { LexicalEntry } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
@@ -59,6 +59,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * Prefisso del titolo di un tile di testo
    */
   private textTilePrefix: string = 'textTile_';
+
+  /**
+   * @private
+   * Prefisso dell'ID di un tile di modifica del lessico
+   */
+  private lexiconEditTilePrefix: string = 'lexiconEditTile_';
 
   /**
    * @private
@@ -504,7 +510,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns {void}
    */
   openLexiconEditTile(selectedSubTree: TreeNode<LexicalEntry>, showLabelName: boolean) {
-    var lexiconEditTileId = 'lexiconEditTile';
+    // var lexiconEditTileId = 'lexiconEditTile';
+    let nodeIdComponent = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree.data?.instanceName : selectedSubTree.parent?.parent?.data?.instanceName;
+    var lexiconEditTileId = this.lexiconEditTilePrefix + nodeIdComponent;
     var panelExist = jsPanel.getPanels().find(
       (x: { id: string; }) => x.id === lexiconEditTileId
     );
@@ -898,7 +906,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: true },
       syncMargins: true,
       panelSize: {
-        width: () => window.innerWidth * 0.5,
+        width: () => window.innerWidth * 0.4,
         height: '60vh'
       },
       headerControls: {
@@ -947,11 +955,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const element = componentRef.location.nativeElement;
 
+    let lexicalEntryNameForTitle = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree.data.label : selectedSubTree.parent?.parent?.data?.label;
+
     let config = {
       id: lexiconEditTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Gestione lessico',
+      headerTitle: 'Gestione lessico - ' + lexicalEntryNameForTitle,
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,

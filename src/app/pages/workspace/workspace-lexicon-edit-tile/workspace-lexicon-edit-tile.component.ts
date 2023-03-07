@@ -17,6 +17,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.group('Dati di apertura del pannello')
+    console.info(this.selectedType)
+    console.info(this.selectedNode)
+    console.groupEnd()
   }
 
 }
