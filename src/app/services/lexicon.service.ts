@@ -9,7 +9,8 @@ import { environment } from 'src/environments/environment';
 export class LexiconService {
 
   private lexoUrl: string;
-  private key = "lexodemo"
+  private readKey = "lexodemo"
+  private writeKey = 'PRINitant19';
 
   constructor(private http: HttpClient) {
     this.lexoUrl = environment.lexoUrl;
@@ -38,7 +39,11 @@ export class LexiconService {
     //return this.http.get<any>(`assets/mock/lexicon/elements.json`);
     // FINE MOCK
     
-    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.readKey}`);
+  }
+
+  getLexicalEntry(lexicalEntryId: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/lexicalEntry?key=${this.readKey}&aspect=core`);
   }
 
   /**
@@ -59,12 +64,20 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/senses`);
   }
 
+  getLexicalEntryTypes(): Observable<any> {
+    return this.http.get(`${this.lexoUrl}ontolex/data/lexicalEntryType`);
+  }
+
   /**
    * GET che recupera la lista di lingue disponibili per la selezione
    * @returns {Observable<any>} observable della lista di lingue disponibili
    */
   getLanguages(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/languages?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/languages?key=${this.readKey}`);
+  }
+
+  getMorphology(): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexinfo/data/morphology`);
   }
 
   /**
@@ -72,7 +85,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di tipi disponibili
    */
   getTypes(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/types?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/types?key=${this.readKey}`);
   }
 
   /**
@@ -80,7 +93,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di autori
    */
   getAuthors(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/authors?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/authors?key=${this.readKey}`);
   }
 
   /**
@@ -88,7 +101,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di POS
    */
   getPos(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/pos?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/pos?key=${this.readKey}`);
   }
 
   /**
@@ -96,7 +109,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di status
    */
   getStatus(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.key}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.readKey}`);
   }
 
   concatenateMorphology(morphology: any[]): string {

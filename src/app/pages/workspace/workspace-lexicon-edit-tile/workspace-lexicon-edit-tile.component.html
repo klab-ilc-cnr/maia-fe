@@ -32,6 +32,8 @@
                 </p-treeTable>
     </ng-template>
     <ng-template pTemplate>
-        PLACEHOLDER FORM
+        <app-lexical-entry-editor *ngIf="showLexicalEntryEditor" [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor>
+        <app-form-editor *ngIf="showFormEditor"></app-form-editor>
+        <app-sense-editor *ngIf="showSenseEditor"></app-sense-editor>
     </ng-template>
 </p-splitter>

@@ -66,6 +66,9 @@ import { UriValidator } from './validators/uri-validator.directive';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { SplitterModule } from 'primeng/splitter';
 import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
+import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
+import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
+import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +96,10 @@ import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-l
     NotDuplicateNameDirective,
     WorkspaceLexiconTileComponent,
     UriValidator,
-    WorkspaceLexiconEditTileComponent
+    WorkspaceLexiconEditTileComponent,
+    LexicalEntryEditorComponent,
+    FormEditorComponent,
+    SenseEditorComponent
   ],
   imports: [
     BrowserModule,

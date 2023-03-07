@@ -1,0 +1,46 @@
+<p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton>
+<!--PLACEHOLDER quando siamo in fase di loading dati-->
+<div *ngIf="!loading" class="card" [style]="{'height':'100%'}">
+    <div class="formgrid grid">
+        <div class="field col-12">
+            <em style="float: right;">Last update: {{lastUpdate}}</em>
+        </div>
+        <div class="field col-12">
+            <label for="label">Label</label>
+            <input id="label" [(ngModel)]="labelForm" type="text" pInputText
+                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12">
+            <label for="confidence">Confidence</label>
+            <input id="confidence" [(ngModel)]="confidenceForm" type="number" pInputNumber [min]="0" [max]="100"
+                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12">
+            <label for="type">Type</label>
+            <p-dropdown id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name"
+                [style]="{'width': '100%'}"></p-dropdown>
+        </div>
+        <div class="field col-12">
+            <label for="partOdSpeech">Part-of-Speech</label>
+            <p-dropdown id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechesForm"
+                [filter]="true" filterBy="name" optionLabel="name" [style]="{'width': '100%'}"></p-dropdown>
+        </div>
+        <div class="field col-12">
+            <label for="language">Language</label>
+            <p-dropdown id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name"
+                [style]="{'width': '100%'}"></p-dropdown>
+        </div>
+        <div class="field col-12">
+            <label for="note">Note</label>
+            <textarea id="note" [(ngModel)]="noteForm" type="text" rows="4"
+                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+        </div>
+        <div class="field col-12">
+            <label for="attestations">Attestations</label>
+            <p-listbox [listStyle]="{'max-height': '250px'}" [readonly]="true" [options]="attestationsForm" optionLabel="name" emptyMessage="No attestation found"></p-listbox>
+        </div>
+        <div class="field col-12">
+            <button pButton type="button" class="w-full" label="Save"></button>
+        </div>
+    </div>
+</div>

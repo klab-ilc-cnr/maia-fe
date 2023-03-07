@@ -30,6 +30,13 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   public loading: boolean = false;
   /**Messa a disposizione dei tipi di entrata lessicale per il template */
   public LexicalEntryType = LexicalEntryType;
+  /**Definisce se visualizzare il form di editing di un'entrata lessicale */
+  public showLexicalEntryEditor = true;
+  /**Definisce se visualizzare il form di editing di una forma */
+  public showFormEditor = false;
+  /**Definisce se visualizzare il form di editing di un senso */
+  public showSenseEditor = false;
+  public lexicalEntryInstanceName = '';
 
 
   constructor(
@@ -40,6 +47,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
     this.selectedInstanceName = this.selectedNode.data.instanceName;
+    this.lexicalEntryInstanceName = this.selectedInstanceName; //TODO soluzione temporanea di test
 
     this.cols = [
       { field: 'name', header: '', width: '70%', display: 'true' },
