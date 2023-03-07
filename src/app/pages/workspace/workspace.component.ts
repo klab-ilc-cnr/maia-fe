@@ -268,7 +268,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.LEXICON:
-          case TileType.LEXICON_EDIT:
+          // case TileType.LEXICON_EDIT: //TODO era una mia aggiunta ma il salvataggio su BE non pare gestito
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
             break;
@@ -511,8 +511,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   openLexiconEditTile(selectedSubTree: TreeNode<LexicalEntry>, showLabelName: boolean) {
     // var lexiconEditTileId = 'lexiconEditTile';
-    let nodeIdComponent = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree.data?.instanceName : selectedSubTree.parent?.parent?.data?.instanceName;
-    var lexiconEditTileId = this.lexiconEditTilePrefix + nodeIdComponent;
+    const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
+    var lexiconEditTileId = this.lexiconEditTilePrefix + lexicalEntryTree?.data?.instanceName;;
     var panelExist = jsPanel.getPanels().find(
       (x: { id: string; }) => x.id === lexiconEditTileId
     );
@@ -951,17 +951,27 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     componentRef.instance.selectedType = selectedSubTree.data!.type!;
     componentRef.instance.selectedNode = selectedSubTree;
 
-    //TODO salto la parte dello switch case in attesa di capire come implementare il contenuto
+    const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
+
+    switch (selectedSubTree.data!.type) {
+      case LexicalEntryType.LEXICAL_ENTRY:
+        selectedSubTree.expanded = false;
+        componentRef.instance.lexicalEntryTree = [selectedSubTree];
+        break;
+      case LexicalEntryType.FORM:
+      case LexicalEntryType.SENSE:
+        componentRef.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
+        break;
+    }
+    componentRef.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
 
     const element = componentRef.location.nativeElement;
-
-    let lexicalEntryNameForTitle = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree.data.label : selectedSubTree.parent?.parent?.data?.label;
 
     let config = {
       id: lexiconEditTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Gestione lessico - ' + lexicalEntryNameForTitle,
+      headerTitle: 'Gestione lessico - ' + lexicalEntryTree?.data?.label,
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,

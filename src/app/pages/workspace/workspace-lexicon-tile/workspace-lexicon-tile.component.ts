@@ -69,7 +69,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public pendingFilters!: boolean;
   /**Testo cercato */
   public searchTextInput!: string;
-  /**Tipo di entrata lessicale */
+  /**Messa a disposizione dei tipi di entrata lessicale per il template */
   public LexicalEntryType = LexicalEntryType;
 
   /**Lista dei nodi entrata lessicale */
