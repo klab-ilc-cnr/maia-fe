@@ -25,20 +25,20 @@
         </div>
         <div class="field col-12">
             <p-fieldset legend="Morphological traits">
-                <div class="p-inputgroup flex align-items-center justify-content-center mt-5">
-                    <p-dropdown id="trait1" [options]="traitsDropdown" [(ngModel)]="selectedTrait" [filter]="true"
+                <div class="p-inputgroup flex align-items-center justify-content-center mt-5" *ngFor="let mf of morphologicalForms; index as index">
+                    <p-dropdown [id]="'trait'+index" [options]="traitsDropdown" [(ngModel)]="mf.selectedTrait" [filter]="true"
                         filterBy="name" optionLabel="name" [style]="{'width':'100%'}" [virtualScroll]="true"
-                        [virtualScrollItemSize]="30" (onChange)="loadProperties($event)">
+                        [virtualScrollItemSize]="30" (onChange)="onChangeTraitSelection($event.value,index)">
                     </p-dropdown>
-                    <p-dropdown [disabled]="selectedTrait?.code === ''" id="property1" [options]="propertiesDropdown"
-                        [(ngModel)]="selectedProperty" optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"
+                    <p-dropdown [disabled]="mf.selectedTrait.code === ''" [id]="'property'+index" [options]="mf.propertiesList"
+                        [(ngModel)]="mf.selectedProperty" optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"
                         [virtualScroll]="true" [virtualScrollItemSize]="30"></p-dropdown>
                     <button pButton pRipple type="button" icon="pi pi-times"
-                        class="p-button-rounded p-button-danger p-button-text"></button>
+                        class="p-button-rounded p-button-danger p-button-text" (click)="onRemoveMorphForm(mf)"></button>
                 </div>
                 <div class="p-inputgroup flex align-items-center justify-content-center mt-5">
                     <button pButton pRipple type="button" icon="pi pi-plus"
-                        class="p-button-rounded p-button-outlined"></button>
+                        class="p-button-rounded p-button-outlined" (click)="onAddMorphForm()"></button>
                 </div>
             </p-fieldset>
         </div>

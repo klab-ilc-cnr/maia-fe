@@ -20,11 +20,14 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   loading?: boolean;
 
   traitsDropdown: DropdownField[] = [];
-  selectedTrait?: DropdownField;
-  propertiesDropdown: DropdownField[] = [];
-  selectedProperty?: DropdownField;
 
   morphologicalData!: any;
+
+  morphologicalForms: {
+    selectedTrait: DropdownField,
+    propertiesList: DropdownField[],
+    selectedProperty: DropdownField
+  }[] = [];
 
   @Input() instanceName!: string;
 
@@ -39,7 +42,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if (res.hasOwnProperty('option') && res.option === 'form_selected') {
+      if (res.hasOwnProperty('option') && res.option === 'form_selected' && res.value === this.instanceName) {
         this.instanceName = res.value;
         this.loadData();
       }
@@ -55,19 +58,26 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadFormTypes();
   }
 
-  loadProperties(event: any) {
-    if (event.value.code === '') {
-      this.propertiesDropdown = [];
-      return;
-    }
-    const traitId = event.value.code;
-    this.propertiesDropdown = [{
-      name: '--none--',
-      code: ''
-    }, ...this.morphologicalData.find((el: any) => el.propertyId === traitId).propertyValues.map((val: any) => ({
-      name: val['valueLabel'],
-      code: val['valueId']
-    }))];
+  onAddMorphForm() {
+    this.morphologicalForms = [
+      ...this.morphologicalForms,
+      {
+        selectedTrait: { name: '--none', code: '' },
+        propertiesList: [],
+        selectedProperty: { name: '--none', code: '' }
+      }
+    ]
+  }
+
+  onChangeTraitSelection(traitDropdownField: any, mfIndex: number) {
+    this.morphologicalForms[mfIndex] = {
+      selectedTrait: traitDropdownField,
+      propertiesList: this.loadProperties(traitDropdownField.code),
+      selectedProperty: { name: '--none--', code: '' }
+    };
+  }
+  onRemoveMorphForm(morph: any) {
+    this.morphologicalForms = this.morphologicalForms.filter(mf => mf !== morph);
   }
 
   private loadForm() {
@@ -83,9 +93,17 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           code: att['label']
         }));
         console.info(data.morphology);
-        data.morphology.forEach((element: any) => {
-
+        this.morphologicalForms = data.morphology.map((el: any) => {
+          const propList = this.loadProperties(el.trait);
+          return {
+            selectedTrait: this.traitsDropdown.find((val: any) => val.code === el.trait),
+            propertiesList: propList,
+            selectedProperty: propList.find((p: any) => p.code === el.value)
+          };
         });
+        if (this.morphologicalForms.length === 0) {
+          this.onAddMorphForm();
+        }
 
         this.loading = false;
       },
@@ -132,5 +150,18 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error(error);
       }
     })
+  }
+
+  private loadProperties(traitId: any) {
+    if (traitId === '') {
+      return [];
+    }
+    return [{
+      name: '--none--',
+      code: ''
+    }, ...this.morphologicalData.find((el: any) => el.propertyId === traitId).propertyValues.map((val: any) => ({
+      name: val['valueLabel'],
+      code: val['valueId']
+    }))];
   }
 }
