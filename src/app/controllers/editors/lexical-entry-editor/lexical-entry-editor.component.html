@@ -1,9 +1,18 @@
-<p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton>
 <!--PLACEHOLDER quando siamo in fase di loading dati-->
+<p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton>
+
 <div *ngIf="!loading" class="card" [style]="{'height':'100%'}">
     <div class="formgrid grid">
         <div class="field col-12">
             <em style="float: right;">Last update: {{lastUpdate}}</em>
+        </div>
+        <div class="field col-12">
+            <label for="status">Status</label>
+            <p-selectButton [options]="statusForm" [(ngModel)]="selectedStatusForm" optionLabel="icon" [disabled]="true">
+                <ng-template let-item>
+                    <app-icon-lock [status]="item.icon"></app-icon-lock>
+                </ng-template>
+            </p-selectButton>
         </div>
         <div class="field col-12">
             <label for="label">Label</label>
@@ -12,7 +21,7 @@
         </div>
         <div class="field col-12">
             <label for="confidence">Confidence</label>
-            <input id="confidence" [(ngModel)]="confidenceForm" type="number" pInputNumber [min]="0" [max]="100"
+            <input id="confidence" [(ngModel)]="confidenceForm" type="number" pInputNumber [min]="0" [max]="100" placeholder="(0-100)"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12">
@@ -37,7 +46,8 @@
         </div>
         <div class="field col-12">
             <label for="attestations">Attestations</label>
-            <p-listbox [listStyle]="{'max-height': '250px'}" [readonly]="true" [options]="attestationsForm" optionLabel="name" emptyMessage="No attestation found"></p-listbox>
+            <p-listbox [listStyle]="{'max-height': '250px'}" [readonly]="true" [options]="attestationsForm"
+                optionLabel="name" emptyMessage="No attestation found"></p-listbox>
         </div>
         <div class="field col-12">
             <button pButton type="button" class="w-full" label="Save"></button>

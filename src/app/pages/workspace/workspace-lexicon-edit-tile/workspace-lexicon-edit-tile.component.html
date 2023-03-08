@@ -2,7 +2,7 @@
     <ng-template pTemplate>
         <p-treeTable #tt selectionMode="single" dataKey="instanceName" [(selection)]="selectedNode"
             [value]="lexicalEntryTree" [columns]="cols" [lazy]="true" [loading]="loading" scrollHeight="100vh"
-            [scrollable]="true" (onNodeExpand)="onNodeExpand($event)">
+            [scrollable]="true" (onNodeExpand)="onNodeExpand($event)" (onNodeSelect)="onNodeSelect($event)">
             <ng-template pTemplate="colgroup" let-columns>
                 <colgroup>
                     <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
@@ -33,7 +33,7 @@
     </ng-template>
     <ng-template pTemplate>
         <app-lexical-entry-editor *ngIf="showLexicalEntryEditor" [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor>
-        <app-form-editor *ngIf="showFormEditor"></app-form-editor>
+        <app-form-editor *ngIf="showFormEditor" [instanceName]="formInstanceName"></app-form-editor>
         <app-sense-editor *ngIf="showSenseEditor"></app-sense-editor>
     </ng-template>
 </p-splitter>

@@ -42,6 +42,14 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.readKey}`);
   }
 
+  getForm(formInstanceName: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/data/${formInstanceName}/form?key=${this.readKey}&aspect=core`);
+  }
+
+  getFormTypes(): Observable<any> {
+    return this.http.get(`${this.lexoUrl}ontolex/data/formType`)
+  }
+
   getLexicalEntry(lexicalEntryId: string): Observable<any> {
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/lexicalEntry?key=${this.readKey}&aspect=core`);
   }

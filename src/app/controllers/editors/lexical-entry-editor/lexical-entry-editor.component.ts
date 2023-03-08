@@ -1,10 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
 import { LexiconService } from 'src/app/services/lexicon.service';
-
-interface DropdownField {
-  name: string,
-  code: string
-}
 
 @Component({
   selector: 'app-lexical-entry-editor',
@@ -24,6 +20,8 @@ export class LexicalEntryEditorComponent implements OnInit {
   selectedLanguageForm?: DropdownField;
   noteForm?: string;
   attestationsForm: any[] = [];
+  statusForm: SelectButtonField[] = [];
+  selectedStatusForm?: SelectButtonField;
   lastUpdate: string = '';
 
   @Input() instanceName!: string;
@@ -39,11 +37,10 @@ export class LexicalEntryEditorComponent implements OnInit {
   loadData() {
     this.loading = true;
 
-    this.loadLexicalEntryTypes();
+    this.loadStatus();
   }
 
   loadLanguages() {
-    console.info('load languages')
     this.lexiconService.getLanguages().subscribe({
       next: (data: any) => {
         this.languagesForm = data.map((lang: any) => ({
@@ -62,8 +59,10 @@ export class LexicalEntryEditorComponent implements OnInit {
   loadLexicalEntry() {
     this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
       next: (data: any) => {
+        this.selectedStatusForm = this.statusForm.find((el: any) => el.icon === data.status);
         this.labelForm = data.label;
-        this.confidenceForm = data.confidence *100;
+        this.confidenceForm = data.confidence < 0 ? 0 : data.confidence * 100;
+        console.info(this.confidenceForm)
 
         this.selectedTypeForm = this.typesForm.find(el => el.code === data.type[0]);
 
@@ -86,8 +85,6 @@ export class LexicalEntryEditorComponent implements OnInit {
   }
 
   loadLexicalEntryTypes() {
-    console.info('load entry types')
-
     this.lexiconService.getLexicalEntryTypes().subscribe({
       next: (data: any) => {
         this.typesForm = data.map((val: any) => ({
@@ -116,6 +113,22 @@ export class LexicalEntryEditorComponent implements OnInit {
       },
       error: (error: any) => {
         console.error(error);
+      }
+    });
+  }
+
+  loadStatus() {
+    this.lexiconService.getStatus().subscribe({
+      next: (data: any) => {
+        this.statusForm = data.map((val: any) => ({
+          icon: val['label'],
+          justify: ''
+        }));
+
+        this.loadLexicalEntryTypes();
+      },
+      error: (error: any) => {
+        console.error(error)
       }
     });
   }

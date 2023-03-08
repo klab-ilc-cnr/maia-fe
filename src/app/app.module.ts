@@ -69,6 +69,9 @@ import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-l
 import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
 import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
   declarations: [
@@ -136,7 +139,10 @@ import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-e
     ToggleButtonModule,
     TagModule,
     OverlayPanelModule,
-    SplitterModule
+    SplitterModule,
+    SelectButtonModule,
+    ScrollPanelModule,
+    FieldsetModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]

@@ -1,3 +1,12 @@
 label {
     width: 100%;
 }
+
+::ng-deep {
+
+    .p-selectbutton .p-button.p-highlight,
+    .p-selectbutton .p-button.p-highlight:hover {
+        background-color: lightgrey !important;
+        border-color: lightgray !important;
+    }
+}

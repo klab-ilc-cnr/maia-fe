@@ -31,12 +31,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Messa a disposizione dei tipi di entrata lessicale per il template */
   public LexicalEntryType = LexicalEntryType;
   /**Definisce se visualizzare il form di editing di un'entrata lessicale */
-  public showLexicalEntryEditor = true;
+  public showLexicalEntryEditor = false;
   /**Definisce se visualizzare il form di editing di una forma */
   public showFormEditor = false;
   /**Definisce se visualizzare il form di editing di un senso */
   public showSenseEditor = false;
   public lexicalEntryInstanceName = '';
+  public formInstanceName = '';
+  public senseInstanceName = '';
 
 
   constructor(
@@ -47,7 +49,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
     this.selectedInstanceName = this.selectedNode.data.instanceName;
-    this.lexicalEntryInstanceName = this.selectedInstanceName; //TODO soluzione temporanea di test
+    this.refreshEditorView(this.selectedType, this.selectedInstanceName);
 
     this.cols = [
       { field: 'name', header: '', width: '70%', display: 'true' },
@@ -166,6 +168,42 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             console.error(error);
           }
         });
+        break;
+    }
+  }
+
+  onNodeSelect(event: any) {
+    if (event.node.data.type === LexicalEntryType.FORMS_ROOT || event.node.data.type === LexicalEntryType.SENSES_ROOT) {
+      return;
+    }
+    this.selectedInstanceName = event.node.data.instanceName;
+    this.selectedType = event.node.data.type;
+    this.refreshEditorView(this.selectedType, this.selectedInstanceName);
+  }
+
+  refreshEditorView(type: LexicalEntryType, instanceName: any) {
+    switch (type) {
+      case LexicalEntryType.LEXICAL_ENTRY:
+        this.showLexicalEntryEditor = true;
+        this.showFormEditor = false;
+        this.showSenseEditor = false;
+        this.lexicalEntryInstanceName = instanceName;
+        break;
+      case LexicalEntryType.FORM:
+        this.showLexicalEntryEditor = false;
+        this.showFormEditor = true;
+        this.showSenseEditor = false;
+        this.formInstanceName = instanceName;
+        this.commonService.notifyOther({ option: 'form_selected', value: instanceName });
+        break;
+      case LexicalEntryType.SENSE:
+        this.showLexicalEntryEditor = false;
+        this.showFormEditor = false;
+        this.showSenseEditor = true;
+        this.senseInstanceName = instanceName;
+        this.commonService.notifyOther({ option: 'sense_selected', value: instanceName });
+        break;
+      default:
         break;
     }
   }
