@@ -1,1 +1,30 @@
-<p>sense-editor works!</p>
+<!--PLACEHOLDER quando siamo in fase di loading dati-->
+<p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton>
+
+<div *ngIf="!loading" class="card" [style]="{'height': '100%'}">
+    <div class="formgrid grid">
+        <div class="field col-12">
+            <em style="float: right;">Last update: {{lastUpdate}}</em>
+        </div>
+        <div class="field col-12">
+            <label for="definition">Definition</label>
+            <textarea id="definition" [(ngModel)]="definitionInput" type="text" rows="4"
+                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+        </div>
+        <div class="field col-12">
+            <label for="reference">Reference</label>
+            <input id="reference" [(ngModel)]="referenceInput" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12">
+            <label for="note">Note</label>
+            <textarea id="note" [(ngModel)]="noteInput" type="text" rows="4" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+        </div>
+        <div class="field col-12">
+            <label for="attestations">Attestations</label>
+            <p-listbox [listStyle]="{'max-height': '250px'}" [readonly]="true" [options]="attestationsList" optionLabel="name" emptyMessage="No attestation found"></p-listbox>
+        </div>
+        <div class="field col-12">
+            <button pButton type="button" class="w-full" label="Save"></button>
+        </div>
+    </div>
+</div>

@@ -96,6 +96,10 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/statistics/types?key=${this.readKey}`);
   }
 
+  getSense(senseInstanceName: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/data/${senseInstanceName}/lexicalSense?key=${this.readKey}&aspect=core`);
+  }
+
   /**
    * GET che recupera la lista di autori disponibili per la selezione
    * @returns {Observable<any>} observable della lista di autori
