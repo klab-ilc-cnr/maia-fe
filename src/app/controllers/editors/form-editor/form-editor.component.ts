@@ -31,6 +31,8 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() instanceName!: string;
 
+  lastUpdate: string = '';
+
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService
@@ -92,7 +94,9 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           name: att['label'],
           code: att['label']
         }));
-        console.info(data.morphology);
+
+        this.lastUpdate = data.lastUpdate ? new Date(data.lastUpdate).toLocaleString() : '';
+
         this.morphologicalForms = data.morphology.map((el: any) => {
           const propList = this.loadProperties(el.trait);
           return {

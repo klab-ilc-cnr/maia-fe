@@ -4,6 +4,9 @@
 <div *ngIf="!loading" class="card" [style]="{'height':'100%'}">
     <div class="formgrid grid">
         <div class="field col-12">
+            <em style="float: right;">Last update: {{lastUpdate}}</em>
+        </div>
+        <div class="field col-12">
             <label for="type">Type</label>
             <p-dropdown id="type" [options]="typesDropdownList" [(ngModel)]="selectedType" optionLabel="name"
                 [style]="{'width': '100%'}"></p-dropdown>
