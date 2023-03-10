@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TreeNode } from 'primeng/api';
+import { MessageService, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 /**Classe del tile di modifica di un'entrata lessicale */
 @Component({
@@ -46,7 +48,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
   constructor(
     private lexiconService: LexiconService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private loggedUserService: LoggedUserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
@@ -97,11 +102,24 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.lexicalEntryTree.forEach(node => this.treeTraversalAlternateLabelInstanceName(node));
   }
 
+  onAdd(event: MouseEvent, elementType: LexicalEntryType) {
+    event.stopPropagation(); //prevengo la selezione
+
+    switch (elementType) {
+      case LexicalEntryType.FORMS_ROOT:
+        this.addNewForm();
+        break;
+      case LexicalEntryType.SENSES_ROOT:
+        this.addNewSense();
+        break;
+    }
+  }
+
   /**
    * Metodo che recupera i sottonodi dell'albero e mappa per la visualizzazione
    * @param event {any} evento emesso su espansione di un nodo
    */
-  onNodeExpand(event: any): void {
+  onNodeExpand(event: any, isNew?: boolean, formWR?: string): void {
     this.loading = true; //mostro il caricamento in corso
 
     switch (event.node.data.type) {
@@ -149,6 +167,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
                 sub: this.lexiconService.concatenateMorphology(val['morphology'])
               }
             }));
+            if(isNew) {
+              event.node.expanded = true;
+              this.selectedNode = event.node.children[event.node.children.length-1] //BUG errore di pre-selezione, non va bene l'ultimo nodo, devi recuperarne uno sulla base della formInstanceName
+              this.onNodeSelect({node: event.node.children[event.node.children.length-1]})
+            }
             //refresh the data
             this.lexicalEntryTree = [...this.lexicalEntryTree];
 
@@ -162,7 +185,6 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       case LexicalEntryType.SENSES_ROOT:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            console.info(data)
             event.node.children = data.map((val: any) => ({
               data: {
                 name: this.showLabelName ? val['label'] : val['senseInstanceName'],
@@ -176,6 +198,12 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
                 type: LexicalEntryType.SENSE
               }
             }));
+            if(isNew) {
+              event.node.expanded = true;
+              this.selectedNode = event.node.children[event.node.children.length-1]
+              this.onNodeSelect({node: event.node.children[event.node.children.length-1]})
+            }
+
             //refresh the data
             this.lexicalEntryTree = [...this.lexicalEntryTree];
 
@@ -229,18 +257,58 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.showFormEditor = true;
         this.showSenseEditor = false;
         this.formInstanceName = instanceName;
-        this.commonService.notifyOther({ option: 'form_selected', value: instanceName });
+        this.commonService.notifyOther({ option: 'form_selected', value: instanceName, lexEntryId: this.lexicalEntryTree[0].data?.instanceName });
         break;
       case LexicalEntryType.SENSE:
         this.showLexicalEntryEditor = false;
         this.showFormEditor = false;
         this.showSenseEditor = true;
         this.senseInstanceName = instanceName;
-        this.commonService.notifyOther({ option: 'sense_selected', value: instanceName });
+        this.commonService.notifyOther({ option: 'sense_selected', value: instanceName, lexEntryId: this.lexicalEntryTree[0].data?.instanceName });
         break;
       default:
         break;
     }
+  }
+
+  private addNewForm() {
+    const lexEntryId = this.lexicalEntryTree[0].data?.instanceName;
+    if (!lexEntryId) {
+      console.error('Lexical entry instance name not found');
+      return;
+    }
+    const loggedUser = this.loggedUserService.currentUser?.name + '.' + this.loggedUserService.currentUser?.surname;
+
+    this.lexiconService.getNewForm(lexEntryId, loggedUser).subscribe({
+      next: (res: any) => {
+        let formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.FORMS_ROOT);
+        this.onNodeExpand({ node: formsRootNode }, true, res.formInstanceName);
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'))
+      },
+      error: (error: any) => {
+        console.error(error);
+      }
+    });
+  }
+
+  private addNewSense() {
+    const lexEntryId = this.lexicalEntryTree[0].data?.instanceName;
+    if (!lexEntryId) {
+      console.error('Lexical entry instance name not found');
+      return;
+    }
+    const loggedUser = this.loggedUserService.currentUser?.name + '.' + this.loggedUserService.currentUser?.surname;
+
+    this.lexiconService.getNewSense(lexEntryId, loggedUser).subscribe({
+      next: (res: any) => {
+        let sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.SENSES_ROOT);
+        this.onNodeExpand({ node: sensesRootNode }, true);
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
+      },
+      error: (error: any) => {
+        console.error(error);
+      }
+    });
   }
 
   /**

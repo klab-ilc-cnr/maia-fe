@@ -13,6 +13,8 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription!: Subscription;
 
+  @Input() lexicalEntryID!: string | undefined;
+
   writtenRepresentationInput?: string;
   typesDropdownList: DropdownField[] = [];
   selectedType?: DropdownField;
@@ -47,11 +49,11 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if (res.hasOwnProperty('option') && res.option === 'form_selected' && res.value === this.instanceName) {
+      if (res.hasOwnProperty('option') && res.option === 'form_selected' && res.value !== this.instanceName && this.lexicalEntryID === res.lexEntryId) {
         this.instanceName = res.value;
         this.loadData();
       }
-      if(res.hasOwnProperty('option') && res.option === 'form_editor_save' && this.instanceName === res.value) {
+      if (res.hasOwnProperty('option') && res.option === 'form_editor_save' && this.instanceName === res.value) {
         this.handleSave(null);
       }
     });
@@ -98,7 +100,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPendingChanges() {
-    if(this.pendingChanges) {
+    if (this.pendingChanges) {
       return;
     }
 

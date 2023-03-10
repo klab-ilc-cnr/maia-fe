@@ -3,104 +3,94 @@
         <div class="grid p-fluid">
             <div class="flex card-container w-full">
                 <div class="p-inputgroup">
-                    <p-button pTooltip="aggiorna risultati" class="mr-2" icon="pi pi-spinner" [loading]="loading" (onClick)="loadNodes()"></p-button>
-                    <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)" icon="pi pi-info-circle" ></button>    
-                    <input
-                    id="searchInput"
-                    class="flex-grow-1 flex align-items-center justify-content-center"
-                    [(ngModel)]="searchTextInput"
-                    type="text"
-                    pInputText
-                    size="50"
-                    placeholder="*"
-                    (keyup)="onChangeFilter()"
-                />
-                    <button pButton [disabled]="!pendingFilters" label="Filtra" icon="pi pi-search" [loading]="loading" (click)="filter()"></button>
-                    <button pButton pRipple type="button" icon="pi pi-filter-slash" label="Reset" class="p-button-secondary" (click)="reset()"></button>
-                    <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic">
+                    <p-button pTooltip="aggiorna risultati" class="mr-2" icon="pi pi-spinner" [loading]="loading"
+                        (onClick)="loadNodes()"></p-button>
+                    <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)"
+                        icon="pi pi-info-circle"></button>
+                    <input id="searchInput" class="flex-grow-1 flex align-items-center justify-content-center"
+                        [(ngModel)]="searchTextInput" type="text" pInputText size="15" placeholder="*"
+                        (keyup)="onChangeFilter()" />
+                    <button pButton [disabled]="!pendingFilters" pTooltip="Filtra" icon="pi pi-search" class="mr-2"
+                        [loading]="loading" (click)="filter()"></button>
+                    <button pButton pRipple type="button" icon="pi pi-filter-slash" pTooltip="Reset"
+                        class="p-button-secondary" (click)="reset()"></button>
+                    <span
+                        class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic">
                         {{counter}}</span>
                 </div>
             </div>
         </div>
         <div class="flex flex-row">
             <div class="flex align-items-center justify-content-center m-3 field-radiobutton">
-                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode" inputId="equals"></p-radioButton>
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"
+                    inputId="equals"></p-radioButton>
                 <label for="equals">Equals</label>
             </div>
             <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
-                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode" inputId="startsWith"></p-radioButton>
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode"
+                    inputId="startsWith"></p-radioButton>
                 <label for="startsWith">StartsWith</label>
             </div>
+
+        </div>
+        <div class="flex flex-row">
             <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
-                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode" inputId="contains"></p-radioButton>
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode"
+                    inputId="contains"></p-radioButton>
                 <label for="contains">Contains</label>
             </div>
             <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
-                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode" inputId="end"></p-radioButton>
+                <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode"
+                    inputId="end"></p-radioButton>
                 <label for="end">End</label>
             </div>
         </div>
         <div class="flex flex-row">
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
-                (onChange)="onChangeFilter()" [options]="selectTypes" [(ngModel)]="selectedType" 
-                placeholder="Tipo" [showClear]="true">
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+                [options]="selectTypes" [(ngModel)]="selectedType" placeholder="Tipo" [showClear]="true">
             </p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
-                (onChange)="onChangeFilter()" [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech"
-                placeholder="Pos" [showClear]="true" [filter]="true" filterBy="label">
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+                [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos" [showClear]="true"
+                [filter]="true" filterBy="label">
             </p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
-                (onChange)="onChangeFilter()" [options]="selectLanguages" [(ngModel)]="selectedLanguage" 
-                placeholder="Lingua" [showClear]="true">
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+                [options]="selectLanguages" [(ngModel)]="selectedLanguage" placeholder="Lingua" [showClear]="true">
             </p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 "
-                (onChange)="onChangeFilter()" [options]="selectAuthors" [(ngModel)]="selectedAuthor" 
-                placeholder="Autore" [showClear]="true" [filter]="true" filterBy="label">
+        </div>
+        <div class="flex flex-row">
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+                [options]="selectAuthors" [(ngModel)]="selectedAuthor" placeholder="Autore" [showClear]="true"
+                [filter]="true" filterBy="label">
             </p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
-                (onChange)="onChangeFilter()" [options]="selectStatuses" [(ngModel)]="selectedStatus" 
-                placeholder="Status" [showClear]="true">
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+                [options]="selectStatuses" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true">
             </p-dropdown>
-            <p-dropdown class="flex align-items-center justify-content-center m-2 " 
-                (onChange)="onChangeFilter()" [options]="selectEntries" [(ngModel)]="selectedEntry" 
-                placeholder="Entry" [showClear]="true">
+            <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+                [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true">
             </p-dropdown>
         </div>
     </div>
 </p-panel>
-<p-treeTable #tt 
-    selectionMode="single"
-    dataKey="instanceName"
-    [(selection)]="selectedNode"
-    [value]="results"
-    [columns]="cols"
-    [lazy]="true" 
-    (onLazyLoad)="loadNodes()"
-    [loading]="loading"
-    (dblclick)="lexicalEntryDoubleClickHandler($event)"
-    (onNodeSelect)="onNodeSelect($event)"
-    (onNodeUnselect)="onNodeUnselect($event)"
-    (onNodeExpand)="onNodeExpand($event)"
-    [scrollable]="true">
-        <ng-template pTemplate="colgroup" let-columns>
-            <colgroup>
-                <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
-            </colgroup>
-        </ng-template>
-        <!-- <ng-template pTemplate="header" let-columns>
+<p-treeTable #tt selectionMode="single" dataKey="instanceName" [(selection)]="selectedNode" [value]="results"
+    [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading"
+    (dblclick)="lexicalEntryDoubleClickHandler($event)" (onNodeSelect)="onNodeSelect($event)"
+    (onNodeUnselect)="onNodeUnselect($event)" (onNodeExpand)="onNodeExpand($event)" [scrollable]="true">
+    <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+            <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
+        </colgroup>
+    </ng-template>
+    <!-- <ng-template pTemplate="header" let-columns>
         <tr>
             <th *ngFor="let col of cols">
             {{ col.header }}
             </th>
         </tr>
         </ng-template> -->
-        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
         <tr [ttSelectableRow]="rowNode">
             <td *ngFor="let col of cols; let i = index">
-            <p-treeTableToggler
-                [rowNode]="rowNode"
-                *ngIf="i == 0"
-            ></p-treeTableToggler>
+                <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
                 <!-- <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'working'"
                     styleClass="mr-2" severity="danger">{{ rowData[col.field] }}
                 </p-tag>
@@ -110,38 +100,44 @@
                 <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'reviewed'"
                     styleClass="mr-2" severity="success">{{ rowData[col.field] }}
                 </p-tag> -->
-                <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]" [status]="rowData[col.field]"></app-icon-lock>
+                <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
+                    [status]="rowData[col.field]"></app-icon-lock>
                 <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
                 <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
-                    [tooltip]="'<em>Autore</em>: '+rowData['creator']+'<br><em>Creato il</em>: '+ rowData['creationDate']+'<br><em>Ultima modifica</em>: '+ rowData['lastUpdate']"></app-icon-author> <!--TODO migliorare-->
+                    [tooltip]="'<em>Autore</em>: '+rowData['creator']+'<br><em>Creato il</em>: '+ rowData['creationDate']+'<br><em>Ultima modifica</em>: '+ rowData['lastUpdate']"></app-icon-author>
+                <!--TODO migliorare-->
                 <!-- <button *ngIf="col.field === 'name' && (rowData['type'] == LexicalEntryType.FORM || rowData['type'] == LexicalEntryType.SENSE)" 
                     pButton pRipple type="button" icon="pi pi-copy" class="p-button-rounded mr-1"
                     pTooltip="Copia uri negli appunti"
                     (click)="copyUri(rowData['uri'])">
                 </button> -->
-                <span *ngIf="col.field === 'name'">{{ rowData[col.field] }}</span>
-                <sub *ngIf="col.field === 'name' && (rowData['type'] == LexicalEntryType.LEXICAL_ENTRY || rowData['type'] == LexicalEntryType.FORM)">{{rowData['sub']}}</sub>
+                <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
+                    rowData[col.field] }}</span>
+                <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
+                    [pTooltip]="rowData['sub']">{{ rowData[col.field] }}</span>
+                <sub
+                    *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
             </td>
         </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
         <tr>
             <td [attr.colspan]="cols.length">Nessun risultato</td>
         </tr>
-        </ng-template>
-  </p-treeTable>
+    </ng-template>
+</p-treeTable>
 
-  <p-overlayPanel #op [dismissable]="true">
+<p-overlayPanel #op [dismissable]="true">
     <ng-template pTemplate>
         <h3>Search examples</h3>
         <br>
-        <span><b>Multiple character wildcard search:</b></span> 
+        <span><b>Multiple character wildcard search:</b></span>
         <span><i>te*</i></span>
         <br><span><b>Single character wildcard search:</b></span>
         <span><i>te?t</i></span><br>
-         <b>Fuzzy search:</b>
-          <span><i>test~</i></span>
-          <br><b>Weighted fuzzy search:</b>
-          <span><i>test~0.8</i></span>
+        <b>Fuzzy search:</b>
+        <span><i>test~</i></span>
+        <br><b>Weighted fuzzy search:</b>
+        <span><i>test~0.8</i></span>
     </ng-template>
 </p-overlayPanel>

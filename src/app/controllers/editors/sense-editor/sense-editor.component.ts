@@ -19,6 +19,7 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   loading?: boolean;
 
   @Input() instanceName!: string;
+  @Input() lexicalEntryID!: string | undefined;
 
   lastUpdate?: string = '';
 
@@ -35,7 +36,7 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if (res.hasOwnProperty('option') && res.option === 'sense_selected' && res.value === this.instanceName) {
+      if (res.hasOwnProperty('option') && res.option === 'sense_selected' && res.value !== this.instanceName && this.lexicalEntryID === res.lexEntryId) {
         this.instanceName = res.value;
         this.loadData();
       }

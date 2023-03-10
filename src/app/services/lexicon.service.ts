@@ -88,6 +88,14 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexinfo/data/morphology`);
   }
 
+  getNewForm(lexicalEntryId: string, creator: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${lexicalEntryId}&key=${this.writeKey}&author=${creator}`);
+  }
+
+  getNewSense(lexicalEntryId: string, creator: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${lexicalEntryId}&key=${this.writeKey}&author=${creator}`)
+  }
+
   /**
    * GET che recupera la lista di tipi disponibili per la selezione
    * @returns {Observable<any>} observable della lista di tipi disponibili
