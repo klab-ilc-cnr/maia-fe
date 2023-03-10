@@ -9,16 +9,16 @@
         <div class="field col-12">
             <label for="type">Type</label>
             <p-dropdown id="type" [options]="typesDropdownList" [(ngModel)]="selectedType" optionLabel="name"
-                [style]="{'width': '100%'}"></p-dropdown>
+                [style]="{'width': '100%'}" (onChange)="onPendingChanges()"></p-dropdown>
         </div>
         <div class="field col-12">
             <label for="writtenRepresentation">Written representation</label>
-            <input id="writtenRepresentation" [(ngModel)]="writtenRepresentationInput" type="text" pInputText
+            <input id="writtenRepresentation" [(ngModel)]="writtenRepresentationInput" type="text" pInputText (change)="onPendingChanges()"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12">
             <label for="note">Note</label>
-            <textarea id="note" [(ngModel)]="noteInput" type="text" rows="4"
+            <textarea id="note" [(ngModel)]="noteInput" type="text" rows="4" (change)="onPendingChanges()"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
         </div>
         <div class="field col-12">
@@ -29,11 +29,11 @@
         <div class="field col-12">
             <p-fieldset legend="Morphological traits">
                 <div class="p-inputgroup flex align-items-center justify-content-center mt-5" *ngFor="let mf of morphologicalForms; index as index">
-                    <p-dropdown [id]="'trait'+index" [options]="traitsDropdown" [(ngModel)]="mf.selectedTrait" [filter]="true"
+                    <p-dropdown [id]="'trait'+index" [options]="traitsDropdown" [(ngModel)]="mf.selectedTrait" [filter]="true" (onChange)="onPendingChanges()"
                         filterBy="name" optionLabel="name" [style]="{'width':'100%'}" [virtualScroll]="true"
                         [virtualScrollItemSize]="30" (onChange)="onChangeTraitSelection($event.value,index)">
                     </p-dropdown>
-                    <p-dropdown [disabled]="mf.selectedTrait.code === ''" [id]="'property'+index" [options]="mf.propertiesList"
+                    <p-dropdown [disabled]="mf.selectedTrait.code === ''" [id]="'property'+index" [options]="mf.propertiesList" (onChange)="onPendingChanges()"
                         [(ngModel)]="mf.selectedProperty" optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"
                         [virtualScroll]="true" [virtualScrollItemSize]="30"></p-dropdown>
                     <button pButton pRipple type="button" icon="pi pi-times"

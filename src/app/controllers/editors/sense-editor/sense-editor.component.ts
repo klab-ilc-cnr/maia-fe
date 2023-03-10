@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 
@@ -21,6 +22,8 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   lastUpdate?: string = '';
 
+  pendingChanges: boolean = false;
+
   constructor(
     private commonService: CommonService,
     private lexiconService: LexiconService
@@ -36,17 +39,40 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.instanceName = res.value;
         this.loadData();
       }
-    })
+      if (res.hasOwnProperty('option') && res.option === 'sense_editor_save' && this.instanceName === res.value) {
+        this.handleSave(null);
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  handleSave(event: any) {
+    console.group('Handle save in lexical entry editor'); //TODO sostituire con meccanismo di salvataggio
+    console.info(this.definitionInput);
+    console.info(this.referenceInput);
+    console.info(this.noteInput);
+    console.groupEnd();
+
+    this.pendingChanges = false;
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE })
+  }
+
   loadData() {
     this.loading = true;
 
     this.loadSense();
+  }
+
+  onPendingChanges() {
+    if(this.pendingChanges) {
+      return;
+    }
+
+    this.pendingChanges = true;
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE });
   }
 
   private loadSense() {

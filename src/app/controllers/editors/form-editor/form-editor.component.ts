@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DropdownField } from 'src/app/models/dropdown-field';
+import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 
@@ -33,6 +34,8 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   lastUpdate: string = '';
 
+  pendingChanges: boolean = false;
+
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService
@@ -48,11 +51,26 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.instanceName = res.value;
         this.loadData();
       }
+      if(res.hasOwnProperty('option') && res.option === 'form_editor_save' && this.instanceName === res.value) {
+        this.handleSave(null);
+      }
     });
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  handleSave(event: any) {
+    console.group('Handle save in lexical entry editor'); //TODO sostituire con meccanismo di salvataggio
+    console.info(this.selectedType);
+    console.info(this.writtenRepresentationInput);
+    console.info(this.noteInput);
+    console.info(this.morphologicalForms);
+    console.groupEnd();
+
+    this.pendingChanges = false;
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.FORM })
   }
 
   loadData() {
@@ -78,6 +96,17 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       selectedProperty: { name: '--none--', code: '' }
     };
   }
+
+  onPendingChanges() {
+    if(this.pendingChanges) {
+      return;
+    }
+
+    this.pendingChanges = true;
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.FORM });
+  }
+
+
   onRemoveMorphForm(morph: any) {
     this.morphologicalForms = this.morphologicalForms.filter(mf => mf !== morph);
   }

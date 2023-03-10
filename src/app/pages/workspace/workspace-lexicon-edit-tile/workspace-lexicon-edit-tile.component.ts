@@ -40,6 +40,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   public formInstanceName = '';
   public senseInstanceName = '';
 
+  lexicalEntryPendingChanges: boolean = false;
+  formPendingChanges: boolean = false;
+  sensePendingChanges: boolean = false;
 
   constructor(
     private lexiconService: LexiconService,
@@ -66,6 +69,20 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       if (res.hasOwnProperty('option') && res.option === 'tag_clicked_edit_tile') {
         this.alternateLabelInstanceName();
         this.showLabelName = !this.showLabelName;
+      }
+
+      if (res.hasOwnProperty('option') && res.option === 'lexicon_edit_pending_changes') {
+        switch (res.type) {
+          case LexicalEntryType.LEXICAL_ENTRY:
+            this.lexicalEntryPendingChanges = res.value;
+            break;
+          case LexicalEntryType.FORM:
+            this.formPendingChanges = res.value;
+            break;
+          case LexicalEntryType.SENSE:
+            this.sensePendingChanges = res.value;
+            break;
+        }
       }
     });
   }
@@ -175,6 +192,24 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   onNodeSelect(event: any) {
     if (event.node.data.type === LexicalEntryType.FORMS_ROOT || event.node.data.type === LexicalEntryType.SENSES_ROOT) {
       return;
+    }
+    if (this.lexicalEntryPendingChanges) {
+      if (confirm('Ci sono modifiche pendenti, vuoi prima salvare?')) {
+        this.commonService.notifyOther({ option: 'lexical_entry_editor_save', value: this.selectedInstanceName });
+      }
+      this.lexicalEntryPendingChanges = false;
+    }
+    if (this.formPendingChanges) {
+      if (confirm('Ci sono modifiche pendenti, vuoi prima salvare?')) {
+        this.commonService.notifyOther({ option: 'form_editor_save', value: this.selectedInstanceName });
+      }
+      this.formPendingChanges = false;
+    }
+    if (this.sensePendingChanges) {
+      if (confirm('Ci sono modifiche pendenti, vuoi prima salvare?')) {
+        this.commonService.notifyOther({ option: 'sense_editor_save', value: this.selectedInstanceName });
+      }
+      this.sensePendingChanges = false;
     }
     this.selectedInstanceName = event.node.data.instanceName;
     this.selectedType = event.node.data.type;

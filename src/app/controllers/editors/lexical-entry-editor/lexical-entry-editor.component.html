@@ -8,7 +8,7 @@
         </div>
         <div class="field col-12">
             <label for="status">Status</label>
-            <p-selectButton [options]="statusForm" [(ngModel)]="selectedStatusForm" optionLabel="icon" [disabled]="true">
+            <p-selectButton [options]="statusForm" [(ngModel)]="selectedStatusForm" optionLabel="icon" [disabled]="true" (onChange)="onPendingChanges()">
                 <ng-template let-item>
                     <app-icon-lock [status]="item.icon"></app-icon-lock>
                 </ng-template>
@@ -16,32 +16,32 @@
         </div>
         <div class="field col-12">
             <label for="label">Label</label>
-            <input id="label" [(ngModel)]="labelForm" type="text" pInputText
+            <input id="label" [(ngModel)]="labelForm" type="text" pInputText (change)="onPendingChanges()"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12">
             <label for="confidence">Confidence</label>
-            <input id="confidence" [(ngModel)]="confidenceForm" type="number" pInputNumber [min]="0" [max]="100" placeholder="(0-100)"
+            <input id="confidence" [(ngModel)]="confidenceForm" type="number" pInputNumber [min]="0" [max]="100" placeholder="(0-100)" (change)="onPendingChanges()"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12">
             <label for="type">Type</label>
-            <p-dropdown id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name"
+            <p-dropdown id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name" (onChange)="onPendingChanges()"
                 [style]="{'width': '100%'}"></p-dropdown>
         </div>
         <div class="field col-12">
             <label for="partOdSpeech">Part-of-Speech</label>
-            <p-dropdown id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechesForm"
+            <p-dropdown id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechesForm" (onChange)="onPendingChanges()"
                 [filter]="true" filterBy="name" optionLabel="name" [style]="{'width': '100%'}"></p-dropdown>
         </div>
         <div class="field col-12">
             <label for="language">Language</label>
-            <p-dropdown id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name"
+            <p-dropdown id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name" (onChange)="onPendingChanges()"
                 [style]="{'width': '100%'}"></p-dropdown>
         </div>
         <div class="field col-12">
             <label for="note">Note</label>
-            <textarea id="note" [(ngModel)]="noteForm" type="text" rows="4"
+            <textarea id="note" [(ngModel)]="noteForm" type="text" rows="4" (change)="onPendingChanges()"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
         </div>
         <div class="field col-12">
