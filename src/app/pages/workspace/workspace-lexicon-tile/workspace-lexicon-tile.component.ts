@@ -217,7 +217,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryType.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            event.node.children = data.map((val: any) => ({
+            let mappedChildren: any[] = data.map((val: any) => ({
               data: {
                 name: this.showLabelName ? val['label'] : val['formInstanceName'],
                 instanceName: val['formInstanceName'],
@@ -232,6 +232,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 sub: this.lexiconService.concatenateMorphology(val['morphology'])
               }
             }));
+            let sortedChildren = mappedChildren.sort((a,b) => a.label===b.label ? 0 :(a.label>b.label? 1 : -1));
+            event.node.children = sortedChildren;
+
             //refresh the data
             this.results = [...this.results];
 

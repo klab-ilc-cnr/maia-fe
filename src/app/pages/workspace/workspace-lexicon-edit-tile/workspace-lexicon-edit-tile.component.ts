@@ -119,7 +119,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
    * Metodo che recupera i sottonodi dell'albero e mappa per la visualizzazione
    * @param event {any} evento emesso su espansione di un nodo
    */
-  onNodeExpand(event: any, isNew?: boolean, formIN?: string): void {
+  onNodeExpand(event: any, isNew?: boolean, elementInstanceName?: string): void {
     this.loading = true; //mostro il caricamento in corso
 
     switch (event.node.data.type) {
@@ -153,7 +153,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       case LexicalEntryType.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            event.node.children = data.map((val: any) => ({
+            let mappedChildren: any[] = data.map((val: any) => ({
               data: {
                 name: this.showLabelName ? val['label'] : val['formInstanceName'],
                 instanceName: val['formInstanceName'],
@@ -167,9 +167,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
                 sub: this.lexiconService.concatenateMorphology(val['morphology'])
               }
             }));
+            let sortedChildren = mappedChildren.sort((a,b) => a.label===b.label ? 0 :(a.label>b.label? 1 : -1));
+            event.node.children = sortedChildren;
             if(isNew) {
               event.node.expanded = true;
-              const newFormNode = event.node.children.find((n: any) => n.data.instanceName === formIN);
+              const newFormNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
               this.selectedNode = newFormNode;
               this.onNodeSelect({node: newFormNode});
             }
@@ -201,8 +203,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             }));
             if(isNew) {
               event.node.expanded = true;
-              this.selectedNode = event.node.children[event.node.children.length-1]
-              this.onNodeSelect({node: event.node.children[event.node.children.length-1]})
+              const newSenseNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
+              this.selectedNode = newSenseNode;
+              this.onNodeSelect({node: newSenseNode})
             }
 
             //refresh the data
@@ -278,9 +281,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       console.error('Lexical entry instance name not found');
       return;
     }
-    const loggedUser = this.loggedUserService.currentUser?.name + '.' + this.loggedUserService.currentUser?.surname;
+    const loggedUser = this.loggedUserService.currentUser;
+    const creatorName = (loggedUser?.name + '.' + loggedUser?.surname).replace(' ', '.');
 
-    this.lexiconService.getNewForm(lexEntryId, loggedUser).subscribe({
+    this.lexiconService.getNewForm(lexEntryId, creatorName).subscribe({
       next: (res: any) => {
         let formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.FORMS_ROOT);
         this.onNodeExpand({ node: formsRootNode }, true, res.formInstanceName);
@@ -298,12 +302,13 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       console.error('Lexical entry instance name not found');
       return;
     }
-    const loggedUser = this.loggedUserService.currentUser?.name + '.' + this.loggedUserService.currentUser?.surname;
+    const loggedUser = this.loggedUserService.currentUser;
+    const creatorName = (loggedUser?.name + '.' + loggedUser?.surname).replace(' ', '.');
 
-    this.lexiconService.getNewSense(lexEntryId, loggedUser).subscribe({
+    this.lexiconService.getNewSense(lexEntryId, creatorName).subscribe({
       next: (res: any) => {
         let sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.SENSES_ROOT);
-        this.onNodeExpand({ node: sensesRootNode }, true);
+        this.onNodeExpand({ node: sensesRootNode }, true, res.senseInstanceName);
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
       },
       error: (error: any) => {
