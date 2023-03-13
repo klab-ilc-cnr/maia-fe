@@ -976,7 +976,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: true },
       syncMargins: true,
       panelSize: {
-        width: () => window.innerWidth * 0.7,
+        width: () => window.innerWidth * 0.5,
         height: '60vh'
       },
       headerControls: {

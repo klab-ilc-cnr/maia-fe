@@ -72,6 +72,7 @@ import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-e
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { FieldsetModule } from 'primeng/fieldset';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @NgModule({
   declarations: [
@@ -142,7 +143,8 @@ import { FieldsetModule } from 'primeng/fieldset';
     SplitterModule,
     SelectButtonModule,
     ScrollPanelModule,
-    FieldsetModule
+    FieldsetModule,
+    ToolbarModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
