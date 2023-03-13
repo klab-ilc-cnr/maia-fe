@@ -119,7 +119,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
    * Metodo che recupera i sottonodi dell'albero e mappa per la visualizzazione
    * @param event {any} evento emesso su espansione di un nodo
    */
-  onNodeExpand(event: any, isNew?: boolean, formWR?: string): void {
+  onNodeExpand(event: any, isNew?: boolean, formIN?: string): void {
     this.loading = true; //mostro il caricamento in corso
 
     switch (event.node.data.type) {
@@ -169,8 +169,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             }));
             if(isNew) {
               event.node.expanded = true;
-              this.selectedNode = event.node.children[event.node.children.length-1] //BUG errore di pre-selezione, non va bene l'ultimo nodo, devi recuperarne uno sulla base della formInstanceName
-              this.onNodeSelect({node: event.node.children[event.node.children.length-1]})
+              const newFormNode = event.node.children.find((n: any) => n.data.instanceName === formIN);
+              this.selectedNode = newFormNode;
+              this.onNodeSelect({node: newFormNode});
             }
             //refresh the data
             this.lexicalEntryTree = [...this.lexicalEntryTree];
