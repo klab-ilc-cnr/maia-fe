@@ -13,7 +13,8 @@
         </div>
         <div class="field col-12">
             <label for="writtenRepresentation">Written representation</label>
-            <input id="writtenRepresentation" [(ngModel)]="writtenRepresentationInput" type="text" pInputText (change)="onPendingChanges()"
+            <input id="writtenRepresentation" [(ngModel)]="writtenRepresentationInput" type="text" pInputText
+                (change)="onPendingChanges()"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12">
@@ -28,25 +29,31 @@
         </div>
         <div class="field col-12">
             <p-fieldset legend="Morphological traits">
-                <div class="p-inputgroup flex align-items-center justify-content-center mt-5" *ngFor="let mf of morphologicalForms; index as index">
-                    <p-dropdown [id]="'trait'+index" [options]="traitsDropdown" [(ngModel)]="mf.selectedTrait" [filter]="true" (onChange)="onPendingChanges()"
-                        filterBy="name" optionLabel="name" [style]="{'width':'100%'}" [virtualScroll]="true"
-                        [virtualScrollItemSize]="30" (onChange)="onChangeTraitSelection($event.value,index)">
+                <div class="p-inputgroup flex align-items-center justify-content-center mt-5"
+                    *ngFor="let mf of morphologicalForms; index as index">
+                    <p-dropdown [id]="'trait'+index" [options]="traitsDropdown" [(ngModel)]="mf.selectedTrait"
+                        [filter]="true" (onChange)="onPendingChanges()" filterBy="name" optionLabel="name"
+                        [style]="{'width':'100%'}" [virtualScroll]="true" [virtualScrollItemSize]="30"
+                        (onChange)="onChangeTraitSelection($event.value,index)">
                     </p-dropdown>
-                    <p-dropdown [disabled]="mf.selectedTrait.code === ''" [id]="'property'+index" [options]="mf.propertiesList" (onChange)="onPendingChanges()"
-                        [(ngModel)]="mf.selectedProperty" optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2"
-                        [virtualScroll]="true" [virtualScrollItemSize]="30"></p-dropdown>
+                    <p-dropdown [disabled]="mf.selectedTrait.code === ''" [id]="'property'+index"
+                        [options]="mf.propertiesList" (onChange)="onPendingChanges()" [(ngModel)]="mf.selectedProperty"
+                        optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2" [virtualScroll]="true"
+                        [virtualScrollItemSize]="30"></p-dropdown>
                     <button pButton pRipple type="button" icon="pi pi-times"
                         class="p-button-rounded p-button-danger p-button-text" (click)="onRemoveMorphForm(mf)"></button>
                 </div>
                 <div class="p-inputgroup flex align-items-center justify-content-center mt-5">
-                    <button pButton pRipple type="button" icon="pi pi-plus"
-                        class="p-button-rounded p-button-outlined" (click)="onAddMorphForm()"></button>
+                    <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-outlined"
+                        (click)="onAddMorphForm()"></button>
                 </div>
             </p-fieldset>
         </div>
-        <div class="field col-12">
+        <div class="field col-11">
             <button pButton type="button" class="w-full" label="Save"></button>
+        </div>
+        <div class="field col-1">
+            <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger w-full"></button>
         </div>
     </div>
 </div>

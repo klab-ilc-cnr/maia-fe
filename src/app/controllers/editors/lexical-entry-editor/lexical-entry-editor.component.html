@@ -49,8 +49,11 @@
             <p-listbox [listStyle]="{'max-height': '250px'}" [readonly]="true" [options]="attestationsForm"
                 optionLabel="name" emptyMessage="No attestation found"></p-listbox>
         </div>
-        <div class="field col-12">
+        <div class="field col-11">
             <button pButton type="button" class="w-full" label="Save"></button>
+        </div>
+        <div class="field col-1">
+            <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger w-full"></button>
         </div>
     </div>
 </div>

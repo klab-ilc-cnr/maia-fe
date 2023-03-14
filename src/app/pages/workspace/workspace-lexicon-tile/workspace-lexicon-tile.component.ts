@@ -56,7 +56,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Lista di colonne della tabella */
   public cols!: any[];
   /**Nodo dell'albero selezionato */
-  public selectedNode?: TreeNode;
+  public selectedNodes: TreeNode[] = [];
   /**Sottonodo dell'albero selezionato */
   public selectedSubTree?: TreeNode<LexicalEntry>;
   /**Definisce se è in corso il caricamento */
@@ -155,12 +155,14 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           children: [{
             data: {
               name: 'form (0)',
+              instanceName: '_form_' + val['lexicalEntryInstanceName'],
               type: LexicalEntryType.FORMS_ROOT
             }
           },
           {
             data: {
               name: 'sense (0)',
+              instanceName: '_sense_'+val['lexicalEntryInstanceName'],
               type: LexicalEntryType.SENSES_ROOT
             }
           }]
@@ -187,6 +189,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    */
   onNodeExpand(event: any): void {
     this.loading = true;
+    const node = event.node;
 
     switch (event.node.data.type) {
       case LexicalEntryType.LEXICAL_ENTRY:
@@ -200,14 +203,18 @@ export class WorkspaceLexiconTileComponent implements OnInit {
             formCildNode.data.name = `form (${countFormChildren})`;
 
             if (countFormChildren > 0) {
-              formCildNode.children = [{ data: { name: '' } }];
+              // formCildNode.children = [{ data: { name: '' } }];
+              formCildNode.leaf = false;
             }
 
             senseCildNode.data.name = `sense (${countSenseChildren})`;
 
             if (countSenseChildren > 0) {
-              senseCildNode.children = [{ data: { name: '' } }];
+              // senseCildNode.children = [{ data: { name: '' } }];
+              senseCildNode.leaf = false;
             }
+
+            this.selectChildNodes(node);
 
             this.loading = false;
           },
@@ -230,10 +237,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 uri: val['form'],
                 type: LexicalEntryType.FORM,
                 sub: this.lexiconService.concatenateMorphology(val['morphology'])
-              }
+              },
+              parent: node
             }));
             let sortedChildren = mappedChildren.sort((a,b) => a.data.label===b.data.label ? 0 :(a.data.label>b.data.label? 1 : -1));
             event.node.children = sortedChildren;
+
+            this.selectChildNodes(node);
+
+            this.selectedNodes = [...this.selectedNodes]
 
             //refresh the data
             this.results = [...this.results];
@@ -260,6 +272,11 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 type: LexicalEntryType.SENSE
               }
             }));
+
+            this.selectChildNodes(node);
+
+            this.selectedNodes = [...this.selectedNodes];
+
             //refresh the data
             this.results = [...this.results];
 
@@ -269,6 +286,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         })
         break;
     }
+
+    console.info(this.selectedNodes)
   }
 
   /**
@@ -284,16 +303,17 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * Metodo che gestisce il doppio click dell'albero con apertura del pannello di edit
    * @param event {any} evento di doppio click sull'albero
    */
-  lexicalEntryDoubleClickHandler(event: any) {
+  lexicalEntryDoubleClickHandler(event: any, rowNode: any) {
     /*     if (this.selectedSubTree?.data?.type === LexicalEntryType.FORMS_ROOT ||
           this.selectedSubTree?.data?.type === LexicalEntryType.SENSES_ROOT) {
            this.selectedSubTree!.expanded = !event.node.expanded;//BUG presente nel branch lessico, non funziona perché event non ha node expanded
         } else {
      */
-    if (this.selectedSubTree?.data?.type === undefined || (this.selectedSubTree?.data?.type == LexicalEntryType.FORMS_ROOT || this.selectedSubTree?.data?.type == LexicalEntryType.SENSES_ROOT)) {
+    const node = rowNode?.node;
+    if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryType.FORMS_ROOT || node?.data?.type == LexicalEntryType.SENSES_ROOT)) {
       return;
     }
-    this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [this.selectedSubTree, this.showLabelName] });
+    this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
     // }
   }
 
@@ -509,4 +529,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         error: () => { }
       })
     } */
+
+    private selectChildNodes(node: TreeNode) {
+      if(node && node.children && this.selectedNodes?.indexOf(node) !== -1) {
+        for(const child of node.children) {
+          if(!this.selectedNodes?.includes(child)) {
+            this.selectedNodes?.push(child);
+          }
+          this.selectChildNodes(child);
+        }
+      }
+    }
 }

@@ -1,7 +1,8 @@
 <p-toolbar>
     <div class="p-toolbar-group-start">
         <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"></button>
-        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"></button>
+        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+            [disabled]="selectedNodes.length === 0"></button>
     </div>
     <div class="p-toolbar-group-end">
         <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"></button>
@@ -80,10 +81,9 @@
         </div>
     </div>
 </p-panel>
-<p-treeTable #tt selectionMode="single" dataKey="instanceName" [(selection)]="selectedNode" [value]="results"
-    [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading"
-    (dblclick)="lexicalEntryDoubleClickHandler($event)" (onNodeSelect)="onNodeSelect($event)"
-    (onNodeUnselect)="onNodeUnselect($event)" (onNodeExpand)="onNodeExpand($event)" [scrollable]="true">
+<p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
+    [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
+    [scrollable]="true">
     <ng-template pTemplate="colgroup" let-columns>
         <colgroup>
             <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
@@ -97,9 +97,10 @@
         </tr>
         </ng-template> -->
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-        <tr [ttSelectableRow]="rowNode">
+        <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
             <td *ngFor="let col of cols; let i = index">
                 <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox>
                 <!-- <p-tag *ngIf="col.field === 'status' && rowData[col.field] === 'working'"
                     styleClass="mr-2" severity="danger">{{ rowData[col.field] }}
                 </p-tag>
@@ -113,8 +114,7 @@
                     [status]="rowData[col.field]"></app-icon-lock>
                 <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
                 <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
-                    [tooltip]="'<em>Autore</em>: '+rowData['creator']+'<br><em>Creato il</em>: '+ rowData['creationDate']+'<br><em>Ultima modifica</em>: '+ rowData['lastUpdate']"></app-icon-author>
-                <!--TODO migliorare-->
+                    [tooltip]="'<em>Autore</em>: '+rowData['creator']+'<br><em>Creato il</em>: '+ rowData['creationDate']+'<br><em>Ultima modifica</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
                 <!-- <button *ngIf="col.field === 'name' && (rowData['type'] == LexicalEntryType.FORM || rowData['type'] == LexicalEntryType.SENSE)" 
                     pButton pRipple type="button" icon="pi pi-copy" class="p-button-rounded mr-1"
                     pTooltip="Copia uri negli appunti"
