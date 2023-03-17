@@ -16,7 +16,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   private subscription!: Subscription
   /**Nome dell'istanza selezionara (entrata lessicale|forma|senso) */
-  private selectedInstanceName!: any;
+  private selectedInstanceName!: string;
 
   /**Tipo di entrata lessicale */
   public selectedType!: LexicalEntryType; //set su workspace
@@ -27,9 +27,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Definisce se visualizzare la label come nome */
   public showLabelName!: boolean; //set su workspace component
   /**Colonne dell'albero dell'entrata lessicale */
-  public cols!: any[];
+  public cols!: {
+    field: string,
+    header?:string,
+    width?: string,
+    display?: string
+  }[];
   /**Definisce se siamo in caricamento di elementi dell'albero */
-  public loading: boolean = false;
+  public loading = false;
   /**Messa a disposizione dei tipi di entrata lessicale per il template */
   public LexicalEntryType = LexicalEntryType;
   /**Definisce se visualizzare il form di editing di un'entrata lessicale */
@@ -42,9 +47,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   public formInstanceName = '';
   public senseInstanceName = '';
 
-  lexicalEntryPendingChanges: boolean = false;
-  formPendingChanges: boolean = false;
-  sensePendingChanges: boolean = false;
+  lexicalEntryPendingChanges = false;
+  formPendingChanges = false;
+  sensePendingChanges = false;
 
   constructor(
     private lexiconService: LexiconService,
@@ -71,22 +76,24 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if (res.hasOwnProperty('option') && res.option === 'tag_clicked_edit_tile') {
-        this.alternateLabelInstanceName();
-        this.showLabelName = !this.showLabelName;
-      }
+      if ('option' in res) {
+        if (res.option === 'tag_clicked_edit_tile') {
+          this.alternateLabelInstanceName();
+          this.showLabelName = !this.showLabelName;
+        }
 
-      if (res.hasOwnProperty('option') && res.option === 'lexicon_edit_pending_changes') {
-        switch (res.type) {
-          case LexicalEntryType.LEXICAL_ENTRY:
-            this.lexicalEntryPendingChanges = res.value;
-            break;
-          case LexicalEntryType.FORM:
-            this.formPendingChanges = res.value;
-            break;
-          case LexicalEntryType.SENSE:
-            this.sensePendingChanges = res.value;
-            break;
+        if (res.option === 'lexicon_edit_pending_changes') {
+          switch (res.type) {
+            case LexicalEntryType.LEXICAL_ENTRY:
+              this.lexicalEntryPendingChanges = res.value;
+              break;
+            case LexicalEntryType.FORM:
+              this.formPendingChanges = res.value;
+              break;
+            case LexicalEntryType.SENSE:
+              this.sensePendingChanges = res.value;
+              break;
+          }
         }
       }
     });
@@ -126,10 +133,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       case LexicalEntryType.LEXICAL_ENTRY:
         this.lexiconService.getElements(event.node.data.instanceName).subscribe({
           next: (data: any) => {
-            let formChildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORMS_ROOT);
-            let senseChildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSES_ROOT);
-            let countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
-            let countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
+            const formChildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORMS_ROOT);
+            const senseChildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSES_ROOT);
+            const countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
+            const countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
 
             formChildNode.data.name = `form (${countFormChildren})`;
 
@@ -145,15 +152,15 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
             this.loading = false;
           },
-          error: (error: any) => {
-            console.error(error); //TODO VALUTARE LA GESTIONE OPPORTUNA
+          error: (error: Error) => {
+            console.error(error.message); //TODO VALUTARE LA GESTIONE OPPORTUNA
           }
         });
         break;
       case LexicalEntryType.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            let mappedChildren: any[] = data.map((val: any) => ({
+            const mappedChildren: any[] = data.map((val: any) => ({
               data: {
                 name: this.showLabelName ? val['label'] : val['formInstanceName'],
                 instanceName: val['formInstanceName'],
@@ -167,7 +174,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
                 sub: this.lexiconService.concatenateMorphology(val['morphology'])
               }
             }));
-            let sortedChildren = mappedChildren.sort((a,b) => a.label===b.label ? 0 :(a.label>b.label? 1 : -1));
+            const sortedChildren = mappedChildren.sort((a,b) => a.label===b.label ? 0 :(a.label>b.label? 1 : -1));
             event.node.children = sortedChildren;
             if(isNew) {
               event.node.expanded = true;
@@ -180,15 +187,15 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
             this.loading = false;
           },
-          error: (error: any) => {
-            console.error(error);
+          error: (error: Error) => {
+            console.error(error.message);
           }
         });
         break;
       case LexicalEntryType.SENSES_ROOT:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            event.node.children = data.map((val: any) => ({
+            event.node.children = data.map((val: {[key: string]: string}) => ({
               data: {
                 name: this.showLabelName ? val['label'] : val['senseInstanceName'],
                 instanceName: val['senseInstanceName'],
@@ -213,8 +220,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
             this.loading = false;
           },
-          error: (error: any) => {
-            console.error(error);
+          error: (error: Error) => {
+            console.error(error.message);
           }
         });
         break;
@@ -286,12 +293,12 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getNewForm(lexEntryId, creatorName).subscribe({
       next: (res: any) => {
-        let formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.FORMS_ROOT);
+        const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.FORMS_ROOT);
         this.onNodeExpand({ node: formsRootNode }, true, res.formInstanceName);
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'))
       },
-      error: (error: any) => {
-        console.error(error);
+      error: (error: Error) => {
+        console.error(error.message);
       }
     });
   }
@@ -307,12 +314,12 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getNewSense(lexEntryId, creatorName).subscribe({
       next: (res: any) => {
-        let sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.SENSES_ROOT);
+        const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.SENSES_ROOT);
         this.onNodeExpand({ node: sensesRootNode }, true, res.senseInstanceName);
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
       },
-      error: (error: any) => {
-        console.error(error);
+      error: (error: Error) => {
+        console.error(error.message);
       }
     });
   }
@@ -324,9 +331,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
    */
   private treeTraversalAlternateLabelInstanceName(node: TreeNode): void {
     if (node.data?.name === node.data?.label) {
-      node.data!.name = node.data?.instanceName;
+      node.data.name = node.data?.instanceName;
     } else if (node.data?.name === node.data?.instanceName) {
-      node.data!.name = node.data?.label;
+      node.data.name = node.data?.label;
     }
 
     if (node.children) {

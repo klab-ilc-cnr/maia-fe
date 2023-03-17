@@ -25,7 +25,7 @@ export class LexiconService {
     // MOCK
     //return this.http.get<any>(`assets/mock/lexicon/lexicalentries.json`);
     // FINE MOCK
-    
+
     return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
@@ -38,7 +38,7 @@ export class LexiconService {
     // MOCK
     //return this.http.get<any>(`assets/mock/lexicon/elements.json`);
     // FINE MOCK
-    
+
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.readKey}`);
   }
 
@@ -132,8 +132,8 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.readKey}`);
   }
 
-  concatenateMorphology(morphology: any[]): string {
-    let values = morphology.map(m => m['value']);
+  concatenateMorphology(morphology: {[key: string]: string}[]): string {
+    const values = morphology.map(m => m['value']);
     return values.join(',')
   }
 }
