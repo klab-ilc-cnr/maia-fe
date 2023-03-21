@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
+import { Morphology } from '../models/lexicon/morphology.model';
+import { OntolexType } from '../models/lexicon/ontolex-type.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +49,8 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/${formInstanceName}/form?key=${this.readKey}&aspect=core`);
   }
 
-  getFormTypes(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}ontolex/data/formType`)
+  getFormTypes(): Observable<OntolexType[]> {
+    return this.http.get<OntolexType[]>(`${this.lexoUrl}ontolex/data/formType`)
   }
 
   getLexicalEntry(lexicalEntryId: string): Observable<any> {
@@ -72,20 +75,20 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/senses`);
   }
 
-  getLexicalEntryTypes(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}ontolex/data/lexicalEntryType`);
+  getLexicalEntryTypes(): Observable<OntolexType[]> {
+    return this.http.get<OntolexType[]>(`${this.lexoUrl}ontolex/data/lexicalEntryType`);
   }
 
   /**
    * GET che recupera la lista di lingue disponibili per la selezione
    * @returns {Observable<any>} observable della lista di lingue disponibili
    */
-  getLanguages(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/languages?key=${this.readKey}`);
+  getLanguages(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages?key=${this.readKey}`);
   }
 
-  getMorphology(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexinfo/data/morphology`);
+  getMorphology(): Observable<Morphology[]> {
+    return this.http.get<Morphology[]>(`${this.lexoUrl}lexinfo/data/morphology`);
   }
 
   getNewForm(lexicalEntryId: string, creator: string): Observable<any> {
@@ -128,8 +131,8 @@ export class LexiconService {
    * GET che recupera la lista di status disponibili per la selezione
    * @returns {Observable<any>} observable della lista di status
    */
-  getStatus(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/status?key=${this.readKey}`);
+  getStatus(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/status?key=${this.readKey}`);
   }
 
   concatenateMorphology(morphology: {[key: string]: string}[]): string {

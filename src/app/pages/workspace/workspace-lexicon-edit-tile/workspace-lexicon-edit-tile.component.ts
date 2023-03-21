@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
+import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
+import { Morphology } from 'src/app/models/lexicon/morphology.model';
+import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -29,7 +33,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Colonne dell'albero dell'entrata lessicale */
   public cols!: {
     field: string,
-    header?:string,
+    header?: string,
     width?: string,
     display?: string
   }[];
@@ -51,6 +55,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   formPendingChanges = false;
   sensePendingChanges = false;
 
+  lexicalEntryTypes!: DropdownField[];
+  partOfSpeeches!: DropdownField[];
+  statusValues!: SelectButtonField[];
+  languageValues!: DropdownField[];
+  formTypes!: DropdownField[];
+  morphTraitList!: DropdownField[];
+  morphologicalData!: Morphology[];
+
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService,
@@ -61,6 +73,12 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
+    this.preloadLexicalEntryTypes();
+    this.preloadMorphInfos();
+    this.preloadStatusTypes();
+    this.preloadLanguages();
+    this.preloadFormTypes();
+
     this.selectedInstanceName = this.selectedNode.data.instanceName;
     this.refreshEditorView(this.selectedType, this.selectedInstanceName);
 
@@ -174,13 +192,13 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
                 sub: this.lexiconService.concatenateMorphology(val['morphology'])
               }
             }));
-            const sortedChildren = mappedChildren.sort((a,b) => a.label===b.label ? 0 :(a.label>b.label? 1 : -1));
+            const sortedChildren = mappedChildren.sort((a, b) => a.label === b.label ? 0 : (a.label > b.label ? 1 : -1));
             event.node.children = sortedChildren;
-            if(isNew) {
+            if (isNew) {
               event.node.expanded = true;
               const newFormNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
               this.selectedNode = newFormNode;
-              this.onNodeSelect({node: newFormNode});
+              this.onNodeSelect({ node: newFormNode });
             }
             //refresh the data
             this.lexicalEntryTree = [...this.lexicalEntryTree];
@@ -195,7 +213,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       case LexicalEntryType.SENSES_ROOT:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            event.node.children = data.map((val: {[key: string]: string}) => ({
+            event.node.children = data.map((val: { [key: string]: string }) => ({
               data: {
                 name: this.showLabelName ? val['label'] : val['senseInstanceName'],
                 instanceName: val['senseInstanceName'],
@@ -208,11 +226,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
                 type: LexicalEntryType.SENSE
               }
             }));
-            if(isNew) {
+            if (isNew) {
               event.node.expanded = true;
               const newSenseNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
               this.selectedNode = newSenseNode;
-              this.onNodeSelect({node: newSenseNode})
+              this.onNodeSelect({ node: newSenseNode })
             }
 
             //refresh the data
@@ -322,6 +340,69 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         console.error(error.message);
       }
     });
+  }
+
+  private preloadFormTypes(): void {
+    this.lexiconService.getFormTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
+      this.formTypes = [
+        {
+          name: '--none--',
+          code: ''
+        },
+        ...res.map((el: OntolexType) => <DropdownField>{
+          name: el.valueLabel,
+          code: el.valueId
+        })
+      ];
+    })
+  }
+
+  private preloadLanguages(): void {
+    this.lexiconService.getLanguages().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
+      this.languageValues = res.map((val: LexiconStatistics) => <DropdownField>{
+        name: val.label,
+        code: val.label
+      });
+    })
+  }
+
+  private preloadLexicalEntryTypes(): void {
+    this.lexiconService.getLexicalEntryTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
+      this.lexicalEntryTypes = res.map((val: OntolexType) => <DropdownField>{
+        name: val.valueLabel,
+        code: val.valueId
+      });
+    })
+  }
+
+  private preloadMorphInfos(): void {
+    this.lexiconService.getMorphology().pipe(take(1)).subscribe((res: Morphology[]) => {
+      this.morphologicalData = res;
+      this.morphTraitList = [
+        {
+          name: '--none--',
+          code: ''
+        },
+        ...res.map((el: Morphology) => <DropdownField>{
+          name: el.propertyLabel,
+          code: el.propertyId
+        })
+      ]
+      this.partOfSpeeches = res.find((el: Morphology) => el.propertyId === 'partOfSpeech')?.propertyValues
+        ?.map((propValue: OntolexType) => <DropdownField>{
+          name: propValue.valueLabel,
+          code: propValue.valueId
+        }) || []
+    });
+  }
+
+  private preloadStatusTypes(): void {
+    this.lexiconService.getStatus().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
+      this.statusValues = res.map((el: LexiconStatistics) => <SelectButtonField>{
+        icon: el.label,
+        justify: ''
+      });
+    })
   }
 
   /**

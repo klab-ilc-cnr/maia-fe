@@ -14,24 +14,24 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
 
   /**Definisce se elementi del form sono in caricamento */
-  loading: boolean = false;
+  loading = false;
   confidenceForm?: number;
   labelForm?: string;
-  typesForm: DropdownField[] = [];
+  @Input() typesForm!: DropdownField[];
   selectedTypeForm?: DropdownField;
-  partOfSpeechesForm: DropdownField[] = [];
+  @Input() partOfSpeechesForm!: DropdownField[];
   selectedPartOfSpeechesForm?: DropdownField;
-  languagesForm: DropdownField[] = [];
+  @Input() languagesForm!: DropdownField[];
   selectedLanguageForm?: DropdownField;
   noteForm?: string;
   attestationsForm: any[] = [];
-  statusForm: SelectButtonField[] = [];
+  @Input() statusForm!: SelectButtonField[];
   selectedStatusForm?: SelectButtonField;
-  lastUpdate: string = '';
+  lastUpdate = '';
 
   @Input() instanceName!: string;
 
-  pendingChanges: boolean = false;
+  pendingChanges = false;
 
   constructor(
     private lexiconService: LexiconService,
@@ -42,7 +42,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     this.loadData()
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res: any) => {
-      if (res.hasOwnProperty('option') && res.option === 'lexical_entry_editor_save' && this.instanceName === res.value) {
+      if ('option' in res && res.option === 'lexical_entry_editor_save' && this.instanceName === res.value) {
         this.handleSave(null);
       }
     })
@@ -70,7 +70,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   loadData() {
     this.loading = true;
 
-    this.loadStatus();
+    this.loadLexicalEntry();
   }
 
   onPendingChanges() {
@@ -80,22 +80,6 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
 
     this.pendingChanges = true;
     this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY });
-  }
-
-  private loadLanguages() {
-    this.lexiconService.getLanguages().subscribe({
-      next: (data: any) => {
-        this.languagesForm = data.map((lang: any) => ({
-          name: lang['label'],
-          code: lang['label']
-        }));
-
-        this.loadLexicalEntry();
-      },
-      error: (error: any) => {
-        console.error(error);
-      }
-    });
   }
 
   private loadLexicalEntry() {
@@ -118,55 +102,6 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
         this.lastUpdate = data.lastUpdate ? new Date(data.lastUpdate).toLocaleString() : '';
 
         this.loading = false;
-      },
-      error: (error: any) => {
-        console.error(error)
-      }
-    });
-  }
-
-  private loadLexicalEntryTypes() {
-    this.lexiconService.getLexicalEntryTypes().subscribe({
-      next: (data: any) => {
-        this.typesForm = data.map((val: any) => ({
-          name: val['valueLabel'],
-          code: val['valueId']
-        }));
-
-        this.loadPartOfSpeech();
-      },
-      error: (error: any) => {
-        console.error(error);
-      }
-    });
-  }
-
-  private loadPartOfSpeech() {
-    this.lexiconService.getMorphology().subscribe({
-      next: (data: any) => {
-        this.partOfSpeechesForm = data.find((el: any) => el.propertyId === 'partOfSpeech')
-          .propertyValues.map((propValue: any) => ({
-            name: propValue['valueLabel'],
-            code: propValue['valueId']
-          }));
-
-        this.loadLanguages();
-      },
-      error: (error: any) => {
-        console.error(error);
-      }
-    });
-  }
-
-  private loadStatus() {
-    this.lexiconService.getStatus().subscribe({
-      next: (data: any) => {
-        this.statusForm = data.map((val: any) => ({
-          icon: val['label'],
-          justify: ''
-        }));
-
-        this.loadLexicalEntryTypes();
       },
       error: (error: any) => {
         console.error(error)
