@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
@@ -28,7 +28,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Form dei filtri */ //TODO verificare perché non ne trovo l'uso
   public filterForm: any;
   /**Definisce se c'è lo spinner di ricerca in corso */
-  public searchIconSpinner: boolean = false;
+  public searchIconSpinner = false;
   /**Lista delle lingue selezionabili */
   public selectLanguages!: SelectItem[];
   /**Lista dei tipi selezionabili */
@@ -60,7 +60,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Sottonodo dell'albero selezionato */
   public selectedSubTree?: TreeNode<LexicalEntry>;
   /**Definisce se è in corso il caricamento */
-  public loading: boolean = false;
+  public loading = false;
   /**Definisce se mostrare l'etichetta o il nome dell'entrata */
   public showLabelName?: boolean;
   /**Modalità di ricerca (equals, etc) */
@@ -77,6 +77,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Riferimento all'entrata lessicale nell'albero */ //TODO verificare perché non è chiaro dove sia richiamata
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
+
+  public scrollHeight!: number;
+
   /* @ViewChild('tt') public tt!: TreeTable; */
 
   /**
@@ -87,14 +90,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    */
   constructor(private messageService: MessageService,
     private lexiconService: LexiconService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private elem: ElementRef) { }
 
-  /*   ngAfterViewInit() {
-      this.tt.onNodeSelect
-        .subscribe((event: any) => {
-  
-        })
-    } */
+  //  ngAfterViewInit() {
+  // this.tt.onNodeSelect
+  //   .subscribe((event: any) => {
+
+  //   })
+  // }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy() {
@@ -103,20 +107,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
+    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 159;
+
     this.cols = [
-      { field: 'name', header: '', width: '70%', display:'true'},
+      { field: 'name', header: '', width: '70%', display: 'true' },
       { field: 'note', width: '10%', display: 'true' },
-      { field: 'creator', header: 'Autore', width: '10%', display:'true'},
-      { field: 'creationDate', header: 'Data creazione', display:'false'},
-      { field: 'lastUpdate', header: 'Data modifica',display:'false'},
-      { field: 'status', header: 'Stato', width: '10%', display:'true'},
-      { field: 'type', display:'false'},
-      { field: 'uri', display:'false'},
-      { field: 'sub', display:'false' }
+      { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
+      { field: 'creationDate', header: 'Data creazione', display: 'false' },
+      { field: 'lastUpdate', header: 'Data modifica', display: 'false' },
+      { field: 'status', header: 'Stato', width: '10%', display: 'true' },
+      { field: 'type', display: 'false' },
+      { field: 'uri', display: 'false' },
+      { field: 'sub', display: 'false' }
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if (res.hasOwnProperty('option') && res.option === 'tag_clicked') {
+      if ('option' in res && res.option === 'tag_clicked') {
         this.alternateLabelInstanceName();
         this.showLabelName = !this.showLabelName;
       }
@@ -162,7 +168,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           {
             data: {
               name: 'sense (0)',
-              instanceName: '_sense_'+val['lexicalEntryInstanceName'],
+              instanceName: '_sense_' + val['lexicalEntryInstanceName'],
               type: LexicalEntryType.SENSES_ROOT
             }
           }]
@@ -172,8 +178,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.loading = false;
         this.pendingFilters = false;
       },
-      error: (error: any) => {
-
+      error: (error: Error) => {
+        console.error(error.message)
       }
     })
   }
@@ -181,6 +187,14 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
   alternateLabelInstanceName() {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
+  }
+
+  onCollapseChange(event: boolean) {
+    if (event) {
+      this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 159;
+      return;
+    }
+    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 376;
   }
 
   /**
@@ -195,10 +209,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryType.LEXICAL_ENTRY:
         this.lexiconService.getElements(event.node.data.instanceName).subscribe({
           next: (data: any) => {
-            let formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORMS_ROOT);
-            let senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSES_ROOT);
-            let countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
-            let countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
+            const formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORMS_ROOT);
+            const senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSES_ROOT);
+            const countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
+            const countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
 
             formCildNode.data.name = `form (${countFormChildren})`;
 
@@ -218,13 +232,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
             this.loading = false;
           },
-          error: (error: any) => { }
+          error: (error: Error) => {
+            console.error(error.message);
+          }
         });
         break;
       case LexicalEntryType.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
           next: (data: any) => {
-            let mappedChildren: any[] = data.map((val: any) => ({
+            const mappedChildren: any[] = data.map((val: any) => ({
               data: {
                 name: this.showLabelName ? val['label'] : val['formInstanceName'],
                 instanceName: val['formInstanceName'],
@@ -240,7 +256,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
               },
               parent: node
             }));
-            let sortedChildren = mappedChildren.sort((a,b) => a.data.label===b.data.label ? 0 :(a.data.label>b.data.label? 1 : -1));
+            const sortedChildren = mappedChildren.sort((a, b) => a.data.label === b.data.label ? 0 : (a.data.label > b.data.label ? 1 : -1));
             event.node.children = sortedChildren;
 
             this.selectChildNodes(node);
@@ -252,7 +268,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
             this.loading = false;
           },
-          error: () => { }
+          error: (error: Error) => {
+            console.error(error.message);
+          }
         })
         break;
       case LexicalEntryType.SENSES_ROOT:
@@ -282,7 +300,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
             this.loading = false;
           },
-          error: () => { }
+          error: (error: Error) => {
+            console.error(error.message);
+          }
         })
         break;
     }
@@ -333,44 +353,46 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   }
 
   /**Metodo che resetta i filtri e segnala come siano presenti filtri pendenti (abilitando il bottone di filtro) */
-  reset(){
+  reset() {
     this.resetFilters();
 
-    this.pendingFilters=true;
+    this.pendingFilters = true;
+    this.filter();
   }
 
   /**Metodo che segnala la presenza di filtri pendenti abilitando il bottone di filtro */
   onChangeFilter() {
     this.pendingFilters = true;
+    this.filter();
   }
 
   /**
    * Metodo che gestisce la copia dell'uri di un'entrata lessicale per un successivo utilizzo
    * @param uri {any} l'uri dell'entrata lessicale
    */
-/*   copyUri(uri:any){
-    const el = document.createElement("textarea");
-    el.value = uri;
-    el.setAttribute("readonly", "");
-    el.style.position = "absolute";
-    el.style.left = "-9999px";
-    document.body.appendChild(el);
-    const selected =
-      document.getSelection()!.rangeCount > 0
-        ? document.getSelection()!.getRangeAt(0)
-        : false;
-    el.select();
-    document.execCommand("copy");
-    document.body.removeChild(el);
-    if (selected) {
-      document.getSelection()!.removeAllRanges();
-      document.getSelection()!.addRange(selected);
+  /*   copyUri(uri:any){
+      const el = document.createElement("textarea");
+      el.value = uri;
+      el.setAttribute("readonly", "");
+      el.style.position = "absolute";
+      el.style.left = "-9999px";
+      document.body.appendChild(el);
+      const selected =
+        document.getSelection()!.rangeCount > 0
+          ? document.getSelection()!.getRangeAt(0)
+          : false;
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      if (selected) {
+        document.getSelection()!.removeAllRanges();
+        document.getSelection()!.addRange(selected);
+      }
+
+      this.messageService.add({ severity: 'success', summary: 'Copiato', detail: '', life: 3000 });
+
     }
-
-    this.messageService.add({ severity: 'success', summary: 'Copiato', detail: '', life: 3000 });
-
-  }
- */
+   */
   /**
    * @private
    * Metodo che resetta i filtri applicati alla ricerca di entrate lessicali
@@ -380,7 +402,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.offset = 0;
     this.limit = 500;
     this.searchTextInput = '';
-    this.searchMode = searchModeEnum.equals;
+    this.searchMode = searchModeEnum.startsWith;
     this.selectedLanguage = undefined;
     this.selectedType = undefined;
     this.selectedAuthor = undefined;
@@ -443,7 +465,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           this.selectLanguages.push({ label: `${languages[i].label}`, value: languages[i].label });
         }
       },
-      error: () => { }
+      error: (error: Error) => { console.error(error.message); }
     });
 
     this.lexiconService.getTypes().subscribe({
@@ -455,7 +477,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           this.selectTypes.push({ label: `${types[i].label}`, value: types[i].label });
         }
       },
-      error: () => { }
+      error: (error: Error) => { console.error(error.message); }
     });
 
     this.lexiconService.getAuthors().subscribe({
@@ -467,7 +489,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           this.selectAuthors.push({ label: `${authors[i].label}`, value: authors[i].label });
         }
       },
-      error: () => { }
+      error: (error: Error) => { console.error(error.message); }
     });
 
     this.lexiconService.getPos().subscribe({
@@ -479,7 +501,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           this.selectPartOfSpeech.push({ label: `${partOfSpeech[i].label}`, value: partOfSpeech[i].label });
         }
       },
-      error: () => { }
+      error: (error: Error) => { console.error(error.message); }
     })
 
     this.lexiconService.getStatus().subscribe({
@@ -491,7 +513,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           this.selectStatuses.push({ label: `${statuses[i].label}`, value: statuses[i].label });
         }
       },
-      error: () => { }
+      error: (error: Error) => { console.error(error.message); }
     })
 
     this.selectEntries = [
@@ -505,39 +527,39 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         next: (data: any) => {
           this.languages = data;
         },
-        error: () => { }
+        error: (error: Error) => {console.error(error.message);}
       });
-  
+
       this.lexiconService.getTypes().subscribe({
         next: (data: any) => {
           this.types = data;
         },
-        error: () => { }
+        error: (error: Error) => {console.error(error.message);}
       });
-  
+
       this.lexiconService.getAuthors().subscribe({
         next: (data: any) => {
           this.authors = data;
         },
-        error: () => { }
+        error: (error: Error) => {console.error(error.message);}
       });
-  
+
       this.lexiconService.getPos().subscribe({
         next: (data: any) => {
           this.partOfSpeech = data;
         },
-        error: () => { }
+        error: (error: Error) => {console.error(error.message);}
       })
     } */
 
-    private selectChildNodes(node: TreeNode) {
-      if(node && node.children && this.selectedNodes?.indexOf(node) !== -1) {
-        for(const child of node.children) {
-          if(!this.selectedNodes?.includes(child)) {
-            this.selectedNodes?.push(child);
-          }
-          this.selectChildNodes(child);
+  private selectChildNodes(node: TreeNode) {
+    if (node && node.children && this.selectedNodes?.indexOf(node) !== -1) {
+      for (const child of node.children) {
+        if (!this.selectedNodes?.includes(child)) {
+          this.selectedNodes?.push(child);
         }
+        this.selectChildNodes(child);
       }
     }
+  }
 }
