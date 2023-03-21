@@ -75,6 +75,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Lista dei nodi entrata lessicale */
   public results: TreeNode<LexicalEntry>[] = [];
 
+  public isVisibleCheckbox = false;
+
   /**Riferimento all'entrata lessicale nell'albero */ //TODO verificare perché non è chiaro dove sia richiamata
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
 
@@ -107,7 +109,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
-    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 159;
+    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 203;
 
     this.cols = [
       { field: 'name', header: '', width: '70%', display: 'true' },
@@ -189,12 +191,16 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
   }
 
+  onChangeSelectionView() {
+    this.isVisibleCheckbox = !this.isVisibleCheckbox;
+  }
+
   onCollapseChange(event: boolean) {
     if (event) {
-      this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 159;
+      this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 203;
       return;
     }
-    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 376;
+    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 420;
   }
 
   /**

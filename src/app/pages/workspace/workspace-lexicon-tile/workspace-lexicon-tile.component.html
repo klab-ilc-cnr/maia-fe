@@ -77,6 +77,12 @@
     </p-dropdown>
   </div>
 </p-panel>
+
+<div class="flex justify-content-end">
+  <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"
+    pTooltip="Selection" (click)="onChangeSelectionView()"></button>
+</div>
+
 <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
   [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
   [scrollable]="true" [scrollHeight]="scrollHeight +'px'">
@@ -89,7 +95,7 @@
     <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
       <td *ngFor="let col of cols; let i = index">
         <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-        <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox>
+        <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
         <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
           [status]="rowData[col.field]"></app-icon-lock>
         <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
