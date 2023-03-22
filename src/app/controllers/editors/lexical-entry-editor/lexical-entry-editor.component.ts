@@ -1,9 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
 import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
 
 @Component({
   selector: 'app-lexical-entry-editor',
@@ -12,6 +14,8 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 })
 export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
+
+  lexicalEntryInstanceName!: string;
 
   /**Definisce se elementi del form sono in caricamento */
   loading = false;
@@ -33,9 +37,12 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
 
   pendingChanges = false;
 
+  lexicalEntryPOS!: string;
+
   constructor(
     private lexiconService: LexiconService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private loggedUserService: LoggedUserService
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +50,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res: any) => {
       if ('option' in res && res.option === 'lexical_entry_editor_save' && this.instanceName === res.value) {
-        this.handleSave(null);
+        this.handleSave();
       }
     })
 
@@ -53,15 +60,28 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  handleSave(event: any) {
-    console.group('Handle save in lexical entry editor'); //TODO sostituire con meccanismo di salvataggio
-    console.info(this.selectedStatusForm)
-    console.info(this.labelForm);
-    console.info(this.confidenceForm);
-    console.info(this.selectedTypeForm);
-    console.info(this.selectedPartOfSpeechesForm);
-    console.info(this.selectedLanguageForm);
-    console.info(this.noteForm);
+  handleSave() {
+    const currentUser = this.loggedUserService.currentUser;
+    const currentUserName = (currentUser?.name + '.' + currentUser?.surname);
+
+    console.group('Handle save in lexical entry editor');
+    // console.info(this.selectedStatusForm) //BUG errore nella chiamata perché non chiaro come gestire aggiornamento di status
+    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.STATUS, value: this.selectedStatusForm?.icon }).pipe(take(1)).subscribe();
+    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LABEL, value: this.labelForm }).pipe(take(1)).subscribe();
+    console.info(this.confidenceForm); //TODO CONTROLLARE COME ESEGUIRE QUESTO UPDATE
+    // console.info(this.selectedTypeForm);
+    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.TYPE, value: this.selectedTypeForm?.code }).pipe(take(1)).subscribe();
+    // console.info(this.selectedPartOfSpeechesForm);
+    this.lexiconService.updateLinguisticRelation(this.lexicalEntryInstanceName, <LinguisticRelationUpdater>{
+      type: LINGUISTIC_RELATIONS.MORPHOLOGY,
+      relation: 'partOfSpeech',
+      value: this.selectedPartOfSpeechesForm?.code,
+      currentValue: this.lexicalEntryPOS
+    }).pipe(take(1)).subscribe();
+    // console.info(this.selectedLanguageForm);
+    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LANGUAGE, value: this.selectedLanguageForm?.code }).pipe(take(1)).subscribe();
+    // console.info(this.noteForm);
+    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.NOTE, value: this.noteForm }).pipe(take(1)).subscribe();
     console.groupEnd();
     this.pendingChanges = false;
     this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY })
@@ -85,6 +105,9 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   private loadLexicalEntry() {
     this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
       next: (data: any) => {
+        this.lexicalEntryInstanceName = data.lexicalEntryInstanceName;
+        this.lexicalEntryPOS = data.pos;
+
         this.selectedStatusForm = this.statusForm.find((el: any) => el.icon === data.status);
         this.labelForm = data.label;
         this.confidenceForm = data.confidence < 0 ? 0 : data.confidence * 100;
