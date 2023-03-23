@@ -313,7 +313,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.FORMS_ROOT);
         this.onNodeExpand({ node: formsRootNode }, true, res.formInstanceName);
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'))
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'));
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
       error: (error: Error) => {
         console.error(error.message);
@@ -335,6 +336,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryType.SENSES_ROOT);
         this.onNodeExpand({ node: sensesRootNode }, true, res.senseInstanceName);
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
       error: (error: Error) => {
         console.error(error.message);

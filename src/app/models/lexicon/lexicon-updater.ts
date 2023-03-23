@@ -52,7 +52,7 @@ export interface LexicalEntryUpdater extends LexiconUpdater {
   relation: LEXICAL_ENTRY_RELATIONS;
 }
 
-export interface LexicalSenseUpdated extends LexiconUpdater {
+export interface LexicalSenseUpdater extends LexiconUpdater {
   relation: LEXICAL_SENSE_RELATIONS
 }
 

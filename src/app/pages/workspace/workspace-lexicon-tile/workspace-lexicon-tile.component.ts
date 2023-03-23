@@ -128,6 +128,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.alternateLabelInstanceName();
         this.showLabelName = !this.showLabelName;
       }
+      if('option' in res && res.option === 'lexicon_edit_update_tree') {
+        this.loadNodes();
+      }
     });
 
     this.searchIconSpinner = false;

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, take } from 'rxjs';
+import { forkJoin, Subscription, take } from 'rxjs';
 import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
 import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
@@ -32,12 +32,11 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   @Input() statusForm!: SelectButtonField[];
   selectedStatusForm?: SelectButtonField;
   lastUpdate = '';
+  initialValues!: { status: string, label: string, confidence: number, type: string, pos: string, lang: string, note: string };
 
   @Input() instanceName!: string;
 
   pendingChanges = false;
-
-  lexicalEntryPOS!: string;
 
   constructor(
     private lexiconService: LexiconService,
@@ -63,28 +62,47 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   handleSave() {
     const currentUser = this.loggedUserService.currentUser;
     const currentUserName = (currentUser?.name + '.' + currentUser?.surname);
-
-    console.group('Handle save in lexical entry editor');
-    // console.info(this.selectedStatusForm) //BUG errore nella chiamata perché non chiaro come gestire aggiornamento di status
-    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.STATUS, value: this.selectedStatusForm?.icon }).pipe(take(1)).subscribe();
-    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LABEL, value: this.labelForm }).pipe(take(1)).subscribe();
+    // eslint-disable-next-line prefer-const
+    let httpList = [];
+    //BUG errore nella chiamata perché non chiaro come gestire aggiornamento di status
+    if (this.initialValues.status !== this.selectedStatusForm?.icon) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.STATUS, value: this.selectedStatusForm?.icon }));
+      this.initialValues.status = this.selectedStatusForm!.icon;
+    }
+    if (this.initialValues.label !== this.labelForm) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LABEL, value: this.labelForm }));
+      this.initialValues.label = this.labelForm!;
+    }
     console.info(this.confidenceForm); //TODO CONTROLLARE COME ESEGUIRE QUESTO UPDATE
-    // console.info(this.selectedTypeForm);
-    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.TYPE, value: this.selectedTypeForm?.code }).pipe(take(1)).subscribe();
-    // console.info(this.selectedPartOfSpeechesForm);
-    this.lexiconService.updateLinguisticRelation(this.lexicalEntryInstanceName, <LinguisticRelationUpdater>{
-      type: LINGUISTIC_RELATIONS.MORPHOLOGY,
-      relation: 'partOfSpeech',
-      value: this.selectedPartOfSpeechesForm?.code,
-      currentValue: this.lexicalEntryPOS
-    }).pipe(take(1)).subscribe();
-    // console.info(this.selectedLanguageForm);
-    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LANGUAGE, value: this.selectedLanguageForm?.code }).pipe(take(1)).subscribe();
-    // console.info(this.noteForm);
-    this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.NOTE, value: this.noteForm }).pipe(take(1)).subscribe();
-    console.groupEnd();
-    this.pendingChanges = false;
-    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY })
+    if (this.initialValues.type !== this.selectedTypeForm?.code) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.TYPE, value: this.selectedTypeForm?.code }));
+      this.initialValues.type = this.selectedTypeForm!.code;
+    }
+    if (this.initialValues.pos !== this.selectedPartOfSpeechesForm?.code) {
+      httpList.push(this.lexiconService.updateLinguisticRelation(this.lexicalEntryInstanceName, <LinguisticRelationUpdater>{
+        type: LINGUISTIC_RELATIONS.MORPHOLOGY,
+        relation: 'partOfSpeech',
+        value: this.selectedPartOfSpeechesForm?.code,
+        currentValue: this.initialValues.pos
+      }));
+      this.initialValues.pos = this.selectedPartOfSpeechesForm!.code;
+    }
+    if (this.initialValues.lang !== this.selectedLanguageForm?.code) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LANGUAGE, value: this.selectedLanguageForm?.code }));
+      this.initialValues.lang = this.selectedLanguageForm!.code;
+    }
+    if (this.initialValues.note !== this.noteForm) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.NOTE, value: this.noteForm }));
+      this.initialValues.note = this.noteForm!;
+    }
+    if (httpList.length > 0) {
+      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
+        this.lastUpdate = new Date(res[0]).toLocaleString()
+        this.pendingChanges = false;
+        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY })
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
+      });
+    }
   }
 
   loadData() {
@@ -105,8 +123,16 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   private loadLexicalEntry() {
     this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
       next: (data: any) => {
+        this.initialValues = {
+          status: data.status,
+          label: data.label,
+          confidence: data.confidence,
+          type: data.type,
+          pos: data.pos,
+          lang: data.language,
+          note: data.note
+        };
         this.lexicalEntryInstanceName = data.lexicalEntryInstanceName;
-        this.lexicalEntryPOS = data.pos;
 
         this.selectedStatusForm = this.statusForm.find((el: any) => el.icon === data.status);
         this.labelForm = data.label;

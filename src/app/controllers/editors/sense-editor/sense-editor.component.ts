@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription, take } from 'rxjs';
 import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalSenseUpdater, LEXICAL_SENSE_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
 
 @Component({
   selector: 'app-sense-editor',
@@ -23,11 +25,14 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   lastUpdate?: string = '';
 
-  pendingChanges: boolean = false;
+  pendingChanges = false;
+
+  private initialValues!: {definition: string, reference: string, note: string};
 
   constructor(
     private commonService: CommonService,
-    private lexiconService: LexiconService
+    private lexiconService: LexiconService,
+    private loggedUserService: LoggedUserService
   ) { }
 
   ngOnInit(): void {
@@ -36,12 +41,12 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if (res.hasOwnProperty('option') && res.option === 'sense_selected' && res.value !== this.instanceName && this.lexicalEntryID === res.lexEntryId) {
+      if ('option' in res && res.option === 'sense_selected' && res.value !== this.instanceName && this.lexicalEntryID === res.lexEntryId) {
         this.instanceName = res.value;
         this.loadData();
       }
-      if (res.hasOwnProperty('option') && res.option === 'sense_editor_save' && this.instanceName === res.value) {
-        this.handleSave(null);
+      if ('option' in res && res.option === 'sense_editor_save' && this.instanceName === res.value) {
+        this.handleSave();
       }
     });
   }
@@ -50,15 +55,34 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  handleSave(event: any) {
-    console.group('Handle save in lexical entry editor'); //TODO sostituire con meccanismo di salvataggio
-    console.info(this.definitionInput);
-    console.info(this.referenceInput);
-    console.info(this.noteInput);
-    console.groupEnd();
+  handleSave() {
+    const currentUser = this.loggedUserService.currentUser;
+    const currentUserName = currentUser?.name + '.' + currentUser?.surname;
 
-    this.pendingChanges = false;
-    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE })
+    // eslint-disable-next-line prefer-const
+    let httpList = [];
+
+    if (this.definitionInput !== this.initialValues.definition) {
+      httpList.push(this.lexiconService.updateLexicalSense(currentUserName, this.instanceName, <LexicalSenseUpdater>{ relation: LEXICAL_SENSE_RELATIONS.DEFINITION, value: this.definitionInput }))
+      this.initialValues.definition = this.definitionInput!;
+    }
+    if (this.referenceInput !== this.initialValues.reference) {
+      httpList.push(this.lexiconService.updateLexicalSense(currentUserName, this.instanceName, <LexicalSenseUpdater>{ relation: LEXICAL_SENSE_RELATIONS.REFERENCE, value: this.referenceInput }))
+      this.initialValues.reference = this.referenceInput!;
+    }
+    if (this.noteInput !== this.initialValues.note) {
+      httpList.push(this.lexiconService.updateLexicalSense(currentUserName, this.instanceName, <LexicalSenseUpdater>{ relation: LEXICAL_SENSE_RELATIONS.NOTE, value: this.noteInput }))
+      this.initialValues.note = this.noteInput!;
+    }
+
+    if (httpList.length > 0) {
+      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
+        this.pendingChanges = false;
+        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE })
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
+        this.lastUpdate = new Date(res[0]).toLocaleString()
+      });
+    }
   }
 
   loadData() {
@@ -86,6 +110,12 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           name: att['label'],
           code: att['label']
         }));
+
+        this.initialValues = {
+          definition: this.definitionInput!,
+          reference: this.referenceInput!,
+          note: data.note
+        };
 
         this.lastUpdate = data.lastUpdate ? new Date(data.lastUpdate).toLocaleString() : '';
 

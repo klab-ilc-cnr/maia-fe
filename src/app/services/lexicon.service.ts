@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
-import { LexicalEntryUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
+import { FormUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { Morphology } from '../models/lexicon/morphology.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
 
@@ -144,6 +144,22 @@ export class LexiconService {
   updateLexicalEntry(user: string, lexicalEntryInstanceName: string, updater: LexicalEntryUpdater): Observable<string> {
     return this.http.post(
       `${this.lexoUrl}lexicon/update/${lexicalEntryInstanceName}/lexicalEntry?key=${this.writeKey}&user=${user}`,
+      updater,
+      { responseType: "text" }
+    );
+  }
+
+  updateLexicalForm(user: string, lexicalFormInstanceName: string, updater: FormUpdater) {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/${lexicalFormInstanceName}/form?key=${this.writeKey}&user=${user}`,
+      updater,
+      { responseType: "text" }
+    );
+  }
+
+  updateLexicalSense(user: string, lexicalSenseInstanceName: string, updater: LexicalSenseUpdater) {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/${lexicalSenseInstanceName}/lexicalSense?key=${this.writeKey}&user=${user}`,
       updater,
       { responseType: "text" }
     );

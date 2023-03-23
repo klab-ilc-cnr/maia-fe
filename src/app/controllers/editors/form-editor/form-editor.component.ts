@@ -1,11 +1,15 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { forkJoin, Subscription, take } from 'rxjs';
 import { DropdownField } from 'src/app/models/dropdown-field';
 import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { FormUpdater, FORM_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { Morphology } from 'src/app/models/lexicon/morphology.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 @Component({
   selector: 'app-form-editor',
@@ -40,9 +44,14 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   pendingChanges = false;
 
+  private initialValues!: { type: string, writtenRep: string, note: string, morphs: { trait: string, value: string }[] };
+
   constructor(
     private lexiconService: LexiconService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private loggedUserService: LoggedUserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +65,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadData();
       }
       if ('option' in res && res.option === 'form_editor_save' && this.instanceName === res.value) {
-        this.handleSave(null);
+        this.handleSave();
       }
     });
   }
@@ -65,16 +74,53 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  handleSave(event: any) {
-    console.group('Handle save in lexical entry editor'); //TODO sostituire con meccanismo di salvataggio
-    console.info(this.selectedType);
-    console.info(this.writtenRepresentationInput);
-    console.info(this.noteInput);
-    console.info(this.morphologicalForms);
-    console.groupEnd();
+  handleSave() {
+    const successMsg = "Forma aggiornata con successo";
+    const currentUser = this.loggedUserService.currentUser;
+    const currentUserName = currentUser?.name + '.' + currentUser?.surname;
 
-    this.pendingChanges = false;
-    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.FORM })
+    // eslint-disable-next-line prefer-const
+    let httpList = [];
+
+    if (this.selectedType?.code !== this.initialValues.type) {
+      httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, <FormUpdater>{ relation: FORM_RELATIONS.TYPE, value: this.selectedType?.code }));
+      this.initialValues.type = this.selectedType!.code;
+    }
+    if (this.writtenRepresentationInput !== this.initialValues.writtenRep) {
+      httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, <FormUpdater>{ relation: FORM_RELATIONS.WRITTEN_REP, value: this.writtenRepresentationInput }));
+      this.initialValues.writtenRep = this.writtenRepresentationInput!;
+    }
+    if (this.noteInput !== this.initialValues.note) {
+      httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, <FormUpdater>{ relation: FORM_RELATIONS.NOTE, value: this.noteInput }));
+      this.initialValues.note = this.noteInput!;
+    }
+    this.morphologicalForms.forEach(mf => {//BUG qualcosa non torna con l'update e non viene correttamente gestita la parte di rimozione di un tratto morfologico
+      const currentValueIndex = this.initialValues.morphs.findIndex(e => e.trait === mf.selectedTrait.code);
+      const currentValue = this.initialValues.morphs.find(e => e.trait === mf.selectedTrait.code)?.value;
+      const newValue = mf.selectedProperty.code;
+      if (currentValue !== newValue) {
+        httpList.push(this.lexiconService.updateLinguisticRelation(this.instanceName, <LinguisticRelationUpdater>{
+          type: LINGUISTIC_RELATIONS.MORPHOLOGY,
+          relation: mf.selectedTrait.code,
+          value: newValue,
+          currentValue: currentValue
+        }));
+      }
+      if (currentValueIndex !== -1) {
+        this.initialValues.morphs[currentValueIndex].value = newValue;
+      } else {
+        this.initialValues.morphs.push({ trait: mf.selectedTrait.code, value: newValue });
+      }
+    });
+    if (httpList.length > 0) {
+      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
+        this.pendingChanges = false;
+        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.FORM })
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
+        this.lastUpdate = new Date(res[0]).toLocaleString();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      });
+    }
   }
 
   loadData() {
@@ -142,6 +188,13 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.morphologicalForms.length === 0) {
           this.onAddMorphForm();
         }
+
+        this.initialValues = {
+          type: this.selectedType!.code,
+          writtenRep: this.writtenRepresentationInput!,
+          note: this.noteInput!,
+          morphs: data.morphology
+        };
 
         this.loading = false;
       },
