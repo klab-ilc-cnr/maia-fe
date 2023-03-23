@@ -20,6 +20,14 @@ export class LexiconService {
     this.lexoUrl = environment.lexoUrl;
   }
 
+  deleteRelation(lexicalEntityId: string, updater: {relation: string, value: string}) {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/delete/${lexicalEntityId}/relation?key=${this.writeKey}`,
+      updater,
+      { responseType: "text" }
+    );
+  }
+
   /**
    * POST che recupera la lista delle entrate lessicali eventualmente filtrate
    * @param parameters {any} parametri di filtro della ricerca

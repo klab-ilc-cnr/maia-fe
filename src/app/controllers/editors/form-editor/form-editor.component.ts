@@ -159,7 +159,15 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   onRemoveMorphForm(morph: any) {
+    const successMsg = "Forma aggiornata con successo";
     this.morphologicalForms = this.morphologicalForms.filter(mf => mf !== morph);
+    const initialValuesIndex = this.initialValues.morphs.findIndex(mf => mf.trait === morph.selectedTrait.code);
+    if(initialValuesIndex !== -1) {
+      this.lexiconService.deleteRelation(this.instanceName, {relation: morph.selectedTrait.code, value: morph.selectedProperty.code}).pipe(take(1)).subscribe(res => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.initialValues.morphs = this.initialValues.morphs.filter(m => m.trait !== morph.selectedTrait.code);
+      });
+    }
   }
 
   private loadForm() {
