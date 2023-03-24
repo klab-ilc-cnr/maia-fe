@@ -20,6 +20,27 @@ export class LexiconService {
     this.lexoUrl = environment.lexoUrl;
   }
 
+  deleteForm(formID: string) {
+    return this.http.get(
+      `${this.lexoUrl}lexicon/delete/${formID}/form?key=${this.writeKey}`,
+      { responseType: "text" }
+    );
+  }
+
+  deleteLexicalEntry(lexicalEntryID: string) {
+    return this.http.get(
+      `${this.lexoUrl}lexicon/delete/${lexicalEntryID}/lexicalEntry?key=${this.writeKey}`,
+      { responseType: "text" }
+    );
+  }
+
+  deleteLexicalSense(senseID: string) {
+    return this.http.get(
+      `${this.lexoUrl}lexicon/delete/${senseID}/lexicalSense?key=${this.writeKey}`,
+      { responseType: "text" }
+    );
+  }
+
   deleteRelation(lexicalEntityId: string, updater: {relation: string, value: string}) {
     return this.http.post(
       `${this.lexoUrl}lexicon/delete/${lexicalEntityId}/relation?key=${this.writeKey}`,

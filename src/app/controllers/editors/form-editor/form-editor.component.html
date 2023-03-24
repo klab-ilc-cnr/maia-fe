@@ -53,7 +53,9 @@
             <button pButton type="button" class="w-full" label="Save" (click)="handleSave()"></button>
         </div>
         <div class="field col-1">
-            <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger w-full"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger w-full" (click)="showDeleteModal()"></button>
         </div>
     </div>
 </div>
+
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { DropdownField } from 'src/app/models/dropdown-field';
@@ -10,6 +10,8 @@ import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import Swal from 'sweetalert2';
+import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
   selector: 'app-form-editor',
@@ -45,6 +47,26 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   pendingChanges = false;
 
   private initialValues!: { type: string, writtenRep: string, note: string, morphs: { trait: string, value: string }[] };
+  /**Riferimento al popup di conferma cancellazione di un'annotazione */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
+
+  private deleteElement = (formID: string): void => {
+    this.showOperationInProgress("Sto cancellando");
+
+    const errorMsg = "Errore nell'eliminare la forma";
+    const successMsg = "Forma eliminata con successo";
+
+    this.lexiconService.deleteForm(formID).pipe(take(1)).subscribe({
+      next: () => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID, isRemove: true });
+        Swal.close();
+      },
+      error: () => {
+        this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+      }
+    })
+  }
 
   constructor(
     private lexiconService: LexiconService,
@@ -148,6 +170,18 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  /**
+   * Metodo che visualizza il modale di cancellazione ed eventualmente richiama la cancellazione stessa
+   * @returns {void}
+   */
+  showDeleteModal(): void {
+    const confirmMsg = 'Stai per cancellare una forma';
+
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement(this.instanceName), this.instanceName);
+  }
+
   onPendingChanges() {
     if (this.pendingChanges) {
       return;
@@ -162,8 +196,8 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     const successMsg = "Forma aggiornata con successo";
     this.morphologicalForms = this.morphologicalForms.filter(mf => mf !== morph);
     const initialValuesIndex = this.initialValues.morphs.findIndex(mf => mf.trait === morph.selectedTrait.code);
-    if(initialValuesIndex !== -1) {
-      this.lexiconService.deleteRelation(this.instanceName, {relation: morph.selectedTrait.code, value: morph.selectedProperty.code}).pipe(take(1)).subscribe(res => {
+    if (initialValuesIndex !== -1) {
+      this.lexiconService.deleteRelation(this.instanceName, { relation: morph.selectedTrait.code, value: morph.selectedProperty.code }).pipe(take(1)).subscribe(res => {
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         this.initialValues.morphs = this.initialValues.morphs.filter(m => m.trait !== morph.selectedTrait.code);
         this.lastUpdate = new Date(res).toLocaleString();
@@ -230,4 +264,37 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       code: ''
     }, ...values];
   }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: 'warning',
+      titleText: message,
+      text: 'per favore attendere',
+      customClass: {
+        container: 'swal2-container'
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
 }

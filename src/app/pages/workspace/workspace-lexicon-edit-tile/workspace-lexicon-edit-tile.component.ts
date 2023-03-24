@@ -113,7 +113,18 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
               break;
           }
         }
-        if(res.option === 'lexicon_edit_update_tree' && res.value === this.lexicalEntryInstanceName) {
+        if (res.option === 'lexicon_edit_update_tree' && res.value === this.lexicalEntryInstanceName) {
+          if (res.isRemove) {
+            this.onNodeSelect({
+              index: undefined,
+              node: this.lexicalEntryTree[0],
+              originalEvent: null,
+              type: 'row'
+            });
+            this.selectedInstanceName = this.lexicalEntryInstanceName;
+            this.selectedType = LexicalEntryType.LEXICAL_ENTRY;
+            this.selectedNode = this.lexicalEntryTree[0];
+          }
           this.refreshTreeNode();
         }
       }
@@ -250,6 +261,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   }
 
   onNodeSelect(event: any) {
+    console.info(event)
     if (event.node.data.type === LexicalEntryType.FORMS_ROOT || event.node.data.type === LexicalEntryType.SENSES_ROOT) {
       return;
     }

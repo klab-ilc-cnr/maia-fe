@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
@@ -7,6 +7,8 @@ import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import Swal from 'sweetalert2';
+import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
   selector: 'app-sense-editor',
@@ -29,7 +31,27 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   pendingChanges = false;
 
-  private initialValues!: {definition: string, reference: string, note: string};
+  private initialValues!: { definition: string, reference: string, note: string };
+  /**Riferimento al popup di conferma cancellazione di un'annotazione */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
+
+  private deleteElement = (senseID: string): void => {
+    this.showOperationInProgress("Sto cancellando");
+
+    const errorMsg = "Errore nell'eliminare il senso";
+    const successMsg = "Senso eliminato con successo";
+
+    this.lexiconService.deleteLexicalSense(senseID).pipe(take(1)).subscribe({
+      next: () => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID, isRemove: true });
+        Swal.close();
+      },
+      error: () => {
+        this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+      }
+    })
+  }
 
   constructor(
     private commonService: CommonService,
@@ -99,12 +121,24 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPendingChanges() {
-    if(this.pendingChanges) {
+    if (this.pendingChanges) {
       return;
     }
 
     this.pendingChanges = true;
     this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE });
+  }
+
+  /**
+ * Metodo che visualizza il modale di cancellazione ed eventualmente richiama la cancellazione stessa
+ * @returns {void}
+ */
+  showDeleteModal(): void {
+    const confirmMsg = 'Stai per cancellare una forma';
+
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement(this.instanceName), this.instanceName);
   }
 
   private loadSense() {
@@ -132,5 +166,37 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error(error);
       }
     })
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: 'warning',
+      titleText: message,
+      text: 'per favore attendere',
+      customClass: {
+        container: 'swal2-container'
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
   }
 }
