@@ -4,12 +4,14 @@ export class LexicalEntry {
     name?: string
     instanceName?: string
     label?: string
+    note?: string
     creator?: string
     creationDate?: string
     lastUpdate?: string
     status?: string
     type?: LexicalEntryType
     uri?: string
+    sub?: string
 }
 
 

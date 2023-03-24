@@ -94,7 +94,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, <FormUpdater>{ relation: FORM_RELATIONS.NOTE, value: this.noteInput }));
       this.initialValues.note = this.noteInput!;
     }
-    this.morphologicalForms.forEach(mf => {//BUG qualcosa non torna con l'update e non viene correttamente gestita la parte di rimozione di un tratto morfologico
+    this.morphologicalForms.forEach(mf => {
       const currentValueIndex = this.initialValues.morphs.findIndex(e => e.trait === mf.selectedTrait.code);
       const currentValue = this.initialValues.morphs.find(e => e.trait === mf.selectedTrait.code)?.value;
       const newValue = mf.selectedProperty.code;
@@ -116,7 +116,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
         this.pendingChanges = false;
         this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.FORM })
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
         this.lastUpdate = new Date(res[0]).toLocaleString();
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       });
@@ -166,6 +166,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.lexiconService.deleteRelation(this.instanceName, {relation: morph.selectedTrait.code, value: morph.selectedProperty.code}).pipe(take(1)).subscribe(res => {
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         this.initialValues.morphs = this.initialValues.morphs.filter(m => m.trait !== morph.selectedTrait.code);
+        this.lastUpdate = new Date(res).toLocaleString();
       });
     }
   }

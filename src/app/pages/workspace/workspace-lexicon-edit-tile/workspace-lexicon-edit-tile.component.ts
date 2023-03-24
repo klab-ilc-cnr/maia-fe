@@ -113,6 +113,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
               break;
           }
         }
+        if(res.option === 'lexicon_edit_update_tree' && res.value === this.lexicalEntryInstanceName) {
+          this.refreshTreeNode();
+        }
       }
     });
   }
@@ -298,6 +301,40 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  refreshTreeNode() {
+    this.lexiconService.getLexicalEntry(this.lexicalEntryInstanceName).pipe(take(1)).subscribe(lexEntry => {
+      this.lexicalEntryTree = [{
+        data: {
+          name: this.showLabelName ? lexEntry['label'] : lexEntry['lexicalEntryInstanceName'],
+          instanceName: lexEntry['lexicalEntryInstanceName'],
+          label: lexEntry['label'],
+          note: lexEntry['note'],
+          creator: lexEntry['creator'],
+          creationDate: lexEntry['creationDate'] ? new Date(lexEntry['creationDate']).toLocaleString() : '',
+          lastUpdate: lexEntry['lastUpdate'] ? new Date(lexEntry['lastUpdate']).toLocaleString() : '',
+          status: lexEntry['status'],
+          uri: lexEntry['lexicalEntry'],
+          type: LexicalEntryType.LEXICAL_ENTRY,
+          sub: lexEntry['pos']
+        },
+        children: [{
+          data: {
+            name: 'form (0)',
+            instanceName: '_form_' + lexEntry['lexicalEntryInstanceName'],
+            type: LexicalEntryType.FORMS_ROOT
+          }
+        },
+        {
+          data: {
+            name: 'sense (0)',
+            instanceName: '_sense_' + lexEntry['lexicalEntryInstanceName'],
+            type: LexicalEntryType.SENSES_ROOT
+          }
+        }]
+      }];
+    })
   }
 
   private addNewForm() {

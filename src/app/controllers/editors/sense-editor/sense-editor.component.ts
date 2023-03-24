@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseUpdater, LEXICAL_SENSE_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 @Component({
   selector: 'app-sense-editor',
@@ -32,7 +34,9 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private commonService: CommonService,
     private lexiconService: LexiconService,
-    private loggedUserService: LoggedUserService
+    private loggedUserService: LoggedUserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +60,8 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleSave() {
+    const successMsg = "Senso aggiornato con successo";
+
     const currentUser = this.loggedUserService.currentUser;
     const currentUserName = currentUser?.name + '.' + currentUser?.surname;
 
@@ -79,8 +85,9 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
         this.pendingChanges = false;
         this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE })
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
-        this.lastUpdate = new Date(res[0]).toLocaleString()
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
+        this.lastUpdate = new Date(res[0]).toLocaleString();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       });
     }
   }

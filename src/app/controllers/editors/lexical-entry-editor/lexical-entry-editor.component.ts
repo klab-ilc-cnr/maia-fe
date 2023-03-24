@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
 import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
@@ -6,6 +7,7 @@ import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 @Component({
   selector: 'app-lexical-entry-editor',
@@ -41,7 +43,9 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService,
-    private loggedUserService: LoggedUserService
+    private loggedUserService: LoggedUserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +64,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   }
 
   handleSave() {
+    const successMsg = "Entrata aggiornata con successo";
     const currentUser = this.loggedUserService.currentUser;
     const currentUserName = (currentUser?.name + '.' + currentUser?.surname);
     // eslint-disable-next-line prefer-const
@@ -100,7 +105,8 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
         this.lastUpdate = new Date(res[0]).toLocaleString()
         this.pendingChanges = false;
         this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY })
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
+        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryInstanceName });
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       });
     }
   }
