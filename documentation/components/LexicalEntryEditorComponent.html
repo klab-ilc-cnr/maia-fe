@@ -1,0 +1,1448 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  LexicalEntryEditorComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-lexical-entry-editor</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./lexical-entry-editor.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./lexical-entry-editor.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#attestationsForm" >attestationsForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#confidenceForm" >confidenceForm</a>
+                            </li>
+                            <li>
+                                <a href="#initialValues" >initialValues</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#labelForm" >labelForm</a>
+                            </li>
+                            <li>
+                                <a href="#lastUpdate" >lastUpdate</a>
+                            </li>
+                            <li>
+                                <a href="#lexicalEntryInstanceName" >lexicalEntryInstanceName</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#noteForm" >noteForm</a>
+                            </li>
+                            <li>
+                                <a href="#pendingChanges" >pendingChanges</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#selectedLanguageForm" >selectedLanguageForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#selectedPartOfSpeechesForm" >selectedPartOfSpeechesForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#selectedStatusForm" >selectedStatusForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#selectedTypeForm" >selectedTypeForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscription" >subscription</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#handleSave" >handleSave</a>
+                            </li>
+                            <li>
+                                <a href="#loadData" >loadData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadLexicalEntry" >loadLexicalEntry</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onPendingChanges" >onPendingChanges</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#instanceName" >instanceName</a>
+                            </li>
+                            <li>
+                                <a href="#languagesForm" >languagesForm</a>
+                            </li>
+                            <li>
+                                <a href="#partOfSpeechesForm" >partOfSpeechesForm</a>
+                            </li>
+                            <li>
+                                <a href="#statusForm" >statusForm</a>
+                            </li>
+                            <li>
+                                <a href="#typesForm" >typesForm</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(lexiconService: <a href="../injectables/LexiconService.html" target="_self">LexiconService</a>, commonService: <a href="../injectables/CommonService.html" target="_self">CommonService</a>, loggedUserService: <a href="../injectables/LoggedUserService.html" target="_self">LoggedUserService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>lexiconService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LexiconService.html" target="_self" >LexiconService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>commonService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommonService.html" target="_self" >CommonService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>loggedUserService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoggedUserService.html" target="_self" >LoggedUserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="instanceName"></a>
+                        <b>instanceName</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:39</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="languagesForm"></a>
+                        <b>languagesForm</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DropdownField.html" target="_self" >DropdownField[]</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:30</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="partOfSpeechesForm"></a>
+                        <b>partOfSpeechesForm</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DropdownField.html" target="_self" >DropdownField[]</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:28</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="statusForm"></a>
+                        <b>statusForm</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SelectButtonField.html" target="_self" >SelectButtonField[]</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:34</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="typesForm"></a>
+                        <b>typesForm</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DropdownField.html" target="_self" >DropdownField[]</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:26</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleSave"></a>
+                    <span class="name">
+                        <span ><b>handleSave</b></span>
+                        <a href="#handleSave"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleSave()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:66</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadData"></a>
+                    <span class="name">
+                        <span ><b>loadData</b></span>
+                        <a href="#loadData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadData()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="114"
+                            class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:114</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadLexicalEntry"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>loadLexicalEntry</b></span>
+                        <a href="#loadLexicalEntry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadLexicalEntry()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="129"
+                            class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:129</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:62</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:51</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPendingChanges"></a>
+                    <span class="name">
+                        <span ><b>onPendingChanges</b></span>
+                        <a href="#onPendingChanges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPendingChanges()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="120"
+                            class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:120</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="attestationsForm"></a>
+                    <span class="name">
+                        <span ><b>attestationsForm</b></span>
+                        <a href="#attestationsForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confidenceForm"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>confidenceForm</b></span>
+                        <a href="#confidenceForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initialValues"></a>
+                    <span class="name">
+                        <span ><b>initialValues</b></span>
+                        <a href="#initialValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="labelForm"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>labelForm</b></span>
+                        <a href="#labelForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastUpdate"></a>
+                    <span class="name">
+                        <span ><b>lastUpdate</b></span>
+                        <a href="#lastUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lexicalEntryInstanceName"></a>
+                    <span class="name">
+                        <span ><b>lexicalEntryInstanceName</b></span>
+                        <a href="#lexicalEntryInstanceName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se elementi del form sono in caricamento</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="noteForm"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>noteForm</b></span>
+                        <a href="#noteForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pendingChanges"></a>
+                    <span class="name">
+                        <span ><b>pendingChanges</b></span>
+                        <a href="#pendingChanges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedLanguageForm"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>selectedLanguageForm</b></span>
+                        <a href="#selectedLanguageForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DropdownField.html" target="_self" >DropdownField</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedPartOfSpeechesForm"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>selectedPartOfSpeechesForm</b></span>
+                        <a href="#selectedPartOfSpeechesForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DropdownField.html" target="_self" >DropdownField</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedStatusForm"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>selectedStatusForm</b></span>
+                        <a href="#selectedStatusForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SelectButtonField.html" target="_self" >SelectButtonField</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedTypeForm"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>selectedTypeForm</b></span>
+                        <a href="#selectedTypeForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DropdownField.html" target="_self" >DropdownField</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscription</b></span>
+                        <a href="#subscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subscription</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/controllers/editors/lexical-entry-editor/lexical-entry-editor.component.ts:18</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnDestroy, OnInit } from &#x27;@angular/core&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { forkJoin, Subscription, take } from &#x27;rxjs&#x27;;
+import { DropdownField, SelectButtonField } from &#x27;src/app/models/dropdown-field&#x27;;
+import { LexicalEntryType } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { CommonService } from &#x27;src/app/services/common.service&#x27;;
+import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
+import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+
+@Component({
+  selector: &#x27;app-lexical-entry-editor&#x27;,
+  templateUrl: &#x27;./lexical-entry-editor.component.html&#x27;,
+  styleUrls: [&#x27;./lexical-entry-editor.component.scss&#x27;]
+})
+export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
+  private subscription!: Subscription;
+
+  lexicalEntryInstanceName!: string;
+
+  /**Definisce se elementi del form sono in caricamento */
+  loading &#x3D; false;
+  confidenceForm?: number;
+  labelForm?: string;
+  @Input() typesForm!: DropdownField[];
+  selectedTypeForm?: DropdownField;
+  @Input() partOfSpeechesForm!: DropdownField[];
+  selectedPartOfSpeechesForm?: DropdownField;
+  @Input() languagesForm!: DropdownField[];
+  selectedLanguageForm?: DropdownField;
+  noteForm?: string;
+  attestationsForm: any[] &#x3D; [];
+  @Input() statusForm!: SelectButtonField[];
+  selectedStatusForm?: SelectButtonField;
+  lastUpdate &#x3D; &#x27;&#x27;;
+  initialValues!: { status: string, label: string, confidence: number, type: string, pos: string, lang: string, note: string };
+
+  @Input() instanceName!: string;
+
+  pendingChanges &#x3D; false;
+
+  constructor(
+    private lexiconService: LexiconService,
+    private commonService: CommonService,
+    private loggedUserService: LoggedUserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
+  ) { }
+
+  ngOnInit(): void {
+    this.loadData()
+
+    this.subscription &#x3D; this.commonService.notifyObservable$.subscribe((res: any) &#x3D;&gt; {
+      if (&#x27;option&#x27; in res &amp;&amp; res.option &#x3D;&#x3D;&#x3D; &#x27;lexical_entry_editor_save&#x27; &amp;&amp; this.instanceName &#x3D;&#x3D;&#x3D; res.value) {
+        this.handleSave();
+      }
+    })
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  handleSave() {
+    const successMsg &#x3D; &quot;Entrata aggiornata con successo&quot;;
+    const currentUser &#x3D; this.loggedUserService.currentUser;
+    const currentUserName &#x3D; (currentUser?.name + &#x27;.&#x27; + currentUser?.surname);
+    // eslint-disable-next-line prefer-const
+    let httpList &#x3D; [];
+    //BUG errore nella chiamata perché non chiaro come gestire aggiornamento di status
+    if (this.initialValues.status !&#x3D;&#x3D; this.selectedStatusForm?.icon) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, &lt;LexicalEntryUpdater&gt;{ relation: LEXICAL_ENTRY_RELATIONS.STATUS, value: this.selectedStatusForm?.icon }));
+      this.initialValues.status &#x3D; this.selectedStatusForm!.icon;
+    }
+    if (this.initialValues.label !&#x3D;&#x3D; this.labelForm) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, &lt;LexicalEntryUpdater&gt;{ relation: LEXICAL_ENTRY_RELATIONS.LABEL, value: this.labelForm }));
+      this.initialValues.label &#x3D; this.labelForm!;
+    }
+    console.info(this.confidenceForm); //TODO CONTROLLARE COME ESEGUIRE QUESTO UPDATE
+    if (this.initialValues.type !&#x3D;&#x3D; this.selectedTypeForm?.code) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, &lt;LexicalEntryUpdater&gt;{ relation: LEXICAL_ENTRY_RELATIONS.TYPE, value: this.selectedTypeForm?.code }));
+      this.initialValues.type &#x3D; this.selectedTypeForm!.code;
+    }
+    if (this.initialValues.pos !&#x3D;&#x3D; this.selectedPartOfSpeechesForm?.code) {
+      httpList.push(this.lexiconService.updateLinguisticRelation(this.lexicalEntryInstanceName, &lt;LinguisticRelationUpdater&gt;{
+        type: LINGUISTIC_RELATIONS.MORPHOLOGY,
+        relation: &#x27;partOfSpeech&#x27;,
+        value: this.selectedPartOfSpeechesForm?.code,
+        currentValue: this.initialValues.pos
+      }));
+      this.initialValues.pos &#x3D; this.selectedPartOfSpeechesForm!.code;
+    }
+    if (this.initialValues.lang !&#x3D;&#x3D; this.selectedLanguageForm?.code) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, &lt;LexicalEntryUpdater&gt;{ relation: LEXICAL_ENTRY_RELATIONS.LANGUAGE, value: this.selectedLanguageForm?.code }));
+      this.initialValues.lang &#x3D; this.selectedLanguageForm!.code;
+    }
+    if (this.initialValues.note !&#x3D;&#x3D; this.noteForm) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, &lt;LexicalEntryUpdater&gt;{ relation: LEXICAL_ENTRY_RELATIONS.NOTE, value: this.noteForm }));
+      this.initialValues.note &#x3D; this.noteForm!;
+    }
+    if (httpList.length &gt; 0) {
+      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) &#x3D;&gt; {
+        this.lastUpdate &#x3D; new Date(res[0]).toLocaleString()
+        this.pendingChanges &#x3D; false;
+        this.commonService.notifyOther({ option: &#x27;lexicon_edit_pending_changes&#x27;, value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY })
+        this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.lexicalEntryInstanceName });
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      });
+    }
+  }
+
+  loadData() {
+    this.loading &#x3D; true;
+
+    this.loadLexicalEntry();
+  }
+
+  onPendingChanges() {
+    if (this.pendingChanges) {
+      return;
+    }
+
+    this.pendingChanges &#x3D; true;
+    this.commonService.notifyOther({ option: &#x27;lexicon_edit_pending_changes&#x27;, value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY });
+  }
+
+  private loadLexicalEntry() {
+    this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
+      next: (data: any) &#x3D;&gt; {
+        this.initialValues &#x3D; {
+          status: data.status,
+          label: data.label,
+          confidence: data.confidence,
+          type: data.type,
+          pos: data.pos,
+          lang: data.language,
+          note: data.note
+        };
+        this.lexicalEntryInstanceName &#x3D; data.lexicalEntryInstanceName;
+
+        this.selectedStatusForm &#x3D; this.statusForm.find((el: any) &#x3D;&gt; el.icon &#x3D;&#x3D;&#x3D; data.status);
+        this.labelForm &#x3D; data.label;
+        this.confidenceForm &#x3D; data.confidence &lt; 0 ? 0 : data.confidence * 100;
+
+        this.selectedTypeForm &#x3D; this.typesForm.find(el &#x3D;&gt; el.code &#x3D;&#x3D;&#x3D; data.type[0]);
+
+        this.selectedPartOfSpeechesForm &#x3D; this.partOfSpeechesForm.find(el &#x3D;&gt; el.code &#x3D;&#x3D;&#x3D; data.pos);
+        this.selectedLanguageForm &#x3D; this.languagesForm.find(el &#x3D;&gt; el.code &#x3D;&#x3D;&#x3D; data.language);
+        this.noteForm &#x3D; data.note;
+        this.attestationsForm &#x3D; data.links.find((el: any) &#x3D;&gt; el.type &#x3D;&#x3D;&#x3D; &#x27;Attestation&#x27;).elements.map((att: any) &#x3D;&gt; ({
+          name: att[&#x27;label&#x27;],
+          code: att[&#x27;label&#x27;]
+        }));
+
+        this.lastUpdate &#x3D; data.lastUpdate ? new Date(data.lastUpdate).toLocaleString() : &#x27;&#x27;;
+
+        this.loading &#x3D; false;
+      },
+      error: (error: any) &#x3D;&gt; {
+        console.error(error)
+      }
+    });
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--PLACEHOLDER quando siamo in fase di loading dati--&gt;
+&lt;p-skeleton *ngIf&#x3D;&quot;loading&quot; width&#x3D;&quot;30rem&quot; height&#x3D;&quot;40rem&quot;&gt;&lt;/p-skeleton&gt;
+
+&lt;div *ngIf&#x3D;&quot;!loading&quot; class&#x3D;&quot;card&quot; [style]&#x3D;&quot;{&#x27;height&#x27;:&#x27;100%&#x27;}&quot;&gt;
+    &lt;div class&#x3D;&quot;formgrid grid&quot;&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;em style&#x3D;&quot;float: right;&quot;&gt;Last update: {{lastUpdate}}&lt;/em&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;status&quot;&gt;Status&lt;/label&gt;
+            &lt;p-selectButton [options]&#x3D;&quot;statusForm&quot; [(ngModel)]&#x3D;&quot;selectedStatusForm&quot; optionLabel&#x3D;&quot;icon&quot; [disabled]&#x3D;&quot;true&quot; (onChange)&#x3D;&quot;onPendingChanges()&quot;&gt;
+                &lt;ng-template let-item&gt;
+                    &lt;app-icon-lock [status]&#x3D;&quot;item.icon&quot;&gt;&lt;/app-icon-lock&gt;
+                &lt;/ng-template&gt;
+            &lt;/p-selectButton&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;label&quot;&gt;Label&lt;/label&gt;
+            &lt;input id&#x3D;&quot;label&quot; [(ngModel)]&#x3D;&quot;labelForm&quot; type&#x3D;&quot;text&quot; pInputText (change)&#x3D;&quot;onPendingChanges()&quot;
+                class&#x3D;&quot;text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;confidence&quot;&gt;Confidence&lt;/label&gt;
+            &lt;input id&#x3D;&quot;confidence&quot; [(ngModel)]&#x3D;&quot;confidenceForm&quot; type&#x3D;&quot;number&quot; pInputNumber [min]&#x3D;&quot;0&quot; [max]&#x3D;&quot;100&quot; placeholder&#x3D;&quot;(0-100)&quot; (change)&#x3D;&quot;onPendingChanges()&quot;
+                class&#x3D;&quot;text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;type&quot;&gt;Type&lt;/label&gt;
+            &lt;p-dropdown id&#x3D;&quot;type&quot; [options]&#x3D;&quot;typesForm&quot; [(ngModel)]&#x3D;&quot;selectedTypeForm&quot; optionLabel&#x3D;&quot;name&quot; (onChange)&#x3D;&quot;onPendingChanges()&quot;
+                [style]&#x3D;&quot;{&#x27;width&#x27;: &#x27;100%&#x27;}&quot;&gt;&lt;/p-dropdown&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;partOdSpeech&quot;&gt;Part-of-Speech&lt;/label&gt;
+            &lt;p-dropdown id&#x3D;&quot;partOfSpeech&quot; [options]&#x3D;&quot;partOfSpeechesForm&quot; [(ngModel)]&#x3D;&quot;selectedPartOfSpeechesForm&quot; (onChange)&#x3D;&quot;onPendingChanges()&quot;
+                [filter]&#x3D;&quot;true&quot; filterBy&#x3D;&quot;name&quot; optionLabel&#x3D;&quot;name&quot; [style]&#x3D;&quot;{&#x27;width&#x27;: &#x27;100%&#x27;}&quot;&gt;&lt;/p-dropdown&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;language&quot;&gt;Language&lt;/label&gt;
+            &lt;p-dropdown id&#x3D;&quot;language&quot; [options]&#x3D;&quot;languagesForm&quot; [(ngModel)]&#x3D;&quot;selectedLanguageForm&quot; optionLabel&#x3D;&quot;name&quot; (onChange)&#x3D;&quot;onPendingChanges()&quot;
+                [style]&#x3D;&quot;{&#x27;width&#x27;: &#x27;100%&#x27;}&quot;&gt;&lt;/p-dropdown&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;note&quot;&gt;Note&lt;/label&gt;
+            &lt;textarea id&#x3D;&quot;note&quot; [(ngModel)]&#x3D;&quot;noteForm&quot; type&#x3D;&quot;text&quot; rows&#x3D;&quot;4&quot; (change)&#x3D;&quot;onPendingChanges()&quot;
+                class&#x3D;&quot;text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full&quot;&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;attestations&quot;&gt;Attestations&lt;/label&gt;
+            &lt;p-listbox [listStyle]&#x3D;&quot;{&#x27;max-height&#x27;: &#x27;250px&#x27;}&quot; [readonly]&#x3D;&quot;true&quot; [options]&#x3D;&quot;attestationsForm&quot;
+                optionLabel&#x3D;&quot;name&quot; emptyMessage&#x3D;&quot;No attestation found&quot;&gt;&lt;/p-listbox&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-11&quot;&gt;
+            &lt;button pButton type&#x3D;&quot;button&quot; class&#x3D;&quot;w-full&quot; label&#x3D;&quot;Save&quot; (click)&#x3D;&quot;handleSave()&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-1&quot;&gt;
+            &lt;button pButton pRipple icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button p-button-danger w-full&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./lexical-entry-editor.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">label {
+    width: 100%;
+}
+
+::ng-deep {
+
+    .p-selectbutton .p-button.p-highlight,
+    .p-selectbutton .p-button.p-highlight:hover {
+        background-color: lightgrey !important;
+        border-color: lightgray !important;
+    }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--PLACEHOLDER quando siamo in fase di loading dati--><p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton><div *ngIf="!loading" class="card" [style]="{\'height\':\'100%\'}">    <div class="formgrid grid">        <div class="field col-12">            <em style="float: right;">Last update: {{lastUpdate}}</em>        </div>        <div class="field col-12">            <label for="status">Status</label>            <p-selectButton [options]="statusForm" [(ngModel)]="selectedStatusForm" optionLabel="icon" [disabled]="true" (onChange)="onPendingChanges()">                <ng-template let-item>                    <app-icon-lock [status]="item.icon"></app-icon-lock>                </ng-template>            </p-selectButton>        </div>        <div class="field col-12">            <label for="label">Label</label>            <input id="label" [(ngModel)]="labelForm" type="text" pInputText (change)="onPendingChanges()"                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">        </div>        <div class="field col-12">            <label for="confidence">Confidence</label>            <input id="confidence" [(ngModel)]="confidenceForm" type="number" pInputNumber [min]="0" [max]="100" placeholder="(0-100)" (change)="onPendingChanges()"                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">        </div>        <div class="field col-12">            <label for="type">Type</label>            <p-dropdown id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name" (onChange)="onPendingChanges()"                [style]="{\'width\': \'100%\'}"></p-dropdown>        </div>        <div class="field col-12">            <label for="partOdSpeech">Part-of-Speech</label>            <p-dropdown id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechesForm" (onChange)="onPendingChanges()"                [filter]="true" filterBy="name" optionLabel="name" [style]="{\'width\': \'100%\'}"></p-dropdown>        </div>        <div class="field col-12">            <label for="language">Language</label>            <p-dropdown id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name" (onChange)="onPendingChanges()"                [style]="{\'width\': \'100%\'}"></p-dropdown>        </div>        <div class="field col-12">            <label for="note">Note</label>            <textarea id="note" [(ngModel)]="noteForm" type="text" rows="4" (change)="onPendingChanges()"                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>        </div>        <div class="field col-12">            <label for="attestations">Attestations</label>            <p-listbox [listStyle]="{\'max-height\': \'250px\'}" [readonly]="true" [options]="attestationsForm"                optionLabel="name" emptyMessage="No attestation found"></p-listbox>        </div>        <div class="field col-11">            <button pButton type="button" class="w-full" label="Save" (click)="handleSave()"></button>        </div>        <div class="field col-1">            <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger w-full"></button>        </div>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'LexicalEntryEditorComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'LexicalEntryEditorComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

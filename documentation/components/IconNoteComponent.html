@@ -38,7 +38,7 @@
   <li>Components</li>
   <li
   >
-  IconLayerGroupComponent</li>
+  IconNoteComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -64,17 +64,10 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/controllers/icons/icon-layer-group/icon-layer-group.component.ts</code>
+    <code>src/app/controllers/icons/icon-note/icon-note.component.ts</code>
 </p>
 
 
-    <p class="comment">
-        <h3>Description</h3>
-    </p>
-    <p class="comment">
-        <p>Classe dell&#39;icona layer-group</p>
-
-    </p>
 
     <p class="comment">
         <h3>Extends</h3>
@@ -108,7 +101,7 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>app-icon-layer-group</code></td>
+                <td class="col-md-9"><code>app-icon-note</code></td>
             </tr>
 
             <tr>
@@ -265,7 +258,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:16</a></code>
+                        <div class="io-line">Defined in         <code><a href="../components/IconBaseComponent.html#source" target="_self" >IconBaseComponent:12</a></code>
 </div>
                 </td>
             </tr>
@@ -273,8 +266,6 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per inizializzare l&#39;icona visualizzata</p>
-</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -336,22 +327,18 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
-import { faLayerGroup } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
+import { faCommentDots } from &#x27;@fortawesome/free-regular-svg-icons&#x27;;
 import { IconBaseComponent } from &#x27;../icon-base/icon-base.component&#x27;;
 
-/**
- * Classe dell&#x27;icona layer-group
- * @extends IconBaseComponent
- */
 @Component({
-  selector: &#x27;app-icon-layer-group&#x27;,
+  selector: &#x27;app-icon-note&#x27;,
   templateUrl: &#x27;../icon-base/icon-base.component.html&#x27;,
   styleUrls: [&#x27;../icon-base/icon-base.component.scss&#x27;]
 })
-export class IconLayerGroupComponent extends IconBaseComponent implements OnInit {
- /**Metodo dell&#x27;interfaccia OnInit, utilizzato per inizializzare l&#x27;icona visualizzata */
+export class IconNoteComponent extends IconBaseComponent implements OnInit {
+
   override ngOnInit(): void {
-    this.icon &#x3D; faLayerGroup;
+    this.icon &#x3D; faCommentDots;
   }
 
 }
@@ -398,7 +385,7 @@ export class IconLayerGroupComponent extends IconBaseComponent implements OnInit
         var COMPONENT_TEMPLATE = '<div><fa-icon [icon]="icon" [size]="size" [fixedWidth]="true"></fa-icon></div>'
     var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
     var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
-    var ACTUAL_COMPONENT = {'name': 'IconLayerGroupComponent'};
+    var ACTUAL_COMPONENT = {'name': 'IconNoteComponent'};
 </script>
 <script src="../js/tree.js"></script>
 
@@ -444,7 +431,7 @@ export class IconLayerGroupComponent extends IconBaseComponent implements OnInit
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'IconLayerGroupComponent.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IconNoteComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription, take } from 'rxjs';
 import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 @Component({
   selector: 'app-workspace-lexicon-tile',
@@ -90,10 +91,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param lexiconService {LexiconService} servizi relativi al lessico
    * @param commonService {CommonService} servizi di uso comune
    */
-  constructor(private messageService: MessageService,
+  constructor(
+    private messageService: MessageService,
     private lexiconService: LexiconService,
     private commonService: CommonService,
-    private elem: ElementRef) { }
+    private elem: ElementRef,
+    private msgConfService: MessageConfigurationService
+  ) { }
 
   //  ngAfterViewInit() {
   // this.tt.onNodeSelect
@@ -128,7 +132,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.alternateLabelInstanceName();
         this.showLabelName = !this.showLabelName;
       }
-      if('option' in res && res.option === 'lexicon_edit_update_tree') {
+      if ('option' in res && res.option === 'lexicon_edit_update_tree') {
         this.loadNodes();
       }
     });
@@ -354,6 +358,20 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     console.log('Unselected ' + event.node.data.uri); //TODO vedi branch lexicon
   }
 
+  onRemoveNodes(): void {
+    const filteredSelectedNodes = this.selectedNodes.filter((n: TreeNode<any>) => n.data.type !== LexicalEntryType.FORMS_ROOT && n.data.type !== LexicalEntryType.SENSES_ROOT);
+
+    const nodesToDelete: TreeNode<any>[] = [];
+    filteredSelectedNodes.forEach(el => {
+      if (el.data.type === LexicalEntryType.LEXICAL_ENTRY ||
+        filteredSelectedNodes.findIndex(e => e.data.instanceName === el.parent?.parent?.data.instanceName) === -1) {
+        nodesToDelete.push(el);
+      }
+    });
+
+    this.deleteNodes(nodesToDelete);
+  }
+
   /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */
   filter() {
     this.updateFilterParameters();
@@ -402,6 +420,30 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
     }
    */
+
+  private deleteNodes(nodesToDelete: TreeNode<any>[]): void {
+    const httpDelete: Observable<string>[] = [];
+    nodesToDelete.forEach(tn => {
+      switch (tn.data.type) {
+        case LexicalEntryType.LEXICAL_ENTRY:
+          httpDelete.push(this.lexiconService.deleteLexicalEntry(tn.data.instanceName));
+          break;
+        case LexicalEntryType.FORM:
+          httpDelete.push(this.lexiconService.deleteForm(tn.data.instanceName));
+          break;
+        case LexicalEntryType.SENSE:
+          httpDelete.push(this.lexiconService.deleteLexicalSense(tn.data.instanceName));
+          break;
+      }
+    });
+    forkJoin(httpDelete).pipe(take(1)).subscribe(() => {
+      const successMsg = "Elementi rimossi";
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.loadNodes();
+    });
+
+  }
+
   /**
    * @private
    * Metodo che resetta i filtri applicati alla ricerca di entrate lessicali

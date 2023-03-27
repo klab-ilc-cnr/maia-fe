@@ -79,11 +79,15 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#key" >key</a>
+                                <a href="#lexoUrl" >lexoUrl</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#lexoUrl" >lexoUrl</a>
+                                <a href="#readKey" >readKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#writeKey" >writeKey</a>
                             </li>
                         </ul>
                     </td>
@@ -98,10 +102,31 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#concatenateMorphology" >concatenateMorphology</a>
+                            </li>
+                            <li>
+                                <a href="#deleteForm" >deleteForm</a>
+                            </li>
+                            <li>
+                                <a href="#deleteLexicalEntry" >deleteLexicalEntry</a>
+                            </li>
+                            <li>
+                                <a href="#deleteLexicalSense" >deleteLexicalSense</a>
+                            </li>
+                            <li>
+                                <a href="#deleteRelation" >deleteRelation</a>
+                            </li>
+                            <li>
                                 <a href="#getAuthors" >getAuthors</a>
                             </li>
                             <li>
                                 <a href="#getElements" >getElements</a>
+                            </li>
+                            <li>
+                                <a href="#getForm" >getForm</a>
+                            </li>
+                            <li>
+                                <a href="#getFormTypes" >getFormTypes</a>
                             </li>
                             <li>
                                 <a href="#getLanguages" >getLanguages</a>
@@ -110,19 +135,49 @@
                                 <a href="#getLexicalEntriesList" >getLexicalEntriesList</a>
                             </li>
                             <li>
+                                <a href="#getLexicalEntry" >getLexicalEntry</a>
+                            </li>
+                            <li>
                                 <a href="#getLexicalEntryForms" >getLexicalEntryForms</a>
                             </li>
                             <li>
                                 <a href="#getLexicalEntrySenses" >getLexicalEntrySenses</a>
                             </li>
                             <li>
+                                <a href="#getLexicalEntryTypes" >getLexicalEntryTypes</a>
+                            </li>
+                            <li>
+                                <a href="#getMorphology" >getMorphology</a>
+                            </li>
+                            <li>
+                                <a href="#getNewForm" >getNewForm</a>
+                            </li>
+                            <li>
+                                <a href="#getNewSense" >getNewSense</a>
+                            </li>
+                            <li>
                                 <a href="#getPos" >getPos</a>
+                            </li>
+                            <li>
+                                <a href="#getSense" >getSense</a>
                             </li>
                             <li>
                                 <a href="#getStatus" >getStatus</a>
                             </li>
                             <li>
                                 <a href="#getTypes" >getTypes</a>
+                            </li>
+                            <li>
+                                <a href="#updateLexicalEntry" >updateLexicalEntry</a>
+                            </li>
+                            <li>
+                                <a href="#updateLexicalForm" >updateLexicalForm</a>
+                            </li>
+                            <li>
+                                <a href="#updateLexicalSense" >updateLexicalSense</a>
+                            </li>
+                            <li>
+                                <a href="#updateLinguisticRelation" >updateLinguisticRelation</a>
                             </li>
                         </ul>
                     </td>
@@ -147,7 +202,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/lexicon.service.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/lexicon.service.ts:17</a></div>
                             </td>
                         </tr>
 
@@ -194,6 +249,363 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="concatenateMorphology"></a>
+                    <span class="name">
+                        <span ><b>concatenateMorphology</b></span>
+                        <a href="#concatenateMorphology"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>concatenateMorphology(morphology: literal type[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="168"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:168</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>morphology</td>
+                                    <td>
+                                            <code>literal type[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteForm"></a>
+                    <span class="name">
+                        <span ><b>deleteForm</b></span>
+                        <a href="#deleteForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteForm(formID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="23"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:23</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>formID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteLexicalEntry"></a>
+                    <span class="name">
+                        <span ><b>deleteLexicalEntry</b></span>
+                        <a href="#deleteLexicalEntry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteLexicalEntry(lexicalEntryID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:30</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalEntryID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteLexicalSense"></a>
+                    <span class="name">
+                        <span ><b>deleteLexicalSense</b></span>
+                        <a href="#deleteLexicalSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteLexicalSense(senseID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:37</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>senseID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteRelation"></a>
+                    <span class="name">
+                        <span ><b>deleteRelation</b></span>
+                        <a href="#deleteRelation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteRelation(lexicalEntityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updater: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:44</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalEntityId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>updater</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getAuthors"></a>
                     <span class="name">
                         <span ><b>getAuthors</b></span>
@@ -210,8 +622,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="82"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:82</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="148"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:148</a></div>
                 </td>
             </tr>
 
@@ -255,8 +667,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:70</a></div>
                 </td>
             </tr>
 
@@ -316,6 +728,112 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getForm"></a>
+                    <span class="name">
+                        <span ><b>getForm</b></span>
+                        <a href="#getForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getForm(formInstanceName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="78"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:78</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>formInstanceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFormTypes"></a>
+                    <span class="name">
+                        <span ><b>getFormTypes</b></span>
+                        <a href="#getFormTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFormTypes()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:82</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OntolexType.html" target="_self" >Observable&lt;OntolexType[]&gt;</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getLanguages"></a>
                     <span class="name">
                         <span ><b>getLanguages</b></span>
@@ -332,8 +850,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="66"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:66</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:116</a></div>
                 </td>
             </tr>
 
@@ -346,7 +864,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>        <code><a href="../classes/LexiconStatistics.html" target="_self" >Observable&lt;LexiconStatistics[]&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -377,8 +895,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="23"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:23</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:57</a></div>
                 </td>
             </tr>
 
@@ -438,6 +956,75 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getLexicalEntry"></a>
+                    <span class="name">
+                        <span ><b>getLexicalEntry</b></span>
+                        <a href="#getLexicalEntry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getLexicalEntry(lexicalEntryId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:86</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalEntryId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getLexicalEntryForms"></a>
                     <span class="name">
                         <span ><b>getLexicalEntryForms</b></span>
@@ -454,8 +1041,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:49</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:95</a></div>
                 </td>
             </tr>
 
@@ -531,8 +1118,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:104</a></div>
                 </td>
             </tr>
 
@@ -592,6 +1179,242 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getLexicalEntryTypes"></a>
+                    <span class="name">
+                        <span ><b>getLexicalEntryTypes</b></span>
+                        <a href="#getLexicalEntryTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getLexicalEntryTypes()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:108</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OntolexType.html" target="_self" >Observable&lt;OntolexType[]&gt;</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMorphology"></a>
+                    <span class="name">
+                        <span ><b>getMorphology</b></span>
+                        <a href="#getMorphology"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMorphology()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="120"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:120</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Morphology.html" target="_self" >Observable&lt;Morphology[]&gt;</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNewForm"></a>
+                    <span class="name">
+                        <span ><b>getNewForm</b></span>
+                        <a href="#getNewForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getNewForm(lexicalEntryId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, creator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="124"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:124</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalEntryId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>creator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNewSense"></a>
+                    <span class="name">
+                        <span ><b>getNewSense</b></span>
+                        <a href="#getNewSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getNewSense(lexicalEntryId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, creator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:128</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalEntryId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>creator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getPos"></a>
                     <span class="name">
                         <span ><b>getPos</b></span>
@@ -608,8 +1431,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="90"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:90</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="156"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:156</a></div>
                 </td>
             </tr>
 
@@ -637,6 +1460,75 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getSense"></a>
+                    <span class="name">
+                        <span ><b>getSense</b></span>
+                        <a href="#getSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSense(senseInstanceName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:140</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>senseInstanceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getStatus"></a>
                     <span class="name">
                         <span ><b>getStatus</b></span>
@@ -653,8 +1545,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="98"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:98</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:164</a></div>
                 </td>
             </tr>
 
@@ -667,7 +1559,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>        <code><a href="../classes/LexiconStatistics.html" target="_self" >Observable&lt;LexiconStatistics[]&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -698,8 +1590,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="74"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:74</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:136</a></div>
                 </td>
             </tr>
 
@@ -723,44 +1615,372 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLexicalEntry"></a>
+                    <span class="name">
+                        <span ><b>updateLexicalEntry</b></span>
+                        <a href="#updateLexicalEntry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateLexicalEntry(user: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, lexicalEntryInstanceName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updater: <a href="../interfaces/LexicalEntryUpdater.html" target="_self">LexicalEntryUpdater</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lexicalEntryInstanceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>updater</td>
+                                    <td>
+                                                <code><a href="../interfaces/LexicalEntryUpdater.html" target="_self" >LexicalEntryUpdater</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLexicalForm"></a>
+                    <span class="name">
+                        <span ><b>updateLexicalForm</b></span>
+                        <a href="#updateLexicalForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateLexicalForm(user: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, lexicalFormInstanceName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updater: <a href="../interfaces/FormUpdater.html" target="_self">FormUpdater</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="181"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:181</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lexicalFormInstanceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>updater</td>
+                                    <td>
+                                                <code><a href="../interfaces/FormUpdater.html" target="_self" >FormUpdater</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLexicalSense"></a>
+                    <span class="name">
+                        <span ><b>updateLexicalSense</b></span>
+                        <a href="#updateLexicalSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateLexicalSense(user: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, lexicalSenseInstanceName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updater: <a href="../interfaces/LexicalSenseUpdater.html" target="_self">LexicalSenseUpdater</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="189"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:189</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lexicalSenseInstanceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>updater</td>
+                                    <td>
+                                                <code><a href="../interfaces/LexicalSenseUpdater.html" target="_self" >LexicalSenseUpdater</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLinguisticRelation"></a>
+                    <span class="name">
+                        <span ><b>updateLinguisticRelation</b></span>
+                        <a href="#updateLinguisticRelation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateLinguisticRelation(lexicalEntryInstanceName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updater: <a href="../interfaces/LinguisticRelationUpdater.html" target="_self">LinguisticRelationUpdater</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="197"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:197</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalEntryInstanceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>updater</td>
+                                    <td>
+                                                <code><a href="../interfaces/LinguisticRelationUpdater.html" target="_self" >LinguisticRelationUpdater</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
             <section>
     
     <h3 id="inputs">
         Properties
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="key"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>key</b></span>
-                        <a href="#key"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&quot;lexodemo&quot;</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/lexicon.service.ts:12</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -781,7 +2001,71 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/services/lexicon.service.ts:11</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/lexicon.service.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readKey"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>readKey</b></span>
+                        <a href="#readKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;lexodemo&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/lexicon.service.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="writeKey"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>writeKey</b></span>
+                        <a href="#writeKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;PRINitant19&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/lexicon.service.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -794,10 +2078,14 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpContext, HttpHeaders } from &#x27;@angular/common/http&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
 import { Injectable } from &#x27;@angular/core&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
 import { environment } from &#x27;src/environments/environment&#x27;;
+import { LexiconStatistics } from &#x27;../models/lexicon/lexicon-statistics&#x27;;
+import { FormUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from &#x27;../models/lexicon/lexicon-updater&#x27;;
+import { Morphology } from &#x27;../models/lexicon/morphology.model&#x27;;
+import { OntolexType } from &#x27;../models/lexicon/ontolex-type.model&#x27;;
 
 @Injectable({
   providedIn: &#x27;root&#x27;
@@ -805,10 +2093,40 @@ import { environment } from &#x27;src/environments/environment&#x27;;
 export class LexiconService {
 
   private lexoUrl: string;
-  private key &#x3D; &quot;lexodemo&quot;
+  private readKey &#x3D; &quot;lexodemo&quot;
+  private writeKey &#x3D; &#x27;PRINitant19&#x27;;
 
   constructor(private http: HttpClient) {
     this.lexoUrl &#x3D; environment.lexoUrl;
+  }
+
+  deleteForm(formID: string) {
+    return this.http.get(
+      &#x60;${this.lexoUrl}lexicon/delete/${formID}/form?key&#x3D;${this.writeKey}&#x60;,
+      { responseType: &quot;text&quot; }
+    );
+  }
+
+  deleteLexicalEntry(lexicalEntryID: string) {
+    return this.http.get(
+      &#x60;${this.lexoUrl}lexicon/delete/${lexicalEntryID}/lexicalEntry?key&#x3D;${this.writeKey}&#x60;,
+      { responseType: &quot;text&quot; }
+    );
+  }
+
+  deleteLexicalSense(senseID: string) {
+    return this.http.get(
+      &#x60;${this.lexoUrl}lexicon/delete/${senseID}/lexicalSense?key&#x3D;${this.writeKey}&#x60;,
+      { responseType: &quot;text&quot; }
+    );
+  }
+
+  deleteRelation(lexicalEntityId: string, updater: {relation: string, value: string}) {
+    return this.http.post(
+      &#x60;${this.lexoUrl}lexicon/delete/${lexicalEntityId}/relation?key&#x3D;${this.writeKey}&#x60;,
+      updater,
+      { responseType: &quot;text&quot; }
+    );
   }
 
   /**
@@ -820,7 +2138,7 @@ export class LexiconService {
     // MOCK
     //return this.http.get&lt;any&gt;(&#x60;assets/mock/lexicon/lexicalentries.json&#x60;);
     // FINE MOCK
-    
+
     return this.http.post(&#x60;${this.lexoUrl}lexicon/data/lexicalEntries&#x60;, parameters);
   }
 
@@ -833,8 +2151,20 @@ export class LexiconService {
     // MOCK
     //return this.http.get&lt;any&gt;(&#x60;assets/mock/lexicon/elements.json&#x60;);
     // FINE MOCK
-    
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key&#x3D;${this.key}&#x60;);
+
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key&#x3D;${this.readKey}&#x60;);
+  }
+
+  getForm(formInstanceName: string): Observable&lt;any&gt; {
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/data/${formInstanceName}/form?key&#x3D;${this.readKey}&amp;aspect&#x3D;core&#x60;);
+  }
+
+  getFormTypes(): Observable&lt;OntolexType[]&gt; {
+    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}ontolex/data/formType&#x60;)
+  }
+
+  getLexicalEntry(lexicalEntryId: string): Observable&lt;any&gt; {
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/data/${lexicalEntryId}/lexicalEntry?key&#x3D;${this.readKey}&amp;aspect&#x3D;core&#x60;);
   }
 
   /**
@@ -855,12 +2185,28 @@ export class LexiconService {
     return this.http.get(&#x60;${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/senses&#x60;);
   }
 
+  getLexicalEntryTypes(): Observable&lt;OntolexType[]&gt; {
+    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}ontolex/data/lexicalEntryType&#x60;);
+  }
+
   /**
    * GET che recupera la lista di lingue disponibili per la selezione
    * @returns {Observable&lt;any&gt;} observable della lista di lingue disponibili
    */
-  getLanguages(): Observable&lt;any&gt; {
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/languages?key&#x3D;${this.key}&#x60;);
+  getLanguages(): Observable&lt;LexiconStatistics[]&gt; {
+    return this.http.get&lt;LexiconStatistics[]&gt;(&#x60;${this.lexoUrl}lexicon/statistics/languages?key&#x3D;${this.readKey}&#x60;);
+  }
+
+  getMorphology(): Observable&lt;Morphology[]&gt; {
+    return this.http.get&lt;Morphology[]&gt;(&#x60;${this.lexoUrl}lexinfo/data/morphology&#x60;);
+  }
+
+  getNewForm(lexicalEntryId: string, creator: string): Observable&lt;any&gt; {
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/creation/form?lexicalEntryID&#x3D;${lexicalEntryId}&amp;key&#x3D;${this.writeKey}&amp;author&#x3D;${creator}&#x60;);
+  }
+
+  getNewSense(lexicalEntryId: string, creator: string): Observable&lt;any&gt; {
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID&#x3D;${lexicalEntryId}&amp;key&#x3D;${this.writeKey}&amp;author&#x3D;${creator}&#x60;)
   }
 
   /**
@@ -868,7 +2214,11 @@ export class LexiconService {
    * @returns {Observable&lt;any&gt;} observable della lista di tipi disponibili
    */
   getTypes(): Observable&lt;any&gt; {
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/types?key&#x3D;${this.key}&#x60;);
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/types?key&#x3D;${this.readKey}&#x60;);
+  }
+
+  getSense(senseInstanceName: string): Observable&lt;any&gt; {
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/data/${senseInstanceName}/lexicalSense?key&#x3D;${this.readKey}&amp;aspect&#x3D;core&#x60;);
   }
 
   /**
@@ -876,7 +2226,7 @@ export class LexiconService {
    * @returns {Observable&lt;any&gt;} observable della lista di autori
    */
   getAuthors(): Observable&lt;any&gt; {
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/authors?key&#x3D;${this.key}&#x60;);
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/authors?key&#x3D;${this.readKey}&#x60;);
   }
 
   /**
@@ -884,15 +2234,52 @@ export class LexiconService {
    * @returns {Observable&lt;any&gt;} observable della lista di POS
    */
   getPos(): Observable&lt;any&gt; {
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/pos?key&#x3D;${this.key}&#x60;);
+    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/pos?key&#x3D;${this.readKey}&#x60;);
   }
 
   /**
    * GET che recupera la lista di status disponibili per la selezione
    * @returns {Observable&lt;any&gt;} observable della lista di status
    */
-  getStatus(): Observable&lt;any&gt; {
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/status?key&#x3D;${this.key}&#x60;);
+  getStatus(): Observable&lt;LexiconStatistics[]&gt; {
+    return this.http.get&lt;LexiconStatistics[]&gt;(&#x60;${this.lexoUrl}lexicon/statistics/status?key&#x3D;${this.readKey}&#x60;);
+  }
+
+  concatenateMorphology(morphology: {[key: string]: string}[]): string {
+    const values &#x3D; morphology.map(m &#x3D;&gt; m[&#x27;value&#x27;]);
+    return values.join(&#x27;,&#x27;)
+  }
+
+  updateLexicalEntry(user: string, lexicalEntryInstanceName: string, updater: LexicalEntryUpdater): Observable&lt;string&gt; {
+    return this.http.post(
+      &#x60;${this.lexoUrl}lexicon/update/${lexicalEntryInstanceName}/lexicalEntry?key&#x3D;${this.writeKey}&amp;user&#x3D;${user}&#x60;,
+      updater,
+      { responseType: &quot;text&quot; }
+    );
+  }
+
+  updateLexicalForm(user: string, lexicalFormInstanceName: string, updater: FormUpdater) {
+    return this.http.post(
+      &#x60;${this.lexoUrl}lexicon/update/${lexicalFormInstanceName}/form?key&#x3D;${this.writeKey}&amp;user&#x3D;${user}&#x60;,
+      updater,
+      { responseType: &quot;text&quot; }
+    );
+  }
+
+  updateLexicalSense(user: string, lexicalSenseInstanceName: string, updater: LexicalSenseUpdater) {
+    return this.http.post(
+      &#x60;${this.lexoUrl}lexicon/update/${lexicalSenseInstanceName}/lexicalSense?key&#x3D;${this.writeKey}&amp;user&#x3D;${user}&#x60;,
+      updater,
+      { responseType: &quot;text&quot; }
+    );
+  }
+
+  updateLinguisticRelation(lexicalEntryInstanceName: string, updater: LinguisticRelationUpdater) {
+    return this.http.post(
+      &#x60;${this.lexoUrl}lexicon/update/${lexicalEntryInstanceName}/linguisticRelation?key&#x3D;${this.writeKey}&#x60;,
+      updater,
+      { responseType: &quot;text&quot; }
+    );
   }
 }
 </code></pre>
