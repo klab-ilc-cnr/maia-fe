@@ -18,6 +18,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   styleUrls: ['./workspace-lexicon-edit-tile.component.scss']
 })
 export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
+  /**Sottoscrizione per la gestione del notify */
   private subscription!: Subscription
   /**Nome dell'istanza selezionara (entrata lessicale|forma|senso) */
   private selectedInstanceName!: string;
@@ -47,22 +48,43 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   public showFormEditor = false;
   /**Definisce se visualizzare il form di editing di un senso */
   public showSenseEditor = false;
+  /**Identificativo dell'entrata lessicale */
   public lexicalEntryInstanceName = '';
+  /**Identificativo della forma */
   public formInstanceName = '';
+  /**Identificativo del senso */
   public senseInstanceName = '';
 
+  /**Definisce se ci sono modifiche pendenti dell'entrata lessicale */
   lexicalEntryPendingChanges = false;
+  /**Definisce se ci sono modifiche pendenti della forma */
   formPendingChanges = false;
+  /**Definisce se ci sono modifiche pendenti del senso */
   sensePendingChanges = false;
 
+  /**Lista delle option per i tipi di entrata lessicale */
   lexicalEntryTypes!: DropdownField[];
+  /**Lista delle option per le POS */
   partOfSpeeches!: DropdownField[];
+  /**Lista delle option per i valori dello status */
   statusValues!: SelectButtonField[];
+  /**Lista delle option per i valori della lingua */
   languageValues!: DropdownField[];
+  /**Lista delle option per i tipi di forma */
   formTypes!: DropdownField[];
+  /**Lista delle option per i tratti morfologici */
   morphTraitList!: DropdownField[];
+  /**Lista dei dati morfologici */
   morphologicalData!: Morphology[];
 
+  /**
+   * Costruttore per WorkspaceLexiconEditTileComponent
+   * @param lexiconService {LexiconService} servizi per LexO
+   * @param commonService {CommonService} servizi di utilizzo comune
+   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
+   * @param messageService {MessageService} servizi per i messaggi di primeng
+   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi
+   */
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService,
@@ -141,6 +163,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.lexicalEntryTree.forEach(node => this.treeTraversalAlternateLabelInstanceName(node));
   }
 
+  /**
+   * Metodo che gestisce l'aggiunta di un elemento all'entrata lessicale
+   * @param event {MouseEvent} evento di clic
+   * @param elementType {LexicalEntryType} tipi di lexical entry
+   */
   onAdd(event: MouseEvent, elementType: LexicalEntryType) {
     event.stopPropagation(); //prevengo la selezione
 
@@ -157,6 +184,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**
    * Metodo che recupera i sottonodi dell'albero e mappa per la visualizzazione
    * @param event {any} evento emesso su espansione di un nodo
+   * @param isNew {boolean} se è un nuovo inserimento
+   * @param elementInstanceName {string} identificativo dell'elemento
    */
   onNodeExpand(event: any, isNew?: boolean, elementInstanceName?: string): void {
     this.loading = true; //mostro il caricamento in corso
@@ -260,6 +289,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Metodo che gestisce la selezione di un nodo
+   * @param event {any} evento emesso dalla selezione di una riga
+   * @returns {void}
+   */
   onNodeSelect(event: any) {
     console.info(event)
     if (event.node.data.type === LexicalEntryType.FORMS_ROOT || event.node.data.type === LexicalEntryType.SENSES_ROOT) {
@@ -288,6 +322,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.refreshEditorView(this.selectedType, this.selectedInstanceName);
   }
 
+  /**
+   * Metodo che gestisce l'aggiornamento dell'editor visualizzato
+   * @param type {LexicalEntryType} tipi di lexical entry da visualizzare
+   * @param instanceName {any} identificativo
+   */
   refreshEditorView(type: LexicalEntryType, instanceName: any) {
     switch (type) {
       case LexicalEntryType.LEXICAL_ENTRY:
@@ -315,6 +354,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**Metodo per l'aggiornamento del nodo visualizzato nella tree table */
   refreshTreeNode() {
     this.lexiconService.getLexicalEntry(this.lexicalEntryInstanceName).pipe(take(1)).subscribe(lexEntry => {
       this.lexicalEntryTree = [{
@@ -349,6 +389,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @private
+   * Metodo per l'aggiunta di una nuova forma all'entrata lessicale
+   * @returns {void}
+   */
   private addNewForm() {
     const lexEntryId = this.lexicalEntryTree[0].data?.instanceName;
     if (!lexEntryId) {
@@ -371,6 +416,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo per l'aggiunta di un nuovo senso all'entrata lessicale
+   * @returns {void}
+   */
   private addNewSense() {
     const lexEntryId = this.lexicalEntryTree[0].data?.instanceName;
     if (!lexEntryId) {
@@ -393,6 +443,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo per il pre-caricamento dei tipi di forma
+   */
   private preloadFormTypes(): void {
     this.lexiconService.getFormTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
       this.formTypes = [
@@ -408,6 +462,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @private
+   * Metodo per il pre-caricamento delle lingue disponibili
+   */
   private preloadLanguages(): void {
     this.lexiconService.getLanguages().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
       this.languageValues = res.map((val: LexiconStatistics) => <DropdownField>{
@@ -417,6 +475,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @private
+   * Metodo per il pre-caricamento dei tipi di entrata lessicale
+   */
   private preloadLexicalEntryTypes(): void {
     this.lexiconService.getLexicalEntryTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
       this.lexicalEntryTypes = res.map((val: OntolexType) => <DropdownField>{
@@ -426,6 +488,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @private
+   * Metodo per il pre-caricamento delle informazioni morfologiche
+   */
   private preloadMorphInfos(): void {
     this.lexiconService.getMorphology().pipe(take(1)).subscribe((res: Morphology[]) => {
       this.morphologicalData = res;
@@ -447,6 +513,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo per il pre-caricamento dei valori di status
+   */
   private preloadStatusTypes(): void {
     this.lexiconService.getStatus().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
       this.statusValues = res.map((el: LexiconStatistics) => <SelectButtonField>{
