@@ -125,6 +125,10 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${lexicalEntryId}&key=${this.writeKey}&author=${creator}`);
   }
 
+  getNewLexicalEntry(creator: string): Observable<any> {
+    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalEntry?key=${this.writeKey}&author=${creator}`);
+  }
+
   getNewSense(lexicalEntryId: string, creator: string): Observable<any> {
     return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${lexicalEntryId}&key=${this.writeKey}&author=${creator}`)
   }

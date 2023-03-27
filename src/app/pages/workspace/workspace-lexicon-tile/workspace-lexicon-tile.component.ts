@@ -5,6 +5,7 @@ import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/model
 import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 @Component({
@@ -96,7 +97,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     private lexiconService: LexiconService,
     private commonService: CommonService,
     private elem: ElementRef,
-    private msgConfService: MessageConfigurationService
+    private msgConfService: MessageConfigurationService,
+    private loggedUserService: LoggedUserService
   ) { }
 
   //  ngAfterViewInit() {
@@ -196,6 +198,17 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
   alternateLabelInstanceName() {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
+  }
+
+  onAddNewLexicalEntry() {
+    const currentUser = this.loggedUserService.currentUser;
+    const creator = currentUser?.name + '.' + currentUser?.surname;
+    this.lexiconService.getNewLexicalEntry(creator).pipe(take(1)).subscribe(lexEntry => {
+      const successMsg = "Creata una nuova entrata lessicale";
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.searchTextInput = lexEntry.lexicalEntryInstanceName;
+      this.filter();
+    })
   }
 
   onChangeSelectionView() {

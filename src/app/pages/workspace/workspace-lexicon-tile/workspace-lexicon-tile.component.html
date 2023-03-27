@@ -1,6 +1,6 @@
 <p-toolbar>
   <div class="p-toolbar-group-start">
-    <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"></button>
+    <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2" (click)="onAddNewLexicalEntry()"></button>
     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
       [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()"></button>
   </div>
