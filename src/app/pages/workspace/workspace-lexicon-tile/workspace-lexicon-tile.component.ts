@@ -91,6 +91,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param lexiconService {LexiconService} servizi relativi al lessico
    * @param commonService {CommonService} servizi di uso comune
+   * @param elem {ElementRef} permette l'accesso diretto al DOM
+   * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
+   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
    */
   constructor(
     private messageService: MessageService,
