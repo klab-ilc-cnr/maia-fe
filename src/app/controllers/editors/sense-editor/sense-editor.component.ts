@@ -10,31 +10,48 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
+/**Componente dell'editor per i sensi */
 @Component({
   selector: 'app-sense-editor',
   templateUrl: './sense-editor.component.html',
   styleUrls: ['./sense-editor.component.scss']
 })
 export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
+  /**Sottoscrizione per la gestione del notify */
   private subscription!: Subscription;
 
+  /**Text input delle note */
   noteInput?: string;
+  /**Text input della definizione */
   definitionInput?: string;
+  /**Text input del riferimento */
   referenceInput?: string;
+  /**Lista delle attestazioni */
   attestationsList: any[] = [];
+  /**Definisce se è in corso il caricamento */
   loading?: boolean;
 
+  /**Identificativo del senso */
   @Input() instanceName!: string;
+  /**Identificativo dell'entrata lessicale di appartenenza */
   @Input() lexicalEntryID!: string | undefined;
 
+  /**Data di ultimo aggiornamento */
   lastUpdate?: string = '';
 
+  /**Definisce se ci sono modifiche pendenti */
   pendingChanges = false;
 
+  /**Valori iniziali del form */
   private initialValues!: { definition: string, reference: string, note: string };
   /**Riferimento al popup di conferma cancellazione di un'annotazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
+  /**
+   * @private
+   * Proprietà di cancellazione di un elemento
+   * @param senseID {string} identificativo del senso
+   */
   private deleteElement = (senseID: string): void => {
     this.showOperationInProgress("Sto cancellando");
 
@@ -53,6 +70,14 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  /**
+   * Costruttore per SenseEditorComponent
+   * @param commonService {CommonService} servizi di uso comune
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
+   * @param messageService {MessageService} servizi dei messaggi primeng
+   * @param msgConfService {MessageConfigurationSevice} servizi di configurazione dei messaggi
+   */
   constructor(
     private commonService: CommonService,
     private lexiconService: LexiconService,
@@ -61,10 +86,12 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     private msgConfService: MessageConfigurationService
   ) { }
 
+  /**Metodo dell'interfaccia OnInit, utilizzato per il caricamento preliminare dei dati */
   ngOnInit(): void {
     this.loadData();
   }
 
+  /**Metodo dell'interfaccia AfterViewInit, utilizzato per sottoscrivere il notify */
   ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
       if ('option' in res && res.option === 'sense_selected' && res.value !== this.instanceName && this.lexicalEntryID === res.lexEntryId) {
@@ -77,10 +104,12 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**Metodo dell'interfaccia OnDestroy, utilizzato per la cancellazione della sottoscrizione */
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  /**Metodo per la gestione del salvataggio delle modifiche al senso */
   handleSave() {
     const successMsg = "Senso aggiornato con successo";
 
@@ -114,12 +143,17 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**Metodo per la gestione del caricamento dei dati */
   loadData() {
     this.loading = true;
 
     this.loadSense();
   }
 
+  /**
+   * Metodo per la gestione delle modifiche pendenti
+   * @returns {void}
+   */
   onPendingChanges() {
     if (this.pendingChanges) {
       return;
@@ -141,6 +175,10 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement(this.instanceName), this.instanceName);
   }
 
+  /**
+   * @private
+   * Metodo per il caricamento dei dati del senso
+   */
   private loadSense() {
     this.lexiconService.getSense(this.instanceName).subscribe({
       next: (data: any) => {

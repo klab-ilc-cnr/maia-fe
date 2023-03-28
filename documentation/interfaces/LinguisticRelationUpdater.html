@@ -69,12 +69,19 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interfaccia dell&#39;updater per relazione linguistica</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                        <code><a href="../interfaces/LexiconUpdater.html" target="_self" >LexiconUpdater</a></code>
+                        <code><a href="../interfaces/LexiconUpdaterBase.html" target="_self" >LexiconUpdaterBase</a></code>
             </p>
 
         <section>
@@ -149,6 +156,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Precedente valore da sostituire</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -182,6 +195,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Proprietà da aggiornare</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -215,6 +234,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Tipo di relazione linguistica da aggiornare</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -222,10 +247,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">interface LexiconUpdater {
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">interface LexiconUpdaterBase {
+  /**Valore di aggiornamento */
   value: string;
 }
 
+/**Enumerazione delle relazioni per forma */
 export enum FORM_RELATIONS {
   TYPE &#x3D; &#x27;type&#x27;,
   NOTE &#x3D; &#x27;note&#x27;,
@@ -237,6 +264,7 @@ export enum FORM_RELATIONS {
   TRANSLITERATION &#x3D; &#x27;transliteration&#x27;
 }
 
+/**Enumerazione delle relazioni per entrata lessicale */
 export enum LEXICAL_ENTRY_RELATIONS {
   LABEL &#x3D; &#x27;label&#x27;,
   TYPE &#x3D; &#x27;type&#x27;,
@@ -245,6 +273,7 @@ export enum LEXICAL_ENTRY_RELATIONS {
   NOTE &#x3D; &#x27;note&#x27;
 }
 
+/**Enumerazione delle relazioni per senso lessicale */
 export enum LEXICAL_SENSE_RELATIONS {
   NOTE &#x3D; &#x27;note&#x27;,
   USAGE &#x3D; &#x27;usage&#x27;,
@@ -258,6 +287,7 @@ export enum LEXICAL_SENSE_RELATIONS {
   SENSE_TRANSLATION &#x3D; &#x27;senseTranslation&#x27;
 }
 
+/**Enumerazione per le relazioni linguistiche */
 export enum LINGUISTIC_RELATIONS {
   MORPHOLOGY &#x3D; &#x27;morphology&#x27;,
   DECOMP &#x3D; &#x27;decomp&#x27;,
@@ -268,21 +298,31 @@ export enum LINGUISTIC_RELATIONS {
   ETY_LINK &#x3D; &#x27;etyLink&#x27;
 }
 
-export interface FormUpdater extends LexiconUpdater {
+/**Interfaccia dell&#x27;updater per forma */
+export interface FormUpdater extends LexiconUpdaterBase {
+  /**Relazione da aggiornare */
   relation: FORM_RELATIONS
 }
 
-export interface LexicalEntryUpdater extends LexiconUpdater {
+/**Interfaccia dell&#x27;updater per entrata lessicale */
+export interface LexicalEntryUpdater extends LexiconUpdaterBase {
+  /**Relazione da aggiornare */
   relation: LEXICAL_ENTRY_RELATIONS;
 }
 
-export interface LexicalSenseUpdater extends LexiconUpdater {
+/**Interfaccia dell&#x27;updater per senso lessicale */
+export interface LexicalSenseUpdater extends LexiconUpdaterBase {
+  /**Relazione da aggiornare */
   relation: LEXICAL_SENSE_RELATIONS
 }
 
-export interface LinguisticRelationUpdater extends LexiconUpdater {
+/**Interfaccia dell&#x27;updater per relazione linguistica */
+export interface LinguisticRelationUpdater extends LexiconUpdaterBase {
+  /**Tipo di relazione linguistica da aggiornare */
   type: LINGUISTIC_RELATIONS,
+  /**Proprietà da aggiornare */
   relation: string,
+  /**Precedente valore da sostituire */
   currentValue: string
 }
 </code></pre>

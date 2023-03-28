@@ -9,37 +9,64 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
+/**Componente dell'editor per le entrate lessicali */
 @Component({
   selector: 'app-lexical-entry-editor',
   templateUrl: './lexical-entry-editor.component.html',
   styleUrls: ['./lexical-entry-editor.component.scss']
 })
 export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
+  /**Sottoscrizione per la gestione del notify */
   private subscription!: Subscription;
 
+  /**Identificativo dell'entrata lessicale */
   lexicalEntryInstanceName!: string;
 
   /**Definisce se elementi del form sono in caricamento */
   loading = false;
+  /**Input numerico della confidenza */
   confidenceForm?: number;
+  /**Text input della label */
   labelForm?: string;
+  /**Lista delle option dei tipi */
   @Input() typesForm!: DropdownField[];
+  /**Option selezionata del tipo */
   selectedTypeForm?: DropdownField;
+  /**Lista delle option delle POS */
   @Input() partOfSpeechesForm!: DropdownField[];
+  /**Option selezionata della POS */
   selectedPartOfSpeechesForm?: DropdownField;
+  /**Lista delle option delle lingue */
   @Input() languagesForm!: DropdownField[];
+  /**Option selezionata della lingua */
   selectedLanguageForm?: DropdownField;
+  /**Text input delle note */
   noteForm?: string;
+  /**Lista delle attestazioni */
   attestationsForm: any[] = [];
+  /**Lista delle option dello status */
   @Input() statusForm!: SelectButtonField[];
+  /**Option selezionata dello status */
   selectedStatusForm?: SelectButtonField;
+  /**Data di ultima modifica */
   lastUpdate = '';
+  /**Valori iniziali del form */
   initialValues!: { status: string, label: string, confidence: number, type: string, pos: string, lang: string, note: string };
 
+  /**Identificativo dell'entrata lessicale */
   @Input() instanceName!: string;
 
+  /**Definisce se ci sono modifiche pendenti */
   pendingChanges = false;
 
+  /**
+   * Costruttore per LexicalEntryEditorComponent
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param commonService {CommonService} servizi comuni
+   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
+   * @param messageService {MessageService} servizi dei messaggi primeng
+   * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
+   */
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService,
@@ -48,6 +75,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     private msgConfService: MessageConfigurationService
   ) { }
 
+  /**Metodo dell'interfaccia OnInit, utilizzato per il caricamento preliminare dei dati e la sottoscrizione di notify */
   ngOnInit(): void {
     this.loadData()
 
@@ -59,10 +87,12 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
 
   }
 
+  /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  /**Metodo per la gestione del salvataggio delle modifiche all'entrata lessicale */
   handleSave() {
     const successMsg = "Entrata aggiornata con successo";
     const currentUser = this.loggedUserService.currentUser;
@@ -111,12 +141,14 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**Metodo per la gestione del caricamento dei dati */
   loadData() {
     this.loading = true;
 
     this.loadLexicalEntry();
   }
 
+  /**Metodo per la gestione delle modifiche pendenti */
   onPendingChanges() {
     if (this.pendingChanges) {
       return;
@@ -126,6 +158,10 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY });
   }
 
+  /**
+   * @private
+   * Metodo per il caricamento dei dati dell'entrata lessicale
+   */
   private loadLexicalEntry() {
     this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
       next: (data: any) => {

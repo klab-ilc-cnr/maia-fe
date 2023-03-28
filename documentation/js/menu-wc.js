@@ -471,7 +471,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/LexicalSenseUpdater.html" data-type="entity-link" >LexicalSenseUpdater</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/LexiconUpdater.html" data-type="entity-link" >LexiconUpdater</a>
+                                <a href="interfaces/LexiconUpdaterBase.html" data-type="entity-link" >LexiconUpdaterBase</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/LinguisticRelationUpdater.html" data-type="entity-link" >LinguisticRelationUpdater</a>

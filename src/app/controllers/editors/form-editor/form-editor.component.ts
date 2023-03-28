@@ -13,43 +13,66 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
+/**Componente dell'editor per le forme */
 @Component({
   selector: 'app-form-editor',
   templateUrl: './form-editor.component.html',
   styleUrls: ['./form-editor.component.scss']
 })
 export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
+  /**Sottoscrizione per la gestione del notify */
   private subscription!: Subscription;
 
+  /**Identificativo dell'entrata lessicale */
   @Input() lexicalEntryID!: string | undefined;
 
+  /**Text input della rappresentazione scritta */
   writtenRepresentationInput?: string;
+  /**Lista delle option per i tipi di forma */
   @Input() typesDropdownList!: DropdownField[];
+  /**Tipo selezionato */
   selectedType?: DropdownField;
+  /**Text input delle note */
   noteInput?: string;
+  /**Lista delle attestazioni */
   attestationsList: any[] = [];
+  /**Definisce se è in corso il caricamento */
   loading?: boolean;
 
+  /**Lista delle option dei tratti */
   @Input() traitsDropdown!: DropdownField[];
 
+  /**Lista delle informazioni morfologiche */
   @Input() morphologicalData!: Morphology[];
 
+  /**Lista degli elementi dei singoli form morfologici */
   morphologicalForms: {
+    /**Option del tratto selezionato */
     selectedTrait: DropdownField,
+    /**Lista delle option dei valori delle proprietà */
     propertiesList: DropdownField[],
+    /**Option del valore di proprietà selezionato */
     selectedProperty: DropdownField
   }[] = [];
 
+  /**Identificativo della forma */
   @Input() instanceName!: string;
 
+  /**Ultimo aggiornamento */
   lastUpdate = '';
 
+  /**Definisce se ci sono modifiche pendenti */
   pendingChanges = false;
 
+  /**Valori iniziali del form */
   private initialValues!: { type: string, writtenRep: string, note: string, morphs: { trait: string, value: string }[] };
   /**Riferimento al popup di conferma cancellazione di un'annotazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
+  /**
+   * Proprietà di cancellazione di un elemento
+   * @param formID {string} identificativo della forma
+   */
   private deleteElement = (formID: string): void => {
     this.showOperationInProgress("Sto cancellando");
 
@@ -68,6 +91,14 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  /**
+   * Costruttore per FormEditorComponent
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param commonService {CommonService} servizi di uso comune
+   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
+   * @param messageService {MessageService} servizi dei messaggi primeng
+   * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
+   */
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService,
@@ -76,10 +107,12 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     private msgConfService: MessageConfigurationService
   ) { }
 
+  /**Metodo dell'interfaccia OnInit, utilizzato per il caricamento iniziale dei dati */
   ngOnInit(): void {
     this.loadData();
   }
 
+  /**Metodo dell'interfaccia AfterViewInit, utilizzato per sottoscrivere i notify */
   ngAfterViewInit(): void {
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
       if ('option' in res && res.option === 'form_selected' && res.value !== this.instanceName && this.lexicalEntryID === res.lexEntryId) {
@@ -92,10 +125,12 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**Metodo dell'interfaccia OnDestroy, utilizzato per rimuovere la sottoscrizione */
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  /**Metodo che gestisce il salvataggio delle modifiche alla forma */
   handleSave() {
     const successMsg = "Forma aggiornata con successo";
     const currentUser = this.loggedUserService.currentUser;
@@ -145,12 +180,14 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**Metodo che gestisce il caricamento dei dati */
   loadData() {
     this.loading = true;
     // this.loadFormTypes();
     this.loadForm();
   }
 
+  /**Metodo che gestisce l'aggiunta di un nuovo elemento morfologico */
   onAddMorphForm() {
     this.morphologicalForms = [
       ...this.morphologicalForms,
@@ -162,7 +199,12 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     ]
   }
 
-  onChangeTraitSelection(traitDropdownField: any, mfIndex: number) {
+  /**
+   * Metodo che gestisce la modifica della selezione del tratto di un elemento morfologico
+   * @param traitDropdownField {DropdownField} option del tratto selezionato
+   * @param mfIndex {number} indice dell'elemento morfologico modificato
+   */
+  onChangeTraitSelection(traitDropdownField: DropdownField, mfIndex: number) {
     this.morphologicalForms[mfIndex] = {
       selectedTrait: traitDropdownField,
       propertiesList: this.loadProperties(traitDropdownField.code),
@@ -182,6 +224,10 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement(this.instanceName), this.instanceName);
   }
 
+  /**
+   * Metodo che gestisce la presenza di modifiche pendenti
+   * @returns {void}
+   */
   onPendingChanges() {
     if (this.pendingChanges) {
       return;
@@ -192,7 +238,11 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  onRemoveMorphForm(morph: any) {
+  /**
+   * Metodo che gestisce la rimozione di un elemento morfologico
+   * @param morph {{ selectedTrait: DropdownField, propertiesList: DropdownField[], selectedProperty: DropdownField }}
+   */
+  onRemoveMorphForm(morph: { selectedTrait: DropdownField, propertiesList: DropdownField[], selectedProperty: DropdownField }) {
     const successMsg = "Forma aggiornata con successo";
     this.morphologicalForms = this.morphologicalForms.filter(mf => mf !== morph);
     const initialValuesIndex = this.initialValues.morphs.findIndex(mf => mf.trait === morph.selectedTrait.code);
@@ -205,6 +255,10 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * @private
+   * Metodo per il caricamento dei dati della forma
+   */
   private loadForm() {
     this.lexiconService.getForm(this.instanceName).subscribe({
       next: (data: any) => {
@@ -247,7 +301,13 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  private loadProperties(traitId: any) {
+  /**
+   * @private
+   * Metodo che esegue il recupero della lista di proprietà/valori associate a un tratto
+   * @param traitId {string} identificativo del tratto
+   * @returns {DropdownField[]} lista delle option delle proprietà
+   */
+  private loadProperties(traitId: string) {
     if (traitId === '') {
       return [];
     }

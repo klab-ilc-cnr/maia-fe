@@ -69,6 +69,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interfaccia che rappresenta un bottone in una selectbutton</p>
+
+            </p>
 
 
         <section>
@@ -137,6 +144,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Icona associata al pulsante</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -170,6 +183,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Justify</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -178,13 +197,18 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface DropdownField {
-    name: string,
-    code: string
+  /**Nome della option */
+  name: string,
+  /**Identificativo della option */
+  code: string
 }
 
+/**Interfaccia che rappresenta un bottone in una selectbutton */
 export interface SelectButtonField {
-    icon: string,
-    justify: string
+  /**Icona associata al pulsante */
+  icon: string,
+  /**Justify */
+  justify: string
 }
 </code></pre>
     </div>

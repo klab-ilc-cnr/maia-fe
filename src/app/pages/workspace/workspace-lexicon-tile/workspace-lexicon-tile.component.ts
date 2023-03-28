@@ -77,11 +77,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Lista dei nodi entrata lessicale */
   public results: TreeNode<LexicalEntry>[] = [];
 
+  /**Definisce se sono visibili le checkbox nel tree table */
   public isVisibleCheckbox = false;
 
   /**Riferimento all'entrata lessicale nell'albero */ //TODO verificare perché non è chiaro dove sia richiamata
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
 
+  /**Altezza calcolata per lo scroller */
   public scrollHeight!: number;
 
   /* @ViewChild('tt') public tt!: TreeTable; */
@@ -203,6 +205,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
   }
 
+  /**Metodo che gestisce l'inserimento di una nuova entrata lessicale */
   onAddNewLexicalEntry() {
     const currentUser = this.loggedUserService.currentUser;
     const creator = currentUser?.name + '.' + currentUser?.surname;
@@ -214,10 +217,16 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     })
   }
 
+  /**Metodo che gestisce la visualizzazione delle checkbox di selezione */
   onChangeSelectionView() {
     this.isVisibleCheckbox = !this.isVisibleCheckbox;
   }
 
+  /**
+   * Metodo che intercetta l'apertura e chiusura del pannello dei filtri e modifica l'altezza dello scroller
+   * @param event {boolean} definisce se il pannello dei filtri è aperto o chiuso
+   * @returns {void}
+   */
   onCollapseChange(event: boolean) {
     if (event) {
       this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 203;
@@ -374,6 +383,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     console.log('Unselected ' + event.node.data.uri); //TODO vedi branch lexicon
   }
 
+  /**Metodo che gestisce la rimozione dei nodi selezionati */
   onRemoveNodes(): void {
     const filteredSelectedNodes = this.selectedNodes.filter((n: TreeNode<any>) => n.data.type !== LexicalEntryType.FORMS_ROOT && n.data.type !== LexicalEntryType.SENSES_ROOT);
 
@@ -437,6 +447,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
    */
 
+
+  /**
+   * @private
+   * Metodo che esegue la rimozione dei nodi selezionati con checkbox
+   * @param nodesToDelete {TreeNode<any>[]} nodi selezionati per la rimozione
+   */
   private deleteNodes(nodesToDelete: TreeNode<any>[]): void {
     const httpDelete: Observable<string>[] = [];
     nodesToDelete.forEach(tn => {
@@ -619,6 +635,11 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       })
     } */
 
+  /**
+   * @private
+   * Metodo che gestisce la selezione dei nodi figli del nodo selezionato
+   * @param node {TreeNode} nodo selezionato
+   */
   private selectChildNodes(node: TreeNode) {
     if (node && node.children && this.selectedNodes?.indexOf(node) !== -1) {
       for (const child of node.children) {

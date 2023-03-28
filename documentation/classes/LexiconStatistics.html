@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che descrive le statistiche di Lexicon</p>
+
+            </p>
 
 
 
@@ -126,10 +133,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="3" class="link-to-prism">src/app/models/lexicon/lexicon-statistics.ts:3</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/lexicon/lexicon-statistics.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Conteggio delle occorrenze</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -152,10 +165,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="2" class="link-to-prism">src/app/models/lexicon/lexicon-statistics.ts:2</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/lexicon/lexicon-statistics.ts:4</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nome della statistica</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -172,7 +191,9 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class LexiconStatistics {
+  /**Nome della statistica */
   label: string|undefined;
+  /**Conteggio delle occorrenze */
   count: number|undefined;
 }
 </code></pre>

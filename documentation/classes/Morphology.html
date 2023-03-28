@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Classe che rappresenta un elemento morfologico di LexO</p>
+
+            </p>
 
 
 
@@ -132,10 +139,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Descrizione della proprietà</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -158,10 +171,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Identificativo della proprietà</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -184,10 +203,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Etichetta della proprietà</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -210,10 +235,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/models/lexicon/morphology.model.ts:12</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista dei valori associati alla proprietà</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -231,10 +262,15 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { OntolexType } from &quot;./ontolex-type.model&quot;;
 
+/**Classe che rappresenta un elemento morfologico di LexO */
 export class Morphology {
+  /**Identificativo della proprietà */
   propertyId: string|undefined;
+  /**Etichetta della proprietà */
   propertyLabel: string|undefined;
+  /**Descrizione della proprietà */
   propertyDescription: string|undefined;
+  /**Lista dei valori associati alla proprietà */
   propertyValues: OntolexType[]|undefined;
 }
 </code></pre>
