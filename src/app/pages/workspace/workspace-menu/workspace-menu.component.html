@@ -1,6 +1,6 @@
 <p-menubar [model]="itemsInput" (click)="menuClick($event)">
     <ng-template pTemplate="start">
-        <h2 class="px-4">Workspace</h2>
+        <h3 class="px-4">MAIA - {{workspaceName}}</h3>
     </ng-template>
     <ng-template pTemplate="end">
         <a class="layout-topbar-logo text-dark fs-1" routerLink="/workspaces">
