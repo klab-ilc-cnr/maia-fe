@@ -31,16 +31,18 @@ export const environment = {
     disableAtHashCheck: true
   },
   allowedUrls: allowedUrls,
-  usersUrl : allowedUrls + '/users',
-  languagesUrl : allowedUrls + '/languages',
+  usersUrl: allowedUrls + '/users',
+  languagesUrl: allowedUrls + '/languages',
   workspacesUrl: allowedUrls + '/workspaces',
   layersUrl: allowedUrls + '/layers',
   featureUrl: allowedUrls + '/features',
   tagsetUrl: allowedUrls + '/tagsets',
-  annotationUrl: allowedUrls +'/annotations',
-  relationUrl: allowedUrls +'/relations',
-  lexoUrl : "/LexO-backend-beta/service/",
-  cashUrl : "http://localhost:8085"
+  annotationUrl: allowedUrls + '/annotations',
+  relationUrl: allowedUrls + '/relations',
+  lexoUrl: "/LexO-backend-maia/service/",
+  cashUrl: "http://localhost:8085",
+  rutPrefix: "ferrandi",
+  rutBaseIRI: "http://rut/somali/ferrandi#"
 };
 
 /*

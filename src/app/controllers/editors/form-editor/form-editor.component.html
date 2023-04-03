@@ -36,8 +36,8 @@
                         [style]="{'width':'100%'}" [virtualScroll]="true" [virtualScrollItemSize]="30"
                         (onChange)="onChangeTraitSelection($event.value,index)">
                     </p-dropdown>
-                    <p-dropdown [disabled]="mf.selectedTrait.code === ''" [id]="'property'+index"
-                        [options]="mf.propertiesList" (onChange)="onPendingChanges()" [(ngModel)]="mf.selectedProperty"
+                    <p-dropdown [disabled]="mf.selectedTrait?.code === ''" [id]="'property'+index"
+                        [options]="mf.propertiesList|| []" (onChange)="onPendingChanges()" [(ngModel)]="mf.selectedProperty"
                         optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2" [virtualScroll]="true"
                         [virtualScrollItemSize]="30"></p-dropdown>
                     <button pButton pRipple type="button" icon="pi pi-times"

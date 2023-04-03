@@ -21,7 +21,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
 import { CommonService } from 'src/app/services/common.service';
-import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
@@ -119,14 +119,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // if (this.workSaved) {
 
-      //Chiudo tutti i pannelli aperti anche i modal
-      jsPanel
-        .getPanels(function (this: any) {
-          return this.classList.contains('jsPanel');
-        })
-        .forEach((panel: { close: () => any; }) => panel.close());
+    //Chiudo tutti i pannelli aperti anche i modal
+    jsPanel
+      .getPanels(function (this: any) {
+        return this.classList.contains('jsPanel');
+      })
+      .forEach((panel: { close: () => any; }) => panel.close());
 
-      localStorage.removeItem(this.storageName)
+    localStorage.removeItem(this.storageName)
     // }
 
     // return this.workSaved;
@@ -178,7 +178,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if('option' in res && res.option === 'onLexiconTreeElementDoubleClickEvent') {
+      if ('option' in res && res.option === 'onLexiconTreeElementDoubleClickEvent') {
         const selectedSubTree = structuredClone(res.value[0]);
         const showLabelName = structuredClone(res.value[1]);
         this.openLexiconEditTile(selectedSubTree, showLabelName);
@@ -190,9 +190,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'Corpus',
         styleClass: 'p-button-raised p-button-text',
         // items: [
-          // { label: 'Apri', id: 'OPEN', command: (event) => { this.openTextChoicePanel(event) } },
-          // { separator: true },
-          // { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } }
+        // { label: 'Apri', id: 'OPEN', command: (event) => { this.openTextChoicePanel(event) } },
+        // { separator: true },
+        // { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } }
         // ]
         command: (event) => { this.openExploreCorpusPanel(event) }
       },
@@ -282,7 +282,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.LEXICON:
-          // case TileType.LEXICON_EDIT: //TODO era una mia aggiunta ma il salvataggio su BE non pare gestito
+            // case TileType.LEXICON_EDIT: //TODO era una mia aggiunta ma il salvataggio su BE non pare gestito
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
             break;
@@ -360,7 +360,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per eliminare eventuali sottoscrizioni */
   ngOnDestroy(): void {
-      this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   /**
@@ -519,14 +519,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Metodo che apre un pannello di modifica di un'entrata lessicale
-   * @param selectedSubTree {TreeNode<LexicalEntry>} sottonodo entrata lessicale selezionato
+   * @param selectedSubTree {TreeNode<LexicalEntryOld>} sottonodo entrata lessicale selezionato
    * @param showLabelName {boolean} definisce se visualizzare la label come nome
    * @returns {void}
    */
-  openLexiconEditTile(selectedSubTree: TreeNode<LexicalEntry>, showLabelName: boolean) {
+  openLexiconEditTile(selectedSubTree: TreeNode<LexicalEntryOld>, showLabelName: boolean) {
     // var lexiconEditTileId = 'lexiconEditTile';
-    const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
-    const lexiconEditTileId = this.lexiconEditTilePrefix + lexicalEntryTree?.data?.instanceName;
+    const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryTypeOld.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
+    const idAfterHash = lexicalEntryTree?.data?.instanceName?.split('#')[1];
+    const lexiconEditTileId = this.lexiconEditTilePrefix + idAfterHash;
     const panelExist = jsPanel.getPanels().find(
       (x: { id: string; }) => x.id === lexiconEditTileId
     );
@@ -956,24 +957,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @private
    * Metodo che genera la configurazione del pannello di edit del lessico
    * @param lexiconEditTileId {string} identificativo del tile di edit del lessico
-   * @param selectedSubTree {TreeNode<LexicalEntry>} sottonodo entrata lessicale selezionato
+   * @param selectedSubTree {TreeNode<LexicalEntryOld>} sottonodo entrata lessicale selezionato
    * @param showLabelName {boolean} definisce se visualizzare la label come nome
    */
-  private generateLexiconEditTileConfiguration(lexiconEditTileId: string, selectedSubTree: TreeNode<LexicalEntry>, showLabelName: boolean) {
+  private generateLexiconEditTileConfiguration(lexiconEditTileId: string, selectedSubTree: TreeNode<LexicalEntryOld>, showLabelName: boolean) {
     const componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent);
 
     componentRef.instance.selectedType = selectedSubTree.data!.type!;
     componentRef.instance.selectedNode = selectedSubTree;
 
-    const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryType.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
+    const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryTypeOld.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
 
     switch (selectedSubTree.data!.type) {
-      case LexicalEntryType.LEXICAL_ENTRY:
+      case LexicalEntryTypeOld.LEXICAL_ENTRY:
         selectedSubTree.expanded = false;
         componentRef.instance.lexicalEntryTree = [selectedSubTree];
         break;
-      case LexicalEntryType.FORM:
-      case LexicalEntryType.SENSE:
+      case LexicalEntryTypeOld.FORM:
+      case LexicalEntryTypeOld.SENSE:
         componentRef.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
         break;
     }
@@ -1002,12 +1003,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
       },
-      onclosed: function(this: any, panel: any) {
+      onclosed: function (this: any, panel: any) {
         this.removeFromTileMap(panel.id, TileType.LEXICON_EDIT);
         this.removeComponentFromList(panel.id);
       },
-      onfronted: function(this: any, panel:any) {
-        const panelIDs = jsPanel.getPanels(function() {
+      onfronted: function (this: any, panel: any) {
+        const panelIDs = jsPanel.getPanels(function () {
           return panel.classList.contains('jsPanel-standard');
         }).map((panel: any) => panel.id);
       }

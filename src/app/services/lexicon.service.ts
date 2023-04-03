@@ -6,6 +6,9 @@ import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { FormUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { Morphology } from '../models/lexicon/morphology.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
+import { LexicalEntriesResponse } from '../models/lexicon/lexical-entry-request.model';
+import { CommonService } from './common.service';
+import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 
 /**Classe dei servizi relativi al lessico */
 @Injectable({
@@ -19,13 +22,18 @@ export class LexiconService {
   private readKey = "lexodemo"
   /**Chiave per le chiamate in scrittura */
   private writeKey = 'PRINitant19';
+  private encodedBaseIRI: string;
 
   /**
    * Costruttore per LexiconService
    * @param http {HttpClient} effettua le chiamate HTTP
    */
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) {
     this.lexoUrl = environment.lexoUrl;
+    this.encodedBaseIRI = this.commonService.encodeUrl(environment.rutBaseIRI);
   }
 
   /**
@@ -84,12 +92,12 @@ export class LexiconService {
    * @param parameters {any} parametri di filtro della ricerca
    * @returns {Observable<any>} observable della lista delle entrate lessicali
    */
-  getLexicalEntriesList(parameters: any): Observable<any> {
+  getLexicalEntriesList(parameters: any): Observable<LexicalEntriesResponse> {
     // MOCK
     //return this.http.get<any>(`assets/mock/lexicon/lexicalentries.json`);
     // FINE MOCK
 
-    return this.http.post(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
+    return this.http.post<LexicalEntriesResponse>(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
   /**
@@ -101,17 +109,18 @@ export class LexiconService {
     // MOCK
     //return this.http.get<any>(`assets/mock/lexicon/elements.json`);
     // FINE MOCK
-
-    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/elements?key=${this.readKey}`);
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get(`${this.lexoUrl}lexicon/data/elements?id=${encodedId}`);
   }
 
   /**
    * GET che recupera i dati di una forma
-   * @param formInstanceName {string} identificativo della forma
+   * @param formID {string} identificativo della forma
    * @returns {Observable<any>}
    */
-  getForm(formInstanceName: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/data/${formInstanceName}/form?key=${this.readKey}&aspect=core`);
+  getForm(formID: string): Observable<FormCore> {
+    const encodedFormID = this.commonService.encodeUrl(formID);
+    return this.http.get<FormCore>(`${this.lexoUrl}lexicon/data/form?id=${encodedFormID}&aspect=core`);
   }
 
   /**
@@ -127,26 +136,29 @@ export class LexiconService {
    * @param lexicalEntryId {string} identificativo dell'entrata lessicale
    * @returns {Observable<any>}
    */
-  getLexicalEntry(lexicalEntryId: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryId}/lexicalEntry?key=${this.readKey}&aspect=core`);
+  getLexicalEntry(lexicalEntryId: string): Observable<LexicalEntryCore> {
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get<LexicalEntryCore>(`${this.lexoUrl}lexicon/data/lexicalEntry?aspect=core&id=${encodedId}`);
   }
 
   /**
    * GET della lista di forme di un'entrata lessicale
-   * @param lexicalEntryInstanceName {any} instance name dell'entrata lessicale
+   * @param lexicalEntryId {any} instance name dell'entrata lessicale
    * @returns {Observable<any>} observable della lista di forme di un'entrata lessicale
    */
-  getLexicalEntryForms(lexicalEntryInstanceName: any): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/forms`);
+  getLexicalEntryForms(lexicalEntryId: string): Observable<FormListItem[]> {
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get<FormListItem[]>(`${this.lexoUrl}lexicon/data/forms?id=${encodedId}`);
   }
 
   /**
    * GET che recupera la lista di sensi di un'entrata lessicale
-   * @param lexicalEntryInstanceName {any} instance name dell'entrata lessicale
+   * @param lexicalEntryId {any} instance name dell'entrata lessicale
    * @returns {Observable<any>} observable della lista di sensi di un'entrata lessicale
    */
-  getLexicalEntrySenses(lexicalEntryInstanceName: any): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/data/${lexicalEntryInstanceName}/senses`);
+  getLexicalEntrySenses(lexicalEntryId: string): Observable<SenseListItem[]> {
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get<SenseListItem[]>(`${this.lexoUrl}lexicon/data/senses?id=${encodedId}`);
   }
 
   /**
@@ -162,7 +174,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di lingue disponibili
    */
   getLanguages(): Observable<LexiconStatistics[]> {
-    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages?key=${this.readKey}`);
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
   }
 
   /**
@@ -180,7 +192,8 @@ export class LexiconService {
    * @returns {Observable<any>}
    */
   getNewForm(lexicalEntryId: string, creator: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${lexicalEntryId}&key=${this.writeKey}&author=${creator}`);
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${encodedLexEntry}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
   }
 
   /**
@@ -189,7 +202,7 @@ export class LexiconService {
    * @returns {Observable<any>}
    */
   getNewLexicalEntry(creator: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalEntry?key=${this.writeKey}&author=${creator}`);
+    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalEntry?author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
   }
 
   /**
@@ -199,7 +212,8 @@ export class LexiconService {
    * @returns {Observable<any>}
    */
   getNewSense(lexicalEntryId: string, creator: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${lexicalEntryId}&key=${this.writeKey}&author=${creator}`)
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${encodedLexEntry}&key=${this.writeKey}&author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`)
   }
 
   /**
@@ -207,16 +221,17 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di tipi disponibili
    */
   getTypes(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/types?key=${this.readKey}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/types`);
   }
 
   /**
    * GET che restituisce i dati di un senso
-   * @param senseInstanceName {string} identificativo del senso
+   * @param senseID {string} identificativo del senso
    * @returns {Observable<any>}
    */
-  getSense(senseInstanceName: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/data/${senseInstanceName}/lexicalSense?key=${this.readKey}&aspect=core`);
+  getSense(senseID: string): Observable<SenseCore> {
+    const encodedSenseID = this.commonService.encodeUrl(senseID);
+    return this.http.get<SenseCore>(`${this.lexoUrl}lexicon/data/lexicalSense?aspect=core&id=${encodedSenseID}`);
   }
 
   /**
@@ -224,7 +239,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di autori
    */
   getAuthors(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/authors?key=${this.readKey}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/authors`);
   }
 
   /**
@@ -232,7 +247,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di POS
    */
   getPos(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/pos?key=${this.readKey}`);
+    return this.http.get(`${this.lexoUrl}lexicon/statistics/pos`);
   }
 
   /**
@@ -240,7 +255,7 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista di status
    */
   getStatus(): Observable<LexiconStatistics[]> {
-    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/status?key=${this.readKey}`);
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/status`);
   }
 
   /**
@@ -248,9 +263,9 @@ export class LexiconService {
    * @param morphology {{ [key: string]: string }[]} lista di tratti morfologici
    * @returns {string} concatenazione dei tratti morfologici
    */
-  concatenateMorphology(morphology: { [key: string]: string }[]): string {
-    const values = morphology.map(m => m['value']);
-    return values.join(',')
+  concatenateMorphology(morphology: MorphologyProperty[]): string {
+    const values = morphology.map(m => m.value.split('#')[1]);
+    return values.join(', ')
   }
 
   /**

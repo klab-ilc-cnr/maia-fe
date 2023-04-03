@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
-import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryTypeOld, LinkElement, LinkProperty, PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseUpdater, LEXICAL_SENSE_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -135,7 +135,7 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     if (httpList.length > 0) {
       forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
         this.pendingChanges = false;
-        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE })
+        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.SENSE })
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
         this.lastUpdate = new Date(res[0]).toLocaleString();
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
@@ -160,7 +160,7 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.pendingChanges = true;
-    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.SENSE });
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.SENSE });
   }
 
   /**
@@ -181,11 +181,13 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private loadSense() {
     this.lexiconService.getSense(this.instanceName).subscribe({
-      next: (data: any) => {
-        this.definitionInput = data.definition.find((el: any) => el.propertyID === 'definition').propertyValue;
+      next: (data: SenseCore) => {
+        this.definitionInput = data.definition.find((el: PropertyElement) => el.propertyID === 'definition')?.propertyValue;
         this.noteInput = data.note;
 
-        this.attestationsList = data.links.find((el: any) => el.type === 'Attestation').elements.map((att: any) => ({
+        const attestations = data.links.find((el: LinkProperty) => el.type === 'Attestation')?.elements;
+
+        this.attestationsList = !attestations ? [] : attestations.map((att: LinkElement) => ({
           name: att['label'],
           code: att['label']
         }));

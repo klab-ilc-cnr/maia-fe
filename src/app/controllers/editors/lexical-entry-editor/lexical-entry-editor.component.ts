@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
-import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -134,7 +134,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
       forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
         this.lastUpdate = new Date(res[0]).toLocaleString()
         this.pendingChanges = false;
-        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY })
+        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.LEXICAL_ENTRY })
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryInstanceName });
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       });
@@ -155,7 +155,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     }
 
     this.pendingChanges = true;
-    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY });
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.LEXICAL_ENTRY });
   }
 
   /**
@@ -182,7 +182,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
 
         this.selectedTypeForm = this.typesForm.find(el => el.code === data.type[0]);
 
-        this.selectedPartOfSpeechesForm = this.partOfSpeechesForm.find(el => el.code === data.pos);
+        this.selectedPartOfSpeechesForm = this.partOfSpeechesForm.find(el => el.code.split('#')[1] === data.pos);
         this.selectedLanguageForm = this.languagesForm.find(el => el.code === data.language);
         this.noteForm = data.note;
         this.attestationsForm = data.links.find((el: any) => el.type === 'Attestation').elements.map((att: any) => ({
