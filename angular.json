@@ -52,6 +52,27 @@
 						]
 					},
 					"configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
 						"collaudo": {
 							"budgets": [
 								{
@@ -91,6 +112,9 @@
 						"proxyConfig": "src/proxy.conf.json"
 					},
 					"configurations": {
+            "production": {
+              "browserTarget": "projectxFE:build:production"
+            },
 						"collaudo": {
 							"browserTarget": "projectxFE:build:collaudo"
 						},
