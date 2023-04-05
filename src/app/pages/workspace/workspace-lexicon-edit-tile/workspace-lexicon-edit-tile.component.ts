@@ -1,8 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Subscription, take } from 'rxjs';
 import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
-import { FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
 import { Morphology } from 'src/app/models/lexicon/morphology.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
@@ -213,8 +214,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
             this.loading = false;
           },
-          error: (error: Error) => {
-            console.error(error.message); //TODO VALUTARE LA GESTIONE OPPORTUNA
+          error: (error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error)) //TODO VALUTARE LA GESTIONE OPPORTUNA
           }
         });
         break;
@@ -248,8 +249,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
             this.loading = false;
           },
-          error: (error: Error) => {
-            console.error(error.message);
+          error: (error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
           }
         });
         break;
@@ -281,8 +282,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
             this.loading = false;
           },
-          error: (error: Error) => {
-            console.error(error.message);
+          error: (error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
           }
         });
         break;
@@ -396,21 +397,21 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   private addNewForm() {
     const lexEntryId = this.lexicalEntryTree[0].data?.instanceName;
     if (!lexEntryId) {
-      console.error('Lexical entry instance name not found');
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig('Lexical entry instance name not found'))
       return;
     }
     const loggedUser = this.loggedUserService.currentUser;
     const creatorName = (loggedUser?.name + '.' + loggedUser?.surname).replace(' ', '.');
 
     this.lexiconService.getNewForm(lexEntryId, creatorName).subscribe({
-      next: (res: any) => {
+      next: (res: FormCore) => {
         const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.FORMS_ROOT);
-        this.onNodeExpand({ node: formsRootNode }, true, res.formInstanceName);
+        this.onNodeExpand({ node: formsRootNode }, true, res.form);
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'));
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
-      error: (error: Error) => {
-        console.error(error.message);
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
       }
     });
   }
@@ -430,14 +431,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     const creatorName = (loggedUser?.name + '.' + loggedUser?.surname).replace(' ', '.');
 
     this.lexiconService.getNewSense(lexEntryId, creatorName).subscribe({
-      next: (res: any) => {
+      next: (res: SenseCore) => {
         const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.SENSES_ROOT);
-        this.onNodeExpand({ node: sensesRootNode }, true, res.senseInstanceName);
+        this.onNodeExpand({ node: sensesRootNode }, true, res.sense);
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
-      error: (error: Error) => {
-        console.error(error.message);
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
       }
     });
   }
@@ -467,10 +468,16 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
    */
   private preloadLanguages(): void {
     this.lexiconService.getLanguages().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
-      this.languageValues = res.map((val: LexiconStatistics) => <DropdownField>{
-        name: val.label,
-        code: val.label
-      });
+      this.languageValues = [
+        {
+          name: '--none--',
+          code: ''
+        },
+        ...res.map((val: LexiconStatistics) => <DropdownField>{
+          name: val.label,
+          code: val.label
+        })
+      ];
     })
   }
 
@@ -508,7 +515,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         ?.map((propValue: OntolexType) => <DropdownField>{
           name: propValue.valueLabel,
           code: propValue.valueId
-        }) || []
+        }) || [];
+      this.partOfSpeeches = [
+        {
+          name: '--none--',
+          code: ''
+        },
+        ...this.partOfSpeeches
+      ];
     });
   }
 

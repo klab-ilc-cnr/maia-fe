@@ -18,8 +18,6 @@ export class LexiconService {
 
   /**Url per le chiamate relative a LexO */
   private lexoUrl: string;
-  /**Chiave per le chiamate in lettura */
-  private readKey = "lexodemo"
   /**Chiave per le chiamate in scrittura */
   private writeKey = 'PRINitant19';
   private encodedBaseIRI: string;
@@ -42,8 +40,9 @@ export class LexiconService {
    * @returns {Observable<string>}
    */
   deleteForm(formID: string): Observable<string> {
+    const encodedFormID = this.commonService.encodeUrl(formID);
     return this.http.get(
-      `${this.lexoUrl}lexicon/delete/${formID}/form?key=${this.writeKey}`,
+      `${this.lexoUrl}lexicon/delete/form?id=${encodedFormID}`,
       { responseType: "text" }
     );
   }
@@ -54,8 +53,9 @@ export class LexiconService {
    * @returns {Observable<string>}
    */
   deleteLexicalEntry(lexicalEntryID: string): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryID);
     return this.http.get(
-      `${this.lexoUrl}lexicon/delete/${lexicalEntryID}/lexicalEntry?key=${this.writeKey}`,
+      `${this.lexoUrl}lexicon/delete/lexicalEntry?id=${encodedLexEntry}`,
       { responseType: "text" }
     );
   }
@@ -66,8 +66,9 @@ export class LexiconService {
    * @returns {Observable<string>}
    */
   deleteLexicalSense(senseID: string) {
+    const encodedSenseID = this.commonService.encodeUrl(senseID);
     return this.http.get(
-      `${this.lexoUrl}lexicon/delete/${senseID}/lexicalSense?key=${this.writeKey}`,
+      `${this.lexoUrl}lexicon/delete/lexicalSense?id=${encodedSenseID}`,
       { responseType: "text" }
     );
   }
@@ -80,8 +81,9 @@ export class LexiconService {
    * @example updater = {relation: 'gender', value: 'female'}
    */
   deleteRelation(lexicalEntityId: string, updater: { relation: string, value: string }): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntityId);
     return this.http.post(
-      `${this.lexoUrl}lexicon/delete/${lexicalEntityId}/relation?key=${this.writeKey}`,
+      `${this.lexoUrl}lexicon/delete/relation?id=${encodedLexEntry}`,
       updater,
       { responseType: "text" }
     );
@@ -191,37 +193,37 @@ export class LexiconService {
    * @param creator {string} nome dell'utente creatore
    * @returns {Observable<any>}
    */
-  getNewForm(lexicalEntryId: string, creator: string): Observable<any> {
+  getNewForm(lexicalEntryId: string, creator: string): Observable<FormCore> {
     const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${encodedLexEntry}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
+    return this.http.get<FormCore>(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${encodedLexEntry}&author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
   }
 
   /**
    * GET che crea una nuova entrata lessicale
    * @param creator {string} nome dell'utente creatore
-   * @returns {Observable<any>}
+   * @returns {Observable<LexicalEntryCore>}
    */
-  getNewLexicalEntry(creator: string): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalEntry?author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
+  getNewLexicalEntry(creator: string): Observable<LexicalEntryCore> {
+    return this.http.get<LexicalEntryCore>(`${this.lexoUrl}lexicon/creation/lexicalEntry?author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
   }
 
   /**
    * GET che crea un nuovo senso associato a un'entrata lessicale
    * @param lexicalEntryId {string} identificativo dell'entrata lessicale
    * @param creator {string} nome dell'utente creatore
-   * @returns {Observable<any>}
+   * @returns {Observable<SenseCore>}
    */
-  getNewSense(lexicalEntryId: string, creator: string): Observable<any> {
+  getNewSense(lexicalEntryId: string, creator: string): Observable<SenseCore> {
     const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${encodedLexEntry}&key=${this.writeKey}&author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`)
+    return this.http.get<SenseCore>(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${encodedLexEntry}&author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`)
   }
 
   /**
    * GET che recupera la lista di tipi disponibili per la selezione
-   * @returns {Observable<any>} observable della lista di tipi disponibili
+   * @returns {Observable<OntolexType[]>} observable della lista di tipi disponibili
    */
-  getTypes(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}lexicon/statistics/types`);
+  getTypes(): Observable<OntolexType[]> {
+    return this.http.get<OntolexType[]>(`${this.lexoUrl}ontolex/data/lexicalEntryType`);
   }
 
   /**
@@ -271,13 +273,14 @@ export class LexiconService {
   /**
    * POST di aggiornamento di un'entrata lessicale
    * @param user {string} nome dell'utente
-   * @param lexicalEntryInstanceName {string} identificativo dell'entrata lessicale
+   * @param lexicalEntryID {string} identificativo dell'entrata lessicale
    * @param updater {LexicalEntryUpdater} dati di aggiornamento
    * @returns {Observable<string>} observable del timestamp di ultima modifica
    */
-  updateLexicalEntry(user: string, lexicalEntryInstanceName: string, updater: LexicalEntryUpdater): Observable<string> {
+  updateLexicalEntry(user: string, lexicalEntryID: string, updater: LexicalEntryUpdater): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryID);
     return this.http.post(
-      `${this.lexoUrl}lexicon/update/${lexicalEntryInstanceName}/lexicalEntry?key=${this.writeKey}&user=${user}`,
+      `${this.lexoUrl}lexicon/update/lexicalEntry?user=${user}&id=${encodedLexEntry}`,
       updater,
       { responseType: "text" }
     );
@@ -286,13 +289,14 @@ export class LexiconService {
   /**
    * POST di aggiornamento di una forma
    * @param user {string} nome dell'utente
-   * @param lexicalFormInstanceName {string} identificativo della forma
+   * @param lexicalFormID {string} identificativo della forma
    * @param updater {FormUpdater} dati di aggiornamento
    * @returns {Observable<string>} observable del timestamp di ultima modifica
    */
-  updateLexicalForm(user: string, lexicalFormInstanceName: string, updater: FormUpdater): Observable<string> {
+  updateLexicalForm(user: string, lexicalFormID: string, updater: FormUpdater): Observable<string> {
+    const encodedLexFormID = this.commonService.encodeUrl(lexicalFormID);
     return this.http.post(
-      `${this.lexoUrl}lexicon/update/${lexicalFormInstanceName}/form?key=${this.writeKey}&user=${user}`,
+      `${this.lexoUrl}lexicon/update/form?id=${encodedLexFormID}&user=${user}`,
       updater,
       { responseType: "text" }
     );
@@ -301,13 +305,14 @@ export class LexiconService {
   /**
    * POST di aggiornamento del senso
    * @param user {string} nome dell'utente
-   * @param lexicalSenseInstanceName {string} identificativo del senso
+   * @param lexicalSenseID {string} identificativo del senso
    * @param updater {LexicalSenseUpdater} dati di aggiornamento
    * @returns {Observable<string>} observable del timestamp di ultima modifica
    */
-  updateLexicalSense(user: string, lexicalSenseInstanceName: string, updater: LexicalSenseUpdater) {
+  updateLexicalSense(user: string, lexicalSenseID: string, updater: LexicalSenseUpdater) {
+    const encodedSenseID = this.commonService.encodeUrl(lexicalSenseID);
     return this.http.post(
-      `${this.lexoUrl}lexicon/update/${lexicalSenseInstanceName}/lexicalSense?key=${this.writeKey}&user=${user}`,
+      `${this.lexoUrl}lexicon/update/lexicalSense?id=${encodedSenseID}&user=${user}`,
       updater,
       { responseType: "text" }
     );
@@ -319,9 +324,10 @@ export class LexiconService {
    * @param updater {LinguisticRelationUpdater} dati di aggiornamento
    * @returns {Observable<string>} observable del timestamp di ultima modifica
    */
-  updateLinguisticRelation(lexicalEntryInstanceName: string, updater: LinguisticRelationUpdater): Observable<string> {
+  updateLinguisticRelation(lexicalEntryID: string, updater: LinguisticRelationUpdater): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryID);
     return this.http.post(
-      `${this.lexoUrl}lexicon/update/${lexicalEntryInstanceName}/linguisticRelation?key=${this.writeKey}`,
+      `${this.lexoUrl}lexicon/update/linguisticRelation?id=${encodedLexEntry}`,
       updater,
       { responseType: "text" }
     );

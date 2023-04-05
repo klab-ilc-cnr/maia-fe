@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { DropdownField } from 'src/app/models/dropdown-field';
 import { FormCore, PropertyElement, LexicalEntryTypeOld, LinkElement, LinkProperty, MorphologyProperty } from 'src/app/models/lexicon/lexical-entry.model';
-import { FormUpdater, FORM_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
+import { FormUpdater, FORM_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
 import { Morphology } from 'src/app/models/lexicon/morphology.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -12,6 +12,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**Componente dell'editor per le forme */
 @Component({
@@ -151,31 +152,39 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, <FormUpdater>{ relation: FORM_RELATIONS.NOTE, value: this.noteInput }));
       this.initialValues.note = this.noteInput!;
     }
-    this.morphologicalForms.forEach(mf => {
-      const currentValueIndex = this.initialValues.morphs.findIndex(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code);
-      const currentValue = this.initialValues.morphs.find(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code)?.value;
-      const newValue = mf.selectedProperty?.code;
-      if (currentValue !== newValue) {
-        httpList.push(this.lexiconService.updateLinguisticRelation(this.instanceName, <LinguisticRelationUpdater>{
-          type: LINGUISTIC_RELATIONS.MORPHOLOGY,
-          relation: mf.selectedTrait?.code,
-          value: newValue,
-          currentValue: currentValue
-        }));
-      }
-      if (currentValueIndex !== -1 && newValue) {
-        this.initialValues.morphs[currentValueIndex].value = newValue;
-      } else if (mf.selectedTrait && newValue) {
-        this.initialValues.morphs.push({ trait: mf.selectedTrait.code, value: newValue });
-      }
-    });
+    if(this.morphologicalForms.length !== 1 || this.morphologicalForms[0].selectedProperty?.code !== "") {
+      this.morphologicalForms.forEach(mf => {
+        const currentValueIndex = this.initialValues.morphs.findIndex(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code);
+        const currentValue = this.initialValues.morphs.find(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code)?.value;
+        const newValue = mf.selectedProperty?.code;
+        if (currentValue !== newValue) {
+          httpList.push(this.lexiconService.updateLinguisticRelation(this.instanceName, <LinguisticRelationUpdater>{
+            type: LINGUISTIC_RELATION_TYPE.MORPHOLOGY,
+            relation: mf.selectedTrait?.code,
+            value: newValue,
+            currentValue: currentValue
+          }));
+        }
+        if (currentValueIndex !== -1 && newValue) {
+          this.initialValues.morphs[currentValueIndex].value = newValue;
+        } else if (mf.selectedTrait && newValue) {
+          this.initialValues.morphs.push({ trait: mf.selectedTrait.code, value: newValue });
+        }
+      });
+    }
+
     if (httpList.length > 0) {
-      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
-        this.pendingChanges = false;
-        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.FORM })
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
-        this.lastUpdate = new Date(res[0]).toLocaleString();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      forkJoin(httpList).pipe(take(1)).subscribe({
+        next: (res: string[]) => {
+          this.pendingChanges = false;
+          this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.FORM })
+          this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
+          this.lastUpdate = new Date(res[0]).toLocaleString();
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        },
+        error: (error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+        }
       });
     }
   }
@@ -247,10 +256,15 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.morphologicalForms = this.morphologicalForms.filter(mf => mf !== morph);
     const initialValuesIndex = this.initialValues.morphs.findIndex(mf => mf.trait === morph.selectedTrait?.code);
     if (initialValuesIndex !== -1 && morph.selectedTrait && morph.selectedProperty) {
-      this.lexiconService.deleteRelation(this.instanceName, { relation: morph.selectedTrait.code, value: morph.selectedProperty.code }).pipe(take(1)).subscribe(res => {
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        this.initialValues.morphs = this.initialValues.morphs.filter(m => m.trait !== morph.selectedTrait?.code);
-        this.lastUpdate = new Date(res).toLocaleString();
+      this.lexiconService.deleteRelation(this.instanceName, { relation: morph.selectedTrait.code, value: morph.selectedProperty.code }).pipe(take(1)).subscribe({
+        next: res => {
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.initialValues.morphs = this.initialValues.morphs.filter(m => m.trait !== morph.selectedTrait?.code);
+          this.lastUpdate = new Date(res).toLocaleString();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+        }
       });
     }
   }
@@ -305,8 +319,8 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.loading = false;
       },
-      error: (error: any) => {
-        console.error(error);
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
       }
     })
   }

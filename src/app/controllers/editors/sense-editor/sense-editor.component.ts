@@ -9,6 +9,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**Componente dell'editor per i sensi */
 @Component({
@@ -133,12 +134,17 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (httpList.length > 0) {
-      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
-        this.pendingChanges = false;
-        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.SENSE })
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
-        this.lastUpdate = new Date(res[0]).toLocaleString();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      forkJoin(httpList).pipe(take(1)).subscribe({
+        next: (res: string[]) => {
+          this.pendingChanges = false;
+          this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.SENSE })
+          this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
+          this.lastUpdate = new Date(res[0]).toLocaleString();
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        },
+        error: (error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+        }
       });
     }
   }
@@ -202,8 +208,8 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.loading = false;
       },
-      error: (error: any) => {
-        console.error(error);
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
       }
     })
   }

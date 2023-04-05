@@ -1,8 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { forkJoin, Observable, Subscription, take } from 'rxjs';
 import { formTypeEnum, LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
+import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -212,7 +215,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.lexiconService.getNewLexicalEntry(creator).pipe(take(1)).subscribe(lexEntry => {
       const successMsg = "Creata una nuova entrata lessicale";
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-      this.searchTextInput = lexEntry.lexicalEntryInstanceName;
+      this.searchTextInput = lexEntry.lexicalEntry;
       this.filter();
     })
   }
@@ -467,10 +470,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           break;
       }
     });
-    forkJoin(httpDelete).pipe(take(1)).subscribe(() => {
-      const successMsg = "Elementi rimossi";
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-      this.loadNodes();
+    forkJoin(httpDelete).pipe(take(1)).subscribe({
+      next: () => {
+        const successMsg = "Elementi rimossi";
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.loadNodes();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+      }
     });
 
   }
@@ -539,9 +547,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    */
   private initSelectFields() {
     this.lexiconService.getLanguages().subscribe({
-      next: (languages: any) => {
+      next: (languages: LexiconStatistics[]) => {
         this.selectLanguages = [];
-        languages.sort((a: any, b: any) => a.label.localeCompare(b.label))
+        languages.sort((a: LexiconStatistics, b: LexiconStatistics) => a.label!.localeCompare(b.label!))
 
         for (let i = 0; i < languages.length; i++) {
           this.selectLanguages.push({ label: `${languages[i].label}`, value: languages[i].label });
@@ -551,12 +559,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     });
 
     this.lexiconService.getTypes().subscribe({
-      next: (types: any) => {
+      next: (types: OntolexType[]) => {
         this.selectTypes = [];
-        types.sort((a: any, b: any) => a.label.localeCompare(b.label))
+        types.sort((a: OntolexType, b: OntolexType) => a.valueLabel!.localeCompare(b.valueLabel!))
 
         for (let i = 0; i < types.length; i++) {
-          this.selectTypes.push({ label: `${types[i].label}`, value: types[i].label });
+          this.selectTypes.push({ label: `${types[i].valueLabel}`, value: types[i].valueId });
         }
       },
       error: (error: Error) => { console.error(error.message); }
@@ -603,36 +611,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { label: formTypeEnum.flexed, value: formTypeEnum.flexed }
     ]
   }
-
-  /*   private initSelectFields() {
-      this.lexiconService.getLanguages().subscribe({
-        next: (data: any) => {
-          this.languages = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      });
-
-      this.lexiconService.getTypes().subscribe({
-        next: (data: any) => {
-          this.types = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      });
-
-      this.lexiconService.getAuthors().subscribe({
-        next: (data: any) => {
-          this.authors = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      });
-
-      this.lexiconService.getPos().subscribe({
-        next: (data: any) => {
-          this.partOfSpeech = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      })
-    } */
 
   /**
    * @private
