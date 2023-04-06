@@ -75,6 +75,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MenuModule } from 'primeng/menu';
 import { EditorModule } from 'primeng/editor';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -148,7 +149,8 @@ import { EditorModule } from 'primeng/editor';
     FieldsetModule,
     ToolbarModule,
     MenuModule,
-    EditorModule
+    EditorModule,
+    TabViewModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
