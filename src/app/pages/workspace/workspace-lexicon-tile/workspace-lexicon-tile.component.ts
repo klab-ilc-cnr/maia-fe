@@ -91,7 +91,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Altezza calcolata per lo scroller */
   public scrollHeight!: number;
 
-  public languageItems: [{ label: string, items: any[]}] = [{
+  public languageItems: [{ label: string, items: any[] }] = [{
     label: 'Languages',
     items: []
   }];
@@ -116,13 +116,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     private loggedUserService: LoggedUserService
   ) { }
 
-  //  ngAfterViewInit() {
-  // this.tt.onNodeSelect
-  //   .subscribe((event: any) => {
-
-  //   })
-  // }
-
   /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -136,12 +129,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { field: 'name', header: '', width: '70%', display: 'true' },
       { field: 'note', width: '10%', display: 'true' },
       { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
-      // { field: 'creationDate', header: 'Data creazione', display: 'false' },
-      // { field: 'lastUpdate', header: 'Data modifica', display: 'false' },
       { field: 'status', header: 'Stato', width: '10%', display: 'true' },
-      // { field: 'type', display: 'false' },
-      // { field: 'uri', display: 'false' },
-      // { field: 'sub', display: 'false' }
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
@@ -229,7 +217,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           next: () => {
             const successMsg = "Creata una nuova entrata lessicale";
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            this.searchTextInput = lexEntry.lexicalEntry;
+            this.searchTextInput = lexEntry.label;
             this.filter();
           },
           error: (error: HttpErrorResponse) => {
