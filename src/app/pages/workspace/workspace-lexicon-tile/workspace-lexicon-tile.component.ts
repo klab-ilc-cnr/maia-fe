@@ -5,6 +5,8 @@ import { forkJoin, Observable, Subscription, take } from 'rxjs';
 import { formTypeEnum, LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
+import { LEXICAL_ENTRY_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
+import { LexicalEntryUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -88,6 +90,11 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Altezza calcolata per lo scroller */
   public scrollHeight!: number;
+
+  public languageItems: [{ label: string, items: any[]}] = [{
+    label: 'Languages',
+    items: []
+  }];
 
   /* @ViewChild('tt') public tt!: TreeTable; */
 
@@ -209,14 +216,30 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   }
 
   /**Metodo che gestisce l'inserimento di una nuova entrata lessicale */
-  onAddNewLexicalEntry() {
+  onAddNewLexicalEntry(language: string) {
     const currentUser = this.loggedUserService.currentUser;
     const creator = currentUser?.name + '.' + currentUser?.surname;
-    this.lexiconService.getNewLexicalEntry(creator).pipe(take(1)).subscribe(lexEntry => {
-      const successMsg = "Creata una nuova entrata lessicale";
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-      this.searchTextInput = lexEntry.lexicalEntry;
-      this.filter();
+    this.lexiconService.getNewLexicalEntry(creator).pipe(take(1)).subscribe({
+      next: lexEntry => {
+        const updater: LexicalEntryUpdater = {
+          relation: LEXICAL_ENTRY_RELATIONS.ENTRY,
+          value: language
+        };
+        this.lexiconService.updateLexicalEntry('tester', lexEntry.lexicalEntry, updater).pipe(take(1)).subscribe({
+          next: () => {
+            const successMsg = "Creata una nuova entrata lessicale";
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+            this.searchTextInput = lexEntry.lexicalEntry;
+            this.filter();
+          },
+          error: (error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+          }
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+      }
     })
   }
 
@@ -553,6 +576,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
         for (let i = 0; i < languages.length; i++) {
           this.selectLanguages.push({ label: `${languages[i].label}`, value: languages[i].label });
+          this.languageItems[0].items.push({
+            label: languages[i].label,
+            command: () => {
+              this.onAddNewLexicalEntry(languages[i].label!);
+            }
+          })
         }
       },
       error: (error: Error) => { console.error(error.message); }

@@ -73,6 +73,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ToolbarModule } from 'primeng/toolbar';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -144,7 +145,8 @@ import { ToolbarModule } from 'primeng/toolbar';
     SelectButtonModule,
     ScrollPanelModule,
     FieldsetModule,
-    ToolbarModule
+    ToolbarModule,
+    MenuModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
