@@ -56,6 +56,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Identificativo del senso */
   public senseInstanceName = '';
 
+  public panelId!: string;
+  panelHeight!: string;
+
   /**Definisce se ci sono modifiche pendenti dell'entrata lessicale */
   lexicalEntryPendingChanges = false;
   /**Definisce se ci sono modifiche pendenti della forma */
@@ -152,6 +155,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.panelHeight = document.getElementById(this.panelId)!.style.height;
   }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per rimuovere eventuali sottoscrizioni */

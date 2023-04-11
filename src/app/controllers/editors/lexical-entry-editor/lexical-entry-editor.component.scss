@@ -10,3 +10,8 @@ label {
         border-color: lightgray !important;
     }
 }
+
+div.card {  //PER SCROLL SINGOLO PANNELLO
+  height: 100%;
+  overflow-y: scroll;
+}

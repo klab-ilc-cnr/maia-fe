@@ -1,0 +1,14 @@
+p-treetable,
+::ng-deep.p-splitter.p-component.p-splitter-horizontal {
+  height: calc(100% - 31px);
+}
+
+p-tabView,
+::ng-deep.p-tabview.p-component,
+::ng-deep div[role="tabpanel"] {
+  height: 100%;
+
+  .p-tabview-panels {
+    height: calc(100% - 41px);
+  }
+}

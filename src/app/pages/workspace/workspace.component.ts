@@ -965,6 +965,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     componentRef.instance.selectedType = selectedSubTree.data!.type!;
     componentRef.instance.selectedNode = selectedSubTree;
+    componentRef.instance.panelId = lexiconEditTileId;
 
     const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryTypeOld.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
 
