@@ -76,6 +76,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { MenuModule } from 'primeng/menu';
 import { EditorModule } from 'primeng/editor';
 import { TabViewModule } from 'primeng/tabview';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [
@@ -150,7 +151,8 @@ import { TabViewModule } from 'primeng/tabview';
     ToolbarModule,
     MenuModule,
     EditorModule,
-    TabViewModule
+    TabViewModule,
+    AutoCompleteModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]

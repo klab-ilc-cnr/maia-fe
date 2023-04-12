@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { forkJoin, Observable, Subscription, take } from 'rxjs';
 import { formTypeEnum, LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
@@ -7,6 +8,7 @@ import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOl
 import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
 import { LEXICAL_ENTRY_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { LexicalEntryUpdater } from 'src/app/models/lexicon/lexicon-updater';
+import { Namespace } from 'src/app/models/lexicon/namespace.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -19,6 +21,8 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   styleUrls: ['./workspace-lexicon-tile.component.scss']
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
+
+  isUploadLexiconVisible = false;
 
   /**Sottoscrizione usata per la gestione del click sull'icona tag */
   private subscription!: Subscription;
@@ -50,6 +54,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectEntries!: SelectItem[];
   /**Lingua selezionata */
   public selectedLanguage: any;
+  public selectedUploadLanguage: any;
+  public selectedUploadPrefix: any;
+  public selectedBaseIRI: any;
   /**Tipo selezionato */
   public selectedType: any;
   /**Autore selezionato */
@@ -88,6 +95,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Riferimento all'entrata lessicale nell'albero */ //TODO verificare perché non è chiaro dove sia richiamata
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
 
+  @ViewChild('lexiconUploaderForm') public lexiconUploaderForm!: NgForm;
+
   /**Altezza calcolata per lo scroller */
   public scrollHeight!: number;
 
@@ -95,6 +104,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     label: 'Languages',
     items: []
   }];
+
+  namespaceList: Namespace[] = [];
+  filteredPrefix!: string[];
+  filteredBase!: string[];
+  selectedPrefix: any;
+  isAddToLexicon = true;
 
   /* @ViewChild('tt') public tt!: TreeTable; */
 
@@ -149,6 +164,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.initSelectFields();
     this.updateFilterParameters();
 
+    this.lexiconService.getNamespaces().pipe(take(1)).subscribe(ns => {
+      this.namespaceList = ns;
+    });
   }
 
   /**Metodo che esegue il caricamento dei nodi */
@@ -201,6 +219,30 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
   alternateLabelInstanceName() {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
+  }
+
+  filterBase(event: any) {
+    const filtered = [];
+    const query = event.query;
+
+    for (const namespace of this.namespaceList) {
+      if (namespace.base.toLowerCase().includes(query.toLowerCase())) {
+        filtered.push(namespace.base);
+      }
+    }
+    this.filteredBase = filtered;
+  }
+
+  filterPrefix(event: any) {
+    const filtered = [];
+    const query = event.query;
+
+    for (const namespace of this.namespaceList) {
+      if (namespace.prefix.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+        filtered.push(namespace.prefix)
+      }
+    }
+    this.filteredPrefix = filtered;
   }
 
   /**Metodo che gestisce l'inserimento di una nuova entrata lessicale */
@@ -409,6 +451,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     });
 
     this.deleteNodes(nodesToDelete);
+  }
+
+  onSelectPrefixBaseIRI(value: string, isPrefix: boolean) {
+    const namespace = isPrefix ? this.namespaceList.find(ns => ns.prefix === value) : this.namespaceList.find(ns => ns.base === value);
+    if (namespace === undefined) {
+      return;
+    }
+    if (isPrefix) {
+      this.selectedBaseIRI = namespace.base;
+      return;
+    }
+    this.selectedUploadPrefix = namespace.prefix;
+  }
+
+  onUploadNewLexicon(): void {
+    console.info(this.lexiconUploaderForm.value);
   }
 
   /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */

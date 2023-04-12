@@ -9,3 +9,9 @@ div.grid.p-fluid.input-search {
 td:has(sub) {
     overflow-x: clip;
 }
+
+#lexiconUploaderForm {
+  label {
+    width: 100%;
+  }
+}

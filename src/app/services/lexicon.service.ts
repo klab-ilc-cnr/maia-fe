@@ -9,6 +9,7 @@ import { OntolexType } from '../models/lexicon/ontolex-type.model';
 import { LexicalEntriesResponse } from '../models/lexicon/lexical-entry-request.model';
 import { CommonService } from './common.service';
 import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
+import { Namespace } from '../models/lexicon/namespace.model';
 
 /**Classe dei servizi relativi al lessico */
 @Injectable({
@@ -185,6 +186,10 @@ export class LexiconService {
    */
   getMorphology(): Observable<Morphology[]> {
     return this.http.get<Morphology[]>(`${this.lexoUrl}lexinfo/data/morphology`);
+  }
+
+  getNamespaces(): Observable<Namespace[]> {
+    return this.http.get<Namespace[]>(`${this.lexoUrl}lexicon/statistics/namespaces`);
   }
 
   /**

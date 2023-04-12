@@ -10,6 +10,12 @@
       [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()"></button>
   </div>
   <div class="p-toolbar-group-end">
+    <button pButton
+      pRipple
+      icon="pi pi-file-import"
+      class="p-button-rounded p-button-success mx-2"
+      pTooltip="Upload lessico"
+      (click)="isUploadLexiconVisible = !isUploadLexiconVisible"></button>
     <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"></button>
   </div>
 </p-toolbar>
@@ -135,3 +141,74 @@
     <span><i>test~0.8</i></span>
   </ng-template>
 </p-overlayPanel>
+
+<p-dialog [(visible)]="isUploadLexiconVisible">
+  <ng-template pTemplate="header">
+    <h5 class="modal-title">Importa nuovo lessico</h5>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="modal-content">
+      <form #lexiconUploaderForm="ngForm"
+        id="lexiconUploaderForm"
+        class="validated">
+        <div class="formgrid grid">
+          <div class="field col-6">
+            <label for="language">Lingua *</label>
+            <p-dropdown
+              #language="ngModel"
+              name="language"
+              [(ngModel)]="selectedUploadLanguage"
+              [options]="selectLanguages"
+              [showClear]="true"
+              id="language"
+              [required]="true"></p-dropdown>
+          </div>
+          <div class="field col-6">
+            <label class="form-label">Aggiungi a esistente</label>
+            <p-inputSwitch #checkAdd="ngModel"
+              name="checkAdd"
+              [(ngModel)]="isAddToLexicon"></p-inputSwitch>
+          </div>
+          <div class="form-group field col-6">
+            <label class="form-label">Prefisso</label>
+            <p-autoComplete #prefix="ngModel"
+              name="prefix"
+              [(ngModel)]="selectedUploadPrefix"
+              [suggestions]="filteredPrefix"
+              (completeMethod)="filterPrefix($event)"
+              (onSelect)="onSelectPrefixBaseIRI($event, true)"></p-autoComplete>
+          </div>
+          <div class="form-group field col-6">
+            <label class="form-label">Base IRI</label>
+            <p-autoComplete #baseIRI="ngModel"
+              name="baseIRI"
+              [(ngModel)]="selectedBaseIRI"
+              [suggestions]="filteredBase"
+              (completeMethod)="filterBase($event)"
+              (onSelect)="onSelectPrefixBaseIRI($event, false)"></p-autoComplete>
+          </div>
+          <div class="form-group field col-12">
+            <label class="form-label">Scegli file *</label>
+            <input type="file"
+              class="form-control"
+              id="lexiconUploader"
+              required>
+          </div>
+          </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="modal-footer">
+      <button type="button"
+        class="btn btn-secondary">
+        Annulla
+      </button>
+      <button type="button"
+        class="btn btn-primary"
+        (click)="onUploadNewLexicon()">
+        Conferma
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
