@@ -11,7 +11,9 @@ td:has(sub) {
 }
 
 #lexiconUploaderForm {
-  label {
+  label,
+  ::ng-deep p-autocomplete .p-component,
+  ::ng-deep p-dropdown .p-component {
     width: 100%;
   }
 }

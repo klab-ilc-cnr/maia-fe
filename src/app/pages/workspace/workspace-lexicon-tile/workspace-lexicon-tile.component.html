@@ -142,7 +142,8 @@
   </ng-template>
 </p-overlayPanel>
 
-<p-dialog [(visible)]="isUploadLexiconVisible">
+<p-dialog [(visible)]="isUploadLexiconVisible"
+  [style]="{ width: '40vw' }">
   <ng-template pTemplate="header">
     <h5 class="modal-title">Importa nuovo lessico</h5>
   </ng-template>
@@ -170,22 +171,24 @@
               [(ngModel)]="isAddToLexicon"></p-inputSwitch>
           </div>
           <div class="form-group field col-6">
-            <label class="form-label">Prefisso</label>
+            <label class="form-label">Prefisso *</label>
             <p-autoComplete #prefix="ngModel"
               name="prefix"
               [(ngModel)]="selectedUploadPrefix"
               [suggestions]="filteredPrefix"
               (completeMethod)="filterPrefix($event)"
-              (onSelect)="onSelectPrefixBaseIRI($event, true)"></p-autoComplete>
+              (onSelect)="onSelectPrefixBaseIRI($event, true)"
+              [required]="true"></p-autoComplete>
           </div>
           <div class="form-group field col-6">
-            <label class="form-label">Base IRI</label>
+            <label class="form-label">Base IRI *</label>
             <p-autoComplete #baseIRI="ngModel"
               name="baseIRI"
               [(ngModel)]="selectedBaseIRI"
               [suggestions]="filteredBase"
               (completeMethod)="filterBase($event)"
-              (onSelect)="onSelectPrefixBaseIRI($event, false)"></p-autoComplete>
+              (onSelect)="onSelectPrefixBaseIRI($event, false)"
+              [required]="true"></p-autoComplete>
           </div>
           <div class="form-group field col-12">
             <label class="form-label">Scegli file *</label>
