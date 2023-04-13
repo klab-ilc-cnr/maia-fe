@@ -12,6 +12,7 @@ export class LexicalEntryOld {
   type?: LexicalEntryTypeOld
   uri?: string
   sub?: string
+  isCanonical?: boolean
 }
 
 export interface LexicalElementBase {

@@ -275,6 +275,14 @@ export class LexiconService {
     return values.join(', ')
   }
 
+  uploadConll(prefix: string, baseIRI: string, author: string, language: string,drop: boolean, file: FormData): Observable<any> {
+    const encodedBaseIRI = this.commonService.encodeUrl(baseIRI);
+    return this.http.post(
+      `${this.lexoUrl}import/conll?prefix=${prefix}&baseIRI=${encodedBaseIRI}&author=${author}&language=${language}&drop=${drop}`,
+      file
+    )
+  }
+
   /**
    * POST di aggiornamento di un'entrata lessicale
    * @param user {string} nome dell'utente

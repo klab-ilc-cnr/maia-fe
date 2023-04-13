@@ -5,18 +5,25 @@
     <!-- <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
       (click)="onAddNewLexicalEntry()"></button> -->
       <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
-      (click)="menu.toggle($event)"></button>
+        (click)="menu.toggle($event)"
+        pTooltip="Add lexical entry"
+        tooltipPosition="bottom"></button>
     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
-      [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()"></button>
+      [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()"
+      pTooltip="Remove"
+      tooltipPosition="bottom"></button>
   </div>
   <div class="p-toolbar-group-end">
     <button pButton
       pRipple
       icon="pi pi-file-import"
       class="p-button-rounded p-button-success mx-2"
-      pTooltip="Upload lessico"
+      pTooltip="Upload CoNLL"
+      tooltipPosition="bottom"
       (click)="isUploadLexiconVisible = !isUploadLexiconVisible"></button>
-    <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"></button>
+    <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"
+      pTooltip="Export"
+      tooltipPosition="bottom"></button>
   </div>
 </p-toolbar>
 <div class="grid p-fluid input-search">
@@ -115,7 +122,9 @@
         <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
           rowData[col.field] }}</span>
         <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
-          [pTooltip]="rowData['sub']">{{ rowData[col.field] }}</span>
+          [pTooltip]="rowData['sub']"
+          tooltipPosition="bottom"
+          [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] }}</span>
         <sub *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
       </td>
     </tr>
@@ -155,20 +164,18 @@
         <div class="formgrid grid">
           <div class="field col-6">
             <label for="language">Lingua *</label>
-            <p-dropdown
-              #language="ngModel"
+            <p-autoComplete #language="ngModel"
               name="language"
               [(ngModel)]="selectedUploadLanguage"
-              [options]="selectLanguages"
-              [showClear]="true"
-              id="language"
-              [required]="true"></p-dropdown>
+              [suggestions]="filteredLanguages"
+              (completeMethod)="filterLanguage($event)"
+              [required]="true"></p-autoComplete>
           </div>
           <div class="field col-6">
-            <label class="form-label">Aggiungi a esistente</label>
-            <p-inputSwitch #checkAdd="ngModel"
-              name="checkAdd"
-              [(ngModel)]="isAddToLexicon"></p-inputSwitch>
+            <label class="form-label">Sovrascrivi</label>
+            <p-inputSwitch #drop="ngModel"
+              name="drop"
+              [(ngModel)]="isOverwriteLexicon"></p-inputSwitch>
           </div>
           <div class="form-group field col-6">
             <label class="form-label">Prefisso *</label>
@@ -190,12 +197,26 @@
               (onSelect)="onSelectPrefixBaseIRI($event, false)"
               [required]="true"></p-autoComplete>
           </div>
-          <div class="form-group field col-12">
+          <div class="field col-6">
+            <label class="form-label">Autore *</label>
+            <input type="text"
+              #author="ngModel"
+              name="author"
+              class="form-control"
+              [(ngModel)]="inputAuthor"
+              required>
+          </div>
+          <div class="form-group field col-6">
             <label class="form-label">Scegli file *</label>
-            <input type="file"
+            <input #uploadFile="ngModel"
+              name="uploadFile"
+              [(ngModel)]="selectedFile"
+              type="file"
               class="form-control"
               id="lexiconUploader"
-              required>
+              required
+              accept=".tsv"
+              (change)="onSelectFile($event)">
           </div>
           </div>
       </form>
@@ -204,7 +225,8 @@
   <ng-template pTemplate="footer">
     <div class="modal-footer">
       <button type="button"
-        class="btn btn-secondary">
+        class="btn btn-secondary"
+        (click)="isUploadLexiconVisible = false">
         Annulla
       </button>
       <button type="button"

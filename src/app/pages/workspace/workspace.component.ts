@@ -780,6 +780,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      theme: {  //TODO ESEMPIO MODIFICA STILE PANEL
+        bgPanel: 'var(--primary-color)',
+        bgContent: '#fff',
+        colorHeader: 'white',
+        colorContent: `#${jsPanel.colorNames.gray700}`,
+        border: 'thin solid #b24406',
+        borderRadius: '.33rem'
+      },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         this.removeFromTileMap(panel.id, TileType.CORPUS);

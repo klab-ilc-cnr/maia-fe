@@ -42,6 +42,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public searchIconSpinner = false;
   /**Lista delle lingue selezionabili */
   public selectLanguages!: SelectItem[];
+  filteredLanguages: SelectItem[] = [];
   /**Lista dei tipi selezionabili */
   public selectTypes!: SelectItem[];
   /**Lista degli autori selezionabili */
@@ -109,7 +110,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   filteredPrefix!: string[];
   filteredBase!: string[];
   selectedPrefix: any;
-  isAddToLexicon = true;
+  selectedFile!: any;
+  _selectedFile!: File;
+  isOverwriteLexicon = false;
+  inputAuthor!: string;
 
   /* @ViewChild('tt') public tt!: TreeTable; */
 
@@ -233,6 +237,19 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.filteredBase = filtered;
   }
 
+  filterLanguage(event: any) {
+    const filtered = [];
+    const query = event.query;
+
+    for(const lang of this.selectLanguages) {
+      if(lang.value.toLowerCase().includes(query.toLowerCase())) {
+        filtered.push(lang.value);
+      }
+    }
+
+    this.filteredLanguages = filtered;
+  }
+
   filterPrefix(event: any) {
     const filtered = [];
     const query = event.query;
@@ -255,7 +272,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           relation: LEXICAL_ENTRY_RELATIONS.ENTRY,
           value: language
         };
-        this.lexiconService.updateLexicalEntry('tester', lexEntry.lexicalEntry, updater).pipe(take(1)).subscribe({
+        this.lexiconService.updateLexicalEntry(creator, lexEntry.lexicalEntry, updater).pipe(take(1)).subscribe({
           next: () => {
             const successMsg = "Creata una nuova entrata lessicale";
             this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
@@ -346,7 +363,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
                 status: null,
                 uri: val['form'],
                 type: LexicalEntryTypeOld.FORM,
-                sub: this.lexiconService.concatenateMorphology(val.morphology)
+                sub: this.lexiconService.concatenateMorphology(val.morphology),
+                isCanonical: val.type === 'canonicalForm'
               },
               parent: node
             }));
@@ -453,6 +471,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.deleteNodes(nodesToDelete);
   }
 
+  onSelectFile(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    const fileList: FileList|null = element.files!;
+
+    this._selectedFile = fileList[0];
+  }
+
   onSelectPrefixBaseIRI(value: string, isPrefix: boolean) {
     const namespace = isPrefix ? this.namespaceList.find(ns => ns.prefix === value) : this.namespaceList.find(ns => ns.base === value);
     if (namespace === undefined) {
@@ -466,7 +491,20 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   }
 
   onUploadNewLexicon(): void {
-    console.info(this.lexiconUploaderForm.value);
+    const lexUpForm = this.lexiconUploaderForm.value;
+    const fileData = new FormData();
+    fileData.append('file', this._selectedFile);
+
+    this.lexiconService.uploadConll(lexUpForm['prefix'], lexUpForm['baseIRI'], lexUpForm['author'], lexUpForm['language'], lexUpForm['drop'], fileData).pipe(take(1)).subscribe({
+      next: () => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig("Lexicon uploaded"));
+        this.filter();
+        this.isUploadLexiconVisible = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+      }
+    })
   }
 
   /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */

@@ -240,7 +240,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
                 lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
                 status: null,
                 type: LexicalEntryTypeOld.FORM,
-                sub: this.lexiconService.concatenateMorphology(val['morphology'])
+                sub: this.lexiconService.concatenateMorphology(val['morphology']),
+                isCanonical: val.type === 'canonicalForm'
               }
             }));
             const sortedChildren = mappedChildren.sort((a, b) => a.label === b.label ? 0 : (a.label > b.label ? 1 : -1));
