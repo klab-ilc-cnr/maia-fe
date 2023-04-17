@@ -47,7 +47,17 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   /**Lista delle attestazioni */
   attestationsForm: any[] = [];
   /**Lista delle option dello status */
-  @Input() statusForm!: SelectButtonField[];
+  // @Input() statusForm!: SelectButtonField[]; //TODO ripristinare quando recuperati da backend
+  statusForm: SelectButtonField[] = [{
+    icon: 'completed',
+    justify: ''
+  }, {
+    icon: 'reviewed',
+    justify: ''
+  }, {
+    icon: 'working',
+    justify: ''
+  }];
   /**Option selezionata dello status */
   selectedStatusForm?: SelectButtonField;
   /**Data di ultima modifica */
@@ -79,7 +89,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il caricamento preliminare dei dati e la sottoscrizione di notify */
   ngOnInit(): void {
-    this.loadData()
+    this.loadData();
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res: any) => {
       if ('option' in res && res.option === 'lexical_entry_editor_save' && this.instanceName === res.value) {
