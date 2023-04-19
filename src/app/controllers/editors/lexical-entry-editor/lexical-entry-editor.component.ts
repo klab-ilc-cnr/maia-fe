@@ -1,9 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { forkJoin, Subscription, take } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
-import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
-import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
+import { LexicalEntryCore, LexicalEntryTypeOld, LinkProperty } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -18,6 +19,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   /**Sottoscrizione per la gestione del notify */
   private subscription!: Subscription;
+  private forkSubscription!: Subscription;
 
   /**Identificativo dell'entrata lessicale */
   lexicalEntryInstanceName!: string;
@@ -45,7 +47,17 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   /**Lista delle attestazioni */
   attestationsForm: any[] = [];
   /**Lista delle option dello status */
-  @Input() statusForm!: SelectButtonField[];
+  // @Input() statusForm!: SelectButtonField[]; //TODO ripristinare quando recuperati da backend
+  statusForm: SelectButtonField[] = [{
+    icon: 'completed',
+    justify: ''
+  }, {
+    icon: 'reviewed',
+    justify: ''
+  }, {
+    icon: 'working',
+    justify: ''
+  }];
   /**Option selezionata dello status */
   selectedStatusForm?: SelectButtonField;
   /**Data di ultima modifica */
@@ -77,7 +89,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il caricamento preliminare dei dati e la sottoscrizione di notify */
   ngOnInit(): void {
-    this.loadData()
+    this.loadData();
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res: any) => {
       if ('option' in res && res.option === 'lexical_entry_editor_save' && this.instanceName === res.value) {
@@ -90,6 +102,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.forkSubscription.unsubscribe();
   }
 
   /**Metodo per la gestione del salvataggio delle modifiche all'entrata lessicale */
@@ -99,44 +112,56 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     const currentUserName = (currentUser?.name + '.' + currentUser?.surname);
     // eslint-disable-next-line prefer-const
     let httpList = [];
-    //BUG errore nella chiamata perché non chiaro come gestire aggiornamento di status
+    let tempInitialValues = this.initialValues;
+    console.info('Valori iniziali', this.initialValues)
+    //TODO controllare non appena disponibili valori multipli di status
     if (this.initialValues.status !== this.selectedStatusForm?.icon) {
-      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.STATUS, value: this.selectedStatusForm?.icon }));
-      this.initialValues.status = this.selectedStatusForm!.icon;
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.TERM_STATUS, value: this.selectedStatusForm?.icon }));
+      tempInitialValues = { ...tempInitialValues, status: this.selectedStatusForm!.icon };
     }
     if (this.initialValues.label !== this.labelForm) {
       httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LABEL, value: this.labelForm }));
-      this.initialValues.label = this.labelForm!;
+      tempInitialValues = { ...tempInitialValues, label: this.labelForm! };
     }
-    console.info(this.confidenceForm); //TODO CONTROLLARE COME ESEGUIRE QUESTO UPDATE
-    if (this.initialValues.type !== this.selectedTypeForm?.code) {
+
+    if (this.initialValues.confidence !== (this.confidenceForm! / 100)) {
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.CONFIDENCE, value: (this.confidenceForm! / 100).toString() }));
+      tempInitialValues = { ...tempInitialValues, confidence: this.confidenceForm! / 100 };
+    }
+    if (this.initialValues.type !== this.selectedTypeForm?.code.split('#')[1]) {
       httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.TYPE, value: this.selectedTypeForm?.code }));
-      this.initialValues.type = this.selectedTypeForm!.code;
+      tempInitialValues = { ...tempInitialValues, type: this.selectedTypeForm!.code };
     }
     if (this.initialValues.pos !== this.selectedPartOfSpeechesForm?.code) {
       httpList.push(this.lexiconService.updateLinguisticRelation(this.lexicalEntryInstanceName, <LinguisticRelationUpdater>{
-        type: LINGUISTIC_RELATIONS.MORPHOLOGY,
-        relation: 'partOfSpeech',
+        type: LINGUISTIC_RELATION_TYPE.MORPHOLOGY,
+        relation: 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech',
         value: this.selectedPartOfSpeechesForm?.code,
         currentValue: this.initialValues.pos
       }));
-      this.initialValues.pos = this.selectedPartOfSpeechesForm!.code;
+      tempInitialValues = { ...tempInitialValues, pos: this.selectedPartOfSpeechesForm!.code };
     }
     if (this.initialValues.lang !== this.selectedLanguageForm?.code) {
-      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.LANGUAGE, value: this.selectedLanguageForm?.code }));
-      this.initialValues.lang = this.selectedLanguageForm!.code;
+      httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.ENTRY, value: this.selectedLanguageForm?.code }));
+      tempInitialValues = { ...tempInitialValues, lang: this.selectedLanguageForm!.code };
     }
     if (this.initialValues.note !== this.noteForm) {
       httpList.push(this.lexiconService.updateLexicalEntry(currentUserName, this.lexicalEntryInstanceName, <LexicalEntryUpdater>{ relation: LEXICAL_ENTRY_RELATIONS.NOTE, value: this.noteForm }));
-      this.initialValues.note = this.noteForm!;
+      tempInitialValues = { ...tempInitialValues, note: this.noteForm! };
     }
     if (httpList.length > 0) {
-      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
-        this.lastUpdate = new Date(res[0]).toLocaleString()
-        this.pendingChanges = false;
-        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY })
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryInstanceName });
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.forkSubscription = forkJoin(httpList).subscribe({
+        next: (res: string[]) => {
+          this.lastUpdate = new Date(res[0]).toLocaleString()
+          this.pendingChanges = false;
+          this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.LEXICAL_ENTRY })
+          this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryInstanceName });
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.initialValues = { ...tempInitialValues };
+        },
+        error: (error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+        }
       });
     }
   }
@@ -155,7 +180,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
     }
 
     this.pendingChanges = true;
-    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.LEXICAL_ENTRY });
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.LEXICAL_ENTRY });
   }
 
   /**
@@ -164,38 +189,41 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
    */
   private loadLexicalEntry() {
     this.lexiconService.getLexicalEntry(this.instanceName).subscribe({
-      next: (data: any) => {
+      next: (data: LexicalEntryCore) => {
+        const pos = data.morphology.find(p => p.trait === 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech')?.value;
         this.initialValues = {
           status: data.status,
           label: data.label,
-          confidence: data.confidence,
-          type: data.type,
-          pos: data.pos,
+          confidence: +data.confidence,
+          type: data.type[0], //TODO valido attualmente, ma in caso di type multipli sarà da gestire
+          pos: pos ? pos : '',
           lang: data.language,
           note: data.note
         };
-        this.lexicalEntryInstanceName = data.lexicalEntryInstanceName;
+        this.lexicalEntryInstanceName = data.lexicalEntry;
 
         this.selectedStatusForm = this.statusForm.find((el: any) => el.icon === data.status);
         this.labelForm = data.label;
-        this.confidenceForm = data.confidence < 0 ? 0 : data.confidence * 100;
+        this.confidenceForm = +data.confidence < 0 ? 0 : +data.confidence * 100;
 
-        this.selectedTypeForm = this.typesForm.find(el => el.code === data.type[0]);
+        this.selectedTypeForm = this.typesForm.find(el => el.code.split('#')[1] === data.type[0]);
 
-        this.selectedPartOfSpeechesForm = this.partOfSpeechesForm.find(el => el.code === data.pos);
+        this.selectedPartOfSpeechesForm = this.partOfSpeechesForm.find(el => el.code.split('#')[1] === data.pos);
         this.selectedLanguageForm = this.languagesForm.find(el => el.code === data.language);
         this.noteForm = data.note;
-        this.attestationsForm = data.links.find((el: any) => el.type === 'Attestation').elements.map((att: any) => ({
+
+        const attestations = data.links.find((el: LinkProperty) => el.type === 'Attestation')?.elements;
+        this.attestationsForm = attestations !== undefined ? attestations.map((att: any) => ({
           name: att['label'],
           code: att['label']
-        }));
+        })) : [];
 
         this.lastUpdate = data.lastUpdate ? new Date(data.lastUpdate).toLocaleString() : '';
 
         this.loading = false;
       },
-      error: (error: any) => {
-        console.error(error)
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
       }
     });
   }

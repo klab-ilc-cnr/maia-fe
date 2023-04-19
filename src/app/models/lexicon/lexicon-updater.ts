@@ -6,48 +6,53 @@ interface LexiconUpdaterBase {
 
 /**Enumerazione delle relazioni per forma */
 export enum FORM_RELATIONS {
-  TYPE = 'type',
-  NOTE = 'note',
-  WRITTEN_REP = 'writtenRep',
-  PHONETIC_REP = 'phoneticRep',
-  PRONUNCIATION = 'pronunciation',
-  ROMANIZATION = 'romanization',
-  SEGMENTATION = 'segmentation',
-  TRANSLITERATION = 'transliteration'
+  TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+  NOTE = 'http://www.w3.org/2004/02/skos/core#note',
+  WRITTEN_REP = 'http://www.w3.org/ns/lemon/ontolex#writtenRep',
+  PHONETIC_REP = 'http://www.w3.org/ns/lemon/ontolex#phoneticRep',
+  PRONUNCIATION = 'http://www.lexinfo.net/ontology/3.0/lexinfo#pronunciation',
+  ROMANIZATION = 'http://www.lexinfo.net/ontology/3.0/lexinfo#romanization',
+  SEGMENTATION = 'http://www.lexinfo.net/ontology/3.0/lexinfo#segmentation',
+  TRANSLITERATION = 'http://www.lexinfo.net/ontology/3.0/lexinfo#transliteration',
+  CONFIDENCE = "http://www.lexinfo.net/ontology/3.0/lexinfo#confidence"
 }
 
 /**Enumerazione delle relazioni per entrata lessicale */
 export enum LEXICAL_ENTRY_RELATIONS {
-  LABEL = 'label',
-  TYPE = 'type',
-  LANGUAGE = 'language',
-  STATUS = 'status',
-  NOTE = 'note'
+  LABEL = "http://www.w3.org/2000/01/rdf-schema#label",
+  TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+  TERM_STATUS = "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
+  NOTE = "http://www.w3.org/2004/02/skos/core#note",
+  ENTRY = "http://www.w3.org/ns/lemon/lime#entry",
+  DENOTES = "http://www.w3.org/ns/lemon/ontolex#denotes",
+  CONFIDENCE = "http://www.lexinfo.net/ontology/3.0/lexinfo#confidence"
 }
 
 /**Enumerazione delle relazioni per senso lessicale */
 export enum LEXICAL_SENSE_RELATIONS {
-  NOTE = 'note',
-  USAGE = 'usage',
-  REFERENCE = 'reference',
-  SUBJECT = 'subject',
-  DEFINITION = 'definition',
-  DESCRIPTION = 'description',
-  EXPLANATION = 'explanation',
-  GLOSS = 'gloss',
-  SENSE_EXAMPLE = 'senseExample',
-  SENSE_TRANSLATION = 'senseTranslation'
+  NOTE = 'http://www.w3.org/2004/02/skos/core#note',
+  USAGE = 'http://www.w3.org/ns/lemon/ontolex#usage',
+  REFERENCE = 'http://www.w3.org/ns/lemon/ontolex#reference',
+  SUBJECT = 'http://purl.org/dc/terms/subject',
+  DEFINITION = 'http://www.w3.org/2004/02/skos/core#definition',
+  DESCRIPTION = 'http://www.lexinfo.net/ontology/3.0/lexinfo#description',
+  EXPLANATION = 'http://www.lexinfo.net/ontology/3.0/lexinfo#explanation',
+  GLOSS = 'http://www.lexinfo.net/ontology/3.0/lexinfo#gloss',
+  SENSE_EXAMPLE = 'http://www.lexinfo.net/ontology/3.0/lexinfo#senseExample',
+  SENSE_TRANSLATION = 'http://www.lexinfo.net/ontology/3.0/lexinfo#senseTranslation',
+  CONFIDENCE = 'http://www.lexinfo.net/ontology/3.0/lexinfo#confidence'
 }
 
 /**Enumerazione per le relazioni linguistiche */
-export enum LINGUISTIC_RELATIONS {
+export enum LINGUISTIC_RELATION_TYPE {
   MORPHOLOGY = 'morphology',
   DECOMP = 'decomp',
   CONCEPT_REF = 'conceptRef',
   LEXICAL_REL = 'lexicalRel',
   SENSE_REL = 'senseRel',
   CONCEPT_REL = 'conceptRel',
-  ETY_LINK = 'etyLink'
+  ETY_LINK = 'etyLink',
+  LEXICON = 'lexicon'
 }
 
 /**Interfaccia dell'updater per forma */
@@ -71,7 +76,7 @@ export interface LexicalSenseUpdater extends LexiconUpdaterBase {
 /**Interfaccia dell'updater per relazione linguistica */
 export interface LinguisticRelationUpdater extends LexiconUpdaterBase {
   /**Tipo di relazione linguistica da aggiornare */
-  type: LINGUISTIC_RELATIONS,
+  type: LINGUISTIC_RELATION_TYPE,
   /**Proprietà da aggiornare */
   relation: string,
   /**Precedente valore da sostituire */

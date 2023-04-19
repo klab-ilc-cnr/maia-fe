@@ -2,8 +2,8 @@ import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@
 import { MessageService } from 'primeng/api';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { DropdownField } from 'src/app/models/dropdown-field';
-import { LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
-import { FormUpdater, FORM_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
+import { FormCore, PropertyElement, LexicalEntryTypeOld, LinkElement, LinkProperty, MorphologyProperty } from 'src/app/models/lexicon/lexical-entry.model';
+import { FormUpdater, FORM_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
 import { Morphology } from 'src/app/models/lexicon/morphology.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -12,6 +12,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**Componente dell'editor per le forme */
 @Component({
@@ -35,7 +36,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Text input delle note */
   noteInput?: string;
   /**Lista delle attestazioni */
-  attestationsList: any[] = [];
+  attestationsList: { name: string, code: string }[] = [];
   /**Definisce se è in corso il caricamento */
   loading?: boolean;
 
@@ -48,11 +49,11 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Lista degli elementi dei singoli form morfologici */
   morphologicalForms: {
     /**Option del tratto selezionato */
-    selectedTrait: DropdownField,
+    selectedTrait: DropdownField | undefined,
     /**Lista delle option dei valori delle proprietà */
-    propertiesList: DropdownField[],
+    propertiesList: DropdownField[] | undefined,
     /**Option del valore di proprietà selezionato */
-    selectedProperty: DropdownField
+    selectedProperty: DropdownField | undefined
   }[] = [];
 
   /**Identificativo della forma */
@@ -151,31 +152,39 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, <FormUpdater>{ relation: FORM_RELATIONS.NOTE, value: this.noteInput }));
       this.initialValues.note = this.noteInput!;
     }
-    this.morphologicalForms.forEach(mf => {
-      const currentValueIndex = this.initialValues.morphs.findIndex(e => e.trait === mf.selectedTrait.code);
-      const currentValue = this.initialValues.morphs.find(e => e.trait === mf.selectedTrait.code)?.value;
-      const newValue = mf.selectedProperty.code;
-      if (currentValue !== newValue) {
-        httpList.push(this.lexiconService.updateLinguisticRelation(this.instanceName, <LinguisticRelationUpdater>{
-          type: LINGUISTIC_RELATIONS.MORPHOLOGY,
-          relation: mf.selectedTrait.code,
-          value: newValue,
-          currentValue: currentValue
-        }));
-      }
-      if (currentValueIndex !== -1) {
-        this.initialValues.morphs[currentValueIndex].value = newValue;
-      } else {
-        this.initialValues.morphs.push({ trait: mf.selectedTrait.code, value: newValue });
-      }
-    });
+    if(this.morphologicalForms.length !== 1 || this.morphologicalForms[0].selectedProperty?.code !== "") {
+      this.morphologicalForms.forEach(mf => {
+        const currentValueIndex = this.initialValues.morphs.findIndex(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code);
+        const currentValue = this.initialValues.morphs.find(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code)?.value;
+        const newValue = mf.selectedProperty?.code;
+        if (currentValue !== newValue) {
+          httpList.push(this.lexiconService.updateLinguisticRelation(this.instanceName, <LinguisticRelationUpdater>{
+            type: LINGUISTIC_RELATION_TYPE.MORPHOLOGY,
+            relation: mf.selectedTrait?.code,
+            value: newValue,
+            currentValue: currentValue
+          }));
+        }
+        if (currentValueIndex !== -1 && newValue) {
+          this.initialValues.morphs[currentValueIndex].value = newValue;
+        } else if (mf.selectedTrait && newValue) {
+          this.initialValues.morphs.push({ trait: mf.selectedTrait.code, value: newValue });
+        }
+      });
+    }
+
     if (httpList.length > 0) {
-      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) => {
-        this.pendingChanges = false;
-        this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.FORM })
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
-        this.lastUpdate = new Date(res[0]).toLocaleString();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      forkJoin(httpList).pipe(take(1)).subscribe({
+        next: (res: string[]) => {
+          this.pendingChanges = false;
+          this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.FORM })
+          this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntryID });
+          this.lastUpdate = new Date(res[0]).toLocaleString();
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        },
+        error: (error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+        }
       });
     }
   }
@@ -234,7 +243,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.pendingChanges = true;
-    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryType.FORM });
+    this.commonService.notifyOther({ option: 'lexicon_edit_pending_changes', value: this.pendingChanges, type: LexicalEntryTypeOld.FORM });
   }
 
 
@@ -242,15 +251,20 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    * Metodo che gestisce la rimozione di un elemento morfologico
    * @param morph {{ selectedTrait: DropdownField, propertiesList: DropdownField[], selectedProperty: DropdownField }}
    */
-  onRemoveMorphForm(morph: { selectedTrait: DropdownField, propertiesList: DropdownField[], selectedProperty: DropdownField }) {
+  onRemoveMorphForm(morph: { selectedTrait: DropdownField | undefined, propertiesList: DropdownField[] | undefined, selectedProperty: DropdownField | undefined }) {
     const successMsg = "Forma aggiornata con successo";
     this.morphologicalForms = this.morphologicalForms.filter(mf => mf !== morph);
-    const initialValuesIndex = this.initialValues.morphs.findIndex(mf => mf.trait === morph.selectedTrait.code);
-    if (initialValuesIndex !== -1) {
-      this.lexiconService.deleteRelation(this.instanceName, { relation: morph.selectedTrait.code, value: morph.selectedProperty.code }).pipe(take(1)).subscribe(res => {
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        this.initialValues.morphs = this.initialValues.morphs.filter(m => m.trait !== morph.selectedTrait.code);
-        this.lastUpdate = new Date(res).toLocaleString();
+    const initialValuesIndex = this.initialValues.morphs.findIndex(mf => mf.trait === morph.selectedTrait?.code);
+    if (initialValuesIndex !== -1 && morph.selectedTrait && morph.selectedProperty) {
+      this.lexiconService.deleteRelation(this.instanceName, { relation: morph.selectedTrait.code, value: morph.selectedProperty.code }).pipe(take(1)).subscribe({
+        next: res => {
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.initialValues.morphs = this.initialValues.morphs.filter(m => m.trait !== morph.selectedTrait?.code);
+          this.lastUpdate = new Date(res).toLocaleString();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+        }
       });
     }
   }
@@ -261,27 +275,37 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private loadForm() {
     this.lexiconService.getForm(this.instanceName).subscribe({
-      next: (data: any) => {
-        this.writtenRepresentationInput = data.label.find((el: any) => el.propertyID === 'writtenRep').propertyValue;
+      next: (data: FormCore) => {
+        this.writtenRepresentationInput = data.label.find((el: PropertyElement) => el.propertyID === 'writtenRep')?.propertyValue;
 
-        this.selectedType = this.typesDropdownList.find(el => el.code === data.type);
+        this.selectedType = this.typesDropdownList.find(el => el.code.split('#')[1] === data.type);
 
         this.noteInput = data.note;
-        this.attestationsList = data.links.find((el: any) => el.type === 'Attestation').elements.map((att: any) => ({
-          name: att['label'],
-          code: att['label']
-        }));
+        const attestations = data.links.find((el: LinkProperty) => el.type === 'Attestation')?.elements;
+        this.attestationsList = attestations !== undefined ? attestations.map((le: LinkElement) => ({
+          name: le.label,
+          code: le.label
+        })) : [];
 
         this.lastUpdate = data.lastUpdate ? new Date(data.lastUpdate).toLocaleString() : '';
 
-        this.morphologicalForms = data.morphology.map((el: any) => {
+        this.morphologicalForms = data.morphology.map((el: MorphologyProperty) => {
           const propList = this.loadProperties(el.trait);
           return {
-            selectedTrait: this.traitsDropdown.find((val: any) => val.code === el.trait),
+            selectedTrait: this.traitsDropdown.find((val: DropdownField) => val.code === el.trait),
             propertiesList: propList,
-            selectedProperty: propList.find((p: any) => p.code === el.value)
+            selectedProperty: propList.find((p: DropdownField) => p.code === el.value)
           };
         });
+
+        // this.morphologicalForms = data.morphology.map((el: any) => {
+        //   const propList = this.loadProperties(el.trait);
+        //   return {
+        //     selectedTrait: this.traitsDropdown.find((val: any) => val.code === el.trait),
+        //     propertiesList: propList,
+        //     selectedProperty: propList.find((p: any) => p.code === el.value)
+        //   };
+        // });
         if (this.morphologicalForms.length === 0) {
           this.onAddMorphForm();
         }
@@ -295,8 +319,8 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.loading = false;
       },
-      error: (error: any) => {
-        console.error(error);
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
       }
     })
   }

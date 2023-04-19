@@ -21,7 +21,9 @@
             <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
               rowData[col.field] }}</span>
             <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
-              [pTooltip]="rowData['sub']">{{ rowData[col.field] }}</span>
+              [pTooltip]="rowData['sub']"
+              tooltipPosition="bottom"
+              [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] }}</span>
             <sub
               *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
             <button pButton type="button" icon="pi pi-plus"
@@ -39,12 +41,27 @@
     </p-treeTable>
   </ng-template>
   <ng-template pTemplate>
-    <app-lexical-entry-editor *ngIf="showLexicalEntryEditor" [typesForm]="lexicalEntryTypes"
-      [partOfSpeechesForm]="partOfSpeeches" [statusForm]="statusValues" [languagesForm]="languageValues"
-      [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor>
-    <app-form-editor *ngIf="showFormEditor" [instanceName]="formInstanceName" [typesDropdownList]="formTypes" [traitsDropdown]="morphTraitList" [morphologicalData]="morphologicalData"
-      [lexicalEntryID]="lexicalEntryTree[0].data?.instanceName"></app-form-editor>
-    <app-sense-editor *ngIf="showSenseEditor" [instanceName]="senseInstanceName"
-      [lexicalEntryID]="lexicalEntryTree[0].data?.instanceName"></app-sense-editor>
+    <p-tabView>
+      <p-tabPanel header="Morphology" *ngIf="showLexicalEntryEditor || showFormEditor">
+        <!--TODO ripristinare statusForm quando recuperati da BE-->
+        <!-- <app-lexical-entry-editor [typesForm]="lexicalEntryTypes" [partOfSpeechesForm]="partOfSpeeches" *ngIf="showLexicalEntryEditor"
+          [statusForm]="statusValues" [languagesForm]="languageValues"
+          [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor> -->
+          <app-lexical-entry-editor [typesForm]="lexicalEntryTypes" [partOfSpeechesForm]="partOfSpeeches" *ngIf="showLexicalEntryEditor"
+          [languagesForm]="languageValues"
+          [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor>
+          <app-form-editor [instanceName]="formInstanceName" [typesDropdownList]="formTypes" *ngIf="showFormEditor"
+          [traitsDropdown]="morphTraitList" [morphologicalData]="morphologicalData"
+          [lexicalEntryID]="lexicalEntryTree[0].data?.instanceName"></app-form-editor>
+      </p-tabPanel>
+      <p-tabPanel header="YYY" *ngIf="showSenseEditor">
+        <app-sense-editor [instanceName]="senseInstanceName"
+          [lexicalEntryID]="lexicalEntryTree[0].data?.instanceName"></app-sense-editor>
+      </p-tabPanel>
+      <p-tabPanel header="Syntax" ></p-tabPanel>
+      <p-tabPanel header="Semantics" [disabled]="true"></p-tabPanel>
+      <p-tabPanel header="Multimedia" [disabled]="true"></p-tabPanel>
+      <p-tabPanel header="Dictionary view" [disabled]="true"></p-tabPanel>
+    </p-tabView>
   </ng-template>
 </p-splitter>

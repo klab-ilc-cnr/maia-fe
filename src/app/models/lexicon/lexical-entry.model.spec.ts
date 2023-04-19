@@ -1,7 +1,7 @@
-import { LexicalEntry } from './lexical-entry.model';
+import { LexicalEntryOld } from './lexical-entry.model';
 
 describe('LexicalEntry', () => {
   it('should create an instance', () => {
-    expect(new LexicalEntry()).toBeTruthy();
+    expect(new LexicalEntryOld()).toBeTruthy();
   });
 });

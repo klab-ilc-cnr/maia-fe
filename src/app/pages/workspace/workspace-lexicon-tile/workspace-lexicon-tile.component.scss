@@ -9,3 +9,12 @@ div.grid.p-fluid.input-search {
 td:has(sub) {
     overflow-x: clip;
 }
+
+#lexiconUploaderForm {
+  label,
+  input[type="text"],
+  ::ng-deep p-autocomplete .p-component,
+  ::ng-deep p-dropdown .p-component {
+    width: 100%;
+  }
+}

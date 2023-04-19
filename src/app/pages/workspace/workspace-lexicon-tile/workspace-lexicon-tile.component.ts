@@ -1,8 +1,15 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { forkJoin, Observable, Subscription, take } from 'rxjs';
-import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { LexicalEntry, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
+import { formTypeEnum, LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
+import { LEXICAL_ENTRY_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
+import { LexicalEntryUpdater } from 'src/app/models/lexicon/lexicon-updater';
+import { Namespace } from 'src/app/models/lexicon/namespace.model';
+import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -14,6 +21,8 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   styleUrls: ['./workspace-lexicon-tile.component.scss']
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
+
+  isUploadLexiconVisible = false;
 
   /**Sottoscrizione usata per la gestione del click sull'icona tag */
   private subscription!: Subscription;
@@ -33,6 +42,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public searchIconSpinner = false;
   /**Lista delle lingue selezionabili */
   public selectLanguages!: SelectItem[];
+  filteredLanguages: SelectItem[] = [];
   /**Lista dei tipi selezionabili */
   public selectTypes!: SelectItem[];
   /**Lista degli autori selezionabili */
@@ -45,6 +55,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectEntries!: SelectItem[];
   /**Lingua selezionata */
   public selectedLanguage: any;
+  public selectedUploadLanguage: any;
+  public selectedUploadPrefix: any;
+  public selectedBaseIRI: any;
   /**Tipo selezionato */
   public selectedType: any;
   /**Autore selezionato */
@@ -60,7 +73,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Nodo dell'albero selezionato */
   public selectedNodes: TreeNode[] = [];
   /**Sottonodo dell'albero selezionato */
-  public selectedSubTree?: TreeNode<LexicalEntry>;
+  public selectedSubTree?: TreeNode<LexicalEntryOld>;
   /**Definisce se è in corso il caricamento */
   public loading = false;
   /**Definisce se mostrare l'etichetta o il nome dell'entrata */
@@ -72,10 +85,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Testo cercato */
   public searchTextInput!: string;
   /**Messa a disposizione dei tipi di entrata lessicale per il template */
-  public LexicalEntryType = LexicalEntryType;
+  public LexicalEntryType = LexicalEntryTypeOld;
 
   /**Lista dei nodi entrata lessicale */
-  public results: TreeNode<LexicalEntry>[] = [];
+  public results: TreeNode<LexicalEntryOld>[] = [];
 
   /**Definisce se sono visibili le checkbox nel tree table */
   public isVisibleCheckbox = false;
@@ -83,8 +96,24 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Riferimento all'entrata lessicale nell'albero */ //TODO verificare perché non è chiaro dove sia richiamata
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
 
+  @ViewChild('lexiconUploaderForm') public lexiconUploaderForm!: NgForm;
+
   /**Altezza calcolata per lo scroller */
   public scrollHeight!: number;
+
+  public languageItems: [{ label: string, items: any[] }] = [{
+    label: 'Languages',
+    items: []
+  }];
+
+  namespaceList: Namespace[] = [];
+  filteredPrefix!: string[];
+  filteredBase!: string[];
+  selectedPrefix: any;
+  selectedFile!: any;
+  _selectedFile!: File;
+  isOverwriteLexicon = false;
+  inputAuthor!: string;
 
   /* @ViewChild('tt') public tt!: TreeTable; */
 
@@ -106,13 +135,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     private loggedUserService: LoggedUserService
   ) { }
 
-  //  ngAfterViewInit() {
-  // this.tt.onNodeSelect
-  //   .subscribe((event: any) => {
-
-  //   })
-  // }
-
   /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -126,12 +148,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { field: 'name', header: '', width: '70%', display: 'true' },
       { field: 'note', width: '10%', display: 'true' },
       { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
-      { field: 'creationDate', header: 'Data creazione', display: 'false' },
-      { field: 'lastUpdate', header: 'Data modifica', display: 'false' },
       { field: 'status', header: 'Stato', width: '10%', display: 'true' },
-      { field: 'type', display: 'false' },
-      { field: 'uri', display: 'false' },
-      { field: 'sub', display: 'false' }
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
@@ -151,6 +168,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.initSelectFields();
     this.updateFilterParameters();
 
+    this.lexiconService.getNamespaces().pipe(take(1)).subscribe(ns => {
+      this.namespaceList = ns;
+    });
   }
 
   /**Metodo che esegue il caricamento dei nodi */
@@ -158,38 +178,38 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.loading = true;
 
     this.lexiconService.getLexicalEntriesList(this.parameters).subscribe({
-      next: (data: any) => {
+      next: (data: LexicalEntriesResponse) => {
         this.results = [];
-        this.results = data['list'].map((val: any) => ({
+        this.results = data.list.map((val: LexicalEntryListItem) => ({
           data: {
-            name: this.showLabelName ? val['label'] : val['lexicalEntryInstanceName'],
-            instanceName: val['lexicalEntryInstanceName'],
-            label: val['label'],
+            name: this.showLabelName ? val.label : val.lexicalEntry,
+            instanceName: val.lexicalEntry,
+            label: val.label,
             note: val['note'],
             creator: val['creator'],
             creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
             lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
             status: val['status'],
             uri: val['lexicalEntry'],
-            type: LexicalEntryType.LEXICAL_ENTRY,
-            sub: val['pos']
+            type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+            sub: val.pos
           },
           children: [{
             data: {
               name: 'form (0)',
-              instanceName: '_form_' + val['lexicalEntryInstanceName'],
-              type: LexicalEntryType.FORMS_ROOT
+              instanceName: '_form_' + val.lexicalEntry,
+              type: LexicalEntryTypeOld.FORMS_ROOT
             }
           },
           {
             data: {
               name: 'sense (0)',
-              instanceName: '_sense_' + val['lexicalEntryInstanceName'],
-              type: LexicalEntryType.SENSES_ROOT
+              instanceName: '_sense_' + val.lexicalEntry,
+              type: LexicalEntryTypeOld.SENSES_ROOT
             }
           }]
         }))
-        this.counter = data['totalHits'];
+        this.counter = data.totalHits;
 
         this.loading = false;
         this.pendingFilters = false;
@@ -205,15 +225,68 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
   }
 
+  filterBase(event: any) {
+    const filtered = [];
+    const query = event.query;
+
+    for (const namespace of this.namespaceList) {
+      if (namespace.base.toLowerCase().includes(query.toLowerCase())) {
+        filtered.push(namespace.base);
+      }
+    }
+    this.filteredBase = filtered;
+  }
+
+  filterLanguage(event: any) {
+    const filtered = [];
+    const query = event.query;
+
+    for(const lang of this.selectLanguages) {
+      if(lang.value.toLowerCase().includes(query.toLowerCase())) {
+        filtered.push(lang.value);
+      }
+    }
+
+    this.filteredLanguages = filtered;
+  }
+
+  filterPrefix(event: any) {
+    const filtered = [];
+    const query = event.query;
+
+    for (const namespace of this.namespaceList) {
+      if (namespace.prefix.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+        filtered.push(namespace.prefix)
+      }
+    }
+    this.filteredPrefix = filtered;
+  }
+
   /**Metodo che gestisce l'inserimento di una nuova entrata lessicale */
-  onAddNewLexicalEntry() {
+  onAddNewLexicalEntry(language: string) {
     const currentUser = this.loggedUserService.currentUser;
     const creator = currentUser?.name + '.' + currentUser?.surname;
-    this.lexiconService.getNewLexicalEntry(creator).pipe(take(1)).subscribe(lexEntry => {
-      const successMsg = "Creata una nuova entrata lessicale";
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-      this.searchTextInput = lexEntry.lexicalEntryInstanceName;
-      this.filter();
+    this.lexiconService.getNewLexicalEntry(creator).pipe(take(1)).subscribe({
+      next: lexEntry => {
+        const updater: LexicalEntryUpdater = {
+          relation: LEXICAL_ENTRY_RELATIONS.ENTRY,
+          value: language
+        };
+        this.lexiconService.updateLexicalEntry(creator, lexEntry.lexicalEntry, updater).pipe(take(1)).subscribe({
+          next: () => {
+            const successMsg = "Creata una nuova entrata lessicale";
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+            this.searchTextInput = lexEntry.label;
+            this.filter();
+          },
+          error: (error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+          }
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+      }
     })
   }
 
@@ -244,11 +317,11 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const node = event.node;
 
     switch (event.node.data.type) {
-      case LexicalEntryType.LEXICAL_ENTRY:
+      case LexicalEntryTypeOld.LEXICAL_ENTRY:
         this.lexiconService.getElements(event.node.data.instanceName).subscribe({
           next: (data: any) => {
-            const formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.FORMS_ROOT);
-            const senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryType.SENSES_ROOT);
+            const formCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryTypeOld.FORMS_ROOT);
+            const senseCildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryTypeOld.SENSES_ROOT);
             const countFormChildren = data['elements'].find((el: { label: string; }) => el.label === 'form').count;
             const countSenseChildren = data['elements'].find((el: { label: string; }) => el.label === 'sense').count;
 
@@ -275,22 +348,23 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           }
         });
         break;
-      case LexicalEntryType.FORMS_ROOT:
+      case LexicalEntryTypeOld.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
-          next: (data: any) => {
-            const mappedChildren: any[] = data.map((val: any) => ({
+          next: (data: FormListItem[]) => {
+            const mappedChildren: any[] = data.map((val: FormListItem) => ({
               data: {
-                name: this.showLabelName ? val['label'] : val['formInstanceName'],
-                instanceName: val['formInstanceName'],
-                label: val['label'],
-                note: val['note'],
-                creator: val['creator'],
-                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
-                status: val['status'],
+                name: this.showLabelName ? val.label : val.form,
+                instanceName: val.form,
+                label: val.label,
+                note: val.note,
+                creator: val.creator,
+                creationDate: val.creationDate ? new Date(val.creationDate).toLocaleString() : '',
+                lastUpdate: val.lastUpdate ? new Date(val.lastUpdate).toLocaleString() : '',
+                status: null,
                 uri: val['form'],
-                type: LexicalEntryType.FORM,
-                sub: this.lexiconService.concatenateMorphology(val['morphology'])
+                type: LexicalEntryTypeOld.FORM,
+                sub: this.lexiconService.concatenateMorphology(val.morphology),
+                isCanonical: val.type === 'canonicalForm'
               },
               parent: node
             }));
@@ -311,21 +385,21 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           }
         })
         break;
-      case LexicalEntryType.SENSES_ROOT:
+      case LexicalEntryTypeOld.SENSES_ROOT:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
-          next: (data: any) => {
-            event.node.children = data.map((val: any) => ({
+          next: (data: SenseListItem[]) => {
+            event.node.children = data.map((val: SenseListItem) => ({
               data: {
-                name: this.showLabelName ? val['label'] : val['senseInstanceName'],
-                instanceName: val['senseInstanceName'],
-                label: val['label'],
-                note: val['note'],
-                creator: val['creator'],
-                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
-                status: val['status'],
-                uri: val['sense'],
-                type: LexicalEntryType.SENSE
+                name: this.showLabelName ? val.label : val.sense,
+                instanceName: val.sense,
+                label: val.label,
+                note: val.note,
+                creator: val.creator,
+                creationDate: val.creationDate ? new Date(val.creationDate).toLocaleString() : '',
+                lastUpdate: val.lastUpdate ? new Date(val.lastUpdate).toLocaleString() : '',
+                status: null,
+                uri: val.sense,
+                type: LexicalEntryTypeOld.SENSE
               }
             }));
 
@@ -345,7 +419,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         break;
     }
 
-    console.info(this.selectedNodes)
   }
 
   /**
@@ -368,7 +441,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         } else {
      */
     const node = rowNode?.node;
-    if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryType.FORMS_ROOT || node?.data?.type == LexicalEntryType.SENSES_ROOT)) {
+    if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
       return;
     }
     this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
@@ -385,17 +458,53 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo che gestisce la rimozione dei nodi selezionati */
   onRemoveNodes(): void {
-    const filteredSelectedNodes = this.selectedNodes.filter((n: TreeNode<any>) => n.data.type !== LexicalEntryType.FORMS_ROOT && n.data.type !== LexicalEntryType.SENSES_ROOT);
+    const filteredSelectedNodes = this.selectedNodes.filter((n: TreeNode<any>) => n.data.type !== LexicalEntryTypeOld.FORMS_ROOT && n.data.type !== LexicalEntryTypeOld.SENSES_ROOT);
 
     const nodesToDelete: TreeNode<any>[] = [];
     filteredSelectedNodes.forEach(el => {
-      if (el.data.type === LexicalEntryType.LEXICAL_ENTRY ||
+      if (el.data.type === LexicalEntryTypeOld.LEXICAL_ENTRY ||
         filteredSelectedNodes.findIndex(e => e.data.instanceName === el.parent?.parent?.data.instanceName) === -1) {
         nodesToDelete.push(el);
       }
     });
 
     this.deleteNodes(nodesToDelete);
+  }
+
+  onSelectFile(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    const fileList: FileList|null = element.files!;
+
+    this._selectedFile = fileList[0];
+  }
+
+  onSelectPrefixBaseIRI(value: string, isPrefix: boolean) {
+    const namespace = isPrefix ? this.namespaceList.find(ns => ns.prefix === value) : this.namespaceList.find(ns => ns.base === value);
+    if (namespace === undefined) {
+      return;
+    }
+    if (isPrefix) {
+      this.selectedBaseIRI = namespace.base;
+      return;
+    }
+    this.selectedUploadPrefix = namespace.prefix;
+  }
+
+  onUploadNewLexicon(): void {
+    const lexUpForm = this.lexiconUploaderForm.value;
+    const fileData = new FormData();
+    fileData.append('file', this._selectedFile);
+
+    this.lexiconService.uploadConll(lexUpForm['prefix'], lexUpForm['baseIRI'], lexUpForm['author'], lexUpForm['language'], lexUpForm['drop'], fileData).pipe(take(1)).subscribe({
+      next: () => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig("Lexicon uploaded"));
+        this.filter();
+        this.isUploadLexiconVisible = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+      }
+    })
   }
 
   /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */
@@ -457,21 +566,26 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const httpDelete: Observable<string>[] = [];
     nodesToDelete.forEach(tn => {
       switch (tn.data.type) {
-        case LexicalEntryType.LEXICAL_ENTRY:
+        case LexicalEntryTypeOld.LEXICAL_ENTRY:
           httpDelete.push(this.lexiconService.deleteLexicalEntry(tn.data.instanceName));
           break;
-        case LexicalEntryType.FORM:
+        case LexicalEntryTypeOld.FORM:
           httpDelete.push(this.lexiconService.deleteForm(tn.data.instanceName));
           break;
-        case LexicalEntryType.SENSE:
+        case LexicalEntryTypeOld.SENSE:
           httpDelete.push(this.lexiconService.deleteLexicalSense(tn.data.instanceName));
           break;
       }
     });
-    forkJoin(httpDelete).pipe(take(1)).subscribe(() => {
-      const successMsg = "Elementi rimossi";
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-      this.loadNodes();
+    forkJoin(httpDelete).pipe(take(1)).subscribe({
+      next: () => {
+        const successMsg = "Elementi rimossi";
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.loadNodes();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+      }
     });
 
   }
@@ -540,24 +654,30 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    */
   private initSelectFields() {
     this.lexiconService.getLanguages().subscribe({
-      next: (languages: any) => {
+      next: (languages: LexiconStatistics[]) => {
         this.selectLanguages = [];
-        languages.sort((a: any, b: any) => a.label.localeCompare(b.label))
+        languages.sort((a: LexiconStatistics, b: LexiconStatistics) => a.label!.localeCompare(b.label!))
 
         for (let i = 0; i < languages.length; i++) {
           this.selectLanguages.push({ label: `${languages[i].label}`, value: languages[i].label });
+          this.languageItems[0].items.push({
+            label: languages[i].label,
+            command: () => {
+              this.onAddNewLexicalEntry(languages[i].label!);
+            }
+          })
         }
       },
       error: (error: Error) => { console.error(error.message); }
     });
 
     this.lexiconService.getTypes().subscribe({
-      next: (types: any) => {
+      next: (types: OntolexType[]) => {
         this.selectTypes = [];
-        types.sort((a: any, b: any) => a.label.localeCompare(b.label))
+        types.sort((a: OntolexType, b: OntolexType) => a.valueLabel!.localeCompare(b.valueLabel!))
 
         for (let i = 0; i < types.length; i++) {
-          this.selectTypes.push({ label: `${types[i].label}`, value: types[i].label });
+          this.selectTypes.push({ label: `${types[i].valueLabel}`, value: types[i].valueId });
         }
       },
       error: (error: Error) => { console.error(error.message); }
@@ -604,36 +724,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { label: formTypeEnum.flexed, value: formTypeEnum.flexed }
     ]
   }
-
-  /*   private initSelectFields() {
-      this.lexiconService.getLanguages().subscribe({
-        next: (data: any) => {
-          this.languages = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      });
-
-      this.lexiconService.getTypes().subscribe({
-        next: (data: any) => {
-          this.types = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      });
-
-      this.lexiconService.getAuthors().subscribe({
-        next: (data: any) => {
-          this.authors = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      });
-
-      this.lexiconService.getPos().subscribe({
-        next: (data: any) => {
-          this.partOfSpeech = data;
-        },
-        error: (error: Error) => {console.error(error.message);}
-      })
-    } */
 
   /**
    * @private

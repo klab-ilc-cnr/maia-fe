@@ -4,14 +4,13 @@
 
 import { LanguageService } from "src/app/services/language.service";
 
-let clientid = "projectx-fe";
-let appName = "/projectx-fe"
-let issuer = "http://localhost:8080/realms/princnr";
-let allowedUrls = 'http://localhost:9000/projectx/api';
+const clientid = "projectx-fe";
+const appName = "/projectx-fe"
+const issuer = "http://localhost:8080/realms/princnr"; //TODO sostituire con keycloak
+const allowedUrls = 'http://localhost:9000/projectx/api'; //TODO sostituire con il backend xeel
 
 export const environment = {
-  production: false,
-  envName: 'local',
+  production: true,
   keycloak: {
     issuer: issuer,
     redirectUri: window.location.origin + appName,
@@ -24,7 +23,7 @@ export const environment = {
     // THIS SHOULD NOT BE USED IN PRODUCTION
     // USE A CERTIFICATE FOR YOUR IDP
     // IN PRODUCTION
-    requireHttps: false,
+    requireHttps: false, //TODO verificare se passare a https per il deploy di prova
     // at_hash is not present in JWT token
     showDebugInformation: true,
     //   // at_hash is not present in JWT token
@@ -39,8 +38,8 @@ export const environment = {
   tagsetUrl: allowedUrls + '/tagsets',
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
-  lexoUrl: "/LexO-backend-maia/service/",
-  cashUrl: "http://localhost:8085",
+  lexoUrl: "http://licodemo.ilc.cnr.it:8080/LexO-backend-maia/service/",
+  cashUrl: "http://localhost:8085", //TODO sostituire con il deploy di cash (o altro backend del testo)
   rutPrefix: "ferrandi",
   rutBaseIRI: "http://rut/somali/ferrandi#"
 };

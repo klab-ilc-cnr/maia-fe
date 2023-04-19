@@ -19,8 +19,7 @@
         </div>
         <div class="field col-12">
             <label for="note">Note</label>
-            <textarea id="note" [(ngModel)]="noteInput" type="text" rows="4" (change)="onPendingChanges()"
-                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+            <p-editor id="note" [(ngModel)]="noteInput" type="text" (change)="onPendingChanges()"></p-editor>
         </div>
         <div class="field col-12">
             <label for="attestations">Attestations</label>
@@ -36,8 +35,8 @@
                         [style]="{'width':'100%'}" [virtualScroll]="true" [virtualScrollItemSize]="30"
                         (onChange)="onChangeTraitSelection($event.value,index)">
                     </p-dropdown>
-                    <p-dropdown [disabled]="mf.selectedTrait.code === ''" [id]="'property'+index"
-                        [options]="mf.propertiesList" (onChange)="onPendingChanges()" [(ngModel)]="mf.selectedProperty"
+                    <p-dropdown [disabled]="mf.selectedTrait?.code === ''" [id]="'property'+index"
+                        [options]="mf.propertiesList|| []" (onChange)="onPendingChanges()" [(ngModel)]="mf.selectedProperty"
                         optionLabel="name" [style]="{'width':'100%'}" class="ml-4 mr-2" [virtualScroll]="true"
                         [virtualScrollItemSize]="30"></p-dropdown>
                     <button pButton pRipple type="button" icon="pi pi-times"
