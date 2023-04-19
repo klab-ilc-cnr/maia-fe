@@ -64,6 +64,19 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
 import { TagModule } from 'primeng/tag';
 import { UriValidator } from './validators/uri-validator.directive';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import { SplitterModule } from 'primeng/splitter';
+import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
+import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
+import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
+import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ToolbarModule } from 'primeng/toolbar';
+import { MenuModule } from 'primeng/menu';
+import { EditorModule } from 'primeng/editor';
+import { TabViewModule } from 'primeng/tabview';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [
@@ -90,7 +103,11 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     WhitespacesValidatorDirective,
     NotDuplicateNameDirective,
     WorkspaceLexiconTileComponent,
-    UriValidator
+    UriValidator,
+    WorkspaceLexiconEditTileComponent,
+    LexicalEntryEditorComponent,
+    FormEditorComponent,
+    SenseEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -126,7 +143,16 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     SkeletonModule,
     ToggleButtonModule,
     TagModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    SplitterModule,
+    SelectButtonModule,
+    ScrollPanelModule,
+    FieldsetModule,
+    ToolbarModule,
+    MenuModule,
+    EditorModule,
+    TabViewModule,
+    AutoCompleteModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]

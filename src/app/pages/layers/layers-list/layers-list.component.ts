@@ -3,8 +3,6 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ColorPickerModule } from 'primeng/colorpicker';
-import { Table } from 'primeng/table';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LayerService } from 'src/app/services/layer.service';
 import Swal from 'sweetalert2';

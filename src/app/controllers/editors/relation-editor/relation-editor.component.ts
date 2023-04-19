@@ -11,8 +11,6 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
-import { v4 as uuidv4 } from 'uuid';
-import { Relations } from 'src/app/models/relation/relations';
 import { RelationService } from 'src/app/services/relation.service';
 
 /**Classe dell'editor delle relazioni */

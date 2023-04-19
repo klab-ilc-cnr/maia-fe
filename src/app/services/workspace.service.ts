@@ -1,13 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { combineLatestAll, combineLatestWith, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TextChoice as TextChoice } from '../models/tile/text-choice-element.model';
 import { TextTileContent } from '../models/tile/text-tile-content.model';
 import { Tile } from '../models/tile/tile.model';
 import { WorkspaceChoice } from '../models/workspace-choice.model';
 import { Workspace } from '../models/workspace.model';
-import { combineLatest, of } from 'rxjs';
 import { DocumentSystem } from '../models/corpus/document-system';
 import { ElementType } from '../models/corpus/element-type';
 import { v4 as uuidv4 } from 'uuid';
@@ -64,6 +63,13 @@ export class WorkspaceService {
     return this.http.post<WorkspaceChoice>(`${this.workspacesUrl}`, workspace);
   }
 
+  public getWorkspaceName(workspaceId: number) {
+    return this.http.get(
+      `${this.workspacesUrl}/name/${workspaceId}`,
+      { responseType: "text" }
+    );
+  }
+
   //TILE
 
   /**
@@ -74,7 +80,7 @@ export class WorkspaceService {
    * @returns {Observable<boolean>} observable dell'esito (positivo/negativo) del salvataggio
    */
   public saveWorkspaceStatus(workspaceId: number, localStorageData: any, openTiles: Map<string, Tile<any>>): Observable<boolean> {
-    let tiles: Array<Tile<any>> = [];
+    const tiles: Array<Tile<any>> = [];
     for (const [tileId, tile] of openTiles.entries()) {
       //tile.tileConfig = JSON.stringify(tile.tileConfig); //passo le configurazioni come stringa
 
@@ -83,11 +89,11 @@ export class WorkspaceService {
         delete tile.tileConfig.resizeit;
       }
 
-      let newTile = new Tile(tile.id!, tile.workspaceId!, tile.content, JSON.stringify(tile.tileConfig), tile.type!)
+      const newTile = new Tile(tile.id!, tile.workspaceId!, tile.content, JSON.stringify(tile.tileConfig), tile.type!)
       tiles.push(newTile);
     }
 
-    let workspace = new Workspace(workspaceId, tiles, localStorageData);
+    const workspace = new Workspace(workspaceId, tiles, localStorageData);
 
     return this.http.put<boolean>(
       `${this.workspacesUrl}/layout`,
@@ -154,7 +160,7 @@ export class WorkspaceService {
    * @returns {Observable<DocumentSystem>} observable del sistema documentale
    */
   public retrieveCorpus(): Observable<DocumentSystem> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
     return this.http.get<DocumentSystem>(`${this.cashUrl}/api/getDocumentSystem?requestUUID=${uuid}`);
     //return this.http.get<DocumentSystem>('assets/mock/files.json')
@@ -167,9 +173,9 @@ export class WorkspaceService {
    * @returns {Observable<any>} observable del file caricato nel sistema documentale
    */
   public uploadFile(element_id: number, file: File): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
-    let formData: FormData = new FormData();
+    const formData: FormData = new FormData();
     formData.append('file', file);
     return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
   }
@@ -182,9 +188,9 @@ export class WorkspaceService {
    * @returns {Observable<any>} observable dell'elemento documentale aggiornato
    */
   public renameElement(element_id: number, rename_string: string, type: ElementType): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
-    let payload = {
+    const payload = {
       "uuid": uuid,
       "user-id": 0,
       "element-id": element_id,
@@ -207,9 +213,9 @@ export class WorkspaceService {
    * @returns {Observable<any>} observable dell'esito della cancellazione
    */
   public removeElement(element_id: number, type: ElementType): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
-    let payload = {
+    const payload = {
       "uuid": uuid,
       "user-id": 0,
       "element-id": element_id
@@ -232,7 +238,7 @@ export class WorkspaceService {
    * @returns {Observable<any>} observable dell'elemento documentale modificato
    */
   public moveElement(element_id: number, target_id: number, type: ElementType): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
     let realTargetId = target_id;
     // To be able to move to the root it is necessary to change the target id from 0 to 1 (which in the db appears to be the root)
@@ -240,7 +246,7 @@ export class WorkspaceService {
       realTargetId = 1;
     }
 
-    let payload = {
+    const payload = {
       "uuid": uuid,
       "user-id": 0,
       "element-id": element_id,
@@ -262,9 +268,9 @@ export class WorkspaceService {
    * @returns {Observable<any>} observable della nuova cartella inserita
    */
   public addFolder(element_id: number): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
-    let payload = {
+    const payload = {
       "uuid": uuid,
       "user-id": 0,
       "element-id": element_id

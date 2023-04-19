@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors, Validators } from '@angular/forms';
+import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 
 /**
  * Funzione di validazione che controlla che l'uri sia correttamente formato

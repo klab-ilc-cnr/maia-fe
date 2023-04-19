@@ -26,8 +26,8 @@ export class WorkspaceListComponent implements OnInit {
   private delete = (id: number, name: string): void => {
     this.showOperationInProgress('Sto cancellando');
 
-    let errorMsg = 'Errore nell\'eliminare il workspace \'' + name + '\'';
-    let successMsg = 'Workspace \'' + name + '\' eliminato con successo';
+    const errorMsg = 'Errore nell\'eliminare il workspace \'' + name + '\'';
+    const successMsg = 'Workspace \'' + name + '\' eliminato con successo';
 
     this.workspaceService.deleteWorkspace(id).subscribe({
       next: (data) => {
@@ -66,9 +66,9 @@ export class WorkspaceListComponent implements OnInit {
   workspace: WorkspaceChoice = new WorkspaceChoice;
 
   /**Definisce se è aperto il dialog del workspace */
-  workspaceDialog: boolean = false;
+  workspaceDialog = false;
   /** ? */ //TODO verificare perché non sembra utilizzato
-  submitted: boolean = false;
+  submitted = false;
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -144,7 +144,7 @@ export class WorkspaceListComponent implements OnInit {
    * @param workspace {WorkspaceChoice} workspace da cancellare
    */
   showDeleteWorkspaceModal(workspace: WorkspaceChoice) {
-    let confirmMsg = 'Stai per cancellare il workspace \'' + workspace.name + '\'';
+    const confirmMsg = 'Stai per cancellare il workspace \'' + workspace.name + '\'';
 
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.delete(workspace.id!, (workspace.name || "")), workspace.id, workspace.name);

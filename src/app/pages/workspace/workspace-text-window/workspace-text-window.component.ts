@@ -5,7 +5,7 @@ import { AnnotationService } from 'src/app/services/annotation.service';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TextRow } from 'src/app/models/text/text-row';
 import { MessageService, SelectItem } from 'primeng/api';
 import { LayerService } from 'src/app/services/layer.service';

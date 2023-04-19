@@ -7,6 +7,10 @@ import { IconRenameComponent } from './icon-rename/icon-rename.component';
 import { IconMoveComponent } from './icon-move/icon-move.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconLayerGroupComponent } from './icon-layer-group/icon-layer-group.component';
+import { IconAuthorComponent } from './icon-author/icon-author.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { IconNoteComponent } from './icon-note/icon-note.component';
+import { IconLockComponent } from './icon-lock/icon-lock.component';
 
 
 @NgModule({
@@ -16,7 +20,10 @@ import { IconLayerGroupComponent } from './icon-layer-group/icon-layer-group.com
     IconUploadFileComponent,
     IconRenameComponent,
     IconMoveComponent,
-    IconLayerGroupComponent
+    IconLayerGroupComponent,
+    IconAuthorComponent,
+    IconNoteComponent,
+    IconLockComponent
   ],
   exports: [
     IconBaseComponent,
@@ -24,11 +31,15 @@ import { IconLayerGroupComponent } from './icon-layer-group/icon-layer-group.com
     IconUploadFileComponent,
     IconRenameComponent,
     IconMoveComponent,
-    IconLayerGroupComponent
+    IconLayerGroupComponent,
+    IconAuthorComponent,
+    IconNoteComponent,
+    IconLockComponent
   ],
   imports: [
     CommonModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    TooltipModule
   ]
 })
 export class IconsModule { }
