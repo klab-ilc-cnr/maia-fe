@@ -1,0 +1,36 @@
+{
+    "type" : "OntoLex-Lemon model",
+    "elements" : [ {
+      "label" : "form",
+      "count" : 60,
+      "hasChildren" : true
+    }, {
+      "label" : "sense",
+      "count" : 3,
+      "hasChildren" : true
+    }, {
+      "label" : "frame",
+      "count" : 0,
+      "hasChildren" : false
+    }, {
+      "label" : "lexicalConcept",
+      "count" : 0,
+      "hasChildren" : false
+    }, {
+      "label" : "concept",
+      "count" : 0,
+      "hasChildren" : false
+    }, {
+      "label" : "subterm",
+      "count" : 0,
+      "hasChildren" : false
+    }, {
+      "label" : "constituent",
+      "count" : 0,
+      "hasChildren" : false
+    }, {
+      "label" : "etymology",
+      "count" : 0,
+      "hasChildren" : false
+    } ]
+  }

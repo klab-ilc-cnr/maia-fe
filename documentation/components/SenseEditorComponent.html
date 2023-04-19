@@ -1,0 +1,1743 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  SenseEditorComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/controllers/editors/sense-editor/sense-editor.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente dell&#39;editor per i sensi</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/AfterViewInit" target="_blank" >AfterViewInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-sense-editor</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./sense-editor.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./sense-editor.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#attestationsList" >attestationsList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#definitionInput" >definitionInput</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteElement" >deleteElement</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initialValues" >initialValues</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#lastUpdate" >lastUpdate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#noteInput" >noteInput</a>
+                            </li>
+                            <li>
+                                <a href="#pendingChanges" >pendingChanges</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#referenceInput" >referenceInput</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscription" >subscription</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#handleSave" >handleSave</a>
+                            </li>
+                            <li>
+                                <a href="#loadData" >loadData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadSense" >loadSense</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onPendingChanges" >onPendingChanges</a>
+                            </li>
+                            <li>
+                                <a href="#showDeleteModal" >showDeleteModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#instanceName" >instanceName</a>
+                            </li>
+                            <li>
+                                <a href="#lexicalEntryID" >lexicalEntryID</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(commonService: <a href="../injectables/CommonService.html" target="_self">CommonService</a>, lexiconService: <a href="../injectables/LexiconService.html" target="_self">LexiconService</a>, loggedUserService: <a href="../injectables/LoggedUserService.html" target="_self">LoggedUserService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:71</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per SenseEditorComponent</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>commonService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommonService.html" target="_self" >CommonService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi di uso comune</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>lexiconService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LexiconService.html" target="_self" >LexiconService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi al lessico</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>loggedUserService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoggedUserService.html" target="_self" >LoggedUserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi all&#39;utente loggato</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi dei messaggi primeng</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi di configurazione dei messaggi</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="instanceName"></a>
+                        <b>instanceName</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:35</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Identificativo del senso</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="lexicalEntryID"></a>
+                        <b>lexicalEntryID</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:37</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Identificativo dell&#39;entrata lessicale di appartenenza</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleSave"></a>
+                    <span class="name">
+                        <span ><b>handleSave</b></span>
+                        <a href="#handleSave"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleSave()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="113"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:113</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per la gestione del salvataggio delle modifiche al senso</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadData"></a>
+                    <span class="name">
+                        <span ><b>loadData</b></span>
+                        <a href="#loadData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadData()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="147"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:147</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per la gestione del caricamento dei dati</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadSense"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>loadSense</b></span>
+                        <a href="#loadSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadSense()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="182"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:182</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per il caricamento dei dati del senso</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia AfterViewInit, utilizzato per sottoscrivere il notify</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:108</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnDestroy, utilizzato per la cancellazione della sottoscrizione</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:90</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per il caricamento preliminare dei dati</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPendingChanges"></a>
+                    <span class="name">
+                        <span ><b>onPendingChanges</b></span>
+                        <a href="#onPendingChanges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPendingChanges()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="157"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:157</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per la gestione delle modifiche pendenti</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDeleteModal"></a>
+                    <span class="name">
+                        <span ><b>showDeleteModal</b></span>
+                        <a href="#showDeleteModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDeleteModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="170"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:170</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il modale di cancellazione ed eventualmente richiama la cancellazione stessa</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="214"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:214</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione fallita</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio di errore</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="228"
+                            class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:228</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione in corso</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio da visualizzare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="attestationsList"></a>
+                    <span class="name">
+                        <span ><b>attestationsList</b></span>
+                        <a href="#attestationsList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista delle attestazioni</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="definitionInput"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>definitionInput</b></span>
+                        <a href="#definitionInput"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Text input della definizione</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteElement"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteElement</b></span>
+                        <a href="#deleteElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Proprietà di cancellazione di un elemento</p>
+</div>
+                </td>
+            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>senseID</td>
+                                                    <td>
+                                                            <code><p>identificativo del senso</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initialValues"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initialValues</b></span>
+                        <a href="#initialValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Valori iniziali del form</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastUpdate"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>lastUpdate</b></span>
+                        <a href="#lastUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Data di ultimo aggiornamento</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se è in corso il caricamento</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="noteInput"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>noteInput</b></span>
+                        <a href="#noteInput"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Text input delle note</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pendingChanges"></a>
+                    <span class="name">
+                        <span ><b>pendingChanges</b></span>
+                        <a href="#pendingChanges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se ci sono modifiche pendenti</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al popup di conferma cancellazione di un&#39;annotazione</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="referenceInput"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>referenceInput</b></span>
+                        <a href="#referenceInput"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Text input del riferimento</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscription</b></span>
+                        <a href="#subscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subscription</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/controllers/editors/sense-editor/sense-editor.component.ts:21</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Sottoscrizione per la gestione del notify</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { forkJoin, Subscription, take } from &#x27;rxjs&#x27;;
+import { LexicalEntryType } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { LexicalSenseUpdater, LEXICAL_SENSE_RELATIONS } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { CommonService } from &#x27;src/app/services/common.service&#x27;;
+import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
+import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
+
+/**Componente dell&#x27;editor per i sensi */
+@Component({
+  selector: &#x27;app-sense-editor&#x27;,
+  templateUrl: &#x27;./sense-editor.component.html&#x27;,
+  styleUrls: [&#x27;./sense-editor.component.scss&#x27;]
+})
+export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
+  /**Sottoscrizione per la gestione del notify */
+  private subscription!: Subscription;
+
+  /**Text input delle note */
+  noteInput?: string;
+  /**Text input della definizione */
+  definitionInput?: string;
+  /**Text input del riferimento */
+  referenceInput?: string;
+  /**Lista delle attestazioni */
+  attestationsList: any[] &#x3D; [];
+  /**Definisce se è in corso il caricamento */
+  loading?: boolean;
+
+  /**Identificativo del senso */
+  @Input() instanceName!: string;
+  /**Identificativo dell&#x27;entrata lessicale di appartenenza */
+  @Input() lexicalEntryID!: string | undefined;
+
+  /**Data di ultimo aggiornamento */
+  lastUpdate?: string &#x3D; &#x27;&#x27;;
+
+  /**Definisce se ci sono modifiche pendenti */
+  pendingChanges &#x3D; false;
+
+  /**Valori iniziali del form */
+  private initialValues!: { definition: string, reference: string, note: string };
+  /**Riferimento al popup di conferma cancellazione di un&#x27;annotazione */
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
+  /**
+   * @private
+   * Proprietà di cancellazione di un elemento
+   * @param senseID {string} identificativo del senso
+   */
+  private deleteElement &#x3D; (senseID: string): void &#x3D;&gt; {
+    this.showOperationInProgress(&quot;Sto cancellando&quot;);
+
+    const errorMsg &#x3D; &quot;Errore nell&#x27;eliminare il senso&quot;;
+    const successMsg &#x3D; &quot;Senso eliminato con successo&quot;;
+
+    this.lexiconService.deleteLexicalSense(senseID).pipe(take(1)).subscribe({
+      next: () &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.lexicalEntryID, isRemove: true });
+        Swal.close();
+      },
+      error: () &#x3D;&gt; {
+        this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg);
+      }
+    })
+  }
+
+  /**
+   * Costruttore per SenseEditorComponent
+   * @param commonService {CommonService} servizi di uso comune
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param loggedUserService {LoggedUserService} servizi relativi all&#x27;utente loggato
+   * @param messageService {MessageService} servizi dei messaggi primeng
+   * @param msgConfService {MessageConfigurationSevice} servizi di configurazione dei messaggi
+   */
+  constructor(
+    private commonService: CommonService,
+    private lexiconService: LexiconService,
+    private loggedUserService: LoggedUserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService
+  ) { }
+
+  /**Metodo dell&#x27;interfaccia OnInit, utilizzato per il caricamento preliminare dei dati */
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  /**Metodo dell&#x27;interfaccia AfterViewInit, utilizzato per sottoscrivere il notify */
+  ngAfterViewInit(): void {
+    this.subscription &#x3D; this.commonService.notifyObservable$.subscribe((res) &#x3D;&gt; {
+      if (&#x27;option&#x27; in res &amp;&amp; res.option &#x3D;&#x3D;&#x3D; &#x27;sense_selected&#x27; &amp;&amp; res.value !&#x3D;&#x3D; this.instanceName &amp;&amp; this.lexicalEntryID &#x3D;&#x3D;&#x3D; res.lexEntryId) {
+        this.instanceName &#x3D; res.value;
+        this.loadData();
+      }
+      if (&#x27;option&#x27; in res &amp;&amp; res.option &#x3D;&#x3D;&#x3D; &#x27;sense_editor_save&#x27; &amp;&amp; this.instanceName &#x3D;&#x3D;&#x3D; res.value) {
+        this.handleSave();
+      }
+    });
+  }
+
+  /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per la cancellazione della sottoscrizione */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  /**Metodo per la gestione del salvataggio delle modifiche al senso */
+  handleSave() {
+    const successMsg &#x3D; &quot;Senso aggiornato con successo&quot;;
+
+    const currentUser &#x3D; this.loggedUserService.currentUser;
+    const currentUserName &#x3D; currentUser?.name + &#x27;.&#x27; + currentUser?.surname;
+
+    // eslint-disable-next-line prefer-const
+    let httpList &#x3D; [];
+
+    if (this.definitionInput !&#x3D;&#x3D; this.initialValues.definition) {
+      httpList.push(this.lexiconService.updateLexicalSense(currentUserName, this.instanceName, &lt;LexicalSenseUpdater&gt;{ relation: LEXICAL_SENSE_RELATIONS.DEFINITION, value: this.definitionInput }))
+      this.initialValues.definition &#x3D; this.definitionInput!;
+    }
+    if (this.referenceInput !&#x3D;&#x3D; this.initialValues.reference) {
+      httpList.push(this.lexiconService.updateLexicalSense(currentUserName, this.instanceName, &lt;LexicalSenseUpdater&gt;{ relation: LEXICAL_SENSE_RELATIONS.REFERENCE, value: this.referenceInput }))
+      this.initialValues.reference &#x3D; this.referenceInput!;
+    }
+    if (this.noteInput !&#x3D;&#x3D; this.initialValues.note) {
+      httpList.push(this.lexiconService.updateLexicalSense(currentUserName, this.instanceName, &lt;LexicalSenseUpdater&gt;{ relation: LEXICAL_SENSE_RELATIONS.NOTE, value: this.noteInput }))
+      this.initialValues.note &#x3D; this.noteInput!;
+    }
+
+    if (httpList.length &gt; 0) {
+      forkJoin(httpList).pipe(take(1)).subscribe((res: string[]) &#x3D;&gt; {
+        this.pendingChanges &#x3D; false;
+        this.commonService.notifyOther({ option: &#x27;lexicon_edit_pending_changes&#x27;, value: this.pendingChanges, type: LexicalEntryType.SENSE })
+        this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.lexicalEntryID });
+        this.lastUpdate &#x3D; new Date(res[0]).toLocaleString();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      });
+    }
+  }
+
+  /**Metodo per la gestione del caricamento dei dati */
+  loadData() {
+    this.loading &#x3D; true;
+
+    this.loadSense();
+  }
+
+  /**
+   * Metodo per la gestione delle modifiche pendenti
+   * @returns {void}
+   */
+  onPendingChanges() {
+    if (this.pendingChanges) {
+      return;
+    }
+
+    this.pendingChanges &#x3D; true;
+    this.commonService.notifyOther({ option: &#x27;lexicon_edit_pending_changes&#x27;, value: this.pendingChanges, type: LexicalEntryType.SENSE });
+  }
+
+  /**
+ * Metodo che visualizza il modale di cancellazione ed eventualmente richiama la cancellazione stessa
+ * @returns {void}
+ */
+  showDeleteModal(): void {
+    const confirmMsg &#x3D; &#x27;Stai per cancellare una forma&#x27;;
+
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteElement(this.instanceName), this.instanceName);
+  }
+
+  /**
+   * @private
+   * Metodo per il caricamento dei dati del senso
+   */
+  private loadSense() {
+    this.lexiconService.getSense(this.instanceName).subscribe({
+      next: (data: any) &#x3D;&gt; {
+        this.definitionInput &#x3D; data.definition.find((el: any) &#x3D;&gt; el.propertyID &#x3D;&#x3D;&#x3D; &#x27;definition&#x27;).propertyValue;
+        this.noteInput &#x3D; data.note;
+
+        this.attestationsList &#x3D; data.links.find((el: any) &#x3D;&gt; el.type &#x3D;&#x3D;&#x3D; &#x27;Attestation&#x27;).elements.map((att: any) &#x3D;&gt; ({
+          name: att[&#x27;label&#x27;],
+          code: att[&#x27;label&#x27;]
+        }));
+
+        this.initialValues &#x3D; {
+          definition: this.definitionInput!,
+          reference: this.referenceInput!,
+          note: data.note
+        };
+
+        this.lastUpdate &#x3D; data.lastUpdate ? new Date(data.lastUpdate).toLocaleString() : &#x27;&#x27;;
+
+        this.loading &#x3D; false;
+      },
+      error: (error: any) &#x3D;&gt; {
+        console.error(error);
+      }
+    })
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;per favore attendere&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--PLACEHOLDER quando siamo in fase di loading dati--&gt;
+&lt;p-skeleton *ngIf&#x3D;&quot;loading&quot; width&#x3D;&quot;30rem&quot; height&#x3D;&quot;40rem&quot;&gt;&lt;/p-skeleton&gt;
+
+&lt;div *ngIf&#x3D;&quot;!loading&quot; class&#x3D;&quot;card&quot; [style]&#x3D;&quot;{&#x27;height&#x27;: &#x27;100%&#x27;}&quot;&gt;
+    &lt;div class&#x3D;&quot;formgrid grid&quot;&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;em style&#x3D;&quot;float: right;&quot;&gt;Last update: {{lastUpdate}}&lt;/em&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;definition&quot;&gt;Definition&lt;/label&gt;
+            &lt;textarea id&#x3D;&quot;definition&quot; [(ngModel)]&#x3D;&quot;definitionInput&quot; type&#x3D;&quot;text&quot; rows&#x3D;&quot;4&quot; (change)&#x3D;&quot;onPendingChanges()&quot;
+                class&#x3D;&quot;text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full&quot;&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;reference&quot;&gt;Reference&lt;/label&gt;
+            &lt;input id&#x3D;&quot;reference&quot; [(ngModel)]&#x3D;&quot;referenceInput&quot; type&#x3D;&quot;text&quot; pInputText (change)&#x3D;&quot;onPendingChanges()&quot;
+                class&#x3D;&quot;text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;note&quot;&gt;Note&lt;/label&gt;
+            &lt;textarea id&#x3D;&quot;note&quot; [(ngModel)]&#x3D;&quot;noteInput&quot; type&#x3D;&quot;text&quot; rows&#x3D;&quot;4&quot; (change)&#x3D;&quot;onPendingChanges()&quot;
+                class&#x3D;&quot;text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full&quot;&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+            &lt;label for&#x3D;&quot;attestations&quot;&gt;Attestations&lt;/label&gt;
+            &lt;p-listbox [listStyle]&#x3D;&quot;{&#x27;max-height&#x27;: &#x27;250px&#x27;}&quot; [readonly]&#x3D;&quot;true&quot; [options]&#x3D;&quot;attestationsList&quot;
+                optionLabel&#x3D;&quot;name&quot; emptyMessage&#x3D;&quot;No attestation found&quot;&gt;&lt;/p-listbox&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-11&quot;&gt;
+            &lt;button pButton type&#x3D;&quot;button&quot; class&#x3D;&quot;w-full&quot; label&#x3D;&quot;Save&quot; (click)&#x3D;&quot;handleSave()&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;field col-1&quot;&gt;
+            &lt;button pButton pRipple icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button p-button-danger w-full&quot; (click)&#x3D;&quot;showDeleteModal()&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./sense-editor.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--PLACEHOLDER quando siamo in fase di loading dati--><p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton><div *ngIf="!loading" class="card" [style]="{\'height\': \'100%\'}">    <div class="formgrid grid">        <div class="field col-12">            <em style="float: right;">Last update: {{lastUpdate}}</em>        </div>        <div class="field col-12">            <label for="definition">Definition</label>            <textarea id="definition" [(ngModel)]="definitionInput" type="text" rows="4" (change)="onPendingChanges()"                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>        </div>        <div class="field col-12">            <label for="reference">Reference</label>            <input id="reference" [(ngModel)]="referenceInput" type="text" pInputText (change)="onPendingChanges()"                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">        </div>        <div class="field col-12">            <label for="note">Note</label>            <textarea id="note" [(ngModel)]="noteInput" type="text" rows="4" (change)="onPendingChanges()"                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>        </div>        <div class="field col-12">            <label for="attestations">Attestations</label>            <p-listbox [listStyle]="{\'max-height\': \'250px\'}" [readonly]="true" [options]="attestationsList"                optionLabel="name" emptyMessage="No attestation found"></p-listbox>        </div>        <div class="field col-11">            <button pButton type="button" class="w-full" label="Save" (click)="handleSave()"></button>        </div>        <div class="field col-1">            <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger w-full" (click)="showDeleteModal()"></button>        </div>    </div></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'SenseEditorComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SenseEditorComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

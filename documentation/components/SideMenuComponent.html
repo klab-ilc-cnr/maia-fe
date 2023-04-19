@@ -1,0 +1,1095 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  SideMenuComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/controllers/page-controllers/side-menu/side-menu.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente del menu laterale di navigazione</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-side-menu</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./side-menu.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./side-menu.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#currentPath" >currentPath</a>
+                            </li>
+                            <li>
+                                <a href="#display" >display</a>
+                            </li>
+                            <li>
+                                <a href="#faChevronDown" >faChevronDown</a>
+                            </li>
+                            <li>
+                                <a href="#faChevronLeft" >faChevronLeft</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isActive" >isActive</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isActiveInternal" >isActiveInternal</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onNavigate" >onNavigate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#canManageUsers" >canManageUsers</a>
+                                </li>
+                                <li>
+                                    <a href="#canManageLayers" >canManageLayers</a>
+                                </li>
+                                <li>
+                                    <a href="#canManageTagsets" >canManageTagsets</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, loggedUserService: <a href="../injectables/LoggedUserService.html" target="_self">LoggedUserService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:23</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per SideMenuComponent</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la navigazione fra le viste //TODO valutare rimozione per mancato uso</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>loggedUserService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoggedUserService.html" target="_self" >LoggedUserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi all&#39;utente loggato</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isActive"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>isActive</b></span>
+                        <a href="#isActive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isActive(urls: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:63</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che valuta se un path è attivo</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>urls</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>url da valutare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>definisce se un path è attivo</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isActiveInternal"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>isActiveInternal</b></span>
+                        <a href="#isActiveInternal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isActiveInternal(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="80"
+                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:80</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che dato un url verifica se questo è attivo (tutte le sue parti sono presenti nel path corrente)</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>url da verificare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>definisce se il percorso è attivo</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:40</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onNavigate"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>onNavigate</b></span>
+                        <a href="#onNavigate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onNavigate(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:96</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che rimuove eventuali slash iniziali e/o finali dall&#39;url verso cui navigare</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>url verso cui navigare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentPath"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>currentPath</b></span>
+                        <a href="#currentPath"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[&#x27;&#x27;]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Path corrente in forma di lista di stringhe</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="display"></a>
+                    <span class="name">
+                        <span ><b>display</b></span>
+                        <a href="#display"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:20</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>?</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="faChevronDown"></a>
+                    <span class="name">
+                        <span ><b>faChevronDown</b></span>
+                        <a href="#faChevronDown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>faChevronDown</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:16</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Icona freccia espandi</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="faChevronLeft"></a>
+                    <span class="name">
+                        <span ><b>faChevronLeft</b></span>
+                        <a href="#faChevronLeft"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>faChevronLeft</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:18</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Icona freccia comprimi</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="canManageUsers"></a>
+                        <span class="name"><b>canManageUsers</b><a href="#canManageUsers"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>canManageUsers()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:44</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter restituisce se l&#39;utente è autorizzato alla gestione utenti</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="canManageLayers"></a>
+                        <span class="name"><b>canManageLayers</b><a href="#canManageLayers"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>canManageLayers()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:49</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter restituisce se l&#39;utente è autorizzato alla gestione layer</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="canManageTagsets"></a>
+                        <span class="name"><b>canManageTagsets</b><a href="#canManageTagsets"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>canManageTagsets()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/controllers/page-controllers/side-menu/side-menu.component.ts:54</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter restituisce se l&#39;utente è autorizzato alla gestione tagset</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { NavigationEnd, Router } from &#x27;@angular/router&#x27;;
+import { filter } from &#x27;rxjs/operators&#x27;;
+import { faChevronDown } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
+import { faChevronLeft } from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
+import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
+
+/**Componente del menu laterale di navigazione */
+@Component({
+  selector: &#x27;app-side-menu&#x27;,
+  templateUrl: &#x27;./side-menu.component.html&#x27;,
+  styleUrls: [&#x27;./side-menu.component.scss&#x27;]
+})
+export class SideMenuComponent implements OnInit {
+  /**Icona freccia espandi */
+  faChevronDown &#x3D; faChevronDown;
+  /**Icona freccia comprimi */
+  faChevronLeft &#x3D; faChevronLeft;
+  /**? */ //TODO verificarne l&#x27;uso, non risultano riferimenti nemmeno nel template
+  display: any;
+
+  /**Path corrente in forma di lista di stringhe */
+  public currentPath: string[] &#x3D; [&#x27;&#x27;];
+
+  /**
+   * Costruttore per SideMenuComponent
+   * @param router {Router} servizi per la navigazione fra le viste //TODO valutare rimozione per mancato uso
+   * @param loggedUserService {LoggedUserService} servizi relativi all&#x27;utente loggato
+   */
+  constructor(
+    private router: Router,
+    private loggedUserService : LoggedUserService
+  ) {
+    router.events.pipe(
+      filter(e &#x3D;&gt; e instanceof NavigationEnd)
+    ).subscribe(evt &#x3D;&gt; this.onNavigate((&lt;NavigationEnd&gt;evt).urlAfterRedirects));
+  }
+
+  /**Metodo dell&#x27;interfaccia OnInit */ //TODO valutare rimozione per mancato uso
+  ngOnInit(): void {
+  }
+
+  /**Getter restituisce se l&#x27;utente è autorizzato alla gestione utenti */
+  public get canManageUsers(): boolean {
+    return this.loggedUserService.canManageUsers();
+  }
+
+  /**Getter restituisce se l&#x27;utente è autorizzato alla gestione layer */
+  public get canManageLayers(): boolean{
+    return this.loggedUserService.canManageLayers();
+  }
+
+  /**Getter restituisce se l&#x27;utente è autorizzato alla gestione tagset */
+  public get canManageTagsets(): boolean{
+    return this.loggedUserService.canManageTagsets();
+  }
+
+  /**
+   * Metodo che valuta se un path è attivo
+   * @param urls {string[]} url da valutare
+   * @returns {boolean} definisce se un path è attivo
+   */
+  public isActive(urls: string[]): boolean {
+    var isActive &#x3D; false;
+    urls.forEach(url &#x3D;&gt; {
+      if (this.isActiveInternal(url)) {
+        isActive &#x3D; true;
+        return;
+      }
+    });
+
+    return isActive;
+  }
+
+  /**
+   * Metodo che dato un url verifica se questo è attivo (tutte le sue parti sono presenti nel path corrente)
+   * @param url {string} url da verificare
+   * @returns {boolean} definisce se il percorso è attivo 
+   */
+  public isActiveInternal(url: string): boolean {
+    const requiredPath &#x3D; url.split(&quot;/&quot;) || [&#x27;&#x27;];
+    for (let i &#x3D; 0; i &lt; requiredPath.length; i++) {
+      if ((this.currentPath.length &lt;&#x3D; i) ||
+        (requiredPath[i].toLowerCase() !&#x3D; this.currentPath[i].toLowerCase())) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Metodo che rimuove eventuali slash iniziali e/o finali dall&#x27;url verso cui navigare
+   * @param url {string} url verso cui navigare
+   */
+  public onNavigate(url: string) {
+    const withoutLeadingSlash &#x3D; url.startsWith(&quot;/&quot;) ? url.substr(1) : url;
+    const withoutLeadingEndingSlash &#x3D; url.endsWith(&quot;/&quot;) ? url.slice(0, -1) : withoutLeadingSlash;
+    this.currentPath &#x3D; withoutLeadingEndingSlash.split(&quot;/&quot;);
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;layout-sidebar&quot;&gt;
+  &lt;div class&#x3D;&quot;layout-menu-container&quot;&gt;
+    &lt;ul class&#x3D;&quot;layout-menu&quot; role&#x3D;&quot;menu&quot; id&#x3D;&quot;side-menu&quot;&gt;
+      &lt;li class&#x3D;&quot;layout-menuitem-category&quot; role&#x3D;&quot;none&quot;&gt;
+        &lt;div class&#x3D;&quot;layout-menuitem-root-text&quot;&gt;
+          &lt;div class&#x3D;&quot;logo-element&quot;&gt;
+            IN+
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;ul role&#x3D;&quot;menu&quot;&gt;
+          &lt;li *ngIf&#x3D;&quot;canManageUsers&quot;
+            [ngClass]&#x3D;&quot;{&#x27;active&#x27;: isActive([&#x27;usersManagement/users&#x27;,&#x27;usersManagement/userDetails&#x27;])}&quot;&gt;
+            &lt;a routerLink&#x3D;&quot;/usersManagement/users&quot;&gt;
+              &lt;i class&#x3D;&quot;layout-menuitem-icon pi pi-users&quot;&gt;&lt;/i&gt;
+              &lt;span&gt;Gestione utenti&lt;/span&gt;
+              &lt;i class&#x3D;&quot;pi pi-chevron-down pi-fw ms-auto&quot; *ngIf&#x3D;&quot;isActive([&#x27;usersManagement/users&#x27;,&#x27;usersManagement/userDetails&#x27;])&quot;&gt;&lt;/i&gt;
+              &lt;i class&#x3D;&quot;pi pi-chevron-right pi-fw ms-auto&quot; *ngIf&#x3D;&quot;!isActive([&#x27;usersManagement/users&#x27;,&#x27;usersManagement/userDetails&#x27;])&quot;&gt;&lt;/i&gt;
+            &lt;/a&gt;
+            &lt;ul [ngClass]&#x3D;&quot;{&#x27;collapse&#x27;:!(isActive([&#x27;usersManagement/users&#x27;,&#x27;usersManagement/userDetails&#x27;]))}&quot;&gt;
+              &lt;li [ngClass]&#x3D;&quot;{&#x27;active&#x27;: isActive([&#x27;usersManagement/users&#x27;])}&quot;&gt;
+                &lt;a routerLink&#x3D;&quot;/usersManagement/users&quot;&gt;
+                  &lt;span&gt;Anagrafiche&lt;/span&gt;
+                &lt;/a&gt;
+              &lt;/li&gt;
+              &lt;li [ngClass]&#x3D;&quot;{&#x27;active&#x27;: isActive([&#x27;usersManagement/userDetails&#x27;])}&quot; class&#x3D;&quot;d-none&quot;&gt;
+                &lt;a routerLink&#x3D;&quot;/usersManagement/userDetails&quot;&gt;
+                  &lt;span&gt;Ruoli e permessi&lt;/span&gt;
+                &lt;/a&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li [ngClass]&#x3D;&quot;{&#x27;active&#x27;: isActive([&#x27;workspaces&#x27;])}&quot;&gt;
+            &lt;a routerLink&#x3D;&quot;/workspaces&quot;&gt;
+              &lt;i class&#x3D;&quot;layout-menuitem-icon pi pi-desktop&quot;&gt;&lt;/i&gt;
+              &lt;span&gt;Workspace&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li *ngIf&#x3D;&quot;canManageLayers&quot; [ngClass]&#x3D;&quot;{&#x27;active&#x27;: isActive([&#x27;layers&#x27;])}&quot;&gt;
+            &lt;a routerLink&#x3D;&quot;/layers&quot;&gt;
+              &lt;app-icon-layer-group class&#x3D;&quot;layout-menuitem-icon&quot;&gt;&lt;/app-icon-layer-group&gt;
+              &lt;span&gt;Layer&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li *ngIf&#x3D;&quot;canManageTagsets&quot; [ngClass]&#x3D;&quot;{&#x27;active&#x27;: isActive([&#x27;tagsets&#x27;])}&quot;&gt;
+            &lt;a routerLink&#x3D;&quot;/tagsets&quot;&gt;
+              &lt;i class&#x3D;&quot;layout-menuitem-icon pi pi-tags&quot;&gt;&lt;/i&gt;
+              &lt;span&gt;Tagset&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./side-menu.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="layout-sidebar">  <div class="layout-menu-container">    <ul class="layout-menu" role="menu" id="side-menu">      <li class="layout-menuitem-category" role="none">        <div class="layout-menuitem-root-text">          <div class="logo-element">            IN+          </div>        </div>        <ul role="menu">          <li *ngIf="canManageUsers"            [ngClass]="{\'active\': isActive([\'usersManagement/users\',\'usersManagement/userDetails\'])}">            <a routerLink="/usersManagement/users">              <i class="layout-menuitem-icon pi pi-users"></i>              <span>Gestione utenti</span>              <i class="pi pi-chevron-down pi-fw ms-auto" *ngIf="isActive([\'usersManagement/users\',\'usersManagement/userDetails\'])"></i>              <i class="pi pi-chevron-right pi-fw ms-auto" *ngIf="!isActive([\'usersManagement/users\',\'usersManagement/userDetails\'])"></i>            </a>            <ul [ngClass]="{\'collapse\':!(isActive([\'usersManagement/users\',\'usersManagement/userDetails\']))}">              <li [ngClass]="{\'active\': isActive([\'usersManagement/users\'])}">                <a routerLink="/usersManagement/users">                  <span>Anagrafiche</span>                </a>              </li>              <li [ngClass]="{\'active\': isActive([\'usersManagement/userDetails\'])}" class="d-none">                <a routerLink="/usersManagement/userDetails">                  <span>Ruoli e permessi</span>                </a>              </li>            </ul>          </li>          <li [ngClass]="{\'active\': isActive([\'workspaces\'])}">            <a routerLink="/workspaces">              <i class="layout-menuitem-icon pi pi-desktop"></i>              <span>Workspace</span>            </a>          </li>          <li *ngIf="canManageLayers" [ngClass]="{\'active\': isActive([\'layers\'])}">            <a routerLink="/layers">              <app-icon-layer-group class="layout-menuitem-icon"></app-icon-layer-group>              <span>Layer</span>            </a>          </li>          <li *ngIf="canManageTagsets" [ngClass]="{\'active\': isActive([\'tagsets\'])}">            <a routerLink="/tagsets">              <i class="layout-menuitem-icon pi pi-tags"></i>              <span>Tagset</span>            </a>          </li>        </ul>      </li>    </ul>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'SideMenuComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SideMenuComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

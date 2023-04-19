@@ -1,5 +1,5 @@
-import {AuthConfig} from 'angular-oauth2-oidc';
-import {environment} from '../../environments/environment';
+import { AuthConfig } from 'angular-oauth2-oidc';
+import { environment } from '../../environments/environment';
 import { OAuthModuleConfig } from 'angular-oauth2-oidc';
 
 export const authConfig: AuthConfig = {
@@ -30,9 +30,9 @@ export const authConfig: AuthConfig = {
 
 
 export const authModuleConfig: OAuthModuleConfig = {
-  resourceServer : {
+  resourceServer: {
     sendAccessToken: true,
-    allowedUrls: [environment.allowedUrls]
+    allowedUrls: [environment.allowedUrls, environment.lexoUrl]
   }
 }
 

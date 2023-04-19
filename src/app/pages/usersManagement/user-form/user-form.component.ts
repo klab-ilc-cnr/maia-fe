@@ -9,6 +9,7 @@ import { LanguageService } from 'src/app/services/language.service';
 import { Language } from 'src/app/models/language';
 import { LoaderService } from 'src/app/services/loader.service';
 
+/**Componente del form dei dati di un utente (anche nuovo) */
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
@@ -16,16 +17,32 @@ import { LoaderService } from 'src/app/services/loader.service';
 })
 export class UserFormComponent implements OnInit {
 
+  /**Riferimento al form dei dati utente */
   @ViewChild('userDetailsForm', { static: true }) userDetailsForm: NgForm | undefined;
 
+  /**Utente in lavorazione */
   user: User;
 
+  /**Definisce se è un utente in modifica */
   private editUser = false;
+  /**Definisce se è un utente in creazione */
   private newUser = false;
+  /**Identificativo per l'inserimento di un nuovo utente */
   private newId = 'new';
+  /**Lista dei ruoli utente */
   public roles = Array<string>();
+  /**Lista delle lingue che possono essere associate a un utente */
   public languages = Array<Language>();
 
+  /**
+   * Costruttore per UserFormComponent
+   * @param route {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
+   * @param router {Router} servizi per la navigazione fra le viste
+   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
+   * @param userService {UserService} servizi relativi agli utenti
+   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
+   * @param languageService {LanguageService} servizi relativi alla gestione delle lingue
+   */
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -33,23 +50,24 @@ export class UserFormComponent implements OnInit {
     private userService: UserService,
     private loggedUserService : LoggedUserService,
     private languageService : LanguageService) {
-    this.user = new User();
+    this.user = new User(); //crea un nuovo utente
 
   }
 
+  /**Metodo dell'interfaccia OnInit nel quale si recuperano i valori iniziali del componente */
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
 
-      var id = params.get('id');
+      var id = params.get('id'); //recupero l'id utente dall'url di navigazione 
 
-      if(id === this.newId)
+      if(id === this.newId) //caso di un nuovo inserimento utente
       {
         this.userDetailsForm?.reset();
         this.newUser = true;
         return;
       }
 
-      if (id != null && id != undefined) {
+      if (id != null && id != undefined) { //caso di indicazione di un id utente da modificare
         this.editUser = true;
         this.loadUser(id);
         return;
@@ -72,21 +90,31 @@ export class UserFormComponent implements OnInit {
     })
   }
 
+  /**Definisce se l'utente loggato può modificare i dati utente */
   public get canManageUsers(): boolean {
     return this.loggedUserService.canManageUsers();
   }
 
+  /**
+   * Getter dell'essere utente in modifica
+   * @returns {boolean} definisce se è un utente in modifica
+   */
   isEditUser () {
     return this.editUser;
   }
 
+  /**
+   * Getter dell'essere un inserimento di nuovo utente
+   * @returns {boolean} definisce se è un nuovo utente
+   */
   isNewUser () {
     return this.newUser;
   }
 
+  /**Metodo che procede alla creazione del nuovo utente o al salvataggio delle modifiche dell'utente selezionato */
   onSubmit() {
     this.loaderService.show();
-    if (this.editUser) {
+    if (this.editUser) { //caso dell'utente modificato
       console.log(this.user.email, this.user.id, this.user.role, this.user.active)
       this.userService.update(this.user).subscribe({
         next: (result) => {
@@ -95,7 +123,7 @@ export class UserFormComponent implements OnInit {
         }
       });
     }
-    else {
+    else { //casp inserimento di un nuovo utente
       this.userService.save(this.user).subscribe({
         next: (result) => {
           this.goToUserList();
@@ -105,18 +133,28 @@ export class UserFormComponent implements OnInit {
     }
   }
 
+  /**Metodo che naviga sul componente della lista utenti */
   goToUserList() {
     this.router.navigate(['usersManagement/users']);
   }
 
+  /**
+   * Metodo che al cambiamento della selezione nella dropdown dei ruoli aggiorna il ruolo dell'utente in lavorazione e lo pone in stato attivo
+   * @param event {any} evento di cambiamento della selezione sulla dropdown dei ruoli
+   */
   onRoleChanged(event: any) {
     console.log("selected value", event.target.value, this.user.active);
     this.user.role = event.target.value;
     this.user.active = true;
   }
 
+  /**
+   * Metodo privato che recupera i dati di un utente utilizzando il suo id
+   * @param id {string} identificativo dell'utente
+   * @returns {void}
+   */
   private loadUser(id: string): void {
-    if(!id) {
+    if(!id) { //caso di id assente
       return;
     }
 
@@ -131,6 +169,7 @@ export class UserFormComponent implements OnInit {
         });
   }
 
+  /**Metodo che richiama le informazioni dell'utente loggato */
   private loadCurrentUserProfile(): void {
     this.loaderService.show();
     this.userService

@@ -33,15 +33,16 @@
 							"src/assets"
 						],
 						"styles": [
-                            "node_modules/primeicons/primeicons.css",
+							"node_modules/primeicons/primeicons.css",
 							"node_modules/primeng/resources/themes/lara-light-blue/theme.css",
 							"node_modules/primeng/resources/primeng.min.css",
 							"node_modules/bootstrap/dist/css/bootstrap.min.css",
-							"src/styles.scss"
+							"src/styles.scss",
+              "node_modules/quill/dist/quill.snow.css"
 						],
 						"scripts": [
-                            "node_modules/jquery/dist/jquery.min.js",
-                            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+							"node_modules/jquery/dist/jquery.min.js",
+							"node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
 							"node_modules/jspanel4/dist/jspanel.js",
 							"node_modules/jspanel4/dist/extensions/contextmenu/jspanel.contextmenu.js",
 							"node_modules/jspanel4/dist/extensions/hint/jspanel.hint.js",
@@ -52,23 +53,44 @@
 						]
 					},
 					"configurations": {
-						"production": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+						"collaudo": {
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "4mb",
+									"maximumError": "10mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "6kb",
+									"maximumError": "10kb"
 								}
 							],
 							"fileReplacements": [
 								{
 									"replace": "src/environments/environment.ts",
-									"with": "src/environments/environment.prod.ts"
+									"with": "src/environments/environment.collaudo.ts"
 								}
 							],
 							"outputHashing": "all"
@@ -86,9 +108,16 @@
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "projectxFE:build",
+						"proxyConfig": "src/proxy.conf.json"
+					},
 					"configurations": {
-						"production": {
-							"browserTarget": "projectxFE:build:production"
+            "production": {
+              "browserTarget": "projectxFE:build:production"
+            },
+						"collaudo": {
+							"browserTarget": "projectxFE:build:collaudo"
 						},
 						"development": {
 							"browserTarget": "projectxFE:build:development"
@@ -130,6 +159,5 @@
 				}
 			}
 		}
-	},
-	"defaultProject": "projectxFE"
+	}
 }

@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class MessageConfigurationService {
 
-  constructor() { }
-
   generateErrorMessageConfig(msg: string): any {
     return {
       severity: 'error',
@@ -20,6 +18,15 @@ export class MessageConfigurationService {
     return {
       severity: 'success',
       summary: 'Successo',
+      detail: msg,
+      life: 3000
+    }
+  }
+
+  generateWarningMessageConfig(msg: string): any {
+    return {
+      severity: 'warn',
+      summary: 'Attenzione',
       detail: msg,
       life: 3000
     }

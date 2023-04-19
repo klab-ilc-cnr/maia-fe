@@ -54,6 +54,29 @@ import { TagsetValueNotDuplicateNameDirective } from './validators/tagset-value-
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
 import { WhitespacesValidatorDirective } from './validators/whitespaces-validator.directive';
 import { NotDuplicateNameDirective } from './validators/not-duplicate-name.directive';
+import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
+import {TreeTableModule} from 'primeng/treetable';
+import { CommonService } from './services/common.service';
+import { PanelModule } from 'primeng/panel';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import { SkeletonModule } from 'primeng/skeleton';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import { TagModule } from 'primeng/tag';
+import { UriValidator } from './validators/uri-validator.directive';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import { SplitterModule } from 'primeng/splitter';
+import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
+import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
+import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
+import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ToolbarModule } from 'primeng/toolbar';
+import { MenuModule } from 'primeng/menu';
+import { EditorModule } from 'primeng/editor';
+import { TabViewModule } from 'primeng/tabview';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [
@@ -78,7 +101,13 @@ import { NotDuplicateNameDirective } from './validators/not-duplicate-name.direc
     TagsetValueNotDuplicateNameDirective,
     RelationEditorComponent,
     WhitespacesValidatorDirective,
-    NotDuplicateNameDirective
+    NotDuplicateNameDirective,
+    WorkspaceLexiconTileComponent,
+    UriValidator,
+    WorkspaceLexiconEditTileComponent,
+    LexicalEntryEditorComponent,
+    FormEditorComponent,
+    SenseEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -107,9 +136,25 @@ import { NotDuplicateNameDirective } from './validators/not-duplicate-name.direc
     TooltipModule,
     ContextMenuModule,
     TreeSelectModule,
-    CheckboxModule
+    CheckboxModule,
+    TreeTableModule,
+    PanelModule,
+    RadioButtonModule,
+    SkeletonModule,
+    ToggleButtonModule,
+    TagModule,
+    OverlayPanelModule,
+    SplitterModule,
+    SelectButtonModule,
+    ScrollPanelModule,
+    FieldsetModule,
+    ToolbarModule,
+    MenuModule,
+    EditorModule,
+    TabViewModule,
+    AutoCompleteModule
   ],
-  providers: [PendingChangesGuard, MessageService, ConfirmationService],
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

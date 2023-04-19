@@ -1,0 +1,63 @@
+<!--PLACEHOLDER quando siamo in fase di loading dati-->
+<p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton>
+
+<div *ngIf="!loading" class="card" [style]="{'height':'100%'}">
+  <div class="formgrid grid">
+    <div class="field col-12">
+      <em style="float: right;">Last update: {{lastUpdate}}</em>
+    </div>
+    <div class="field col-12">
+      <label for="status">Status</label>
+      <p-selectButton [options]="statusForm" [(ngModel)]="selectedStatusForm" optionLabel="icon" [disabled]="true"
+        (onChange)="onPendingChanges()">
+        <ng-template let-item>
+          <app-icon-lock [status]="item.icon"></app-icon-lock>
+        </ng-template>
+      </p-selectButton>
+    </div>
+    <div class="field col-12">
+      <label for="label">Label</label>
+      <input id="label" [(ngModel)]="labelForm" type="text" pInputText (change)="onPendingChanges()"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-12">
+      <label for="confidence">Confidence</label>
+      <input id="confidence" [(ngModel)]="confidenceForm" type="number" pInputNumber [min]="0" [max]="100"
+        placeholder="(0-100)" (change)="onPendingChanges()"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-12">
+      <label for="type">Type</label>
+      <p-dropdown id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name"
+        (onChange)="onPendingChanges()" [style]="{'width': '100%'}"></p-dropdown>
+    </div>
+    <div class="field col-12">
+      <label for="partOdSpeech">Part-of-Speech</label>
+      <p-dropdown id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechesForm"
+        (onChange)="onPendingChanges()" [filter]="true" filterBy="name" optionLabel="name"
+        [style]="{'width': '100%'}"></p-dropdown>
+    </div>
+    <div class="field col-12">
+      <label for="language">Language</label>
+      <p-dropdown id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name"
+        (onChange)="onPendingChanges()" [style]="{'width': '100%'}"></p-dropdown>
+    </div>
+    <div class="field col-12">
+      <label for="note">Note</label>
+      <p-editor id="note" [(ngModel)]="noteForm" type="text" (change)="onPendingChanges()">
+      </p-editor>
+    </div>
+    <div class="field col-12">
+      <label for="attestations">Attestations</label>
+      <p-listbox [listStyle]="{'max-height': '250px'}" [readonly]="true" [options]="attestationsForm" optionLabel="name"
+        emptyMessage="No attestation found"></p-listbox>
+    </div>
+    <div class="field col-11">
+      <button pButton type="button" class="w-full" label="Save" (click)="handleSave()"></button>
+    </div>
+    <!--TODO verifica come gestire la cancellazione di un'entrata lessicale-->
+    <!-- <div class="field col-1">
+            <button pButton pRipple icon="pi pi-trash" class="p-button p-button-danger w-full"></button>
+        </div> -->
+  </div>
+</div>

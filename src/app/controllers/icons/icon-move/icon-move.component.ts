@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { IconBaseComponent } from '../icon-base/icon-base.component';
 
+/**
+ * Classe dell'icona move
+ * @extends IconBaseComponent
+ */
 @Component({
   selector: 'app-icon-move',
   templateUrl: '../icon-base/icon-base.component.html',
@@ -9,7 +13,8 @@ import { IconBaseComponent } from '../icon-base/icon-base.component';
 })
 export class IconMoveComponent extends IconBaseComponent implements OnInit {
 
-  override ngOnInit(): void {
+ /**Metodo dell'interfaccia OnInit, utilizzato per inizializzare l'icona visualizzata */
+ override ngOnInit(): void {
     this.icon = faSync;
   }
 

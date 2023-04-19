@@ -5,6 +5,7 @@ import { USERSMANAGEMENT_ROUTES } from "./usersmanagement.routes";
 import { WORKSPACES_ROUTES } from "./workspaces.routes";
 import { LAYERS_ROUTES } from './layers.routes';
 
+/**Route relative alle diverse pagine dell'applicazione */
 export const PROJECTX_ROUTES = [
     {
         path: 'usersManagement',

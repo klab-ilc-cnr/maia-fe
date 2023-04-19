@@ -1,0 +1,1819 @@
+[ {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.302+02:00",
+    "creationDate" : "2021-06-08T08:56:54.302+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "acceda",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUacceda_S1CP",
+    "formInstanceName" : "MUSaccedereVERB_PHUacceda_S1CP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.302+02:00",
+    "creationDate" : "2021-06-08T08:56:54.302+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "acceda",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUacceda_S2CP",
+    "formInstanceName" : "MUSaccedereVERB_PHUacceda_S2CP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.302+02:00",
+    "creationDate" : "2021-06-08T08:56:54.302+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "acceda",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUacceda_S3CP",
+    "formInstanceName" : "MUSaccedereVERB_PHUacceda_S3CP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedano",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedano_P3CP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedano_P3CP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accede",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccede_S3IP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccede_S3IP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedei",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedei_S1IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedei_S1IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedemmo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedemmo_P1IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedemmo_P1IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedendo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "gerundive"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedendo_G",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedendo_G",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedente",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "feminine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedente_FS_PP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedente_FS_PP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedente",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "masculine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedente_MS_PP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedente_MS_PP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedenti",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "feminine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedenti_FP_PP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedenti_FP_PP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedenti",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "masculine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedenti_MP_PP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedenti_MP_PP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederai",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "future"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederai_S2IF",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederai_S2IF",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederanno",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "future"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederanno_P3IF",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederanno_P3IF",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "canonicalForm",
+    "label" : "accedere",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "infinitive"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedere_F",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedere_F",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederebbe",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "conditional"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederebbe_S3DP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederebbe_S3DP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederebbero",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "conditional"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederebbero_P3DP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederebbero_P3DP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederei",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "conditional"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederei_S1DP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederei_S1DP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederemmo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "conditional"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederemmo_P1DP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederemmo_P1DP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederemo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "future"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederemo_P1IF",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederemo_P1IF",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedereste",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "conditional"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedereste_P2DP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedereste_P2DP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederesti",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "conditional"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederesti_S2DP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederesti_S2DP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederete",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "future"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederete_P2IF",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederete_P2IF",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederono",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccederono_P3IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccederono_P3IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederà",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "future"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedera_S3IF",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedera_S3IF",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accederò",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "future"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedero_S1IF",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedero_S1IF",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedesse",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedesse_S3CI",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedesse_S3CI",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedessero",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedessero_P3CI",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedessero_P3CI",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedessi",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedessi_S1CI",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedessi_S1CI",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedessi",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedessi_S2CI",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedessi_S2CI",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedessimo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedessimo_P1CI",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedessimo_P1CI",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedeste",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedeste_P2CI",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedeste_P2CI",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedeste",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedeste_P2IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedeste_P2IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedesti",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedesti_S2IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedesti_S2IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedete",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedete_P2IP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedete_P2IP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedete",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedete_P2MP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedete_P2MP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedette",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedette_S3IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedette_S3IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedettero",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedettero_P3IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedettero_P3IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedetti",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedetti_S1IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedetti_S1IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedeva",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedeva_S3II",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedeva_S3II",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedevamo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedevamo_P1II",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedevamo_P1II",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedevano",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedevano_P3II",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedevano_P3II",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedevate",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedevate_P2II",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedevate_P2II",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedevi",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedevi_S2II",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedevi_S2II",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedevo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "imperfect"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedevo_S1II",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedevo_S1II",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedi",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedi_S2IP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedi_S2IP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedi",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedi_S2MP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedi_S2MP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accediamo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccediamo_P1CP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccediamo_P1CP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accediamo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccediamo_P1IP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccediamo_P1IP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accediate",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "subjunctive"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "secondPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccediate_P2CP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccediate_P2CP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedo",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedo_S1IP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedo_S1IP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedono",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "present"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedono_P3IP",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedono_P3IP",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "acceduta",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "feminine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUacceduta_FS_PR",
+    "formInstanceName" : "MUSaccedereVERB_PHUacceduta_FS_PR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedute",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "feminine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccedute_FP_PR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccedute_FP_PR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "acceduti",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "masculine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUacceduti_MP_PR",
+    "formInstanceName" : "MUSaccedereVERB_PHUacceduti_MP_PR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "acceduto",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "gender",
+      "value" : "masculine"
+    }, {
+      "trait" : "mood",
+      "value" : "participle"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUacceduto_MS_PR",
+    "formInstanceName" : "MUSaccedereVERB_PHUacceduto_MS_PR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.303+02:00",
+    "creationDate" : "2021-06-08T08:56:54.303+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accedè",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccede2_S3IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccede2_S3IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accesse",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccesse_S3IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccesse_S3IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accessero",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "plural"
+    }, {
+      "trait" : "person",
+      "value" : "thirdPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccessero_P3IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccessero_P3IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  }, {
+    "creator" : "user1",
+    "lastUpdate" : "2021-06-08T08:56:54.304+02:00",
+    "creationDate" : "2021-06-08T08:56:54.304+02:00",
+    "confidence" : -1.0,
+    "type" : "otherForm",
+    "label" : "accessi",
+    "note" : "questa è una nota di prova",
+    "phoneticRep" : "",
+    "morphology" : [ {
+      "trait" : "partOfSpeech",
+      "value" : "verb"
+    }, {
+      "trait" : "mood",
+      "value" : "indicative"
+    }, {
+      "trait" : "number",
+      "value" : "singular"
+    }, {
+      "trait" : "person",
+      "value" : "firstPerson"
+    }, {
+      "trait" : "tense",
+      "value" : "past"
+    } ],
+    "form" : "http://lexica/mylexicon#MUSaccedereVERB_PHUaccessi_S1IR",
+    "formInstanceName" : "MUSaccedereVERB_PHUaccessi_S1IR",
+    "lexicalEntry" : "http://lexica/mylexicon#MUSaccedereVERB",
+    "lexicalEntryInstanceName" : "MUSaccedereVERB",
+    "targetSense" : "",
+    "targetSenseInstanceName" : ""
+  } ]

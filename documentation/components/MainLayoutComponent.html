@@ -1,0 +1,1469 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  MainLayoutComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/layouts/main-layout/main-layout.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Classe che rappresenta il layout principale</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-main-layout</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./main-layout.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./main-layout.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#documentClickListener" >documentClickListener</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#menuActiveMobile" >menuActiveMobile</a>
+                            </li>
+                            <li>
+                                <a href="#menuClick" >menuClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#menuInactiveDesktop" >menuInactiveDesktop</a>
+                            </li>
+                            <li>
+                                <a href="#menuMode" >menuMode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#overlayMenuActive" >overlayMenuActive</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#renderer" >renderer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#staticMenuInactive" >staticMenuInactive</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#topMenuActive" >topMenuActive</a>
+                            </li>
+                            <li>
+                                <a href="#topMenuButtonClick" >topMenuButtonClick</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#topMenuLeaving" >topMenuLeaving</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#hideTopMenu" >hideTopMenu</a>
+                            </li>
+                            <li>
+                                <a href="#isDesktop" >isDesktop</a>
+                            </li>
+                            <li>
+                                <a href="#isMobile" >isMobile</a>
+                            </li>
+                            <li>
+                                <a href="#isOverlay" >isOverlay</a>
+                            </li>
+                            <li>
+                                <a href="#isStatic" >isStatic</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onMenuClick" >onMenuClick</a>
+                            </li>
+                            <li>
+                                <a href="#toggleMenu" >toggleMenu</a>
+                            </li>
+                            <li>
+                                <a href="#toggleTopMenu" >toggleTopMenu</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:52</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per MainLayoutComponent</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>renderer</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>classe di base per implementare rendering personalizzati</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hideTopMenu"></a>
+                    <span class="name">
+                        <span ><b>hideTopMenu</b></span>
+                        <a href="#hideTopMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>hideTopMenu()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="142"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:142</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che nasconde il menu in alto</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isDesktop"></a>
+                    <span class="name">
+                        <span ><b>isDesktop</b></span>
+                        <a href="#isDesktop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isDesktop()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="156"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:156</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che valuta la dimensione dello schermo per definire se la pagina è in modalità desktop</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isMobile"></a>
+                    <span class="name">
+                        <span ><b>isMobile</b></span>
+                        <a href="#isMobile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isMobile()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="161"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:161</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che valuta la dimensione dello schermo per definire se la pagina è in modalità mobile</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isOverlay"></a>
+                    <span class="name">
+                        <span ><b>isOverlay</b></span>
+                        <a href="#isOverlay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isOverlay()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="171"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:171</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che verifica se il menu è in modalità overlay</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isStatic"></a>
+                    <span class="name">
+                        <span ><b>isStatic</b></span>
+                        <a href="#isStatic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isStatic()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="166"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:166</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che verifica se il menu è in modalità statica</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:65</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia AfterViewInit, utilizzato per la gestione dei click sul documento</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:61</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onMenuClick"></a>
+                    <span class="name">
+                        <span ><b>onMenuClick</b></span>
+                        <a href="#onMenuClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onMenuClick()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="151"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:151</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che salva il click sul menu</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleMenu"></a>
+                    <span class="name">
+                        <span ><b>toggleMenu</b></span>
+                        <a href="#toggleMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleMenu(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:100</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza o nasconde il menu laterale</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>evento emesso per attivare/disattiva il sidemenu</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleTopMenu"></a>
+                    <span class="name">
+                        <span ><b>toggleTopMenu</b></span>
+                        <a href="#toggleTopMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleTopMenu(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:128</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza o nasconde il menu in alto</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>evento emesso per attivare/disattivare il menu in alto</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="documentClickListener"></a>
+                    <span class="name">
+                        <span ><b>documentClickListener</b></span>
+                        <a href="#documentClickListener"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code> | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Proprietà per la gestione dei click sul documento</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="menuActiveMobile"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>menuActiveMobile</b></span>
+                        <a href="#menuActiveMobile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se è attivo il menu per dispositivi mobili</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="menuClick"></a>
+                    <span class="name">
+                        <span ><b>menuClick</b></span>
+                        <a href="#menuClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se vi è stato un click sul menu</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="menuInactiveDesktop"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>menuInactiveDesktop</b></span>
+                        <a href="#menuInactiveDesktop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:25</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se il menu desktop è inattivo</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="menuMode"></a>
+                    <span class="name">
+                        <span ><b>menuMode</b></span>
+                        <a href="#menuMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;static&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Tipologia di menu in uso</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="overlayMenuActive"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>overlayMenuActive</b></span>
+                        <a href="#overlayMenuActive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se il menu in overlay è attivo</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderer"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>renderer</b></span>
+                        <a href="#renderer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description">classe di base per implementare rendering personalizzati</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="staticMenuInactive"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>staticMenuInactive</b></span>
+                        <a href="#staticMenuInactive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se il menu statico è chiuso</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topMenuActive"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>topMenuActive</b></span>
+                        <a href="#topMenuActive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se il menu in alto è attivo</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topMenuButtonClick"></a>
+                    <span class="name">
+                        <span ><b>topMenuButtonClick</b></span>
+                        <a href="#topMenuButtonClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se vi è stato un click sul menu in alto</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topMenuLeaving"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>topMenuLeaving</b></span>
+                        <a href="#topMenuLeaving"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>boolean | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/layouts/main-layout/main-layout.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Definisce se lasciamo il menu in alto (?)</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { animate, state, style, transition, trigger } from &#x27;@angular/animations&#x27;;
+import { Component, OnInit, Renderer2 } from &#x27;@angular/core&#x27;;
+
+/**Classe che rappresenta il layout principale */
+@Component({
+  selector: &#x27;app-main-layout&#x27;,
+  templateUrl: &#x27;./main-layout.component.html&#x27;,
+  styleUrls: [&#x27;./main-layout.component.scss&#x27;],
+  animations: [
+    trigger(&#x27;submenu&#x27;, [
+        state(&#x27;hidden&#x27;, style({
+            height: &#x27;0px&#x27;
+        })),
+        state(&#x27;visible&#x27;, style({
+            height: &#x27;*&#x27;
+        })),
+        transition(&#x27;visible &#x3D;&gt; hidden&#x27;, animate(&#x27;400ms cubic-bezier(0.86, 0, 0.07, 1)&#x27;)),
+        transition(&#x27;hidden &#x3D;&gt; visible&#x27;, animate(&#x27;400ms cubic-bezier(0.86, 0, 0.07, 1)&#x27;))
+    ])
+  ]
+})
+export class MainLayoutComponent implements OnInit {
+
+  /**Definisce se il menu desktop è inattivo */ //TODO verificarne uso, viene inizializzato nel componente ma poi non sembra utilizzato per controlli
+  public menuInactiveDesktop: boolean | undefined;
+
+  /**Definisce se è attivo il menu per dispositivi mobili */
+  public menuActiveMobile: boolean | undefined;
+
+  /**Definisce se il menu in overlay è attivo */
+  public overlayMenuActive: boolean | undefined;
+
+  /**Definisce se il menu statico è chiuso */
+  public staticMenuInactive: boolean &#x3D; false;
+
+  /**Definisce se il menu in alto è attivo */
+  public topMenuActive: boolean | undefined;
+
+  /**Definisce se lasciamo il menu in alto (?) */
+  public topMenuLeaving: boolean | undefined;
+
+  /**Proprietà per la gestione dei click sul documento */
+  documentClickListener: (() &#x3D;&gt; void) | undefined;
+
+  /**Definisce se vi è stato un click sul menu */
+  menuClick: boolean | undefined;
+
+  /**Tipologia di menu in uso */
+  menuMode &#x3D; &#x27;static&#x27;;
+
+  /**Definisce se vi è stato un click sul menu in alto */
+  topMenuButtonClick: boolean | undefined;
+
+  /**
+   * Costruttore per MainLayoutComponent
+   * @param renderer {Renderer2} classe di base per implementare rendering personalizzati
+   */
+  constructor(public renderer: Renderer2) { }
+
+  /**Metodo dell&#x27;interfaccia OnInit */ //TODO valutare rimozione per mancato uso
+  ngOnInit(): void {
+  }
+
+  /**Metodo dell&#x27;interfaccia AfterViewInit, utilizzato per la gestione dei click sul documento */
+  ngAfterViewInit() {
+    // hides the overlay menu and top menu if outside is clicked
+    this.documentClickListener &#x3D; this.renderer.listen(&#x27;body&#x27;, &#x27;click&#x27;, (event) &#x3D;&gt; {
+      if (!this.isDesktop()) {
+        if (!this.menuClick) {
+            this.menuActiveMobile &#x3D; false;
+        }
+
+        if (!this.topMenuButtonClick) {
+            this.hideTopMenu();
+        }
+      }
+      else {
+        if (!this.menuClick &amp;&amp; this.isOverlay()) {
+            this.menuInactiveDesktop &#x3D; true;
+        }
+        if (!this.menuClick){
+            this.overlayMenuActive &#x3D; false;
+        }
+      }
+
+      // if (this.configActive &amp;&amp; !this.configClick) {
+      //   this.configActive &#x3D; false;
+      // }
+
+      // this.configClick &#x3D; false;
+      this.menuClick &#x3D; false;
+      this.topMenuButtonClick &#x3D; false;
+    });
+  }
+
+  /**
+   * Metodo che visualizza o nasconde il menu laterale
+   * @param event {Event} evento emesso per attivare/disattiva il sidemenu
+   */
+  toggleMenu(event: Event) {
+    this.menuClick &#x3D; true;
+
+    if (this.isDesktop()) {
+      if (this.menuMode &#x3D;&#x3D;&#x3D; &#x27;overlay&#x27;) {
+        if(this.menuActiveMobile &#x3D;&#x3D;&#x3D; true) {
+          this.overlayMenuActive &#x3D; true;
+        }
+
+        this.overlayMenuActive &#x3D; !this.overlayMenuActive;
+        this.menuActiveMobile &#x3D; false;
+      }
+      else if (this.menuMode &#x3D;&#x3D;&#x3D; &#x27;static&#x27;) {
+        this.staticMenuInactive &#x3D; !this.staticMenuInactive;
+      }
+    }
+    else {
+      this.menuActiveMobile &#x3D; !this.menuActiveMobile;
+      this.topMenuActive &#x3D; false;
+    }
+
+    event.preventDefault();
+  }
+
+  /**
+   * Metodo che visualizza o nasconde il menu in alto
+   * @param event {Event} evento emesso per attivare/disattivare il menu in alto
+   */
+  toggleTopMenu(event: Event) {
+    this.topMenuButtonClick &#x3D; true;
+    this.menuActiveMobile &#x3D; false;
+
+    if (this.topMenuActive) {
+        this.hideTopMenu();
+    } else {
+        this.topMenuActive &#x3D; true;
+    }
+
+    event.preventDefault();
+  }
+
+  /**Metodo che nasconde il menu in alto */
+  hideTopMenu() {
+    this.topMenuLeaving &#x3D; true;
+    setTimeout(() &#x3D;&gt; {
+      this.topMenuActive &#x3D; false;
+      this.topMenuLeaving &#x3D; false;
+    }, 1);
+  }
+
+  /**Metodo che salva il click sul menu */
+  onMenuClick() {
+    this.menuClick &#x3D; true;
+  }
+
+  /**Metodo che valuta la dimensione dello schermo per definire se la pagina è in modalità desktop */
+  isDesktop() {
+    return window.innerWidth &gt; 992;
+  }
+
+  /**Metodo che valuta la dimensione dello schermo per definire se la pagina è in modalità mobile */
+  isMobile(){
+    return window.innerWidth &lt; 1024;
+  }
+
+  /**Metodo che verifica se il menu è in modalità statica */
+  isStatic() {
+    return this.menuMode &#x3D;&#x3D;&#x3D; &#x27;static&#x27;;
+  }
+
+  /**Metodo che verifica se il menu è in modalità overlay */
+  isOverlay() {
+    return this.menuMode &#x3D;&#x3D;&#x3D; &#x27;overlay&#x27;;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;body&gt;
+  &lt;div class&#x3D;&quot;layout-wrapper&quot; [ngClass]&#x3D;&quot;{&#x27;layout-overlay&#x27;:isOverlay(),
+                                          &#x27;layout-static&#x27;:isStatic(),
+                                          &#x27;layout-overlay-sidebar-active&#x27;: overlayMenuActive,
+                                          &#x27;layout-static-sidebar-inactive&#x27;: staticMenuInactive,
+                                          &#x27;layout-mobile-sidebar-active&#x27;: menuActiveMobile}&quot;&gt;
+    &lt;app-header&gt;&lt;/app-header&gt;
+    &lt;app-side-menu&gt;&lt;/app-side-menu&gt;
+
+    &lt;div id&#x3D;&quot;layoutcontainer&quot; class&#x3D;&quot;layout-container&quot;&gt;
+        &lt;div class&#x3D;&quot;layout-content&quot;&gt;
+            &lt;router-outlet&gt;&lt;/router-outlet&gt;
+            &lt;app-loader&gt;&lt;/app-loader&gt;
+            &lt;p-toast&gt;&lt;/p-toast&gt;
+        &lt;/div&gt;
+        &lt;app-footer&gt;&lt;/app-footer&gt;
+    &lt;/div&gt;
+    &lt;!-- &lt;app-config&gt;&lt;/app-config&gt; --&gt;
+    &lt;!-- &lt;div *ngIf&#x3D;&quot;menuActiveMobile&quot; class&#x3D;&quot;layout-mask p-component-overlay&quot;&gt;&lt;/div&gt; --&gt;
+  &lt;/div&gt;
+    &lt;!-- &lt;div id&#x3D;&quot;wrapper&quot;&gt;
+        &lt;app-header&gt;&lt;/app-header&gt;
+        &lt;p-button type&#x3D;&quot;text&quot; (click)&#x3D;&quot;display &#x3D; true; m &#x3D; false;&quot; icon&#x3D;&quot;pi pi-plus&quot; label&#x3D;&quot;Show&quot;&gt;&lt;/p-button&gt;
+        &lt;app-side-menu&gt;&lt;/app-side-menu&gt;
+        &lt;div id&#x3D;&quot;page-wrapper&quot; class&#x3D;&quot;gray-bg&quot;&gt;
+            &lt;router-outlet&gt;&lt;/router-outlet&gt;
+        &lt;/div&gt;
+    &lt;/div&gt; --&gt;
+&lt;/body&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./main-layout.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><body>  <div class="layout-wrapper" [ngClass]="{\'layout-overlay\':isOverlay(),                                          \'layout-static\':isStatic(),                                          \'layout-overlay-sidebar-active\': overlayMenuActive,                                          \'layout-static-sidebar-inactive\': staticMenuInactive,                                          \'layout-mobile-sidebar-active\': menuActiveMobile}">    <app-header></app-header>    <app-side-menu></app-side-menu>    <div id="layoutcontainer" class="layout-container">        <div class="layout-content">            <router-outlet></router-outlet>            <app-loader></app-loader>            <p-toast></p-toast>        </div>        <app-footer></app-footer>    </div>    <!-- <app-config></app-config> -->    <!-- <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div> -->  </div>    <!-- <div id="wrapper">        <app-header></app-header>        <p-button type="text" (click)="display = true; m = false;" icon="pi pi-plus" label="Show"></p-button>        <app-side-menu></app-side-menu>        <div id="page-wrapper" class="gray-bg">            <router-outlet></router-outlet>        </div>    </div> --></body></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'MainLayoutComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MainLayoutComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

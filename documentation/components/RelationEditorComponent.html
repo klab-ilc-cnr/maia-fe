@@ -1,0 +1,2267 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  RelationEditorComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/controllers/editors/relation-editor/relation-editor.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Classe dell&#39;editor delle relazioni</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-relation-editor</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./relation-editor.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./relation-editor.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_sourceAnn" >_sourceAnn</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_targetAnn" >_targetAnn</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteElement" >deleteElement</a>
+                            </li>
+                            <li>
+                                <a href="#layersList" >layersList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#relationForm" >relationForm</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onCancelBtn" >onCancelBtn</a>
+                            </li>
+                            <li>
+                                <a href="#onClearBtn" >onClearBtn</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#save" >save</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveWithFormErrors" >saveWithFormErrors</a>
+                            </li>
+                            <li>
+                                <a href="#showDeleteModal" >showDeleteModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#relationModel" >relationModel</a>
+                            </li>
+                            <li>
+                                <a href="#sourceAnn" >sourceAnn</a>
+                            </li>
+                            <li>
+                                <a href="#sourceLayer" >sourceLayer</a>
+                            </li>
+                            <li>
+                                <a href="#targetAnn" >targetAnn</a>
+                            </li>
+                            <li>
+                                <a href="#targetLayer" >targetLayer</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#onCancel" >onCancel</a>
+                            </li>
+                            <li>
+                                <a href="#onDelete" >onDelete</a>
+                            </li>
+                            <li>
+                                <a href="#onSave" >onSave</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#sourceAnn" >sourceAnn</a>
+                                </li>
+                                <li>
+                                    <a href="#targetAnn" >targetAnn</a>
+                                </li>
+                                <li>
+                                    <a href="#isEditing" >isEditing</a>
+                                </li>
+                                <li>
+                                    <a href="#noneRelationIsSelected" >noneRelationIsSelected</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(annotationService: <a href="../injectables/AnnotationService.html" target="_self">AnnotationService</a>, workspaceService: <a href="../injectables/WorkspaceService.html" target="_self">WorkspaceService</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, layerService: <a href="../injectables/LayerService.html" target="_self">LayerService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, relationService: <a href="../injectables/RelationService.html" target="_self">RelationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:150</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per RelationEditorComponent</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>annotationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AnnotationService.html" target="_self" >AnnotationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi alle annotazioni //TODO verificare cancellazione per mancato uso</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>workspaceService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WorkspaceService.html" target="_self" >WorkspaceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi ai workspace  //TODO verificare cancellazione per mancato uso</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la gestione del segnale di caricamento</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>layerService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LayerService.html" target="_self" >LayerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi ai layer  //TODO verificare cancellazione per mancato uso</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la gestione dei messaggi</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la configurazione dei messaggi per messageService</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>relationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/RelationService.html" target="_self" >RelationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi alle relazioni</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="relationModel"></a>
+                        <b>relationModel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Relation.html" target="_self" >Relation</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Relation()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:95</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Relazione in lavorazione</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sourceAnn"></a>
+                        <b>sourceAnn</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:104</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Annotazione sorgente</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sourceLayer"></a>
+                        <b>sourceLayer</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Layer.html" target="_self" >Layer | undefined</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:97</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Layer sorgente</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="targetAnn"></a>
+                        <b>targetAnn</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:115</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Annotazione target</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="targetLayer"></a>
+                        <b>targetLayer</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Layer.html" target="_self" >Layer | undefined</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:99</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Layer target</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onCancel"></a>
+                        <b>onCancel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:124</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emettitore per l&#39;annullamento</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onDelete"></a>
+                        <b>onDelete</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:126</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emettitore per la cancellazione</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onSave"></a>
+                        <b>onSave</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="128" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:128</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emettitore per il salvataggio</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="177"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:177</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCancelBtn"></a>
+                    <span class="name">
+                        <span ><b>onCancelBtn</b></span>
+                        <a href="#onCancelBtn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCancelBtn()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="182"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:182</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che esegue l&#39;emissione dell&#39;evento di annullamento</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onClearBtn"></a>
+                    <span class="name">
+                        <span ><b>onClearBtn</b></span>
+                        <a href="#onClearBtn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onClearBtn()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="187"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:187</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che resetta il form</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit(form: <a href="https://angular.io/api/forms/NgForm" target="_blank">NgForm</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="197"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:197</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che sottomette il salvataggio del form che rappresenta la relazione</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>form</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>form della relazione</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="save"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>save</b></span>
+                        <a href="#save"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>save()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:226</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che esegue il salvataggio della relazione</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveWithFormErrors"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>saveWithFormErrors</b></span>
+                        <a href="#saveWithFormErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveWithFormErrors()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="333"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:333</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che marca tutti i campi del form come touched per segnalare errori</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDeleteModal"></a>
+                    <span class="name">
+                        <span ><b>showDeleteModal</b></span>
+                        <a href="#showDeleteModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDeleteModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="209"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:209</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il modale di conferma della cancellazione ed eventualmente richiama la cancellazione stessa</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="342"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:342</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione fallita</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio di errore</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="355"
+                            class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:355</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione in corso</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio da visualizzare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_sourceAnn"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_sourceAnn</b></span>
+                        <a href="#_sourceAnn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Annotation()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="110" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:110</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Annotazione sorgente</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_targetAnn"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_targetAnn</b></span>
+                        <a href="#_targetAnn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Annotation()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:121</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Annotazione target</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteElement"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteElement</b></span>
+                        <a href="#deleteElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Effettua la cancellazione di una relazione</p>
+</div>
+                </td>
+            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>id</td>
+                                                    <td>
+                                                            <code><p>identificativo numerico della relazione</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="layersList"></a>
+                    <span class="name">
+                        <span ><b>layersList</b></span>
+                        <a href="#layersList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Layer.html" target="_self" >Layer[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:145</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista dei layer</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:150</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al popup di conferma cancellazione</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="relationForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>relationForm</b></span>
+                        <a href="#relationForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(NgForm)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:148</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al form della relazione</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sourceAnn"></a>
+                        <span class="name"><b>sourceAnn</b><a href="#sourceAnn"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>sourceAnn()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:104</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Annotazione sorgente</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>sourceAnn(sourceAnn: <a href="../classes/Annotation.html" target="_self">Annotation</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:106</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Setter dell&#39;annotazione sorgente</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>sourceAnn</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="targetAnn"></a>
+                        <span class="name"><b>targetAnn</b><a href="#targetAnn"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>targetAnn()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:115</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Annotazione target</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>targetAnn(targetAnn: <a href="../classes/Annotation.html" target="_self">Annotation</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:117</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Setter dell&#39;annotazione target</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>targetAnn</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="../classes/Annotation.html" target="_self" >Annotation</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isEditing"></a>
+                        <span class="name"><b>isEditing</b><a href="#isEditing"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isEditing()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:131</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter che definisce se siamo in modalità di modifica</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="noneRelationIsSelected"></a>
+                        <span class="name"><b>noneRelationIsSelected</b><a href="#noneRelationIsSelected"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>noneRelationIsSelected()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="140" class="link-to-prism">src/app/controllers/editors/relation-editor/relation-editor.component.ts:140</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter che definisce se non vi sono relazioni selezionate</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from &#x27;@angular/core&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { Annotation } from &#x27;src/app/models/annotation/annotation&#x27;;
+import { Layer } from &#x27;src/app/models/layer/layer.model&#x27;;
+import { Relation } from &#x27;src/app/models/relation/relation&#x27;;
+import { AnnotationService } from &#x27;src/app/services/annotation.service&#x27;;
+import { LayerService } from &#x27;src/app/services/layer.service&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { WorkspaceService } from &#x27;src/app/services/workspace.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
+import { RelationService } from &#x27;src/app/services/relation.service&#x27;;
+
+/**Classe dell&#x27;editor delle relazioni */
+@Component({
+  selector: &#x27;app-relation-editor&#x27;,
+  templateUrl: &#x27;./relation-editor.component.html&#x27;,
+  styleUrls: [&#x27;./relation-editor.component.scss&#x27;]
+})
+export class RelationEditorComponent implements OnInit {
+
+  /**
+   * @private
+   * Effettua la cancellazione di una relazione
+   * @param id {number} identificativo numerico della relazione
+   * @returns {void}
+   */
+  private deleteElement &#x3D; (id: number): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
+
+    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare la relazione&#x27;
+    let successMsg &#x3D; &#x27;Relazione eliminata con successo&#x27;
+
+    if (id &#x3D;&#x3D; undefined || id &#x3D;&#x3D; null || !this.targetAnn.attributes) {
+      this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg)
+      return;
+    }
+
+    /*     let sIndex &#x3D; this.sourceAnn.attributes[&#x27;relations&#x27;].out.findIndex((r: Relation) &#x3D;&gt; r.id &#x3D;&#x3D; this.relationModel?.id);
+        let tIndex &#x3D; this.targetAnn.attributes[&#x27;relations&#x27;].in.findIndex((r: Relation) &#x3D;&gt; r.id &#x3D;&#x3D; this.relationModel?.id);
+    
+        if (sIndex &lt; 0) {
+          this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg)
+          return;
+        }
+    
+        if (tIndex &lt; 0) {
+          this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg)
+          return;
+        }
+    
+        this.sourceAnn.attributes[&#x27;relations&#x27;].out.splice(sIndex, 1);
+        this.targetAnn.attributes[&#x27;relations&#x27;].in.splice(tIndex, 1);
+    
+        this.loaderService.show();
+        this.annotationService.update(this.sourceAnn).subscribe({
+          next: () &#x3D;&gt; {
+            this.annotationService.update(this.targetAnn).subscribe({
+              next: () &#x3D;&gt; {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+                Swal.close();
+                this.onDelete.emit();
+              },
+              error: (err: string) &#x3D;&gt; {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+              }
+            });
+          },
+          error: (err: string) &#x3D;&gt; {
+            this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+          }
+        }); */
+
+    this.loaderService.show();
+    this.relationService.delete(this.relationModel.id!).subscribe({
+      next: () &#x3D;&gt; {
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        Swal.close();
+        this.onDelete.emit();
+      },
+      error: (err: string) &#x3D;&gt; {
+        this.loaderService.hide();
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+      }
+    });
+  }
+
+  /**Relazione in lavorazione */
+  @Input() relationModel: Relation &#x3D; new Relation();
+  /**Layer sorgente */
+  @Input() sourceLayer: Layer | undefined;
+  /**Layer target */
+  @Input() targetLayer: Layer | undefined;
+
+  /**Annotazione sorgente */
+  @Input()
+  /**Getter dell&#x27;annotazione sorgente */
+  get sourceAnn(): Annotation { return this._sourceAnn; }
+  /**Setter dell&#x27;annotazione sorgente */
+  set sourceAnn(sourceAnn: Annotation) {
+    this._sourceAnn &#x3D; sourceAnn;
+  }
+  /**Annotazione sorgente */
+  private _sourceAnn: Annotation &#x3D; new Annotation();
+
+  /**Annotazione target */
+  @Input()
+  /**Getter dell&#x27;annotazione target */
+  get targetAnn(): Annotation { return this._targetAnn; }
+  /**Setter dell&#x27;annotazione target */
+  set targetAnn(targetAnn: Annotation) {
+    this._targetAnn &#x3D; targetAnn;
+  }
+  /**Annotazione target */
+  private _targetAnn: Annotation &#x3D; new Annotation();
+
+  /**Emettitore per l&#x27;annullamento */
+  @Output() onCancel &#x3D; new EventEmitter&lt;any&gt;();
+  /**Emettitore per la cancellazione */
+  @Output() onDelete &#x3D; new EventEmitter&lt;any&gt;();
+  /**Emettitore per il salvataggio */
+  @Output() onSave &#x3D; new EventEmitter&lt;any&gt;();
+
+  /**Getter che definisce se siamo in modalità di modifica */
+  public get isEditing(): boolean {
+    if (this.relationModel &amp;&amp; this.relationModel.id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**Getter che definisce se non vi sono relazioni selezionate */
+  public get noneRelationIsSelected(): boolean {
+    return (!this.relationModel || !this.sourceAnn || !this.sourceLayer || !this.targetAnn || !this.targetLayer);
+  }
+
+  /**Lista dei layer */
+  layersList: Layer[] &#x3D; [];
+
+  /**Riferimento al form della relazione */
+  @ViewChild(NgForm) public relationForm!: NgForm;
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
+  /**
+   * Costruttore per RelationEditorComponent
+   * @param annotationService {AnnotationService} servizi relativi alle annotazioni //TODO verificare cancellazione per mancato uso
+   * @param workspaceService {WorkspaceService} servizi relativi ai workspace  //TODO verificare cancellazione per mancato uso
+   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
+   * @param layerService {LayerService} servizi relativi ai layer  //TODO verificare cancellazione per mancato uso 
+   * @param messageService {MessageService} servizi per la gestione dei messaggi
+   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
+   * @param relationService {RelationService} servizi relativi alle relazioni
+   */
+  constructor(
+    private annotationService: AnnotationService, //TODO verificare cancellazione per mancato uso
+    private workspaceService: WorkspaceService, //TODO verificare cancellazione per mancato uso
+    private loaderService: LoaderService,
+    private layerService: LayerService, //TODO verificare cancellazione per mancato uso
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private relationService: RelationService
+  ) { }
+
+  /**Metodo dell&#x27;interfaccia OnInit */ //TODO verificare cancellazione per mancato uso
+  ngOnInit(): void {
+  }
+
+  /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal */
+  ngOnDestroy(): void {
+    Swal.close();
+  }
+
+  /**Metodo che esegue l&#x27;emissione dell&#x27;evento di annullamento */
+  onCancelBtn() {
+    this.onCancel.emit();
+  }
+
+  /**Metodo che resetta il form */
+  onClearBtn() {
+    this.relationForm.form.reset();
+    this.saveWithFormErrors();
+  }
+
+  /**
+   * Metodo che sottomette il salvataggio del form che rappresenta la relazione
+   * @param form {NgForm} form della relazione
+   * @returns {void}
+   */
+  onSubmit(form: NgForm): void {
+    if (this.relationForm.invalid) {
+      return this.saveWithFormErrors();
+    }
+
+    this.save();
+  }
+
+  /**
+   * Metodo che visualizza il modale di conferma della cancellazione ed eventualmente richiama la cancellazione stessa
+   * @returns {void}
+   */
+  showDeleteModal(): void {
+    if (!this.relationModel) {
+      return;
+    }
+
+    let confirmMsg &#x3D; &#x27;Stai per cancellare una relazione&#x27;;
+
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteElement((this.relationModel.id!)), this.relationModel.id);
+  }
+
+  /**
+   * @private
+   * Metodo che esegue il salvataggio della relazione
+   * @returns {void}
+   */
+  private save(): void {
+    if (!this.relationModel) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Errore durante il salvataggio!&quot;));
+      return;
+    }
+
+    let successMsg &#x3D; &quot;Operazione effettuata con successo&quot;;
+
+    // INIZIO INIZIALIZZAZIONE
+    /*     if (!this.sourceAnn.attributes) {
+          this.sourceAnn.attributes &#x3D; {};
+        }
+    
+        if (!this.targetAnn.attributes) {
+          this.targetAnn.attributes &#x3D; {};
+        }
+    
+        if (!this.sourceAnn.attributes[&#x27;relations&#x27;]) {
+          this.sourceAnn.attributes[&#x27;relations&#x27;] &#x3D; new Relations();
+        }
+    
+        if (!this.targetAnn.attributes[&#x27;relations&#x27;]) {
+          this.targetAnn.attributes[&#x27;relations&#x27;] &#x3D; new Relations();
+        }
+        // FINE INIZIALIZZAZIONE
+    
+        if (this.isEditing) {
+          successMsg &#x3D; &quot;Relazione modificata con successo&quot;;
+    
+          let sIndex &#x3D; this.sourceAnn.attributes[&#x27;relations&#x27;].out.findIndex((r: Relation) &#x3D;&gt; r.id &#x3D;&#x3D; this.relationModel?.id);
+          let tIndex &#x3D; this.targetAnn.attributes[&#x27;relations&#x27;].in.findIndex((r: Relation) &#x3D;&gt; r.id &#x3D;&#x3D; this.relationModel?.id);
+    
+          if (sIndex &lt; 0) {
+            return;
+          }
+    
+          if (tIndex &lt; 0) {
+            return;
+          }
+    
+          this.sourceAnn.attributes[&#x27;relations&#x27;].out.splice(sIndex, 1);
+          this.targetAnn.attributes[&#x27;relations&#x27;].in.splice(tIndex, 1);
+        }
+        else {
+          successMsg &#x3D; &quot;Relazione creata con successo&quot;;
+          this.relationModel.id &#x3D; uuidv4();
+        }
+    
+        this.sourceAnn.attributes[&#x27;relations&#x27;].out.push(JSON.parse(JSON.stringify(this.relationModel)));
+        this.targetAnn.attributes[&#x27;relations&#x27;].in.push(JSON.parse(JSON.stringify(this.relationModel)));
+    
+        // @TODO: queste chiamate andranno sostituite con una unica al nostro backend che gestirà la creazione delle relazioni
+        this.loaderService.show();
+         this.annotationService.update(this.sourceAnn).subscribe({
+          next: () &#x3D;&gt; {
+            this.annotationService.update(this.targetAnn).subscribe({
+              next: () &#x3D;&gt; {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+                this.onSave.emit();
+              },
+              error: (err: string) &#x3D;&gt; {
+                this.loaderService.hide();
+                this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+              }
+            });
+          },
+          error: (err: string) &#x3D;&gt; {
+            this.loaderService.hide();
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+          }
+        }); */
+    this.sourceAnn.attributes[&quot;&quot;]
+    if (this.isEditing) { //caso di modifica di una relazione esistente
+      successMsg &#x3D; &quot;Relazione modificata con successo&quot;;
+      this.relationService.update(this.relationModel).subscribe({
+        next: (response: Relation) &#x3D;&gt; {
+          console.log(response);
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.onSave.emit();
+        },
+        error: (err: string) &#x3D;&gt; {
+          console.log(err);
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+        }
+      })
+    }
+    else { //caso inserimento di una nuova relazione
+      successMsg &#x3D; &quot;Relazione creata con successo&quot;;
+      this.relationService.create(this.relationModel).subscribe({
+        next: (response: Relation) &#x3D;&gt; {
+          console.log(response);
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+          this.onSave.emit();
+        },
+        error: (err: string) &#x3D;&gt; {
+          console.log(err);
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
+        }
+      })
+    }
+  }
+
+  /**
+   * @private
+   * Metodo che marca tutti i campi del form come touched per segnalare errori
+   */
+  private saveWithFormErrors(): void {
+    this.relationForm.form.markAllAsTouched();
+  }
+
+  /**
+   * @private
+   * Metodo che visualizza il popup di operazione fallita
+   * @param errorMessage {string} messaggio di errore
+   */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  /**
+   * @private
+   * Metodo che visualizza il popup di operazione in corso
+   * @param message {string} messaggio da visualizzare
+   */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;per favore attendere&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;px-2 h-100 w-100&quot;&gt;
+  &lt;div class&#x3D;&quot;border-bottom mb-2 py-2&quot;&gt;
+    Relazione
+  &lt;/div&gt;
+  &lt;div *ngIf&#x3D;&quot;noneRelationIsSelected; else elseBlock&quot; class&#x3D;&quot;relation-area none&quot;&gt;
+    Nessuna relazione selezionata
+  &lt;/div&gt;
+  &lt;ng-template #elseBlock&gt;
+    &lt;div class&#x3D;&quot;relation-area&quot;&gt;
+      &lt;form #relationForm&#x3D;&quot;ngForm&quot; class&#x3D;&quot;validated&quot; (ngSubmit)&#x3D;&quot;onSubmit(relationForm)&quot;&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;label&gt;Da&lt;/label&gt;
+          &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+            &lt;div class&#x3D;&quot;input-group mb-3&quot;&gt;
+              &lt;span class&#x3D;&quot;input-group-text&quot; id&#x3D;&quot;srcAnn-basic-addon&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: sourceLayer?.color+&#x27;4D&#x27;}&quot;&gt;{{ sourceLayer?.name }}&lt;/span&gt;
+              &lt;input class&#x3D;&quot;form-control&quot; type&#x3D;&quot;text&quot; [value]&#x3D;&quot;sourceAnn.value&quot; id&#x3D;&quot;basic-srcAnnValue&quot; aria-describedby&#x3D;&quot;srcAnn-basic-addon&quot; disabled readonly&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;label&gt;A&lt;/label&gt;
+          &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+            &lt;div class&#x3D;&quot;input-group mb-3&quot;&gt;
+              &lt;span class&#x3D;&quot;input-group-text&quot; id&#x3D;&quot;targetAnn-basic-addon&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: targetLayer?.color+&#x27;4D&#x27;}&quot;&gt;{{ targetLayer?.name }}&lt;/span&gt;
+              &lt;input class&#x3D;&quot;form-control&quot; type&#x3D;&quot;text&quot; [value]&#x3D;&quot;targetAnn.value&quot; id&#x3D;&quot;basic-targetAnnValue&quot; aria-describedby&#x3D;&quot;targetAnn-basic-addon&quot; disabled readonly&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;label class&#x3D;&quot;form-label&quot;&gt;Nome *&lt;/label&gt;
+          &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+            &lt;input #name&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;name&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;relationModel.name&quot;
+              required maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Nome relazione&quot; appWhitespacesValidator&gt;
+            &lt;div *ngIf&#x3D;&quot;name.invalid &amp;&amp; (name.touched || name.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;required&#x27;]&quot;&gt;
+                Necessario inserire il nome della relazione
+              &lt;/div&gt;
+              &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
+                Il nome della relazione non può contenere solo spazi vuoti
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;label class&#x3D;&quot;form-label&quot;&gt;Descrizione&lt;/label&gt;
+          &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
+            &lt;input #description&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;description&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;relationModel.description&quot;
+              maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Descrizione&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;d-block&quot;&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-save&quot; label&#x3D;&quot;Salva&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm&quot; (click)&#x3D;&quot;onSubmit(relationForm)&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-times&quot; label&#x3D;&quot;Annulla&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm p-button-secondary&quot; (click)&#x3D;&quot;onCancelBtn()&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;fa-solid fa-eraser&quot; label&#x3D;&quot;Pulisci&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm p-button-help&quot; (click)&#x3D;&quot;onClearBtn()&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-trash&quot; label&#x3D;&quot;Elimina&quot; class&#x3D;&quot;w-100 mb-2 p-button-sm p-button-danger&quot; [disabled]&#x3D;&quot;!isEditing&quot; (click)&#x3D;&quot;showDeleteModal()&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/ng-template&gt;
+&lt;/div&gt;
+
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./relation-editor.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.relation-area {
+  width: 100%;
+  height: calc(100% - 45px);
+  overflow: auto;
+
+  &amp;.none {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,.09);
+    color: #6c757d;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="px-2 h-100 w-100">  <div class="border-bottom mb-2 py-2">    Relazione  </div>  <div *ngIf="noneRelationIsSelected; else elseBlock" class="relation-area none">    Nessuna relazione selezionata  </div>  <ng-template #elseBlock>    <div class="relation-area">      <form #relationForm="ngForm" class="validated" (ngSubmit)="onSubmit(relationForm)">        <div class="form-group">          <label>Da</label>          <div class="p-fluid">            <div class="input-group mb-3">              <span class="input-group-text" id="srcAnn-basic-addon" [ngStyle]="{\'background-color\': sourceLayer?.color+\'4D\'}">{{ sourceLayer?.name }}</span>              <input class="form-control" type="text" [value]="sourceAnn.value" id="basic-srcAnnValue" aria-describedby="srcAnn-basic-addon" disabled readonly>            </div>          </div>        </div>        <div class="form-group">          <label>A</label>          <div class="p-fluid">            <div class="input-group mb-3">              <span class="input-group-text" id="targetAnn-basic-addon" [ngStyle]="{\'background-color\': targetLayer?.color+\'4D\'}">{{ targetLayer?.name }}</span>              <input class="form-control" type="text" [value]="targetAnn.value" id="basic-targetAnnValue" aria-describedby="targetAnn-basic-addon" disabled readonly>            </div>          </div>        </div>        <div class="form-group">          <label class="form-label">Nome *</label>          <div class="p-fluid">            <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="relationModel.name"              required maxlength="300" placeholder="Nome relazione" appWhitespacesValidator>            <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">              <div *ngIf="name.errors?.[\'required\']">                Necessario inserire il nome della relazione              </div>              <div *ngIf="name.errors?.[\'isNotOnlyWhitespaces\']">                Il nome della relazione non può contenere solo spazi vuoti              </div>            </div>          </div>        </div>        <div class="form-group">          <label class="form-label">Descrizione</label>          <div class="p-fluid">            <input #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="relationModel.description"              maxlength="300" placeholder="Descrizione">          </div>        </div>        <div class="d-block">          <button pButton pRipple type="button" icon="pi pi-save" label="Salva" class="w-100 mb-2 p-button-sm" (click)="onSubmit(relationForm)"></button>          <button pButton pRipple type="button" icon="pi pi-times" label="Annulla" class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>          <button pButton pRipple type="button" icon="fa-solid fa-eraser" label="Pulisci" class="w-100 mb-2 p-button-sm p-button-help" (click)="onClearBtn()"></button>          <button pButton pRipple type="button" icon="pi pi-trash" label="Elimina" class="w-100 mb-2 p-button-sm p-button-danger" [disabled]="!isEditing" (click)="showDeleteModal()"></button>        </div>      </form>    </div>  </ng-template></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'RelationEditorComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'RelationEditorComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

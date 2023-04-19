@@ -1,0 +1,1529 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>projectx-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  TagsetsListComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente della lista dei tagset</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-tagsets-list</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./tagsets-list.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./tagsets-list.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#delete" >delete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#tagsetForm" >tagsetForm</a>
+                            </li>
+                            <li>
+                                <a href="#tagsetModel" >tagsetModel</a>
+                            </li>
+                            <li>
+                                <a href="#tagsets" >tagsets</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadData" >loadData</a>
+                            </li>
+                            <li>
+                                <a href="#navigateTo" >navigateTo</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onDelete" >onDelete</a>
+                            </li>
+                            <li>
+                                <a href="#onEdit" >onEdit</a>
+                            </li>
+                            <li>
+                                <a href="#onNew" >onNew</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#isEditing" >isEditing</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, tagsetService: <a href="../injectables/TagsetService.html" target="_self">TagsetService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, activeRoute: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:67</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per TagsetsListComponent</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>loaderService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la gestione del segnale di caricamento</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>tagsetService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/TagsetService.html" target="_self" >TagsetService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi ai tagset</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la gestione dei messaggi</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la configurazione dei messaggi per messageService</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>activeRoute</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>fornisce l&#39;accesso alle informazioni di una route associata con un componente caricato in un outlet</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per la navigazione fra le viste</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadData"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>loadData</b></span>
+                        <a href="#loadData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadData()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che esegue il caricamento dei dati del componente</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateTo"></a>
+                    <span class="name">
+                        <span ><b>navigateTo</b></span>
+                        <a href="#navigateTo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>navigateTo(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:101</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che esegue la navigazione su un tagset specifico</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>evento qualsiasi</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:93</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal aperti</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:88</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per il caricamento dei dati iniziali del componente</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDelete"></a>
+                    <span class="name">
+                        <span ><b>onDelete</b></span>
+                        <a href="#onDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDelete(tagset: <a href="../classes/Tagset.html" target="_self">Tagset</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:123</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di conferma cancellazione ed eventualmente richiama proprietà di cancellazione</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tagset</td>
+                                    <td>
+                                                <code><a href="../classes/Tagset.html" target="_self" >Tagset</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>tagset selezionato</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEdit"></a>
+                    <span class="name">
+                        <span ><b>onEdit</b></span>
+                        <a href="#onEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEdit(tagset: <a href="../classes/Tagset.html" target="_self">Tagset</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:115</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che esegue la navigazione di un tagset per la sua modifica</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tagset</td>
+                                    <td>
+                                                <code><a href="../classes/Tagset.html" target="_self" >Tagset</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>tagset selezionato</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onNew"></a>
+                    <span class="name">
+                        <span ><b>onNew</b></span>
+                        <a href="#onNew"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onNew()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:107</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che esegue la navigazione su un &quot;nuovo&quot; tagset</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="151"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:151</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione fallita</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio di errore</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:164</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione in corso</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio da visualizzare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delete"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>delete</b></span>
+                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Esegue la rimozione di un tagset</p>
+</div>
+                </td>
+            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>id</td>
+                                                    <td>
+                                                            <code><p>identificativo numerico del tagset</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                            <tr>
+                                                    <td>name</td>
+                                                    <td>
+                                                            <code><p>nome del tagset</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al popup di cancellazione elemento</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsetForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>tagsetForm</b></span>
+                        <a href="#tagsetForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(NgForm)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al form di creazione/modifica tagset</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsetModel"></a>
+                    <span class="name">
+                        <span ><b>tagsetModel</b></span>
+                        <a href="#tagsetModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Tagset.html" target="_self" >Tagset</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Tagset()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Tagset in lavorazione</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsets"></a>
+                    <span class="name">
+                        <span ><b>tagsets</b></span>
+                        <a href="#tagsets"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Tagset.html" target="_self" >Tagset[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista dei tagset</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isEditing"></a>
+                        <span class="name"><b>isEditing</b><a href="#isEditing"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isEditing()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/pages/tagsets/tagsets-list/tagsets-list.component.ts:51</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter che definisce se siamo in modalità di modifica</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { Tagset } from &#x27;./../../../models/tagset/tagset&#x27;;
+import { Component, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { TagsetService } from &#x27;src/app/services/tagset.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
+
+/**Componente della lista dei tagset */
+@Component({
+  selector: &#x27;app-tagsets-list&#x27;,
+  templateUrl: &#x27;./tagsets-list.component.html&#x27;,
+  styleUrls: [&#x27;./tagsets-list.component.scss&#x27;]
+})
+export class TagsetsListComponent implements OnInit {
+  /**
+   * Esegue la rimozione di un tagset
+   * @param id {number} identificativo numerico del tagset
+   * @param name {string} nome del tagset
+   */
+  private delete &#x3D; (id: number, name: string): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
+
+    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare il tagset \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+    let failMsg &#x3D; &#x27;Il tagset \&#x27;&#x27; + name + &#x27;\&#x27; è parte di una feature&#x27;;
+    let successMsg &#x3D; &#x27;Tagset \&#x27;&#x27; + name + &#x27;\&#x27; eliminato con successo&#x27;;
+
+    this.tagsetService
+        .delete(id)
+        .subscribe({
+          next: (result) &#x3D;&gt; {
+            if (result) {
+              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+              Swal.close();
+            }
+            else {
+              this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + failMsg);
+            }
+            this.loadData();
+          },
+          error: () &#x3D;&gt; {
+            this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg)
+          }
+        })
+  }
+
+  /**Getter che definisce se siamo in modalità di modifica */
+  public get isEditing(): boolean {
+    if (this.tagsetModel &amp;&amp; this.tagsetModel.id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**Lista dei tagset */
+  tagsets: Tagset[] &#x3D; [];
+  /**Tagset in lavorazione */
+  tagsetModel: Tagset &#x3D; new Tagset();
+
+  /**Riferimento al form di creazione/modifica tagset */
+  @ViewChild(NgForm) public tagsetForm!: NgForm;
+  /**Riferimento al popup di cancellazione elemento */
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
+  /**
+   * Costruttore per TagsetsListComponent
+   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
+   * @param tagsetService {TagsetService} servizi relativi ai tagset
+   * @param messageService {MessageService} servizi per la gestione dei messaggi
+   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
+   * @param activeRoute {ActivatedRoute} fornisce l&#x27;accesso alle informazioni di una route associata con un componente caricato in un outlet
+   * @param router {Router} servizi per la navigazione fra le viste
+   */
+  constructor(
+    private loaderService: LoaderService,
+    private tagsetService: TagsetService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private activeRoute: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  /**Metodo dell&#x27;interfaccia OnInit, utilizzato per il caricamento dei dati iniziali del componente */
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal aperti */
+  ngOnDestroy(): void {
+    Swal.close();
+  }
+
+  /**
+   * Metodo che esegue la navigazione su un tagset specifico
+   * @param event {any} evento qualsiasi
+   */
+  navigateTo(event: any) { //TODO non è richiamato né internamente, né nel template, verificare se serve la rimozione
+    const item &#x3D; event.data;
+    this.router.navigate([item.id], { relativeTo: this.activeRoute });
+  }
+
+  /**Metodo che esegue la navigazione su un &quot;nuovo&quot; tagset */
+  onNew(): void {
+    this.router.navigate([&quot;new&quot;], { relativeTo: this.activeRoute });
+	}
+
+  /**
+   * Metodo che esegue la navigazione di un tagset per la sua modifica
+   * @param tagset {Tagset} tagset selezionato
+   */
+  onEdit(tagset: Tagset): void {
+    this.router.navigate([tagset.id], { relativeTo: this.activeRoute });
+  }
+
+  /**
+   * Metodo che visualizza il popup di conferma cancellazione ed eventualmente richiama proprietà di cancellazione
+   * @param tagset {Tagset} tagset selezionato
+   */
+  onDelete(tagset: Tagset): void {
+    let confirmMsg &#x3D; &#x27;Stai per cancellare il tagset \&#x27;&#x27; + tagset.name + &#x27;\&#x27;&#x27;;
+
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.delete(tagset.id, (tagset.name || &quot;&quot;)), tagset.id, tagset.name);
+  }
+
+  /**
+   * @private
+   * Metodo che esegue il caricamento dei dati del componente
+   */
+  private loadData() {
+    this.loaderService.show();
+
+    this.tagsetService.retrieve()
+      .subscribe({
+        next: (data) &#x3D;&gt; {
+          this.tagsets &#x3D; [...data];
+          this.loaderService.hide();
+        }
+      })
+  }
+
+  /**
+   * @private
+   * Metodo che visualizza il popup di operazione fallita
+   * @param errorMessage {string} messaggio di errore
+   */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  /**
+   * @private
+   * Metodo che visualizza il popup di operazione in corso
+   * @param message {string} messaggio da visualizzare
+   */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;per favore attendere&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;grid&quot;&gt;
+  &lt;div class&#x3D;&quot;col-12&quot;&gt;
+    &lt;div class&#x3D;&quot;card&quot;&gt;
+      &lt;div class&#x3D;&quot;page-header&quot;&gt;
+        &lt;h5&gt;Gestore tagsets&lt;/h5&gt;
+        &lt;button pButton pRipple label&#x3D;&quot;Nuovo tagset&quot; icon&#x3D;&quot;pi pi-tag&quot; class&#x3D;&quot;p-button-danger&quot; (click)&#x3D;&quot;onNew()&quot;&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;card-body p-fluid&quot;&gt;
+        &lt;p-table #dt [value]&#x3D;&quot;tagsets&quot; [rows]&#x3D;&quot;10&quot; [paginator]&#x3D;&quot;true&quot; [rowHover]&#x3D;&quot;true&quot; dataKey&#x3D;&quot;id&quot;
+          currentPageReportTemplate&#x3D;&quot;Elementi da {first} a {last} per un totale di {totalRecords} elementi&quot;
+          [responsive]&#x3D;&quot;true&quot; responsiveLayout&#x3D;&quot;scroll&quot; [showCurrentPageReport]&#x3D;&quot;true&quot;&gt;
+            &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+              &lt;tr&gt;
+                &lt;th pSortableColumn&#x3D;&quot;name&quot;&gt;Nome&lt;p-sortIcon field&#x3D;&quot;name&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+                &lt;th pSortableColumn&#x3D;&quot;description&quot;&gt;Descrizione&lt;p-sortIcon field&#x3D;&quot;description&quot;&gt;&lt;/p-sortIcon&gt;&lt;/th&gt;
+                &lt;th&gt;&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/ng-template&gt;
+            &lt;ng-template pTemplate&#x3D;&quot;body&quot; let-tagset let-i&#x3D;&quot;rowIndex&quot;&gt;
+              &lt;tr&gt;
+                &lt;td&gt;{{tagset.name}}&lt;/td&gt;
+                &lt;td&gt;{{tagset.description}}&lt;/td&gt;
+                &lt;td&gt;
+                  &lt;button pButton pRipple icon&#x3D;&quot;pi pi-pencil&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot; (click)&#x3D;&quot;onEdit(tagset)&quot;&gt;&lt;/button&gt;
+                  &lt;button pButton pRipple icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-rounded p-button-danger mx-2&quot; (click)&#x3D;&quot;onDelete(tagset)&quot;&gt;&lt;/button&gt;
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/ng-template&gt;
+            &lt;ng-template pTemplate&#x3D;&quot;summary&quot;&gt;
+              &lt;div class&#x3D;&quot;p-d-flex p-ai-center p-jc-between&quot;&gt;
+                In totale ci sono {{ tagsets ? tagsets.length : 0 }} tagsets.
+              &lt;/div&gt;
+            &lt;/ng-template&gt;
+        &lt;/p-table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./tagsets-list.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="grid">  <div class="col-12">    <div class="card">      <div class="page-header">        <h5>Gestore tagsets</h5>        <button pButton pRipple label="Nuovo tagset" icon="pi pi-tag" class="p-button-danger" (click)="onNew()"></button>      </div>      <div class="card-body p-fluid">        <p-table #dt [value]="tagsets" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"          currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"          [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">            <ng-template pTemplate="header">              <tr>                <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon></th>                <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon></th>                <th></th>              </tr>            </ng-template>            <ng-template pTemplate="body" let-tagset let-i="rowIndex">              <tr>                <td>{{tagset.name}}</td>                <td>{{tagset.description}}</td>                <td>                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="onEdit(tagset)"></button>                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="onDelete(tagset)"></button>                </td>              </tr>            </ng-template>            <ng-template pTemplate="summary">              <div class="p-d-flex p-ai-center p-jc-between">                In totale ci sono {{ tagsets ? tagsets.length : 0 }} tagsets.              </div>            </ng-template>        </p-table>      </div>    </div>  </div></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'TagsetsListComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'TagsetsListComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
