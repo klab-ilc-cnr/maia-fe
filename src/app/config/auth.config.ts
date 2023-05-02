@@ -25,7 +25,8 @@ export const authConfig: AuthConfig = {
   requireHttps: environment.keycloak.requireHttps,
   // at_hash is not present in JWT token
   showDebugInformation: environment.keycloak.showDebugInformation,
-  disableAtHashCheck: environment.keycloak.disableAtHashCheck
+  disableAtHashCheck: environment.keycloak.disableAtHashCheck,
+  strictDiscoveryDocumentValidation: environment.keycloak.strictDiscoveryDocumentValidation 
 };
 
 
