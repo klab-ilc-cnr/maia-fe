@@ -5,9 +5,16 @@
 import { LanguageService } from "src/app/services/language.service";
 
 const clientid = "projectx-fe";
-const appName = "/projectx-fe"
-const issuer = "http://localhost:8080/realms/princnr"; //TODO sostituire con keycloak
-const allowedUrls = 'http://localhost:9000/projectx/api'; //TODO sostituire con il backend xeel
+//const appName = "/projectx-fe"
+const appName = "/maia-fe" //path del deploy
+//const issuer = "http://146.48.93.223:8081/realms/princnr"; //TODO sostituire con keycloak
+//const issuer = "http://localhost:8081/realms/princnr"; //TODO sostituire con keycloak
+const issuer = "https://klab.ilc.cnr.it/keycloak/realms/princnr"; //TODO sostituire con keycloak
+
+//const allowedUrls = 'http://146.48.93.223:9000/projectx/api'; //TODO sostituire con il backend xeel
+//const allowedUrls   = 'http://146.48.93.223:8080/projectx/api'; //TODO sostituire con il backend xeel
+//const allowedUrls   = 'http://localhost:8080/projectx/api'; //TODO sostituire con il backend xeel
+const allowedUrls   = 'https://klab.ilc.cnr.it/projectx/api'; //TODO sostituire con il backend xeel
 
 export const environment = {
   production: true,
@@ -27,7 +34,8 @@ export const environment = {
     // at_hash is not present in JWT token
     showDebugInformation: true,
     //   // at_hash is not present in JWT token
-    disableAtHashCheck: true
+    disableAtHashCheck: true,
+    strictDiscoveryDocumentValidation: false //https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/using-an-id-provider-that-fails-discovery-document-validation.html
   },
   allowedUrls: allowedUrls,
   usersUrl: allowedUrls + '/users',
@@ -38,8 +46,10 @@ export const environment = {
   tagsetUrl: allowedUrls + '/tagsets',
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
-  lexoUrl: "http://licodemo.ilc.cnr.it:8080/LexO-backend-maia/service/",
-  cashUrl: "http://localhost:8085", //TODO sostituire con il deploy di cash (o altro backend del testo)
+  //lexoUrl: "http://licodemo.ilc.cnr.it:8080/LexO-backend-maia/service/",
+  lexoUrl: "https://klab.ilc.cnr.it/LexO-backend-maia/service/",
+  //cashUrl: "http://146.48.93.223:8080/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
+  cashUrl: "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
   rutPrefix: "ferrandi",
   rutBaseIRI: "http://rut/somali/ferrandi#"
 };
