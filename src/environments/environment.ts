@@ -4,10 +4,10 @@
 
 import { LanguageService } from "src/app/services/language.service";
 
-let clientid = "projectx-fe";
-let appName = "/projectx-fe"
-let issuer = "http://localhost:8080/realms/princnr";
-let allowedUrls = 'http://localhost:9000/projectx/api';
+const clientid = "projectx-fe";
+const appName = "/projectx-fe"
+const issuer = "http://localhost:8080/realms/princnr";
+const allowedUrls = 'http://localhost:9000/projectx/api';
 
 export const environment = {
   production: false,
@@ -28,7 +28,8 @@ export const environment = {
     // at_hash is not present in JWT token
     showDebugInformation: true,
     //   // at_hash is not present in JWT token
-    disableAtHashCheck: true
+    disableAtHashCheck: true,
+    strictDiscoveryDocumentValidation: false //https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/using-an-id-provider-that-fails-discovery-document-validation.html
   },
   allowedUrls: allowedUrls,
   usersUrl: allowedUrls + '/users',
@@ -40,7 +41,8 @@ export const environment = {
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
   lexoUrl: "/LexO-backend-maia/service/",
-  cashUrl: "http://localhost:8085",
+  // cashUrl: "http://localhost:8085",
+  cashUrl: "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
   rutPrefix: "ferrandi",
   rutBaseIRI: "http://rut/somali/ferrandi#"
 };

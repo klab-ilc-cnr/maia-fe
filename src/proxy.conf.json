@@ -18,7 +18,7 @@
     "logLevel": "debug"
   },
   "/api/*": {
-    "target": "http://localhost:8085",
+    "target": "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
