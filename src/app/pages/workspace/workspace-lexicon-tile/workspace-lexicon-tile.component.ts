@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { forkJoin, Observable, Subscription, take } from 'rxjs';
+import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { formTypeEnum, LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
@@ -97,6 +98,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   @ViewChild('lexicalEntry') lexicalEntryTree: any;
 
   @ViewChild('lexiconUploaderForm') public lexiconUploaderForm!: NgForm;
+
+  /**Riferimento al popup di conferma cancellazione di un'annotazione */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**Altezza calcolata per lo scroller */
   public scrollHeight!: number;
@@ -241,8 +245,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const filtered = [];
     const query = event.query;
 
-    for(const lang of this.selectLanguages) {
-      if(lang.value.toLowerCase().includes(query.toLowerCase())) {
+    for (const lang of this.selectLanguages) {
+      if (lang.value.toLowerCase().includes(query.toLowerCase())) {
         filtered.push(lang.value);
       }
     }
@@ -468,12 +472,14 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       }
     });
 
-    this.deleteNodes(nodesToDelete);
+    this.showDeleteModal(nodesToDelete);
+
+    // this.deleteNodes(nodesToDelete);
   }
 
   onSelectFile(event: Event) {
     const element = event.currentTarget as HTMLInputElement;
-    const fileList: FileList|null = element.files!;
+    const fileList: FileList | null = element.files!;
 
     this._selectedFile = fileList[0];
   }
@@ -528,6 +534,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.filter();
   }
 
+  private showDeleteModal(nodesToDelete: TreeNode[]): void {
+    const confirmMsg = 'You are about to delete selected lexical entries';
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteNodes(nodesToDelete), 'delete_lex_nodes');
+  }
+
   /**
    * Metodo che gestisce la copia dell'uri di un'entrata lessicale per un successivo utilizzo
    * @param uri {any} l'uri dell'entrata lessicale
@@ -580,6 +592,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     forkJoin(httpDelete).pipe(take(1)).subscribe({
       next: () => {
         const successMsg = "Elementi rimossi";
+        this.selectedNodes = [];
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         this.loadNodes();
       },
