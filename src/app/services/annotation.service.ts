@@ -36,8 +36,8 @@ export class AnnotationService {
    */
   public retrieveByNodeId(nodeId: number): Observable<any> {
     let uuid = uuidv4();
-
-    return this.http.get<any>(`${this.cashUrl}/api/v1/annotation?requestUUID=${uuid}&nodeid=${nodeId}`);
+    //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.get<any>(`${this.cashUrl}/api/public/annotation?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
 
   /**
@@ -48,8 +48,8 @@ export class AnnotationService {
    */
   public create(nodeId: number, item: any): Observable<any> {
     let uuid = uuidv4();
-
-    return this.http.post<any>(`${this.cashUrl}/api/v1/annotation?requestUUID=${uuid}&nodeid=${nodeId}`, item);
+    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.post<any>(`${this.cashUrl}/api/annotation?requestUUID=${uuid}&nodeid=${nodeId}`, item);
   }
 
   /**
@@ -59,8 +59,8 @@ export class AnnotationService {
    */
   public update(item: any) {
     let uuid = uuidv4();
-
-    return this.http.put<any>(`${this.cashUrl}/api/v1/annotation?requestUUID=${uuid}`, item);
+    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.put<any>(`${this.cashUrl}/api/annotation?requestUUID=${uuid}`, item);
   }
 
   /**
@@ -81,8 +81,8 @@ export class AnnotationService {
    */
   public retrieveText(nodeId: number): Observable<any> {
     let uuid = uuidv4();
-
-    return this.http.get<any>(`${this.cashUrl}/api/v1/gettext?requestUUID=${uuid}&nodeid=${nodeId}`);
+    //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.get<any>(`${this.cashUrl}/api/public/gettext?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
 
   /**
@@ -104,7 +104,8 @@ export class AnnotationService {
   public delete(annotationId: number): Observable<any> {
     let uuid = uuidv4();
 
-    return this.http.delete<any>(`${this.cashUrl}/api/v1/annotate?requestUUID=${uuid}&annotationID=${annotationId}`);
+       //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+       return this.http.delete<any>(`${this.cashUrl}/api/annotate?requestUUID=${uuid}&annotationID=${annotationId}`);
   }
 
   // FINE CHIAMATE CASH SERVER

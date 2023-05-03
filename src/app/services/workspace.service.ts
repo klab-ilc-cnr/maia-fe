@@ -161,8 +161,8 @@ export class WorkspaceService {
    */
   public retrieveCorpus(): Observable<DocumentSystem> {
     const uuid = uuidv4();
-
-    return this.http.get<DocumentSystem>(`${this.cashUrl}/api/getDocumentSystem?requestUUID=${uuid}`);
+//SIM: aggiunto public/ nel path
+    return this.http.get<DocumentSystem>(`${this.cashUrl}/api/public/getDocumentSystem?requestUUID=${uuid}`);
     //return this.http.get<DocumentSystem>('assets/mock/files.json')
   }
 
