@@ -580,6 +580,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     forkJoin(httpDelete).pipe(take(1)).subscribe({
       next: () => {
         const successMsg = "Elementi rimossi";
+        this.selectedNodes = [];
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         this.loadNodes();
       },
