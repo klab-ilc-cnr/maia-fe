@@ -31,6 +31,10 @@ import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry
 import { FormEditorComponent } from './controllers/editors/form-editor/form-editor.component';
 import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
 import { SharedModule } from './modules/shared.module';
+import { TabsLexicalEntryComponent } from './controllers/tab-controllers/tabs-lexical-entry/tabs-lexical-entry.component';
+import { TabsFormComponent } from './controllers/tab-controllers/tabs-form/tabs-form.component';
+import { TabsSenseComponent } from './controllers/tab-controllers/tabs-sense/tabs-sense.component';
+import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,11 @@ import { SharedModule } from './modules/shared.module';
     WorkspaceLexiconEditTileComponent,
     LexicalEntryEditorComponent,
     FormEditorComponent,
-    SenseEditorComponent
+    SenseEditorComponent,
+    TabsLexicalEntryComponent,
+    TabsFormComponent,
+    TabsSenseComponent,
+    LexEntryMetadataEditorComponent
   ],
   imports: [
     BrowserModule,

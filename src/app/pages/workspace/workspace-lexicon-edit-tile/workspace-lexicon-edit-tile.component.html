@@ -41,13 +41,20 @@
     </p-treeTable>
   </ng-template>
   <ng-template pTemplate>
-    <p-tabView>
-      <p-tabPanel header="Morphology" *ngIf="showLexicalEntryEditor || showFormEditor">
+    <!-- <p-tabView> -->
+      <app-tabs-lexical-entry *ngIf="showLexicalEntryEditor"
+        [lexicalEntryTypes]="lexicalEntryTypes"
+        [partOfSpeeches]="partOfSpeeches"
+        [languageValues]="languageValues"
+        [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-tabs-lexical-entry>
+      <app-tabs-form *ngIf="showFormEditor"></app-tabs-form>
+      <app-tabs-sense *ngIf="showSenseEditor"></app-tabs-sense>
+      <!-- <p-tabPanel header="Morphology" *ngIf="showLexicalEntryEditor || showFormEditor"> -->
         <!--TODO ripristinare statusForm quando recuperati da BE-->
         <!-- <app-lexical-entry-editor [typesForm]="lexicalEntryTypes" [partOfSpeechesForm]="partOfSpeeches" *ngIf="showLexicalEntryEditor"
           [statusForm]="statusValues" [languagesForm]="languageValues"
           [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor> -->
-          <app-lexical-entry-editor [typesForm]="lexicalEntryTypes" [partOfSpeechesForm]="partOfSpeeches" *ngIf="showLexicalEntryEditor"
+          <!-- <app-lexical-entry-editor [typesForm]="lexicalEntryTypes" [partOfSpeechesForm]="partOfSpeeches" *ngIf="showLexicalEntryEditor"
           [languagesForm]="languageValues"
           [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor>
           <app-form-editor [instanceName]="formInstanceName" [typesDropdownList]="formTypes" *ngIf="showFormEditor"
@@ -61,7 +68,7 @@
       <p-tabPanel header="Syntax" ></p-tabPanel>
       <p-tabPanel header="Semantics" [disabled]="true"></p-tabPanel>
       <p-tabPanel header="Multimedia" [disabled]="true"></p-tabPanel>
-      <p-tabPanel header="Dictionary view" [disabled]="true"></p-tabPanel>
-    </p-tabView>
+      <p-tabPanel header="Dictionary view" [disabled]="true"></p-tabPanel> -->
+    <!-- </p-tabView> -->
   </ng-template>
 </p-splitter>

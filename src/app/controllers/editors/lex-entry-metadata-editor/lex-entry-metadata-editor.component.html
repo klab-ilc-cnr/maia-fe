@@ -1,0 +1,37 @@
+<!--PLACEHOLDER quando siamo in fase di loading dati-->
+<p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton>
+
+<div *ngIf="!loading" class="card"
+  [style]="{'height': '100%'}">
+  <div class="formgrid grid">
+    <div class="field col-6">
+      <label for="">Author</label>
+    </div>
+    <div class="field col-6">
+      <label for="">Creation date</label>
+    </div>
+    <div class="field col-6">
+      <label for="">Author</label>
+    </div>
+    <div class="field col-6">
+      <label for="">Completion date</label>
+    </div>
+    <div class="field col-6">
+      <label for="">Author</label>
+    </div>
+    <div class="field col-6">
+      <label for="">Review date</label>
+    </div>
+    <!--TODO inserire confidence-->
+    <!--TODO inserire see also-->
+    <!--TODO inserire same as-->
+    <div class="field col-12">
+      <label for="note">Note</label>
+      <p-editor id="note"
+        type="text"></p-editor>
+    </div>
+    <div class="field col-11">
+      <button pButton type="button" class="w-full" label="Save"></button> <!--TODO se i dati sono in sola view rimuovere-->
+    </div>
+  </div>
+</div>

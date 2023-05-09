@@ -167,7 +167,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   }
 
   /**Metodo per la gestione del caricamento dei dati */
-  loadData() {
+  loadData() {  //TODO valuta se spostare il recupero dell'entrata lessicale nel gestore dei tab (viene richiamato solamente una volta)
     this.loading = true;
 
     this.loadLexicalEntry();
