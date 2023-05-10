@@ -1,0 +1,24 @@
+<div>
+  <form (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    class="formgrid grid">
+    <div *ngFor="let field of fields"
+      class="field"
+      [ngClass]="field.styleClass">
+      <app-dynamic-form-field [field]="field"
+        [form]="form"></app-dynamic-form-field>
+    </div>
+    <div class="col-12">
+      <button type="submit"
+        pButton
+        [disabled]="!form.valid"
+        class="w-full"
+        label="Save"></button>
+    </div>
+  </form>
+
+  <div *ngIf="payload"
+    class="form-row">
+    <strong>Saved the following values</strong><br>{{payload}}
+  </div>
+</div>

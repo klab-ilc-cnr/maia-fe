@@ -1,0 +1,26 @@
+<div [formGroup]="form">
+  <label [attr.for]="field.key">{{field.label}}</label>
+  <div [ngSwitch]="field.controlType">
+    <!--INPUT TEXT-->
+    <input *ngSwitchCase="'textbox'"
+      pInputText
+      [formControlName]="field.key"
+      [id]="field.key"
+      [type]="field.type"
+      class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
+    <!--DROPDOWN-->
+    <p-dropdown *ngSwitchCase="'dropdown'"
+      [formControlName]="field.key"
+      [options]="field.options"
+      optionLabel="value"
+      optionValue="key"
+      [filter]="true"
+      filterBy="value"
+      styleClass="w-full"></p-dropdown>
+  </div>
+  <div class="errorMessage"
+    *ngIf="!isValid">
+    {{field.label}} is required
+  </div>
+</div>

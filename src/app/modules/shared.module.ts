@@ -38,6 +38,8 @@ import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.dire
 import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
 import { UriValidator } from '../validators/uri-validator.directive';
 import { PopupDeleteItemComponent } from '../controllers/popup/popup-delete-item/popup-delete-item.component';
+import { DynamicFormFieldComponent } from '../forms/dynamic-form-field/dynamic-form-field.component';
+import { DynamicFormComponent } from '../forms/dynamic-form/dynamic-form.component';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -82,7 +84,9 @@ const DIRECTIVES = [
 ];
 
 const COMPONENTS = [
-  PopupDeleteItemComponent
+  PopupDeleteItemComponent,
+  DynamicFormFieldComponent,
+  DynamicFormComponent
 ];
 
 @NgModule({
