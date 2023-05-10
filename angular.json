@@ -74,6 +74,27 @@
               ],
               "outputHashing": "all"
             },
+			"italex": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.italex.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
 						"collaudo": {
 							"budgets": [
 								{
