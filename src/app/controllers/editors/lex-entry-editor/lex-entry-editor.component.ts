@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription, map, of } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryCore, LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 
@@ -80,6 +80,10 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+  }
+
+  onSelectLexEntry(lexEntry: LexicalEntryListItem) {
+    console.info('add see also', lexEntry.lexicalEntry);
   }
 
   onSubmit() {

@@ -43,7 +43,6 @@
           Evokes <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <app-autocomplete-checkbox [isChecked]="true"></app-autocomplete-checkbox>
           <app-autocomplete-checkbox [isChecked]="false" placeholderMsg="Search lexical concept" [filterFn]="lexConceptList" field="label"></app-autocomplete-checkbox>
         </ng-template>
       </p-fieldset>
@@ -67,7 +66,7 @@
           See also <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <app-autocomplete-checkbox [isChecked]="false" placeholderMsg="Search lexical entry" [filterFn]="lexEntryList" field="label"></app-autocomplete-checkbox>
+          <app-autocomplete-checkbox [isChecked]="false" placeholderMsg="Search lexical entry" [filterFn]="lexEntryList" field="label" (selected)="onSelectLexEntry($event)"></app-autocomplete-checkbox>
         </ng-template>
       </p-fieldset>
     </div>
