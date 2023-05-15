@@ -23,18 +23,46 @@
     </div>
     <div class="field col-4">
       <label for="language">Language</label>
-      <p-dropdown [options]="(languages$ | async) || []" optionLabel="label" optionValue="label" styleClass="w-full" [placeholder]="emptyField"
-        [filter]="true" filterBy="label" name="language" formControlName="language"></p-dropdown>
+      <p-dropdown [options]="(languages$ | async) || []" optionLabel="label" optionValue="label" styleClass="w-full"
+        [placeholder]="emptyField" [filter]="true" filterBy="label" name="language"
+        formControlName="language"></p-dropdown>
     </div>
     <div class="field col-6">
       <label for="pos">Part-of-Speech</label>
-      <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId" [filter]="true" filterBy="name" [placeholder]="emptyField"
-        formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>
+      <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId" [filter]="true"
+        filterBy="name" [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>
     </div>
     <div class="field col-6">
       <label for="type">Type</label>
-      <p-multiSelect [options]="(types$|async) || []" optionLabel="valueLabel" optionValue="valueId" display="chip" [placeholder]="emptyField"
-        formControlName="type" name="type" styleClass="w-full"></p-multiSelect>
+      <p-multiSelect [options]="(types$|async) || []" optionLabel="valueLabel" optionValue="valueId" display="chip"
+        [placeholder]="emptyField" formControlName="type" name="type" styleClass="w-full"></p-multiSelect>
+    </div>
+    <div class="field col-7">
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          Evokes <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+      </p-fieldset>
+    </div>
+    <div class="field col-5">
+      <p-fieldset legend="Evokes" styleClass="read-only"></p-fieldset>
+    </div>
+    <div class="field col-7">
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          Denotes <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+      </p-fieldset>
+    </div>
+    <div class="field col-5">
+      <p-fieldset legend="Denotes" styleClass="read-only"></p-fieldset>
+    </div>
+    <div class="field col-7">
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          See also <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+      </p-fieldset>
     </div>
   </form>
 </div>
