@@ -1,0 +1,10 @@
+p-autocomplete {
+  width: 75%;
+}
+
+::ng-deep {
+  p-autocomplete>span,
+  p-autocomplete>span>input {
+    width: 100%;
+  }
+}

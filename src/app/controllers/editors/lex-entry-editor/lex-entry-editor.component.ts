@@ -1,8 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, map, of } from 'rxjs';
+import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { GlobalStateService } from 'src/app/services/global-state.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
 
 @Component({
   selector: 'app-lex-entry-editor',
@@ -28,8 +30,35 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   pos$ = this.globalState.pos$;
   types$ = this.globalState.lexicalEntryTypes$;
 
+  lexConceptList = (text: string) => this.lexiconService.getFilteredLexicalConcepts({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    labelType: "prefLabel",
+    author: "",
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map(resp => resp.list)
+  );
+
+  lexEntryList = (text: string) => this.lexiconService.getLexicalEntriesList({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    type: '',
+    pos: '',
+    formType: '',
+    author: '',
+    lang: '',
+    status: '',
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map(resp => resp.list)
+  );
+
   constructor(
     private globalState: GlobalStateService,
+    private lexiconService: LexiconService,
   ) {
   }
 

@@ -1,0 +1,10 @@
+<div class="field d-flex justify-content-between">
+  <input *ngIf="isChecked; else autocomplete" pInputText type="text" placeholder="Write URL"
+    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary col-9">
+  <ng-template #autocomplete>
+    <p-autoComplete [placeholder]="placeholderMsg" [field]="field" [suggestions]="(suggestions | async) || []" (completeMethod)="onFilter($event)" [virtualScroll]="true"></p-autoComplete>
+  </ng-template>
+  <input type="checkbox" [checked]="isChecked">
+  <button pButton pRipple type="button" icon="pi pi-times"
+    class="p-button-rounded p-button-danger p-button-text"></button>
+</div>

@@ -6,7 +6,7 @@ import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { FormUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { Morphology } from '../models/lexicon/morphology.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
-import { LexicalEntriesResponse } from '../models/lexicon/lexical-entry-request.model';
+import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { CommonService } from './common.service';
 import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { Namespace } from '../models/lexicon/namespace.model';
@@ -114,6 +114,10 @@ export class LexiconService {
     // FINE MOCK
     const encodedId = this.commonService.encodeUrl(lexicalEntryId);
     return this.http.get(`${this.lexoUrl}lexicon/data/elements?id=${encodedId}`);
+  }
+
+  getFilteredLexicalConcepts(parameters: {text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number}): Observable<{totalHits: number, list: any[]}> { //TODO replace con response list corretto
+    return this.http.post<{totalHits: number, list: any[]}>(`${this.lexoUrl}lexicon/data/filteredLexicalConcepts`, parameters)
   }
 
   /**
