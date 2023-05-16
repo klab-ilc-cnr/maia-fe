@@ -40,10 +40,12 @@
     <div class="field col-7">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Evokes <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+          Evokes <button pButton pRipple icon="pi pi-plus"
+            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <app-autocomplete-checkbox [isChecked]="false" placeholderMsg="Search lexical concept" [filterFn]="lexConceptList" field="label"></app-autocomplete-checkbox>
+          <app-autocomplete-checkbox [isChecked]="false" placeholderMsg="Search lexical concept"
+            [filterFn]="lexConceptList" field="label"></app-autocomplete-checkbox>
         </ng-template>
       </p-fieldset>
     </div>
@@ -53,7 +55,8 @@
     <div class="field col-7">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Denotes <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+          Denotes <button pButton pRipple icon="pi pi-plus"
+            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
       </p-fieldset>
     </div>
@@ -63,10 +66,15 @@
     <div class="field col-7">
       <p-fieldset>
         <ng-template pTemplate="header">
-          See also <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+          See also <button pButton pRipple icon="pi pi-plus"
+            class="p-button-rounded p-button-success mx-2 fieldset-small" (click)="onAddSeeAlso()"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <app-autocomplete-checkbox [isChecked]="false" placeholderMsg="Search lexical entry" [filterFn]="lexEntryList" field="label" (selected)="onSelectLexEntry($event)"></app-autocomplete-checkbox>
+          <form formArrayName="seeAlso">
+            <app-autocomplete-checkbox *ngFor="let sA of seeAlso.controls; index as index" [isChecked]="false"
+              placeholderMsg="Search lexical entry" [filterFn]="lexEntryList" field="label"
+              (selected)="onSelectLexEntry($event)" (remove)="onRemoveSeeAlso(index)"></app-autocomplete-checkbox>
+          </form>
         </ng-template>
       </p-fieldset>
     </div>

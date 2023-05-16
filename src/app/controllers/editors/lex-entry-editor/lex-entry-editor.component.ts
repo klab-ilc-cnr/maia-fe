@@ -22,13 +22,19 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     label: new FormControl<string>(''),
     language: new FormControl<string>(''),
     pos: new FormControl<string>(''),
-    type: new FormControl<string[]>([])
+    type: new FormControl<string[]>([]),
+    seeAlso: new FormArray<FormControl>([])
   });
+
   /**Lista delle option dello status */
   statusForm: string[] = ['completed', 'reviewed', 'working'];
   languages$ = this.globalState.languages$;
   pos$ = this.globalState.pos$;
   types$ = this.globalState.lexicalEntryTypes$;
+
+  get seeAlso() {
+    return this.form.controls['seeAlso'] as FormArray;
+  }
 
   lexConceptList = (text: string) => this.lexiconService.getFilteredLexicalConcepts({
     text: text,
@@ -80,6 +86,14 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+  }
+
+  onAddSeeAlso() {
+    this.seeAlso.push(new FormControl(''));
+  }
+
+  onRemoveSeeAlso(index: number) {
+    this.seeAlso.removeAt(index);
   }
 
   onSelectLexEntry(lexEntry: LexicalEntryListItem) {
