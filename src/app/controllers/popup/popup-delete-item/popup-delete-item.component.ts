@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ElementType } from 'src/app/models/corpus/element-type';
+import { _ElementType } from 'src/app/models/corpus/element-type';
 import Swal from 'sweetalert2';
 
 /**Componente del popup di conferma cancellazione con codice */
@@ -20,9 +20,9 @@ export class PopupDeleteItemComponent {
    * @param deleteFn {} funzione per la cancellazione di un elemento
    * @param id {any} identificativo dell'elemento
    * @param name {string} nome dell'elemento
-   * @param type {ElementType} tipo di elemento da cancellare
+   * @param type {_ElementType} tipo di elemento da cancellare
    */
-  public showDeleteConfirm(deleteFn: (id: any, name?: string, type?: ElementType) => void, id?: any, name?: string, type?: ElementType): void {
+  public showDeleteConfirm(deleteFn: (id: any, name?: string, type?: _ElementType) => void, id?: any, name?: string, type?: _ElementType): void {
     Swal.fire({
       icon: 'warning',
       titleText: this.confirmMessage,

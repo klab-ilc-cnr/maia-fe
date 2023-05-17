@@ -8,8 +8,9 @@ import { Tile } from '../models/tile/tile.model';
 import { WorkspaceChoice } from '../models/workspace-choice.model';
 import { Workspace } from '../models/workspace.model';
 import { DocumentSystem } from '../models/corpus/document-system';
-import { ElementType } from '../models/corpus/element-type';
+import { ElementType, _ElementType } from '../models/corpus/element-type';
 import { v4 as uuidv4 } from 'uuid';
+import { CorpusElement } from '../models/texto/corpus-element';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json'); //TODO verificare rimozione per mancato uso
 
@@ -24,6 +25,8 @@ export class WorkspaceService {
   private workspacesUrl: string;
   /**Url per le chiamate a cash */
   private cashUrl: string;
+  private textoUrl: string;
+  private textoDebugUrl: string;
 
   /**
    * Costruttore per WorkspaceService
@@ -32,6 +35,8 @@ export class WorkspaceService {
   constructor(private http: HttpClient) {
     this.workspacesUrl = environment.workspacesUrl; //inizializzo i due url dall'environment
     this.cashUrl = environment.cashUrl;
+    this.textoUrl = environment.textoUrl;
+    this.textoDebugUrl = environment.textoDebugUrl;
   }
 
   //WORKSPACE
@@ -159,11 +164,23 @@ export class WorkspaceService {
    * GET che recupera il sistema documentale
    * @returns {Observable<DocumentSystem>} observable del sistema documentale
    */
-  public retrieveCorpus(): Observable<DocumentSystem> {
+  public _retrieveCorpus(): Observable<DocumentSystem> {
     const uuid = uuidv4();
 //SIM: aggiunto public/ nel path
     return this.http.get<DocumentSystem>(`${this.cashUrl}/api/public/getDocumentSystem?requestUUID=${uuid}`);
     //return this.http.get<DocumentSystem>('assets/mock/files.json')
+  }
+
+  public retrieveCorpus(userId?: number): Observable<CorpusElement[]> {
+    const uuid = uuidv4();
+    const user = userId ? `/${userId}` : '';
+    return this.http.get<CorpusElement[]>(
+      `${this.textoUrl}/texto/user${user}/tree`,
+      {
+        headers: new HttpHeaders({'UUID': uuid})
+      }
+    );
+    // return this.http.get(`${this.textoDebugUrl}/texto/user${user}/tree`); //DEBUG
   }
 
   /**
@@ -172,7 +189,7 @@ export class WorkspaceService {
    * @param file {File} il file da caricare
    * @returns {Observable<any>} observable del file caricato nel sistema documentale
    */
-  public uploadFile(element_id: number, file: File): Observable<any> {
+  public _uploadFile(element_id: number, file: File): Observable<any> {
     const uuid = uuidv4();
 
     const formData: FormData = new FormData();
@@ -180,14 +197,27 @@ export class WorkspaceService {
     return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
   }
 
+  public uploadFile(resourceId: number, file: File) {
+    const uuid = uuidv4();
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(
+      `${this.textoUrl}/texto/resource/${resourceId}/upload`,
+      formData,
+      {
+        headers: new HttpHeaders({'UUID': uuid})
+      }
+    );
+  }
+
   /**
    * POST che richiede l'aggiornamento del nome dell'elemento documentale
    * @param element_id {number} identificativo numerico dell'elemento documentale
    * @param rename_string {string} nome da dare
-   * @param type {ElementType} tipo di elemento documentale (file o folder)
+   * @param type {_ElementType} tipo di elemento documentale (file o folder)
    * @returns {Observable<any>} observable dell'elemento documentale aggiornato
    */
-  public renameElement(element_id: number, rename_string: string, type: ElementType): Observable<any> {
+  public _renameElement(element_id: number, rename_string: string, type: _ElementType): Observable<any> {
     const uuid = uuidv4();
 
     const payload = {
@@ -199,20 +229,35 @@ export class WorkspaceService {
 
     let operationUrl = "renameFolder";
 
-    if (type == ElementType.File) {
+    if (type == _ElementType.File) {
       operationUrl = "renameFile";
     }
 
     return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
+  public renameElement(elementType: string, elementId: number, newName: string) {
+    const uuid = uuidv4();
+    const operationUrl = elementType === ElementType.FOLDER ? 'folder' : 'resource';
+    const payload = {
+      name: newName
+    };
+    return this.http.post(
+      `${this.textoUrl}/texto/${operationUrl}/${elementId}/update`,
+      payload,
+      {
+        headers: new HttpHeaders({'UUID': uuid})
+      }
+    );
+  }
+
   /**
    * POST che esegue la cancellazione di file o di una cartella del corpus
    * @param element_id {number} identificativo numerico dell'elemento
-   * @param type {ElementType} tipo di elemento da eliminare
+   * @param type {_ElementType} tipo di elemento da eliminare
    * @returns {Observable<any>} observable dell'esito della cancellazione
    */
-  public removeElement(element_id: number, type: ElementType): Observable<any> {
+  public _removeElement(element_id: number, type: _ElementType): Observable<any> {
     const uuid = uuidv4();
 
     const payload = {
@@ -223,21 +268,32 @@ export class WorkspaceService {
 
     let operationUrl = "removeFolder";
 
-    if (type == ElementType.File) {
+    if (type == _ElementType.File) {
       operationUrl = "removeFile";
     }
 
     return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   }
 
+  public removeElement(elementType: string, elementId: number) {
+    const uuid = uuidv4();
+    const operationUrl = elementType === ElementType.FOLDER ? 'folder' : 'resource';
+    return this.http.get(
+      `${this.textoUrl}/texto/${operationUrl}/${elementId}/remove`,
+      {
+        headers: new HttpHeaders({'UUID': uuid})
+      }
+    );
+  }
+
   /**
    * POST che richiede lo spostamento di un elemento documentale
    * @param element_id {number} identificativo numerico dell'elemento
    * @param target_id {number} identificativo numerico del folder di destinazione
-   * @param type {ElementType} tipo di elemento documentale
+   * @param type {_ElementType} tipo di elemento documentale
    * @returns {Observable<any>} observable dell'elemento documentale modificato
    */
-  public moveElement(element_id: number, target_id: number, type: ElementType): Observable<any> {
+  public _moveElement(element_id: number, target_id: number, type: _ElementType): Observable<any> {
     const uuid = uuidv4();
 
     let realTargetId = target_id;
@@ -255,11 +311,28 @@ export class WorkspaceService {
 
     let operationUrl = "moveFolder";
 
-    if (type == ElementType.File) {
+    if (type == _ElementType.File) {
       operationUrl = "moveFileTo";
     }
 
     return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
+  }
+
+  public moveElement(elementType: string, elementId: number, targetId: number) { //TODO sostituire elementType con una enum?
+    const uuid = uuidv4();
+    const operationUrl = elementType === ElementType.FOLDER ? 'folder' : 'resource';
+    const payload = {
+      parent: {
+        id: targetId
+      }
+    };
+    return this.http.post(
+      `${this.textoUrl}/texto/${operationUrl}/${elementId}/update`,
+      payload,
+      {
+        headers: new HttpHeaders({'UUID': uuid})
+      }
+    );
   }
 
   /**
@@ -267,7 +340,7 @@ export class WorkspaceService {
    * @param element_id {number} identificativo numerico dell'elemento
    * @returns {Observable<any>} observable della nuova cartella inserita
    */
-  public addFolder(element_id: number): Observable<any> {
+  public _addFolder(element_id: number): Observable<any> {
     const uuid = uuidv4();
 
     const payload = {
@@ -277,6 +350,27 @@ export class WorkspaceService {
     }
 
     return this.http.post<any>(`${this.cashUrl}/api/crud/addFolder`, payload);
+  }
+
+  public addFolder(parentFolderId: number, folderName: string, userId: number) {
+    const uuid = uuidv4();
+    const payload = {
+      parent: {
+        id: parentFolderId
+      },
+      name: folderName,
+      user: {
+        id: userId
+      }
+    };
+
+    return this.http.post(
+      `${this.textoUrl}/texto/folder/create`,
+      payload,
+      {
+        headers: new HttpHeaders({'UUID': uuid})
+      }
+    )
   }
   // FINE CHIAMATE CASH SERVER
 

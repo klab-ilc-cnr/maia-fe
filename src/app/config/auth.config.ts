@@ -26,14 +26,14 @@ export const authConfig: AuthConfig = {
   // at_hash is not present in JWT token
   showDebugInformation: environment.keycloak.showDebugInformation,
   disableAtHashCheck: environment.keycloak.disableAtHashCheck,
-  //strictDiscoveryDocumentValidation: environment.keycloak.strictDiscoveryDocumentValidation 
+  //strictDiscoveryDocumentValidation: environment.keycloak.strictDiscoveryDocumentValidation
 };
 
 
 export const authModuleConfig: OAuthModuleConfig = {
   resourceServer: {
     sendAccessToken: true,
-    allowedUrls: [environment.allowedUrls, environment.lexoUrl]
+    allowedUrls: [environment.allowedUrls, environment.lexoUrl, environment.textoUrl, environment.textoDebugUrl]
   }
 }
 

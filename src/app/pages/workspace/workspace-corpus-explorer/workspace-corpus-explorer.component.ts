@@ -1,7 +1,7 @@
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { ContextMenu } from 'primeng/contextmenu';
 import { DocumentElement } from 'src/app/models/corpus/document-element';
-import { ElementType } from 'src/app/models/corpus/element-type';
+import { ElementType, _ElementType } from 'src/app/models/corpus/element-type';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { WorkspaceService } from 'src/app/services/workspace.service';
@@ -11,6 +11,10 @@ import Swal from 'sweetalert2';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { Roles } from 'src/app/models/roles';
+import { of, switchMap } from 'rxjs';
+import { CorpusElement, ResourceElement } from 'src/app/models/texto/corpus-element';
+import { FolderElement } from 'src/app/models/texto/corpus-element';
+import { CorpusStateService } from 'src/app/services/corpus-state.service';
 
 /**Variabile globale (jQuery?) */
 declare var $: any;
@@ -19,29 +23,34 @@ declare var $: any;
 @Component({
   selector: 'app-workspace-corpus-explorer',
   templateUrl: './workspace-corpus-explorer.component.html',
-  styleUrls: ['./workspace-corpus-explorer.component.scss']
+  styleUrls: ['./workspace-corpus-explorer.component.scss'],
+  providers: [CorpusStateService]
 })
 export class WorkspaceCorpusExplorerComponent implements OnInit {
+  files$ = this.corpusStateService.filesystem$.pipe(
+    switchMap(docs => of(this.mapToTreeNodes(docs))),
+  );
+
   /**
    * @private
    * Effettua la cancellazione di un elemento
    * @param id {number} identificativo numerico dell'elemento
    * @param name {string} nome dell'elemento
-   * @param type {ElementType} tipo di elemento (cartella o file)
+   * @param type {_ElementType} tipo di elemento (cartella o file)
    */
-  private deleteElement = (id: number, name: string, type: ElementType): void => {
+  private deleteElement = (id: number, name: string, type: _ElementType): void => {
     this.showOperationInProgress('Sto cancellando');
 
     let errorMsg = 'Errore nell\'eliminare la cartella \'' + name + '\'';
     let successMsg = 'Cartella \'' + name + '\' eliminata con successo';
 
-    if (type == ElementType.File) {
+    if (type == _ElementType.File) {
       errorMsg = 'Errore nell\'eliminare il file \'' + name + '\'';
       successMsg = 'File \'' + name + '\' eliminato con successo';
     }
 
     this.workspaceService
-        .removeElement(id, type)
+        ._removeElement(id, type)
         .subscribe({
           next: (result) => {
             if (result.responseStatus == 0) {
@@ -68,7 +77,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   /**
    * @private
-   * Conteggio dei click 
+   * Conteggio dei click
    */
   private clickCount = 0;
 
@@ -166,7 +175,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private loaderService: LoaderService,
     private messageService: MessageService,
-    private msgConfService: MessageConfigurationService
+    private msgConfService: MessageConfigurationService,
+    private corpusStateService: CorpusStateService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero dei dati iniziali */
@@ -189,10 +199,10 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     setTimeout(() => {
       if (this.clickCount === 1) { //caso del click singolo al momento non utilizzato
       } else if (this.clickCount === 2) {
-        if (event.node.data?.type == ElementType.File) {
+        if (event.node.data?.type == _ElementType.File) {
           this.onTextSelectEvent.emit(event)
         }
-        else if (event.node.data?.type == ElementType.Directory) {
+        else if (event.node.data?.type == _ElementType.Directory) {
           event.node.expanded = !event.node.expanded;
         }
       }
@@ -243,12 +253,12 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     let name = this.addFolderForm.form.value.nfName;
 
     this.loaderService.show();
-    this.workspaceService.addFolder(element_id).subscribe({
+    this.workspaceService._addFolder(element_id).subscribe({
       next: (result) => {
         if (result['response-status'] == 0) { //caso response status 0 considerato esito positivo
           let newId = result.node['element-id'];
 
-          this.workspaceService.renameElement(newId, name, ElementType.Directory).subscribe({
+          this.workspaceService._renameElement(newId, name, _ElementType.Directory).subscribe({
             next: (result) => {
               $('#addFolderModal').modal('hide');
 
@@ -256,7 +266,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
                 this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Cartella \'' + name + '\' creata con successo'));
               }
               else { //caso errore in creazione folder
-                this.workspaceService.removeElement(newId, ElementType.Directory).subscribe({
+                this.workspaceService._removeElement(newId, _ElementType.Directory).subscribe({
                   next: (result) => {
                     this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
                   },
@@ -320,7 +330,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       let successMsg = 'File \'' + name + '\' caricato con successo in \'' + folderName + '\'';
 
       this.loaderService.show();
-      this.workspaceService.uploadFile(element_id, this.fileUploaded).subscribe({
+      this.workspaceService._uploadFile(element_id, this.fileUploaded).subscribe({
         next: (result) => {
           $('#uploadFileModal').modal('hide');
 
@@ -372,13 +382,13 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       let errorMsg = 'Errore nello spostare la cartella \'' + name + '\' in \'' + newParentName + '\'';
       let successMsg = 'Cartella \'' + name + '\' spostata con successo';
 
-      if (type == ElementType.File) {
+      if (type == _ElementType.File) {
         errorMsg = 'Errore nello spostare il file \'' + name + '\' in \'' + newParentName + '\'';
         successMsg = 'File \'' + name + '\' spostato con successo';
       }
 
       this.loaderService.show();
-      this.workspaceService.moveElement(element_id, target_id, type).subscribe({
+      this.workspaceService._moveElement(element_id, target_id, type).subscribe({
         next: (result) => {
           $('#moveModal').modal('hide');
 
@@ -429,13 +439,13 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       let errorMsg = 'Errore nel rinominare la cartella \'' + oldName + '\' in \'' + newName + '\'';
       let successMsg = 'Cartella \'' + newName + '\' rinominata con successo';
 
-      if (type == ElementType.File) {
+      if (type == _ElementType.File) {
         errorMsg = 'Errore nel rinominare il file \'' + oldName + '\' in \'' + newName + '\'';
         successMsg = 'File \'' + newName + '\' rinominato con successo';
       }
 
       this.loaderService.show();
-      this.workspaceService.renameElement(element_id, newName, type).subscribe({
+      this.workspaceService._renameElement(element_id, newName, type).subscribe({
         next: (result) => {
           $('#renameModal').modal('hide');
 
@@ -476,14 +486,15 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   }
 
   reload(): void {
-    this.updateDocumentSystem();
+    // this.updateDocumentSystem();
+    this.corpusStateService.refreshFileSystem.next(null);
   }
 
   /**Metodo che gestisce la visualizzazione del form di aggiunta cartella */
   showAddFolderModal(): void {
     this.resetAddFolderForm();
 
-    if (this.selectedDocument && this.selectedDocument.data?.type == ElementType.Directory) {
+    if (this.selectedDocument && this.selectedDocument.data?.type == _ElementType.Directory) {
       var node = this.searchNodeByElementId(this.foldersAvailableToAddFolder, this.selectedDocument);
 
       if (node) {
@@ -503,7 +514,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
       let confirmMsg = 'Stai per cancellare la cartella \'' + name + '\'';
 
-      if (type == ElementType.File) {
+      if (type == _ElementType.File) {
         confirmMsg = 'Stai per cancellare il file \'' + name + '\'';
       }
 
@@ -520,7 +531,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.foldersAvailableToMoveElementIn = [];
 
     if (this.selectedDocument) {
-      if (this.selectedDocument.data?.type == ElementType.Directory){
+      if (this.selectedDocument.data?.type == _ElementType.Directory){
         this.foldersAvailableToMoveElementIn = this.foldersAvailableToAddFolder;
       }
       else {
@@ -546,7 +557,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   showUploadFileModal(): void {
     this.resetFileUploaderForm();
 
-    if (this.selectedDocument && this.selectedDocument.data?.type == ElementType.Directory) {
+    if (this.selectedDocument && this.selectedDocument.data?.type == _ElementType.Directory) {
       var node = this.searchNodeByElementId(this.foldersAvailableToFileUpload, this.selectedDocument);
 
       if (node) {
@@ -586,11 +597,11 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       node.children =  this.documentsToTreeNodes(doc.children);
     }
 
-    if (doc.type == ElementType.Directory) {
+    if (doc.type == _ElementType.Directory) {
       node.expandedIcon = "pi pi-folder-open";
       node.collapsedIcon = "pi pi-folder";
     }
-    else if (doc.type == ElementType.File) {
+    else if (doc.type == _ElementType.File) {
       node.icon = "pi pi-file";
       node.leaf = true;
     }
@@ -598,6 +609,32 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     node.label = doc.name;
     node.data = doc;
 
+    return node;
+  }
+
+  private mapToTreeNodes(elements: CorpusElement[]): TreeNode<CorpusElement>[] {
+    const result: TreeNode<CorpusElement>[] = [];
+    elements.forEach(element => {
+      result.push(this.mapToTreeNode(element));
+    });
+    return result;
+  }
+
+  private mapToTreeNode(element: CorpusElement): TreeNode<CorpusElement> {
+    const node: TreeNode<CorpusElement> = {};
+    if('children' in element) {
+      const e = <FolderElement>element;
+      node.children = this.mapToTreeNodes(e.children);
+      node.expandedIcon = "pi pi-folder-open";
+      node.collapsedIcon = "pi pi-folder";
+    }
+    if(element.type === ElementType.RESOURCE) {
+      const e = <ResourceElement>element;
+      node.icon = "pi pi-file";
+      node.leaf = true;
+    }
+    node.label = element.name;
+    node.data = element;
     return node;
   }
 
@@ -648,7 +685,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
     cmItems.unshift(menuRename);
 
-    if (node.data.type == ElementType.Directory) {
+    if (node.data.type == _ElementType.Directory) {
       cmItems.unshift(menuAddFolder);
     }
 
@@ -665,7 +702,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     var dataParsed: TreeNode<any>[] = [];
 
     docs.forEach((obj) => {
-      if (obj.data.type != ElementType.File) {
+      if (obj.data.type != _ElementType.File) {
         obj.children = this.omitFiles(obj.children);
         dataParsed.push(obj);
       }
@@ -791,14 +828,18 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.loading = true;
     this.loaderService.show();
 
-    this.workspaceService.retrieveCorpus().subscribe({
+    this.workspaceService.retrieveCorpus().subscribe(resp => {
+      console.info('texto retrieve corpus', resp);
+    })
+
+    this.workspaceService._retrieveCorpus().subscribe({
       next: (data) => {
         if (data.documentSystem) {
           this.rawData = JSON.parse(JSON.stringify(data.documentSystem))
           let rootNode = {
             path: "/root/",
             name: "Corpus",
-            type: ElementType.Directory,
+            type: _ElementType.Directory,
             'element-id': 0,
             metadata: {},
             children: this.rawData

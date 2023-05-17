@@ -58,6 +58,8 @@
   #tree
 ></p-tree>
 
+<p-tree [value]="(files$|async)||[]" selectionMode="single"></p-tree>
+
 <div class="d-flex justify-content-center m-3">
   <button
     class="btn btn-secondary"

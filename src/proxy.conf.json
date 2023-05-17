@@ -22,5 +22,12 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+  "/texto/*": {
+    "target": "https://146.48.93.234:9443",
+    "target": "https://macalbanesi:9443",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }

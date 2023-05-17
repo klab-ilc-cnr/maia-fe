@@ -43,6 +43,8 @@ export const environment = {
   lexoUrl: "/LexO-backend-maia/service/",
   // cashUrl: "http://localhost:8085",
   cashUrl: "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
+  textoUrl: "https://146.48.93.234:9443",
+  textoDebugUrl: "https://macalbanesi:9443",
   rutPrefix: "ferrandi",
   rutBaseIRI: "http://rut/somali/ferrandi#"
 };
