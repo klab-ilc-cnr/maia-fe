@@ -14,6 +14,7 @@ export class CorpusStateService {
   renameElement = new Subject<{ elementType: ElementType, elementId: number, newName: string }>();
   moveElement = new Subject<{ elementType: ElementType, elementId: number, targetId: number }>();
   uploadFile = new Subject<{ parentId: number, resourceName: string, file: File }>();
+  removeElement = new Subject<{ elementType: ElementType, elementId: number }>();
   filesystem$ = merge(
     this.workspaceService.retrieveCorpus(),
     this.refreshFileSystem.pipe(
@@ -65,6 +66,16 @@ export class CorpusStateService {
       )),
       switchMap(() => this.workspaceService.retrieveCorpus()),
     ),
+    this.removeElement.pipe(
+      switchMap(req => this.workspaceService.removeElement(req.elementType, req.elementId).pipe(
+        tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.elementType} removed`))),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} removing failed: ${error.error}`));
+          return throwError(() => new Error(error.error));
+        }),
+      )),
+      switchMap(() => this.workspaceService.retrieveCorpus()),
+    ),
   ).pipe(
     shareReplay(1),
   )
@@ -82,5 +93,6 @@ export class CorpusStateService {
     this.renameElement.subscribe();
     this.moveElement.subscribe();
     this.uploadFile.subscribe();
+    this.removeElement.subscribe();
   }
 }

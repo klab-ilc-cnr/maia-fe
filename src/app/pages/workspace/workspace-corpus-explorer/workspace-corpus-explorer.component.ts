@@ -2,23 +2,17 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { ContextMenu } from 'primeng/contextmenu';
 import { DocumentElement } from 'src/app/models/corpus/document-element';
 import { ElementType, _ElementType } from 'src/app/models/corpus/element-type';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { WorkspaceService } from 'src/app/services/workspace.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
-import Swal from 'sweetalert2';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
-import { LoaderService } from 'src/app/services/loader.service';
 import { Roles } from 'src/app/models/roles';
 import { Observable, of, switchMap } from 'rxjs';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
 import { FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
-
-/**Variabile globale (jQuery?) */
-declare let $: any;
 
 /**Componente del pannello di esplorazione corpus */
 @Component({
@@ -27,7 +21,7 @@ declare let $: any;
   styleUrls: ['./workspace-corpus-explorer.component.scss'],
   providers: [CorpusStateService]
 })
-export class WorkspaceCorpusExplorerComponent implements OnInit {
+export class WorkspaceCorpusExplorerComponent {
   files$ = this.corpusStateService.filesystem$.pipe(
     switchMap(docs => of(this.mapToTreeNodes(docs))),
   );
@@ -48,38 +42,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @param name {string} nome dell'elemento
    * @param type {_ElementType} tipo di elemento (cartella o file)
    */
-  private deleteElement = (id: number, name: string, type: _ElementType): void => {
-    this.showOperationInProgress('Sto cancellando');
-
-    let errorMsg = 'Errore nell\'eliminare la cartella \'' + name + '\'';
-    let successMsg = 'Cartella \'' + name + '\' eliminata con successo';
-
-    if (type == _ElementType.File) {
-      errorMsg = 'Errore nell\'eliminare il file \'' + name + '\'';
-      successMsg = 'File \'' + name + '\' eliminato con successo';
-    }
-
-    this.workspaceService
-      ._removeElement(id, type)
-      .subscribe({
-        next: (result) => {
-          if (result.responseStatus == 0) {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-            Swal.close();
-          }
-          else if (result.responseStatus == 1) {
-            this.showOperationFailed('Utente non autorizzato');
-          }
-          else {
-            this.showOperationFailed(errorMsg);
-          }
-
-          this.updateDocumentSystem();
-        },
-        error: () => {
-          this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
-        }
-      })
+  private deleteElement = (id: number, type: ElementType): void => {
+    this.corpusStateService.removeElement.next({ elementType: type, elementId: id });
   }
 
   /**Evento di selezione di un testo */
@@ -96,19 +60,6 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     return this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE; //hanno diritto di cancellazione solo i ruoli amministratore
   }
 
-  /**Getter che definisce se debba essere disabilitato il rinomina */
-  public get shouldRMBeDisabled(): boolean {
-    if (this.selectedDocument) {
-      if (this.selectedDocument.label == "Corpus") { //vero se è selezionata la cartella Corpus
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
-    return true; //vero se non è selezionato un file
-  }
-
   /**Getter che definisce se debba essere disabilitato il caricamento di un file */
   public get shouldUploadFileBeDisabled(): boolean {
     if (this.selectedDocument) {
@@ -122,16 +73,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     return false;
   }
 
-  /**Lista dei nodi documentali */
-  files: TreeNode<DocumentElement>[] = [];
   /**File caricato */
-  fileUploaded: File|undefined;
-  /**Lista dei nodi documentali nei quali si possono aggiungere cartelle */
-  foldersAvailableToAddFolder: TreeNode<DocumentElement>[] = [];
-  /**Lista dei nodi documentali nei quali si possono caricare file */
-  foldersAvailableToFileUpload: TreeNode<DocumentElement>[] = [];
-  /**Lista dei nodi documentale nei quali si possono spostare elementi */
-  foldersAvailableToMoveElementIn: TreeNode<DocumentElement>[] = [];
+  fileUploaded: File | undefined;
   /**Definisce se si è superata la dimensione massima di un file */
   isFileSizeExceed = false;
   /**Definisce se un file è stato caricato */
@@ -140,22 +83,9 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   isFileUploaderTouched = false;
   /**Lista degli elementi del menu */
   items: MenuItem[] = [];
-  /**Definisce se è in corso un caricamento */
-  loading = false;
-  /**Nome della nuova cartella */
-  newFolderName: string | undefined;
-  /**Nuovo nome */
-  newName: string | undefined;
-  /**Dati grezzi */
-  rawData: any;
   /**Nodo documentale selezionato */
   selectedDocument: TreeNode<DocumentElement> | undefined;
-  /**Nodo documentale di tipo cartella selezionato */
-  selectedFolderNode: TreeNode<DocumentElement> | undefined;
   selectedNode: TreeNode<CorpusElement> | undefined;
-
-  /**Riferimento all'albero documentale */
-  @ViewChild('tree') public tree: any;
 
   /**Riferimento al form di aggiunta folder */
   addFolderRForm = new FormGroup({
@@ -192,29 +122,15 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   /**
    * Costruttore per WorkspaceCorpusExplorerComponent
    * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
-   * @param workspaceService {WorkspaceService} servizi relativi ai workspace
-   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
    * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
    */
   constructor(
     private loggedUserService: LoggedUserService,
-    private workspaceService: WorkspaceService,
-    private loaderService: LoaderService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private corpusStateService: CorpusStateService,
   ) { }
-
-  /**Metodo dell'interfaccia OnInit, utilizzato per il recupero dei dati iniziali */
-  ngOnInit(): void {
-    this.updateDocumentSystem()
-  }
-
-  /**Metodo dell'interfaccia OnDestroy, utilizzato per la chiusura di eventuali popup swal */
-  ngOnDestroy(): void {
-    Swal.close();
-  }
 
   /**
    * Metodo che gestisce la selezione di un nodo dell'albero documentale
@@ -379,7 +295,6 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   }
 
   reload(): void {
-    // this.updateDocumentSystem();
     this.corpusStateService.refreshFileSystem.next(null);
     this.selectedNode = undefined;
   }
@@ -401,20 +316,19 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   /**Metodo che gestisce la visualizzazione del popup di conferma cancellazione di un elemento documentale */
   showDeleteModal(): void {
-    if (this.selectedDocument && this.selectedDocument.data) {
-      const element_id = this.selectedDocument.data['element-id'];
-      const name = this.selectedDocument.data.name || "";
-      const type = this.selectedDocument.data.type;
+    if (this.selectedNode && this.selectedNode.data) {
+      const element_id = this.selectedNode.data.id;
+      const name = this.selectedNode.label || "";
+      const type = this.selectedNode.data.type;
 
-      let confirmMsg = 'Stai per cancellare la cartella \'' + name + '\'';
-
-      if (type == _ElementType.File) {
-        confirmMsg = 'Stai per cancellare il file \'' + name + '\'';
+      let confirmMsg = `You are about to delete the ${name} folder`;
+      if (type == ElementType.RESOURCE) {
+        confirmMsg = `You are about to delete the ${name} file`;
       }
 
       this.popupDeleteItem.confirmMessage = confirmMsg;
 
-      this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement(element_id, name, type), element_id, name, type);
+      this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement(element_id, type), element_id, type);
     }
   }
 
@@ -591,65 +505,6 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   /**
    * @private
-   * Metodo che restituisce l'albero documentale omettendone i nodi di tipo file
-   * @param docs {any[]} lista dei documenti
-   * @returns {TreeNode<any>[]} lista dei nodi dell'albero
-   */
-  private omitFiles(docs: any[]) {
-    const dataParsed: TreeNode<any>[] = [];
-
-    docs.forEach((obj) => {
-      if (obj.data.type != _ElementType.File) {
-        obj.children = this.omitFiles(obj.children);
-        dataParsed.push(obj);
-      }
-    })
-
-    return dataParsed;
-  }
-
-  /**
-   * @private
-   * Metodo che resetta il form di aggiunta folder
-   */
-  private resetAddFolderForm(): void {
-    $('#addFolderForm').trigger("reset");
-
-    this.selectedFolderNode = undefined;
-  }
-
-  /**
-   * @private
-   * Metodo che resetta il form di caricamento di un nuovo file
-   */
-  private resetFileUploaderForm(): void {
-    $('#fileUploaderForm').trigger("reset");
-
-    this.isFileUploaded = false;
-    this.isFileUploaderTouched = false;
-    this.selectedFolderNode = undefined;
-  }
-
-  /**
-   * @private
-   * Metodo che resetta il form di spostamento di un elemento documentale
-   */
-  private resetMoveForm(): void {
-    $('#moveForm').trigger("reset");
-
-    this.selectedFolderNode = undefined;
-  }
-
-  /**
-   * @private
-   * Metodo che resetta il form per rinominare un elemento documentale
-   */
-  private resetRenameForm(): void {
-    $('#renameForm').trigger("reset");
-  }
-
-  /**
-   * @private
    * Metodo che segna i campi del form come touched e segnala il mancato caricamento
    */
   private saveUploadFileWithFormErrors(): void {
@@ -659,114 +514,5 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       this.isFileUploaded = false;
       this.isFileUploaderTouched = true;
     }
-  }
-
-  /**
-   * @private
-   * Metodo che visualizza il popup di operazione fallita
-   * @param errorMessage {string} messaggio di errore
-   */
-  private showOperationFailed(errorMessage: string): void {
-    Swal.fire({
-      icon: 'error',
-      title: errorMessage,
-      showConfirmButton: true
-    });
-  }
-
-  /**
-   * @private
-   * Metodo che visualizza il popup di operazione in corso
-   * @param message {string} messaggio da visualizzare
-   */
-  private showOperationInProgress(message: string): void {
-    Swal.fire({
-      icon: 'warning',
-      titleText: message,
-      text: 'per favore attendere',
-      customClass: {
-        container: 'swal2-container'
-      },
-      showCancelButton: false,
-      showConfirmButton: false
-    });
-  }
-
-  /**
-   * @private
-   * Metodo che data una lista di nodi ne recupera uno sulla base dell'identificativo
-   * @param source {any[]} lista dei nodi
-   * @param element {any} elemento cercato
-   * @returns {any} nodo della lista corrispondente
-   */
-  private searchNodeByElementId(source: any[], element: any): any {
-    for (const el of source) {
-      if (el.data?.['element-id'] == element.data?.['element-id']) {
-        return el;
-      }
-
-      if (el.children && el.children.lenght != 0) {
-        const node = this.searchNodeByElementId(el.children, element);
-
-        if (node) {
-          return node;
-        }
-      }
-    }
-
-    return undefined;
-  }
-
-  /**
-   * @private
-   * Metodo che aggiorna il sistema documentale
-   */
-  private updateDocumentSystem() {
-    this.loading = true;
-    this.loaderService.show();
-
-    this.workspaceService.retrieveCorpus();
-
-    this.workspaceService._retrieveCorpus().subscribe({
-      next: (data) => {
-        if (data.documentSystem) {
-          this.rawData = JSON.parse(JSON.stringify(data.documentSystem))
-          const rootNode = {
-            path: "/root/",
-            name: "Corpus",
-            type: _ElementType.Directory,
-            'element-id': 0,
-            metadata: {},
-            children: this.rawData
-          }
-
-          const fileTree = [];
-          fileTree.push(rootNode);
-
-          this.files = this.documentsToTreeNodes(fileTree);
-
-          if (this.files.length > 0) {
-            this.files[0].expanded = true;
-            this.files[0].draggable = false;
-            this.files[0].droppable = true;
-          }
-
-          const filesDeepCopy = JSON.parse(JSON.stringify(this.files))
-
-          const docSystemWithoutFiles = this.omitFiles(filesDeepCopy);
-          this.foldersAvailableToAddFolder = JSON.parse(JSON.stringify(docSystemWithoutFiles));
-
-          if (docSystemWithoutFiles.length > 0) {
-            docSystemWithoutFiles[0].selectable = false;
-          }
-
-          this.foldersAvailableToFileUpload = docSystemWithoutFiles;
-        }
-
-        this.tree.resetFilter();
-        this.loaderService.hide();
-        this.loading = false;
-      }
-    })
   }
 }

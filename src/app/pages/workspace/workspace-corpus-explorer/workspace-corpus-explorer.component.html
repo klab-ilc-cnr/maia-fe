@@ -1,29 +1,25 @@
 <div class="button-group-actions mb-3">
-  <button class="btn btn-outline-success rounded-circle" pTooltip="Carica file" tooltipPosition="bottom"
+  <button class="btn btn-outline-success rounded-circle" pTooltip="Upload file" tooltipPosition="bottom"
     (click)="showUploadFileModal()" [disabled]="shouldUploadFileBeDisabled">
     <app-icon-upload-file style="margin-right: 0.3rem"></app-icon-upload-file>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" pTooltip="Aggiungi cartella" tooltipPosition="bottom"
+  <button class="btn btn-outline-primary rounded-circle" pTooltip="Add folder" tooltipPosition="bottom"
     (click)="showAddFolderModal()">
     <app-icon-add-folder></app-icon-add-folder>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" pTooltip="Rinomina" tooltipPosition="bottom"
+  <button class="btn btn-outline-primary rounded-circle" pTooltip="Rename" tooltipPosition="bottom"
     (click)="showRenameModal()" [disabled]="!selectedNode">
     <app-icon-rename></app-icon-rename>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" pTooltip="Sposta" tooltipPosition="bottom"
+  <button class="btn btn-outline-primary rounded-circle" pTooltip="Move" tooltipPosition="bottom"
     (click)="showMoveModal()" [disabled]="!selectedNode">
     <app-icon-move></app-icon-move>
   </button>
-  <button *ngIf="shouldDeleteBeDisplayed" class="btn btn-outline-danger rounded-circle" pTooltip="Elimina"
+  <button *ngIf="shouldDeleteBeDisplayed" class="btn btn-outline-danger rounded-circle" pTooltip="Delete"
     tooltipPosition="bottom" (click)="showDeleteModal()">
     <i class="pi pi-trash"></i>
   </button>
 </div>
-
-<p-tree [value]="files" selectionMode="single" [(selection)]="selectedDocument" [contextMenu]="cm"
-  (onNodeSelect)="nodeSelect($event)" (onNodeContextMenuSelect)="onTreeContextMenuSelect($event, cm)" [filter]="true"
-  [loading]="loading" scrollHeight="250px" #tree></p-tree>
 
 <p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
   (onNodeSelect)="nodeSelect($event)" [contextMenu]="cm" (onNodeContextMenuSelect)="onOpenContextMenu($event)"
