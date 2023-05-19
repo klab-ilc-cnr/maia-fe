@@ -11,6 +11,7 @@ import { DocumentSystem } from '../models/corpus/document-system';
 import { ElementType, _ElementType } from '../models/corpus/element-type';
 import { v4 as uuidv4 } from 'uuid';
 import { CorpusElement } from '../models/texto/corpus-element';
+import { TextoUser } from '../models/user';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json'); //TODO verificare rimozione per mancato uso
 
@@ -374,4 +375,7 @@ export class WorkspaceService {
   }
   // FINE CHIAMATE CASH SERVER
 
+  public getTextoCurrentUserId(): Observable<TextoUser> {
+    return this.http.get<TextoUser>(`${this.textoUrl}/texto/user/me`)
+  }
 }

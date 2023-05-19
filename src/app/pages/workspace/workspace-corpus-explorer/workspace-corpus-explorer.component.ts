@@ -5,16 +5,17 @@ import { ElementType, _ElementType } from 'src/app/models/corpus/element-type';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import Swal from 'sweetalert2';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { Roles } from 'src/app/models/roles';
-import { of, switchMap } from 'rxjs';
-import { CorpusElement, ResourceElement } from 'src/app/models/texto/corpus-element';
+import { Observable, of, switchMap } from 'rxjs';
+import { CorpusElement } from 'src/app/models/texto/corpus-element';
 import { FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
+import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 /**Variabile globale (jQuery?) */
 declare var $: any;
@@ -30,6 +31,15 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   files$ = this.corpusStateService.filesystem$.pipe(
     switchMap(docs => of(this.mapToTreeNodes(docs))),
   );
+
+  folders$!: Observable<TreeNode<CorpusElement>[]>;
+
+  //#region VARIABILI DI VISUALIZZAZIONE DEI MODALI
+  visibleAddFolder = false;
+  visibleRename = false;
+  visibleMove = false;
+  visibleUploadFile = false;
+  //#endregion
 
   /**
    * @private
@@ -50,26 +60,26 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     }
 
     this.workspaceService
-        ._removeElement(id, type)
-        .subscribe({
-          next: (result) => {
-            if (result.responseStatus == 0) {
-              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-              Swal.close();
-            }
-            else if (result.responseStatus == 1) {
-              this.showOperationFailed('Utente non autorizzato');
-            }
-            else {
-              this.showOperationFailed(errorMsg);
-            }
-
-            this.updateDocumentSystem();
-          },
-          error: () => {
-            this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+      ._removeElement(id, type)
+      .subscribe({
+        next: (result) => {
+          if (result.responseStatus == 0) {
+            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+            Swal.close();
           }
-        })
+          else if (result.responseStatus == 1) {
+            this.showOperationFailed('Utente non autorizzato');
+          }
+          else {
+            this.showOperationFailed(errorMsg);
+          }
+
+          this.updateDocumentSystem();
+        },
+        error: () => {
+          this.showOperationFailed('Cancellazione Fallita: ' + errorMsg);
+        }
+      })
   }
 
   /**Evento di selezione di un testo */
@@ -84,7 +94,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   /**Getter che definisce se debba essere visualizzata l'opzione di cancellazione */
   public get shouldDeleteBeDisplayed(): boolean {
     return this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE; //hanno diritto di cancellazione solo i ruoli amministratore
-  };
+  }
 
   /**Getter che definisce se debba essere disabilitato il rinomina */
   public get shouldRMBeDisabled(): boolean {
@@ -96,9 +106,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         return false;
       }
     }
-
     return true; //vero se non è selezionato un file
-  };
+  }
 
   /**Getter che definisce se debba essere disabilitato il caricamento di un file */
   public get shouldUploadFileBeDisabled(): boolean {
@@ -110,9 +119,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         return false;
       }
     }
-
     return false;
-  };
+  }
 
   /**Lista dei nodi documentali */
   files: TreeNode<DocumentElement>[] = [];
@@ -144,6 +152,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   selectedDocument: TreeNode<DocumentElement> | undefined;
   /**Nodo documentale di tipo cartella selezionato */
   selectedFolderNode: TreeNode<DocumentElement> | undefined;
+  selectedNode: TreeNode<CorpusElement> | undefined;
 
   /**Riferimento all'uploader dei file */
   @ViewChild('fileUploader') public fileUploader!: ElementRef;
@@ -151,13 +160,32 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   @ViewChild('tree') public tree: any;
 
   /**Riferimento al form di aggiunta folder */
-  @ViewChild('addFolderForm') public addFolderForm!: NgForm;
+  addFolderRForm = new FormGroup({
+    name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
+    parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null, Validators.required)
+  });
+  get addFolderName() { return this.addFolderRForm.get('name'); }
+  get addFolderParent() { return this.addFolderRForm.get('parentFolder'); }
+  set setAddFolderParent(node: TreeNode<CorpusElement>) { this.addFolderRForm.get('parentFolder')?.setValue(node); }
+
+  renameElementForm = new FormGroup({
+    newName: new FormControl<string>('', [Validators.required, whitespacesValidator]),
+  });
+  get getNewName() { return this.renameElementForm.get('newName'); }
+  set setNewName(n: string) { this.getNewName?.setValue(n); }
+
+  moveElementForm = new FormGroup({
+    targetFolder: new FormControl<TreeNode<CorpusElement> | null>(null, Validators.required),
+  });
+  get getTargetFolder() { return this.moveElementForm.get('targetFolder'); }
+  set setTargetFolder(node: TreeNode<CorpusElement>) { this.getTargetFolder?.setValue(node); }
+
   /**Riferimento al form dell'uploader di file */
   @ViewChild('fileUploaderForm') public fileUploaderForm!: NgForm;
   /**Riferimento al form di spostamento elemento */
-  @ViewChild('moveForm') public moveForm!: NgForm;
+  // @ViewChild('moveForm') public moveForm!: NgForm;
   /**Riferimento al form per rinominare un elemento documentale */
-  @ViewChild('renameForm') public renameForm!: NgForm;
+  // @ViewChild('renameForm') public renameForm!: NgForm;
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -171,7 +199,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
    */
   constructor(
-    private loggedUserService : LoggedUserService,
+    private loggedUserService: LoggedUserService,
     private workspaceService: WorkspaceService,
     private loaderService: LoaderService,
     private messageService: MessageService,
@@ -193,18 +221,17 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * Metodo che gestisce la selezione di un nodo dell'albero documentale
    * @param event {any} evento di click su un nodo dell'albero documentale
    */
-  nodeSelect(event: any): void {
+  nodeSelect(event: { originalEvent: MouseEvent, node: TreeNode<CorpusElement> }): void {
     this.clickCount++; //unito al timeout, viene utilizzato per gestire comportamenti diversi per click singolo e doppio click
 
     setTimeout(() => {
       if (this.clickCount === 1) { //caso del click singolo al momento non utilizzato
       } else if (this.clickCount === 2) {
-        if (event.node.data?.type == _ElementType.File) {
-          this.onTextSelectEvent.emit(event)
+        if (event.node.data?.type === ElementType.RESOURCE) {
+          //TODO inserire meccanismo di apertura testo
+          return;
         }
-        else if (event.node.data?.type == _ElementType.Directory) {
-          event.node.expanded = !event.node.expanded;
-        }
+        event.node.expanded = !event.node.expanded;
       }
       this.clickCount = 0;
     }, 250)
@@ -244,72 +271,26 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {void}
    */
   onSubmitAddFolderModal(): void {
-    if (this.addFolderForm.invalid) { //caso di form non valido
-      this.addFolderForm.form.markAllAsTouched();
-      return ;
+    if (this.addFolderRForm.invalid) { //caso di form non valido
+      this.addFolderRForm.markAllAsTouched();
+      return;
     }
 
-    let element_id = this.addFolderForm.form.value.folderToAdd.data?.['element-id'];
-    let name = this.addFolderForm.form.value.nfName;
+    const parentFolderId = this.addFolderParent?.value?.data?.id;
+    const folderName = this.addFolderName?.value;
 
-    this.loaderService.show();
-    this.workspaceService._addFolder(element_id).subscribe({
-      next: (result) => {
-        if (result['response-status'] == 0) { //caso response status 0 considerato esito positivo
-          let newId = result.node['element-id'];
+    if (!parentFolderId || !folderName) {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig('Missing data'));
+      return;
+    }
 
-          this.workspaceService._renameElement(newId, name, _ElementType.Directory).subscribe({
-            next: (result) => {
-              $('#addFolderModal').modal('hide');
+    this.corpusStateService.addFolder.next({
+      parentFolderId: parentFolderId,
+      folderName: folderName
+    });
 
-              if (result.responseStatus == 0) { //caso responseStatus 0 creazione avvenuta
-                this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Cartella \'' + name + '\' creata con successo'));
-              }
-              else { //caso errore in creazione folder
-                this.workspaceService._removeElement(newId, _ElementType.Directory).subscribe({
-                  next: (result) => {
-                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
-                  },
-                  error: () => {
-                    this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
-                  }
-                })
-              }
+    this.visibleAddFolder = false;
 
-              this.loaderService.hide();
-
-              this.updateDocumentSystem();
-            },
-            error: () => {
-              $('#addFolderModal').modal('hide');
-              this.loaderService.hide();
-              this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
-            }
-          })
-        }
-        else if (result['response-status'] == 1) { //caso status 1 utente non autorizzato
-          $('#addFolderModal').modal('hide');
-          this.loaderService.hide();
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
-        }
-        else { //caso errore di creazione
-          $('#addFolderModal').modal('hide');
-          this.loaderService.hide();
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
-        }
-
-        $('#addFolderModal').modal('hide');
-
-        this.updateDocumentSystem();
-      },
-      error: (err) => {
-        $('#addFolderModal').modal('hide');
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig('Errore nella creazione della cartella \'' + name + '\''));
-      }
-    })
-
-    $('#addFolderModal').modal('hide');
   }
 
   /**
@@ -367,57 +348,23 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {void}
    */
   onSubmitMoveModal(): void {
-    if (this.moveForm.invalid) {
-      this.moveForm.form.markAllAsTouched();
+    if (this.moveElementForm.invalid) {
+      this.moveElementForm.markAllAsTouched();
       return;
     }
 
-    if (this.selectedDocument && this.selectedDocument.data) {
-      let element_id = this.selectedDocument.data['element-id'];
-      let name = this.selectedDocument.data.name;
-      let newParentName = this.moveForm.form.value.folderToMoveIn.data.name;
-      let target_id = this.moveForm.form.value.folderToMoveIn.data["element-id"];
-      let type = this.selectedDocument.data.type;
-
-      let errorMsg = 'Errore nello spostare la cartella \'' + name + '\' in \'' + newParentName + '\'';
-      let successMsg = 'Cartella \'' + name + '\' spostata con successo';
-
-      if (type == _ElementType.File) {
-        errorMsg = 'Errore nello spostare il file \'' + name + '\' in \'' + newParentName + '\'';
-        successMsg = 'File \'' + name + '\' spostato con successo';
-      }
-
-      this.loaderService.show();
-      this.workspaceService._moveElement(element_id, target_id, type).subscribe({
-        next: (result) => {
-          $('#moveModal').modal('hide');
-
-          if (result.responseStatus == 0) {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-          }
-          else if (result.responseStatus == 1) {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
-          }
-          else {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-          }
-
-          this.loaderService.hide();
-
-          this.updateDocumentSystem();
-        },
-        error: () => {
-          $('#moveModal').modal('hide');
-          this.loaderService.hide();
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-        }
-      })
-    }
-    else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di spostamento"));
+    if (this.selectedNode?.data?.id === this.getTargetFolder?.value?.data?.id) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`You cannot move the folder ${this.selectedNode?.label} within itself`));
+      return;
     }
 
-    $('#moveModal').modal('hide');
+    this.corpusStateService.moveElement.next({
+      elementType: this.selectedNode!.data!.type,
+      elementId: this.selectedNode!.data!.id,
+      targetId: this.getTargetFolder!.value!.data!.id
+    });
+
+    this.visibleMove = false;
   }
 
   /**
@@ -425,55 +372,28 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {void}
    */
   onSubmitRenameModal(): void {
-    if (this.renameForm.invalid) {
-      this.renameForm.form.markAllAsTouched();
+    if (this.renameElementForm.invalid) {
+      this.renameElementForm.markAllAsTouched();
       return;
     }
 
-    if (this.selectedDocument && this.selectedDocument.data) {
-      let element_id = this.selectedDocument.data['element-id'];
-      let newName = this.renameForm.form.value.newElementName;
-      let oldName = this.selectedDocument.data.name;
-      let type = this.selectedDocument.data.type;
+    const newName = this.getNewName?.value;
 
-      let errorMsg = 'Errore nel rinominare la cartella \'' + oldName + '\' in \'' + newName + '\'';
-      let successMsg = 'Cartella \'' + newName + '\' rinominata con successo';
-
-      if (type == _ElementType.File) {
-        errorMsg = 'Errore nel rinominare il file \'' + oldName + '\' in \'' + newName + '\'';
-        successMsg = 'File \'' + newName + '\' rinominato con successo';
-      }
-
-      this.loaderService.show();
-      this.workspaceService._renameElement(element_id, newName, type).subscribe({
-        next: (result) => {
-          $('#renameModal').modal('hide');
-
-          if (result.responseStatus == 0) {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-          }
-          else if (result.responseStatus == 1) {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
-          }
-          else {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-          }
-
-          this.loaderService.hide();
-          this.updateDocumentSystem();
-        },
-        error: () => {
-          $('#renameModal').modal('hide');
-          this.loaderService.hide();
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-        }
-      })
-    }
-    else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di rinominazione"));
+    if (!newName) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig('New name missing'));
+      return;
     }
 
-    $('#renameModal').modal('hide');
+    if (newName === this.selectedNode?.label) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig('New name is equal to current name'));
+      return;
+    }
+    const elementType = this.selectedNode!.data!.type;
+    const elementId = this.selectedNode!.data!.id;
+    this.corpusStateService.renameElement.next({ elementType: elementType, elementId: elementId, newName: newName }); //BUG ottengo un internal server error
+
+    this.visibleRename = false;
+
   }
 
   /**
@@ -485,24 +405,29 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.generateContextMenu(event.node);
   }
 
+  onOpenContextMenu(event: { originalEvent: PointerEvent, node: TreeNode<CorpusElement> }) {
+    this.generateContextMenu(event.node);
+  }
+
   reload(): void {
     // this.updateDocumentSystem();
     this.corpusStateService.refreshFileSystem.next(null);
+    this.selectedNode = undefined;
   }
 
   /**Metodo che gestisce la visualizzazione del form di aggiunta cartella */
   showAddFolderModal(): void {
-    this.resetAddFolderForm();
+    this.addFolderRForm.reset();
 
-    if (this.selectedDocument && this.selectedDocument.data?.type == _ElementType.Directory) {
-      var node = this.searchNodeByElementId(this.foldersAvailableToAddFolder, this.selectedDocument);
-
-      if (node) {
-        this.selectedFolderNode = node;
-      }
+    if (this.selectedNode?.data?.type === ElementType.FOLDER) {
+      this.setAddFolderParent = this.selectedNode;
     }
 
-    $('#addFolderModal').appendTo('body').modal('show');
+    this.folders$ = this.files$.pipe(
+      switchMap(nodes => of(this.mapToOnlyFolders(nodes))),
+    );
+
+    this.visibleAddFolder = true;
   }
 
   /**Metodo che gestisce la visualizzazione del popup di conferma cancellazione di un elemento documentale */
@@ -526,31 +451,22 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   /**Metodo che gestisce la visualizzazione del modale di spostamento di un elemento documentale */
   showMoveModal(): void {
-    this.resetMoveForm();
-
-    this.foldersAvailableToMoveElementIn = [];
-
-    if (this.selectedDocument) {
-      if (this.selectedDocument.data?.type == _ElementType.Directory){
-        this.foldersAvailableToMoveElementIn = this.foldersAvailableToAddFolder;
-      }
-      else {
-        this.foldersAvailableToMoveElementIn = this.foldersAvailableToFileUpload;
-      }
-    }
-
-    $('#moveModal').appendTo('body').modal('show');
+    this.moveElementForm.reset();
+    this.folders$ = this.files$.pipe(
+      switchMap(nodes => of(this.mapToOnlyFolders(nodes))),
+    );
+    this.visibleMove = true;
   }
 
   /**Metodo che gestisce la visualizzazione del modale per rinominare un elemento documentale */
   showRenameModal(): void {
-    this.resetRenameForm();
+    this.renameElementForm.reset();
 
-    if (this.selectedDocument) {
-      this.newName = this.selectedDocument?.label;
+    if (this.selectedNode?.label) {
+      this.setNewName = this.selectedNode.label;
     }
 
-    $('#renameModal').appendTo('body').modal('show');
+    this.visibleRename = true;
   }
 
   /**Metodo che gestisce la visualizzazione del modale di caricamento di un nuovo file */
@@ -564,8 +480,8 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
         this.selectedFolderNode = node;
       }
     }
-
-    $('#uploadFileModal').appendTo('body').modal('show');
+    this.visibleUploadFile = true;
+    // $('#uploadFileModal').appendTo('body').modal('show');
   }
 
   /**
@@ -594,7 +510,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     var node: TreeNode<DocumentElement> = {};
 
     if (doc.children) {
-      node.children =  this.documentsToTreeNodes(doc.children);
+      node.children = this.documentsToTreeNodes(doc.children);
     }
 
     if (doc.type == _ElementType.Directory) {
@@ -612,6 +528,23 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     return node;
   }
 
+  private mapToOnlyFolders(nodes: TreeNode<CorpusElement>[]): TreeNode<CorpusElement>[] {
+    const folderTree: TreeNode<CorpusElement>[] = [];
+    nodes.forEach(node => {
+      if (node.data?.type === ElementType.FOLDER) {
+        if (node.children?.length === 0) {
+          folderTree.push(node);
+        } else if (node.children) {
+          folderTree.push({
+            ...node,
+            children: this.mapToOnlyFolders(node.children)
+          });
+        }
+      }
+    })
+    return folderTree;
+  }
+
   private mapToTreeNodes(elements: CorpusElement[]): TreeNode<CorpusElement>[] {
     const result: TreeNode<CorpusElement>[] = [];
     elements.forEach(element => {
@@ -622,14 +555,13 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   private mapToTreeNode(element: CorpusElement): TreeNode<CorpusElement> {
     const node: TreeNode<CorpusElement> = {};
-    if('children' in element) {
+    if ('children' in element) {
       const e = <FolderElement>element;
       node.children = this.mapToTreeNodes(e.children);
       node.expandedIcon = "pi pi-folder-open";
       node.collapsedIcon = "pi pi-folder";
     }
-    if(element.type === ElementType.RESOURCE) {
-      const e = <ResourceElement>element;
+    if (element.type === ElementType.RESOURCE) {
       node.icon = "pi pi-file";
       node.leaf = true;
     }
@@ -644,21 +576,21 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @param node {TreeNode} nodo dell'albero documentale sul quale è avvenuto il click
    * @returns {void}
    */
-  private generateContextMenu(node: TreeNode): void {
-    var menuAddFolder = {
+  private generateContextMenu(node: TreeNode<CorpusElement>): void {
+    const menuAddFolder = {
       label: 'Aggiungi cartella',
       icon: 'fa-solid fa-folder-plus',
       command: (event: any) => {
+        console.info('add folder event', event)
         this.showAddFolderModal()
       }
     }
-
-    if (node.data.name == "Corpus") {
-      this.items = [menuAddFolder];
-      return;
+    const cmItems = [];
+    if (node.data?.type === ElementType.FOLDER) {
+      cmItems.push(menuAddFolder);
     }
 
-    let cmItems = [
+    cmItems.push(...[
       {
         label: 'Sposta',
         icon: 'fa-solid fa-sync',
@@ -673,20 +605,19 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
           this.showDeleteModal()
         }
       }
-    ];
+    ]);
 
-    let menuRename = {
+    const menuRename = {
       label: 'Rinomina',
       icon: 'fa-solid fa-pen',
       command: (event: any) => {
         this.showRenameModal()
       }
     }
-
-    cmItems.unshift(menuRename);
-
-    if (node.data.type == _ElementType.Directory) {
-      cmItems.unshift(menuAddFolder);
+    if (node.data?.type === ElementType.RESOURCE) {
+      cmItems.unshift(menuRename);
+    } else {
+      cmItems.push(menuRename);
     }
 
     this.items = cmItems;
@@ -828,9 +759,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
     this.loading = true;
     this.loaderService.show();
 
-    this.workspaceService.retrieveCorpus().subscribe(resp => {
-      console.info('texto retrieve corpus', resp);
-    })
+    this.workspaceService.retrieveCorpus();
 
     this.workspaceService._retrieveCorpus().subscribe({
       next: (data) => {

@@ -1,116 +1,55 @@
 <div class="button-group-actions mb-3">
-  <button
-    class="btn btn-outline-success rounded-circle"
-    pTooltip="Carica file"
-    tooltipPosition="bottom"
-    (click)="showUploadFileModal()"
-    [disabled]="shouldUploadFileBeDisabled"
-  >
+  <button class="btn btn-outline-success rounded-circle" pTooltip="Carica file" tooltipPosition="bottom"
+    (click)="showUploadFileModal()" [disabled]="shouldUploadFileBeDisabled">
     <app-icon-upload-file style="margin-right: 0.3rem"></app-icon-upload-file>
   </button>
-  <button
-    class="btn btn-outline-primary rounded-circle"
-    pTooltip="Aggiungi cartella"
-    tooltipPosition="bottom"
-    (click)="showAddFolderModal()"
-  >
+  <button class="btn btn-outline-primary rounded-circle" pTooltip="Aggiungi cartella" tooltipPosition="bottom"
+    (click)="showAddFolderModal()">
     <app-icon-add-folder></app-icon-add-folder>
   </button>
-  <button
-    class="btn btn-outline-primary rounded-circle"
-    pTooltip="Rinomina"
-    tooltipPosition="bottom"
-    (click)="showRenameModal()"
-    [disabled]="shouldRMBeDisabled"
-  >
+  <button class="btn btn-outline-primary rounded-circle" pTooltip="Rinomina" tooltipPosition="bottom"
+    (click)="showRenameModal()" [disabled]="!selectedNode">
     <app-icon-rename></app-icon-rename>
   </button>
-  <button
-    class="btn btn-outline-primary rounded-circle"
-    pTooltip="Sposta"
-    tooltipPosition="bottom"
-    (click)="showMoveModal()"
-    [disabled]="shouldRMBeDisabled"
-  >
+  <button class="btn btn-outline-primary rounded-circle" pTooltip="Sposta" tooltipPosition="bottom"
+    (click)="showMoveModal()" [disabled]="!selectedNode">
     <app-icon-move></app-icon-move>
   </button>
-  <button
-    *ngIf="shouldDeleteBeDisplayed"
-    class="btn btn-outline-danger rounded-circle"
-    pTooltip="Elimina"
-    tooltipPosition="bottom"
-    (click)="showDeleteModal()"
-  >
+  <button *ngIf="shouldDeleteBeDisplayed" class="btn btn-outline-danger rounded-circle" pTooltip="Elimina"
+    tooltipPosition="bottom" (click)="showDeleteModal()">
     <i class="pi pi-trash"></i>
   </button>
 </div>
 
-<p-tree
-  [value]="files"
-  selectionMode="single"
-  [(selection)]="selectedDocument"
-  [contextMenu]="cm"
-  (onNodeSelect)="nodeSelect($event)"
-  (onNodeContextMenuSelect)="onTreeContextMenuSelect($event, cm)"
-  [filter]="true"
-  [loading]="loading"
-  scrollHeight="250px"
-  #tree
-></p-tree>
+<p-tree [value]="files" selectionMode="single" [(selection)]="selectedDocument" [contextMenu]="cm"
+  (onNodeSelect)="nodeSelect($event)" (onNodeContextMenuSelect)="onTreeContextMenuSelect($event, cm)" [filter]="true"
+  [loading]="loading" scrollHeight="250px" #tree></p-tree>
 
-<p-tree [value]="(files$|async)||[]" selectionMode="single"></p-tree>
+<p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
+  (onNodeSelect)="nodeSelect($event)" [contextMenu]="cm" (onNodeContextMenuSelect)="onOpenContextMenu($event)"
+  [filter]="true"></p-tree>
 
 <div class="d-flex justify-content-center m-3">
-  <button
-    class="btn btn-secondary"
-    id="btnReload"
-    (click)="reload()"
-  >
+  <button class="btn btn-secondary" id="btnReload" (click)="reload()">
     Aggiorna Corpus
   </button>
 </div>
 
 <p-contextMenu #cm appendTo="body" [model]="items"></p-contextMenu>
 
-<div
-  class="modal fade"
-  id="uploadFileModal"
-  tabindex="-1"
-  aria-labelledby="uploadFileModalLabel"
-  aria-hidden="true"
->
+<p-dialog header="Upload file" class="modal" [(visible)]="visibleUploadFile" [modal]="true"
+  [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        (ngSubmit)="onSubmitFileUploaderModal()"
-        #fileUploaderForm="ngForm"
-        id="fileUploaderForm"
-        class="validated"
-      >
-        <div class="modal-header">
-          <h5 class="modal-title" id="uploadFileModalLabel">Importa nuovo file</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form (ngSubmit)="onSubmitFileUploaderModal()" #fileUploaderForm="ngForm" id="fileUploaderForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
             <label class="form-label">Scegli un file *</label>
-            <input
-              type="file"
-              class="form-control"
+            <!--TODO temporaneamente rimossi i formati accettati , .xml, .reg, .bat, .pls, .m3u, .m3u8, .srt, .ies, .air, .stp, .xspf, .dix, .sfm, .theme, .torrent-->
+            <input type="file" class="form-control"
               [ngClass]="{'is-invalid': !isFileUploaded && (isFileUploaderTouched || isFileSizeExceed)}"
-              aria-label="file example"
-              id="fileUploader"
-              type="file"
-              accept="text/plain, .xml, .reg, .bat, .pls, .m3u, .m3u8, .srt, .ies, .air, .stp, .xspf, .dix, .sfm, .theme, .torrent"
-              required
-              (change)="onFileUpload($event)"
-              (click)="onFileUploaderTouch()"
-            />
+              aria-label="file example" id="fileUploader" type="file" accept="text/plain" required
+              (change)="onFileUpload($event)" (click)="onFileUploaderTouch()" />
             <div *ngIf="!isFileUploaded && isFileUploaderTouched" class="invalid-feedback">
               Necessario selezionare un file plain text
             </div>
@@ -121,7 +60,9 @@
           <div class="form-group">
             <label class="form-label">Seleziona cartella *</label>
             <div class="p-fluid">
-              <p-treeSelect #folderToUpload="ngModel" name="folderToUpload" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToFileUpload" placeholder="Seleziona cartella" required></p-treeSelect>
+              <p-treeSelect #folderToUpload="ngModel" name="folderToUpload" [(ngModel)]="selectedFolderNode"
+                [options]="foldersAvailableToFileUpload" placeholder="Seleziona cartella" required
+                appendTo="body"></p-treeSelect>
               <div *ngIf="folderToUpload.invalid && (folderToUpload.touched || folderToUpload.dirty)"
                 class="invalid-feedback">
                 <div *ngIf="folderToUpload.errors?.['required']">
@@ -132,11 +73,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Annulla
           </button>
           <button type="submit" class="btn btn-primary">Conferma</button>
@@ -144,179 +81,114 @@
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
-<div
-  class="modal fade"
-  id="addFolderModal"
-  tabindex="-1"
-  aria-labelledby="addFolderModalLabel"
-  aria-hidden="true"
->
+<p-dialog header="Add folder" class="modal" [(visible)]="visibleAddFolder" [modal]="true"
+  [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        (ngSubmit)="onSubmitAddFolderModal()"
-        #addFolderForm="ngForm"
-        id="addFolderForm"
-        class="validated"
-      >
-        <div class="modal-header">
-          <h5 class="modal-title" id="addFolderModalLabel">Aggiungi cartella</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form (ngSubmit)="onSubmitAddFolderModal()" [formGroup]="addFolderRForm" id="addFolderForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Nome nuova cartella *</label>
-            <input #nfName="ngModel" type="text" name="nfName" class="form-control" [(ngModel)]="newFolderName"
-              required maxlength="300" placeholder="Nome nuova cartella" appWhitespacesValidator>
-            <div *ngIf="nfName.invalid && (nfName.touched || nfName.dirty)" class="invalid-feedback">
-              <div *ngIf="nfName.errors?.['required']">
-                Necessario inserire il nome della nuova cartella
+            <label class="form-label">New folder name *</label>
+            <input formControlName="name" type="text" name="name" class="form-control" maxlength="300"
+              placeholder="New folder name">
+            <div *ngIf="addFolderName?.invalid" class="invalid-feedback">
+              <div *ngIf="addFolderName?.errors?.['required']">
+                New folder name required
               </div>
-              <div *ngIf="nfName.errors?.['isNotOnlyWhitespaces']">
-                Il nome della nuova cartella non può contenere solo spazi vuoti
+              <div *ngIf="addFolderName?.errors?.['isNotOnlyWhitespaces']">
+                The name of the new folder cannot contain only blanks
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Seleziona cartella *</label>
+            <label class="form-label">Select folder *</label>
             <div class="p-fluid">
-              <p-treeSelect #folderToAdd="ngModel" name="folderToAdd" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToAddFolder" placeholder="Seleziona cartella" required></p-treeSelect>
-              <div *ngIf="folderToAdd.invalid && (folderToAdd.touched || folderToAdd.dirty)"
+              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async) || []"
+                placeholder="Select folder" appendTo="body"></p-treeSelect>
+              <div *ngIf="addFolderParent?.invalid && (addFolderParent?.touched || addFolderParent?.dirty)"
                 class="invalid-feedback">
-                <div *ngIf="folderToAdd.errors?.['required']">
-                  Necessario selezionare una cartella
+                <div *ngIf="addFolderParent?.errors?.['required']">
+                  Need to select a folder
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Annulla
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            (click)="visibleAddFolder = !visibleAddFolder;">
+            Cancel
           </button>
-          <button type="submit" class="btn btn-primary">Conferma</button>
+          <button type="submit" class="btn btn-primary" [disabled]="addFolderRForm.invalid">Confirm</button>
         </div>
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
-<div
-  class="modal fade"
-  id="renameModal"
-  tabindex="-1"
-  aria-labelledby="renameModalLabel"
-  aria-hidden="true"
->
+<p-dialog header="Rename" class="modal" [(visible)]="visibleRename" [modal]="true"
+  [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        (ngSubmit)="onSubmitRenameModal()"
-        #renameForm="ngForm"
-        id="renameForm"
-        class="validated"
-      >
-        <div class="modal-header">
-          <h5 class="modal-title" id="renameModalLabel">Rinomina {{ selectedDocument?.label }}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form (ngSubmit)="onSubmitRenameModal()" [formGroup]="renameElementForm" id="renameForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Nuovo nome *</label>
-            <input #newElementName="ngModel" type="text" name="newElementName" class="form-control" [(ngModel)]="newName"
-              required maxlength="300" placeholder="Nuovo nome" appWhitespacesValidator>
-            <div *ngIf="newElementName.invalid && (newElementName.touched || newElementName.dirty)" class="invalid-feedback">
-              <div *ngIf="newElementName.errors?.['required']">
-                Necessario inserire il nuovo nome
+            <label class="form-label">New name *</label>
+            <input formControlName="newName" type="text" name="newElementName" class="form-control" maxlength="300"
+              placeholder="New name">
+            <div *ngIf="getNewName?.invalid && (getNewName?.touched || getNewName?.dirty)" class="invalid-feedback">
+              <div *ngIf="getNewName?.errors?.['required']">
+                New name required
               </div>
-              <div *ngIf="newElementName.errors?.['isNotOnlyWhitespaces']">
-                Il nuovo nome non può contenere solo spazi vuoti
+              <div *ngIf="getNewName?.errors?.['isNotOnlyWhitespaces']">
+                The new name cannot contain only blanks
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Annulla
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            (click)="visibleRename = !visibleRename">
+            Cancel
           </button>
-          <button type="submit" class="btn btn-primary">Conferma</button>
+          <button type="submit" class="btn btn-primary" [disabled]="renameElementForm.invalid">Confirm</button>
         </div>
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
-<div
-  class="modal fade"
-  id="moveModal"
-  tabindex="-1"
-  aria-labelledby="moveModalLabel"
-  aria-hidden="true"
->
+<p-dialog header="Move" class="modal" [(visible)]="visibleMove" [modal]="true"
+  [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        (ngSubmit)="onSubmitMoveModal()"
-        #moveForm="ngForm"
-        id="moveForm"
-        class="validated"
-      >
-        <div class="modal-header">
-          <h5 class="modal-title" id="moveModalLabel">Sposta {{ selectedDocument?.label }}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form (ngSubmit)="onSubmitMoveModal()" [formGroup]="moveElementForm" id="moveForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Seleziona cartella di destinazione *</label>
+            <label class="form-label">Select a target folder *</label>
             <div class="p-fluid">
-              <p-treeSelect #folderToMoveIn="ngModel" name="folderToMoveIn" [(ngModel)]="selectedFolderNode" [options]="foldersAvailableToMoveElementIn" placeholder="Seleziona cartella" required></p-treeSelect>
-              <div *ngIf="folderToMoveIn.invalid && (folderToMoveIn.touched || folderToMoveIn.dirty)"
+              <p-treeSelect name="targetFolder" formControlName="targetFolder" [options]="(folders$ | async) || []"
+                placeholder="Select folder" appendTo="body"></p-treeSelect>
+              <div *ngIf="getTargetFolder?.invalid && (getTargetFolder?.touched || getTargetFolder?.dirty)"
                 class="invalid-feedback">
-                <div *ngIf="folderToMoveIn.errors?.['required']">
-                  Necessario selezionare una cartella di destinazione
+                <div *ngIf="getTargetFolder?.errors?.['required']">
+                  Target folder required
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Annulla
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="visibleMove = !visibleMove;">
+            Cancel
           </button>
-          <button type="submit" class="btn btn-primary">Conferma</button>
+          <button type="submit" class="btn btn-primary" [disabled]="moveElementForm.invalid">Confirm</button>
         </div>
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
