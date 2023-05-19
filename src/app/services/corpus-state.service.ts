@@ -10,19 +10,20 @@ import { ElementType } from '../models/corpus/element-type';
 export class CorpusStateService {
   textoCurrentUserId!: number;
   refreshFileSystem = new Subject();
-  addFolder = new Subject<{ parentFolderId: number, folderName: string }>();
+  addElement = new Subject<{ elementType: ElementType, parentFolderId: number, elementName: string }>();
   renameElement = new Subject<{ elementType: ElementType, elementId: number, newName: string }>();
   moveElement = new Subject<{ elementType: ElementType, elementId: number, targetId: number }>();
+  uploadFile = new Subject<{ parentId: number, resourceName: string, file: File }>();
   filesystem$ = merge(
     this.workspaceService.retrieveCorpus(),
     this.refreshFileSystem.pipe(
       switchMap(() => this.workspaceService.retrieveCorpus())
     ),
-    this.addFolder.pipe(
-      switchMap(req => this.workspaceService.addFolder(req.parentFolderId, req.folderName, this.textoCurrentUserId).pipe(
-        tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Folder ${req.folderName} added`))),
+    this.addElement.pipe(
+      switchMap(req => this.workspaceService.addElement(req.elementType, req.parentFolderId, req.elementName, this.textoCurrentUserId).pipe(
+        tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.elementType} ${req.elementName} added`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Add folder failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Add ${req.elementType.toLowerCase()} failed: ${error.error}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -48,6 +49,22 @@ export class CorpusStateService {
       )),
       switchMap(() => this.workspaceService.retrieveCorpus()),
     ),
+    this.uploadFile.pipe(
+      switchMap(req => this.workspaceService.addElement(ElementType.RESOURCE, req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
+        switchMap(resp => this.workspaceService.uploadFile(resp.id, req.file).pipe(
+          tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.resourceName} uploaded`))),
+          catchError((error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.resourceName} uploading failed: ${error.error}`));
+            return throwError(() => new Error(error.error));
+          }),
+        )),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Resource ${req.resourceName} creation failed: ${error.error}`));
+          return throwError(() => new Error(error.error));
+        }),
+      )),
+      switchMap(() => this.workspaceService.retrieveCorpus()),
+    ),
   ).pipe(
     shareReplay(1),
   )
@@ -61,8 +78,9 @@ export class CorpusStateService {
       this.textoCurrentUserId = resp.id;
     });
     this.refreshFileSystem.subscribe();
-    this.addFolder.subscribe();
+    this.addElement.subscribe();
     this.renameElement.subscribe();
     this.moveElement.subscribe();
+    this.uploadFile.subscribe();
   }
 }

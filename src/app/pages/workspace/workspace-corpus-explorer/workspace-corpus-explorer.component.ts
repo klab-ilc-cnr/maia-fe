@@ -2,10 +2,10 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { ContextMenu } from 'primeng/contextmenu';
 import { DocumentElement } from 'src/app/models/corpus/document-element';
 import { ElementType, _ElementType } from 'src/app/models/corpus/element-type';
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import Swal from 'sweetalert2';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -18,7 +18,7 @@ import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 /**Variabile globale (jQuery?) */
-declare var $: any;
+declare let $: any;
 
 /**Componente del pannello di esplorazione corpus */
 @Component({
@@ -125,7 +125,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   /**Lista dei nodi documentali */
   files: TreeNode<DocumentElement>[] = [];
   /**File caricato */
-  fileUploaded: any = undefined;
+  fileUploaded: File|undefined;
   /**Lista dei nodi documentali nei quali si possono aggiungere cartelle */
   foldersAvailableToAddFolder: TreeNode<DocumentElement>[] = [];
   /**Lista dei nodi documentali nei quali si possono caricare file */
@@ -133,15 +133,15 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   /**Lista dei nodi documentale nei quali si possono spostare elementi */
   foldersAvailableToMoveElementIn: TreeNode<DocumentElement>[] = [];
   /**Definisce se si è superata la dimensione massima di un file */
-  isFileSizeExceed: boolean = false;
+  isFileSizeExceed = false;
   /**Definisce se un file è stato caricato */
-  isFileUploaded: boolean = false;
+  isFileUploaded = false;
   /**Definisce se l'uploader dei file è stato toccato */
-  isFileUploaderTouched: boolean = false;
+  isFileUploaderTouched = false;
   /**Lista degli elementi del menu */
   items: MenuItem[] = [];
   /**Definisce se è in corso un caricamento */
-  loading: boolean = false;
+  loading = false;
   /**Nome della nuova cartella */
   newFolderName: string | undefined;
   /**Nuovo nome */
@@ -154,8 +154,6 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   selectedFolderNode: TreeNode<DocumentElement> | undefined;
   selectedNode: TreeNode<CorpusElement> | undefined;
 
-  /**Riferimento all'uploader dei file */
-  @ViewChild('fileUploader') public fileUploader!: ElementRef;
   /**Riferimento all'albero documentale */
   @ViewChild('tree') public tree: any;
 
@@ -180,12 +178,13 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   get getTargetFolder() { return this.moveElementForm.get('targetFolder'); }
   set setTargetFolder(node: TreeNode<CorpusElement>) { this.getTargetFolder?.setValue(node); }
 
-  /**Riferimento al form dell'uploader di file */
-  @ViewChild('fileUploaderForm') public fileUploaderForm!: NgForm;
-  /**Riferimento al form di spostamento elemento */
-  // @ViewChild('moveForm') public moveForm!: NgForm;
-  /**Riferimento al form per rinominare un elemento documentale */
-  // @ViewChild('renameForm') public renameForm!: NgForm;
+  uploaderForm = new FormGroup({
+    file: new FormControl<File | null>(null, Validators.required),
+    parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null, Validators.required)
+  });
+  get getFile() { return this.uploaderForm.get('file'); }
+  get getParentFolder() { return this.uploaderForm.get('parentFolder'); }
+  set setParentFolder(node: TreeNode<CorpusElement>) { this.getParentFolder?.setValue(node); }
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -284,9 +283,10 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       return;
     }
 
-    this.corpusStateService.addFolder.next({
+    this.corpusStateService.addElement.next({
+      elementType: ElementType.FOLDER,
       parentFolderId: parentFolderId,
-      folderName: folderName
+      elementName: folderName
     });
 
     this.visibleAddFolder = false;
@@ -298,49 +298,18 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {void}
    */
   onSubmitFileUploaderModal(): void {
-    if (this.fileUploaderForm.invalid || !this.fileUploaded) { //caso di form non valido o file non caricato
+    if (this.uploaderForm.invalid || !this.fileUploaded) { //caso di form non valido o file non caricato
       return this.saveUploadFileWithFormErrors();
     }
 
-    if (this.fileUploaded && this.selectedFolderNode) {
-      let element_id = this.fileUploaderForm.form.value.folderToUpload.data["element-id"];
-      let name = this.fileUploaded.name;
-      let folderName = this.fileUploaderForm.form.value.folderToUpload.data.name;
-
-      let errorMsg = 'Errore nel caricare il file \'' + name + '\' in \'' + folderName + '\'';
-      let successMsg = 'File \'' + name + '\' caricato con successo in \'' + folderName + '\'';
-
-      this.loaderService.show();
-      this.workspaceService._uploadFile(element_id, this.fileUploaded).subscribe({
-        next: (result) => {
-          $('#uploadFileModal').modal('hide');
-
-          if (result['response-status'] == 0) {
-            this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-          }
-          else if (result['response-status'] == 1) {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig('Utente non autorizzato'));
-          }
-          else {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-          }
-
-          this.loaderService.hide();
-
-          this.updateDocumentSystem();
-        },
-        error: () => {
-          $('#uploadFileModal').modal('hide');
-          this.loaderService.hide();
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-        }
-      })
+    if (this.fileUploaded && this.getParentFolder?.valid) {
+      this.corpusStateService.uploadFile.next({ parentId: this.getParentFolder.value!.data!.id, resourceName: this.fileUploaded.name.split('.')[0], file: this.fileUploaded });
     }
     else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore nell'operazione di caricamento file"));
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Error loading file"));
     }
 
-    $('#uploadFileModal').modal('hide');
+    this.visibleUploadFile = false;
   }
 
   /**
@@ -433,9 +402,9 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
   /**Metodo che gestisce la visualizzazione del popup di conferma cancellazione di un elemento documentale */
   showDeleteModal(): void {
     if (this.selectedDocument && this.selectedDocument.data) {
-      let element_id = this.selectedDocument.data['element-id'];
-      let name = this.selectedDocument.data.name || "";
-      let type = this.selectedDocument.data.type;
+      const element_id = this.selectedDocument.data['element-id'];
+      const name = this.selectedDocument.data.name || "";
+      const type = this.selectedDocument.data.type;
 
       let confirmMsg = 'Stai per cancellare la cartella \'' + name + '\'';
 
@@ -471,17 +440,14 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
 
   /**Metodo che gestisce la visualizzazione del modale di caricamento di un nuovo file */
   showUploadFileModal(): void {
-    this.resetFileUploaderForm();
-
-    if (this.selectedDocument && this.selectedDocument.data?.type == _ElementType.Directory) {
-      var node = this.searchNodeByElementId(this.foldersAvailableToFileUpload, this.selectedDocument);
-
-      if (node) {
-        this.selectedFolderNode = node;
-      }
+    this.uploaderForm.reset();
+    this.folders$ = this.files$.pipe(
+      switchMap(nodes => of(this.mapToOnlyFolders(nodes))),
+    );
+    if (this.selectedNode?.data?.type === ElementType.FOLDER) {
+      this.setParentFolder = this.selectedNode;
     }
     this.visibleUploadFile = true;
-    // $('#uploadFileModal').appendTo('body').modal('show');
   }
 
   /**
@@ -491,9 +457,9 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {TreeNode<any>[]} lista di nodi dell'albero
    */
   private documentsToTreeNodes(docs: DocumentElement[]) {
-    var dataParsed = [];
+    const dataParsed = [];
 
-    for (let d of docs) {
+    for (const d of docs) {
       dataParsed.push(this.documentToTreeNode(d));
     }
 
@@ -507,7 +473,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {TreeNode} nodo dell'albero
    */
   private documentToTreeNode(doc: DocumentElement): TreeNode {
-    var node: TreeNode<DocumentElement> = {};
+    const node: TreeNode<DocumentElement> = {};
 
     if (doc.children) {
       node.children = this.documentsToTreeNodes(doc.children);
@@ -630,7 +596,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {TreeNode<any>[]} lista dei nodi dell'albero
    */
   private omitFiles(docs: any[]) {
-    var dataParsed: TreeNode<any>[] = [];
+    const dataParsed: TreeNode<any>[] = [];
 
     docs.forEach((obj) => {
       if (obj.data.type != _ElementType.File) {
@@ -687,7 +653,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * Metodo che segna i campi del form come touched e segnala il mancato caricamento
    */
   private saveUploadFileWithFormErrors(): void {
-    this.fileUploaderForm.form.markAllAsTouched();
+    this.uploaderForm.markAllAsTouched();
 
     if (!this.fileUploaded) {
       this.isFileUploaded = false;
@@ -734,13 +700,13 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
    * @returns {any} nodo della lista corrispondente
    */
   private searchNodeByElementId(source: any[], element: any): any {
-    for (let el of source) {
+    for (const el of source) {
       if (el.data?.['element-id'] == element.data?.['element-id']) {
         return el;
       }
 
       if (el.children && el.children.lenght != 0) {
-        let node = this.searchNodeByElementId(el.children, element);
+        const node = this.searchNodeByElementId(el.children, element);
 
         if (node) {
           return node;
@@ -765,7 +731,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
       next: (data) => {
         if (data.documentSystem) {
           this.rawData = JSON.parse(JSON.stringify(data.documentSystem))
-          let rootNode = {
+          const rootNode = {
             path: "/root/",
             name: "Corpus",
             type: _ElementType.Directory,
@@ -774,7 +740,7 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
             children: this.rawData
           }
 
-          let fileTree = [];
+          const fileTree = [];
           fileTree.push(rootNode);
 
           this.files = this.documentsToTreeNodes(fileTree);
@@ -785,9 +751,9 @@ export class WorkspaceCorpusExplorerComponent implements OnInit {
             this.files[0].droppable = true;
           }
 
-          var filesDeepCopy = JSON.parse(JSON.stringify(this.files))
+          const filesDeepCopy = JSON.parse(JSON.stringify(this.files))
 
-          var docSystemWithoutFiles = this.omitFiles(filesDeepCopy);
+          const docSystemWithoutFiles = this.omitFiles(filesDeepCopy);
           this.foldersAvailableToAddFolder = JSON.parse(JSON.stringify(docSystemWithoutFiles));
 
           if (docSystemWithoutFiles.length > 0) {

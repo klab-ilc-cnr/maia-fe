@@ -41,42 +41,47 @@
   [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form (ngSubmit)="onSubmitFileUploaderModal()" #fileUploaderForm="ngForm" id="fileUploaderForm" class="validated">
+      <form (ngSubmit)="onSubmitFileUploaderModal()" [formGroup]="uploaderForm" id="fileUploaderForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Scegli un file *</label>
+            <label class="form-label">Select file *</label>
             <!--TODO temporaneamente rimossi i formati accettati , .xml, .reg, .bat, .pls, .m3u, .m3u8, .srt, .ies, .air, .stp, .xspf, .dix, .sfm, .theme, .torrent-->
             <input type="file" class="form-control"
               [ngClass]="{'is-invalid': !isFileUploaded && (isFileUploaderTouched || isFileSizeExceed)}"
-              aria-label="file example" id="fileUploader" type="file" accept="text/plain" required
+              aria-label="file example" id="fileUploader" accept="text/plain" formControlName="file"
               (change)="onFileUpload($event)" (click)="onFileUploaderTouch()" />
             <div *ngIf="!isFileUploaded && isFileUploaderTouched" class="invalid-feedback">
-              Necessario selezionare un file plain text
+              Need to select a plain text file
             </div>
             <div *ngIf="!isFileUploaded && isFileSizeExceed" class="invalid-feedback">
-              Le dimensioni del file superano i 10MB consentiti
+              File size exceeds the allowed 10MB
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Seleziona cartella *</label>
+            <label class="form-label">Select folder *</label>
             <div class="p-fluid">
-              <p-treeSelect #folderToUpload="ngModel" name="folderToUpload" [(ngModel)]="selectedFolderNode"
-                [options]="foldersAvailableToFileUpload" placeholder="Seleziona cartella" required
-                appendTo="body"></p-treeSelect>
-              <div *ngIf="folderToUpload.invalid && (folderToUpload.touched || folderToUpload.dirty)"
+              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]"
+                placeholder="Select folder" required appendTo="body"></p-treeSelect>
+              <div *ngIf="getParentFolder?.invalid && (getParentFolder?.touched || getParentFolder?.dirty)"
                 class="invalid-feedback">
-                <div *ngIf="folderToUpload.errors?.['required']">
-                  Necessario selezionare una cartella
+                <div *ngIf="getParentFolder?.errors?.['required']">
+                  Select folder required
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Annulla
-          </button>
-          <button type="submit" class="btn btn-primary">Conferma</button>
+          <div class="w-full mb-4">
+            <em>Check that the file uses UTF-8 encoding</em>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="visibleUploadFile = false;">
+              Annulla
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="uploaderForm.invalid">Conferma</button>
+          </div>
         </div>
       </form>
     </div>

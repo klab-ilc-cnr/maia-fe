@@ -353,20 +353,21 @@ export class WorkspaceService {
     return this.http.post<any>(`${this.cashUrl}/api/crud/addFolder`, payload);
   }
 
-  public addFolder(parentFolderId: number, folderName: string, userId: number) {
+  public addElement(elementType: ElementType, parentFolderId: number, elementName: string, userId: number): Observable<CorpusElement> {
     const uuid = uuidv4();
+    const operationUrl = elementType === ElementType.FOLDER ? 'folder' : 'resource';
     const payload = {
       parent: {
         id: parentFolderId
       },
-      name: folderName,
+      name: elementName,
       user: {
         id: userId
       }
     };
 
-    return this.http.post(
-      `${this.textoUrl}/texto/folder/create`,
+    return this.http.post<CorpusElement>(
+      `${this.textoUrl}/texto/${operationUrl}/create`,
       payload,
       {
         headers: new HttpHeaders({'UUID': uuid})
