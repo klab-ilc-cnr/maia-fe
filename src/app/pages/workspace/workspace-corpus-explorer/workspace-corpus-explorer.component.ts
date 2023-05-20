@@ -1,7 +1,5 @@
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { ContextMenu } from 'primeng/contextmenu';
-import { DocumentElement } from 'src/app/models/corpus/document-element';
-import { ElementType, _ElementType } from 'src/app/models/corpus/element-type';
+import { ElementType } from 'src/app/models/corpus/element-type';
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -40,7 +38,7 @@ export class WorkspaceCorpusExplorerComponent {
    * Effettua la cancellazione di un elemento
    * @param id {number} identificativo numerico dell'elemento
    * @param name {string} nome dell'elemento
-   * @param type {_ElementType} tipo di elemento (cartella o file)
+   * @param type {ElementType} tipo di elemento (cartella o file)
    */
   private deleteElement = (id: number, type: ElementType): void => {
     this.corpusStateService.removeElement.next({ elementType: type, elementId: id });
@@ -60,19 +58,6 @@ export class WorkspaceCorpusExplorerComponent {
     return this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE; //hanno diritto di cancellazione solo i ruoli amministratore
   }
 
-  /**Getter che definisce se debba essere disabilitato il caricamento di un file */
-  public get shouldUploadFileBeDisabled(): boolean {
-    if (this.selectedDocument) {
-      if (this.selectedDocument.label == "Corpus") {
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
-    return false;
-  }
-
   /**File caricato */
   fileUploaded: File | undefined;
   /**Definisce se si è superata la dimensione massima di un file */
@@ -84,7 +69,6 @@ export class WorkspaceCorpusExplorerComponent {
   /**Lista degli elementi del menu */
   items: MenuItem[] = [];
   /**Nodo documentale selezionato */
-  selectedDocument: TreeNode<DocumentElement> | undefined;
   selectedNode: TreeNode<CorpusElement> | undefined;
 
   /**Riferimento al form di aggiunta folder */
@@ -281,15 +265,6 @@ export class WorkspaceCorpusExplorerComponent {
 
   }
 
-  /**
-   * Metodo che gestisce la visualizzazione del menu contestuale
-   * @param event {any} evento di click con tasto destro
-   * @param cm {ContextMenu} menu contestuale //TODO verificare possibile rimozione in quanto non utilizzato
-   */
-  onTreeContextMenuSelect(event: any, cm: ContextMenu): void {
-    this.generateContextMenu(event.node);
-  }
-
   onOpenContextMenu(event: { originalEvent: PointerEvent, node: TreeNode<CorpusElement> }) {
     this.generateContextMenu(event.node);
   }
@@ -362,50 +337,6 @@ export class WorkspaceCorpusExplorerComponent {
       this.setParentFolder = this.selectedNode;
     }
     this.visibleUploadFile = true;
-  }
-
-  /**
-   * @private
-   * Metodo che mappa la lista di elementi documento e restituisce una lista di nodi dell'albero
-   * @param docs {DocumentElement[]} lista degli elementi documentali
-   * @returns {TreeNode<any>[]} lista di nodi dell'albero
-   */
-  private documentsToTreeNodes(docs: DocumentElement[]) {
-    const dataParsed = [];
-
-    for (const d of docs) {
-      dataParsed.push(this.documentToTreeNode(d));
-    }
-
-    return dataParsed;
-  }
-
-  /**
-   * @private
-   * Metodo che mappa un elemento documentale per restituire un nodo dell'albero
-   * @param doc {DocumentElement} elemento documentale
-   * @returns {TreeNode} nodo dell'albero
-   */
-  private documentToTreeNode(doc: DocumentElement): TreeNode {
-    const node: TreeNode<DocumentElement> = {};
-
-    if (doc.children) {
-      node.children = this.documentsToTreeNodes(doc.children);
-    }
-
-    if (doc.type == _ElementType.Directory) {
-      node.expandedIcon = "pi pi-folder-open";
-      node.collapsedIcon = "pi pi-folder";
-    }
-    else if (doc.type == _ElementType.File) {
-      node.icon = "pi pi-file";
-      node.leaf = true;
-    }
-
-    node.label = doc.name;
-    node.data = doc;
-
-    return node;
   }
 
   private mapToOnlyFolders(nodes: TreeNode<CorpusElement>[]): TreeNode<CorpusElement>[] {
