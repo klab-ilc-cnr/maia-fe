@@ -10,6 +10,7 @@ import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexica
 import { CommonService } from './common.service';
 import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { Namespace } from '../models/lexicon/namespace.model';
+import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 
 /**Classe dei servizi relativi al lessico */
 @Injectable({
@@ -139,6 +140,14 @@ export class LexiconService {
   }
 
   /**
+   * GET che recupera la lista di lingue disponibili per la selezione
+   * @returns {Observable<any>} observable della lista di lingue disponibili
+   */
+  getLanguages(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
+  }
+
+  /**
    * GET che recupera i dati dell'entrata lessicale
    * @param lexicalEntryId {string} identificativo dell'entrata lessicale
    * @returns {Observable<any>}
@@ -176,12 +185,9 @@ export class LexiconService {
     return this.http.get<OntolexType[]>(`${this.lexoUrl}ontolex/data/lexicalEntryType`);
   }
 
-  /**
-   * GET che recupera la lista di lingue disponibili per la selezione
-   * @returns {Observable<any>} observable della lista di lingue disponibili
-   */
-  getLanguages(): Observable<LexiconStatistics[]> {
-    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
+  getLinguisticRelations(property: string, lexicalEntryId: string): Observable<LinguisticRelationModel[]> {
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/lexicon/data/linguisticRelation?property=${property}&id=${encodedId}`);
   }
 
   /**

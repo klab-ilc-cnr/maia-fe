@@ -1,6 +1,6 @@
 <p-skeleton *ngIf="!lexicalEntry" width="30rem" height="40rem"></p-skeleton>
 
-<div *ngIf="lexicalEntry" class="card" [style]="{'height': '100%'}">
+<div *ngIf="lexicalEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
   <form (ngSubmit)="onSubmit()" [formGroup]="form" class="formgrid grid">
     <div class="field col-6">
       <em>Last update: {{lexicalEntry.lastUpdate | date : 'medium'}}</em>
@@ -37,10 +37,10 @@
       <p-multiSelect [options]="(types$|async) || []" optionLabel="valueLabel" optionValue="valueId" display="chip"
         [placeholder]="emptyField" formControlName="type" name="type" styleClass="w-full"></p-multiSelect>
     </div>
-    <div class="field col-7">
+    <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Evokes <button pButton pRipple icon="pi pi-plus"
+          Evokes <button pButton pRipple icon="pi pi-plus" type="button"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
@@ -49,34 +49,38 @@
         </ng-template>
       </p-fieldset>
     </div>
-    <div class="field col-5">
+    <!-- <div class="field col-5">
       <p-fieldset legend="Evokes" styleClass="read-only"></p-fieldset>
-    </div>
-    <div class="field col-7">
+    </div> -->
+    <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Denotes <button pButton pRipple icon="pi pi-plus"
+          Denotes <button pButton pRipple icon="pi pi-plus" type="button"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
       </p-fieldset>
     </div>
-    <div class="field col-5">
+    <!-- <div class="field col-5">
       <p-fieldset legend="Denotes" styleClass="read-only"></p-fieldset>
-    </div>
-    <div class="field col-7">
+    </div> -->
+    <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          See also <button pButton pRipple icon="pi pi-plus"
+          See also <button pButton pRipple icon="pi pi-plus" type="button"
             class="p-button-rounded p-button-success mx-2 fieldset-small" (click)="onAddSeeAlso()"></button>
         </ng-template>
         <ng-template pTemplate="content">
           <form formArrayName="seeAlso">
-            <app-autocomplete-checkbox *ngFor="let sA of seeAlso.controls; index as index" [isChecked]="false"
-              placeholderMsg="Search lexical entry" [filterFn]="lexEntryList" field="label"
-              (selected)="onSelectLexEntry($event)" (remove)="onRemoveSeeAlso(index)"></app-autocomplete-checkbox>
+            <app-autocomplete-checkbox *ngFor="let sA of seeAlso.controls; index as index" [isChecked]="sA.value.external"
+              [fieldValue]="sA.value" placeholderMsg="Search lexical entry" [filterFn]="lexEntryList" field="label"
+              (selected)="onSelectLexEntry($event, index)"
+              (remove)="onRemoveSeeAlso(index)"></app-autocomplete-checkbox>
           </form>
         </ng-template>
       </p-fieldset>
+    </div>
+    <div class="field col-11">
+      <button pButton type="submit" class="w-full" label="Save"></button>
     </div>
   </form>
 </div>

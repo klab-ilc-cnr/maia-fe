@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subscription, map, of } from 'rxjs';
+import { Observable, Subscription, map, of, take } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryCore, LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { GlobalStateService } from 'src/app/services/global-state.service';
@@ -59,7 +59,11 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map(resp => resp.list)
+    map(resp => resp.list.map(le => <{ label: string, value: string }>{
+      label: le.label,
+      value: le.lexicalEntry,
+      external: false
+    }))
   );
 
   constructor(
@@ -81,6 +85,10 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       if (le.language) this.form.get('language')?.setValue(le.language);
       if (lexEntryPosCode) this.form.get('pos')?.setValue(lexEntryPosCode);
       if (lexEntryTypeCode && lexEntryTypeCode.length > 0) this.form.get('type')?.setValue(lexEntryTypeCode);
+      const seeAlsoCount = this.lexicalEntry.links.find(l => l.type === 'Reference')?.elements.find(r => r.label === 'seeAlso')?.count;
+      if (seeAlsoCount && seeAlsoCount > 0) {
+        this.getSeeAlso();
+      }
     })
   }
 
@@ -89,19 +97,26 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   }
 
   onAddSeeAlso() {
-    this.seeAlso.push(new FormControl(''));
+    this.seeAlso.push(new FormControl({ label: '', value: '', external: false }));
   }
 
   onRemoveSeeAlso(index: number) {
     this.seeAlso.removeAt(index);
   }
 
-  onSelectLexEntry(lexEntry: LexicalEntryListItem) {
-    console.info('add see also', lexEntry.lexicalEntry);
+  onSelectLexEntry(lexEntryId: string, formIndex: number) {
+    this.seeAlso.at(formIndex).setValue(lexEntryId);
   }
 
   onSubmit() {
     console.info('form', this.form.value)
   }
 
+  private getSeeAlso() {
+    this.lexiconService.getLinguisticRelations('seeAlso', this.lexicalEntry.lexicalEntry).pipe(take(1)).subscribe(seeAlsoList => {
+      seeAlsoList.forEach(seeAlso => {
+        this.seeAlso.push(new FormControl({ label: seeAlso.label, value: seeAlso.entity, external: seeAlso.linkType === 'external' }))
+      });
+    })
+  }
 }

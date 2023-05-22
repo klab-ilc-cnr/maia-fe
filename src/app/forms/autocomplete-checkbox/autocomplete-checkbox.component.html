@@ -1,11 +1,13 @@
 <div class="field d-flex justify-content-between">
   <input *ngIf="isChecked; else autocomplete" pInputText type="text" placeholder="Write URL"
+    [(ngModel)]="fieldValue.value" (focusout)="onFocusOut()"
     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary col-9">
   <ng-template #autocomplete>
     <p-autoComplete [placeholder]="placeholderMsg" [field]="field" [suggestions]="(suggestions | async) || []"
-      (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event)" [virtualScroll]="true" [formControl]="control"></p-autoComplete>
+      [(ngModel)]="fieldValue" (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event)"
+      [virtualScroll]="true"></p-autoComplete>
   </ng-template>
   <input type="checkbox" [checked]="isChecked" (change)="isChecked = !isChecked" [disabled]="isCheckedDisabled">
-  <button pButton pRipple type="button" icon="pi pi-times"
-    class="p-button-rounded p-button-danger p-button-text" (click)="onRemove()"></button>
+  <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"
+    (click)="onRemove()"></button>
 </div>
