@@ -13,11 +13,11 @@ p-selectButton {
   font-weight: 600;
 }
 
-::ng-deep {
-  .read-only.p-fieldset {
-    background-color: lightyellow;
-  }
-}
+// ::ng-deep {
+//   .read-only.p-fieldset {
+//     background-color: lightyellow;
+//   }
+// }
 
 .fieldset-small {
   height: 1.5rem !important;

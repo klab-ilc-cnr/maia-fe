@@ -8,13 +8,13 @@ import { Observable, switchMap, BehaviorSubject, debounceTime } from 'rxjs';
 })
 export class AutocompleteCheckboxComponent {
   @Input() field!: string;
+  @Input() fieldValue!: { label: string, value: string, external: boolean, inferred: boolean };
   @Input() isChecked!: boolean;
   @Input() isCheckedDisabled = false;
   @Input() placeholderMsg = '';
   @Input() filterFn!: (filter: string) => Observable<any[]>;
   @Output() remove = new EventEmitter();
   @Output() selected = new EventEmitter<any>();
-  @Input() fieldValue!: { label: string, value: string, external: boolean };
 
   currentFilter$ = new BehaviorSubject<string>('');
 
@@ -30,7 +30,8 @@ export class AutocompleteCheckboxComponent {
   onFocusOut() {
     this.selected.emit({
       ...this.fieldValue,
-      external: true
+      external: true,
+      inferred: false
     });
   }
 
@@ -38,7 +39,7 @@ export class AutocompleteCheckboxComponent {
     this.remove.emit();
   }
 
-  onSelectSuggestion(event: { label: string, value: string, external: boolean }) {
+  onSelectSuggestion(event: { label: string, value: string, external: boolean, inferred: boolean }) {
     this.selected.emit(event);
   }
 }

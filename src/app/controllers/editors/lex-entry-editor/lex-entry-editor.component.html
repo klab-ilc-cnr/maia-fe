@@ -40,29 +40,37 @@
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Evokes <button pButton pRipple icon="pi pi-plus" type="button"
+          Evokes <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddEvokes()"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <app-autocomplete-checkbox [isChecked]="false" placeholderMsg="Search lexical concept"
-            [filterFn]="lexConceptList" field="label"></app-autocomplete-checkbox>
+          <form formArrayName="evokes">
+            <!--TODO rimuovi isCheckedDisabled quando finiscono le limitazioni di uso-->
+            <app-autocomplete-checkbox placeholderMsg="Search lexical concept" [filterFn]="lexConceptList" field="label"
+              *ngFor="let evoke of evokes.controls; index as index" [isChecked]="evoke.value.external"
+              [isCheckedDisabled]="true" [fieldValue]="evoke.value" (selected)="onSelectLexicalConcept($event, index)"
+              (remove)="onRemoveEvokes(index)"></app-autocomplete-checkbox>
+          </form>
         </ng-template>
       </p-fieldset>
     </div>
-    <!-- <div class="field col-5">
-      <p-fieldset legend="Evokes" styleClass="read-only"></p-fieldset>
-    </div> -->
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Denotes <button pButton pRipple icon="pi pi-plus" type="button"
+          Denotes <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddDenotes()"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <form formArrayName="denotes">
+            <!--TODO rimuovi isCheckedDisabled quando finiscono le limitazioni di uso-->
+            <app-autocomplete-checkbox placeholderMsg="Search ontologies" [filterFn]="lexOntolList" field="label"
+              *ngFor="let denote of denotes.controls; index as index" [isChecked]="denote.value.external"
+              [isCheckedDisabled]="true" [fieldValue]="denote.value" (remove)="onRemoveDenotes(index)"
+              (selected)="onSelectDenote($event, index)"></app-autocomplete-checkbox>
+          </form>
         </ng-template>
       </p-fieldset>
     </div>
-    <!-- <div class="field col-5">
-      <p-fieldset legend="Denotes" styleClass="read-only"></p-fieldset>
-    </div> -->
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
@@ -71,9 +79,9 @@
         </ng-template>
         <ng-template pTemplate="content">
           <form formArrayName="seeAlso">
-            <app-autocomplete-checkbox *ngFor="let sA of seeAlso.controls; index as index" [isChecked]="sA.value.external"
-              [fieldValue]="sA.value" placeholderMsg="Search lexical entry" [filterFn]="lexEntryList" field="label"
-              (selected)="onSelectLexEntry($event, index)"
+            <app-autocomplete-checkbox *ngFor="let sA of seeAlso.controls; index as index"
+              [isChecked]="sA.value.external" [fieldValue]="sA.value" placeholderMsg="Search lexical entry"
+              [filterFn]="lexEntryList" field="label" (selected)="onSelectLexEntry($event, index)"
               (remove)="onRemoveSeeAlso(index)"></app-autocomplete-checkbox>
           </form>
         </ng-template>

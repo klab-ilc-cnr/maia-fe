@@ -2,7 +2,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription, map, of, take } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { LexicalEntryCore, LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 
@@ -23,6 +24,8 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     language: new FormControl<string>(''),
     pos: new FormControl<string>(''),
     type: new FormControl<string[]>([]),
+    evokes: new FormArray<FormControl>([]),
+    denotes: new FormArray<FormControl>([]),
     seeAlso: new FormArray<FormControl>([])
   });
 
@@ -31,6 +34,14 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   languages$ = this.globalState.languages$;
   pos$ = this.globalState.pos$;
   types$ = this.globalState.lexicalEntryTypes$;
+
+  get evokes() {
+    return this.form.controls['evokes'] as FormArray;
+  }
+
+  get denotes() {
+    return this.form.controls['denotes'] as FormArray;
+  }
 
   get seeAlso() {
     return this.form.controls['seeAlso'] as FormArray;
@@ -44,7 +55,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map(resp => resp.list)
+    map(resp => resp.list) //TODO da mappare come lex entry list, non appena capita la struttura dell'oggetto lexical concept
   );
 
   lexEntryList = (text: string) => this.lexiconService.getLexicalEntriesList({
@@ -59,12 +70,15 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map(resp => resp.list.map(le => <{ label: string, value: string }>{
+    map(resp => resp.list.map(le => <{ label: string, value: string, external: boolean, inferred: boolean }>{
       label: le.label,
       value: le.lexicalEntry,
-      external: false
+      external: false,
+      inferred: false
     }))
   );
+
+  lexOntolList = (text: string) => of([]); //TODO implementare il recupero delle ontologie
 
   constructor(
     private globalState: GlobalStateService,
@@ -89,6 +103,8 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       if (seeAlsoCount && seeAlsoCount > 0) {
         this.getSeeAlso();
       }
+      this.getDenotes();
+      this.getEvokes();
     })
   }
 
@@ -96,12 +112,36 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
+  onAddDenotes() {
+    this.denotes.push(new FormControl({ label: '', value: '', external: true, inferred: false })); //TODO da modificare quando potremo inserire l'autocomplete sulle ontologie
+  }
+
+  onAddEvokes() {
+    this.evokes.push(new FormControl({ label: '', value: '', external: true, inferred: false })); //TODO da modificare quando potremo inserire evokes da autocomplete
+  }
+
   onAddSeeAlso() {
-    this.seeAlso.push(new FormControl({ label: '', value: '', external: false }));
+    this.seeAlso.push(new FormControl({ label: '', value: '', external: false, inferred: false }));
+  }
+
+  onRemoveDenotes(index: number) {
+    this.denotes.removeAt(index);
+  }
+
+  onRemoveEvokes(index: number) {
+    this.evokes.removeAt(index);
   }
 
   onRemoveSeeAlso(index: number) {
     this.seeAlso.removeAt(index);
+  }
+
+  onSelectDenote(ontology: string, formIndex: number) {
+    this.denotes.at(formIndex).setValue(ontology);
+  }
+
+  onSelectLexicalConcept(lexConceptId: string, formIndex: number) {
+    this.evokes.at(formIndex).setValue(lexConceptId);
   }
 
   onSelectLexEntry(lexEntryId: string, formIndex: number) {
@@ -112,11 +152,32 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     console.info('form', this.form.value)
   }
 
+  private getDenotes() {
+    this.linguisticRelationCall('denotes').subscribe(denotesList => {
+      console.info('denotes', denotesList);
+    });
+  }
+
+  private getEvokes() {
+    this.linguisticRelationCall('evokes').subscribe(evokesList => {
+      console.info('evokes', evokesList);
+    });
+  }
+
   private getSeeAlso() {
-    this.lexiconService.getLinguisticRelations('seeAlso', this.lexicalEntry.lexicalEntry).pipe(take(1)).subscribe(seeAlsoList => {
+    this.linguisticRelationCall('seeAlso').subscribe((seeAlsoList: LinguisticRelationModel[]) => {
       seeAlsoList.forEach(seeAlso => {
-        this.seeAlso.push(new FormControl({ label: seeAlso.label, value: seeAlso.entity, external: seeAlso.linkType === 'external' }))
+        this.seeAlso.push(new FormControl({ label: seeAlso.label, value: seeAlso.entity, external: seeAlso.linkType === 'external', inferred: seeAlso.inferred }))
       });
-    })
+    });
+  }
+
+  private linguisticRelationCall(relation: string): Observable<LinguisticRelationModel[]> {
+    return this.lexiconService.getLinguisticRelations(relation, this.lexicalEntry.lexicalEntry).pipe(
+      take(1),
+      map((list: LinguisticRelationModel[]) => list.sort((a, b) => a.inferred === b.inferred ? 0 : (
+        a.inferred && !b.inferred ? -1 : 1
+      ))),
+    );
   }
 }
