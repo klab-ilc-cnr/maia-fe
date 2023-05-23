@@ -1,11 +1,19 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subscription, map, of, take } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { Observable, Subject, catchError, debounceTime, map, of, skip, take, takeUntil, throwError } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { LEXICAL_ENTRY_RELATIONS, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
+import { Roles } from 'src/app/models/roles';
+import { User } from 'src/app/models/user';
+import { CommonService } from 'src/app/services/common.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-lex-entry-editor',
@@ -13,13 +21,13 @@ import { LexiconService } from 'src/app/services/lexicon.service';
   styleUrls: ['./lex-entry-editor.component.scss']
 })
 export class LexEntryEditorComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$ = new Subject();
   emptyField = '-- Select --'
-  subs!: Subscription;
   @Input() lexicalEntry$!: Observable<LexicalEntryCore>;
   lexicalEntry!: LexicalEntryCore;
   initialType!: string;
   form = new FormGroup({
-    status: new FormControl<string>({ value: '', disabled: true }), //TODO sostituire disabled true con controllo sui ruoli utente
+    status: new FormControl<string>({ value: '', disabled: true }),
     label: new FormControl<string>(''),
     language: new FormControl<string>(''),
     pos: new FormControl<string>(''),
@@ -34,6 +42,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   languages$ = this.globalState.languages$;
   pos$ = this.globalState.pos$;
   types$ = this.globalState.lexicalEntryTypes$;
+  currentUser!: User;
 
   get evokes() {
     return this.form.controls['evokes'] as FormArray;
@@ -83,11 +92,76 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   constructor(
     private globalState: GlobalStateService,
     private lexiconService: LexiconService,
+    private userService: UserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private commonService: CommonService,
   ) {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+    ).subscribe(cu => {
+      this.currentUser = cu;
+    });
+
+    this.form.get('status')?.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(status => {
+      if (this.lexicalEntry.status !== status) {
+        this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.TERM_STATUS, status).then(() => {
+          this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, status: status };
+        });
+      }
+    });
+
+    this.form.get('label')?.valueChanges.pipe(
+      debounceTime(500),
+      takeUntil(this.unsubscribe$),
+    ).subscribe(label => {
+      if (this.lexicalEntry.label !== label) {
+        this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.LABEL, label).then(() => {
+          this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, label: label };
+        });
+      }
+    });
+
+    this.form.get('language')?.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(language => {
+      if (this.lexicalEntry.language !== language) {
+        //TODO come effettuare l'update?
+      }
+    });
+
+    this.form.get('pos')?.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(pos => {
+      const posIndex = this.lexicalEntry.morphology.findIndex(m => m.trait.endsWith('#partOfSpeech'));
+      const currentPos = posIndex !== -1 ? this.lexicalEntry.morphology[posIndex].value : undefined;
+      if (!currentPos || pos !== currentPos) {
+        this.updateLinguisticRelation(LINGUISTIC_RELATION_TYPE.MORPHOLOGY, 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech', pos, currentPos).then(() => {
+          let tempLexEntry = <LexicalEntryCore>{...this.lexicalEntry, pos: pos?.split('#')[1]};
+          if(posIndex !== -1 && pos) {
+            const tempMorph = [...this.lexicalEntry.morphology];
+            tempMorph[posIndex] = {...tempMorph[posIndex], value: pos};
+            tempLexEntry = <LexicalEntryCore>{...tempLexEntry, morphology: [...tempMorph]};
+          }
+          this.lexicalEntry = tempLexEntry;
+        })
+      }
+    });
+
+    this.form.get('type')?.valueChanges.pipe(
+      skip(1),
+      takeUntil(this.unsubscribe$),
+    ).subscribe(type => {
+      this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.TYPE, type);
+    });
   }
 
   ngOnInit(): void {
-    this.subs = this.lexicalEntry$.subscribe(le => {
+    this.lexicalEntry$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(le => {
       this.lexicalEntry = le;
       const lexEntryPosCode = this.lexicalEntry.morphology.find(m => m.trait.endsWith('#partOfSpeech'))?.value;
       const lexEntryTypeCode: string[] = [];
@@ -99,6 +173,9 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       if (le.language) this.form.get('language')?.setValue(le.language);
       if (lexEntryPosCode) this.form.get('pos')?.setValue(lexEntryPosCode);
       if (lexEntryTypeCode && lexEntryTypeCode.length > 0) this.form.get('type')?.setValue(lexEntryTypeCode);
+      if (this.currentUser.role === Roles.AMMINISTRATORE) { //TODO vedere se altri ruoli devono essere autorizzati
+        this.form.get('status')?.enable();
+      }
       const seeAlsoCount = this.lexicalEntry.links.find(l => l.type === 'Reference')?.elements.find(r => r.label === 'seeAlso')?.count;
       if (seeAlsoCount && seeAlsoCount > 0) {
         this.getSeeAlso();
@@ -109,7 +186,8 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe();
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   onAddDenotes() {
@@ -148,10 +226,6 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     this.seeAlso.at(formIndex).setValue(lexEntryId);
   }
 
-  onSubmit() {
-    console.info('form', this.form.value)
-  }
-
   private getDenotes() {
     this.linguisticRelationCall('denotes').subscribe(denotesList => {
       console.info('denotes', denotesList);
@@ -179,5 +253,51 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
         a.inferred && !b.inferred ? -1 : 1
       ))),
     );
+  }
+
+  private async updateLexicalEntryField(relation: LEXICAL_ENTRY_RELATIONS, value: any) {
+    if (!this.currentUser.name) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
+      return;
+    }
+    const updater = <LexicalEntryUpdater>{
+      relation: relation,
+      value: value
+    };
+    this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.lexicalEntry.label} update "${relation}" failed `));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe((resp) => {
+      this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
+    });
+  }
+
+  private async updateLinguisticRelation(type: LINGUISTIC_RELATION_TYPE, relation: string, value: any, currentValue?: any) {
+    if (!this.currentUser.name) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
+      return;
+    }
+    const updater = <LinguisticRelationUpdater>{
+      type: type,
+      relation: relation,
+      value: value,
+      currentValue: currentValue ?? ''
+    };
+    this.lexiconService.updateLinguisticRelation(this.lexicalEntry.lexicalEntry, updater).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.lexicalEntry.label} update "${relation}" failed `));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(resp => {
+      this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
+    })
   }
 }
