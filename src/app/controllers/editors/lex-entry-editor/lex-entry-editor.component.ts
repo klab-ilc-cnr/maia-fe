@@ -128,22 +128,22 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
     ).subscribe(language => {
       if (this.lexicalEntry.language !== language) {
-        //TODO come effettuare l'update?
+        //TODO utilizza lexical entry updater con relation entry
       }
     });
 
-    this.form.get('pos')?.valueChanges.pipe(
+    this.form.get('pos')?.valueChanges.pipe( //BUG non passa current corretto e quindi va in aggiunta invece che in modifica
       takeUntil(this.unsubscribe$),
     ).subscribe(pos => {
       const posIndex = this.lexicalEntry.morphology.findIndex(m => m.trait.endsWith('#partOfSpeech'));
       const currentPos = posIndex !== -1 ? this.lexicalEntry.morphology[posIndex].value : undefined;
       if (!currentPos || pos !== currentPos) {
         this.updateLinguisticRelation(LINGUISTIC_RELATION_TYPE.MORPHOLOGY, 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech', pos, currentPos).then(() => {
-          let tempLexEntry = <LexicalEntryCore>{...this.lexicalEntry, pos: pos?.split('#')[1]};
-          if(posIndex !== -1 && pos) {
+          let tempLexEntry = <LexicalEntryCore>{ ...this.lexicalEntry, pos: pos?.split('#')[1] };
+          if (posIndex !== -1 && pos) {
             const tempMorph = [...this.lexicalEntry.morphology];
-            tempMorph[posIndex] = {...tempMorph[posIndex], value: pos};
-            tempLexEntry = <LexicalEntryCore>{...tempLexEntry, morphology: [...tempMorph]};
+            tempMorph[posIndex] = { ...tempMorph[posIndex], value: pos };
+            tempLexEntry = <LexicalEntryCore>{ ...tempLexEntry, morphology: [...tempMorph] };
           }
           this.lexicalEntry = tempLexEntry;
         })
@@ -223,7 +223,11 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   }
 
   onSelectLexEntry(lexEntryId: string, formIndex: number) {
-    this.seeAlso.at(formIndex).setValue(lexEntryId);
+    const formElementInitial = this.seeAlso.at(formIndex);
+    if(formElementInitial.value !== lexEntryId) {
+      //TODO update http then update form
+      // this.seeAlso.at(formIndex).setValue(lexEntryId);
+    }
   }
 
   private getDenotes() {
@@ -254,6 +258,8 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       ))),
     );
   }
+
+  private async updateGenericRelation() {} //TODO da implementare
 
   private async updateLexicalEntryField(relation: LEXICAL_ENTRY_RELATIONS, value: any) {
     if (!this.currentUser.name) {
@@ -298,6 +304,6 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
       this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
-    })
+    });
   }
 }

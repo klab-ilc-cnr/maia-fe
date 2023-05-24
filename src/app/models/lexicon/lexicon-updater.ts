@@ -23,7 +23,7 @@ export enum LEXICAL_ENTRY_RELATIONS {
   TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
   TERM_STATUS = "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
   NOTE = "http://www.w3.org/2004/02/skos/core#note",
-  ENTRY = "http://www.w3.org/ns/lemon/lime#entry",
+  ENTRY = "http://www.w3.org/ns/lemon/lime#entry", //LANGUAGE anche se si chiama entry
   DENOTES = "http://www.w3.org/ns/lemon/ontolex#denotes",
   CONFIDENCE = "http://www.lexinfo.net/ontology/3.0/lexinfo#confidence"
 }
