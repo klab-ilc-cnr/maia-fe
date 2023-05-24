@@ -4,7 +4,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, debounceTime, map, of, skip, take, takeUntil, throwError } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryCore, MorphologyProperty } from 'src/app/models/lexicon/lexical-entry.model';
 import { LEXICAL_ENTRY_RELATIONS, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 import { Roles } from 'src/app/models/roles';
@@ -132,7 +132,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.form.get('pos')?.valueChanges.pipe( //BUG non passa current corretto e quindi va in aggiunta invece che in modifica
+    this.form.get('pos')?.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(pos => {
       const posIndex = this.lexicalEntry.morphology.findIndex(m => m.trait.endsWith('#partOfSpeech'));
@@ -143,6 +143,12 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
           if (posIndex !== -1 && pos) {
             const tempMorph = [...this.lexicalEntry.morphology];
             tempMorph[posIndex] = { ...tempMorph[posIndex], value: pos };
+            tempLexEntry = <LexicalEntryCore>{ ...tempLexEntry, morphology: [...tempMorph] };
+          } else if (posIndex === -1 && pos) {
+            const tempMorph = [...this.lexicalEntry.morphology, <MorphologyProperty>{
+              trait: 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech',
+              value: pos
+            }];
             tempLexEntry = <LexicalEntryCore>{ ...tempLexEntry, morphology: [...tempMorph] };
           }
           this.lexicalEntry = tempLexEntry;
@@ -224,7 +230,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
 
   onSelectLexEntry(lexEntryId: string, formIndex: number) {
     const formElementInitial = this.seeAlso.at(formIndex);
-    if(formElementInitial.value !== lexEntryId) {
+    if (formElementInitial.value !== lexEntryId) {
       //TODO update http then update form
       // this.seeAlso.at(formIndex).setValue(lexEntryId);
     }
@@ -259,7 +265,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  private async updateGenericRelation() {} //TODO da implementare
+  private async updateGenericRelation() { } //TODO da implementare
 
   private async updateLexicalEntryField(relation: LEXICAL_ENTRY_RELATIONS, value: any) {
     if (!this.currentUser.name) {
