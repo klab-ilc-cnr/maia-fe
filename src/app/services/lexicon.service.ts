@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
-import { FormUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
+import { FormUpdater, GenericRelationUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { Morphology } from '../models/lexicon/morphology.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
 import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
@@ -290,6 +290,15 @@ export class LexiconService {
     return this.http.post(
       `${this.lexoUrl}import/conll?prefix=${prefix}&baseIRI=${encodedBaseIRI}&author=${author}&language=${language}&drop=${drop}`,
       file
+    )
+  }
+
+  updateGenericRelation(lexicalEntryID: string, updater: GenericRelationUpdater): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryID);
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/genericRelation?id=${encodedLexEntry}`,
+      updater,
+      { responseType: "text" }
     )
   }
 
