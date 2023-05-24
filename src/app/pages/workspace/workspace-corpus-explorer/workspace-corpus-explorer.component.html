@@ -57,13 +57,7 @@
             <label class="form-label">Select folder *</label>
             <div class="p-fluid">
               <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]"
-                placeholder="Select folder" required appendTo="body"></p-treeSelect>
-              <div *ngIf="getParentFolder?.invalid && (getParentFolder?.touched || getParentFolder?.dirty)"
-                class="invalid-feedback">
-                <div *ngIf="getParentFolder?.errors?.['required']">
-                  Select folder required
-                </div>
-              </div>
+                placeholder="Select folder" appendTo="body"></p-treeSelect>
             </div>
           </div>
         </div>
@@ -104,16 +98,10 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Select folder *</label>
+            <label class="form-label">Select folder</label>
             <div class="p-fluid">
               <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async) || []"
                 placeholder="Select folder" appendTo="body"></p-treeSelect>
-              <div *ngIf="addFolderParent?.invalid && (addFolderParent?.touched || addFolderParent?.dirty)"
-                class="invalid-feedback">
-                <div *ngIf="addFolderParent?.errors?.['required']">
-                  Need to select a folder
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -168,16 +156,10 @@
       <form (ngSubmit)="onSubmitMoveModal()" [formGroup]="moveElementForm" id="moveForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Select a target folder *</label>
+            <label class="form-label">Select a target folder</label>
             <div class="p-fluid">
               <p-treeSelect name="targetFolder" formControlName="targetFolder" [options]="(folders$ | async) || []"
                 placeholder="Select folder" appendTo="body"></p-treeSelect>
-              <div *ngIf="getTargetFolder?.invalid && (getTargetFolder?.touched || getTargetFolder?.dirty)"
-                class="invalid-feedback">
-                <div *ngIf="getTargetFolder?.errors?.['required']">
-                  Target folder required
-                </div>
-              </div>
             </div>
           </div>
         </div>

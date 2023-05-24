@@ -10,7 +10,7 @@ import { Workspace } from '../models/workspace.model';
 import { DocumentSystem } from '../models/corpus/document-system';
 import { ElementType, _ElementType } from '../models/corpus/element-type';
 import { v4 as uuidv4 } from 'uuid';
-import { CorpusElement } from '../models/texto/corpus-element';
+import { CorpusElement, FolderElement } from '../models/texto/corpus-element';
 import { TextoUser } from '../models/user';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json'); //TODO verificare rimozione per mancato uso
@@ -106,12 +106,12 @@ export class WorkspaceService {
       workspace
     );
 
-/*     let layoutSave$ = this.http.put<boolean>(
-      `${this.workspacesUrl}/layout`,
-      workspace
-    );
+    /*     let layoutSave$ = this.http.put<boolean>(
+          `${this.workspacesUrl}/layout`,
+          workspace
+        );
 
-    return layoutSave$; */
+        return layoutSave$; */
 
     /*     let tilesSave$ = this.http.post<boolean>(`${this.workspacesUrl}/tiles/${workspaceId}`, tiles);
         return tilesSave$.pipe(combineLatestWith(layoutSave$)); //esegue entrambi i servizi */
@@ -167,7 +167,7 @@ export class WorkspaceService {
    */
   public _retrieveCorpus(): Observable<DocumentSystem> {
     const uuid = uuidv4();
-//SIM: aggiunto public/ nel path
+    //SIM: aggiunto public/ nel path
     return this.http.get<DocumentSystem>(`${this.cashUrl}/api/public/getDocumentSystem?requestUUID=${uuid}`);
     //return this.http.get<DocumentSystem>('assets/mock/files.json')
   }
@@ -178,7 +178,7 @@ export class WorkspaceService {
     return this.http.get<CorpusElement[]>(
       `${this.textoUrl}/texto/user${user}/tree`,
       {
-        headers: new HttpHeaders({'UUID': uuid})
+        headers: new HttpHeaders({ 'UUID': uuid })
       }
     );
     // return this.http.get(`${this.textoDebugUrl}/texto/user${user}/tree`); //DEBUG
@@ -206,7 +206,7 @@ export class WorkspaceService {
       `${this.textoUrl}/texto/resource/${resourceId}/upload`,
       formData,
       {
-        headers: new HttpHeaders({'UUID': uuid})
+        headers: new HttpHeaders({ 'UUID': uuid })
       }
     );
   }
@@ -247,7 +247,7 @@ export class WorkspaceService {
       `${this.textoUrl}/texto/${operationUrl}/${elementId}/update`,
       payload,
       {
-        headers: new HttpHeaders({'UUID': uuid})
+        headers: new HttpHeaders({ 'UUID': uuid })
       }
     );
   }
@@ -282,7 +282,7 @@ export class WorkspaceService {
     return this.http.get(
       `${this.textoUrl}/texto/${operationUrl}/${elementId}/remove`,
       {
-        headers: new HttpHeaders({'UUID': uuid})
+        headers: new HttpHeaders({ 'UUID': uuid })
       }
     );
   }
@@ -331,7 +331,7 @@ export class WorkspaceService {
       `${this.textoUrl}/texto/${operationUrl}/${elementId}/update`,
       payload,
       {
-        headers: new HttpHeaders({'UUID': uuid})
+        headers: new HttpHeaders({ 'UUID': uuid })
       }
     );
   }
@@ -370,7 +370,7 @@ export class WorkspaceService {
       `${this.textoUrl}/texto/${operationUrl}/create`,
       payload,
       {
-        headers: new HttpHeaders({'UUID': uuid})
+        headers: new HttpHeaders({ 'UUID': uuid })
       }
     )
   }
@@ -378,5 +378,10 @@ export class WorkspaceService {
 
   public getTextoCurrentUserId(): Observable<TextoUser> {
     return this.http.get<TextoUser>(`${this.textoUrl}/texto/user/me`)
+  }
+
+  public getTextoUserRootFolder(userId?: number): Observable<FolderElement> {
+    const operationUrl = userId ? `/${userId}` : '';
+    return this.http.get<FolderElement>(`${this.textoUrl}/texto/user${operationUrl}/home`);
   }
 }

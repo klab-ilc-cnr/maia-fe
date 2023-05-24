@@ -74,7 +74,7 @@ export class WorkspaceCorpusExplorerComponent {
   /**Riferimento al form di aggiunta folder */
   addFolderRForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
-    parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null, Validators.required)
+    parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null)
   });
   get addFolderName() { return this.addFolderRForm.get('name'); }
   get addFolderParent() { return this.addFolderRForm.get('parentFolder'); }
@@ -87,14 +87,14 @@ export class WorkspaceCorpusExplorerComponent {
   set setNewName(n: string) { this.getNewName?.setValue(n); }
 
   moveElementForm = new FormGroup({
-    targetFolder: new FormControl<TreeNode<CorpusElement> | null>(null, Validators.required),
+    targetFolder: new FormControl<TreeNode<CorpusElement> | null>(null),
   });
   get getTargetFolder() { return this.moveElementForm.get('targetFolder'); }
   set setTargetFolder(node: TreeNode<CorpusElement>) { this.getTargetFolder?.setValue(node); }
 
   uploaderForm = new FormGroup({
     file: new FormControl<File | null>(null, Validators.required),
-    parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null, Validators.required)
+    parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null)
   });
   get getFile() { return this.uploaderForm.get('file'); }
   get getParentFolder() { return this.uploaderForm.get('parentFolder'); }
@@ -175,12 +175,16 @@ export class WorkspaceCorpusExplorerComponent {
       return;
     }
 
-    const parentFolderId = this.addFolderParent?.value?.data?.id;
+    let parentFolderId = this.addFolderParent?.value?.data?.id;
     const folderName = this.addFolderName?.value;
 
-    if (!parentFolderId || !folderName) {
+    if (!folderName) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Missing data'));
       return;
+    }
+
+    if(!parentFolderId) {
+      parentFolderId = -1;
     }
 
     this.corpusStateService.addElement.next({
@@ -203,7 +207,8 @@ export class WorkspaceCorpusExplorerComponent {
     }
 
     if (this.fileUploaded && this.getParentFolder?.valid) {
-      this.corpusStateService.uploadFile.next({ parentId: this.getParentFolder.value!.data!.id, resourceName: this.fileUploaded.name.split('.')[0], file: this.fileUploaded });
+      const parentId = this.getParentFolder.value?.data?.id;
+      this.corpusStateService.uploadFile.next({ parentId: (parentId ? parentId : -1), resourceName: this.fileUploaded.name.split('.')[0], file: this.fileUploaded });
     }
     else {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig("Error loading file"));
@@ -230,7 +235,7 @@ export class WorkspaceCorpusExplorerComponent {
     this.corpusStateService.moveElement.next({
       elementType: this.selectedNode!.data!.type,
       elementId: this.selectedNode!.data!.id,
-      targetId: this.getTargetFolder!.value!.data!.id
+      targetId: this.getTargetFolder?.value?.data?.id ?? -1
     });
 
     this.visibleMove = false;
