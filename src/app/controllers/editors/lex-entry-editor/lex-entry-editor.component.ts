@@ -277,8 +277,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   onSelectDenote(selectedValue: { label: string, value: string, external: boolean, inferred: boolean }, formIndex: number) {
     if (this._denotes[formIndex].value !== selectedValue.value) {
       this.updateLinguisticRelation(LINGUISTIC_RELATION_TYPE.CONCEPT_REF, "http://www.w3.org/ns/lemon/ontolex#denotes", selectedValue.value, this._denotes[formIndex].value).then(() => {
-        this.denotes.at(formIndex).setValue(selectedValue);
-        this._denotes[formIndex] = <{ label: string, value: string, external: boolean, inferred: boolean }>{ ...selectedValue };
+        this.updateListControlList(this.denotes, this._denotes, formIndex, selectedValue);
       });
     }
   }
@@ -286,8 +285,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   onSelectLexicalConcept(selectedValue: { label: string, value: string, external: boolean, inferred: boolean }, formIndex: number) { //BUG con https://dbpedia.org/page/House non funziona, da testare
     if (this._evokes[formIndex].value !== selectedValue.value) {
       this.updateLinguisticRelation(LINGUISTIC_RELATION_TYPE.CONCEPT_REL, "http://www.w3.org/ns/lemon/ontolex#evokes", selectedValue.value, this._evokes[formIndex].value).then(() => {
-        this.evokes.at(formIndex).setValue(selectedValue);
-        this._evokes[formIndex] = <{ label: string, value: string, external: boolean, inferred: boolean }>{ ...selectedValue };
+        this.updateListControlList(this.evokes, this._evokes, formIndex, selectedValue);
       });
     }
   }
@@ -295,8 +293,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   onSelectLexEntry(selectedValue: { label: string, value: string, external: boolean, inferred: boolean }, formIndex: number) {
     if (this._seeAlso[formIndex].value !== selectedValue.value) {
       this.updateGenericRelation(GENERIC_RELATION_TYPE.REFERENCE, GENERIC_RELATIONS.SEEALSO, selectedValue.value, this._seeAlso[formIndex].value).then(() => {
-        this.seeAlso.at(formIndex).setValue(selectedValue);
-        this._seeAlso[formIndex] = <{ label: string, value: string, external: boolean, inferred: boolean }>{ ...selectedValue };
+        this.updateListControlList(this.seeAlso, this._seeAlso, formIndex, selectedValue);
       });
     }
   }
@@ -336,6 +333,20 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     );
   }
 
+  private async manageUpdateObservable(updateObs: Observable<string>, relation: string) {
+    updateObs.pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.lexicalEntry.label} update "${relation}" failed `));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(resp => {
+      this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
+    });
+  }
+
   private async removeRelation(updater: { relation: string, value: string }) {
     this.lexiconService.deleteRelation(this.lexicalEntry.lexicalEntry, updater).pipe(
       take(1),
@@ -357,17 +368,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       value: value,
       currentValue: currentValue
     };
-    this.lexiconService.updateGenericRelation(this.lexicalEntry.lexicalEntry, updater).pipe(
-      take(1),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.lexicalEntry.label} update "${relation}" failed `));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(resp => {
-      this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
-      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
-    });
+    this.manageUpdateObservable(this.lexiconService.updateGenericRelation(this.lexicalEntry.lexicalEntry, updater), relation);
   }
 
   private async updateLexicalEntryField(relation: LEXICAL_ENTRY_RELATIONS, value: any) {
@@ -379,17 +380,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       relation: relation,
       value: value
     };
-    this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater).pipe(
-      take(1),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.lexicalEntry.label} update "${relation}" failed `));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe((resp) => {
-      this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
-      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
-    });
+    this.manageUpdateObservable(this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater), relation);
   }
 
   private async updateLinguisticRelation(type: LINGUISTIC_RELATION_TYPE, relation: string, value: any, currentValue?: any) {
@@ -403,16 +394,11 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       value: value,
       currentValue: currentValue ?? ''
     };
-    this.lexiconService.updateLinguisticRelation(this.lexicalEntry.lexicalEntry, updater).pipe(
-      take(1),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.lexicalEntry.label} update "${relation}" failed `));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(resp => {
-      this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
-      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
-    });
+    this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.lexicalEntry.lexicalEntry, updater), relation);
+  }
+
+  private updateListControlList(list: FormArray<any>, controlList: { label: string, value: string, external: boolean, inferred: boolean }[], index: number, value: { label: string, value: string, external: boolean, inferred: boolean }) {
+    list.at(index).setValue(value);
+    controlList[index] = <{ label: string, value: string, external: boolean, inferred: boolean }>{ ...value };
   }
 }
