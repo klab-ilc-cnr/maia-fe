@@ -7,6 +7,9 @@ import { Subject, merge, of, shareReplay, switchMap } from 'rxjs';
 })
 export class GlobalStateService {
   addLanguage = new Subject<string>(); //sarebbe usato per gestire l'aggiunta di una lingua
+  formEntryTypes$ = this.lexiconService.getFormTypes().pipe(
+    shareReplay(1),
+  );
   languages$ = merge(
     this.addLanguage.pipe(
       // switchMap((l) => this.lexiconService.postLanguages(l)), //TODO questo è un esempio per gestire l'aggiornamento delle lingue a seguito di un add.

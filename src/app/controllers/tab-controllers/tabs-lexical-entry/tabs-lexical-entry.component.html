@@ -1,18 +1,13 @@
 <p-tabView>
-<p-tabPanel header="Lex. entry">
-  <!-- <app-lexical-entry-editor [typesForm]="lexicalEntryTypes"
-    [partOfSpeechesForm]="partOfSpeeches"
-    [languagesForm]="languageValues"
-    [instanceName]="lexicalEntryInstanceName"></app-lexical-entry-editor> -->
+  <p-tabPanel header="Lex. entry">
     <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$"></app-lex-entry-editor>
-</p-tabPanel>
-<p-tabPanel header="Decomposition"
-  [disabled]="true"></p-tabPanel>
-<p-tabPanel header="Relations"></p-tabPanel>
-<p-tabPanel header="Contexts"></p-tabPanel>
-<p-tabPanel header="Multimedia"></p-tabPanel>
-<p-tabPanel header="Dictionary view"></p-tabPanel>
-<p-tabPanel header="Metadata">
-  <app-lex-entry-metadata-editor></app-lex-entry-metadata-editor>
-</p-tabPanel>
+  </p-tabPanel>
+  <p-tabPanel header="Decomposition" [disabled]="true"></p-tabPanel>
+  <p-tabPanel header="Relations"></p-tabPanel>
+  <p-tabPanel header="Contexts"></p-tabPanel>
+  <p-tabPanel header="Multimedia"></p-tabPanel>
+  <p-tabPanel header="Dictionary view"></p-tabPanel>
+  <p-tabPanel header="Metadata">
+    <app-lex-entry-metadata-editor></app-lex-entry-metadata-editor>
+  </p-tabPanel>
 </p-tabView>
