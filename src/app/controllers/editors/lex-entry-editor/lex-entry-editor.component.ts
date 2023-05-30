@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, debounceTime, map, of, skip, take, takeUntil, throwError } from 'rxjs';
@@ -14,6 +14,7 @@ import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
+import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
   selector: 'app-lex-entry-editor',
@@ -92,6 +93,9 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   );
 
   lexOntolList = (text: string) => of([]); //TODO implementare il recupero delle ontologie
+
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   constructor(
     private globalState: GlobalStateService,
@@ -228,13 +232,17 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       return;
     }
     if (currentValue && currentValue !== '') {
-      this.removeRelation({ relation: "http://www.w3.org/ns/lemon/ontolex#denotes", value: currentValue }).then(
-        () => {
-          this.denotes.removeAt(index);
-          this._denotes.splice(index, 1);
-        },
-        () => null
-      );
+      const confirmMsg = `Are you sure to remove "${currentValue}"?`;
+      this.popupDeleteItem.confirmMessage = confirmMsg;
+      this.popupDeleteItem.showDeleteConfirmSimple(() => {
+        this.removeRelation({ relation: "http://www.w3.org/ns/lemon/ontolex#denotes", value: currentValue }).then(
+          () => {
+            this.denotes.removeAt(index);
+            this._denotes.splice(index, 1);
+          },
+          () => null
+        );
+      });
     }
   }
 
@@ -246,13 +254,17 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       return;
     }
     if (currentValue && currentValue !== '') {
-      this.removeRelation({ relation: "http://www.w3.org/ns/lemon/ontolex#evokes", value: currentValue }).then(
-        () => {
-          this.evokes.removeAt(index);
-          this._evokes.splice(index, 1);
-        },
-        () => null
-      );
+      const confirmMsg = `Are you sure to remove "${currentValue}"?`;
+      this.popupDeleteItem.confirmMessage = confirmMsg;
+      this.popupDeleteItem.showDeleteConfirmSimple(() => {
+        this.removeRelation({ relation: "http://www.w3.org/ns/lemon/ontolex#evokes", value: currentValue }).then(
+          () => {
+            this.evokes.removeAt(index);
+            this._evokes.splice(index, 1);
+          },
+          () => null
+        );
+      });
     }
   }
 
@@ -264,13 +276,17 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       return;
     }
     if (currentValue && currentValue !== '') {
-      this.removeRelation({ relation: GENERIC_RELATIONS.SEEALSO, value: currentValue }).then(
-        () => {
-          this.seeAlso.removeAt(index);
-          this._seeAlso.splice(index, 1);
-        },
-        () => null
-      );
+      const confirmMsg = `Are you sure to remove "${currentValue}"?`;
+      this.popupDeleteItem.confirmMessage = confirmMsg;
+      this.popupDeleteItem.showDeleteConfirmSimple(() => {
+        this.removeRelation({ relation: GENERIC_RELATIONS.SEEALSO, value: currentValue }).then(
+          () => {
+            this.seeAlso.removeAt(index);
+            this._seeAlso.splice(index, 1);
+          },
+          () => null
+        );
+      });
     }
   }
 

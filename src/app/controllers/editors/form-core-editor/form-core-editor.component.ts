@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil, throwError } from 'rxjs';
@@ -11,6 +11,7 @@ import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
+import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
   selector: 'app-form-core-editor',
@@ -37,8 +38,10 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       console.info('variant');
     }
   }];
-
   get label() { return this.form.controls.label; }
+
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   constructor(
     private globalState: GlobalStateService,
@@ -58,7 +61,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       distinctUntilChanged(),
     ).subscribe(newValue => {
-      this.updateForm('type', newValue ?? '');
+      if (!newValue?.endsWith('#' + this.formEntry.type)) {
+        this.updateForm('type', newValue ?? '').then(() => {
+          this.formEntry = <FormCore>{ ...this.formEntry, type: newValue?.split('#')[1] };
+        });
+      }
     });
 
     this.label.valueChanges.pipe(
@@ -70,6 +77,10 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
         const currentPropertyId = this.labelFormItems.findIndex(e => e.propertyID === key);
         if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== resp[key]) {
           this.updateForm(key, resp[key]).then(() => {
+            if (resp[key] === '') {
+              this.labelFormItems = this.labelFormItems.filter(item => item.propertyID !== key);
+              return;
+            }
             this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
           });
         }
@@ -115,7 +126,13 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.representationItems = this.representationItems.filter(i => i.label !== property.propertyID);
   }
 
-  onDeleteLexicalForm() {} //TODO implementare cancellazione della forma lessicale con chiusura dell'editor e passaggio su editor dell'entrata lessicale
+  onDeleteLexicalForm() { } //TODO implementare cancellazione della forma lessicale con chiusura dell'editor e passaggio su editor dell'entrata lessicale
+
+  onRemoveLabelElement(labelFieldName: string) { //TODO aggiungi popup di conferma
+    const confirmMsg = `Are you sure to remove "${labelFieldName}"?`;
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirmSimple(() => { this.label.get(labelFieldName)?.setValue(''); });
+  }
 
   private async manageUpdateObservable(updateObs: Observable<string>, relation: string) {
     updateObs.pipe(

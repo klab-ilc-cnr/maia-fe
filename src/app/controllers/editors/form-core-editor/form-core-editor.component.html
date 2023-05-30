@@ -29,8 +29,11 @@
           <form [formGroup]="form.controls.label">
             <div class="field col-12" *ngFor="let control of labelFormItems">
               <label [for]="control.propertyID">{{control.propertyID}}</label>
-              <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"
-                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+              <span class="justify-content-between">
+                <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"
+                  class="col-10 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
+                <button pButton pRipple type="button" icon="pi pi-times" class=" col-1 p-button-rounded p-button-danger p-button-text" (click)="onRemoveLabelElement(control.propertyID)"></button>
+              </span>
             </div>
           </form>
         </ng-template>
@@ -47,3 +50,4 @@
     </div>
   </form>
 </div>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
