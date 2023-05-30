@@ -1,5 +1,5 @@
 import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -15,7 +15,7 @@ export class AnnotationService {
   private annotationUrl: string;
   /**Url per le chiamate a cash */
   private cashUrl: string;
-
+  private textoUrl: string;
   /**
    * Costruttore per AnnotationService
    * @param http {HttpClient} effettua le chiamate HTTP
@@ -23,6 +23,7 @@ export class AnnotationService {
   constructor(private http: HttpClient) {
     this.annotationUrl = environment.annotationUrl;
     this.cashUrl = environment.cashUrl;
+    this.textoUrl = environment.textoUrl;
   }
 
   // INIZIO CHIAMATE CASH SERVER
@@ -35,7 +36,7 @@ export class AnnotationService {
    * @returns {Observable<any>} observable delle annotazioni
    */
   public retrieveByNodeId(nodeId: number): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
     //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
     return this.http.get<any>(`${this.cashUrl}/api/public/annotation?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
@@ -47,7 +48,7 @@ export class AnnotationService {
    * @returns {Observable<any>} observable della nuova annotazione
    */
   public create(nodeId: number, item: any): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
     //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
     return this.http.post<any>(`${this.cashUrl}/api/annotation?requestUUID=${uuid}&nodeid=${nodeId}`, item);
   }
@@ -58,7 +59,7 @@ export class AnnotationService {
    * @returns {Observable<any>} observable dell'annotazione modificata
    */
   public update(item: any) {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
     //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
     return this.http.put<any>(`${this.cashUrl}/api/annotation?requestUUID=${uuid}`, item);
   }
@@ -69,7 +70,7 @@ export class AnnotationService {
    * @returns {Observable<any>} observable dell'esito
    */
   public retrieveTokens(nodeId: number): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
     return this.http.get<any>(`${this.cashUrl}/api/v1/token?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
@@ -79,10 +80,22 @@ export class AnnotationService {
    * @param nodeId {identificativo numerico del nodo testo}
    * @returns {Observable<any>} observable del testo
    */
-  public retrieveText(nodeId: number): Observable<any> {
-    let uuid = uuidv4();
+  public _retrieveText(nodeId: number): Observable<any> {
+    const uuid = uuidv4();
     //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
     return this.http.get<any>(`${this.cashUrl}/api/public/gettext?requestUUID=${uuid}&nodeid=${nodeId}`);
+  }
+
+  public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable<string> {
+    const uuid = uuidv4();
+    return this.http.post(
+      `${this.textoUrl}/texto/resource/${textId}/text`,
+      slice,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid }),
+        responseType: 'text',
+      }
+    );
   }
 
   /**
@@ -91,7 +104,7 @@ export class AnnotationService {
    * @returns {Observable<any>} observable dell'esito
    */
   public retreiveContent(nodeId: number) {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
     return this.http.get<any>(`${this.cashUrl}/api/v1/getcontent?requestUUID=${uuid}&nodeid=${nodeId}`);
   }
@@ -102,10 +115,10 @@ export class AnnotationService {
    * @returns {Observable<any>} observable dell'esito
    */
   public delete(annotationId: number): Observable<any> {
-    let uuid = uuidv4();
+    const uuid = uuidv4();
 
-       //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-       return this.http.delete<any>(`${this.cashUrl}/api/annotate?requestUUID=${uuid}&annotationID=${annotationId}`);
+    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.delete<any>(`${this.cashUrl}/api/annotate?requestUUID=${uuid}&annotationID=${annotationId}`);
   }
 
   // FINE CHIAMATE CASH SERVER
@@ -122,9 +135,9 @@ export class AnnotationService {
   }
 
   //non necessario al momento
-/*   public updateAnnotationFeature(annFeatures: AnnotationFeature): Observable<AnnotationFeature> {
-    return this.http.put<AnnotationFeature>(`${this.annotationUrl}`, annFeatures);
-  } */
+  /*   public updateAnnotationFeature(annFeatures: AnnotationFeature): Observable<AnnotationFeature> {
+      return this.http.put<AnnotationFeature>(`${this.annotationUrl}`, annFeatures);
+    } */
 
   /**
    * DELETE che rimuove le feature di una annotazione dato il suo ID

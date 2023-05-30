@@ -24,6 +24,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
+import { CorpusElement } from 'src/app/models/texto/corpus-element';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -758,17 +759,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   private generateCorpusExplorerPanelConfiguration(ecPanelId: string) {
     const componentRef = this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
 
-    componentRef.instance.onTextSelectEvent //mappa l'evento di selezione di un testo nell'ec
-      .subscribe({
-        next: (event: any) => {
-          console.log("qui", event);
-
-          const textId = event.node.data?.['element-id'];
-          const title = event.node.label;
-
-          this.openTextPanel(textId, title.toLowerCase())
-        }
-      });
+    const subs = componentRef.instance.onTextSelectEvent //mappa l'evento di selezione di un testo nell'ec
+      .subscribe((resource: CorpusElement) => {
+        console.info('onTextSelectEvent ricevuto', resource);
+        const textId = resource.id;
+        const title = resource.name ?? '';
+        this.openTextPanel(textId, title?.toLowerCase());
+      }
+      );
 
     const element = componentRef.location.nativeElement;
 
@@ -792,6 +790,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         this.removeFromTileMap(panel.id, TileType.CORPUS);
         this.removeComponentFromList(panel.id);
+        subs.unsubscribe();
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()

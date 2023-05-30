@@ -127,7 +127,7 @@ export class WorkspaceCorpusExplorerComponent {
       if (this.clickCount === 1) { //caso del click singolo al momento non utilizzato
       } else if (this.clickCount === 2) {
         if (event.node.data?.type === ElementType.RESOURCE) {
-          console.info('resource dbl event', event);
+          this.onTextSelectEvent.emit(event.node.data);
           return;
         }
         event.node.expanded = !event.node.expanded;
@@ -183,7 +183,7 @@ export class WorkspaceCorpusExplorerComponent {
       return;
     }
 
-    if(!parentFolderId) {
+    if (!parentFolderId) {
       parentFolderId = -1;
     }
 
