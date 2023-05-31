@@ -5,7 +5,8 @@
       <em>Last update: {{formEntry.lastUpdate | date: 'medium'}}</em>
     </div>
     <div class="field col-6">
-      <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;" pTooltip="Delete lexical form" (click)="onDeleteLexicalForm()"></button>
+      <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"
+        pTooltip="Delete lexical form" (click)="onDeleteLexicalForm()"></button>
     </div>
     <div class="field col-6">
       <label for="pos">Part-of-Speech</label>
@@ -22,7 +23,8 @@
       <p-fieldset>
         <ng-template pTemplate="header">
           <p-menu #menuRepresentation [model]="representationItems" [popup]="true" appendTo="body"></p-menu>
-          Representation <button pButton pRipple icon="pi pi-plus" type="button" (click)="menuRepresentation.toggle($event)"
+          Representation <button pButton pRipple icon="pi pi-plus" type="button"
+            (click)="menuRepresentation.toggle($event)"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
@@ -32,7 +34,9 @@
               <span class="justify-content-between">
                 <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"
                   class="col-10 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
-                <button pButton pRipple type="button" icon="pi pi-times" class=" col-1 p-button-rounded p-button-danger p-button-text" (click)="onRemoveLabelElement(control.propertyID)"></button>
+                <button pButton pRipple type="button" icon="pi pi-times"
+                  class=" col-1 p-button-rounded p-button-danger p-button-text"
+                  (click)="onRemoveLabelElement(control.propertyID)"></button>
               </span>
             </div>
           </form>
@@ -42,10 +46,14 @@
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Morphological traits<button pButton pRipple icon="pi pi-plus" type="button"
+          Morphological traits<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
-        <ng-template pTemplate="content"></ng-template>
+        <ng-template pTemplate="content">
+          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index" [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues"
+            (remove)="onRemoveMorph(index)" (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"
+            [isCheckboxVisible]="false" [relationField]="morph.value.relation" [valueField]="morph.value.value"></app-double-autocomplete>
+        </ng-template>
       </p-fieldset>
     </div>
   </form>

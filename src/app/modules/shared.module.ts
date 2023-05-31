@@ -39,6 +39,7 @@ import { WhitespacesValidatorDirective } from '../validators/whitespaces-validat
 import { UriValidator } from '../validators/uri-validator.directive';
 import { PopupDeleteItemComponent } from '../controllers/popup/popup-delete-item/popup-delete-item.component';
 import { AutocompleteCheckboxComponent } from '../forms/autocomplete-checkbox/autocomplete-checkbox.component';
+import { DoubleAutocompleteComponent } from '../forms/double-autocomplete/double-autocomplete.component';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -84,13 +85,14 @@ const DIRECTIVES = [
 
 const COMPONENTS = [
   PopupDeleteItemComponent,
-  AutocompleteCheckboxComponent
+  AutocompleteCheckboxComponent,
+  DoubleAutocompleteComponent,
 ];
 
 @NgModule({
   declarations: [
     DIRECTIVES,
-    COMPONENTS
+    COMPONENTS,
   ],
   imports: [
     CommonModule,
