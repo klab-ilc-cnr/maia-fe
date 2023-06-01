@@ -1,11 +1,17 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil, throwError } from 'rxjs';
 import { PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
 import { CommonService } from 'src/app/services/common.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
+import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
   selector: 'app-sense-core-editor',
@@ -15,6 +21,8 @@ import { UserService } from 'src/app/services/user.service';
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   @Input() senseEntry$!: Observable<SenseCore>;
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   currentUser!: User;
   definitionFormItems: PropertyElement[] = [];
   definitionsMenuItems: { label: string, command: any }[] = [];
@@ -28,6 +36,9 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private globalState: GlobalStateService,
     private commonService: CommonService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private lexiconService: LexiconService,
   ) {
     this.userService.retrieveCurrentUser().pipe(
       take(1),
@@ -57,6 +68,24 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         this.onAddDefinitionField(def);
       }
     });
+
+    this.definition.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(500),
+      distinctUntilChanged(),
+    ).subscribe((resp: { [key: string]: any }) => {
+      for (const key in resp) {
+        const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
+        if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
+        this.updateSense(key, resp[key]).then(() => {
+          if (resp[key] === '') {
+            this.definitionFormItems = this.definitionFormItems.filter(i => i.propertyID !== key);
+            return;
+          }
+          this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -68,7 +97,6 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this.definitionFormItems.push(fieldProperty);
     this.definition.addControl(fieldProperty.propertyID, new FormControl<string>(fieldProperty.propertyValue));
     this.definitionsMenuItems = this.definitionsMenuItems.filter(i => i.label !== fieldProperty.propertyID);
-    console.info(this.form.value)
   }
 
   onDeleteLexicalSense() {
@@ -76,6 +104,35 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   onRemoveDefinitionElement(fieldName: string) {
-    //TODO implementa rimozione del campo di definitions
+    const confirmMsg = `Are you sure to remove "${fieldName}"?`;
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirmSimple(() => { this.definition.get(fieldName)?.setValue(''); });
+  }
+
+  private async manageUpdateObservable(updateObs: Observable<string>, relation: string) {
+    updateObs.pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`"${relation}" update failed `));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(resp => {
+      this.senseEntry = <SenseCore>{ ...this.senseEntry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.senseEntry.sense });
+    });
+  }
+
+  private async updateSense(relation: string, value: string) {
+    if (!this.currentUser.name) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
+      return;
+    }
+    const updater = <LexicalSenseUpdater>{
+      relation: this.commonService.getSenseUpdateRelation(relation),
+      value: value,
+    };
+    const updateObs = this.lexiconService.updateLexicalSense(this.currentUser.name, this.senseEntry.sense, updater);
+    this.manageUpdateObservable(updateObs, relation);
   }
 }
