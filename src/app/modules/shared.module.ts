@@ -40,6 +40,8 @@ import { UriValidator } from '../validators/uri-validator.directive';
 import { PopupDeleteItemComponent } from '../controllers/popup/popup-delete-item/popup-delete-item.component';
 import { AutocompleteCheckboxComponent } from '../forms/autocomplete-checkbox/autocomplete-checkbox.component';
 import { DoubleAutocompleteComponent } from '../forms/double-autocomplete/double-autocomplete.component';
+import { CardModule } from 'primeng/card';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -73,7 +75,9 @@ const PRIMENG_MODULES = [
   MenuModule,
   EditorModule,
   TabViewModule,
-  AutoCompleteModule
+  AutoCompleteModule,
+  CardModule,
+  InputNumberModule,
 ];
 
 const DIRECTIVES = [

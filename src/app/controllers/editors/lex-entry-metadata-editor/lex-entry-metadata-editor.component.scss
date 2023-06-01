@@ -2,16 +2,18 @@ label {
   width: 100%;
 }
 
-::ng-deep {
-
-  .p-selectbutton .p-button.p-highlight,
-  .p-selectbutton .p-button.p-highlight:hover {
-      background-color: lightgrey !important;
-      border-color: lightgray !important;
-  }
+p-selectButton {
+  float: right;
 }
 
-div.card {  //PER SCROLL SINGOLO PANNELLO
-height: 100%;
-overflow-y: scroll;
+::ng-deep legend {
+  width: auto;
+  float: inherit;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.fieldset-small {
+  height: 1.5rem !important;
+  width: 1.5rem;
 }

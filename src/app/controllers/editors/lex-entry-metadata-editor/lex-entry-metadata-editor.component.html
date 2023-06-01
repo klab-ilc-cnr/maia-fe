@@ -1,37 +1,50 @@
 <!--PLACEHOLDER quando siamo in fase di loading dati-->
 <p-skeleton *ngIf="!lexicalEntry" width="30rem" height="40rem"></p-skeleton>
 
-<div *ngIf="lexicalEntry" class="card"
-  [style]="{'height': '100%'}">
-  <div class="formgrid grid">
+<div *ngIf="lexicalEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
+  <form [formGroup]="form" class="formgrid grid">
     <div class="field col-6">
-      <label for="">Author</label>
+      <label for="creator">Creator</label>
+      <input name="creator" formControlName="creator" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
     </div>
     <div class="field col-6">
-      <label for="">Creation date</label>
+      <label for="creationDate">Creation date</label>
+      <input name="creationDate" formControlName="creationDate" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
     </div>
     <div class="field col-6">
-      <label for="">Author</label>
+      <label for="author">Author</label>
+      <input name="author" formControlName="author" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
     </div>
     <div class="field col-6">
-      <label for="">Completion date</label>
+      <label for="completionDate">Completion date</label>
+      <input name="completionDate" formControlName="completionDate" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
     </div>
     <div class="field col-6">
-      <label for="">Author</label>
+      <label for="revisor">Reviewer</label>
+      <input name="revisor" formControlName="revisor" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
     </div>
     <div class="field col-6">
-      <label for="">Review date</label>
+      <label for="revisionDate">Review date</label>
+      <input name="revisionDate" formControlName="revisionDate" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
     </div>
-    <!--TODO inserire confidence-->
-    <!--TODO inserire see also-->
-    <!--TODO inserire same as-->
+    <div class="field col-6">
+      <label for="provenance">Provenance</label>
+      <input name="provenance" formControlName="provenance" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="confidence">Lexical entry confidence</label>
+      <p-inputNumber name="confidence" formControlName="confidence" suffix="%" [min]="0" class="w-full" styleClass="w-full"></p-inputNumber>
+    </div>
     <div class="field col-12">
       <label for="note">Note</label>
-      <p-editor id="note"
-        type="text"></p-editor>
+      <p-editor name="note" formControlName="note"></p-editor>
     </div>
-    <div class="field col-11">
-      <button pButton type="button" class="w-full" label="Save"></button> <!--TODO se i dati sono in sola view rimuovere-->
-    </div>
-  </div>
+  </form>
 </div>
