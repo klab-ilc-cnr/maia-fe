@@ -20,6 +20,20 @@ export class CommonService {
     "http://www.lexinfo.net/ontology/3.0/lexinfo#confidence",
   ];
 
+  private senseRelations = [
+    "http://www.w3.org/2004/02/skos/core#note",
+    "http://www.w3.org/ns/lemon/ontolex#usage",
+    "http://www.w3.org/ns/lemon/ontolex#reference",
+    "http://purl.org/dc/terms/subject",
+    "http://www.w3.org/2004/02/skos/core#definition",
+    "http://www.lexinfo.net/ontology/3.0/lexinfo#description",
+    "http://www.lexinfo.net/ontology/3.0/lexinfo#explanation",
+    "http://www.lexinfo.net/ontology/3.0/lexinfo#gloss",
+    "http://www.lexinfo.net/ontology/3.0/lexinfo#senseExample",
+    "http://www.lexinfo.net/ontology/3.0/lexinfo#senseTranslation",
+    "http://www.lexinfo.net/ontology/3.0/lexinfo#confidence"
+  ];
+
   public notifyOther(data: any) {
     if (data) {
       this.notify.next(data);
@@ -32,5 +46,9 @@ export class CommonService {
 
   public getFormUpdateRelation(relation: string): string {
     return this.formRelations.find(r => r.endsWith('#' + relation)) ?? '';
+  }
+
+  public getSenseUpdateRelation(relation: string): string {
+    return this.senseRelations.find(r => r.endsWith('#' + relation)) ?? '';
   }
 }

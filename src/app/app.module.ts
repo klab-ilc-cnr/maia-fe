@@ -37,6 +37,7 @@ import { TabsSenseComponent } from './controllers/tab-controllers/tabs-sense/tab
 import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component';
 import { LexEntryEditorComponent } from './controllers/editors/lex-entry-editor/lex-entry-editor.component';
 import { FormCoreEditorComponent } from './controllers/editors/form-core-editor/form-core-editor.component';
+import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { FormCoreEditorComponent } from './controllers/editors/form-core-editor/
     TabsSenseComponent,
     LexEntryMetadataEditorComponent,
     LexEntryEditorComponent,
-    FormCoreEditorComponent
+    FormCoreEditorComponent,
+    SenseCoreEditorComponent
   ],
   imports: [
     BrowserModule,

@@ -109,18 +109,18 @@ export interface SenseListItem extends LexicalElementBase {
 }
 
 export interface SenseCore extends LexicalElementBase {
-  sense: string,
-  definition: PropertyElement[],
-  usage: string,
-  topic: string,
-  links: LinkProperty[],
-  note: string,
-  concept: string,
-  description: string,
-  explanation: string,
-  gloss: string,
-  senseExample: string,
-  senseTranslation: string
+  concept: string;
+  definition: PropertyElement[];
+  description: string | null;
+  explanation: string | null;
+  gloss: string | null;
+  links: LinkProperty[];
+  note: string;
+  sense: string;
+  senseExample: string | null;
+  senseTranslation: string | null;
+  topic: string;
+  usage: string;
 }
 
 export enum LexicalEntryType {
