@@ -58,7 +58,8 @@ export interface LexicalEntryListItem extends LexicalElementBase {
 }
 
 export interface LexicalEntryCore extends LexicalEntryListItem {
-  links: LinkProperty[]
+  links: LinkProperty[],
+  stemType: string,
 }
 
 export interface PropertyElement {

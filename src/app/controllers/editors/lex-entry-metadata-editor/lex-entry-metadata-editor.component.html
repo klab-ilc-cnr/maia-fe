@@ -1,7 +1,7 @@
 <!--PLACEHOLDER quando siamo in fase di loading dati-->
-<p-skeleton *ngIf="loading" width="30rem" height="40rem"></p-skeleton>
+<p-skeleton *ngIf="!lexicalEntry" width="30rem" height="40rem"></p-skeleton>
 
-<div *ngIf="!loading" class="card"
+<div *ngIf="lexicalEntry" class="card"
   [style]="{'height': '100%'}">
   <div class="formgrid grid">
     <div class="field col-6">
