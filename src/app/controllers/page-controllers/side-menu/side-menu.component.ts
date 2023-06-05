@@ -55,6 +55,8 @@ export class SideMenuComponent implements OnInit {
     return this.loggedUserService.canManageTagsets();
   }
 
+  public get canManageLexicon(): boolean { return this.loggedUserService.canManageLexicon(); }
+
   /**
    * Metodo che valuta se un path è attivo
    * @param urls {string[]} url da valutare
@@ -75,7 +77,7 @@ export class SideMenuComponent implements OnInit {
   /**
    * Metodo che dato un url verifica se questo è attivo (tutte le sue parti sono presenti nel path corrente)
    * @param url {string} url da verificare
-   * @returns {boolean} definisce se il percorso è attivo 
+   * @returns {boolean} definisce se il percorso è attivo
    */
   public isActiveInternal(url: string): boolean {
     const requiredPath = url.split("/") || [''];

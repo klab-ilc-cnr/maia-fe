@@ -58,6 +58,12 @@ export class LoggedUserService {
     return (user?.role === (Roles.AMMINISTRATORE));
   }
 
+  public canManageLexicon(): boolean {
+    const user = this.currentUser;
+    if(!user || user === undefined) return false;
+    return user.role === Roles.AMMINISTRATORE;
+  }
+
   /**
    * Metodo che registra le informazioni dell'utente loggato
    * @param user {User} utente loggato

@@ -64,7 +64,7 @@ import { SenseCoreEditorComponent } from './controllers/editors/sense-core-edito
     LexEntryMetadataEditorComponent,
     LexEntryEditorComponent,
     FormCoreEditorComponent,
-    SenseCoreEditorComponent
+    SenseCoreEditorComponent,
   ],
   imports: [
     BrowserModule,

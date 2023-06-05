@@ -17,5 +17,9 @@ export const PROJECTX_ROUTES = [
     {
         path: 'tagsets',
         loadChildren: () => import('../modules/tagsets.module').then(m => m.TagsetsModule)
-    }
+    },
+    {
+      path: 'lexicon',
+      loadChildren: () => import('../modules/lexicon.module').then(m => m.LexiconModule),
+    },
 ];
