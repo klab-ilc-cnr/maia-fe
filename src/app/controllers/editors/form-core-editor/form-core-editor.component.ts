@@ -96,6 +96,12 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
           this.updateForm(key, resp[key]).then(() => {
             if (resp[key] === '') {
               this.labelFormItems = this.labelFormItems.filter(item => item.propertyID !== key);
+              this.representationItems.push({
+                label: key,
+                command: () => {
+                  this.onAddLabelField(<PropertyElement>{ propertyID: key, propertyValue: '' });
+                },
+              });
               return;
             }
             this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
