@@ -2,11 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Subscription, take } from 'rxjs';
-import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
 import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
-import { Morphology } from 'src/app/models/lexicon/morphology.model';
-import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -66,21 +62,6 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Definisce se ci sono modifiche pendenti del senso */
   sensePendingChanges = false;
 
-  /**Lista delle option per i tipi di entrata lessicale */
-  lexicalEntryTypes!: DropdownField[];
-  /**Lista delle option per le POS */
-  partOfSpeeches!: DropdownField[];
-  /**Lista delle option per i valori dello status */
-  statusValues!: SelectButtonField[];
-  /**Lista delle option per i valori della lingua */
-  languageValues!: DropdownField[];
-  /**Lista delle option per i tipi di forma */
-  formTypes!: DropdownField[];
-  /**Lista delle option per i tratti morfologici */
-  morphTraitList!: DropdownField[];
-  /**Lista dei dati morfologici */
-  morphologicalData!: Morphology[];
-
   /**
    * Costruttore per WorkspaceLexiconEditTileComponent
    * @param lexiconService {LexiconService} servizi per LexO
@@ -99,12 +80,6 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
-    this.preloadLexicalEntryTypes();
-    this.preloadMorphInfos();
-    this.preloadStatusTypes();
-    this.preloadLanguages();
-    this.preloadFormTypes();
-
     this.selectedInstanceName = this.selectedNode.data.instanceName;
     this.refreshEditorView(this.selectedType, this.selectedInstanceName);
 
@@ -449,102 +424,6 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
       }
     });
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento dei tipi di forma
-   */
-  private preloadFormTypes(): void {
-    this.lexiconService.getFormTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
-      this.formTypes = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...res.map((el: OntolexType) => <DropdownField>{
-          name: el.valueLabel,
-          code: el.valueId
-        })
-      ];
-    })
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento delle lingue disponibili
-   */
-  private preloadLanguages(): void {
-    this.lexiconService.getLanguages().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
-      this.languageValues = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...res.map((val: LexiconStatistics) => <DropdownField>{
-          name: val.label,
-          code: val.label
-        })
-      ];
-    })
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento dei tipi di entrata lessicale
-   */
-  private preloadLexicalEntryTypes(): void {
-    this.lexiconService.getLexicalEntryTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
-      this.lexicalEntryTypes = res.map((val: OntolexType) => <DropdownField>{
-        name: val.valueLabel,
-        code: val.valueId
-      });
-    })
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento delle informazioni morfologiche
-   */
-  private preloadMorphInfos(): void {
-    this.lexiconService.getMorphology().pipe(take(1)).subscribe((res: Morphology[]) => {
-      this.morphologicalData = res;
-      this.morphTraitList = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...res.map((el: Morphology) => <DropdownField>{
-          name: el.propertyLabel,
-          code: el.propertyId
-        })
-      ]
-      this.partOfSpeeches = res.find((el: Morphology) => el.propertyId?.split('#')[1] === 'partOfSpeech')?.propertyValues
-        ?.map((propValue: OntolexType) => <DropdownField>{
-          name: propValue.valueLabel,
-          code: propValue.valueId
-        }) || [];
-      this.partOfSpeeches = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...this.partOfSpeeches
-      ];
-    });
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento dei valori di status
-   */
-  private preloadStatusTypes(): void {
-    this.lexiconService.getStatus().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
-      this.statusValues = res.map((el: LexiconStatistics) => <SelectButtonField>{
-        icon: el.label,
-        justify: ''
-      });
-    })
   }
 
   /**
