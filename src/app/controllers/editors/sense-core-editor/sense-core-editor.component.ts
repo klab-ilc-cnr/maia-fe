@@ -45,6 +45,29 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe(cu => {
       this.currentUser = cu;
     });
+
+    this.definition.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(500),
+      distinctUntilChanged(),
+    ).subscribe((resp: { [key: string]: any }) => {
+      for (const key in resp) {
+        const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
+        if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
+        this.updateSense(key, resp[key]).then(() => {
+          if (resp[key] === '') {
+            this.definitionFormItems = this.definitionFormItems.filter(i => i.propertyID !== key);
+            this.definitionsMenuItems.push({
+              label: key,
+              command: () => {
+                this.onAddDefinitionField(<PropertyElement>{ propertyID: key, propertyValue: '' });
+              }
+            }); return;
+          }
+          this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -69,23 +92,6 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.definition.valueChanges.pipe(
-      takeUntil(this.unsubscribe$),
-      debounceTime(500),
-      distinctUntilChanged(),
-    ).subscribe((resp: { [key: string]: any }) => {
-      for (const key in resp) {
-        const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
-        if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
-        this.updateSense(key, resp[key]).then(() => {
-          if (resp[key] === '') {
-            this.definitionFormItems = this.definitionFormItems.filter(i => i.propertyID !== key);
-            return;
-          }
-          this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
-        });
-      }
-    });
   }
 
   ngOnDestroy(): void {
