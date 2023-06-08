@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { FormCore, PropertyElement } from 'src/app/models/lexicon/lexical-entry.model';
@@ -123,18 +123,34 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       this.form.get('pos')?.disable();
       if (this.formEntry.type) this.form.get('type')?.setValue('http://www.w3.org/ns/lemon/ontolex#' + this.formEntry.type);
 
-      this.formEntry.label.forEach(label => {
+      for(const label of this.formEntry.label) {
         if (label.propertyValue === '' && label.propertyID !== 'variant') { //TODO capire come gestire il caso variant
+          if(label.propertyID === 'writtenRep') {
+            this.label.addControl(label.propertyID, new FormControl<string>(label.propertyValue, Validators.required));
+          }
           this.representationItems.push({
             label: label.propertyID,
             command: () => {
               this.onAddLabelField(label)
             },
           });
-        } else {
-          this.onAddLabelField(label);
+          continue;
         }
-      });
+        this.onAddLabelField(label);
+      }
+
+      // this.formEntry.label.forEach(label => {
+      //   if (label.propertyValue === '' && label.propertyID !== 'variant') { //TODO capire come gestire il caso variant
+      //     this.representationItems.push({
+      //       label: label.propertyID,
+      //       command: () => {
+      //         this.onAddLabelField(label)
+      //       },
+      //     });
+      //   } else {
+      //     this.onAddLabelField(label);
+      //   }
+      // });
 
       this.formEntry.morphology.forEach(m => {
         const morphElement = { relation: m.trait, value: m.value, external: false };
