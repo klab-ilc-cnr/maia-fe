@@ -1,12 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
 import { CommonService } from 'src/app/services/common.service';
+import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
@@ -27,8 +28,24 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   definitionsMenuItems: { label: string, command: any }[] = [];
   form = new FormGroup({
     definition: new FormGroup({}),
+    morphology: new FormArray<FormControl>([]),
   });
+  _morphology: { relation: string, value: string, external: boolean }[] = [];
+  get morphology() { return this.form.controls.morphology as FormArray; }
   get definition() { return this.form.controls.definition; }
+  morphRelations$ = this.globalState.morphologies$.pipe(
+    switchMap(list => {
+      const mappedElements = list.map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
+      return of(mappedElements);
+    }),
+  );
+
+  morphRelationValues = (relation: string) => this.globalState.morphologies$.pipe(
+    switchMap(list => {
+      const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
+      return of(values);
+    }),
+  );
 
   constructor(
     private userService: UserService,
@@ -36,6 +53,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private lexiconService: LexiconService,
+    private globalState: GlobalStateService,
   ) {
     this.userService.retrieveCurrentUser().pipe(
       take(1),
@@ -96,14 +114,46 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this.definitionsMenuItems = this.definitionsMenuItems.filter(i => i.label !== fieldProperty.propertyID);
   }
 
+  onAddMorphology() {
+    const newMorph = { relation: '', value: '', external: false };
+    this.morphology.push(new FormControl(newMorph));
+    this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...newMorph });
+  }
+
   onDeleteLexicalSense() {
     //TODO implementare metodo di cancellazione del senso e reindirizzamento dell'albero
+  }
+
+  onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
+    const currentValue = this._morphology[index].value;
+    if (currentValue !== event.value) {
+      //TODO implementa salvatggio della selezione
+      this.updateListControlList(this.morphology, this._morphology, index, event); //temporaneo
+    }
   }
 
   onRemoveDefinitionElement(fieldName: string) {
     const confirmMsg = `Are you sure to remove "${fieldName}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() => { this.definition.get(fieldName)?.setValue(''); });
+  }
+
+  onRemoveMorph(index: number) {
+    const currentValue = this._morphology[index].value;
+    if (!currentValue || currentValue === '') {
+      this.morphology.removeAt(index);
+      this._morphology.splice(index, 1);
+      return;
+    }
+    if (currentValue && currentValue !== '') {
+      const confirmMsg = `Are you sure to remove "${currentValue}"?`;
+      this.popupDeleteItem.confirmMessage = confirmMsg;
+      this.popupDeleteItem.showDeleteConfirmSimple(() => {
+        //TODO implementa rimozione della morfologia
+        this.morphology.removeAt(index); //temporaneo
+        this._morphology.splice(index, 1); //temporaneo
+      });
+    }
   }
 
   private async manageUpdateObservable(updateObs: Observable<string>, relation: string) {
@@ -131,5 +181,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     };
     const updateObs = this.lexiconService.updateLexicalSense(this.currentUser.name, this.senseEntry.sense, updater);
     this.manageUpdateObservable(updateObs, relation);
+  }
+
+  private updateListControlList(list: FormArray<any>, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
+    list.at(index).setValue(value);
+    controlList[index] = <{ relation: string, value: string, external: boolean }>{ ...value };
   }
 }
