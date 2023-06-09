@@ -1,15 +1,14 @@
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { ElementType } from 'src/app/models/corpus/element-type';
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
-import { LoggedUserService } from 'src/app/services/logged-user.service';
-import { Roles } from 'src/app/models/roles';
+import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Observable, of, switchMap } from 'rxjs';
-import { CorpusElement } from 'src/app/models/texto/corpus-element';
-import { FolderElement } from 'src/app/models/texto/corpus-element';
+import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
+import { ElementType } from 'src/app/models/corpus/element-type';
+import { Roles } from 'src/app/models/roles';
+import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 /**Componente del pannello di esplorazione corpus */
