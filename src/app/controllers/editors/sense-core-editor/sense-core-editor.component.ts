@@ -7,7 +7,6 @@ import { PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry
 import { LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
 import { CommonService } from 'src/app/services/common.service';
-import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
@@ -20,7 +19,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
-  @Input() senseEntry$!: Observable<SenseCore>;
+  @Input() senseEntry!: SenseCore;
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   currentUser!: User;
@@ -29,12 +28,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   form = new FormGroup({
     definition: new FormGroup({}),
   });
-  senseEntry!: SenseCore;
   get definition() { return this.form.controls.definition; }
 
   constructor(
     private userService: UserService,
-    private globalState: GlobalStateService,
     private commonService: CommonService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
@@ -71,27 +68,21 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.senseEntry$.pipe(
-      takeUntil(this.unsubscribe$),
-    ).subscribe(sense => {
-      this.senseEntry = sense;
-      for (const def of this.senseEntry.definition) {
-        if (def.propertyID === 'definition') {
-          this.definition.addControl('definition', new FormControl<string>(def.propertyValue, Validators.required));
-        }
-        if (def.propertyID !== 'definition' && def.propertyValue === '') {
-          this.definitionsMenuItems.push({
-            label: def.propertyID,
-            command: () => {
-              this.onAddDefinitionField(def);
-            }
-          });
-          continue;
-        }
-        this.onAddDefinitionField(def);
+    for (const def of this.senseEntry.definition) {
+      if (def.propertyID === 'definition') {
+        this.definition.addControl('definition', new FormControl<string>(def.propertyValue, Validators.required));
       }
-    });
-
+      if (def.propertyID !== 'definition' && def.propertyValue === '') {
+        this.definitionsMenuItems.push({
+          label: def.propertyID,
+          command: () => {
+            this.onAddDefinitionField(def);
+          }
+        });
+        continue;
+      }
+      this.onAddDefinitionField(def);
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,6 @@
 <p-tabView>
   <p-tabPanel header="Sense">
-    <app-sense-core-editor [senseEntry$]="senseEntry$"></app-sense-core-editor>
+    <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton>
+    <app-sense-core-editor *ngIf="senseEntry" [senseEntry]="senseEntry"></app-sense-core-editor>
   </p-tabPanel>
 </p-tabView>

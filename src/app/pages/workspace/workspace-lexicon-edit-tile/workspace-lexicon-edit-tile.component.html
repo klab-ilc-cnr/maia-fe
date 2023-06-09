@@ -40,10 +40,11 @@
     </p-treeTable>
   </ng-template>
   <ng-template pTemplate>
-    <!-- <p-tabView> -->
     <app-tabs-lexical-entry *ngIf="showLexicalEntryEditor"
       [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-tabs-lexical-entry>
-    <app-tabs-form *ngIf="showFormEditor" [formId]="formInstanceName" [lexEntryId]="lexicalEntryInstanceName"></app-tabs-form>
-    <app-tabs-sense *ngIf="showSenseEditor" [senseId]="senseInstanceName"></app-tabs-sense>
+    <app-tabs-form *ngIf="showFormEditor" [formId]="formInstanceName"
+      [lexEntryId]="lexicalEntryInstanceName"></app-tabs-form>
+    <app-tabs-sense *ngIf="showSenseEditor" [senseId]="senseInstanceName"
+      [lexEntryId]="lexicalEntryInstanceName"></app-tabs-sense>
   </ng-template>
 </p-splitter>
