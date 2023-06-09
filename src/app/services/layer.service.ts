@@ -1,19 +1,19 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { v4 as uuidv4 } from 'uuid';
 import { Layer } from '../models/layer/layer.model';
+import { TLayer } from '../models/texto/t-layer';
 
 /**Classe dei servizi relativi ai layer */
 @Injectable({
   providedIn: 'root'
 })
 export class LayerService {
-
+  private textoUrl: string;
   /**Url per le chiamate relative ai layer */
   private layerUrl: string;
-  /**Url per le chiamate relative alle feature */
-  private featureUrl: string; //TODO verificare se si può rimuovere in quanto non utilizzato
 
   /**
    * Costruttore per LayerService
@@ -21,7 +21,7 @@ export class LayerService {
    */
   constructor(private http: HttpClient) {
     this.layerUrl = environment.layersUrl; //inizializza gli url sulla base degli environment
-    this.featureUrl = environment.featureUrl;
+    this.textoUrl = environment.textoUrl;
   }
 
   /**
@@ -62,4 +62,26 @@ export class LayerService {
   //FEATURES
 
 
+  //#region TEXTO services
+
+  public getLayerList(): Observable<TLayer[]> {
+    const uuid = uuidv4();
+    return this.http.get<TLayer[]>(
+      `${this.textoUrl}/texto/layer/list`,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid })
+      },
+    )
+  }
+
+  public postCreateLayer(newLayer: TLayer): Observable<TLayer> {
+    const uuid = uuidv4();
+    return this.http.post<TLayer>(
+      `${this.textoUrl}/texto/layer/create`,
+      newLayer,
+      { headers: new HttpHeaders({ 'UUID': uuid }) },
+    );
+  }
+
+  //#endregion
 }
