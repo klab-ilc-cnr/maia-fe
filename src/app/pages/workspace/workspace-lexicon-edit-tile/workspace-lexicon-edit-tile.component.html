@@ -43,7 +43,7 @@
     <!-- <p-tabView> -->
     <app-tabs-lexical-entry *ngIf="showLexicalEntryEditor"
       [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-tabs-lexical-entry>
-    <app-tabs-form *ngIf="showFormEditor" [formId]="formInstanceName"></app-tabs-form>
+    <app-tabs-form *ngIf="showFormEditor" [formId]="formInstanceName" [lexEntryId]="lexicalEntryInstanceName"></app-tabs-form>
     <app-tabs-sense *ngIf="showSenseEditor" [senseId]="senseInstanceName"></app-tabs-sense>
   </ng-template>
 </p-splitter>

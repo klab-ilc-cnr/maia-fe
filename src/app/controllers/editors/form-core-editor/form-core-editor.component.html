@@ -1,4 +1,3 @@
-<p-skeleton *ngIf="!formEntry" width="30rem" height="40rem"></p-skeleton>
 <div *ngIf="formEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
   <form [formGroup]="form" class="formgrid grid">
     <div class="field col-6" style="align-self: center;">
@@ -50,9 +49,11 @@
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index" [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues"
-            (remove)="onRemoveMorph(index)" (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"
-            [isCheckboxVisible]="false" [relationField]="morph.value.relation" [valueField]="morph.value.value"></app-double-autocomplete>
+          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"
+            [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"
+            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"
+            [isCheckboxVisible]="false" [relationField]="morph.value.relation"
+            [valueField]="morph.value.value"></app-double-autocomplete>
         </ng-template>
       </p-fieldset>
     </div>

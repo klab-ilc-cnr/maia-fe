@@ -21,9 +21,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 export class FormCoreEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   emptyField = '-- Select --'
-  @Input() formEntry$!: Observable<FormCore>;
   currentUser!: User;
-  formEntry!: FormCore;
+  @Input() formEntry!: FormCore;
   form = new FormGroup({
     pos: new FormControl<string>(''),
     type: new FormControl<string>(''),
@@ -112,51 +111,33 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.formEntry$.pipe(
-      takeUntil(this.unsubscribe$),
-    ).subscribe(fe => {
-      this.formEntry = fe;
-      const pos = this.formEntry.inheritedMorphology.find(m => m.trait.endsWith('partOfSpeech'))?.value;
-      if (pos) {
-        this.form.get('pos')?.setValue(pos);
-      }
-      this.form.get('pos')?.disable();
-      if (this.formEntry.type) this.form.get('type')?.setValue('http://www.w3.org/ns/lemon/ontolex#' + this.formEntry.type);
+    const pos = this.formEntry.inheritedMorphology.find(m => m.trait.endsWith('partOfSpeech'))?.value;
+    if (pos) {
+      this.form.get('pos')?.setValue(pos);
+    }
+    this.form.get('pos')?.disable();
+    if (this.formEntry.type) this.form.get('type')?.setValue('http://www.w3.org/ns/lemon/ontolex#' + this.formEntry.type);
 
-      for(const label of this.formEntry.label) {
-        if (label.propertyValue === '' && label.propertyID !== 'variant') { //TODO capire come gestire il caso variant
-          if(label.propertyID === 'writtenRep') {
-            this.label.addControl(label.propertyID, new FormControl<string>(label.propertyValue, Validators.required));
-          }
-          this.representationItems.push({
-            label: label.propertyID,
-            command: () => {
-              this.onAddLabelField(label)
-            },
-          });
-          continue;
+    for (const label of this.formEntry.label) {
+      if (label.propertyValue === '' && label.propertyID !== 'variant') { //TODO capire come gestire il caso variant
+        if (label.propertyID === 'writtenRep') {
+          this.label.addControl(label.propertyID, new FormControl<string>(label.propertyValue, Validators.required));
         }
-        this.onAddLabelField(label);
+        this.representationItems.push({
+          label: label.propertyID,
+          command: () => {
+            this.onAddLabelField(label)
+          },
+        });
+        continue;
       }
+      this.onAddLabelField(label);
+    }
 
-      // this.formEntry.label.forEach(label => {
-      //   if (label.propertyValue === '' && label.propertyID !== 'variant') { //TODO capire come gestire il caso variant
-      //     this.representationItems.push({
-      //       label: label.propertyID,
-      //       command: () => {
-      //         this.onAddLabelField(label)
-      //       },
-      //     });
-      //   } else {
-      //     this.onAddLabelField(label);
-      //   }
-      // });
-
-      this.formEntry.morphology.forEach(m => {
-        const morphElement = { relation: m.trait, value: m.value, external: false };
-        this.morphology.push(new FormControl(morphElement));
-        this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
-      });
+    this.formEntry.morphology.forEach(m => {
+      const morphElement = { relation: m.trait, value: m.value, external: false };
+      this.morphology.push(new FormControl(morphElement));
+      this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
     });
   }
 
@@ -231,20 +212,6 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.formEntry.lexicalEntry });
     });
   }
-
-  private async updateForm(relation: string, value: string) {
-    if (!this.currentUser.name) {
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
-      return;
-    }
-    const updater = <FormUpdater>{
-      relation: this.commonService.getFormUpdateRelation(relation),
-      value: value,
-    };
-    const updateObs = this.lexiconService.updateLexicalForm(this.currentUser.name, this.formEntry.form, updater);
-    this.manageUpdateObservable(updateObs, relation);
-  }
-
   private async removeRelation(updater: { relation: string, value: string }) {
     this.lexiconService.deleteRelation(this.formEntry.form, updater).pipe(
       take(1),
@@ -257,6 +224,19 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.formEntry.label} removing "${updater.value}" success `));
       this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.formEntry.lexicalEntry });
     });
+  }
+
+  private async updateForm(relation: string, value: string) {
+    if (!this.currentUser.name) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
+      return;
+    }
+    const updater = <FormUpdater>{
+      relation: this.commonService.getFormUpdateRelation(relation),
+      value: value,
+    };
+    const updateObs = this.lexiconService.updateLexicalForm(this.currentUser.name, this.formEntry.form, updater);
+    this.manageUpdateObservable(updateObs, relation);
   }
 
   private async updateLinguisticRelation(type: LINGUISTIC_RELATION_TYPE, relation: string, value: any, currentValue?: any) {
