@@ -40,7 +40,7 @@
     </div>
     <div class="field col-6">
       <label for="confidence">Lexical entry confidence</label>
-      <p-inputNumber name="confidence" formControlName="confidence" suffix="%" [min]="0" class="w-full" styleClass="w-full"></p-inputNumber>
+      <p-inputNumber name="confidence" formControlName="confidence" suffix="%" [min]="0" [max]="100" class="w-full" styleClass="w-full"></p-inputNumber>
     </div>
     <div class="field col-12">
       <label for="note">Note</label>

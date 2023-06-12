@@ -14,6 +14,7 @@ export class TabsFormComponent implements OnInit, OnDestroy {
   @Input() formId!: string;
   @Input() lexEntryId!: string;
   formEntry!: FormCore | undefined;
+  selectedTab = 0;
 
   constructor(
     private lexiconService: LexiconService,

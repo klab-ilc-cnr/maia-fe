@@ -1,6 +1,6 @@
-<p-tabView>
+<p-tabView [(activeIndex)]="selectedTab">
   <p-tabPanel header="Lex. entry">
-    <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$"></app-lex-entry-editor>
+    <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$" *ngIf="selectedTab === 0"></app-lex-entry-editor>
   </p-tabPanel>
   <p-tabPanel header="Decomposition" [disabled]="true"></p-tabPanel>
   <p-tabPanel header="Relations"></p-tabPanel>
@@ -8,6 +8,6 @@
   <p-tabPanel header="Multimedia"></p-tabPanel>
   <p-tabPanel header="Dictionary view"></p-tabPanel>
   <p-tabPanel header="Metadata">
-    <app-lex-entry-metadata-editor [lexicalEntry$]="lexicalEntry$"></app-lex-entry-metadata-editor>
+    <app-lex-entry-metadata-editor *ngIf="selectedTab === 6" [lexicalEntry$]="lexicalEntry$"></app-lex-entry-metadata-editor>
   </p-tabPanel>
 </p-tabView>

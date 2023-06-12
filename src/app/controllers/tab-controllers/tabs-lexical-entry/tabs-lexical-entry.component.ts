@@ -12,6 +12,7 @@ export class TabsLexicalEntryComponent implements OnInit {
   lexicalEntry$!: Observable<LexicalEntryCore>;
   /**Identificativo dell'entrata lessicale */
   @Input() lexicalEntryInstanceName!: string;
+  selectedTab = 0;
 
   constructor(
     private lexiconService: LexiconService,
