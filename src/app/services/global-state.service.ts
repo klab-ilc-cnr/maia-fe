@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LexiconService } from './lexicon.service';
 import { Subject, merge, of, shareReplay, switchMap } from 'rxjs';
+import { LexiconService } from './lexicon.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +30,18 @@ export class GlobalStateService {
   );
 
   languages2$ = this.lexiconService.getLanguages().pipe(
+    shareReplay(1),
+  );
+
+  authors$ = this.lexiconService.getAuthors().pipe(
+    shareReplay(1),
+  );
+
+  statisticsPos$ = this.lexiconService.getPos().pipe(
+    shareReplay(1),
+  );
+
+  statisticStatuses$ = this.lexiconService.getStatus().pipe(
     shareReplay(1),
   );
 
