@@ -2,12 +2,14 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { LanguageService } from "src/app/services/language.service";
 
 const clientid = "projectx-fe";
-const appName = "/projectx-fe"
-const issuer = "http://localhost:8080/realms/princnr";
-const allowedUrls = 'http://localhost:9000/projectx/api';
+// const appName = "/projectx-fe"
+const appName = "/maia-fe"
+// const issuer = "http://localhost:8080/realms/princnr";
+const issuer = "https://klab.ilc.cnr.it/keycloak/realms/princnr"; //TODO sostituire con keycloak
+// const allowedUrls = 'http://localhost:9000/projectx/api';
+const allowedUrls   = 'https://klab.ilc.cnr.it/projectx/api'; //TODO sostituire con il backend xeel
 
 export const environment = {
   production: false,
