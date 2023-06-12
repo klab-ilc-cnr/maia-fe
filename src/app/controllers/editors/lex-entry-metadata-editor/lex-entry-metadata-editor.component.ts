@@ -57,6 +57,19 @@ export class LexEntryMetadataEditorComponent implements OnInit, OnDestroy {
         }
       });
     });
+    formControlList.confidence.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(500),
+    ).subscribe(conf => {
+      if (conf && conf !== 0) {
+        const convertedConf = conf / 100;
+        if (convertedConf !== +this.lexicalEntry.confidence) {
+          this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.CONFIDENCE, convertedConf).then(() => {
+            this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, confidence: convertedConf.toString() };
+          });
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
