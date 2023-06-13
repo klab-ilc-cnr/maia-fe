@@ -1,8 +1,9 @@
-import { Tagset } from './../models/tagset/tagset';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { TTagset } from '../models/texto/t-tagset';
+import { Tagset } from './../models/tagset/tagset';
 
 /**Classe dei servizi relativi ai tagset */
 @Injectable({
@@ -11,10 +12,11 @@ import { environment } from 'src/environments/environment';
 export class TagsetService {
 
   /**
-   * @private 
+   * @private
    * Url per le chiamate relative ai tagset
    */
   private tagsetUrl: string;
+  private textoUrl: string;
 
   /**
    * Costruttore per TagsetService
@@ -22,6 +24,7 @@ export class TagsetService {
    */
   constructor(private http: HttpClient) {
     this.tagsetUrl = environment.tagsetUrl; //recupero l'url dall'environment
+    this.textoUrl = environment.textoUrl;
   }
 
   /**
@@ -34,7 +37,7 @@ export class TagsetService {
     // FINE MOCK
 
     /* La seguente riga è da DECOMMENTARE dopo aver demockato */
-     return this.http.get<Tagset[]>(this.tagsetUrl);
+    return this.http.get<Tagset[]>(this.tagsetUrl);
   }
 
   /**
@@ -48,7 +51,7 @@ export class TagsetService {
     // FINE MOCK
 
     /* La seguente riga è da DECOMMENTARE dopo aver demockato */
-     return this.http.get<Tagset>(`${this.tagsetUrl}/${id}`);
+    return this.http.get<Tagset>(`${this.tagsetUrl}/${id}`);
   }
 
   /**
@@ -91,4 +94,25 @@ export class TagsetService {
   public retrieveCanBeDeleted(id: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.tagsetUrl}/canbedeleted/${id}`);
   }
+
+  //#region TEXTO
+  public createTagset(newTagset: TTagset): Observable<TTagset> {
+    return this.http.post<TTagset>(
+      `${this.textoUrl}/texto/tagset/create`,
+      newTagset
+    );
+  }
+
+  public getTagsetById(tagsetId: number): Observable<TTagset> {
+    return this.http.get<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}`);
+  }
+
+  public getTagsetList(): Observable<TTagset[]> {
+    return this.http.get<TTagset[]>(`${this.textoUrl}/texto/tagset/list`);
+  }
+
+  public removeTagsetById(tagsetId: number) {
+    return this.http.get<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}/remove`);
+  }
+  //#endregion
 }

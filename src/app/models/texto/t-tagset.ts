@@ -1,5 +1,9 @@
-import { TAnnotElementBase } from "./t-annot-element-base";
+import { TStatus } from "./t-status";
 
-export class TTagset extends TAnnotElementBase {
-  values: string[] | undefined; //TODO da verificare se stringhe o oggetti
+export class TTagset {
+  id: number | undefined;
+  status: TStatus | undefined;
+  time: string | undefined;
+  name: string | undefined;
+  description: string | undefined;
 }

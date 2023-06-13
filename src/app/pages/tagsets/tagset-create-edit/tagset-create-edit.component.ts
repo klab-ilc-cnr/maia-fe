@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { Tagset } from 'src/app/models/tagset/tagset';
 import { TagsetValue } from 'src/app/models/tagset/tagset-value';
+import { TTagset } from 'src/app/models/texto/t-tagset';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { TagsetStateService } from 'src/app/services/tagset-state.service';
 import { TagsetService } from 'src/app/services/tagset.service';
 import Swal from 'sweetalert2';
 
@@ -18,9 +20,11 @@ declare var $: any;
 @Component({
   selector: 'app-tagset-create-edit',
   templateUrl: './tagset-create-edit.component.html',
-  styleUrls: ['./tagset-create-edit.component.scss']
+  styleUrls: ['./tagset-create-edit.component.scss'],
+  providers: [TagsetStateService],
 })
-export class TagsetCreateEditComponent implements OnInit {
+export class TagsetCreateEditComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$ = new Subject();
   /**
    * @private
    * Effettua la rimozione di un tagset
@@ -147,7 +151,8 @@ export class TagsetCreateEditComponent implements OnInit {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private activeRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private tagsetState: TagsetStateService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per decidere se tornare alla pagina della lista, caricare i dati del tagset o iniziare un nuovo inserimento */
@@ -171,6 +176,8 @@ export class TagsetCreateEditComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal */
   ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
     Swal.close();
   }
 
@@ -323,33 +330,36 @@ export class TagsetCreateEditComponent implements OnInit {
 
     let successMsg = "Operazione effettuata con successo";
     let apiCall;
-
     if (this.isEditing) {
       successMsg = "Tagset modificato con successo";
       apiCall = this.tagsetService.update(this.tagsetModel);
     }
     else {
       successMsg = "Tagset creato con successo";
-      apiCall = this.tagsetService.create(this.tagsetModel);
+      this.tagsetService.createTagset(<TTagset>{name: this.tagsetModel.name}).pipe(
+        takeUntil(this.unsubscribe$),
+      ).subscribe(() => {
+        this.backToList();
+      })
     }
 
-    this.loaderService.show();
-    apiCall.subscribe({
-      next: () => {
-        this.loaderService.hide();
-        this.backToList();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-      },
-      error: (err) => {
-        this.loaderService.hide();
+    // this.loaderService.show();
+    // apiCall.subscribe({
+    //   next: () => {
+    //     this.loaderService.hide();
+    //     this.backToList();
+    //     this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+    //   },
+    //   error: (err) => {
+    //     this.loaderService.hide();
 
-        if (err.status == 418) {
-          errorMsg == "Esiste già un tagset con questo nome!"
-        }
+    //     if (err.status == 418) {
+    //       errorMsg == "Esiste già un tagset con questo nome!"
+    //     }
 
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
-      }
-    });
+    //     this.messageService.add(this.msgConfService.generateErrorMessageConfig(errorMsg));
+    //   }
+    // });
   }
 
   /**
