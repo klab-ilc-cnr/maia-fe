@@ -11,6 +11,7 @@ import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
@@ -21,6 +22,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   @Input() senseEntry!: SenseCore;
+  @Input() lexEntryId!: string;
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   currentUser!: User;
@@ -46,6 +48,22 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       return of(values);
     }),
   );
+
+  private deleteSense = (senseId: string) => {
+    this.showOperationInProgress("Deletion in progress");
+    const successMsg = "Successfully removed sense";
+    this.lexiconService.deleteLexicalSense(senseId).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.showOperationFailed("Deletion failed: " + error.message);
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexEntryId, isRemove: true });
+      Swal.close();
+    });
+  }
 
   constructor(
     private userService: UserService,
@@ -86,6 +104,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
     for (const def of this.senseEntry.definition) {
       if (def.propertyID === 'definition') {
         this.definition.addControl('definition', new FormControl<string>(def.propertyValue, Validators.required));
@@ -121,13 +140,15 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   onDeleteLexicalSense() {
-    //TODO implementare metodo di cancellazione del senso e reindirizzamento dell'albero
+    const confirmMsg = "You are about to delete a sense";
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
 
   onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
     const currentValue = this._morphology[index].value;
     if (currentValue !== event.value) {
-      //TODO implementa salvatggio della selezione
+      //TODO implementa salvataggio della selezione non appena disponibile il servizio relativo
       this.updateListControlList(this.morphology, this._morphology, index, event); //temporaneo
     }
   }
@@ -181,6 +202,37 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     };
     const updateObs = this.lexiconService.updateLexicalSense(this.currentUser.name, this.senseEntry.sense, updater);
     this.manageUpdateObservable(updateObs, relation);
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: 'warning',
+      titleText: message,
+      text: 'please wait',
+      customClass: {
+        container: 'swal2-container'
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
   }
 
   private updateListControlList(list: FormArray<any>, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {

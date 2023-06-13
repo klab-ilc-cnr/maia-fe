@@ -11,6 +11,7 @@ import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 
 @Component({
@@ -55,6 +56,22 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       return of(values);
     }),
   );
+
+  private deleteForm = (formId: string) => {
+    this.showOperationInProgress("Deletion in progress");
+    const successMsg = "Successfully removed form";
+    this.lexiconService.deleteForm(formId).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.showOperationFailed("Deletion failed: " + error.message);
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.formEntry.lexicalEntry, isRemove: true });
+      Swal.close();
+    });
+  }
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -159,7 +176,9 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   onDeleteLexicalForm() {
-    //TODO implementare cancellazione della forma lessicale con chiusura dell'editor e passaggio su editor dell'entrata lessicale
+    const confirmMsg = "You are about to delete a form";
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteForm(this.formEntry.form), this.formEntry.form);
   }
 
   onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
@@ -251,6 +270,37 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       currentValue: currentValue ?? ''
     };
     this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.formEntry.form, updater), relation);
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: 'warning',
+      titleText: message,
+      text: 'please wait',
+      customClass: {
+        container: 'swal2-container'
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
   }
 
   private updateListControlList(list: FormArray<any>, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
