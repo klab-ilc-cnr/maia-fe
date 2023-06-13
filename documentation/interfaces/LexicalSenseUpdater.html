@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -164,54 +164,77 @@
 
 /**Enumerazione delle relazioni per forma */
 export enum FORM_RELATIONS {
-  TYPE &#x3D; &#x27;type&#x27;,
-  NOTE &#x3D; &#x27;note&#x27;,
-  WRITTEN_REP &#x3D; &#x27;writtenRep&#x27;,
-  PHONETIC_REP &#x3D; &#x27;phoneticRep&#x27;,
-  PRONUNCIATION &#x3D; &#x27;pronunciation&#x27;,
-  ROMANIZATION &#x3D; &#x27;romanization&#x27;,
-  SEGMENTATION &#x3D; &#x27;segmentation&#x27;,
-  TRANSLITERATION &#x3D; &#x27;transliteration&#x27;
+  TYPE &#x3D; &#x27;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&#x27;,
+  NOTE &#x3D; &#x27;http://www.w3.org/2004/02/skos/core#note&#x27;,
+  WRITTEN_REP &#x3D; &#x27;http://www.w3.org/ns/lemon/ontolex#writtenRep&#x27;,
+  PHONETIC_REP &#x3D; &#x27;http://www.w3.org/ns/lemon/ontolex#phoneticRep&#x27;,
+  PRONUNCIATION &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#pronunciation&#x27;,
+  ROMANIZATION &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#romanization&#x27;,
+  SEGMENTATION &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#segmentation&#x27;,
+  TRANSLITERATION &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#transliteration&#x27;,
+  CONFIDENCE &#x3D; &quot;http://www.lexinfo.net/ontology/3.0/lexinfo#confidence&quot;
+}
+
+export enum GENERIC_RELATION_TYPE {
+  REFERENCE &#x3D; &#x27;reference&#x27;,
+  BIBLIOGRAPHY &#x3D; &#x27;bibliography&#x27;,
+  ATTESTATION &#x3D; &#x27;attestation&#x27;,
+  MULTIMEDIA &#x3D; &#x27;multimedia&#x27;,
+}
+
+export enum GENERIC_RELATIONS {
+  SEEALSO &#x3D; &#x27;http://www.w3.org/2000/01/rdf-schema#seeAlso&#x27;,
+  SAMEAS &#x3D; &#x27;http://www.w3.org/2002/07/owl#sameAs&#x27;,
 }
 
 /**Enumerazione delle relazioni per entrata lessicale */
 export enum LEXICAL_ENTRY_RELATIONS {
-  LABEL &#x3D; &#x27;label&#x27;,
-  TYPE &#x3D; &#x27;type&#x27;,
-  LANGUAGE &#x3D; &#x27;language&#x27;,
-  STATUS &#x3D; &#x27;status&#x27;,
-  NOTE &#x3D; &#x27;note&#x27;
+  LABEL &#x3D; &quot;http://www.w3.org/2000/01/rdf-schema#label&quot;,
+  TYPE &#x3D; &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;,
+  TERM_STATUS &#x3D; &quot;http://www.w3.org/2003/06/sw-vocab-status/ns#term_status&quot;,
+  NOTE &#x3D; &quot;http://www.w3.org/2004/02/skos/core#note&quot;,
+  ENTRY &#x3D; &quot;http://www.w3.org/ns/lemon/lime#entry&quot;, //LANGUAGE anche se si chiama entry
+  DENOTES &#x3D; &quot;http://www.w3.org/ns/lemon/ontolex#denotes&quot;,
+  CONFIDENCE &#x3D; &quot;http://www.lexinfo.net/ontology/3.0/lexinfo#confidence&quot;
 }
 
 /**Enumerazione delle relazioni per senso lessicale */
 export enum LEXICAL_SENSE_RELATIONS {
-  NOTE &#x3D; &#x27;note&#x27;,
-  USAGE &#x3D; &#x27;usage&#x27;,
-  REFERENCE &#x3D; &#x27;reference&#x27;,
-  SUBJECT &#x3D; &#x27;subject&#x27;,
-  DEFINITION &#x3D; &#x27;definition&#x27;,
-  DESCRIPTION &#x3D; &#x27;description&#x27;,
-  EXPLANATION &#x3D; &#x27;explanation&#x27;,
-  GLOSS &#x3D; &#x27;gloss&#x27;,
-  SENSE_EXAMPLE &#x3D; &#x27;senseExample&#x27;,
-  SENSE_TRANSLATION &#x3D; &#x27;senseTranslation&#x27;
+  NOTE &#x3D; &#x27;http://www.w3.org/2004/02/skos/core#note&#x27;,
+  USAGE &#x3D; &#x27;http://www.w3.org/ns/lemon/ontolex#usage&#x27;,
+  REFERENCE &#x3D; &#x27;http://www.w3.org/ns/lemon/ontolex#reference&#x27;,
+  SUBJECT &#x3D; &#x27;http://purl.org/dc/terms/subject&#x27;,
+  DEFINITION &#x3D; &#x27;http://www.w3.org/2004/02/skos/core#definition&#x27;,
+  DESCRIPTION &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#description&#x27;,
+  EXPLANATION &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#explanation&#x27;,
+  GLOSS &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#gloss&#x27;,
+  SENSE_EXAMPLE &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#senseExample&#x27;,
+  SENSE_TRANSLATION &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#senseTranslation&#x27;,
+  CONFIDENCE &#x3D; &#x27;http://www.lexinfo.net/ontology/3.0/lexinfo#confidence&#x27;
 }
 
 /**Enumerazione per le relazioni linguistiche */
-export enum LINGUISTIC_RELATIONS {
+export enum LINGUISTIC_RELATION_TYPE {
   MORPHOLOGY &#x3D; &#x27;morphology&#x27;,
   DECOMP &#x3D; &#x27;decomp&#x27;,
   CONCEPT_REF &#x3D; &#x27;conceptRef&#x27;,
   LEXICAL_REL &#x3D; &#x27;lexicalRel&#x27;,
   SENSE_REL &#x3D; &#x27;senseRel&#x27;,
   CONCEPT_REL &#x3D; &#x27;conceptRel&#x27;,
-  ETY_LINK &#x3D; &#x27;etyLink&#x27;
+  ETY_LINK &#x3D; &#x27;etyLink&#x27;,
+  LEXICON &#x3D; &#x27;lexicon&#x27;
 }
 
 /**Interfaccia dell&#x27;updater per forma */
 export interface FormUpdater extends LexiconUpdaterBase {
   /**Relazione da aggiornare */
   relation: FORM_RELATIONS
+}
+
+export interface GenericRelationUpdater extends LexiconUpdaterBase {
+  type: GENERIC_RELATION_TYPE,
+  relation: GENERIC_RELATIONS,
+  currentValue: string,
 }
 
 /**Interfaccia dell&#x27;updater per entrata lessicale */
@@ -229,7 +252,7 @@ export interface LexicalSenseUpdater extends LexiconUpdaterBase {
 /**Interfaccia dell&#x27;updater per relazione linguistica */
 export interface LinguisticRelationUpdater extends LexiconUpdaterBase {
   /**Tipo di relazione linguistica da aggiornare */
-  type: LINGUISTIC_RELATIONS,
+  type: LINGUISTIC_RELATION_TYPE,
   /**Proprietà da aggiornare */
   relation: string,
   /**Precedente valore da sostituire */

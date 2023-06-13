@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -84,6 +84,9 @@
                             <li>
                                 <a href="#generateSuccessMessageConfig" >generateSuccessMessageConfig</a>
                             </li>
+                            <li>
+                                <a href="#generateWarningMessageConfig" >generateWarningMessageConfig</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -96,24 +99,6 @@
     </table>
 </section>
 
-            <section>
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor()</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/services/message-configuration.service.ts:6</a></div>
-                            </td>
-                        </tr>
-
-            </tbody>
-        </table>
-</section>
 
             <section>
     
@@ -140,8 +125,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="10"
-                            class="link-to-prism">src/app/services/message-configuration.service.ts:10</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="8"
+                            class="link-to-prism">src/app/services/message-configuration.service.ts:8</a></div>
                 </td>
             </tr>
 
@@ -209,8 +194,77 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/app/services/message-configuration.service.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="17"
+                            class="link-to-prism">src/app/services/message-configuration.service.ts:17</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>msg</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateWarningMessageConfig"></a>
+                    <span class="name">
+                        <span ><b>generateWarningMessageConfig</b></span>
+                        <a href="#generateWarningMessageConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateWarningMessageConfig(msg: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">src/app/services/message-configuration.service.ts:26</a></div>
                 </td>
             </tr>
 
@@ -271,8 +325,6 @@
 })
 export class MessageConfigurationService {
 
-  constructor() { }
-
   generateErrorMessageConfig(msg: string): any {
     return {
       severity: &#x27;error&#x27;,
@@ -286,6 +338,15 @@ export class MessageConfigurationService {
     return {
       severity: &#x27;success&#x27;,
       summary: &#x27;Successo&#x27;,
+      detail: msg,
+      life: 3000
+    }
+  }
+
+  generateWarningMessageConfig(msg: string): any {
+    return {
+      severity: &#x27;warn&#x27;,
+      summary: &#x27;Attenzione&#x27;,
       detail: msg,
       life: 3000
     }
