@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TTagset } from '../models/texto/t-tagset';
 import { Tagset } from './../models/tagset/tagset';
+import { TTagsetItem } from '../models/texto/t-tagset-item';
 
 /**Classe dei servizi relativi ai tagset */
 @Injectable({
@@ -107,12 +108,23 @@ export class TagsetService {
     return this.http.get<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}`);
   }
 
-  public getTagsetList(): Observable<TTagset[]> {
+  public getTagsetItemsById(tagsetId: number): Observable<TTagsetItem[]> {
+    return this.http.get<TTagsetItem[]>(`${this.textoUrl}/texto/tagset/${tagsetId}/items`);
+  }
+
+  public getTagsetsList(): Observable<TTagset[]> {
     return this.http.get<TTagset[]>(`${this.textoUrl}/texto/tagset/list`);
   }
 
   public removeTagsetById(tagsetId: number) {
     return this.http.get<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}/remove`);
+  }
+
+  public updateTagset(updatedTagset: TTagset): Observable<TTagset> {
+    return this.http.post<TTagset>(
+      `${this.textoUrl}/texto/tagset/${updatedTagset.id}/update`,
+      updatedTagset,
+    );
   }
   //#endregion
 }

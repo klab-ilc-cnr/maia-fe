@@ -25,6 +25,8 @@ declare var $: any;
 })
 export class TagsetCreateEditComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  ttagset!: TTagset;
+  ttagsetItems$ = this.tagsetState.tagsetItems$;
   /**
    * @private
    * Effettua la rimozione di un tagset
@@ -153,11 +155,19 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     private activeRoute: ActivatedRoute,
     private router: Router,
     private tagsetState: TagsetStateService,
-  ) { }
+  ) {
+    // this.tagsetState.tagset$.pipe(
+    //   takeUntil(this.unsubscribe$),
+    // ).subscribe(tagset => {
+    //   this.ttagset = tagset;
+    // });
+  }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per decidere se tornare alla pagina della lista, caricare i dati del tagset o iniziare un nuovo inserimento */
   ngOnInit(): void {
-    this.activeRoute.paramMap.subscribe({
+    this.activeRoute.paramMap.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe({
       next: (params) => {
         const id = params.get('id');
 
@@ -165,7 +175,9 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
           this.backToList();
         }
         else if (id != this.newId) {
-          this.loadData(Number.parseInt(id));
+          // this.loadData(Number.parseInt(id));
+          this.tagsetState.retrieveTagset.next(+id);
+          this.tagsetState.retrieveTagsetItems.next(+id);
         }
         else {
           this.tagsetModel.values = [];
@@ -336,11 +348,11 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     }
     else {
       successMsg = "Tagset creato con successo";
-      this.tagsetService.createTagset(<TTagset>{name: this.tagsetModel.name}).pipe(
-        takeUntil(this.unsubscribe$),
-      ).subscribe(() => {
-        this.backToList();
-      })
+      // this.tagsetService.createTagset(<TTagset>{name: this.tagsetModel.name}).pipe(
+      //   takeUntil(this.unsubscribe$),
+      // ).subscribe(() => {
+      //   this.backToList();
+      // })
     }
 
     // this.loaderService.show();

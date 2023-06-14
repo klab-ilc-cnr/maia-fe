@@ -6,7 +6,7 @@
         <button pButton pRipple label="New tagset" icon="pi pi-tag" class="p-button-danger" (click)="onNew()"></button>
       </div>
       <div class="card-body p-fluid">
-        <p-table #dt [value]="(tagsets$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+        <p-table [value]="(tagsets$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
           currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
           [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
           <ng-template pTemplate="header">
@@ -23,7 +23,9 @@
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2"
                   (click)="onEdit(tagset)"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+                  <button pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
+                  (click)="onEditTagsetItems(tagset)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
                   (click)="onDelete(tagset)"></button>
               </td>
             </tr>
@@ -38,5 +40,48 @@
     </div>
   </div>
 </div>
+<p-dialog [header]="modalTitle" class="modal" [(visible)]="visibleEditNewTagset" [modal]="true"
+  [style]="{ minWidth: '30vw', maxWidth: '50vw' }" appendTo="body">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmitTagsetModal()" [formGroup]="tagsetForm" id="tagsetForm" class="validated">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Name *</label>
+            <div class="p-fluid">
+              <input type="text" name="name" class="form-control" formControlName="name" autofocus maxlength="300"
+                placeholder="Tagset name">
+              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                <div *ngIf="name.errors?.['required']">
+                  Name is mandatory
+                </div>
+                <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                  The tagset name cannot contain only blanks
+                </div>
+                <div *ngIf="name.errors?.['notDuplicateName']">
+                  A tagset with this name already exists
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <div class="p-fluid">
+              <textarea rows="3" formControlName="description" type="text" name="description"
+                class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="visibleEditNewTagset=false;">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary"
+            [disabled]="tagsetForm.invalid || name.value === ''">{{tagsetOnEdit!==undefined? 'Update': 'Add'}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
