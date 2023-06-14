@@ -156,11 +156,11 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private tagsetState: TagsetStateService,
   ) {
-    // this.tagsetState.tagset$.pipe(
-    //   takeUntil(this.unsubscribe$),
-    // ).subscribe(tagset => {
-    //   this.ttagset = tagset;
-    // });
+    this.tagsetState.tagset$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(tagset => {
+      this.ttagset = tagset;
+    });
   }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per decidere se tornare alla pagina della lista, caricare i dati del tagset o iniziare un nuovo inserimento */
