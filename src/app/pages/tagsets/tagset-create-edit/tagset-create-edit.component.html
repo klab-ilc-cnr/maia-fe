@@ -1,165 +1,122 @@
-<form
-  (ngSubmit)="onSubmitTagsetForm(tagsetForm)"
-  #tagsetForm="ngForm"
-  id="tagsetForm"
-  class="validated"
->
-  <div class="grid">
-    <div class="col-12">
-      <div class="card">
-        <div class="page-header mb-0">
-          <h5>{{title}}</h5>
-          <div class="button-group-actions">
-            <button pButton pRipple type="button" label="Salva" icon="pi pi-save" (click)="onSubmitTagsetForm(tagsetForm)"></button>
-            <button pButton pRipple type="button" label="Annulla" icon="pi pi-times" class="p-button-secondary" (click)="backToList()"></button>
-            <button *ngIf="isEditing" pButton pRipple type="button" label="Elimina" icon="pi pi-trash" class="p-button-danger" (click)="showDeleteModal(tagsetModel)" [disabled]="canBeDeleted"></button>
-          </div>
-        </div>
-        <div class="card-body p-fluid">
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="page-header">
+        <h5 style="border-radius: 3px">
+          {{ (ttagsetName|async)||'' }}
+        </h5>
+        <div class="button-group-actions">
+          <button pButton pRipple label="Back to list" icon="pi pi-arrow-left" class="p-button-secondary"
+            (click)="backToList()"></button>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="row px-0">
-    <div class="col-4">
-      <div class="card">
-        <div class="card-body p-fluid">
-          <div class="form-group">
-            <label class="form-label">Nome *</label>
-            <div class="p-fluid">
-              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="tagsetModel.name"
-                required maxlength="300" placeholder="Nome tagset" appWhitespacesValidator>
-              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
-                <div *ngIf="name.errors?.['required']">
-                  Necessario inserire il nome del tagset
-                </div>
-                <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
-                  Il nome del tagset non può contenere solo spazi vuoti
-                </div>
-              </div>
-            </div>
+      <div class="card-body p-fluid">
+        <div class="row row-cols-1 row-cols-md-3">
+          <div class="col">
+            <label class="header-label">Name</label>
+            <p>{{(ttagsetName|async)||''}}</p>
           </div>
-          <div class="form-group">
-            <label class="form-label">Descrizione</label>
-            <div class="p-fluid">
-              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="tagsetModel.description"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-8">
-      <div class="card">
-        <div class="card-body p-fluid">
-          <div class="form-group">
-            <div class="d-flex align-items-center justify-content-between mb-2 w-auto">
-              <label class="form-label">Valori</label>
-              <div *ngIf="areTagsetValuesChanged" class="text-warning text-center">
-                I valori del tagset sono cambiati, ricordati di salvare le modifiche.
-              </div>
-              <button pButton pRipple type="button" label="Nuovo valore" icon="pi pi-plus" class="w-auto" (click)="showTagsetValueModal()"></button>
-            </div>
-            <div class="p-fluid">
-              <p-table #dt [value]="tagsetModel.values!" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-                currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
-                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
-                  <ng-template pTemplate="header">
-                    <tr>
-                      <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon></th>
-                      <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon></th>
-                      <th></th>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-value let-i="rowIndex">
-                    <tr>
-                      <td>{{value.name}}</td>
-                      <td>{{value.description}}</td>
-                      <td>
-                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="showEditValueModal(value)"></button>
-                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="showDeleteValueModal(value)"></button>
-                      </td>
-                    </tr>
-                  </ng-template>
-              </p-table>
-            </div>
+          <div class="col">
+            <label class="header-label">Description</label>
+            <p>{{(ttagsetDescription|async)||''}}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-</form>
+</div>
+<div class="row px-0">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body p-fluid">
+        <div class="form-group">
+          <div class="d-flex align-items-center justify-content-between mb-2 w-auto">
+            <label class="form-label">Values</label>
+            <button pButton pRipple type="button" label="New value" icon="pi pi-plus" class="w-auto"
+              (click)="showTagsetValueModal()"></button>
+          </div>
+          <div class="p-fluid">
+            <p-table [value]="(ttagsetItems$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+              currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
+              [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+                  <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
+                  <th></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-value let-i="rowIndex">
+                <tr>
+                  <td>{{value.name}}</td>
+                  <td>{{value.description}}</td>
+                  <td>
+                    <button pButton pRipple type="button" icon="pi pi-pencil"
+                      class="p-button-rounded p-button-success mx-2" (click)="showEditValueModal(value)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-trash"
+                      class="p-button-rounded p-button-danger mx-2" (click)="showDeleteValueModal(value)"></button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div
-  class="modal fade"
-  id="tagsetValueModal"
-  tabindex="-1"
-  aria-labelledby="tagsetValueModalLabel"
-  aria-hidden="true"
->
+<p-dialog [header]="newEditTitle" class="modal" [(visible)]="visibleEditNewTagsetItem" [modal]="true"
+  [style]="{ minWidth: '30vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        #tagsetValueForm="ngForm"
-        id="tagsetValueForm"
-        class="validated"
-        [appTagsetValueNotDuplicateName]="tagsetModel.values!"
-      >
-        <input type="hidden" #tvOriginalName="ngModel" name="tvOriginalName" [(ngModel)]="tagsetValueModel.originalName">
-        <div class="modal-header">
-          <h5 class="modal-title" id="tagsetValueModalLabel">{{tagsetValueModalTitle}}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form id="tagsetValueForm" class="validated" [formGroup]="tagsetItemForm" (ngSubmit)="onSubmitTagsetValueModal()">
         <div class="modal-body">
           <div class="cross-validation"
-            [class.cross-validation-error]="tagsetValueForm.errors?.['tagsetValueNotDuplicateName'] && (tagsetValueForm.touched || tagsetValueForm.dirty)">
+            [class.cross-validation-error]="name.errors?.['tagsetValueNotDuplicateName'] && (name.touched || name.dirty)">
             <div class="form-group">
-              <label class="form-label">Nome *</label>
+              <label class="form-label">Name *</label>
               <div class="p-fluid">
-                <input #tvName="ngModel" type="text" name="tvName" class="form-control" [(ngModel)]="tagsetValueModel.name"
-                  required maxlength="300" placeholder="Nome del valore del tagset" appWhitespacesValidator>
-                <div *ngIf="tvName.invalid && (tvName.touched || tvName.dirty)" class="invalid-feedback">
-                  <div *ngIf="tvName.errors?.['required']">
-                    Necessario inserire il nome del valore del tagset
+                <input type="text" name="name" class="form-control" formControlName="name" maxlength="300"
+                  placeholder="Tagset value name">
+                <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                  <div *ngIf="name.errors?.['required']">
+                    Need to enter the name of the tagset value
                   </div>
-                  <div *ngIf="tvName.errors?.['isNotOnlyWhitespaces']">
-                    Il nome del valore del tagset non può contenere solo spazi vuoti
+                  <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                    Tagset value name cannot contain only blanks
                   </div>
                 </div>
-                <div *ngIf="tagsetValueForm.errors?.['tagsetValueNotDuplicateName']" class="invalid-feedback">
-                  Esiste già un valore con questo nome
+                <div *ngIf="name.errors?.['tagsetValueNotDuplicateName']" class="invalid-feedback">
+                  There already exists a value with this name
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Descrizione</label>
+            <label class="form-label">Description</label>
             <div class="p-fluid">
-              <textarea rows="3" #tvDescription="ngModel" type="text" name="tvDescription" class="form-control" [(ngModel)]="tagsetValueModel.description"></textarea>
+              <textarea rows="3" formControlName="description" type="text" name="description"
+                class="form-control"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Annulla
+          <button type="button" class="btn btn-secondary" (click)="visibleEditNewTagsetItem=false;">
+            Cancel
           </button>
-          <button type="button" class="btn btn-primary" (click)="onSubmitTagsetValueModal(tagsetValueForm)">
+          <button type="submit" class="btn btn-primary" [disabled]="name.invalid || name.value ===''">
             <span *ngIf="isTagsetValueEditing; else elseBlock">
-              Aggiorna
+              Update
             </span>
             <ng-template #elseBlock>
-              <span>Aggiungi</span>
+              <span>Add</span>
             </ng-template>
           </button>
         </div>
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

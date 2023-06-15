@@ -2,17 +2,21 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Subject, catchError, debounceTime, merge, of, shareReplay, switchMap, tap, throwError } from 'rxjs';
+import { TTagset } from '../models/texto/t-tagset';
+import { TTagsetItem } from '../models/texto/t-tagset-item';
 import { MessageConfigurationService } from './message-configuration.service';
 import { TagsetService } from './tagset.service';
-import { TTagset } from '../models/texto/t-tagset';
 
 @Injectable()
 export class TagsetStateService {
   addTagset = new Subject<TTagset>();
+  addTagsetItem = new Subject<TTagsetItem>();
   removeTagset = new Subject<number>();
+  removeTagsetItem = new Subject<TTagsetItem>();
   retrieveTagset = new Subject<number>();
   retrieveTagsetItems = new Subject<number>();
   updateTagset = new Subject<TTagset>();
+  updateTagsetItem = new Subject<TTagsetItem>();
   tagset$ = merge(
     this.retrieveTagset.pipe(
       switchMap(tagsetId => this.tagsetService.getTagsetById(tagsetId).pipe(
@@ -33,6 +37,36 @@ export class TagsetStateService {
           return throwError(() => new Error(error.error));
         }),
       )),
+    ),
+    this.addTagsetItem.pipe(
+      switchMap(newTagsetItem => this.tagsetService.createTagsetItem(newTagsetItem).pipe(
+        tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset item added`))),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Adding tagset item failed: ${error.error}`));
+          return throwError(() => new Error(error.error));
+        }),
+      )),
+      switchMap(tagsetItem => this.tagsetService.getTagsetItemsById(tagsetItem.tagset!.id!)),
+    ),
+    this.removeTagsetItem.pipe(
+      switchMap(tagsetItem => this.tagsetService.removeTagsetItemById(tagsetItem.id!).pipe(
+        tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset item removed`))),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Removing tagset item failed: ${error.error}`));
+          return throwError(() => new Error(error.error));
+        }),
+      )),
+      switchMap(tagsetItem => this.tagsetService.getTagsetItemsById(tagsetItem.tagset!.id!)),
+    ),
+    this.updateTagsetItem.pipe(
+      switchMap(updatedIagsetItem => this.tagsetService.updateTagsetItem(updatedIagsetItem).pipe(
+        tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset item updated`))),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Updating tagset item failed: ${error.error}`));
+          return throwError(() => new Error(error.error));
+        }),
+      )),
+      switchMap(updatedIagsetItem => this.tagsetService.getTagsetItemsById(updatedIagsetItem.tagset!.id!)),
     ),
   ).pipe(
     shareReplay(1),
@@ -86,9 +120,12 @@ export class TagsetStateService {
     private msgConfService: MessageConfigurationService,
   ) {
     this.addTagset.subscribe();
+    this.addTagsetItem.subscribe();
     this.removeTagset.subscribe();
+    this.removeTagsetItem.subscribe();
     this.retrieveTagset.subscribe();
     this.retrieveTagsetItems.subscribe();
     this.updateTagset.subscribe();
+    this.updateTagsetItem.subscribe();
   }
 }
