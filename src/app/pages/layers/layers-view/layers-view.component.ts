@@ -1,19 +1,22 @@
-import { FeatureService } from 'src/app/services/feature.service';
-import { LoaderService } from 'src/app/services/loader.service';
-import { TagsetService } from 'src/app/services/tagset.service';
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { MessageService, SelectItem } from 'primeng/api';
-import { LayerService } from 'src/app/services/layer.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Layer } from 'src/app/models/layer/layer.model';
-import { Feature } from 'src/app/models/feature/feature';
 import { NgForm } from '@angular/forms';
-import { FeatureType } from 'src/app/models/feature/feature-type';
-import { Tagset } from 'src/app/models/tagset/tagset';
-import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService, SelectItem } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { CreateFeature } from 'src/app/models/feature/create-feature';
+import { Feature } from 'src/app/models/feature/feature';
+import { FeatureType } from 'src/app/models/feature/feature-type';
+import { Layer } from 'src/app/models/layer/layer.model';
+import { Tagset } from 'src/app/models/tagset/tagset';
+import { TLayer } from 'src/app/models/texto/t-layer';
+import { FeatureService } from 'src/app/services/feature.service';
+import { LayerStateService } from 'src/app/services/layer-state.service';
+import { LayerService } from 'src/app/services/layer.service';
+import { LoaderService } from 'src/app/services/loader.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { TagsetService } from 'src/app/services/tagset.service';
+import Swal from 'sweetalert2';
 
 /**Variabile globale (jQuery?) */
 declare var $: any; //TODO verificare natura di questo elemento
@@ -22,9 +25,15 @@ declare var $: any; //TODO verificare natura di questo elemento
 @Component({
   selector: 'app-layers-view',
   templateUrl: './layers-view.component.html',
-  styleUrls: ['./layers-view.component.scss']
+  styleUrls: ['./layers-view.component.scss'],
+  providers: [LayerStateService]
 })
 export class LayersViewComponent implements OnInit {
+  private readonly unsubscribe$ = new Subject();
+  visibleEditNewFeature = false;
+  tlayer!: TLayer;
+  tlayer$ = this.layerState.layer$;
+  features$ = this.layerState.features$;
   /**
    * Effettua la rimozione di una feature
    * @param id {number} identificativo numerico della feature
@@ -139,26 +148,37 @@ export class LayersViewComponent implements OnInit {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router,
+    private layerState: LayerStateService,
+  ) {
+    this.layerState.layer$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(l => {
+      this.tlayer = l;
+    });
+  }
 
   /**Metodo dell'interfaccia OnInit utilizzato per inizializzare i valori di partenza del componente */
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      var id = params.get('id');
-
-      if (id != null) {
+    this.route.paramMap.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(params => {
+      const id = params.get('id');
+      if(id===null) {
+        this.back();
+        return;
+      }
+      this.layerState.retrieveLayerById.next(+id);
+      this.layerState.retrieveLayerFeatures.next(+id);
         this.layerId = Number.parseInt(id);
         this.loadDetails(this.layerId);
-      }
-      else {
-        this.back();
-      }
     });
   }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal aperti */
   ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
     Swal.close();
   }
 
@@ -192,6 +212,7 @@ export class LayersViewComponent implements OnInit {
 
   /**Metodo che visualizza il modale per lavorazione della nuova feature */
   showFeatureModal() {
+    this.visibleEditNewFeature = true;
     this.resetForm();
     this.featureModel.layerId = this.layerInfo?.id;
 

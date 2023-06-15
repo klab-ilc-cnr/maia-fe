@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { Layer } from '../models/layer/layer.model';
+import { TFeature } from '../models/texto/t-feature';
 import { TLayer } from '../models/texto/t-layer';
 
 /**Classe dei servizi relativi ai layer */
@@ -81,6 +82,20 @@ export class LayerService {
         headers: new HttpHeaders({ 'UUID': uuid })
       },
     )
+  }
+
+  public retrieveLayerById(layerId: number): Observable<TLayer> {
+    const uuid = uuidv4();
+    return this.http.get<TLayer>(
+      `${this.textoUrl}/texto/layer/${layerId}`,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid })
+      },
+    )
+  }
+
+  public retrieveLayerFeatureList(layerId: number): Observable<TFeature[]> {
+    return this.http.get<TFeature[]>(`${this.textoUrl}/texto/layer/${layerId}/features`);
   }
 
   public retrieveLayerList(): Observable<TLayer[]> {

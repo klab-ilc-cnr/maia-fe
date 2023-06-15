@@ -10,7 +10,19 @@ import { MessageConfigurationService } from './message-configuration.service';
 export class LayerStateService {
   addLayer = new Subject<TLayer>();
   removeLayer = new Subject<number>();
+  retrieveLayerById = new Subject<number>();
+  retrieveLayerFeatures = new Subject<number>();
   updateLayer = new Subject<TLayer>();
+  layer$ = this.retrieveLayerById.pipe(
+    switchMap(layerId => this.layerService.retrieveLayerById(layerId).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Error retrieving layer: ${error.error}`));
+        return throwError(() => new Error(error.error));
+      }),
+  )),
+  ).pipe(
+    shareReplay(1)
+  );
   layers$ = merge(
     this.layerService.retrieveLayerList(),
     this.addLayer.pipe(
@@ -47,6 +59,19 @@ export class LayerStateService {
     shareReplay(1)
   );
 
+  features$ = merge(
+    this.retrieveLayerFeatures.pipe(
+      switchMap(layerId => this.layerService.retrieveLayerFeatureList(layerId).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Retrieving layer features failed: ${error.error}`));
+          return throwError(() => new Error(error.error));
+        }),
+      )),
+    ),
+  ).pipe(
+    shareReplay(1),
+  );
+
   constructor(
     private layerService: LayerService,
     private messageService: MessageService,
@@ -54,6 +79,8 @@ export class LayerStateService {
   ) {
     this.addLayer.subscribe();
     this.removeLayer.subscribe();
+    this.retrieveLayerById.subscribe();
+    this.retrieveLayerFeatures.subscribe();
     this.updateLayer.subscribe();
   }
 }

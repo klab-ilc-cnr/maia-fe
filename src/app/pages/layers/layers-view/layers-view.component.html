@@ -2,28 +2,29 @@
   <div class="col-12">
     <div class="card">
       <div class="page-header">
-        <h5 [ngStyle]="{'background-color': layerInfo?.color+'4D'}" style="border-radius: 3px">
-          {{ title }}
+        <h5 [ngStyle]="{'background-color': (tlayer$|async)?.color+'4D'}" style="border-radius: 3px">
+          {{ (tlayer$|async)?.name }}
         </h5>
         <div class="button-group-actions">
-          <button pButton pRipple label="Torna alla lista" icon="pi pi-arrow-left" class="p-button-secondary" (click)="back()"></button>
+          <button pButton pRipple label="Back to list" icon="pi pi-arrow-left" class="p-button-secondary"
+            (click)="back()"></button>
         </div>
       </div>
       <div class="card-body p-fluid">
         <div class="row row-cols-1 row-cols-md-3">
           <div class="col">
-            <label class="header-label">Nome</label>
-            <p>{{ layerInfo?.name }}</p>
+            <label class="header-label">Name</label>
+            <p>{{ (tlayer$|async)?.name }}</p>
           </div>
           <div class="col">
-            <label class="header-label">Colore</label>
+            <label class="header-label">Color</label>
             <p>
-              <p-colorPicker [ngModel]="layerInfo?.color" [disabled]="true"></p-colorPicker>
+              <p-colorPicker [ngModel]="(tlayer$|async)?.color" [disabled]="true"></p-colorPicker>
             </p>
           </div>
           <div class="col">
-            <label class="header-label">Descrizione</label>
-            <p>{{ layerInfo?.description }}</p>
+            <label class="header-label">Description</label>
+            <p>{{ (tlayer$|async)?.description }}</p>
           </div>
         </div>
       </div>
@@ -32,17 +33,18 @@
       <div class="card-body p-fluid">
         <div class="d-flex align-items-center justify-content-between mb-2">
           <label class="header-label">Features</label>
-          <button pButton pRipple type="button" label="Nuova feature" icon="pi pi-plus" class="w-auto" (click)="showFeatureModal()"></button>
+          <button pButton pRipple type="button" label="New feature" icon="pi pi-plus" class="w-auto"
+            (click)="showFeatureModal()"></button>
         </div>
-        <p-table #dt [value]="features" [rowHover]="true" dataKey="id"
-          [responsive]="true" responsiveLayout="scroll">
+        <p-table #dt [value]="(features$|async)||[]" [rowHover]="true" dataKey="id" [responsive]="true"
+          responsiveLayout="scroll">
           <ng-template pTemplate="header">
             <tr>
-              <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
+              <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon>
               </th>
-              <th pSortableColumn="type">Tipo<p-sortIcon field="type"></p-sortIcon>
+              <th pSortableColumn="type">Type<p-sortIcon field="type"></p-sortIcon>
               </th>
-              <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon>
+              <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon>
               </th>
               <th></th>
             </tr>
@@ -53,8 +55,10 @@
               <td>{{ feature.type }}</td>
               <td>{{ feature.description }}</td>
               <td>
-                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="showEditFeatureModal(feature)"></button>
-                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="showDeleteFeatureModal(feature)"></button>
+                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2"
+                  (click)="showEditFeatureModal(feature)"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+                  (click)="showDeleteFeatureModal(feature)"></button>
               </td>
             </tr>
           </ng-template>
@@ -64,59 +68,41 @@
   </div>
 </div>
 
-<div
-  class="modal fade"
-  id="featureModal"
-  tabindex="-1"
-  aria-labelledby="featureModalLabel"
-  aria-hidden="true"
->
+<p-dialog header="TEMP" class="modal" [(visible)]="visibleEditNewFeature" [modal]="true"
+  [style]="{ minWidth: '30vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        (ngSubmit)="onSubmitFeatureModal(featureForm)"
-        #featureForm="ngForm"
-        id="featureForm"
-        class="validated"
-      >
-        <input type="hidden" #layerId="ngModel" name="layerId" [(ngModel)]="featureModel.layerId">
-        <div class="modal-header">
-          <h5 class="modal-title" id="featureModalLabel">{{ featureModalTitle }}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form (ngSubmit)="onSubmitFeatureModal(featureForm)" #featureForm="ngForm" id="featureForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Nome *</label>
+            <label class="form-label">Name *</label>
             <div class="p-fluid">
               <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="featureModel.name"
-                required maxlength="300" placeholder="Nome feature" appWhitespacesValidator [appNotDuplicateName]="filteredFeatureNames">
+                required maxlength="300" placeholder="Nome feature" appWhitespacesValidator
+                [appNotDuplicateName]="filteredFeatureNames">
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
-                  Necessario inserire il nome della feature
+                  Need to enter the name of the feature
                 </div>
                 <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
-                  Il nome della feature non può contenere solo spazi vuoti
+                  Feature name cannot contain only blanks
                 </div>
                 <div *ngIf="name.errors?.['notDuplicateName']">
-                  Esiste già una feature con questo nome
+                  There already exists a feature with this name
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Tipo *</label>
+            <label class="form-label">Type *</label>
             <div class="p-fluid">
-              <p-dropdown #type="ngModel" name="type" [(ngModel)]="featureModel.type"
-                placeholder="Tipo feature" [options]="featureTypeOptions" [filter]="true" [showClear]="true" [required]="true" (onChange)="featureTypeChange($event)">
+              <p-dropdown #type="ngModel" name="type" [(ngModel)]="featureModel.type" placeholder="Feature type"
+                [options]="featureTypeOptions" [filter]="true" [showClear]="true" [required]="true"
+                (onChange)="featureTypeChange($event)">
               </p-dropdown>
               <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">
                 <div *ngIf="type.errors?.['required']">
-                  Necessario inserire il tipo della feature
+                  Need to enter the type of the feature
                 </div>
               </div>
             </div>
@@ -125,38 +111,40 @@
             <label class="form-label">Tagset *</label>
             <div class="p-fluid">
               <p-dropdown #tagsetId="ngModel" name="tagsetId" [(ngModel)]="featureModel.tagsetId"
-                placeholder="Tipo feature" [options]="tagsetOptions" [filter]="true" [showClear]="true" [required]="true">
+                placeholder="Tipo feature" [options]="tagsetOptions" [filter]="true" [showClear]="true"
+                [required]="true">
               </p-dropdown>
               <div *ngIf="tagsetId.invalid && (tagsetId.touched || tagsetId.dirty)" class="invalid-feedback">
                 <div *ngIf="tagsetId.errors?.['required']">
-                  Necessario inserire il tagset della feature
+                  Need to enter the tagset of the feature
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Descrizione</label>
+            <label class="form-label">Description</label>
             <div class="p-fluid">
-              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="featureModel.description"></textarea>
+              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control"
+                [(ngModel)]="featureModel.description"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Annulla
+          <button type="button" class="btn btn-secondary" (click)="visibleEditNewFeature=false;">
+            Cancel
           </button>
           <button type="button" class="btn btn-primary" (click)="onSubmitFeatureModal(featureForm)">
             <span *ngIf="isEditing; else elseBlock">
-              Aggiorna
+              Update
             </span>
             <ng-template #elseBlock>
-              <span>Aggiungi</span>
+              <span>Add</span>
             </ng-template>
           </button>
         </div>
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

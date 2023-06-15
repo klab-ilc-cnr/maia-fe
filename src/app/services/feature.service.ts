@@ -12,6 +12,7 @@ export class FeatureService {
 
   /**Url per le richieste relative alle feature */
   private featureUrl: string;
+  private textoUrl: string;
 
   /**
    * Costruttore per FeatureService
@@ -19,6 +20,7 @@ export class FeatureService {
    */
   constructor(private http: HttpClient) {
     this.featureUrl = environment.featureUrl;
+    this.textoUrl = environment.textoUrl;
   }
 
   /**
@@ -69,4 +71,9 @@ export class FeatureService {
 
     return this.http.get<boolean>(`${this.featureUrl}/canbedeleted/${layerId}/${featureId}`);
   }
+
+  //#region TEXTO
+
+
+  //#endregion
 }
