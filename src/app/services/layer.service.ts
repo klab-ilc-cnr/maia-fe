@@ -37,7 +37,7 @@ export class LayerService {
    * @param layer {Layer} layer modificato
    * @returns {Observable<Layer>} observable del layer modificato
    */
-  public updateLayer(layer: Layer): Observable<Layer> {
+  public _updateLayer(layer: Layer): Observable<Layer> {
     return this.http.put<Layer>(`${this.layerUrl}`, layer);
   }
 
@@ -55,7 +55,7 @@ export class LayerService {
    * @param layer {Layer} nuovo layer
    * @returns {Observable<Layer>} observable del nuovo layer
    */
-  public createLayer(layer: Layer): Observable<Layer> {
+  public _createLayer(layer: Layer): Observable<Layer> {
     return this.http.post<Layer>(`${this.layerUrl}`, layer);
   }
 
@@ -64,7 +64,26 @@ export class LayerService {
 
   //#region TEXTO services
 
-  public getLayerList(): Observable<TLayer[]> {
+  public createLayer(newLayer: TLayer): Observable<TLayer> {
+    const uuid = uuidv4();
+    return this.http.post<TLayer>(
+      `${this.textoUrl}/texto/layer/create`,
+      newLayer,
+      { headers: new HttpHeaders({ 'UUID': uuid }) },
+    );
+  }
+
+  public removeLayerById(layerId: number) {
+    const uuid = uuidv4();
+    return this.http.get(
+      `${this.textoUrl}/texto/layer/${layerId}/remove`,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid })
+      },
+    )
+  }
+
+  public retrieveLayerList(): Observable<TLayer[]> {
     const uuid = uuidv4();
     return this.http.get<TLayer[]>(
       `${this.textoUrl}/texto/layer/list`,
@@ -74,11 +93,11 @@ export class LayerService {
     )
   }
 
-  public postCreateLayer(newLayer: TLayer): Observable<TLayer> {
+  public updateLayerById(updatedLayer: TLayer): Observable<TLayer> {
     const uuid = uuidv4();
     return this.http.post<TLayer>(
-      `${this.textoUrl}/texto/layer/create`,
-      newLayer,
+      `${this.textoUrl}/texto/layer/${updatedLayer.id}/update`,
+      updatedLayer,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );
   }
