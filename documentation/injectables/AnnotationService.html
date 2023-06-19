@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -330,8 +330,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="119"
-                            class="link-to-prism">src/app/services/annotation.service.ts:119</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="120"
+                            class="link-to-prism">src/app/services/annotation.service.ts:120</a></div>
                 </td>
             </tr>
 
@@ -488,8 +488,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="133"
-                            class="link-to-prism">src/app/services/annotation.service.ts:133</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/app/services/annotation.service.ts:134</a></div>
                 </td>
             </tr>
 
@@ -1056,8 +1056,8 @@ export class AnnotationService {
    */
   public retrieveByNodeId(nodeId: number): Observable&lt;any&gt; {
     let uuid &#x3D; uuidv4();
-
-    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
+    //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
   }
 
   /**
@@ -1068,8 +1068,8 @@ export class AnnotationService {
    */
   public create(nodeId: number, item: any): Observable&lt;any&gt; {
     let uuid &#x3D; uuidv4();
-
-    return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;, item);
+    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;, item);
   }
 
   /**
@@ -1079,8 +1079,8 @@ export class AnnotationService {
    */
   public update(item: any) {
     let uuid &#x3D; uuidv4();
-
-    return this.http.put&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/annotation?requestUUID&#x3D;${uuid}&#x60;, item);
+    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.put&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&#x60;, item);
   }
 
   /**
@@ -1101,8 +1101,8 @@ export class AnnotationService {
    */
   public retrieveText(nodeId: number): Observable&lt;any&gt; {
     let uuid &#x3D; uuidv4();
-
-    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/gettext?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
+    //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
+    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/gettext?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
   }
 
   /**
@@ -1124,7 +1124,8 @@ export class AnnotationService {
   public delete(annotationId: number): Observable&lt;any&gt; {
     let uuid &#x3D; uuidv4();
 
-    return this.http.delete&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/annotate?requestUUID&#x3D;${uuid}&amp;annotationID&#x3D;${annotationId}&#x60;);
+       //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+       return this.http.delete&lt;any&gt;(&#x60;${this.cashUrl}/api/annotate?requestUUID&#x3D;${uuid}&amp;annotationID&#x3D;${annotationId}&#x60;);
   }
 
   // FINE CHIAMATE CASH SERVER

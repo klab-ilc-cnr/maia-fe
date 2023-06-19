@@ -1,0 +1,1824 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>maia-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  SenseCoreEditorComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-sense-core-editor</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./sense-core-editor.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./sense-core-editor.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#_morphology" >_morphology</a>
+                            </li>
+                            <li>
+                                <a href="#currentUser" >currentUser</a>
+                            </li>
+                            <li>
+                                <a href="#definitionFormItems" >definitionFormItems</a>
+                            </li>
+                            <li>
+                                <a href="#definitionsMenuItems" >definitionsMenuItems</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                <a href="#morphRelations$" >morphRelations$</a>
+                            </li>
+                            <li>
+                                <a href="#morphRelationValues" >morphRelationValues</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#manageUpdateObservable" >manageUpdateObservable</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onAddDefinitionField" >onAddDefinitionField</a>
+                            </li>
+                            <li>
+                                <a href="#onAddMorphology" >onAddMorphology</a>
+                            </li>
+                            <li>
+                                <a href="#onDeleteLexicalSense" >onDeleteLexicalSense</a>
+                            </li>
+                            <li>
+                                <a href="#onMorphSelection" >onMorphSelection</a>
+                            </li>
+                            <li>
+                                <a href="#onRemoveDefinitionElement" >onRemoveDefinitionElement</a>
+                            </li>
+                            <li>
+                                <a href="#onRemoveMorph" >onRemoveMorph</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateListControlList" >updateListControlList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateSense" >updateSense</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#senseEntry" >senseEntry</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#morphology" >morphology</a>
+                                </li>
+                                <li>
+                                    <a href="#definition" >definition</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(userService: <a href="../injectables/UserService.html" target="_self">UserService</a>, commonService: <a href="../injectables/CommonService.html" target="_self">CommonService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, lexiconService: <a href="../injectables/LexiconService.html" target="_self">LexiconService</a>, globalState: <a href="../injectables/GlobalStateService.html" target="_self">GlobalStateService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:48</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>commonService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommonService.html" target="_self" >CommonService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>lexiconService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LexiconService.html" target="_self" >LexiconService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>globalState</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GlobalStateService.html" target="_self" >GlobalStateService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="senseEntry"></a>
+                        <b>senseEntry</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SenseCore.html" target="_self" >SenseCore</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:23</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="manageUpdateObservable"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>manageUpdateObservable</b></span>
+                        <a href="#manageUpdateObservable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:159</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>updateObs</td>
+                                    <td>
+                                            <code>Observable&lt;string&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>relation</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:106</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:88</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onAddDefinitionField"></a>
+                    <span class="name">
+                        <span ><b>onAddDefinitionField</b></span>
+                        <a href="#onAddDefinitionField"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onAddDefinitionField(fieldProperty: <a href="../interfaces/PropertyElement.html" target="_self">PropertyElement</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:111</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>fieldProperty</td>
+                                    <td>
+                                                <code><a href="../interfaces/PropertyElement.html" target="_self" >PropertyElement</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onAddMorphology"></a>
+                    <span class="name">
+                        <span ><b>onAddMorphology</b></span>
+                        <a href="#onAddMorphology"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onAddMorphology()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="117"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:117</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDeleteLexicalSense"></a>
+                    <span class="name">
+                        <span ><b>onDeleteLexicalSense</b></span>
+                        <a href="#onDeleteLexicalSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDeleteLexicalSense()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:123</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onMorphSelection"></a>
+                    <span class="name">
+                        <span ><b>onMorphSelection</b></span>
+                        <a href="#onMorphSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onMorphSelection(event: literal type, index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="127"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:127</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRemoveDefinitionElement"></a>
+                    <span class="name">
+                        <span ><b>onRemoveDefinitionElement</b></span>
+                        <a href="#onRemoveDefinitionElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRemoveDefinitionElement(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="135"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:135</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>fieldName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRemoveMorph"></a>
+                    <span class="name">
+                        <span ><b>onRemoveMorph</b></span>
+                        <a href="#onRemoveMorph"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRemoveMorph(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="141"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:141</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateListControlList"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>updateListControlList</b></span>
+                        <a href="#updateListControlList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateListControlList(list: FormArray<any>, controlList: literal type[], index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, value: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="186"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:186</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>list</td>
+                                    <td>
+                                            <code>FormArray&lt;any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>controlList</td>
+                                    <td>
+                                            <code>literal type[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSense"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>updateSense</b></span>
+                        <a href="#updateSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateSense(relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>relation</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_morphology"></a>
+                    <span class="name">
+                        <span ><b>_morphology</b></span>
+                        <a href="#_morphology"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentUser"></a>
+                    <span class="name">
+                        <span ><b>currentUser</b></span>
+                        <a href="#currentUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/User.html" target="_self" >User</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="definitionFormItems"></a>
+                    <span class="name">
+                        <span ><b>definitionFormItems</b></span>
+                        <a href="#definitionFormItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/PropertyElement.html" target="_self" >PropertyElement[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="definitionsMenuItems"></a>
+                    <span class="name">
+                        <span ><b>definitionsMenuItems</b></span>
+                        <a href="#definitionsMenuItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FormGroup({
+    definition: new FormGroup({}),
+    morphology: new FormArray&lt;FormControl&gt;([]),
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="morphRelations$"></a>
+                    <span class="name">
+                        <span ><b>morphRelations$</b></span>
+                        <a href="#morphRelations$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.globalState.morphologies$.pipe(
+    switchMap(list &#x3D;&gt; {
+      const mappedElements &#x3D; list.map(l &#x3D;&gt; &lt;{ label: string, id: string }&gt;{ label: l.propertyLabel, id: l.propertyId });
+      return of(mappedElements);
+    }),
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="morphRelationValues"></a>
+                    <span class="name">
+                        <span ><b>morphRelationValues</b></span>
+                        <a href="#morphRelationValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:25</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al popup di conferma cancellazione</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="morphology"></a>
+                        <span class="name"><b>morphology</b><a href="#morphology"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>morphology()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:34</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="definition"></a>
+                        <span class="name"><b>definition</b><a href="#definition"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>definition()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:35</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, Input, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { FormArray, FormControl, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
+import { PropertyElement, SenseCore } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { LexicalSenseUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { User } from &#x27;src/app/models/user&#x27;;
+import { CommonService } from &#x27;src/app/services/common.service&#x27;;
+import { GlobalStateService } from &#x27;src/app/services/global-state.service&#x27;;
+import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
+
+@Component({
+  selector: &#x27;app-sense-core-editor&#x27;,
+  templateUrl: &#x27;./sense-core-editor.component.html&#x27;,
+  styleUrls: [&#x27;./sense-core-editor.component.scss&#x27;]
+})
+export class SenseCoreEditorComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$ &#x3D; new Subject();
+  @Input() senseEntry!: SenseCore;
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+  currentUser!: User;
+  definitionFormItems: PropertyElement[] &#x3D; [];
+  definitionsMenuItems: { label: string, command: any }[] &#x3D; [];
+  form &#x3D; new FormGroup({
+    definition: new FormGroup({}),
+    morphology: new FormArray&lt;FormControl&gt;([]),
+  });
+  _morphology: { relation: string, value: string, external: boolean }[] &#x3D; [];
+  get morphology() { return this.form.controls.morphology as FormArray; }
+  get definition() { return this.form.controls.definition; }
+  morphRelations$ &#x3D; this.globalState.morphologies$.pipe(
+    switchMap(list &#x3D;&gt; {
+      const mappedElements &#x3D; list.map(l &#x3D;&gt; &lt;{ label: string, id: string }&gt;{ label: l.propertyLabel, id: l.propertyId });
+      return of(mappedElements);
+    }),
+  );
+
+  morphRelationValues &#x3D; (relation: string) &#x3D;&gt; this.globalState.morphologies$.pipe(
+    switchMap(list &#x3D;&gt; {
+      const values &#x3D; list.find(morph &#x3D;&gt; morph.propertyId &#x3D;&#x3D;&#x3D; relation)?.propertyValues ?? [];
+      return of(values);
+    }),
+  );
+
+  constructor(
+    private userService: UserService,
+    private commonService: CommonService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private lexiconService: LexiconService,
+    private globalState: GlobalStateService,
+  ) {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+    ).subscribe(cu &#x3D;&gt; {
+      this.currentUser &#x3D; cu;
+    });
+
+    this.definition.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(500),
+      distinctUntilChanged(),
+    ).subscribe((resp: { [key: string]: any }) &#x3D;&gt; {
+      for (const key in resp) {
+        const currentPropertyId &#x3D; this.definitionFormItems.findIndex(e &#x3D;&gt; e.propertyID &#x3D;&#x3D;&#x3D; key);
+        if (currentPropertyId &#x3D;&#x3D;&#x3D; -1 || this.definitionFormItems[currentPropertyId].propertyValue &#x3D;&#x3D;&#x3D; resp[key]) continue;
+        this.updateSense(key, resp[key]).then(() &#x3D;&gt; {
+          if (resp[key] &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+            this.definitionFormItems &#x3D; this.definitionFormItems.filter(i &#x3D;&gt; i.propertyID !&#x3D;&#x3D; key);
+            this.definitionsMenuItems.push({
+              label: key,
+              command: () &#x3D;&gt; {
+                this.onAddDefinitionField(&lt;PropertyElement&gt;{ propertyID: key, propertyValue: &#x27;&#x27; });
+              }
+            }); return;
+          }
+          this.definitionFormItems[currentPropertyId] &#x3D; &lt;PropertyElement&gt;{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
+        });
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    for (const def of this.senseEntry.definition) {
+      if (def.propertyID &#x3D;&#x3D;&#x3D; &#x27;definition&#x27;) {
+        this.definition.addControl(&#x27;definition&#x27;, new FormControl&lt;string&gt;(def.propertyValue, Validators.required));
+      }
+      if (def.propertyID !&#x3D;&#x3D; &#x27;definition&#x27; &amp;&amp; def.propertyValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        this.definitionsMenuItems.push({
+          label: def.propertyID,
+          command: () &#x3D;&gt; {
+            this.onAddDefinitionField(def);
+          }
+        });
+        continue;
+      }
+      this.onAddDefinitionField(def);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
+  }
+
+  onAddDefinitionField(fieldProperty: PropertyElement) {
+    this.definitionFormItems.push(fieldProperty);
+    this.definition.addControl(fieldProperty.propertyID, new FormControl&lt;string&gt;(fieldProperty.propertyValue));
+    this.definitionsMenuItems &#x3D; this.definitionsMenuItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; fieldProperty.propertyID);
+  }
+
+  onAddMorphology() {
+    const newMorph &#x3D; { relation: &#x27;&#x27;, value: &#x27;&#x27;, external: false };
+    this.morphology.push(new FormControl(newMorph));
+    this._morphology.push(&lt;{ relation: string, value: string, external: boolean }&gt;{ ...newMorph });
+  }
+
+  onDeleteLexicalSense() {
+    //TODO implementare metodo di cancellazione del senso e reindirizzamento dell&#x27;albero
+  }
+
+  onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
+    const currentValue &#x3D; this._morphology[index].value;
+    if (currentValue !&#x3D;&#x3D; event.value) {
+      //TODO implementa salvatggio della selezione
+      this.updateListControlList(this.morphology, this._morphology, index, event); //temporaneo
+    }
+  }
+
+  onRemoveDefinitionElement(fieldName: string) {
+    const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${fieldName}&quot;?&#x60;;
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; { this.definition.get(fieldName)?.setValue(&#x27;&#x27;); });
+  }
+
+  onRemoveMorph(index: number) {
+    const currentValue &#x3D; this._morphology[index].value;
+    if (!currentValue || currentValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+      this.morphology.removeAt(index);
+      this._morphology.splice(index, 1);
+      return;
+    }
+    if (currentValue &amp;&amp; currentValue !&#x3D;&#x3D; &#x27;&#x27;) {
+      const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${currentValue}&quot;?&#x60;;
+      this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+      this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; {
+        //TODO implementa rimozione della morfologia
+        this.morphology.removeAt(index); //temporaneo
+        this._morphology.splice(index, 1); //temporaneo
+      });
+    }
+  }
+
+  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string) {
+    updateObs.pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;&quot;${relation}&quot; update failed &#x60;));
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(resp &#x3D;&gt; {
+      this.senseEntry &#x3D; &lt;SenseCore&gt;{ ...this.senseEntry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;&quot;${relation}&quot; update success &#x60;));
+      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.senseEntry.sense });
+    });
+  }
+
+  private async updateSense(relation: string, value: string) {
+    if (!this.currentUser.name) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
+      return;
+    }
+    const updater &#x3D; &lt;LexicalSenseUpdater&gt;{
+      relation: this.commonService.getSenseUpdateRelation(relation),
+      value: value,
+    };
+    const updateObs &#x3D; this.lexiconService.updateLexicalSense(this.currentUser.name, this.senseEntry.sense, updater);
+    this.manageUpdateObservable(updateObs, relation);
+  }
+
+  private updateListControlList(list: FormArray&lt;any&gt;, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
+    list.at(index).setValue(value);
+    controlList[index] &#x3D; &lt;{ relation: string, value: string, external: boolean }&gt;{ ...value };
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- &lt;p-skeleton *ngIf&#x3D;&quot;!senseEntry&quot; width&#x3D;&quot;30rem&quot; height&#x3D;&quot;40rem&quot;&gt;&lt;/p-skeleton&gt; --&gt;
+&lt;div *ngIf&#x3D;&quot;senseEntry&quot; class&#x3D;&quot;card&quot; [style]&#x3D;&quot;{&#x27;height&#x27;: &#x27;100%&#x27;, &#x27;overflow-y&#x27;: &#x27;scroll&#x27;}&quot;&gt;
+  &lt;form class&#x3D;&quot;formgrid grid&quot; [formGroup]&#x3D;&quot;form&quot;&gt;
+    &lt;div class&#x3D;&quot;field col-6&quot; style&#x3D;&quot;align-self: center;&quot;&gt;
+      &lt;em&gt;Last update: {{senseEntry.lastUpdate | date: &#x27;medium&#x27;}}&lt;/em&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-6&quot;&gt;
+      &lt;button pButton type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-danger&quot; style&#x3D;&quot;float: right;&quot;
+        pTooltip&#x3D;&quot;Delete lexical form&quot; (click)&#x3D;&quot;onDeleteLexicalSense()&quot;&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+      &lt;p-fieldset&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+          &lt;p-menu #menuDefinitions [model]&#x3D;&quot;definitionsMenuItems&quot; [popup]&#x3D;&quot;true&quot; appendTo&#x3D;&quot;body&quot;&gt;&lt;/p-menu&gt;
+          Definitions &lt;button pButton pRipple icon&#x3D;&quot;pi pi-plus&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;menuDefinitions.toggle($event)&quot;
+            class&#x3D;&quot;p-button-rounded p-button-success mx-2 fieldset-small&quot;&gt;&lt;/button&gt;
+        &lt;/ng-template&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;content&quot;&gt;
+          &lt;form [formGroup]&#x3D;&quot;form.controls.definition&quot;&gt;
+            &lt;div class&#x3D;&quot;field col-12&quot; *ngFor&#x3D;&quot;let control of definitionFormItems&quot;&gt;
+              &lt;label [for]&#x3D;&quot;control.propertyID&quot;&gt;{{control.propertyID}}&lt;/label&gt;
+              &lt;div class&#x3D;&quot;d-flex justify-content-between&quot; style&#x3D;&quot;align-items: center;&quot;&gt;
+                &lt;textarea pInputTextarea [formControlName]&#x3D;&quot;control.propertyID&quot; [name]&#x3D;&quot;control.propertyID&quot;
+                  class&#x3D;&quot;col-11&quot;&gt;&lt;/textarea&gt;
+                &lt;button *ngIf&#x3D;&quot;control.propertyID !&#x3D;&#x3D; &#x27;definition&#x27;&quot; pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-times&quot;
+                  class&#x3D;&quot; col-1 p-button-rounded p-button-danger p-button-text&quot;
+                  (click)&#x3D;&quot;onRemoveDefinitionElement(control.propertyID)&quot;&gt;&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/ng-template&gt;
+      &lt;/p-fieldset&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+      &lt;p-fieldset&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+          Morphological Restriction &lt;button pButton pRipple icon&#x3D;&quot;pi pi-plus&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;onAddMorphology()&quot;
+            class&#x3D;&quot;p-button-rounded p-button-success mx-2 fieldset-small&quot;&gt;&lt;/button&gt;
+        &lt;/ng-template&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;content&quot;&gt;
+          &lt;app-double-autocomplete *ngFor&#x3D;&quot;let morph of morphology.controls; index as index&quot;
+            [relations$]&#x3D;&quot;morphRelations$&quot; [valuesFilterFn]&#x3D;&quot;morphRelationValues&quot; (remove)&#x3D;&quot;onRemoveMorph(index)&quot;
+            (selected)&#x3D;&quot;onMorphSelection($event, index)&quot; valueId&#x3D;&quot;valueId&quot; valueLabel&#x3D;&quot;valueLabel&quot;
+            [isCheckboxVisible]&#x3D;&quot;false&quot; [relationField]&#x3D;&quot;morph.value.relation&quot;
+            [valueField]&#x3D;&quot;morph.value.value&quot;&gt;&lt;/app-double-autocomplete&gt;
+        &lt;/ng-template&gt;
+      &lt;/p-fieldset&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./sense-core-editor.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">label {
+  width: 100%;
+}
+
+p-selectButton {
+  float: right;
+}
+
+::ng-deep legend {
+  width: auto;
+  float: inherit;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.fieldset-small {
+  height: 1.5rem !important;
+  width: 1.5rem;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton> --><div *ngIf="senseEntry" class="card" [style]="{\'height\': \'100%\', \'overflow-y\': \'scroll\'}">  <form class="formgrid grid" [formGroup]="form">    <div class="field col-6" style="align-self: center;">      <em>Last update: {{senseEntry.lastUpdate | date: \'medium\'}}</em>    </div>    <div class="field col-6">      <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"        pTooltip="Delete lexical form" (click)="onDeleteLexicalSense()"></button>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          <p-menu #menuDefinitions [model]="definitionsMenuItems" [popup]="true" appendTo="body"></p-menu>          Definitions <button pButton pRipple icon="pi pi-plus" type="button" (click)="menuDefinitions.toggle($event)"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <form [formGroup]="form.controls.definition">            <div class="field col-12" *ngFor="let control of definitionFormItems">              <label [for]="control.propertyID">{{control.propertyID}}</label>              <div class="d-flex justify-content-between" style="align-items: center;">                <textarea pInputTextarea [formControlName]="control.propertyID" [name]="control.propertyID"                  class="col-11"></textarea>                <button *ngIf="control.propertyID !== \'definition\'" pButton pRipple type="button" icon="pi pi-times"                  class=" col-1 p-button-rounded p-button-danger p-button-text"                  (click)="onRemoveDefinitionElement(control.propertyID)"></button>              </div>            </div>          </form>        </ng-template>      </p-fieldset>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          Morphological Restriction <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"            [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"            [isCheckboxVisible]="false" [relationField]="morph.value.relation"            [valueField]="morph.value.value"></app-double-autocomplete>        </ng-template>      </p-fieldset>    </div>  </form></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'SenseCoreEditorComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SenseCoreEditorComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

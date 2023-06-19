@@ -1,12 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
-import { Subscription, take } from 'rxjs';
-import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
+import { Subject, take, takeUntil } from 'rxjs';
 import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
-import { Morphology } from 'src/app/models/lexicon/morphology.model';
-import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -19,11 +15,9 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   styleUrls: ['./workspace-lexicon-edit-tile.component.scss']
 })
 export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
-  /**Sottoscrizione per la gestione del notify */
-  private subscription!: Subscription
+  private readonly unsubscribe$ = new Subject();
   /**Nome dell'istanza selezionara (entrata lessicale|forma|senso) */
   private selectedInstanceName!: string;
-
   /**Tipo di entrata lessicale */
   public selectedType!: LexicalEntryTypeOld; //set su workspace
   /**Nodo dell'albero del lessico selezionato */
@@ -66,21 +60,6 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Definisce se ci sono modifiche pendenti del senso */
   sensePendingChanges = false;
 
-  /**Lista delle option per i tipi di entrata lessicale */
-  lexicalEntryTypes!: DropdownField[];
-  /**Lista delle option per le POS */
-  partOfSpeeches!: DropdownField[];
-  /**Lista delle option per i valori dello status */
-  statusValues!: SelectButtonField[];
-  /**Lista delle option per i valori della lingua */
-  languageValues!: DropdownField[];
-  /**Lista delle option per i tipi di forma */
-  formTypes!: DropdownField[];
-  /**Lista delle option per i tratti morfologici */
-  morphTraitList!: DropdownField[];
-  /**Lista dei dati morfologici */
-  morphologicalData!: Morphology[];
-
   /**
    * Costruttore per WorkspaceLexiconEditTileComponent
    * @param lexiconService {LexiconService} servizi per LexO
@@ -99,13 +78,10 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
-    this.preloadLexicalEntryTypes();
-    this.preloadMorphInfos();
-    this.preloadStatusTypes();
-    this.preloadLanguages();
-    this.preloadFormTypes();
-
     this.selectedInstanceName = this.selectedNode.data.instanceName;
+    if(this.selectedNode.data.type === LexicalEntryTypeOld.FORM || this.selectedNode.data.type === LexicalEntryTypeOld.SENSE) {
+      this.lexicalEntryInstanceName = this.selectedNode.parent?.parent?.data.instanceName;
+    }
     this.refreshEditorView(this.selectedType, this.selectedInstanceName);
 
     this.cols = [
@@ -119,7 +95,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       { field: 'sub', display: 'false' }
     ];
 
-    this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
+    this.commonService.notifyObservable$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((res) => {
       if ('option' in res) {
         if (res.option === 'tag_clicked_edit_tile') {
           this.alternateLabelInstanceName();
@@ -163,7 +141,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per rimuovere eventuali sottoscrizioni */
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
+
   }
 
   /**Evoca lo switch label-instanceName su tutti i nodi dell'albero visualizzato */
@@ -200,7 +180,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
     switch (event.node.data.type) {
       case LexicalEntryTypeOld.LEXICAL_ENTRY:
-        this.lexiconService.getElements(event.node.data.instanceName).subscribe({
+        this.lexiconService.getElements(event.node.data.instanceName).pipe(
+          takeUntil(this.unsubscribe$),
+        ).subscribe({
           next: (data: any) => {
             const formChildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryTypeOld.FORMS_ROOT);
             const senseChildNode = event.node.children.find((el: any) => el.data.type === LexicalEntryTypeOld.SENSES_ROOT);
@@ -227,7 +209,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         });
         break;
       case LexicalEntryTypeOld.FORMS_ROOT:
-        this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
+        this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).pipe(
+          takeUntil(this.unsubscribe$),
+        ).subscribe({
           next: (data: FormListItem[]) => {
             const mappedChildren: any[] = data.map((val: FormListItem) => ({
               data: {
@@ -263,7 +247,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         });
         break;
       case LexicalEntryTypeOld.SENSES_ROOT:
-        this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
+        this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).pipe(
+          takeUntil(this.unsubscribe$),
+        ).subscribe({
           next: (data: SenseListItem[]) => {
             event.node.children = data.map((val: SenseListItem) => ({
               data: {
@@ -411,7 +397,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     const loggedUser = this.loggedUserService.currentUser;
     const creatorName = (loggedUser?.name + '.' + loggedUser?.surname).replace(' ', '.');
 
-    this.lexiconService.getNewForm(lexEntryId, creatorName).subscribe({
+    this.lexiconService.getNewForm(lexEntryId, creatorName).pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe({
       next: (res: FormCore) => {
         const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.FORMS_ROOT);
         this.onNodeExpand({ node: formsRootNode }, true, res.form);
@@ -438,7 +426,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     const loggedUser = this.loggedUserService.currentUser;
     const creatorName = (loggedUser?.name + '.' + loggedUser?.surname).replace(' ', '.');
 
-    this.lexiconService.getNewSense(lexEntryId, creatorName).subscribe({
+    this.lexiconService.getNewSense(lexEntryId, creatorName).pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe({
       next: (res: SenseCore) => {
         const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.SENSES_ROOT);
         this.onNodeExpand({ node: sensesRootNode }, true, res.sense);
@@ -449,102 +439,6 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
       }
     });
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento dei tipi di forma
-   */
-  private preloadFormTypes(): void {
-    this.lexiconService.getFormTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
-      this.formTypes = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...res.map((el: OntolexType) => <DropdownField>{
-          name: el.valueLabel,
-          code: el.valueId
-        })
-      ];
-    })
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento delle lingue disponibili
-   */
-  private preloadLanguages(): void {
-    this.lexiconService.getLanguages().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
-      this.languageValues = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...res.map((val: LexiconStatistics) => <DropdownField>{
-          name: val.label,
-          code: val.label
-        })
-      ];
-    })
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento dei tipi di entrata lessicale
-   */
-  private preloadLexicalEntryTypes(): void {
-    this.lexiconService.getLexicalEntryTypes().pipe(take(1)).subscribe((res: OntolexType[]) => {
-      this.lexicalEntryTypes = res.map((val: OntolexType) => <DropdownField>{
-        name: val.valueLabel,
-        code: val.valueId
-      });
-    })
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento delle informazioni morfologiche
-   */
-  private preloadMorphInfos(): void {
-    this.lexiconService.getMorphology().pipe(take(1)).subscribe((res: Morphology[]) => {
-      this.morphologicalData = res;
-      this.morphTraitList = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...res.map((el: Morphology) => <DropdownField>{
-          name: el.propertyLabel,
-          code: el.propertyId
-        })
-      ]
-      this.partOfSpeeches = res.find((el: Morphology) => el.propertyId?.split('#')[1] === 'partOfSpeech')?.propertyValues
-        ?.map((propValue: OntolexType) => <DropdownField>{
-          name: propValue.valueLabel,
-          code: propValue.valueId
-        }) || [];
-      this.partOfSpeeches = [
-        {
-          name: '--none--',
-          code: ''
-        },
-        ...this.partOfSpeeches
-      ];
-    });
-  }
-
-  /**
-   * @private
-   * Metodo per il pre-caricamento dei valori di status
-   */
-  private preloadStatusTypes(): void {
-    this.lexiconService.getStatus().pipe(take(1)).subscribe((res: LexiconStatistics[]) => {
-      this.statusValues = res.map((el: LexiconStatistics) => <SelectButtonField>{
-        icon: el.label,
-        justify: ''
-      });
-    })
   }
 
   /**

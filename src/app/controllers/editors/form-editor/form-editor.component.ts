@@ -1,9 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { forkJoin, Subscription, take } from 'rxjs';
+import { Subscription, forkJoin, take } from 'rxjs';
 import { DropdownField } from 'src/app/models/dropdown-field';
-import { FormCore, PropertyElement, LexicalEntryTypeOld, LinkElement, LinkProperty, MorphologyProperty } from 'src/app/models/lexicon/lexical-entry.model';
-import { FormUpdater, FORM_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
+import { FormCore, LexicalEntryTypeOld, LinkElement, LinkProperty, MorphologyProperty, PropertyElement } from 'src/app/models/lexicon/lexical-entry.model';
+import { FORM_RELATIONS, FormUpdater, LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { Morphology } from 'src/app/models/lexicon/morphology.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -12,9 +13,8 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
-import { HttpErrorResponse } from '@angular/common/http';
 
-/**Componente dell'editor per le forme */
+/**OLD Componente dell'editor per le forme */
 @Component({
   selector: 'app-form-editor',
   templateUrl: './form-editor.component.html',

@@ -31,14 +31,35 @@ export class PopupDeleteItemComponent {
       customClass: {
         confirmButton: "swalDangerButton"
       },
-      confirmButtonText: "Sono sicuro elimina",
-      cancelButtonText: "Annulla",
+      confirmButtonText: "I'm sure, delete",
+      cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed && id) {
         deleteFn(id, name, type);
       }
       else {
-        this.swalOperationCancelled("Cancellazione Annullata");
+        this.swalOperationCancelled("Cancellation Cancelled");
+      }
+    });
+  }
+
+  public showDeleteConfirmSimple(deleteFn: () => void) {
+    Swal.fire({
+      icon: 'warning',
+      titleText: this.confirmMessage,
+      showCancelButton: true,
+      showConfirmButton: true,
+      customClass: {
+        confirmButton: "swalDangerButton"
+      },
+      confirmButtonText: "I'm sure, delete",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteFn();
+      }
+      else {
+        this.swalOperationCancelled("Cancellation Cancelled");
       }
     });
   }

@@ -1,0 +1,17 @@
+<div class="field d-flex justify-content-between" [ngClass]="fieldValue.inferred ? 'readonly-input': ''">
+  <input *ngIf="isChecked; else autocomplete" pInputText type="text" placeholder="Write URL"
+    [(ngModel)]="fieldValue.value" (focusout)="onFocusOut()" [disabled]="fieldValue.inferred"
+    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary col-9">
+  <ng-template #autocomplete>
+    <p-autoComplete [placeholder]="placeholderMsg" [field]="field" [suggestions]="(suggestions | async) || []"
+      [(ngModel)]="fieldValue" (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event)"
+      [virtualScroll]="true" [disabled]="fieldValue.inferred"></p-autoComplete>
+  </ng-template>
+  <input type="checkbox" [checked]="isChecked" (change)="isChecked = !isChecked"
+    [disabled]="isCheckedDisabled || fieldValue.inferred">
+  <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"
+    (click)="onRemove()" *ngIf="!fieldValue.inferred; else filler"></button>
+  <ng-template #filler>
+    <div></div>
+  </ng-template>
+</div>

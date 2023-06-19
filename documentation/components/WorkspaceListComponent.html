@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -1467,12 +1467,6 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
                         <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
@@ -1539,12 +1533,6 @@
                     </span>
                 </td>
             </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                    </td>
-                </tr>
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>false</code>
@@ -1749,8 +1737,8 @@ export class WorkspaceListComponent implements OnInit {
   private delete &#x3D; (id: number, name: string): void &#x3D;&gt; {
     this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
 
-    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare il workspace \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
-    let successMsg &#x3D; &#x27;Workspace \&#x27;&#x27; + name + &#x27;\&#x27; eliminato con successo&#x27;;
+    const errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare il workspace \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
+    const successMsg &#x3D; &#x27;Workspace \&#x27;&#x27; + name + &#x27;\&#x27; eliminato con successo&#x27;;
 
     this.workspaceService.deleteWorkspace(id).subscribe({
       next: (data) &#x3D;&gt; {
@@ -1789,9 +1777,9 @@ export class WorkspaceListComponent implements OnInit {
   workspace: WorkspaceChoice &#x3D; new WorkspaceChoice;
 
   /**Definisce se è aperto il dialog del workspace */
-  workspaceDialog: boolean &#x3D; false;
+  workspaceDialog &#x3D; false;
   /** ? */ //TODO verificare perché non sembra utilizzato
-  submitted: boolean &#x3D; false;
+  submitted &#x3D; false;
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
@@ -1867,7 +1855,7 @@ export class WorkspaceListComponent implements OnInit {
    * @param workspace {WorkspaceChoice} workspace da cancellare
    */
   showDeleteWorkspaceModal(workspace: WorkspaceChoice) {
-    let confirmMsg &#x3D; &#x27;Stai per cancellare il workspace \&#x27;&#x27; + workspace.name + &#x27;\&#x27;&#x27;;
+    const confirmMsg &#x3D; &#x27;Stai per cancellare il workspace \&#x27;&#x27; + workspace.name + &#x27;\&#x27;&#x27;;
 
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.delete(workspace.id!, (workspace.name || &quot;&quot;)), workspace.id, workspace.name);
@@ -2170,7 +2158,7 @@ export class WorkspaceListComponent implements OnInit {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><p-toast></p-toast><div class="grid">    <div class="col-12">        <div class="card">            <div class="page-header">                <h5>Workspace</h5>                <p-button label="Nuovo workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"                    class="ms-start"></p-button>            </div>            <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"                currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"                selectionMode="single"                (onRowSelect)="openWorkspace($event)">                <ng-template pTemplate="header">                    <tr>                        <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>                        </th>                        <th pSortableColumn="note">Note<p-sortIcon field="note"></p-sortIcon>                        </th>                        <th pSortableColumn="updated">Ultimo accesso<p-sortIcon field="updated"></p-sortIcon>                        </th>                        <th></th>                    </tr>                </ng-template>                <ng-template pTemplate="body" let-workspace>                    <tr [pSelectableRow]="workspace">                        <td>{{workspace.name}}</td>                        <td>{{workspace.note}}</td>                        <td>{{workspace.updated | date: \'dd-MM-yyyy HH:mm:ss\'}}</td>                        <td>                            <button pButton pRipple icon="pi pi-desktop"                                class="p-button-rounded mx-2"                                (click)="goToWorkspace(workspace.id)"></button>                            <button pButton pRipple icon="pi pi-pencil"                                class="p-button-rounded p-button-success mx-2"                                (click)="showEditWorkspaceModal(workspace)"></button>                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"                                (click)="showDeleteWorkspaceModal(workspace)"></button>                        </td>                    </tr>                </ng-template>                <ng-template pTemplate="summary">                    <div class="p-d-flex p-ai-center p-jc-between">                        In totale ci sono {{workspaces ? workspaces.length : 0 }} workspace.                    </div>                </ng-template>            </p-table>        </div>    </div></div><div  class="modal fade"  id="workspaceModal"  tabindex="-1"  aria-labelledby="workspaceModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        (ngSubmit)="onSubmitWorkspaceModal(workspaceForm)"        #workspaceForm="ngForm"        id="workspaceForm"        class="validated"      >        <input type="hidden" #id="ngModel" name="id" [(ngModel)]="workspace.id">        <div class="modal-header">          <h5 class="modal-title" id="workspaceModalLabel">{{workspaceModalTitle}}</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="form-group">            <label class="form-label">Nome *</label>            <div class="p-fluid">              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="workspace.name"                required autofocus maxlength="300" placeholder="Nome workspace" appWhitespacesValidator>              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">                <div *ngIf="name.errors?.[\'required\']">                  Il nome è obbligatorio                </div>                <div *ngIf="name.errors?.[\'isNotOnlyWhitespaces\']">                  Il nome del workspace non può contenere solo spazi vuoti                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Note</label>            <div class="p-fluid">              <textarea rows="3" #note="ngModel" type="text" name="note" class="form-control" [(ngModel)]="workspace.note"></textarea>            </div>          </div>        </div>        <div class="modal-footer">          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">            Annulla          </button>          <button type="button" class="btn btn-primary" (click)="onSubmitWorkspaceModal(workspaceForm)">            <span *ngIf="isEditing; else elseBlock">              Aggiorna            </span>            <ng-template #elseBlock>              <span>Aggiungi</span>            </ng-template>          </button>        </div>      </form>    </div>  </div></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
-    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
     var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'WorkspaceListComponent'};
 </script>

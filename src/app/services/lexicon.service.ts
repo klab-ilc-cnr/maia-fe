@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
-import { FormUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
+import { FormUpdater, GenericRelationUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { Morphology } from '../models/lexicon/morphology.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
-import { LexicalEntriesResponse } from '../models/lexicon/lexical-entry-request.model';
+import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { CommonService } from './common.service';
 import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { Namespace } from '../models/lexicon/namespace.model';
+import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 
 /**Classe dei servizi relativi al lessico */
 @Injectable({
@@ -116,6 +117,10 @@ export class LexiconService {
     return this.http.get(`${this.lexoUrl}lexicon/data/elements?id=${encodedId}`);
   }
 
+  getFilteredLexicalConcepts(parameters: {text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number}): Observable<{totalHits: number, list: any[]}> { //TODO replace con response list corretto
+    return this.http.post<{totalHits: number, list: any[]}>(`${this.lexoUrl}lexicon/data/filteredLexicalConcepts`, parameters)
+  }
+
   /**
    * GET che recupera i dati di una forma
    * @param formID {string} identificativo della forma
@@ -132,6 +137,14 @@ export class LexiconService {
    */
   getFormTypes(): Observable<OntolexType[]> {
     return this.http.get<OntolexType[]>(`${this.lexoUrl}ontolex/data/formType`)
+  }
+
+  /**
+   * GET che recupera la lista di lingue disponibili per la selezione
+   * @returns {Observable<any>} observable della lista di lingue disponibili
+   */
+  getLanguages(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
   }
 
   /**
@@ -172,12 +185,9 @@ export class LexiconService {
     return this.http.get<OntolexType[]>(`${this.lexoUrl}ontolex/data/lexicalEntryType`);
   }
 
-  /**
-   * GET che recupera la lista di lingue disponibili per la selezione
-   * @returns {Observable<any>} observable della lista di lingue disponibili
-   */
-  getLanguages(): Observable<LexiconStatistics[]> {
-    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
+  getLinguisticRelations(property: string, lexicalEntryId: string): Observable<LinguisticRelationModel[]> {
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/lexicon/data/linguisticRelation?property=${property}&id=${encodedId}`);
   }
 
   /**
@@ -280,6 +290,15 @@ export class LexiconService {
     return this.http.post(
       `${this.lexoUrl}import/conll?prefix=${prefix}&baseIRI=${encodedBaseIRI}&author=${author}&language=${language}&drop=${drop}`,
       file
+    )
+  }
+
+  updateGenericRelation(lexicalEntryID: string, updater: GenericRelationUpdater): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryID);
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/genericRelation?id=${encodedLexEntry}`,
+      updater,
+      { responseType: "text" }
     )
   }
 

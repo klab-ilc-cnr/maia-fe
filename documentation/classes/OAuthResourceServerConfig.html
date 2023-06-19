@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -132,7 +132,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/config/auth.config.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/config/auth.config.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -167,7 +167,7 @@ If sendAccessToken is set to true, the access_token is send to them too.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/config/auth.config.ts:47</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/config/auth.config.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -192,7 +192,7 @@ If sendAccessToken is set to true, the access_token is send to them too.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/config/auth.config.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/config/auth.config.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -211,8 +211,8 @@ If sendAccessToken is set to true, the access_token is send to them too.</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {AuthConfig} from &#x27;angular-oauth2-oidc&#x27;;
-import {environment} from &#x27;../../environments/environment&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AuthConfig } from &#x27;angular-oauth2-oidc&#x27;;
+import { environment } from &#x27;../../environments/environment&#x27;;
 import { OAuthModuleConfig } from &#x27;angular-oauth2-oidc&#x27;;
 
 export const authConfig: AuthConfig &#x3D; {
@@ -238,14 +238,15 @@ export const authConfig: AuthConfig &#x3D; {
   requireHttps: environment.keycloak.requireHttps,
   // at_hash is not present in JWT token
   showDebugInformation: environment.keycloak.showDebugInformation,
-  disableAtHashCheck: environment.keycloak.disableAtHashCheck
+  disableAtHashCheck: environment.keycloak.disableAtHashCheck,
+  //strictDiscoveryDocumentValidation: environment.keycloak.strictDiscoveryDocumentValidation 
 };
 
 
 export const authModuleConfig: OAuthModuleConfig &#x3D; {
-  resourceServer : {
+  resourceServer: {
     sendAccessToken: true,
-    allowedUrls: [environment.allowedUrls]
+    allowedUrls: [environment.allowedUrls, environment.lexoUrl]
   }
 }
 
