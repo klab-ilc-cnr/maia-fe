@@ -134,6 +134,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
 
   /**Metodo che visualizza il modale di inserimento di un nuovo valore del tagset */
   showTagsetValueModal() {
+    this.ttagsetItemOnEdit = undefined;
     this.newEditTitle = 'New tagset value'
     this.tagsetItemForm.reset();
     this.name.setValidators(nameDuplicateValidator(this.ttagsetItemsName));

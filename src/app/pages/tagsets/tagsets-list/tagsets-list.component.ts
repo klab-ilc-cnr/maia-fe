@@ -95,6 +95,7 @@ export class TagsetsListComponent implements OnDestroy {
 
   /**Metodo che esegue la navigazione su un "nuovo" tagset */
   onNew(): void {
+    this.tagsetOnEdit = undefined;
     this.tagsetForm.reset();
     this.modalTitle = 'New tagset';
     this.name.setValidators(nameDuplicateValidator(this.tagsetsNames));

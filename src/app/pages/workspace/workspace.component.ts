@@ -234,7 +234,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loaderService.show();
         this.layerService.retrieveLayers().subscribe({
           next: (layers: Layer[]) => {
-            this.visibleLayers = layers;
+            this.visibleLayers = layers; //TODO da gestire
             this.loaderService.hide();
 
             if (this.workspaceId === this.newId) {
@@ -821,7 +821,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
     componentRef.instance.height = window.innerHeight / 3 * 2;
-    componentRef.instance.visibleLayers = this.visibleLayers;
+    // componentRef.instance.visibleLayers = this.visibleLayers;
 
     const element = componentRef.location.nativeElement;
 

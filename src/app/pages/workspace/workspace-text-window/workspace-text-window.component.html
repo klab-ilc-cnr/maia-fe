@@ -6,8 +6,8 @@
   <div class="col-sm-6">
     <label class="col-sm-2 col-form-label">Layer</label>
     <div class="p-fluid">
-      <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer"
-        placeholder="Seleziona un layer" [options]="layerOptions" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="true">
+      <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
+        placeholder="Select a layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="true">
       </p-dropdown>
       <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">
         <div *ngIf="layer.errors?.['required']">
@@ -19,7 +19,7 @@
   <div class="col-sm-6">
     <label class="col-sm-2 col-form-label">Visibilità</label>
     <div class="p-fluid">
-      <p-multiSelect [options]="layersList" [(ngModel)]="selectedLayers" defaultLabel="Selezione i layer da visualizzare" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
+      <p-multiSelect [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Selezione i layer da visualizzare" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
         <ng-template let-value pTemplate="selectedItems">
           <div class="layer-item-value" *ngFor="let option of selectedLayers" [ngStyle]="{'border-color': option.color}">
             <span class="pe-2">

@@ -1,37 +1,39 @@
-import { EditorType } from 'src/app/models/editor-type';
-import { LineBuilder } from 'src/app/models/text/line-builder';
-import { LoaderService } from 'src/app/services/loader.service';
-import { AnnotationService } from 'src/app/services/annotation.service';
-import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
-import { WorkspaceService } from 'src/app/services/workspace.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { TextRow } from 'src/app/models/text/text-row';
-import { MessageService, SelectItem } from 'primeng/api';
-import { LayerService } from 'src/app/services/layer.service';
+import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
+import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
+import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
-import { TextLine } from 'src/app/models/text/text-line';
-import { forkJoin } from 'rxjs';
-import { TextHighlight } from 'src/app/models/text/text-highlight';
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
-import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
+import { LineBuilder } from 'src/app/models/text/line-builder';
+import { TextHighlight } from 'src/app/models/text/text-highlight';
+import { TextLine } from 'src/app/models/text/text-line';
+import { TextRow } from 'src/app/models/text/text-row';
+import { TLayer } from 'src/app/models/texto/t-layer';
+import { AnnotationService } from 'src/app/services/annotation.service';
+import { LayerStateService } from 'src/app/services/layer-state.service';
+import { LoaderService } from 'src/app/services/loader.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { RelationService } from 'src/app/services/relation.service';
 
 @Component({
   selector: 'app-workspace-text-window',
   templateUrl: './workspace-text-window.component.html',
-  styleUrls: ['./workspace-text-window.component.scss']
+  styleUrls: ['./workspace-text-window.component.scss'],
+  providers: [LayerStateService],
 })
-export class WorkspaceTextWindowComponent implements OnInit {
-
+export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$ = new Subject();
+  layers$ = this.layerState.layers$.pipe(
+    switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
+  );
   /**Indice di inizio selezione */
   private selectionStart?: number;
   /**Indice di fine selezione */
   private selectionEnd?: number;
-  /**Definisce se la modifica è bloccata */ //TODO non in uso, verificare
-  private _editIsLocked = false;
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -75,17 +77,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
   /**Altezza del pannello di testo */
   height: number = window.innerHeight / 2;
   /**Lista delle opzioni layer */
-  layerOptions = new Array<SelectItem>();
+  // layerOptions = new Array<SelectItem>();
   /**Lista dei layer */
-  layersList: Layer[] = [];
+  layersList: TLayer[] = [];
   /**Relazione in lavorazione */
   relation = new Relation();
   /**Righe di testo */
   rows: TextRow[] = [];
   /**Layer selezionato */
-  selectedLayer: any;
+  selectedLayer: TLayer|undefined;
   /**Lista di layer selezionati */
-  selectedLayers: Layer[] | undefined;
+  selectedLayers: TLayer[] | undefined;
 
   sentnumVerticalLine = "M 0 0";
   /**Definisce se visualizzare l'editor di annotazione */
@@ -112,7 +114,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   /**Text response */
   textRes: any;
   /**Lista dei layer visibili */
-  visibleLayers: Layer[] = [];
+  visibleLayers: TLayer[] = [];
 
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
@@ -121,8 +123,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
    * Costruttore per WorkspaceTextWindowComponent
    * @param annotationService {AnnotationService} servizi relativi alle annotazioni
    * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param workspaceService {WorkspaceService} servizi relativi ai workspace //TODO valutare rimozione per mancato utilizzo
-   * @param layerService {LayerService} servizi relativi ai layer
    * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
    * @param relationService {RelationService} servizi relativi alle relazioni
@@ -130,11 +130,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
   constructor(
     private annotationService: AnnotationService,
     private loaderService: LoaderService,
-    private workspaceService: WorkspaceService,
-    private layerService: LayerService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private relationService: RelationService
+    private relationService: RelationService,
+    private layerState: LayerStateService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per caricare i dati iniziali del componente */
@@ -143,11 +142,25 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
+    this.layers$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(list => {
+      this.layersList = list;
+      if(!this.selectedLayers) {
+        this.selectedLayers = this.visibleLayers = list;
+      }
+    });
+
     this.showAnnotationEditor = true;
 
     this.updateHeight(this.height);
 
     this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -174,37 +187,43 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.loaderService.show();
 
     forkJoin([
-      this.layerService.retrieveLayers(),
+      // this.layerService.retrieveLayers(),
       // this.annotationService._retrieveText(this.textId),
       this.annotationService.retrieveText(this.textId, { start: 0, end: null }),
       this.annotationService.retrieveByNodeId(this.textId),
       this.relationService.retrieveByTextId(this.textId)
     ]).subscribe({
-      next: ([layersResponse, textResponse, annotationsResponse, relationsResponse]) => {
-        this.layersList = layersResponse;
+      next: ([textResponse, annotationsResponse, relationsResponse]) => {
+        // this.layersList = layersResponse;
 
-        if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
-          this.visibleLayers = this.selectedLayers = this.layersList;
-        }
-        else {
+        if(this.selectedLayers) {
           this.visibleLayers = this.selectedLayers;
         }
 
-        this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
+        // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
+        //   this.visibleLayers = this.selectedLayers = this.layersList;
+        // }
+        // else {
+        //   this.visibleLayers = this.selectedLayers;
+        // }
 
-        this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
+        // this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
 
-        this.layerOptions.unshift({
-          label: "Nessuna annotazione",
-          value: -1
-        });
+        // this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
+
+        // this.layerOptions.unshift({
+        //   label: "Nessuna annotazione",
+        //   value: -1
+        // });
 
         if (!this.selectedLayer) {
-          this.selectedLayer = -1;
+          this.selectedLayer = undefined;
         }
 
-        this.annotation.layer = this.selectedLayer;
-        this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+        // this.annotation.layer = this.selectedLayer;
+        // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+        this.annotation.layer = this.selectedLayer?.id;
+        this.annotation.layerName = this.selectedLayer?.name;
 
         this.textRes = textResponse;
         this.annotationsRes = annotationsResponse;
@@ -350,8 +369,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     const relations = new Relations();
 
-    this.annotation.layer = this.selectedLayer;
-    this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+    // this.annotation.layer = this.selectedLayer;
+    // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+    this.annotation.layer = this.selectedLayer?.id;
+    this.annotation.layerName = this.selectedLayer?.name;
     this.annotation.spans = new Array<SpanCoordinates>();
     this.annotation.spans.push({
       start: startIndex,
@@ -396,7 +417,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     // }
 
     this.annotation = { ...ann }
-    this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
+    // this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
+    this.annotation.layerName = this.selectedLayer?.name;
 
     //this._editIsLocked = true;
   }

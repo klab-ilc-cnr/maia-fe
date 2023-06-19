@@ -127,6 +127,7 @@ export class LayersListComponent {
 
   /**Metodo che visualizza il modale di modifica di un layer per un nuovo inserimento */
   showLayerModal() {
+    this.layerOnEdit = undefined;
     this.tlayerForm.reset();
     this.modalTitle = "New layer";
     this.name.setValidators(nameDuplicateValidator(this.layersNames));
