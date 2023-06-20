@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >DocumentElement</li>
+  <li >ResourceElement</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -62,18 +62,17 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/models/corpus/document-element.ts</code>
+            <code>src/app/models/texto/corpus-element.ts</code>
         </p>
 
 
+
             <p class="comment">
-                <h3>Description</h3>
+                <h3>Extends</h3>
             </p>
             <p class="comment">
-                <p>Classe che rappresenta un elemento del sistema documentale</p>
-
+                        <code><a href="../classes/CorpusElement.html" target="_self" >CorpusElement</a></code>
             </p>
-
 
 
 
@@ -90,22 +89,23 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#children" >children</a>
+                                    <span class="modifier"></span>
+                                <a href="#type" >type</a>
                             </li>
                             <li>
-                                <a href="#element-id" >element-id</a>
+                                <a href="#description" >description</a>
                             </li>
                             <li>
-                                <a href="#metadata" >metadata</a>
+                                <a href="#id" >id</a>
                             </li>
                             <li>
                                 <a href="#name" >name</a>
                             </li>
                             <li>
-                                <a href="#path" >path</a>
+                                <a href="#parent" >parent</a>
                             </li>
                             <li>
-                                <a href="#type" >type</a>
+                                <a href="#user" >user</a>
                             </li>
                         </ul>
                     </td>
@@ -130,31 +130,38 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="children"></a>
+                    <a name="type"></a>
                     <span class="name">
-                        <span ><b>children</b></span>
-                        <a href="#children"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>type</b></span>
+                        <a href="#type"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/DocumentElement.html" target="_self" >DocumentElement[] | undefined</a></code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#ElementType" target="_self" >ElementType</a></code>
 
                     </td>
                 </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>ElementType.RESOURCE</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/CorpusElement.html" target="_self" >CorpusElement</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/models/corpus/document-element.ts:17</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:13</a></code>
+</div>
                         </td>
                     </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Lista degli elementi figli dell&#39;elemento corrente</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>
@@ -162,10 +169,43 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="element-id"></a>
+                    <a name="description"></a>
                     <span class="name">
-                        <span ><b>element-id</b></span>
-                        <a href="#element-id"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>description</b></span>
+                        <a href="#description"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/CorpusElement.html" target="_self" >CorpusElement</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:8</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="id"></a>
+                    <span class="name">
+                        <span ><b>id</b></span>
+                        <a href="#id"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -175,50 +215,19 @@
 
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/CorpusElement.html" target="_self" >CorpusElement</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/models/corpus/document-element.ts:13</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:4</a></code>
+</div>
                         </td>
                     </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Identificativo numerico dell&#39;elemento</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="metadata"></a>
-                    <span class="name">
-                        <span ><b>metadata</b></span>
-                        <a href="#metadata"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/DocumentMetadata.html" target="_self" >DocumentMetadata | undefined</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/models/corpus/document-element.ts:15</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metadati dell&#39;elemento</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>
@@ -239,18 +248,19 @@
 
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/CorpusElement.html" target="_self" >CorpusElement</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/models/corpus/document-element.ts:9</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:7</a></code>
+</div>
                         </td>
                     </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Nome dell&#39;elemento</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>
@@ -258,31 +268,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="path"></a>
+                    <a name="parent"></a>
                     <span class="name">
-                        <span ><b>path</b></span>
-                        <a href="#path"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>parent</b></span>
+                        <a href="#parent"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>string | undefined</code>
+                        <i>Type : </i>    <code>literal type | undefined</code>
 
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/CorpusElement.html" target="_self" >CorpusElement</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/corpus/document-element.ts:7</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:6</a></code>
+</div>
                         </td>
                     </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Path dell&#39;elemento</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>
@@ -290,31 +301,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="type"></a>
+                    <a name="user"></a>
                     <span class="name">
-                        <span ><b>type</b></span>
-                        <a href="#type"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>user</b></span>
+                        <a href="#user"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#_ElementType" target="_self" >_ElementType</a></code>
+                        <i>Type : </i>    <code>literal type | undefined</code>
 
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/CorpusElement.html" target="_self" >CorpusElement</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/models/corpus/document-element.ts:11</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:9</a></code>
+</div>
                         </td>
                     </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Tipo di elemento (cartella o file)</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>
@@ -330,23 +342,24 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { _ElementType } from &#x27;./element-type&#x27;;
-import { DocumentMetadata } from &quot;./document-metadata&quot;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ElementType } from &quot;../corpus/element-type&quot;;
 
-/**Classe che rappresenta un elemento del sistema documentale */
-export class DocumentElement {
-  /**Path dell&#x27;elemento */
-  path: string | undefined
-  /**Nome dell&#x27;elemento */
-  name: string | undefined
-  /**Tipo di elemento (cartella o file) */
-  type!: _ElementType
-  /**Identificativo numerico dell&#x27;elemento */
-  &#x27;element-id&#x27;: number
-  /**Metadati dell&#x27;elemento */
-  metadata: DocumentMetadata | undefined
-  /**Lista degli elementi figli dell&#x27;elemento corrente */
-  children: DocumentElement[] | undefined
+export class CorpusElement {
+  id!: number;
+  type!: ElementType;
+  parent: { id: number; } | undefined;
+  name: string | undefined;
+  description: string | undefined;
+  user: { id: number; } | undefined;
+}
+
+export class ResourceElement extends CorpusElement {
+  override type: ElementType &#x3D; ElementType.RESOURCE;
+}
+
+export class FolderElement extends CorpusElement {
+  override type: ElementType &#x3D; ElementType.FOLDER;
+  children!: CorpusElement[];
 }
 </code></pre>
     </div>
@@ -386,7 +399,7 @@ export class DocumentElement {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'DocumentElement.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ResourceElement.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

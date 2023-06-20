@@ -86,11 +86,11 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#featureUrl" >featureUrl</a>
+                                <a href="#layerUrl" >layerUrl</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#layerUrl" >layerUrl</a>
+                                <a href="#textoUrl" >textoUrl</a>
                             </li>
                         </ul>
                     </td>
@@ -106,6 +106,14 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#_createLayer" >_createLayer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_updateLayer" >_updateLayer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#createLayer" >createLayer</a>
                             </li>
                             <li>
@@ -114,11 +122,27 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#removeLayerById" >removeLayerById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#retrieveLayerById" >retrieveLayerById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#retrieveLayerFeatureList" >retrieveLayerFeatureList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#retrieveLayerList" >retrieveLayerList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#retrieveLayers" >retrieveLayers</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#updateLayer" >updateLayer</a>
+                                <a href="#updateLayerById" >updateLayerById</a>
                             </li>
                         </ul>
                     </td>
@@ -143,7 +167,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/layer.service.ts:16</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/layer.service.ts:17</a></div>
                             </td>
                         </tr>
 
@@ -197,26 +221,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="createLayer"></a>
+                    <a name="_createLayer"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>createLayer</b></span>
-                        <a href="#createLayer"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>_createLayer</b></span>
+                        <a href="#_createLayer"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createLayer(layer: <a href="../classes/Layer.html" target="_self">Layer</a>)</code>
+                    <code>_createLayer(layer: <a href="../classes/Layer.html" target="_self">Layer</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/app/services/layer.service.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/app/services/layer.service.ts:59</a></div>
                 </td>
             </tr>
 
@@ -276,6 +300,156 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="_updateLayer"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>_updateLayer</b></span>
+                        <a href="#_updateLayer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_updateLayer(layer: <a href="../classes/Layer.html" target="_self">Layer</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/app/services/layer.service.ts:41</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>PUT che richiede la modifica dei dati di un layer</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>layer</td>
+                                    <td>
+                                                <code><a href="../classes/Layer.html" target="_self" >Layer</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>layer modificato</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Layer.html" target="_self" >Observable&lt;Layer&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable del layer modificato</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createLayer"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>createLayer</b></span>
+                        <a href="#createLayer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createLayer(newLayer: <a href="../classes/TLayer.html" target="_self">TLayer</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/app/services/layer.service.ts:68</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>newLayer</td>
+                                    <td>
+                                                <code><a href="../classes/TLayer.html" target="_self" >TLayer</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;TLayer&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="deleteLayer"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -294,8 +468,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/app/services/layer.service.ts:49</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/services/layer.service.ts:50</a></div>
                 </td>
             </tr>
 
@@ -355,6 +529,258 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="removeLayerById"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>removeLayerById</b></span>
+                        <a href="#removeLayerById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeLayerById(layerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">src/app/services/layer.service.ts:77</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>layerId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveLayerById"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>retrieveLayerById</b></span>
+                        <a href="#retrieveLayerById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>retrieveLayerById(layerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">src/app/services/layer.service.ts:87</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>layerId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;TLayer&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveLayerFeatureList"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>retrieveLayerFeatureList</b></span>
+                        <a href="#retrieveLayerFeatureList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>retrieveLayerFeatureList(layerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="97"
+                            class="link-to-prism">src/app/services/layer.service.ts:97</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>layerId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;TFeature[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveLayerList"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>retrieveLayerList</b></span>
+                        <a href="#retrieveLayerList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>retrieveLayerList()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/app/services/layer.service.ts:101</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;TLayer[]&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="retrieveLayers"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -373,8 +799,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="31"
-                            class="link-to-prism">src/app/services/layer.service.ts:31</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/app/services/layer.service.ts:32</a></div>
                 </td>
             </tr>
 
@@ -402,34 +828,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="updateLayer"></a>
+                    <a name="updateLayerById"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>updateLayer</b></span>
-                        <a href="#updateLayer"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateLayerById</b></span>
+                        <a href="#updateLayerById"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateLayer(layer: <a href="../classes/Layer.html" target="_self">Layer</a>)</code>
+                    <code>updateLayerById(updatedLayer: <a href="../classes/TLayer.html" target="_self">TLayer</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="40"
-                            class="link-to-prism">src/app/services/layer.service.ts:40</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/app/services/layer.service.ts:111</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>PUT che richiede la modifica dei dati di un layer</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -440,14 +864,13 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>layer</td>
+                                    <td>updatedLayer</td>
                                     <td>
-                                                <code><a href="../classes/Layer.html" target="_self" >Layer</a></code>
+                                                <code><a href="../classes/TLayer.html" target="_self" >TLayer</a></code>
                                     </td>
 
                                     <td>
@@ -455,10 +878,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>layer modificato</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -466,12 +885,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Layer.html" target="_self" >Observable&lt;Layer&gt;</a></code>
+                        <b>Returns : </b>    <code>Observable&lt;TLayer&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable del layer modificato</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -483,39 +901,6 @@
     <h3 id="inputs">
         Properties
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="featureUrl"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>featureUrl</b></span>
-                        <a href="#featureUrl"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/layer.service.ts:16</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Url per le chiamate relative alle feature</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -536,7 +921,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/layer.service.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/layer.service.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -549,28 +934,56 @@
 
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="textoUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>textoUrl</b></span>
+                        <a href="#textoUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/layer.service.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
 </section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
 import { Injectable } from &#x27;@angular/core&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
 import { environment } from &#x27;src/environments/environment&#x27;;
+import { v4 as uuidv4 } from &#x27;uuid&#x27;;
 import { Layer } from &#x27;../models/layer/layer.model&#x27;;
+import { TFeature } from &#x27;../models/texto/t-feature&#x27;;
+import { TLayer } from &#x27;../models/texto/t-layer&#x27;;
 
 /**Classe dei servizi relativi ai layer */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class LayerService {
-
+  private textoUrl: string;
   /**Url per le chiamate relative ai layer */
   private layerUrl: string;
-  /**Url per le chiamate relative alle feature */
-  private featureUrl: string; //TODO verificare se si può rimuovere in quanto non utilizzato
 
   /**
    * Costruttore per LayerService
@@ -578,7 +991,7 @@ export class LayerService {
    */
   constructor(private http: HttpClient) {
     this.layerUrl &#x3D; environment.layersUrl; //inizializza gli url sulla base degli environment
-    this.featureUrl &#x3D; environment.featureUrl;
+    this.textoUrl &#x3D; environment.textoUrl;
   }
 
   /**
@@ -594,7 +1007,7 @@ export class LayerService {
    * @param layer {Layer} layer modificato
    * @returns {Observable&lt;Layer&gt;} observable del layer modificato
    */
-  public updateLayer(layer: Layer): Observable&lt;Layer&gt; {
+  public _updateLayer(layer: Layer): Observable&lt;Layer&gt; {
     return this.http.put&lt;Layer&gt;(&#x60;${this.layerUrl}&#x60;, layer);
   }
 
@@ -612,13 +1025,68 @@ export class LayerService {
    * @param layer {Layer} nuovo layer
    * @returns {Observable&lt;Layer&gt;} observable del nuovo layer
    */
-  public createLayer(layer: Layer): Observable&lt;Layer&gt; {
+  public _createLayer(layer: Layer): Observable&lt;Layer&gt; {
     return this.http.post&lt;Layer&gt;(&#x60;${this.layerUrl}&#x60;, layer);
   }
 
   //FEATURES
 
 
+  //#region TEXTO services
+
+  public createLayer(newLayer: TLayer): Observable&lt;TLayer&gt; {
+    const uuid &#x3D; uuidv4();
+    return this.http.post&lt;TLayer&gt;(
+      &#x60;${this.textoUrl}/texto/layer/create&#x60;,
+      newLayer,
+      { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
+    );
+  }
+
+  public removeLayerById(layerId: number) {
+    const uuid &#x3D; uuidv4();
+    return this.http.get(
+      &#x60;${this.textoUrl}/texto/layer/${layerId}/remove&#x60;,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      },
+    )
+  }
+
+  public retrieveLayerById(layerId: number): Observable&lt;TLayer&gt; {
+    const uuid &#x3D; uuidv4();
+    return this.http.get&lt;TLayer&gt;(
+      &#x60;${this.textoUrl}/texto/layer/${layerId}&#x60;,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      },
+    )
+  }
+
+  public retrieveLayerFeatureList(layerId: number): Observable&lt;TFeature[]&gt; {
+    return this.http.get&lt;TFeature[]&gt;(&#x60;${this.textoUrl}/texto/layer/${layerId}/features&#x60;);
+  }
+
+  public retrieveLayerList(): Observable&lt;TLayer[]&gt; {
+    const uuid &#x3D; uuidv4();
+    return this.http.get&lt;TLayer[]&gt;(
+      &#x60;${this.textoUrl}/texto/layer/list&#x60;,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      },
+    )
+  }
+
+  public updateLayerById(updatedLayer: TLayer): Observable&lt;TLayer&gt; {
+    const uuid &#x3D; uuidv4();
+    return this.http.post&lt;TLayer&gt;(
+      &#x60;${this.textoUrl}/texto/layer/${updatedLayer.id}/update&#x60;,
+      updatedLayer,
+      { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
+    );
+  }
+
+  //#endregion
 }
 </code></pre>
     </div>

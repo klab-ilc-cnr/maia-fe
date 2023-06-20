@@ -13,42 +13,60 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
-
+/**Componente dell'editor di lavorazione del core di un senso */
 @Component({
   selector: 'app-sense-core-editor',
   templateUrl: './sense-core-editor.component.html',
   styleUrls: ['./sense-core-editor.component.scss']
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
+  /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
+  /**Senso in lavorazione */
   @Input() senseEntry!: SenseCore;
+  /**Identificativo dell'entrata lessicale di appartenenza */
   @Input() lexEntryId!: string;
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
+  /**Utente loggato */
   currentUser!: User;
+  /**Elementi del form relativi alle definizioni */
   definitionFormItems: PropertyElement[] = [];
+  /**Elementi del menu relativi alle definizioni */
   definitionsMenuItems: { label: string, command: any }[] = [];
+  /**Form per la modifica dei valori del senso */
   form = new FormGroup({
     definition: new FormGroup({}),
     morphology: new FormArray<FormControl>([]),
   });
+  /**Lista di controllo delle relazioni morfologiche */
   _morphology: { relation: string, value: string, external: boolean }[] = [];
+  /**Getter del form array della morfologia */
   get morphology() { return this.form.controls.morphology as FormArray; }
+  /**Getter del form group delle definizioni */
   get definition() { return this.form.controls.definition; }
+  /**Observable della relazioni morfologiche */
   morphRelations$ = this.globalState.morphologies$.pipe(
     switchMap(list => {
       const mappedElements = list.map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
       return of(mappedElements);
     }),
   );
-
+  /**
+   * Funzione di filtro delle relazioni morfologiche
+   * @param relation {string} relazione selezionata
+   * @returns {Observable<OntolexType[]>} observable della lista di valori associati a una relazione
+   */
   morphRelationValues = (relation: string) => this.globalState.morphologies$.pipe(
     switchMap(list => {
       const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
       return of(values);
     }),
   );
-
+  /**
+   * Funzione di cancellazione di un senso
+   * @param senseId {string} identificativo del senso
+   */
   private deleteSense = (senseId: string) => {
     this.showOperationInProgress("Deletion in progress");
     const successMsg = "Successfully removed sense";
@@ -65,6 +83,15 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Costruttore per SenseCoreEditorComponent
+   * @param userService {UserService} servizi relativi agli utenti
+   * @param commonService {CommonService} servizi di utilità generale
+   * @param messageService {MessageService} api primeng
+   * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param globalState {GlobalStateService} servizi dello stato del lessico
+   */
   constructor(
     private userService: UserService,
     private commonService: CommonService,
@@ -103,6 +130,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**Metodo dell'interfaccia OnInit, utilizzato per prevalorizzare il form */
   ngOnInit(): void {
     //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
     for (const def of this.senseEntry.definition) {
@@ -122,29 +150,41 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**Metodo dell'interfaccia OnDestroy, utilizzato per l'emissione e chiusura del subject di gestione delle subscribe */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
   }
 
+  /**
+   * Metodo per l'aggiunta di un nuovo elemento alle definizioni
+   * @param fieldProperty {PropertyElement} proprietà da aggiungere alle definizioni
+   */
   onAddDefinitionField(fieldProperty: PropertyElement) {
     this.definitionFormItems.push(fieldProperty);
     this.definition.addControl(fieldProperty.propertyID, new FormControl<string>(fieldProperty.propertyValue));
     this.definitionsMenuItems = this.definitionsMenuItems.filter(i => i.label !== fieldProperty.propertyID);
   }
 
+  /**Metodo che gestisce l'inserimento di un nuovo elemento nei tratti morfologici */
   onAddMorphology() {
     const newMorph = { relation: '', value: '', external: false };
     this.morphology.push(new FormControl(newMorph));
     this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...newMorph });
   }
 
+  /**Metodo che gestisce la cancellazione del senso in lavorazione */
   onDeleteLexicalSense() {
     const confirmMsg = "You are about to delete a sense";
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
 
+  /**
+   * Metodo che salva un nuovo inserimento nei tratti morfologici
+   * @param event {{ relation: string, value: string, external: boolean }} evento emesso alla selezione dei valori di un tratto morfologico
+   * @param index {number} indice nella lista e nella lista di controllo
+   */
   onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
     const currentValue = this._morphology[index].value;
     if (currentValue !== event.value) {
@@ -153,12 +193,21 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Metodo che gestisce la rimozione di una definizione
+   * @param fieldName {string} nome del campo definition in rimozione
+   */
   onRemoveDefinitionElement(fieldName: string) {
     const confirmMsg = `Are you sure to remove "${fieldName}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() => { this.definition.get(fieldName)?.setValue(''); });
   }
 
+  /**
+   * Metodo che gestisce la rimozione di un elemento dalla lista dei tratti morfologici
+   * @param index {number} indice nell'elenco dei tratti morfologici
+   * @returns {void}
+   */
   onRemoveMorph(index: number) {
     const currentValue = this._morphology[index].value;
     if (!currentValue || currentValue === '') {
@@ -177,6 +226,12 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @private
+   * Metodo che gestisce l'observable di update
+   * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
+   * @param relation {string} relazione aggiornata
+   */
   private async manageUpdateObservable(updateObs: Observable<string>, relation: string) {
     updateObs.pipe(
       take(1),
@@ -191,6 +246,13 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo che aggiorna un senso
+   * @param relation {string} relazione da aggiornare
+   * @param value {string} nuovo valore dellazione
+   * @returns {Promise<void>}
+   */
   private async updateSense(relation: string, value: string) {
     if (!this.currentUser.name) {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
@@ -235,6 +297,13 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Metodo che aggiorna la lista del formarray e la relativa lista di controllo con il nuovo valore
+   * @param list {FormArrya<any>} lista di elementi del campo formarray
+   * @param controlList { relation: string, value: string, external: boolean }[]} lista di controllo
+   * @param index {number} indice dell'elemento nelle liste
+   * @param value {{ relation: string, value: string, external: boolean }} valore aggiornato
+   */
   private updateListControlList(list: FormArray<any>, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
     list.at(index).setValue(value);
     controlList[index] = <{ relation: string, value: string, external: boolean }>{ ...value };

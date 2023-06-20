@@ -257,7 +257,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>showDeleteConfirm(deleteFn: (id: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>,name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>,type: <a href="../undefineds/ElementType.html">ElementType</a>) => void, id?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, name?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, type?: <a href="../undefineds/ElementType.html" target="_self">ElementType</a>)</code>
+                    <code>showDeleteConfirm(deleteFn: (id: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>,name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>,type: <a href="../undefineds/_ElementType.html">_ElementType</a>) => void, id?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, name?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, type?: <a href="../undefineds/_ElementType.html" target="_self">_ElementType</a>)</code>
                 </td>
             </tr>
 
@@ -339,7 +339,7 @@
                                 <tr>
                                     <td>type</td>
                                     <td>
-                                                <code><a href="../miscellaneous/enumerations.html#ElementType" target="_self" >ElementType</a></code>
+                                                <code><a href="../miscellaneous/enumerations.html#_ElementType" target="_self" >_ElementType</a></code>
                                     </td>
 
                                     <td>
@@ -524,7 +524,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input } from &#x27;@angular/core&#x27;;
-import { ElementType } from &#x27;src/app/models/corpus/element-type&#x27;;
+import { _ElementType } from &#x27;src/app/models/corpus/element-type&#x27;;
 import Swal from &#x27;sweetalert2&#x27;;
 
 /**Componente del popup di conferma cancellazione con codice */
@@ -545,9 +545,9 @@ export class PopupDeleteItemComponent {
    * @param deleteFn {} funzione per la cancellazione di un elemento
    * @param id {any} identificativo dell&#x27;elemento
    * @param name {string} nome dell&#x27;elemento
-   * @param type {ElementType} tipo di elemento da cancellare
+   * @param type {_ElementType} tipo di elemento da cancellare
    */
-  public showDeleteConfirm(deleteFn: (id: any, name?: string, type?: ElementType) &#x3D;&gt; void, id?: any, name?: string, type?: ElementType): void {
+  public showDeleteConfirm(deleteFn: (id: any, name?: string, type?: _ElementType) &#x3D;&gt; void, id?: any, name?: string, type?: _ElementType): void {
     Swal.fire({
       icon: &#x27;warning&#x27;,
       titleText: this.confirmMessage,

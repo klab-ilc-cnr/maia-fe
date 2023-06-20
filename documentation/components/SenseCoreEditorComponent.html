@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente dell&#39;editor di lavorazione del core di un senso</p>
+
+    </p>
 
 
     <p class="comment">
@@ -147,6 +154,10 @@
                                 <a href="#definitionsMenuItems" >definitionsMenuItems</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteSense" >deleteSense</a>
+                            </li>
+                            <li>
                                 <a href="#form" >form</a>
                             </li>
                             <li>
@@ -207,6 +218,14 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                 <a href="#updateListControlList" >updateListControlList</a>
                             </li>
                             <li>
@@ -226,6 +245,9 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                <a href="#lexEntryId" >lexEntryId</a>
+                            </li>
                             <li>
                                 <a href="#senseEntry" >senseEntry</a>
                             </li>
@@ -268,12 +290,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:48</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:84</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per SenseCoreEditorComponent</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -282,6 +306,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -296,6 +321,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi agli utenti</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>commonService</td>
@@ -308,6 +337,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi di utilità generale</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>messageService</td>
@@ -320,6 +353,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>api primeng</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>msgConfService</td>
@@ -332,6 +369,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi di configurazione dei messaggi</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>lexiconService</td>
@@ -344,6 +385,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi al lessico</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>globalState</td>
@@ -356,6 +401,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi dello stato del lessico</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -372,6 +421,33 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="lexEntryId"></a>
+                        <b>lexEntryId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:28</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Identificativo dell&#39;entrata lessicale di appartenenza</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="senseEntry"></a>
                         <b>senseEntry</b>
                     </td>
@@ -384,9 +460,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:23</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:26</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Senso in lavorazione</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -421,14 +503,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="159"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:159</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="235"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:235</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce l&#39;observable di update</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -439,6 +523,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -453,6 +538,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>observable del timestamp di ultimo aggiornamento</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>relation</td>
@@ -465,6 +554,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>relazione aggiornata</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -502,14 +595,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="106"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:106</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="154"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:154</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnDestroy, utilizzato per l&#39;emissione e chiusura del subject di gestione delle subscribe</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -539,14 +634,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="88"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:88</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:134</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per prevalorizzare il form</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -576,14 +673,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="111"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:111</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="163"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:163</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per l&#39;aggiunta di un nuovo elemento alle definizioni</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -594,6 +693,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -608,6 +708,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>proprietà da aggiungere alle definizioni</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -645,14 +749,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="117"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:117</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="170"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:170</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce l&#39;inserimento di un nuovo elemento nei tratti morfologici</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -682,14 +788,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="123"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:123</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="177"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:177</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce la cancellazione del senso in lavorazione</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -719,14 +827,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="127"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:127</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="188"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:188</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che salva un nuovo inserimento nei tratti morfologici</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -737,6 +847,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -751,6 +862,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>evento emesso alla selezione dei valori di un tratto morfologico</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>index</td>
@@ -763,6 +878,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>indice nella lista e nella lista di controllo</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -800,14 +919,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="135"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:135</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="200"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:200</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce la rimozione di una definizione</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -818,6 +939,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -832,6 +954,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>nome del campo definition in rimozione</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -869,14 +995,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="141"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:141</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="211"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:211</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce la rimozione di un elemento dalla lista dei tratti morfologici</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -887,6 +1015,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -901,6 +1030,166 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>indice nell&#39;elenco dei tratti morfologici</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="274"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:274</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione fallita</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio di errore</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="287"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:287</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione in corso</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio da visualizzare</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -940,14 +1229,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="186"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:186</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="307"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:307</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che aggiorna la lista del formarray e la relativa lista di controllo con il nuovo valore</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -958,6 +1249,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -972,6 +1264,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>lista di elementi del campo formarray</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>controlList</td>
@@ -984,6 +1280,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>: string, value: string, external: boolean }[]} lista di controllo</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>index</td>
@@ -996,6 +1296,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>indice dell&#39;elemento nelle liste</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>value</td>
@@ -1008,6 +1312,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>valore aggiornato</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1048,14 +1356,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="173"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:173</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="256"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:256</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che aggiorna un senso</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1066,6 +1376,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1080,6 +1391,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>relazione da aggiornare</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>value</td>
@@ -1092,6 +1407,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>nuovo valore dellazione</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1139,10 +1458,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:43</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di controllo delle relazioni morfologiche</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1165,10 +1490,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:32</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Utente loggato</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1196,10 +1527,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:34</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Elementi del form relativi alle definizioni</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1227,11 +1564,73 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:28</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:36</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Elementi del menu relativi alle definizioni</p>
+</div>
+                </td>
+            </tr>
 
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteSense"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteSense</b></span>
+                        <a href="#deleteSense"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Funzione di cancellazione di un senso</p>
+</div>
+                </td>
+            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>senseId</td>
+                                                    <td>
+                                                            <code><p>identificativo del senso</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
@@ -1255,10 +1654,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:38</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Form per la modifica dei valori del senso</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1285,10 +1690,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:49</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable della relazioni morfologiche</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1310,11 +1721,41 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:43</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:60</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Funzione di filtro delle relazioni morfologiche</p>
+</div>
+                </td>
+            </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>relation</td>
+                                                    <td>
+                                                            <code><p>relazione selezionata</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
@@ -1346,7 +1787,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -1379,10 +1820,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:24</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject per la gestione della cancellazione delle subscribe</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1408,9 +1855,16 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:34</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:45</a></div>
                                 </td>
                             </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter del form array della morfologia</p>
+</div>
+
+                        </td>
+                    </tr>
 
             </tbody>
         </table>
@@ -1430,9 +1884,16 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:35</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:47</a></div>
                                 </td>
                             </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter del form group delle definizioni</p>
+</div>
+
+                        </td>
+                    </tr>
 
             </tbody>
         </table>
@@ -1454,42 +1915,87 @@ import { GlobalStateService } from &#x27;src/app/services/global-state.service&#
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
 import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
-
+/**Componente dell&#x27;editor di lavorazione del core di un senso */
 @Component({
   selector: &#x27;app-sense-core-editor&#x27;,
   templateUrl: &#x27;./sense-core-editor.component.html&#x27;,
   styleUrls: [&#x27;./sense-core-editor.component.scss&#x27;]
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
+  /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ &#x3D; new Subject();
+  /**Senso in lavorazione */
   @Input() senseEntry!: SenseCore;
+  /**Identificativo dell&#x27;entrata lessicale di appartenenza */
+  @Input() lexEntryId!: string;
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+  /**Utente loggato */
   currentUser!: User;
+  /**Elementi del form relativi alle definizioni */
   definitionFormItems: PropertyElement[] &#x3D; [];
+  /**Elementi del menu relativi alle definizioni */
   definitionsMenuItems: { label: string, command: any }[] &#x3D; [];
+  /**Form per la modifica dei valori del senso */
   form &#x3D; new FormGroup({
     definition: new FormGroup({}),
     morphology: new FormArray&lt;FormControl&gt;([]),
   });
+  /**Lista di controllo delle relazioni morfologiche */
   _morphology: { relation: string, value: string, external: boolean }[] &#x3D; [];
+  /**Getter del form array della morfologia */
   get morphology() { return this.form.controls.morphology as FormArray; }
+  /**Getter del form group delle definizioni */
   get definition() { return this.form.controls.definition; }
+  /**Observable della relazioni morfologiche */
   morphRelations$ &#x3D; this.globalState.morphologies$.pipe(
     switchMap(list &#x3D;&gt; {
       const mappedElements &#x3D; list.map(l &#x3D;&gt; &lt;{ label: string, id: string }&gt;{ label: l.propertyLabel, id: l.propertyId });
       return of(mappedElements);
     }),
   );
-
+  /**
+   * Funzione di filtro delle relazioni morfologiche
+   * @param relation {string} relazione selezionata
+   * @returns {Observable&lt;OntolexType[]&gt;} observable della lista di valori associati a una relazione
+   */
   morphRelationValues &#x3D; (relation: string) &#x3D;&gt; this.globalState.morphologies$.pipe(
     switchMap(list &#x3D;&gt; {
       const values &#x3D; list.find(morph &#x3D;&gt; morph.propertyId &#x3D;&#x3D;&#x3D; relation)?.propertyValues ?? [];
       return of(values);
     }),
   );
+  /**
+   * Funzione di cancellazione di un senso
+   * @param senseId {string} identificativo del senso
+   */
+  private deleteSense &#x3D; (senseId: string) &#x3D;&gt; {
+    this.showOperationInProgress(&quot;Deletion in progress&quot;);
+    const successMsg &#x3D; &quot;Successfully removed sense&quot;;
+    this.lexiconService.deleteLexicalSense(senseId).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.showOperationFailed(&quot;Deletion failed: &quot; + error.message);
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(() &#x3D;&gt; {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.lexEntryId, isRemove: true });
+      Swal.close();
+    });
+  }
 
+  /**
+   * Costruttore per SenseCoreEditorComponent
+   * @param userService {UserService} servizi relativi agli utenti
+   * @param commonService {CommonService} servizi di utilità generale
+   * @param messageService {MessageService} api primeng
+   * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param globalState {GlobalStateService} servizi dello stato del lessico
+   */
   constructor(
     private userService: UserService,
     private commonService: CommonService,
@@ -1528,7 +2034,9 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**Metodo dell&#x27;interfaccia OnInit, utilizzato per prevalorizzare il form */
   ngOnInit(): void {
+    //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
     for (const def of this.senseEntry.definition) {
       if (def.propertyID &#x3D;&#x3D;&#x3D; &#x27;definition&#x27;) {
         this.definition.addControl(&#x27;definition&#x27;, new FormControl&lt;string&gt;(def.propertyValue, Validators.required));
@@ -1546,41 +2054,64 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per l&#x27;emissione e chiusura del subject di gestione delle subscribe */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
   }
 
+  /**
+   * Metodo per l&#x27;aggiunta di un nuovo elemento alle definizioni
+   * @param fieldProperty {PropertyElement} proprietà da aggiungere alle definizioni
+   */
   onAddDefinitionField(fieldProperty: PropertyElement) {
     this.definitionFormItems.push(fieldProperty);
     this.definition.addControl(fieldProperty.propertyID, new FormControl&lt;string&gt;(fieldProperty.propertyValue));
     this.definitionsMenuItems &#x3D; this.definitionsMenuItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; fieldProperty.propertyID);
   }
 
+  /**Metodo che gestisce l&#x27;inserimento di un nuovo elemento nei tratti morfologici */
   onAddMorphology() {
     const newMorph &#x3D; { relation: &#x27;&#x27;, value: &#x27;&#x27;, external: false };
     this.morphology.push(new FormControl(newMorph));
     this._morphology.push(&lt;{ relation: string, value: string, external: boolean }&gt;{ ...newMorph });
   }
 
+  /**Metodo che gestisce la cancellazione del senso in lavorazione */
   onDeleteLexicalSense() {
-    //TODO implementare metodo di cancellazione del senso e reindirizzamento dell&#x27;albero
+    const confirmMsg &#x3D; &quot;You are about to delete a sense&quot;;
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
 
+  /**
+   * Metodo che salva un nuovo inserimento nei tratti morfologici
+   * @param event {{ relation: string, value: string, external: boolean }} evento emesso alla selezione dei valori di un tratto morfologico
+   * @param index {number} indice nella lista e nella lista di controllo
+   */
   onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
     const currentValue &#x3D; this._morphology[index].value;
     if (currentValue !&#x3D;&#x3D; event.value) {
-      //TODO implementa salvatggio della selezione
+      //TODO implementa salvataggio della selezione non appena disponibile il servizio relativo
       this.updateListControlList(this.morphology, this._morphology, index, event); //temporaneo
     }
   }
 
+  /**
+   * Metodo che gestisce la rimozione di una definizione
+   * @param fieldName {string} nome del campo definition in rimozione
+   */
   onRemoveDefinitionElement(fieldName: string) {
     const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${fieldName}&quot;?&#x60;;
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; { this.definition.get(fieldName)?.setValue(&#x27;&#x27;); });
   }
 
+  /**
+   * Metodo che gestisce la rimozione di un elemento dalla lista dei tratti morfologici
+   * @param index {number} indice nell&#x27;elenco dei tratti morfologici
+   * @returns {void}
+   */
   onRemoveMorph(index: number) {
     const currentValue &#x3D; this._morphology[index].value;
     if (!currentValue || currentValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
@@ -1599,6 +2130,12 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @private
+   * Metodo che gestisce l&#x27;observable di update
+   * @param updateObs {Observable&lt;string&gt;} observable del timestamp di ultimo aggiornamento
+   * @param relation {string} relazione aggiornata
+   */
   private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string) {
     updateObs.pipe(
       take(1),
@@ -1613,6 +2150,13 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo che aggiorna un senso
+   * @param relation {string} relazione da aggiornare
+   * @param value {string} nuovo valore dellazione
+   * @returns {Promise&lt;void&gt;}
+   */
   private async updateSense(relation: string, value: string) {
     if (!this.currentUser.name) {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
@@ -1626,6 +2170,44 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this.manageUpdateObservable(updateObs, relation);
   }
 
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;please wait&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
+  /**
+   * Metodo che aggiorna la lista del formarray e la relativa lista di controllo con il nuovo valore
+   * @param list {FormArrya&lt;any&gt;} lista di elementi del campo formarray
+   * @param controlList { relation: string, value: string, external: boolean }[]} lista di controllo
+   * @param index {number} indice dell&#x27;elemento nelle liste
+   * @param value {{ relation: string, value: string, external: boolean }} valore aggiornato
+   */
   private updateListControlList(list: FormArray&lt;any&gt;, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
     list.at(index).setValue(value);
     controlList[index] &#x3D; &lt;{ relation: string, value: string, external: boolean }&gt;{ ...value };

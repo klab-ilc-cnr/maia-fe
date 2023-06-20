@@ -421,6 +421,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/AnnotationMetadata.html" data-type="entity-link" >AnnotationMetadata</a>
                             </li>
                             <li class="link">
+                                <a href="classes/CorpusElement.html" data-type="entity-link" >CorpusElement</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/CorpusTileContent.html" data-type="entity-link" >CorpusTileContent</a>
                             </li>
                             <li class="link">
@@ -440,6 +443,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="classes/FeatureForAnnotation.html" data-type="entity-link" >FeatureForAnnotation</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/FolderElement.html" data-type="entity-link" >FolderElement</a>
                             </li>
                             <li class="link">
                                 <a href="classes/Language.html" data-type="entity-link" >Language</a>
@@ -481,6 +487,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/Relations.html" data-type="entity-link" >Relations</a>
                             </li>
                             <li class="link">
+                                <a href="classes/ResourceElement.html" data-type="entity-link" >ResourceElement</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/SpanCoordinates.html" data-type="entity-link" >SpanCoordinates</a>
                             </li>
                             <li class="link">
@@ -499,13 +508,28 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/TextLine.html" data-type="entity-link" >TextLine</a>
                             </li>
                             <li class="link">
+                                <a href="classes/TextoUser.html" data-type="entity-link" >TextoUser</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/TextRow.html" data-type="entity-link" >TextRow</a>
                             </li>
                             <li class="link">
                                 <a href="classes/TextTileContent.html" data-type="entity-link" >TextTileContent</a>
                             </li>
                             <li class="link">
+                                <a href="classes/TFeature.html" data-type="entity-link" >TFeature</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/Tile.html" data-type="entity-link" >Tile</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/TLayer.html" data-type="entity-link" >TLayer</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/TTagset.html" data-type="entity-link" >TTagset</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/TTagsetItem.html" data-type="entity-link" >TTagsetItem</a>
                             </li>
                             <li class="link">
                                 <a href="classes/User.html" data-type="entity-link" >User</a>
@@ -536,6 +560,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <a href="injectables/CommonService.html" data-type="entity-link" >CommonService</a>
                                 </li>
                                 <li class="link">
+                                    <a href="injectables/CorpusStateService.html" data-type="entity-link" >CorpusStateService</a>
+                                </li>
+                                <li class="link">
                                     <a href="injectables/FeatureService.html" data-type="entity-link" >FeatureService</a>
                                 </li>
                                 <li class="link">
@@ -546,6 +573,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 </li>
                                 <li class="link">
                                     <a href="injectables/LayerService.html" data-type="entity-link" >LayerService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/LayerStateService.html" data-type="entity-link" >LayerStateService</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/LexiconService.html" data-type="entity-link" >LexiconService</a>
@@ -564,6 +594,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 </li>
                                 <li class="link">
                                     <a href="injectables/TagsetService.html" data-type="entity-link" >TagsetService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/TagsetStateService.html" data-type="entity-link" >TagsetStateService</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/UserService.html" data-type="entity-link" >UserService</a>

@@ -68,6 +68,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente dell&#39;editor di lavorazione del core di una forma</p>
+
+    </p>
 
 
     <p class="comment">
@@ -139,6 +146,10 @@
                             </li>
                             <li>
                                 <a href="#currentUser" >currentUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteForm" >deleteForm</a>
                             </li>
                             <li>
                                 <a href="#emptyField" >emptyField</a>
@@ -221,6 +232,14 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#updateForm" >updateForm</a>
                             </li>
@@ -287,12 +306,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:95</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per FormCoreEditorComponent</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -301,6 +322,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -315,6 +337,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi per il recupero dello stato globale del lessico</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>lexiconService</td>
@@ -327,6 +353,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi al lessico</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>userService</td>
@@ -339,6 +369,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi agli utenti</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>messageService</td>
@@ -351,6 +385,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>api primeng</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>msgConfService</td>
@@ -363,6 +401,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi di configurazione dei messaggi</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>commonService</td>
@@ -375,6 +417,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi di utilità generale</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -403,9 +449,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:25</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:30</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Forma in lavorazione</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -440,14 +492,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="202"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:202</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="276"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:276</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce l&#39;observable di update</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -458,6 +512,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -472,6 +527,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>observable del timestamp di ultimo aggiornamento</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>relation</td>
@@ -484,6 +543,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>relazione aggiornata</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -521,14 +584,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="144"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:144</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="190"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:190</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnDestroy, utilizzato per l&#39;emissione e chiusura del subject di gestione delle subscribe</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -558,14 +623,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="113"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:113</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:158</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per la valorizzazione iniziale del componente e del form</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -595,14 +662,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="149"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:149</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="199"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:199</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per l&#39;aggiunta di un campo del gruppo label</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -613,6 +682,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -627,6 +697,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>proprietà selezionata</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -664,14 +738,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="155"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:155</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="206"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:206</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo di aggiunta di una riga di tratti morfologici</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -701,14 +777,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="161"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:161</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="213"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:213</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per la cancellazione della forma</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -738,14 +816,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="165"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:165</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="224"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:224</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che salva la selezione di un tratto morfologico e del suo valore</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -756,6 +836,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -770,6 +851,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>evento emesso dal componente su selezione</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>index</td>
@@ -782,6 +867,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>indice nella lista dei campi di morfologia</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -819,14 +908,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="174"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:174</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="237"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:237</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che rimuove un elemento dalla lista di campi delle label</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -837,6 +928,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -851,6 +943,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>nome del field label da rimuobre</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -888,14 +984,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="180"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:180</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="248"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:248</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che rimuove un elemento dalla lista dei tratti morfologici</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -906,6 +1004,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -920,6 +1019,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>indice del tratto morfologico nella lista</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -960,14 +1063,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="215"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:215</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="294"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:294</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo di rimozione di una relazione</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -978,6 +1083,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -992,6 +1098,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>oggetto di aggiornamento</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1000,6 +1110,162 @@
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="356"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:356</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione fallita</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio di errore</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="369"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:369</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione in corso</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio da visualizzare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                     </div>
                     <div class="io-description">
@@ -1032,14 +1298,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="229"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:229</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="315"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:315</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che aggiorna una forma</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1050,6 +1318,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1064,6 +1333,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>relazione da aggiornare</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>value</td>
@@ -1076,6 +1349,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>nuovo valore dellazione</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1116,14 +1393,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="242"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:242</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="337"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:337</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per l&#39;aggiornamento di una relazione linguistica</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1134,6 +1413,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1148,6 +1428,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>tipo di relazione linguistica</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>relation</td>
@@ -1160,6 +1444,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>relazione da aggiornare</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>value</td>
@@ -1172,6 +1460,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>nuovo valore</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>currentValue</td>
@@ -1184,6 +1476,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>eventuale valore corrente</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1223,14 +1519,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="256"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:256</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="389"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:389</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che aggiorna la lista del formarray e la relativa lista di controllo con il nuovo valore</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1241,6 +1539,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1255,6 +1554,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>lista di elementi del campo formarray</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>controlList</td>
@@ -1267,6 +1570,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>: string, value: string, external: boolean }[]} lista di controllo</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>index</td>
@@ -1279,6 +1586,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>indice dell&#39;elemento nelle liste</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>value</td>
@@ -1291,6 +1602,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>valore aggiornato</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1338,10 +1653,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:39</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di controllo dei tratti morfologici</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1364,11 +1685,73 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:28</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Utente loggato</p>
+</div>
+                </td>
+            </tr>
 
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteForm</b></span>
+                        <a href="#deleteForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:79</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Funzione di cancellazione di una forma</p>
+</div>
+                </td>
+            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>formId</td>
+                                                    <td>
+                                                            <code><p>identificativo della forma</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
@@ -1395,10 +1778,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:23</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:26</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Stringa per il campo vuoto</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1425,10 +1814,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:32</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Form di lavorazione della forma</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1456,10 +1851,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:47</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di controllo dei campi label</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1486,10 +1887,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:58</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable delle relazioni morfologiche</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1511,11 +1918,41 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:52</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:69</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Funzione di filtro delle relazioni morfologiche</p>
+</div>
+                </td>
+            </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>relation</td>
+                                                    <td>
+                                                            <code><p>relazione selezionata</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
@@ -1547,7 +1984,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -1578,10 +2015,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:34</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:43</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable dei valori pos disponibili</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1614,10 +2057,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:49</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di voci del menu di aggiunta di un nuovo elemento di representations</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1639,10 +2088,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:35</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:45</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable dei tipi di forma</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1666,10 +2121,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:24</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject per la gestione della cancellazione delle subscribe</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1695,9 +2156,16 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:33</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:41</a></div>
                                 </td>
                             </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter del form array dei tratti morfologici</p>
+</div>
+
+                        </td>
+                    </tr>
 
             </tbody>
         </table>
@@ -1717,9 +2185,16 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:43</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:56</a></div>
                                 </td>
                             </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter del form group delle label</p>
+</div>
+
+                        </td>
+                    </tr>
 
             </tbody>
         </table>
@@ -1741,54 +2216,98 @@ import { GlobalStateService } from &#x27;src/app/services/global-state.service&#
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
 import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
-
+/**Componente dell&#x27;editor di lavorazione del core di una forma */
 @Component({
   selector: &#x27;app-form-core-editor&#x27;,
   templateUrl: &#x27;./form-core-editor.component.html&#x27;,
   styleUrls: [&#x27;./form-core-editor.component.scss&#x27;]
 })
 export class FormCoreEditorComponent implements OnInit, OnDestroy {
+  /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ &#x3D; new Subject();
+  /**Stringa per il campo vuoto */
   emptyField &#x3D; &#x27;-- Select --&#x27;
+  /**Utente loggato */
   currentUser!: User;
+  /**Forma in lavorazione */
   @Input() formEntry!: FormCore;
+  /**Form di lavorazione della forma */
   form &#x3D; new FormGroup({
     pos: new FormControl&lt;string&gt;(&#x27;&#x27;),
     type: new FormControl&lt;string&gt;(&#x27;&#x27;),
     label: new FormGroup({}),
     morphology: new FormArray&lt;FormControl&gt;([]),
   });
+  /**Lista di controllo dei tratti morfologici */
   _morphology: { relation: string, value: string, external: boolean }[] &#x3D; [];
+  /**Getter del form array dei tratti morfologici */
   get morphology() { return this.form.controls[&#x27;morphology&#x27;] as FormArray; }
+  /**Observable dei valori pos disponibili */
   pos$ &#x3D; this.globalState.pos$;
+  /**Observable dei tipi di forma */
   types$ &#x3D; this.globalState.formEntryTypes$;
+  /**Lista di controllo dei campi label */
   labelFormItems: PropertyElement[] &#x3D; [];
+  /**Lista di voci del menu di aggiunta di un nuovo elemento di representations */
   representationItems: { label: string, command: any }[] &#x3D; [{
     label: &#x27;Variant&#x27;,
     command: () &#x3D;&gt; {
       console.info(&#x27;variant&#x27;);
     }
   }];
+  /**Getter del form group delle label */
   get label() { return this.form.controls.label; }
-
+  /**Observable delle relazioni morfologiche */
   morphRelations$ &#x3D; this.globalState.morphologies$.pipe(
     switchMap(list &#x3D;&gt; {
       const mappedElements &#x3D; list.map(l &#x3D;&gt; &lt;{ label: string, id: string }&gt;{ label: l.propertyLabel, id: l.propertyId });
       return of(mappedElements);
     }),
   );
-
+  /**
+   * Funzione di filtro delle relazioni morfologiche
+   * @param relation {string} relazione selezionata
+   * @returns {Observable&lt;OntolexType[]&gt;} observable della lista di valori associati a una relazione
+   */
   morphRelationValues &#x3D; (relation: string) &#x3D;&gt; this.globalState.morphologies$.pipe(
     switchMap(list &#x3D;&gt; {
       const values &#x3D; list.find(morph &#x3D;&gt; morph.propertyId &#x3D;&#x3D;&#x3D; relation)?.propertyValues ?? [];
       return of(values);
     }),
   );
-
+  /**
+   * Funzione di cancellazione di una forma
+   * @param formId {string} identificativo della forma
+   */
+  private deleteForm &#x3D; (formId: string) &#x3D;&gt; {
+    this.showOperationInProgress(&quot;Deletion in progress&quot;);
+    const successMsg &#x3D; &quot;Successfully removed form&quot;;
+    this.lexiconService.deleteForm(formId).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.showOperationFailed(&quot;Deletion failed: &quot; + error.message);
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(() &#x3D;&gt; {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.formEntry.lexicalEntry, isRemove: true });
+      Swal.close();
+    });
+  }
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
 
+  /**
+   * Costruttore per FormCoreEditorComponent
+   * @param globalState {GlobalStateService} servizi per il recupero dello stato globale del lessico
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param userService {UserService} servizi relativi agli utenti
+   * @param messageService {MessageService} api primeng
+   * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
+   * @param commonService {CommonService} servizi di utilità generale
+   */
   constructor(
     private globalState: GlobalStateService,
     private lexiconService: LexiconService,
@@ -1840,6 +2359,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**Metodo dell&#x27;interfaccia OnInit, utilizzato per la valorizzazione iniziale del componente e del form */
   ngOnInit(): void {
     const pos &#x3D; this.formEntry.inheritedMorphology.find(m &#x3D;&gt; m.trait.endsWith(&#x27;partOfSpeech&#x27;))?.value;
     if (pos) {
@@ -1871,27 +2391,41 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per l&#x27;emissione e chiusura del subject di gestione delle subscribe */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
   }
 
+  /**
+   * Metodo per l&#x27;aggiunta di un campo del gruppo label
+   * @param property {PropertyElement} proprietà selezionata
+   */
   onAddLabelField(property: PropertyElement) {
     this.labelFormItems.push(property);
     this.label.addControl(property.propertyID, new FormControl&lt;string&gt;(property.propertyValue));
     this.representationItems &#x3D; this.representationItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; property.propertyID);
   }
 
+  /**Metodo di aggiunta di una riga di tratti morfologici */
   onAddMorphology() {
     const newMorph &#x3D; { relation: &#x27;&#x27;, value: &#x27;&#x27;, external: false };
     this.morphology.push(new FormControl(newMorph));
     this._morphology.push(&lt;{ relation: string, value: string, external: boolean }&gt;{ ...newMorph });
   }
 
+  /**Metodo per la cancellazione della forma */
   onDeleteLexicalForm() {
-    //TODO implementare cancellazione della forma lessicale con chiusura dell&#x27;editor e passaggio su editor dell&#x27;entrata lessicale
+    const confirmMsg &#x3D; &quot;You are about to delete a form&quot;;
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteForm(this.formEntry.form), this.formEntry.form);
   }
 
+  /**
+   * Metodo che salva la selezione di un tratto morfologico e del suo valore
+   * @param event {{ relation: string, value: string, external: boolean }} evento emesso dal componente su selezione
+   * @param index {number} indice nella lista dei campi di morfologia
+   */
   onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
     const currentValue &#x3D; this._morphology[index].value;
     if (currentValue !&#x3D;&#x3D; event.value) {
@@ -1901,12 +2435,21 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Metodo che rimuove un elemento dalla lista di campi delle label
+   * @param labelFieldName {string} nome del field label da rimuobre
+   */
   onRemoveLabelElement(labelFieldName: string) {
     const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${labelFieldName}&quot;?&#x60;;
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; { this.label.get(labelFieldName)?.setValue(&#x27;&#x27;); });
   }
 
+  /**
+   * Metodo che rimuove un elemento dalla lista dei tratti morfologici
+   * @param index {number} indice del tratto morfologico nella lista
+   * @returns {void}
+   */
   onRemoveMorph(index: number) {
     const currentValue &#x3D; this._morphology[index].value;
     if (!currentValue || currentValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
@@ -1929,6 +2472,12 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @private
+   * Metodo che gestisce l&#x27;observable di update
+   * @param updateObs {Observable&lt;string&gt;} observable del timestamp di ultimo aggiornamento
+   * @param relation {string} relazione aggiornata
+   */
   private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string) {
     updateObs.pipe(
       take(1),
@@ -1942,6 +2491,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.formEntry.lexicalEntry });
     });
   }
+  /**
+   * @private
+   * Metodo di rimozione di una relazione
+   * @param updater {{ relation: string, value: string }} oggetto di aggiornamento
+   */
   private async removeRelation(updater: { relation: string, value: string }) {
     this.lexiconService.deleteRelation(this.formEntry.form, updater).pipe(
       take(1),
@@ -1956,6 +2510,13 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo che aggiorna una forma
+   * @param relation {string} relazione da aggiornare
+   * @param value {string} nuovo valore dellazione
+   * @returns {Promise&lt;void&gt;}
+   */
   private async updateForm(relation: string, value: string) {
     if (!this.currentUser.name) {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
@@ -1969,6 +2530,15 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.manageUpdateObservable(updateObs, relation);
   }
 
+  /**
+   * @private
+   * Metodo per l&#x27;aggiornamento di una relazione linguistica
+   * @param type {LINGUISTIC_RELATION_TYPE} tipo di relazione linguistica
+   * @param relation {string} relazione da aggiornare
+   * @param value {any} nuovo valore
+   * @param currentValue {any} eventuale valore corrente
+   * @returns {Promise&lt;void&gt;}
+   */
   private async updateLinguisticRelation(type: LINGUISTIC_RELATION_TYPE, relation: string, value: any, currentValue?: any) {
     if (!this.currentUser.name) {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
@@ -1983,6 +2553,44 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.formEntry.form, updater), relation);
   }
 
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;please wait&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
+  /**
+   * Metodo che aggiorna la lista del formarray e la relativa lista di controllo con il nuovo valore
+   * @param list {FormArrya&lt;any&gt;} lista di elementi del campo formarray
+   * @param controlList { relation: string, value: string, external: boolean }[]} lista di controllo
+   * @param index {number} indice dell&#x27;elemento nelle liste
+   * @param value {{ relation: string, value: string, external: boolean }} valore aggiornato
+   */
   private updateListControlList(list: FormArray&lt;any&gt;, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
     list.at(index).setValue(value);
     controlList[index] &#x3D; &lt;{ relation: string, value: string, external: boolean }&gt;{ ...value };

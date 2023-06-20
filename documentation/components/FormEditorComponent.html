@@ -72,7 +72,7 @@
         <h3>Description</h3>
     </p>
     <p class="comment">
-        <p>Componente dell&#39;editor per le forme</p>
+        <p>OLD Componente dell&#39;editor per le forme</p>
 
     </p>
 
@@ -1764,12 +1764,13 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
 import { MessageService } from &#x27;primeng/api&#x27;;
-import { forkJoin, Subscription, take } from &#x27;rxjs&#x27;;
+import { Subscription, forkJoin, take } from &#x27;rxjs&#x27;;
 import { DropdownField } from &#x27;src/app/models/dropdown-field&#x27;;
-import { FormCore, PropertyElement, LexicalEntryTypeOld, LinkElement, LinkProperty, MorphologyProperty } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
-import { FormUpdater, FORM_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATION_TYPE } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { FormCore, LexicalEntryTypeOld, LinkElement, LinkProperty, MorphologyProperty, PropertyElement } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { FORM_RELATIONS, FormUpdater, LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
 import { Morphology } from &#x27;src/app/models/lexicon/morphology.model&#x27;;
 import { OntolexType } from &#x27;src/app/models/lexicon/ontolex-type.model&#x27;;
 import { CommonService } from &#x27;src/app/services/common.service&#x27;;
@@ -1778,9 +1779,8 @@ import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x2
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import Swal from &#x27;sweetalert2&#x27;;
 import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
-import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
 
-/**Componente dell&#x27;editor per le forme */
+/**OLD Componente dell&#x27;editor per le forme */
 @Component({
   selector: &#x27;app-form-editor&#x27;,
   templateUrl: &#x27;./form-editor.component.html&#x27;,

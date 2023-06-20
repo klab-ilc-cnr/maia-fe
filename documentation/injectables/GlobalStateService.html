@@ -62,6 +62,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Servizi per il recupero dello stato globale per il lessico</p>
+
+            </p>
 
 
 
@@ -88,9 +95,6 @@
                             </li>
                             <li>
                                 <a href="#languages$" >languages$</a>
-                            </li>
-                            <li>
-                                <a href="#languages2$" >languages2$</a>
                             </li>
                             <li>
                                 <a href="#lexicalEntryTypes$" >lexicalEntryTypes$</a>
@@ -131,12 +135,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/services/global-state.service.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/services/global-state.service.ts:48</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore di GlobalStateService</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -145,6 +151,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -159,6 +166,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>servizi relativi al lessico</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -193,10 +204,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/services/global-state.service.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/services/global-state.service.ts:11</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Aggiunta di una lingua</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -220,10 +237,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/services/global-state.service.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/services/global-state.service.ts:38</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable degli autori disponibili</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -247,10 +270,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/services/global-state.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/services/global-state.service.ts:13</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable dei tipi di forma</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -269,7 +298,6 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>merge(
     this.addLanguage.pipe(
-      // switchMap((l) &#x3D;&gt; this.lexiconService.postLanguages(l)), //TODO questo è un esempio per gestire l&#x27;aggiornamento delle lingue a seguito di un add.
       switchMap(() &#x3D;&gt; this.lexiconService.getLanguages()
       ),
     ),
@@ -281,37 +309,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/services/global-state.service.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/global-state.service.ts:17</a></div>
                         </td>
                     </tr>
 
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="languages2$"></a>
-                    <span class="name">
-                        <span ><b>languages2$</b></span>
-                        <a href="#languages2$"><span class="icon ion-ios-link"></span></a>
-                    </span>
+                    <div class="io-description"><p>Observable delle lingue disponibili</p>
+</div>
                 </td>
             </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>this.lexiconService.getLanguages().pipe(
-    shareReplay(1),
-  )</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/services/global-state.service.ts:32</a></div>
-                        </td>
-                    </tr>
-
 
         </tbody>
     </table>
@@ -335,10 +342,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/services/global-state.service.ts:23</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/services/global-state.service.ts:27</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable dei tipi di entrate lessicali</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -360,10 +373,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/services/global-state.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/services/global-state.service.ts:31</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable degli elementi di morfologia</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -388,10 +407,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/services/global-state.service.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/services/global-state.service.ts:33</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable delle pos disponibili</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -415,10 +440,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/services/global-state.service.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/services/global-state.service.ts:42</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable delle pos disponibili in statistica</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -442,10 +473,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/services/global-state.service.ts:44</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/services/global-state.service.ts:46</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable degli status disponibili secondo le statistiche</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -459,17 +496,20 @@
 import { Subject, merge, of, shareReplay, switchMap } from &#x27;rxjs&#x27;;
 import { LexiconService } from &#x27;./lexicon.service&#x27;;
 
+/**Servizi per il recupero dello stato globale per il lessico */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class GlobalStateService {
+  /**Aggiunta di una lingua */
   addLanguage &#x3D; new Subject&lt;string&gt;(); //sarebbe usato per gestire l&#x27;aggiunta di una lingua
+  /**Observable dei tipi di forma */
   formEntryTypes$ &#x3D; this.lexiconService.getFormTypes().pipe(
     shareReplay(1),
   );
+  /**Observable delle lingue disponibili */
   languages$ &#x3D; merge(
     this.addLanguage.pipe(
-      // switchMap((l) &#x3D;&gt; this.lexiconService.postLanguages(l)), //TODO questo è un esempio per gestire l&#x27;aggiornamento delle lingue a seguito di un add.
       switchMap(() &#x3D;&gt; this.lexiconService.getLanguages()
       ),
     ),
@@ -477,31 +517,33 @@ export class GlobalStateService {
   ).pipe(
     shareReplay(1),
   );
+  /**Observable dei tipi di entrate lessicali */
   lexicalEntryTypes$ &#x3D; this.lexiconService.getLexicalEntryTypes().pipe(
     shareReplay(1),
   );
+  /**Observable degli elementi di morfologia */
   morphologies$ &#x3D; this.lexiconService.getMorphology();
+  /**Observable delle pos disponibili */
   pos$ &#x3D; this.morphologies$.pipe(
     switchMap(m &#x3D;&gt; of(m.find(e &#x3D;&gt; e.propertyId?.endsWith(&#x27;#partOfSpeech&#x27;))?.propertyValues)),
     shareReplay(1),
   );
-
-  languages2$ &#x3D; this.lexiconService.getLanguages().pipe(
-    shareReplay(1),
-  );
-
+  /**Observable degli autori disponibili */
   authors$ &#x3D; this.lexiconService.getAuthors().pipe(
     shareReplay(1),
   );
-
+  /**Observable delle pos disponibili in statistica */
   statisticsPos$ &#x3D; this.lexiconService.getPos().pipe(
     shareReplay(1),
   );
-
+  /**Observable degli status disponibili secondo le statistiche */
   statisticStatuses$ &#x3D; this.lexiconService.getStatus().pipe(
     shareReplay(1),
   );
-
+  /**
+   * Costruttore di GlobalStateService
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   */
   constructor(
     private lexiconService: LexiconService,
   ) {

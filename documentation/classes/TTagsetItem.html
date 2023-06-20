@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >OAuthResourceServerConfig</li>
+  <li >TTagsetItem</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -62,11 +62,17 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/config/auth.config.ts</code>
+            <code>src/app/models/texto/t-tagset-item.ts</code>
         </p>
 
 
 
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code><a href="../classes/TTagset.html" target="_self" >TTagset</a></code>
+            </p>
 
 
 
@@ -83,15 +89,22 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Optional</span>
-                                <a href="#allowedUrls" >allowedUrls</a>
+                                <a href="#tagset" >tagset</a>
                             </li>
                             <li>
-                                    <span class="modifier">Optional</span>
-                                <a href="#customUrlValidation" >customUrlValidation</a>
+                                <a href="#description" >description</a>
                             </li>
                             <li>
-                                <a href="#sendAccessToken" >sendAccessToken</a>
+                                <a href="#id" >id</a>
+                            </li>
+                            <li>
+                                <a href="#name" >name</a>
+                            </li>
+                            <li>
+                                <a href="#status" >status</a>
+                            </li>
+                            <li>
+                                <a href="#time" >time</a>
                             </li>
                         </ul>
                     </td>
@@ -116,58 +129,55 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="allowedUrls"></a>
+                    <a name="tagset"></a>
                     <span class="name">
-                            <span class="modifier">Optional</span>
-                        <span ><b>allowedUrls</b></span>
-                        <a href="#allowedUrls"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>tagset</b></span>
+                        <a href="#tagset"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Array&lt;string&gt;</code>
+                        <i>Type : </i>    <code>TTagset | undefined</code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/config/auth.config.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/texto/t-tagset-item.ts:4</a></div>
                         </td>
                     </tr>
 
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Urls for which calls should be intercepted.
-If there is an ResourceServerErrorHandler registered, it is used for them.
-If sendAccessToken is set to true, the access_token is send to them too.</p>
+                    <a name="description"></a>
+                    <span class="name">
+                        <span ><b>description</b></span>
+                        <a href="#description"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/TTagset.html" target="_self" >TTagset</a></code>
 </div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="customUrlValidation"></a>
-                    <span class="name">
-                            <span class="modifier">Optional</span>
-                        <span ><b>customUrlValidation</b></span>
-                        <a href="#customUrlValidation"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
-
-                    </td>
-                </tr>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/config/auth.config.ts:48</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:8</a></code>
+</div>
                         </td>
                     </tr>
 
@@ -178,21 +188,128 @@ If sendAccessToken is set to true, the access_token is send to them too.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="sendAccessToken"></a>
+                    <a name="id"></a>
                     <span class="name">
-                        <span ><b>sendAccessToken</b></span>
-                        <a href="#sendAccessToken"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>id</b></span>
+                        <a href="#id"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>true</code>
+                        <i>Type : </i>    <code>number | undefined</code>
+
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/TTagset.html" target="_self" >TTagset</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/config/auth.config.ts:47</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:4</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="name"></a>
+                    <span class="name">
+                        <span ><b>name</b></span>
+                        <a href="#name"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/TTagset.html" target="_self" >TTagset</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:7</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="status"></a>
+                    <span class="name">
+                        <span ><b>status</b></span>
+                        <a href="#status"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#TStatus" target="_self" >TStatus | undefined</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/TTagset.html" target="_self" >TTagset</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:5</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="time"></a>
+                    <span class="name">
+                        <span ><b>time</b></span>
+                        <a href="#time"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/TTagset.html" target="_self" >TTagset</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:6</a></code>
+</div>
                         </td>
                     </tr>
 
@@ -211,54 +328,10 @@ If sendAccessToken is set to true, the access_token is send to them too.</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AuthConfig } from &#x27;angular-oauth2-oidc&#x27;;
-import { environment } from &#x27;../../environments/environment&#x27;;
-import { OAuthModuleConfig } from &#x27;angular-oauth2-oidc&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { TTagset } from &quot;./t-tagset&quot;;
 
-export const authConfig: AuthConfig &#x3D; {
-
-  // Url of the Identity Provider
-  issuer: environment.keycloak.issuer,
-
-  // URL of the SPA to redirect the user to after login
-  redirectUri: environment.keycloak.redirectUri,
-
-  // The SPA&#x27;s id.
-  // The SPA is registerd with this id at the auth-serverß
-  clientId: environment.keycloak.clientId,
-
-  responseType: environment.keycloak.responseType,
-  // set the scope for the permissions the client should request
-  // The first three are defined by OIDC.
-  scope: environment.keycloak.scope,
-  // Remove the requirement of using Https to simplify the demo
-  // THIS SHOULD NOT BE USED IN PRODUCTION
-  // USE A CERTIFICATE FOR YOUR IDP
-  // IN PRODUCTION
-  requireHttps: environment.keycloak.requireHttps,
-  // at_hash is not present in JWT token
-  showDebugInformation: environment.keycloak.showDebugInformation,
-  disableAtHashCheck: environment.keycloak.disableAtHashCheck,
-  //strictDiscoveryDocumentValidation: environment.keycloak.strictDiscoveryDocumentValidation
-};
-
-
-export const authModuleConfig: OAuthModuleConfig &#x3D; {
-  resourceServer: {
-    sendAccessToken: true,
-    allowedUrls: [environment.allowedUrls, environment.lexoUrl, environment.textoUrl, environment.textoDebugUrl]
-  }
-}
-
-export class OAuthResourceServerConfig {
-  /**
-   * Urls for which calls should be intercepted.
-   * If there is an ResourceServerErrorHandler registered, it is used for them.
-   * If sendAccessToken is set to true, the access_token is send to them too.
-   */
-  allowedUrls?: Array&lt;string&gt;;
-  sendAccessToken &#x3D; true;
-  customUrlValidation?: (url: string) &#x3D;&gt; boolean;
+export class TTagsetItem extends TTagset {
+  tagset: TTagset | undefined;
 }
 </code></pre>
     </div>
@@ -298,7 +371,7 @@ export class OAuthResourceServerConfig {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'OAuthResourceServerConfig.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'TTagsetItem.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -72,7 +72,7 @@
         <h3>Description</h3>
     </p>
     <p class="comment">
-        <p>Componente dell&#39;editor per i sensi</p>
+        <p>OLD Componente dell&#39;editor per i sensi</p>
 
     </p>
 
@@ -1342,20 +1342,20 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
 import { MessageService } from &#x27;primeng/api&#x27;;
-import { forkJoin, Subscription, take } from &#x27;rxjs&#x27;;
+import { Subscription, forkJoin, take } from &#x27;rxjs&#x27;;
 import { LexicalEntryTypeOld, LinkElement, LinkProperty, PropertyElement, SenseCore } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
-import { LexicalSenseUpdater, LEXICAL_SENSE_RELATIONS } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { LEXICAL_SENSE_RELATIONS, LexicalSenseUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
 import { CommonService } from &#x27;src/app/services/common.service&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import Swal from &#x27;sweetalert2&#x27;;
 import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
-import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
 
-/**Componente dell&#x27;editor per i sensi */
+/** OLD Componente dell&#x27;editor per i sensi */
 @Component({
   selector: &#x27;app-sense-editor&#x27;,
   templateUrl: &#x27;./sense-editor.component.html&#x27;,
