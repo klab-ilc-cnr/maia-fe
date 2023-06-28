@@ -77,7 +77,7 @@
               (click)="visibleUploadFile = false;">
               Annulla
             </button>
-            <button type="submit" class="btn btn-primary" [disabled]="uploaderForm.invalid">Conferma</button>
+            <button type="submit" class="btn btn-primary" [disabled]="uploaderForm.invalid || (!isFileUploaded && (isFileUploaderTouched || isFileSizeExceed))">Conferma</button>
           </div>
         </div>
       </form>
