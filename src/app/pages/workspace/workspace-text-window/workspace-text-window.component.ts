@@ -189,7 +189,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     forkJoin([
       // this.layerService.retrieveLayers(),
       // this.annotationService._retrieveText(this.textId),
-      this.annotationService.retrieveTextSplitted(this.textId, { start: 5, end: 7 }), //TODO gli indici saranno da passare dinamicamente
+      this.annotationService.retrieveTextSplitted(this.textId, { start: 3, end: 7 }), //TODO gli indici saranno da passare dinamicamente
       this.annotationService.retrieveByNodeId(this.textId),
       this.relationService.retrieveByTextId(this.textId)
     ]).subscribe({
@@ -225,7 +225,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.annotation.layer = this.selectedLayer?.id;
         this.annotation.layerName = this.selectedLayer?.name;
 
-        this.textRes = textResponse.join(' ');
+        this.textRes = textResponse;
         this.annotationsRes = annotationsResponse;
 
         this.simplifiedAnns = [];
@@ -352,7 +352,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
     // let text = this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato //TODO OGGETTO RICEVUTO è SOLO TESTO, NON JSON
-    const text = this.textRes.substring(startIndex, endIndex);
+    const text = this.textRes.join('').substring(startIndex, endIndex);
 
     if (!this.onlySpaces(text)) {
       const originalLength = text.length;
@@ -1773,12 +1773,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.rows = [];
 
     // let rawText = JSON.parse(JSON.stringify(this.textRes.text)); //TODO ARRIVA GIà COME RAW TEXT
-    const rawText = this.textRes;
+    // const rawText = this.textRes;
     const rawAnns = JSON.parse(JSON.stringify(this.annotationsRes.annotations));
-    const sentences = rawText.split(/(?<=[\.!\?])/g);
+    // const sentences = rawText.split(/(?<=[\.!\?])/g);
+    const sentences = this.textRes;
     const row_id = 0;
     let start = 0;
-    const end = rawText.length;
+    // const end = rawText.length;
 
     const width = this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
 
