@@ -6,6 +6,7 @@ import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadat
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
+import { PageEvent } from 'src/app/models/page-event';
 import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
 import { LineBuilder } from 'src/app/models/text/line-builder';
@@ -119,6 +120,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
 
+  //#region PAGINATOR
+  first = 0;
+  rowsPaginator = 2;
+  rowsPerPageOptions = [2,5];
+  totalRecords = 0;
+  //#endregion
+
   /**
    * Costruttore per WorkspaceTextWindowComponent
    * @param annotationService {AnnotationService} servizi relativi alle annotazioni
@@ -172,6 +180,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
+  onPageChange(event: PageEvent) {
+    this.first = event.first;
+    this.rowsPaginator = event.rows;
+    this.loadData();
+  }
+
   /**
    * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
    * @returns {void}
@@ -189,12 +203,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     forkJoin([
       // this.layerService.retrieveLayers(),
       // this.annotationService._retrieveText(this.textId),
-      this.annotationService.retrieveTextSplitted(this.textId, { start: 3, end: 7 }), //TODO gli indici saranno da passare dinamicamente
+      this.annotationService.retrieveTextSplitted(this.textId, { start: this.first, end: (this.first + this.rowsPaginator) }),
       this.annotationService.retrieveByNodeId(this.textId),
       this.relationService.retrieveByTextId(this.textId)
     ]).subscribe({
       next: ([textResponse, annotationsResponse, relationsResponse]) => {
         // this.layersList = layersResponse;
+        this.totalRecords = 21; //TODO sostituire con il dato preso dalla risposta del servizio di recupero testo
 
         if(this.selectedLayers) {
           this.visibleLayers = this.selectedLayers;
