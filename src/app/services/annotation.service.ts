@@ -1,7 +1,7 @@
-import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -94,6 +94,17 @@ export class AnnotationService {
       {
         headers: new HttpHeaders({ 'UUID': uuid }),
         responseType: 'text',
+      }
+    );
+  }
+
+  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable<string[]> { //TODO cambierà la firma, non sarà lista di stringhe ma json
+    const uuid = uuidv4();
+    return this.http.post<string[]>(
+      `${this.textoUrl}/texto/resource/${textId}/rows`,
+      slice,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid }),
       }
     );
   }

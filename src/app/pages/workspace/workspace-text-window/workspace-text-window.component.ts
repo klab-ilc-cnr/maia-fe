@@ -189,7 +189,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     forkJoin([
       // this.layerService.retrieveLayers(),
       // this.annotationService._retrieveText(this.textId),
-      this.annotationService.retrieveText(this.textId, { start: 0, end: null }),
+      this.annotationService.retrieveTextSplitted(this.textId, { start: 5, end: 7 }), //TODO gli indici saranno da passare dinamicamente
       this.annotationService.retrieveByNodeId(this.textId),
       this.relationService.retrieveByTextId(this.textId)
     ]).subscribe({
@@ -225,7 +225,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.annotation.layer = this.selectedLayer?.id;
         this.annotation.layerName = this.selectedLayer?.name;
 
-        this.textRes = textResponse;
+        this.textRes = textResponse.join(' ');
         this.annotationsRes = annotationsResponse;
 
         this.simplifiedAnns = [];
