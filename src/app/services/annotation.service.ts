@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
+import { PaginatedResponse } from '../models/texto/paginated-response';
 
 /**Classe dei servizi per le annotazioni */
 @Injectable({
@@ -98,9 +99,9 @@ export class AnnotationService {
     );
   }
 
-  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable<string[]> { //TODO cambierà la firma, non sarà lista di stringhe ma json
+  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable<PaginatedResponse> { //TODO cambierà la firma, non sarà lista di stringhe ma json
     const uuid = uuidv4();
-    return this.http.post<string[]>(
+    return this.http.post<PaginatedResponse>(
       `${this.textoUrl}/texto/resource/${textId}/rows`,
       slice,
       {

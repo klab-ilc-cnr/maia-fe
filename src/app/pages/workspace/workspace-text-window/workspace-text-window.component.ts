@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
+import { Subject, catchError, forkJoin, of, switchMap, takeUntil, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
@@ -86,7 +87,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Righe di testo */
   rows: TextRow[] = [];
   /**Layer selezionato */
-  selectedLayer: TLayer|undefined;
+  selectedLayer: TLayer | undefined;
   /**Lista di layer selezionati */
   selectedLayers: TLayer[] | undefined;
 
@@ -122,8 +123,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   //#region PAGINATOR
   first = 0;
-  rowsPaginator = 2;
-  rowsPerPageOptions = [2,5];
+  rowsPaginator = 5;
+  rowsPerPageOptions = [5, 10, 15];
   totalRecords = 0;
   //#endregion
 
@@ -154,7 +155,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
     ).subscribe(list => {
       this.layersList = list;
-      if(!this.selectedLayers) {
+      if (!this.selectedLayers) {
         this.selectedLayers = this.visibleLayers = list;
       }
     });
@@ -199,91 +200,100 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
 
     this.loaderService.show();
+    let lastIndex = this.first + this.rowsPaginator;
+    if (this.totalRecords && lastIndex > this.totalRecords) {
+      lastIndex = this.totalRecords;
+    }
 
     forkJoin([
       // this.layerService.retrieveLayers(),
       // this.annotationService._retrieveText(this.textId),
-      this.annotationService.retrieveTextSplitted(this.textId, { start: this.first, end: (this.first + this.rowsPaginator) }),
+      this.annotationService.retrieveTextSplitted(this.textId, { start: this.first, end: lastIndex }),
       this.annotationService.retrieveByNodeId(this.textId),
       this.relationService.retrieveByTextId(this.textId)
-    ]).subscribe({
-      next: ([textResponse, annotationsResponse, relationsResponse]) => {
-        // this.layersList = layersResponse;
-        this.totalRecords = 21; //TODO sostituire con il dato preso dalla risposta del servizio di recupero testo
-
-        if(this.selectedLayers) {
-          this.visibleLayers = this.selectedLayers;
-        }
-
-        // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
-        //   this.visibleLayers = this.selectedLayers = this.layersList;
-        // }
-        // else {
-        //   this.visibleLayers = this.selectedLayers;
-        // }
-
-        // this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
-
-        // this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
-
-        // this.layerOptions.unshift({
-        //   label: "Nessuna annotazione",
-        //   value: -1
-        // });
-
-        if (!this.selectedLayer) {
-          this.selectedLayer = undefined;
-        }
-
-        // this.annotation.layer = this.selectedLayer;
-        // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
-        this.annotation.layer = this.selectedLayer?.id;
-        this.annotation.layerName = this.selectedLayer?.name;
-
-        this.textRes = textResponse;
-        this.annotationsRes = annotationsResponse;
-
-        this.simplifiedAnns = [];
-        this.simplifiedArcs = relationsResponse;
-
-        const layersIndex = new Array<string>();
-
-        this.visibleLayers.forEach(l => {
-          if (l.id) {
-            layersIndex.push(l.id?.toString())
-          }
-        })
-
-        this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
-          if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
-            const sAnn = a.spans.map((sc: SpanCoordinates) => {
-              let { spans, ...newAnn } = a;
-              return {
-                ...newAnn,
-                span: sc
-              }
-            })
-
-            this.simplifiedAnns.push(...sAnn);
-          }
-
-          /*           if (a.attributes && a.attributes["relations"]) {
-                      let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-                        if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
-                          this.simplifiedArcs.push(r);
-                        }
-                      })
-                    } */
-        })
-
-        this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
-
-        console.log('Hello', this.simplifiedAnns)
-        console.log('Archi', this.simplifiedArcs)
-
-        this.renderData();
+    ]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error}`));
         this.loaderService.hide();
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(([textResponse, annotationsResponse, relationsResponse]) => {
+      // this.layersList = layersResponse;
+      this.totalRecords = textResponse.count!;
+
+      if (this.selectedLayers) {
+        this.visibleLayers = this.selectedLayers;
       }
+
+      // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
+      //   this.visibleLayers = this.selectedLayers = this.layersList;
+      // }
+      // else {
+      //   this.visibleLayers = this.selectedLayers;
+      // }
+
+      // this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
+
+      // this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
+
+      // this.layerOptions.unshift({
+      //   label: "Nessuna annotazione",
+      //   value: -1
+      // });
+
+      if (!this.selectedLayer) {
+        this.selectedLayer = undefined;
+      }
+
+      // this.annotation.layer = this.selectedLayer;
+      // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+      this.annotation.layer = this.selectedLayer?.id;
+      this.annotation.layerName = this.selectedLayer?.name;
+
+      this.textRes = textResponse.data || [];
+      this.annotationsRes = annotationsResponse;
+
+      this.simplifiedAnns = [];
+      this.simplifiedArcs = relationsResponse;
+
+      const layersIndex = new Array<string>();
+
+      this.visibleLayers.forEach(l => {
+        if (l.id) {
+          layersIndex.push(l.id?.toString())
+        }
+      })
+
+      this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
+        if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
+          const sAnn = a.spans.map((sc: SpanCoordinates) => {
+            let { spans, ...newAnn } = a;
+            return {
+              ...newAnn,
+              span: sc
+            }
+          })
+
+          this.simplifiedAnns.push(...sAnn);
+        }
+
+        /*           if (a.attributes && a.attributes["relations"]) {
+                    let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
+                      if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
+                        this.simplifiedArcs.push(r);
+                      }
+                    })
+                  } */
+      })
+
+      this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
+
+      console.log('Hello', this.simplifiedAnns)
+      console.log('Archi', this.simplifiedArcs)
+
+      this.renderData();
+      this.loaderService.hide();
     });
   }
 
