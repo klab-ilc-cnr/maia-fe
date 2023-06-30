@@ -49,8 +49,8 @@
 </div>
 
 <div class="row mx-0">
+  <p-paginator class="col-8" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rowsPaginator" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsPerPageOptions"></p-paginator>
   <div class="col-8" >
-    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rowsPaginator" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsPerPageOptions"></p-paginator>
     <div class="text-container" [ngStyle]="{'height.px': textContainerHeight}">
       <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >
         <svg class="text-editor" [attr.height]="svgHeight">
