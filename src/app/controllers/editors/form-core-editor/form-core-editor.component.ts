@@ -237,7 +237,17 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   onRemoveLabelElement(labelFieldName: string) {
     const confirmMsg = `Are you sure to remove "${labelFieldName}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
-    this.popupDeleteItem.showDeleteConfirmSimple(() => { this.label.get(labelFieldName)?.setValue(''); });
+    this.popupDeleteItem.showDeleteConfirmSimple(() => {
+      const control = this.label.get(labelFieldName);
+      if (control?.value === '') {
+        const index = this.labelFormItems.findIndex(e => e.propertyID === labelFieldName);
+        this.labelFormItems.splice(index, 1);
+        this.label.removeControl(labelFieldName);
+      }
+      else {
+        control?.setValue('');
+      }
+    });
   }
 
   /**
