@@ -243,6 +243,12 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
         const index = this.labelFormItems.findIndex(e => e.propertyID === labelFieldName);
         this.labelFormItems.splice(index, 1);
         this.label.removeControl(labelFieldName);
+        this.representationItems.push({
+          label: labelFieldName,
+          command: () => {
+            this.onAddLabelField(<PropertyElement>{ propertyID: labelFieldName, propertyValue: '' });
+          },
+        });
       }
       else {
         control?.setValue('');
