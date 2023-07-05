@@ -2,7 +2,6 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { LanguageService } from "src/app/services/language.service";
 
 const clientid = "/projectx-fe"; //deve essere lo stesso cliendId in keycloak!
 //const appName = "/projectx-fe"
@@ -51,7 +50,9 @@ export const environment = {
   //cashUrl: "http://146.48.93.223:8080/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
   cashUrl: "https://klab.ilc.cnr.it/maia-italex/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
   rutPrefix: "ferrandi",
-  rutBaseIRI: "http://rut/somali/ferrandi#"
+  rutBaseIRI: "http://rut/somali/ferrandi#",
+  textoUrl: "https://146.48.93.234:9443",
+  textoDebugUrl: "https://146.48.93.234:9443"
 };
 
 /*

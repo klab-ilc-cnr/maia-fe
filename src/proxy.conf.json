@@ -1,6 +1,6 @@
 {
   "/LexO-backend-maia/service/*": {
-    "target": "http://licodemo.ilc.cnr.it:8080",
+    "target": "https://klab.ilc.cnr.it/",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
