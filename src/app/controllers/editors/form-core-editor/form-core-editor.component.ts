@@ -164,14 +164,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       else
         this.movePropertyToMenu(label.propertyID);
     }
-
-    if (this.formEntry.label) {
-      this.formEntry.morphology.forEach(m => {
-        const morphElement = { relation: m.trait, value: m.value, external: false };
-        this.morphology.push(new FormControl(morphElement));
-        this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
-      });
-    }
+    this.formEntry.morphology.forEach(m => {
+      const morphElement = { relation: m.trait, value: m.value, external: false };
+      this.morphology.push(new FormControl(morphElement));
+      this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
+    });
   }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per l'emissione e chiusura del subject di gestione delle subscribe */
