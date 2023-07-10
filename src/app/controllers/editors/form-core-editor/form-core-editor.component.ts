@@ -159,9 +159,8 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
 
     for (const label of this.formEntry.label) {
       if (label.propertyID === 'variant') continue; //TODO capire come gestire il caso variant
-      if (label.propertyValue != '')
-        this.movePropertyToForm(label.propertyID, label.propertyValue);
-      else
+      this.movePropertyToForm(label.propertyID, label.propertyValue);
+      if (label.propertyValue == '')
         this.movePropertyToMenu(label.propertyID);
     }
     this.formEntry.morphology.forEach(m => {
