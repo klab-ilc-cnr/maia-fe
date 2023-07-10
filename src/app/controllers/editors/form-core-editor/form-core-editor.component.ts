@@ -138,13 +138,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
         if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== resp[key]) {
           this.updateForm(key, resp[key]).then(() => {
             if (resp[key] === '') {
-              this.labelFormItems = this.labelFormItems.filter(item => item.propertyID !== key);
-              this.representationItems.push({
-                label: key,
-                command: () => {
-                  this.onAddLabelField(<PropertyElement>{ propertyID: key, propertyValue: '' });
-                },
-              });
+              this.movePropertyToMenu(key);
               return;
             }
             this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
@@ -164,21 +158,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     if (this.formEntry.type) this.form.get('type')?.setValue('http://www.w3.org/ns/lemon/ontolex#' + this.formEntry.type);
 
     for (const label of this.formEntry.label) {
-      if (label.propertyValue === '' && label.propertyID !== 'variant') { //TODO capire come gestire il caso variant
-        if (label.propertyID === 'writtenRep') {
-          this.label.addControl(label.propertyID, new FormControl<string>(label.propertyValue, Validators.required));
-        }
-        this.representationItems.push({
-          label: label.propertyID,
-          command: () => {
-            this.onAddLabelField(label)
-          },
-        });
-        continue;
-      }
-      this.onAddLabelField(label);
+      if (label.propertyID === 'variant') continue; //TODO capire come gestire il caso variant
+      this.movePropertyToForm(label.propertyID, label.propertyValue);
+      if (label.propertyValue == '')
+        this.movePropertyToMenu(label.propertyID);
     }
-
     this.formEntry.morphology.forEach(m => {
       const morphElement = { relation: m.trait, value: m.value, external: false };
       this.morphology.push(new FormControl(morphElement));
@@ -192,14 +176,32 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+
   /**
-   * Metodo per l'aggiunta di un campo del gruppo label
-   * @param property {PropertyElement} proprietà selezionata
+   * Metodo responsabile dell'aggiunta di una label nel form dinamico
+   * @param propertyID {string} nome della label da aggiungere nel form
+   * @param propertyValue {string} valore della label da aggiungere nel form
    */
-  onAddLabelField(property: PropertyElement) {
+  private movePropertyToForm(propertyID: string, propertyValue: string) {
+    const formControl = new FormControl<string>(propertyValue, Validators.required);
+    const property = <PropertyElement> { propertyID, propertyValue };
+    this.label.addControl(propertyID, formControl);
     this.labelFormItems.push(property);
-    this.label.addControl(property.propertyID, new FormControl<string>(property.propertyValue));
-    this.representationItems = this.representationItems.filter(i => i.label !== property.propertyID);
+    this.representationItems = this.representationItems.filter(i => i.label !== propertyID);
+  }
+
+  /**
+   * Metodo responsabile della rimozione di una label dal form dinamico
+   * @param propertyID {string} nome della label da rimuovere dal form
+   */
+  private movePropertyToMenu(propertyID: string) {
+    const index = this.labelFormItems.findIndex(e => e.propertyID === propertyID);
+    this.labelFormItems.splice(index, 1);
+    this.label.removeControl(propertyID);
+    this.representationItems.push({
+        label: propertyID,
+        command: () => this.movePropertyToForm(propertyID, ''),
+    });
   }
 
   /**Metodo di aggiunta di una riga di tratti morfologici */
@@ -240,15 +242,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
       const control = this.label.get(labelFieldName);
       if (control?.value === '') {
-        const index = this.labelFormItems.findIndex(e => e.propertyID === labelFieldName);
-        this.labelFormItems.splice(index, 1);
-        this.label.removeControl(labelFieldName);
-        this.representationItems.push({
-          label: labelFieldName,
-          command: () => {
-            this.onAddLabelField(<PropertyElement>{ propertyID: labelFieldName, propertyValue: '' });
-          },
-        });
+        this.movePropertyToMenu(labelFieldName);
       }
       else {
         control?.setValue('');
