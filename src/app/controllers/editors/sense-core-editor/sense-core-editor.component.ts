@@ -116,13 +116,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
         this.updateSense(key, resp[key]).then(() => {
           if (resp[key] === '') {
-            this.definitionFormItems = this.definitionFormItems.filter(i => i.propertyID !== key);
-            this.definitionsMenuItems.push({
-              label: key,
-              command: () => {
-                this.onAddDefinitionField(<PropertyElement>{ propertyID: key, propertyValue: '' });
-              }
-            }); return;
+            this.movePropertyToMenu(key);
+            return;
           }
           this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
         });
@@ -133,20 +128,11 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   /**Metodo dell'interfaccia OnInit, utilizzato per prevalorizzare il form */
   ngOnInit(): void {
     //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
-    for (const def of this.senseEntry.definition) {
-      if (def.propertyID === 'definition') {
-        this.definition.addControl('definition', new FormControl<string>(def.propertyValue, Validators.required));
+    for (const { propertyID, propertyValue } of this.senseEntry.definition) {
+      this.movePropertyToForm(propertyID, propertyValue);
+      if (propertyValue === '') {
+        this.movePropertyToMenu(propertyID);
       }
-      if (def.propertyID !== 'definition' && def.propertyValue === '') {
-        this.definitionsMenuItems.push({
-          label: def.propertyID,
-          command: () => {
-            this.onAddDefinitionField(def);
-          }
-        });
-        continue;
-      }
-      this.onAddDefinitionField(def);
     }
   }
 
@@ -157,13 +143,30 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Metodo per l'aggiunta di un nuovo elemento alle definizioni
-   * @param fieldProperty {PropertyElement} proprietà da aggiungere alle definizioni
+   * Metodo che sposta una proprietà dal menu al form dinamico
+   * @param propertyID {string} proprietà da spostare
+   * @param propertyValue {string} valore iniziale della proprietà
    */
-  onAddDefinitionField(fieldProperty: PropertyElement) {
+  private movePropertyToForm(propertyID: string, propertyValue: string): void {
+    const fieldProperty : PropertyElement = { propertyID, propertyValue };
+    const control = new FormControl<string>(propertyValue, Validators.required);
     this.definitionFormItems.push(fieldProperty);
-    this.definition.addControl(fieldProperty.propertyID, new FormControl<string>(fieldProperty.propertyValue));
-    this.definitionsMenuItems = this.definitionsMenuItems.filter(i => i.label !== fieldProperty.propertyID);
+    this.definition.addControl(propertyID, control);
+    this.definitionsMenuItems = this.definitionsMenuItems.filter(i => i.label !== propertyID);
+  }
+
+  /**
+   * Metodo che sposta una proprietà dal form dinamico al menu
+   * @param propertyID {string} proprietà da spostare
+   */
+  private movePropertyToMenu(propertyID: string): void {
+    this.definition.removeControl(propertyID);
+    const index = this.definitionFormItems.findIndex(e => e.propertyID === propertyID);
+    this.definitionFormItems.splice(index, 1);
+    this.definitionsMenuItems.push({
+      label: propertyID,
+      command: () => this.movePropertyToForm(propertyID, '')
+    });
   }
 
   /**Metodo che gestisce l'inserimento di un nuovo elemento nei tratti morfologici */
@@ -200,7 +203,15 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   onRemoveDefinitionElement(fieldName: string) {
     const confirmMsg = `Are you sure to remove "${fieldName}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
-    this.popupDeleteItem.showDeleteConfirmSimple(() => { this.definition.get(fieldName)?.setValue(''); });
+    this.popupDeleteItem.showDeleteConfirmSimple(() => {
+      const definition = this.definition.get(fieldName);
+      if (definition?.value === '') {
+        this.movePropertyToMenu(fieldName);
+      }
+      else {
+        definition?.setValue('');
+      }
+     });
   }
 
   /**
