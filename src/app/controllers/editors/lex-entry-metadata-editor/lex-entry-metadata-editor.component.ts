@@ -51,9 +51,9 @@ export class LexEntryMetadataEditorComponent implements OnInit, OnDestroy {
       debounceTime(500),
       skip(1),
     ).subscribe(note => {
-      this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.NOTE, note).then(() => {
+      this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.NOTE, note?? '').then(() => {
         if (this.lexicalEntry.note !== note) {
-          this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, note: note };
+          this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, note };
         }
       });
     });
@@ -84,7 +84,7 @@ export class LexEntryMetadataEditorComponent implements OnInit, OnDestroy {
       if (this.lexicalEntry.completionDate !== '') formControlList.completionDate.setValue(new Date(this.lexicalEntry.completionDate).toLocaleString());
       formControlList.revisor.setValue(this.lexicalEntry.revisor);
       if (this.lexicalEntry.revisionDate !== '') formControlList.revisionDate.setValue(new Date(this.lexicalEntry.revisionDate).toLocaleString());
-      formControlList.note.setValue(this.lexicalEntry.note);
+      formControlList.note.setValue(this.lexicalEntry.note?? '');
       if (+this.lexicalEntry.confidence !== -1) formControlList.confidence.setValue(+this.lexicalEntry.confidence * 100);
     });
   }
