@@ -1,9 +1,6 @@
-import { TStatus } from "./t-status";
+import { AnnotationCore } from "./annotation-core";
 
-export class TTagset {
-  id: number | undefined;
-  status: TStatus | undefined;
-  time: string | undefined;
+export class TTagset extends AnnotationCore {
   name: string | undefined;
   description: string | undefined;
 }
