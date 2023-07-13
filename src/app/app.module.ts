@@ -39,6 +39,8 @@ import { TabsLexicalEntryComponent } from './controllers/tab-controllers/tabs-le
 import { TabsSenseComponent } from './controllers/tab-controllers/tabs-sense/tabs-sense.component';
 import { SharedModule } from './modules/shared.module';
 import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
+import { FormMetadataEditorComponent } from './controllers/editors/form-metadata-editor/form-metadata-editor.component';
+import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-e
     TabsFormComponent,
     TabsSenseComponent,
     LexEntryMetadataEditorComponent,
+    FormMetadataEditorComponent,
+    SenseMetadataEditorComponent,
     LexEntryEditorComponent,
     FormCoreEditorComponent,
     SenseCoreEditorComponent,
