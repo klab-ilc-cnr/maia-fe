@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -18,6 +18,8 @@ export class TabsSenseComponent implements OnInit, OnDestroy {
   @Input() lexEntryId!: string;
   /**Senso in lavorazione */
   senseEntry: SenseCore | undefined;
+
+  entry$!: Observable<SenseCore>;
 
   /**
    * Costruttore per TabsSenseComponent
@@ -62,8 +64,11 @@ export class TabsSenseComponent implements OnInit, OnDestroy {
  * Metodo che richiama il servizio di recupero del senso
  */
   private loadData(): void {
-    this.lexiconService.getSense(this.senseId).pipe(
+    this.entry$ = this.lexiconService.getSense(this.senseId);
+    this.entry$.pipe(
       take(1),
-    ).subscribe(se => { this.senseEntry = se; });
+    ).subscribe(se => {
+      this.senseEntry = se;
+    });
   }
 }

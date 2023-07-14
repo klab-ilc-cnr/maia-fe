@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { FormCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -20,6 +20,8 @@ export class TabsFormComponent implements OnInit, OnDestroy {
   formEntry: FormCore | undefined;
   /**Tab iniziale selezionato */
   selectedTab = 0;
+  entry$!: Observable<FormCore>;
+
 
   /**
    * Costruttore per TabsFormComponent
@@ -29,7 +31,8 @@ export class TabsFormComponent implements OnInit, OnDestroy {
   constructor(
     private lexiconService: LexiconService,
     private commonService: CommonService,
-  ) { }
+  ) {
+  }
 
   /**Metodo dell'interfaccia OnInit utilizzato per il caricamento iniziale dei dati */
   ngOnInit(): void {
@@ -64,7 +67,9 @@ export class TabsFormComponent implements OnInit, OnDestroy {
    * Metodo che richiama il servizio di recupero della forma
    */
   private loadData() {
-    this.lexiconService.getForm(this.formId).pipe(
+    this.entry$ = this.lexiconService.getForm(this.formId);
+
+    this.entry$.pipe(
       take(1),
     ).subscribe(fe => {
       this.formEntry = fe;
