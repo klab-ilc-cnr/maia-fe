@@ -41,6 +41,7 @@ import { SharedModule } from './modules/shared.module';
 import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
 import { FormMetadataEditorComponent } from './controllers/editors/form-metadata-editor/form-metadata-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
+import { BaseMetadataEditorComponent } from './controllers/editors/base-metadata-editor/base-metadata-editor.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { SenseMetadataEditorComponent } from './controllers/editors/sense-metada
     LexEntryMetadataEditorComponent,
     FormMetadataEditorComponent,
     SenseMetadataEditorComponent,
+    BaseMetadataEditorComponent,
     LexEntryEditorComponent,
     FormCoreEditorComponent,
     SenseCoreEditorComponent,
