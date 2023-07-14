@@ -18,7 +18,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LexEntryMetadataEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
-  @Input() lexicalEntry$!: Observable<LexicalEntryCore>;
+  @Input() entry$!: Observable<LexicalEntryCore>;
   form = new FormGroup({
     creator: new FormControl<string>({ value: '', disabled: true }),
     creationDate: new FormControl<string>({ value: '', disabled: true }),
@@ -30,7 +30,7 @@ export class LexEntryMetadataEditorComponent implements OnInit, OnDestroy {
     confidence: new FormControl<number | undefined>(undefined),
     note: new FormControl<string>(''),
   });
-  lexicalEntry!: LexicalEntryCore;
+  entry!: LexicalEntryCore;
   currentUser!: User;
 
   constructor(
@@ -45,47 +45,38 @@ export class LexEntryMetadataEditorComponent implements OnInit, OnDestroy {
     ).subscribe(cu => {
       this.currentUser = cu;
     });
+
     const formControlList = this.form.controls;
-    formControlList.note.valueChanges.pipe(
+    this.subscribe(formControlList.note, LEXICAL_ENTRY_RELATIONS.NOTE, 'note');
+    this.subscribe(formControlList.confidence, LEXICAL_ENTRY_RELATIONS.CONFIDENCE, 'confidence');
+  }
+
+  private subscribe(control: FormControl, fieldType: any, fieldName:string) {
+    control.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
       skip(1),
-    ).subscribe(note => {
-      this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.NOTE, note?? '').then(() => {
-        if (this.lexicalEntry.note !== note) {
-          this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, note };
-        }
+    ).subscribe(value => {
+      this.updateLexicalEntryField(fieldType, fieldName, value?? '').then(() => {
+        this.entry = { ...this.entry, [fieldName]: value?? '' };
       });
-    });
-    formControlList.confidence.valueChanges.pipe(
-      takeUntil(this.unsubscribe$),
-      debounceTime(500),
-    ).subscribe(conf => {
-      if (conf && conf !== 0) {
-        const convertedConf = conf / 100;
-        if (convertedConf !== +this.lexicalEntry.confidence) {
-          this.updateLexicalEntryField(LEXICAL_ENTRY_RELATIONS.CONFIDENCE, convertedConf).then(() => {
-            this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, confidence: convertedConf.toString() };
-          });
-        }
-      }
     });
   }
 
   ngOnInit(): void {
-    this.lexicalEntry$.pipe(
+    this.entry$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(le => {
-      this.lexicalEntry = le;
+      this.entry = le;
       const formControlList = this.form.controls;
-      formControlList.creator.setValue(this.lexicalEntry.creator);
-      if (this.lexicalEntry.creationDate !== '') formControlList.creationDate.setValue(new Date(this.lexicalEntry.creationDate).toLocaleString());
-      formControlList.author.setValue(this.lexicalEntry.author);
-      if (this.lexicalEntry.completionDate !== '') formControlList.completionDate.setValue(new Date(this.lexicalEntry.completionDate).toLocaleString());
-      formControlList.revisor.setValue(this.lexicalEntry.revisor);
-      if (this.lexicalEntry.revisionDate !== '') formControlList.revisionDate.setValue(new Date(this.lexicalEntry.revisionDate).toLocaleString());
-      formControlList.note.setValue(this.lexicalEntry.note?? '');
-      if (+this.lexicalEntry.confidence !== -1) formControlList.confidence.setValue(+this.lexicalEntry.confidence * 100);
+      formControlList.creator.setValue(this.entry.creator);
+      if (this.entry.creationDate !== '') formControlList.creationDate.setValue(new Date(this.entry.creationDate).toLocaleString());
+      formControlList.author.setValue(this.entry.author);
+      if (this.entry.completionDate !== '') formControlList.completionDate.setValue(new Date(this.entry.completionDate).toLocaleString());
+      formControlList.revisor.setValue(this.entry.revisor);
+      if (this.entry.revisionDate !== '') formControlList.revisionDate.setValue(new Date(this.entry.revisionDate).toLocaleString());
+      formControlList.note.setValue(this.entry.note?? '');
+      if (+this.entry.confidence !== -1) formControlList.confidence.setValue(+this.entry.confidence * 100);
     });
   }
 
@@ -98,25 +89,34 @@ export class LexEntryMetadataEditorComponent implements OnInit, OnDestroy {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.lexicalEntry.label} update "${relation}" failed `));
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.entry.label} update "${relation}" failed `));
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(resp => {
-      this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
-      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
+      this.entry = { ...this.entry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.entry.label} update "${relation}" success `));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.entry.lexicalEntry });
     });
   }
 
-  private async updateLexicalEntryField(relation: LEXICAL_ENTRY_RELATIONS, value: any) {
+  private async updateLexicalEntryField(relation: LEXICAL_ENTRY_RELATIONS, fieldName: string, value: any) {
+    if (value === this.entry[fieldName as keyof LexicalEntryCore]) return;
+
     if (!this.currentUser.name) {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
       return;
     }
-    const updater = <LexicalEntryUpdater>{
-      relation: relation,
-      value: value
-    };
-    this.manageUpdateObservable(this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater), relation);
+
+    if (relation === LEXICAL_ENTRY_RELATIONS.CONFIDENCE) {
+      value /= 100;
+    }
+
+    const obs = this.lexiconService.updateLexicalEntry(
+      this.currentUser.name,
+      this.entry.lexicalEntry,
+      {relation, value}
+    );
+
+    this.manageUpdateObservable(obs, relation);
   }
 }
