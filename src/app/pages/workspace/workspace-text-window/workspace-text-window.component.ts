@@ -14,6 +14,7 @@ import { LineBuilder } from 'src/app/models/text/line-builder';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { TextLine } from 'src/app/models/text/text-line';
 import { TextRow } from 'src/app/models/text/text-row';
+import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
@@ -65,6 +66,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Annotazione in lavorazione */
   annotation = new Annotation();
+  textoAnnotation = new TAnnotation();
+  offset: number|undefined;
   /**Annotation response */
   annotationsRes: any;
   /**Freccia di relazione */
@@ -197,6 +200,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.relation = new Relation();
 
     this.loaderService.show();
@@ -248,10 +252,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       // this.annotation.layer = this.selectedLayer;
       // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+      this.textoAnnotation.layer = this.selectedLayer;
       this.annotation.layer = this.selectedLayer?.id;
       this.annotation.layerName = this.selectedLayer?.name;
 
       this.textRes = textResponse.data || [];
+      this.offset = textResponse.offset;
       this.annotationsRes = annotationsResponse;
 
       this.simplifiedAnns = [];
@@ -320,17 +326,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
     this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
   }
 
   /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationDeleted() {
     this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.loadData();
   }
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
     this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.loadData();
   }
 
@@ -343,6 +352,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onRelationCancel() {
     this.relation = new Relation();
     this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
 
@@ -368,10 +378,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onSelectionChange(event: any): void {
     const selection = this.getCurrentTextSelection();
 
+    console.info('selection indexes', selection);
+
     if (!selection) { //caso senza selezione, esco dal metodo
       return;
     }
-
+    this.textoAnnotation = new TAnnotation();
     this.annotation = new Annotation();
 
     let startIndex = selection.startIndex;
@@ -396,6 +408,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+    this.textoAnnotation.layer = this.selectedLayer;
+    this.textoAnnotation.start = (this.offset??0) + startIndex;
+    this.textoAnnotation.end = (this.offset??0) + endIndex;
     this.annotation.layer = this.selectedLayer?.id;
     this.annotation.layerName = this.selectedLayer?.name;
     this.annotation.spans = new Array<SpanCoordinates>();
@@ -409,6 +424,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.annotation.attributes["metadata"] = new AnnotationMetadata();
 
     this.annotation.value = text;
+
+    console.info('texto annotation', this.textoAnnotation)
 
     this.showEditorAndHideOthers(EditorType.Annotation);
   }

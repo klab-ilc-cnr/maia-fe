@@ -7,6 +7,8 @@ import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature'
 import { FeatureForAnnotation } from 'src/app/models/feature/feature-for-annotation';
 import { FeatureType } from 'src/app/models/feature/feature-type';
 import { Roles } from 'src/app/models/roles';
+import { TAnnotation } from 'src/app/models/texto/t-annotation';
+import { TFeature } from 'src/app/models/texto/t-feature';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { FeatureService } from 'src/app/services/feature.service';
 import { LayerService } from 'src/app/services/layer.service';
@@ -63,6 +65,20 @@ export class AnnotationEditorComponent implements OnInit, OnDestroy {
       })
   }
 
+  @Input()
+  get textoAnnotationModel(): TAnnotation { return this._textoAnnotation; }
+  set textoAnnotationModel(annotation: TAnnotation) {
+    this._textoAnnotation = annotation;
+    const layerId = this._textoAnnotation.layer!.id!;
+    this.layerService.retrieveLayerFeatureList(layerId).pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(features => {
+      this.textoFeatures = features;
+      console.info('texto features for layer',features)
+    });
+
+  }
+
   /**Annotazione in lavorazione */
   @Input()
   /**Getter dell'annotazione in lavorazione */
@@ -78,12 +94,6 @@ export class AnnotationEditorComponent implements OnInit, OnDestroy {
     if (!layerId || isNaN(layerId)) {
       return;
     }
-
-    this.layerService.retrieveLayerFeatureList(layerId).pipe(
-      takeUntil(this.unsubscribe$),
-    ).subscribe(features => {
-      //TODO IMPLEMENTARE QUANDO AVREMO IL MODELLO DELLE ANNOTAZIONI
-    });
 
     this.featureService.retrieveFeaturesByLayerId(layerId).subscribe({
       next: (data) => {
@@ -128,6 +138,8 @@ export class AnnotationEditorComponent implements OnInit, OnDestroy {
   }
   /**Annotazione in lavorazione (default a new) */
   private _annotation: Annotation = new Annotation();
+  private _textoAnnotation: TAnnotation = new TAnnotation();
+  textoFeatures: TFeature[] = [];
 
   /**Identificativo numerico del file in annotazione */
   @Input() fileId: number | undefined;
