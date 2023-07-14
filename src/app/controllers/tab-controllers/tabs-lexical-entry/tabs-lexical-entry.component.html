@@ -8,6 +8,6 @@
   <p-tabPanel header="Multimedia"></p-tabPanel>
   <p-tabPanel header="Dictionary view"></p-tabPanel>
   <p-tabPanel header="Metadata">
-    <app-lex-entry-metadata-editor *ngIf="selectedTab === 6" [lexicalEntry$]="lexicalEntry$"></app-lex-entry-metadata-editor>
+    <app-lex-entry-metadata-editor *ngIf="selectedTab === 6" [entry$]="lexicalEntry$"></app-lex-entry-metadata-editor>
   </p-tabPanel>
 </p-tabView>
