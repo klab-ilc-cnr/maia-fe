@@ -1,7 +1,7 @@
 <!--PLACEHOLDER quando siamo in fase di loading dati-->
-<p-skeleton *ngIf="!lexicalEntry" width="30rem" height="40rem"></p-skeleton>
+<p-skeleton *ngIf="!entry" width="30rem" height="40rem"></p-skeleton>
 
-<div *ngIf="lexicalEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
+<div *ngIf="entry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
   <form [formGroup]="form" class="formgrid grid">
     <div class="field col-6">
       <label for="creator">Creator</label>
