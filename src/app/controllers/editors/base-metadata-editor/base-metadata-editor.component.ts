@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Form, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, catchError, debounceTime, skip, take, takeUntil, throwError } from 'rxjs';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
@@ -16,13 +16,16 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   @Input() entry$!: Observable<any>;
   @Input() confidenceLabel = 'Confidence';
-  form = new FormGroup({
+
+  formControls : {[name: string] : FormControl} = {
     creator: new FormControl<string>({ value: '', disabled: true }),
     creationDate: new FormControl<string>({ value: '', disabled: true }),
     provenance: new FormControl<string>(''),
     confidence: new FormControl<number | undefined>(undefined),
     note: new FormControl<string>(''),
-  });
+  };
+
+  form! : FormGroup;
   entry!: any;
   currentUser!: User;
   relations!: any;
@@ -37,13 +40,10 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
     ).subscribe(cu => {
       this.currentUser = cu;
     });
-
-    const formControlList = this.form.controls;
-    this.subscribe(formControlList.note, 'note');
-    this.subscribe(formControlList.confidence, 'confidence');
   }
 
-  private subscribe(control: FormControl, fieldName: string) {
+  private subscribe(fieldName: string) {
+    const control = this.form.controls[fieldName];
     control.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
@@ -69,23 +69,27 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (!this.relations) throw new Error('this.relations must be set in BaseMetatadaEditorComponent');
 
+    this.form = new FormGroup(this.formControls);
+    this.subscribe('note');
+    this.subscribe('confidence');
+
     this.entry$.pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe(this.onLoadData);
+    ).subscribe((entry) => this.onLoadData(entry));
   }
 
-  protected onLoadData = (entry: typeof this.entry) => {
+  protected onLoadData(entry: typeof this.entry) {
     this.entry = entry;
     const formControlList = this.form.controls;
-    formControlList.creator.setValue(entry.creator);
+    formControlList['creator'].setValue(entry.creator);
     if (entry.creationDate !== '') {
       const date = new Date(entry.creationDate).toLocaleString();
-      formControlList.creationDate.setValue(date);
+      formControlList['creationDate'].setValue(date);
     }
     if (+entry.confidence !== -1) {
-      formControlList.confidence.setValue(+entry.confidence * 100);
+      formControlList['confidence'].setValue(+entry.confidence * 100);
     }
-    formControlList.note.setValue(entry.note?? '');
+    formControlList['note'].setValue(entry.note?? '');
   }
 
   ngOnDestroy(): void {
