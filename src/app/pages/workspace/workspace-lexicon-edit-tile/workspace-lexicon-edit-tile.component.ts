@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
+import { RowToggler } from 'primeng/table';
 import { Subject, take, takeUntil } from 'rxjs';
 import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -76,6 +77,62 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     private msgConfService: MessageConfigurationService
   ) { }
 
+
+  private onLexiconEditPendingChanges(res: any): void {
+    switch (res.type) {
+      case LexicalEntryTypeOld.LEXICAL_ENTRY:
+        this.lexicalEntryPendingChanges = res.value;
+        break;
+      case LexicalEntryTypeOld.FORM:
+        this.formPendingChanges = res.value;
+        break;
+      case LexicalEntryTypeOld.SENSE:
+        this.sensePendingChanges = res.value;
+        break;
+    }
+  }
+
+  private onLexiconDeleteUpdateTree(res: any): void {
+    if (res.value !== this.lexicalEntryInstanceName) return;
+      this.onNodeSelect({
+        index: undefined,
+        node: this.lexicalEntryTree[0],
+        originalEvent: null,
+        type: 'row'
+      });
+      this.selectedInstanceName = this.lexicalEntryInstanceName;
+      this.selectedType = LexicalEntryTypeOld.LEXICAL_ENTRY;
+      this.selectedNode = this.lexicalEntryTree[0];
+      this.refreshTreeNode();
+  }
+
+  private findAndModifyEntry(root: any, type: LexicalEntryTypeOld, id: string, newValue: string): boolean {
+    if (root.data.type === type && root.data.name === id) {
+      root.data.name = newValue;
+      root.data.label = newValue;
+      return true;
+    }
+
+    if (!root.children) return false;
+
+    for (const child of root.children) {
+      const found = this.findAndModifyEntry(child, type, id, newValue);
+      if (found) return true;
+    }
+    return false;
+  }
+
+  private onLexiconEditWrittenRep(res: any): void {
+    if (res.entryName !== this.lexicalEntryInstanceName) return;
+    this.findAndModifyEntry(this.lexicalEntryTree[0], res.type, res.id, res.newValue);
+    this.lexicalEntryTree = [...this.lexicalEntryTree];
+  }
+
+  private onLexiconEditUpdateTree(res: any): void {
+    if (res.value !== this.lexicalEntryInstanceName) return;
+    this.refreshTreeNode();
+  }
+
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
     this.selectedInstanceName = this.selectedNode.data.instanceName;
@@ -98,39 +155,23 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.commonService.notifyObservable$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
-      if ('option' in res) {
-        if (res.option === 'tag_clicked_edit_tile') {
+      switch (res.option) {
+        case 'tag_clicked_edit_tile':
           this.alternateLabelInstanceName();
           this.showLabelName = !this.showLabelName;
-        }
-
-        if (res.option === 'lexicon_edit_pending_changes') {
-          switch (res.type) {
-            case LexicalEntryTypeOld.LEXICAL_ENTRY:
-              this.lexicalEntryPendingChanges = res.value;
-              break;
-            case LexicalEntryTypeOld.FORM:
-              this.formPendingChanges = res.value;
-              break;
-            case LexicalEntryTypeOld.SENSE:
-              this.sensePendingChanges = res.value;
-              break;
-          }
-        }
-        if (res.option === 'lexicon_edit_update_tree' && res.value === this.lexicalEntryInstanceName) {
-          if (res.isRemove) {
-            this.onNodeSelect({
-              index: undefined,
-              node: this.lexicalEntryTree[0],
-              originalEvent: null,
-              type: 'row'
-            });
-            this.selectedInstanceName = this.lexicalEntryInstanceName;
-            this.selectedType = LexicalEntryTypeOld.LEXICAL_ENTRY;
-            this.selectedNode = this.lexicalEntryTree[0];
-          }
-          this.refreshTreeNode();
-        }
+          break;
+        case 'lexicon_edit_pending_changes':
+          this.onLexiconEditPendingChanges(res);
+          break;
+        case 'lexicon_edit_update_tree':
+          if (res.isRemove) this.onLexiconDeleteUpdateTree(res);
+          else this.onLexiconEditUpdateTree(res);
+          break;
+        case 'lexicon_edit_writtenrep':
+          this.onLexiconEditWrittenRep(res);
+          break;
+        default:
+          break;
       }
     });
   }
