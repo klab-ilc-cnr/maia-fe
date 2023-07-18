@@ -37,6 +37,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private selectionStart?: number;
   /**Indice di fine selezione */
   private selectionEnd?: number;
+  selctedText = '';
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -411,6 +412,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset??0) + startIndex;
     this.textoAnnotation.end = (this.offset??0) + endIndex;
+    this.selctedText = text;
     this.annotation.layer = this.selectedLayer?.id;
     this.annotation.layerName = this.selectedLayer?.name;
     this.annotation.spans = new Array<SpanCoordinates>();

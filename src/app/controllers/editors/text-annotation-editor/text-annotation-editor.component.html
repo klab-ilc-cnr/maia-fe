@@ -1,0 +1,72 @@
+<div class="px-2 h-100 w-100">
+  <div class="border-bottom mb-2 py-2">
+    Annotation
+  </div>
+  <div *ngIf="noneAnnotationIsSelected; else annotationIsSelected" class="annotation-area none">
+    No annotation selected
+  </div>
+  <ng-template #annotationIsSelected>
+    <div class="annotation-area" *ngIf="annotationForm">
+      <form [formGroup]="annotationForm" class="validated" (ngSubmit)="onSubmitAnnotation()">
+        <div class="form-group">
+          <label for="layer">Layer</label>
+          <input type="text" class="form-control" formControlName="layer" name="layer">
+        </div>
+        <div class="form-group">
+          <label for="text">Text</label>
+          <input type="text" class="form-control" formControlName="text" name="text">
+        </div>
+        <hr />
+        <label class="w-100 text-center">Features</label>
+        <div *ngIf="features.length === 0; else featureBlock" class="none py-3 mb-3">
+          No feature
+        </div>
+        <ng-template #featureBlock>
+          <form [formGroup]="featureForm">
+            <div class="form-group" *ngFor="let feature of features">
+              <label class="form-label">{{feature.feature?.name}}</label>
+              <div [ngSwitch]="feature.feature?.type" class="p-fluid">
+                <div *ngSwitchCase="featureTypes.STRING">
+                  <input class="form-control" type="text" [formControlName]="feature.feature!.name!">
+                  <div
+                    *ngIf="featureForm.get(feature.feature!.name!)?.invalid && (featureForm.get(feature.feature!.name!)?.touched || featureForm.get(feature.feature!.name!)?.dirty)"
+                    class="invalid-feedback">
+                    <div *ngIf="featureForm.get(feature.feature!.name!)?.errors?.['isNotOnlyWhitespaces']">
+                      {{feature.feature!.name!}} can't contain only white space
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="featureTypes.TAGSET">
+                  <p-dropdown [formControlName]="feature.feature!.name!" [options]="(feature.tagsetItems|async)|| []"
+                    [filter]="true" [showClear]="true" optionLabel="name" appendTo="body"
+                    emptyFilterMessage="No element found" placeholder="Select a value">
+                  </p-dropdown>
+                </div>
+                <div *ngSwitchCase="featureTypes.URI">
+                  <input class="form-control" type="text" [formControlName]="feature.feature!.name!">
+                  <div
+                    *ngIf="featureForm.get(feature.feature!.name!)?.invalid && (featureForm.get(feature.feature!.name!)?.touched || featureForm.get(feature.feature!.name!)?.dirty)"
+                    class="invalid-feedback">
+                    <div *ngIf="featureForm.get(feature.feature!.name!)?.errors?.['isValidUri']">
+                      {{feature.feature!.name!}} does not contain a valid uri
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+        <div class="d-block" *ngIf="shouldBeEditable">
+          <button pButton pRipple type="submit" icon="pi pi-save" label="Save" class="w-100 mb-2 p-button-sm"></button>
+          <button pButton pRipple type="button" icon="pi pi-times" label="Cancel"
+            class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>
+          <button pButton pRipple type="button" icon="fa-solid fa-eraser" label="Clean"
+            class="w-100 mb-2 p-button-sm p-button-help" (click)="onClearBtn()"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" label="Delete"
+            class="w-100 mb-2 p-button-sm p-button-danger" [disabled]="shouldBeDisabled"
+            (click)="showDeleteModal()"></button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

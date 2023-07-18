@@ -42,6 +42,7 @@ import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-e
 import { FormMetadataEditorComponent } from './controllers/editors/form-metadata-editor/form-metadata-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { BaseMetadataEditorComponent } from './controllers/editors/base-metadata-editor/base-metadata-editor.component';
+import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { BaseMetadataEditorComponent } from './controllers/editors/base-metadata
     FormCoreEditorComponent,
     SenseCoreEditorComponent,
     SemanticRelEditorComponent,
+    TextAnnotationEditorComponent,
   ],
   imports: [
     BrowserModule,
