@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, pairwise, startWith, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
@@ -243,7 +243,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable<string>, relation: string) {
+  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, newValue: string) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -253,7 +253,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe(resp => {
       this.senseEntry = <SenseCore>{ ...this.senseEntry, lastUpdate: resp };
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
-      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.senseEntry.sense });
+
+      if (relation === 'definition') {
+        this.commonService.notifyOther({
+          option: 'lexicon_edit_label',
+          uri: this.senseEntry.sense,
+          newValue,
+        });
+      }
     });
   }
 
@@ -261,20 +268,21 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @private
    * Metodo che aggiorna un senso
    * @param relation {string} relazione da aggiornare
-   * @param value {string} nuovo valore dellazione
-   * @returns {Promise<void>}
+   * @param newValue {string} nuovo valore della relazione
    */
-  private async updateSense(relation: string, value: string) {
+  private async updateSense(relation: string, newValue: string) {
     if (!this.currentUser.name) {
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
+      const msg = this.msgConfService.generateWarningMessageConfig(`Current user not found`);
+      this.messageService.add(msg);
       return;
     }
-    const updater = <LexicalSenseUpdater>{
+
+    const updater = <LexicalSenseUpdater> {
       relation: this.commonService.getSenseUpdateRelation(relation),
-      value: value,
+      value: newValue,
     };
     const updateObs = this.lexiconService.updateLexicalSense(this.currentUser.name, this.senseEntry.sense, updater);
-    this.manageUpdateObservable(updateObs, relation);
+    this.manageUpdateObservable(updateObs, relation, newValue);
   }
 
   /**

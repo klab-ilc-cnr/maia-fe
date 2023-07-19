@@ -180,24 +180,24 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  private findAndModifyEntry(root: any, type: LexicalEntryTypeOld, id: string, newValue: string): boolean {
-    if (root.data?.type === type && root.data.name === id) {
-      root.data.name = newValue;
+  private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
+    if (root.data?.uri === uri) {
       root.data.label = newValue;
+      root.data.name = newValue;
       return true;
     }
 
     if (!root.children) return false;
 
     for (const child of root.children) {
-      const found = this.findAndModifyEntry(child, type, id, newValue);
+      const found = this.findAndModifyEntry(child, uri, newValue);
       if (found) return true;
     }
     return false;
   }
 
-  private onLexiconEditWrittenRep(res: any): void {
-    this.findAndModifyEntry({children: this.results}, res.type, res.id, res.newValue);
+  private onLexiconEdiTreeLabel(res: any): void {
+    this.findAndModifyEntry({children: this.results}, res.uri, res.newValue);
     this.results = [...this.results];
   }
 
@@ -221,8 +221,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         case 'lexicon_edit_update_tree':
           this.loadNodes();
           break;
-        case 'lexicon_edit_writtenrep':
-            this.onLexiconEditWrittenRep(res);
+        case 'lexicon_edit_label':
+            this.onLexiconEdiTreeLabel(res);
             break;
         default:
           break;

@@ -105,25 +105,24 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       this.refreshTreeNode();
   }
 
-  private findAndModifyEntry(root: any, type: LexicalEntryTypeOld, id: string, newValue: string): boolean {
-    if (root.data.type === type && root.data.name === id) {
-      root.data.name = newValue;
+  private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
+    if (root.data?.uri === uri) {
       root.data.label = newValue;
+      root.data.name = newValue;
       return true;
     }
 
     if (!root.children) return false;
 
     for (const child of root.children) {
-      const found = this.findAndModifyEntry(child, type, id, newValue);
+      const found = this.findAndModifyEntry(child, uri, newValue);
       if (found) return true;
     }
     return false;
   }
 
-  private onLexiconEditWrittenRep(res: any): void {
-    if (res.entryName !== this.lexicalEntryInstanceName) return;
-    this.findAndModifyEntry(this.lexicalEntryTree[0], res.type, res.id, res.newValue);
+  private onLexiconEditTreeLabel(res: any): void {
+    this.findAndModifyEntry(this.lexicalEntryTree[0], res.uri, res.newValue);
     this.lexicalEntryTree = [...this.lexicalEntryTree];
   }
 
@@ -166,8 +165,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
           if (res.isRemove) this.onLexiconDeleteUpdateTree(res);
           else this.onLexiconEditUpdateTree(res);
           break;
-        case 'lexicon_edit_writtenrep':
-          this.onLexiconEditWrittenRep(res);
+        case 'lexicon_edit_label':
+          this.onLexiconEditTreeLabel(res);
           break;
         default:
           break;
@@ -295,6 +294,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
               data: {
                 name: this.showLabelName ? val['label'] : val.sense,
                 instanceName: val.sense,
+                uri: val.sense,
                 label: val['label'],
                 note: val['note'],
                 creator: val['creator'],

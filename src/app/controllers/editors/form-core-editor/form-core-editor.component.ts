@@ -3,8 +3,8 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, pairwise, startWith, switchMap, take, takeUntil, throwError } from 'rxjs';
-import { FormCore, LexicalEntryTypeOld, PropertyElement } from 'src/app/models/lexicon/lexical-entry.model';
-import { FormUpdater, LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
+import { FormCore, PropertyElement } from 'src/app/models/lexicon/lexical-entry.model';
+import { FormUpdater, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
 import { CommonService } from 'src/app/services/common.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
@@ -120,11 +120,9 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.form.controls.type.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       distinctUntilChanged(),
-      startWith(this.form.controls.type.value),
-      pairwise(),
-    ).subscribe(([oldValue, newValue]) => {
+    ).subscribe((newValue) => {
       if (!newValue?.endsWith('#' + this.formEntry.type)) {
-        this.updateForm('type', oldValue, newValue ?? '').then(() => {
+        this.updateForm('type', newValue ?? '').then(() => {
           this.formEntry = <FormCore>{ ...this.formEntry, type: newValue?.split('#')[1] };
         });
       }
@@ -134,13 +132,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       debounceTime(500),
       distinctUntilChanged(),
-      startWith({}),
-      pairwise()
-    ).subscribe(([prev, resp]: [{[key: string]: any}, {[key: string]: any}]) => {
+    ).subscribe((resp: {[key: string]: any}) => {
       for (const key in resp) {
         const currentPropertyId = this.labelFormItems.findIndex(e => e.propertyID === key);
         if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== resp[key]) {
-          this.updateForm(key, prev[key], resp[key]).then(() => {
+          this.updateForm(key, resp[key]).then(() => {
             if (resp[key] === '') {
               this.movePropertyToMenu(key);
               return;
@@ -287,7 +283,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, oldValue: string | null, newValue: string) {
+  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, newValue: string) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -299,14 +295,14 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       this.formEntry = { ...this.formEntry, lastUpdate: resp };
       const msg = this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success`);
       this.messageService.add(msg);
-      if (relation === 'writtenRep')
+
+      if (relation === 'writtenRep') {
         this.commonService.notifyOther({
-          option: 'lexicon_edit_writtenrep',
-          entryName: this.formEntry.lexicalEntry,
-          id: oldValue,
+          option: 'lexicon_edit_label',
+          uri: this.formEntry.form,
           newValue,
-          type: LexicalEntryTypeOld.FORM,
-      });
+        });
+      }
     });
   }
   /**
@@ -335,7 +331,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param value {string} nuovo valore dellazione
    * @returns {Promise<void>}
    */
-  private async updateForm(relation: string, oldValue: string|null, newValue: string) {
+  private async updateForm(relation: string, newValue: string) {
     if (!this.currentUser.name) {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Current user not found`));
       return;
@@ -345,7 +341,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       value: newValue,
     };
     const updateObs = this.lexiconService.updateLexicalForm(this.currentUser.name, this.formEntry.form, updater);
-    this.manageUpdateObservable(updateObs, relation, oldValue, newValue);
+    this.manageUpdateObservable(updateObs, relation, newValue);
   }
 
   /**
@@ -364,7 +360,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     }
     const updater = { type, relation, value, currentValue: currentValue ?? '' };
     const obs = this.lexiconService.updateLinguisticRelation(this.formEntry.form, updater);
-    this.manageUpdateObservable(obs, relation, currentValue, value);
+    this.manageUpdateObservable(obs, relation, value);
   }
 
   /**
