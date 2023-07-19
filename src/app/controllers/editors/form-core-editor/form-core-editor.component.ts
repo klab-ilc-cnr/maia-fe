@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, pairwise, startWith, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { FormCore, PropertyElement } from 'src/app/models/lexicon/lexical-entry.model';
 import { FormUpdater, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
