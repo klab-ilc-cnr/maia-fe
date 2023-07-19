@@ -365,7 +365,7 @@ export class AnnotationEditorComponent implements OnInit, OnDestroy {
                     }) */
         }
         else {
-          this.annotationService.createAnnotationFeature(annFeatures).subscribe({
+          this.annotationService._createAnnotationFeature(annFeatures).subscribe({
             next: () => {
               this.loaderService.hide();
               this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));

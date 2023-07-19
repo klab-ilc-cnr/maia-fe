@@ -2,16 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { TextChoice as TextChoice } from '../models/tile/text-choice-element.model';
-import { TextTileContent } from '../models/tile/text-tile-content.model';
-import { Tile } from '../models/tile/tile.model';
-import { WorkspaceChoice } from '../models/workspace-choice.model';
-import { Workspace } from '../models/workspace.model';
+import { v4 as uuidv4 } from 'uuid';
 import { DocumentSystem } from '../models/corpus/document-system';
 import { ElementType, _ElementType } from '../models/corpus/element-type';
-import { v4 as uuidv4 } from 'uuid';
-import { CorpusElement, FolderElement } from '../models/texto/corpus-element';
+import { CorpusElement, FolderElement, ResourceElement } from '../models/texto/corpus-element';
+import { TextChoice } from '../models/tile/text-choice-element.model';
+import { TextTileContent } from '../models/tile/text-tile-content.model';
+import { Tile } from '../models/tile/tile.model';
 import { TextoUser } from '../models/user';
+import { WorkspaceChoice } from '../models/workspace-choice.model';
+import { Workspace } from '../models/workspace.model';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json'); //TODO verificare rimozione per mancato uso
 
@@ -383,5 +383,9 @@ export class WorkspaceService {
   public getTextoUserRootFolder(userId?: number): Observable<FolderElement> {
     const operationUrl = userId ? `/${userId}` : '';
     return this.http.get<FolderElement>(`${this.textoUrl}/texto/user${operationUrl}/home`);
+  }
+
+  public retrieveResourceElementById(resourceId: number): Observable<ResourceElement> {
+    return this.http.get<ResourceElement>(`${this.textoUrl}/texto/resource/${resourceId}`);
   }
 }

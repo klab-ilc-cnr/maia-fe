@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
@@ -73,6 +73,8 @@ export class TextAnnotationEditorComponent implements OnDestroy {
 
   private _annotation: TAnnotation = new TAnnotation();
 
+  @Output() onSave = new EventEmitter<{ feature: TFeature, value: string }[]>();
+
   constructor(
     private layerService: LayerService,
     private tagsetService: TagsetService,
@@ -92,12 +94,29 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   onSubmitAnnotation() {
-    //TODO da implementare
-    console.info('annotation value to save:', this.annotationForm.value);
+    console.info('list for saving', this.createFeatureValueList());
+    this.onSave.emit(this.createFeatureValueList());
   }
 
   showDeleteModal() {
     //TODO da implementare
+  }
+
+  private createFeatureValueList(): { feature: TFeature, value: string }[] {
+    const result: { feature: TFeature, value: string }[] = [];
+    this.features.forEach(feature => {
+      if (!feature.feature?.name) {
+        throw Error('Feature missing name');
+      }
+      const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
+      if (featValue !== '') {
+        result.push(<{ feature: TFeature, value: string }>{
+          feature: feature.feature,
+          value: typeof (featValue) === 'string' ? featValue : featValue.name
+        });
+      }
+    });
+    return result;
   }
 
   private createForm() {

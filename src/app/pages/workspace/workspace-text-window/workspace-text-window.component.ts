@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Subject, catchError, forkJoin, of, switchMap, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
@@ -14,13 +14,19 @@ import { LineBuilder } from 'src/app/models/text/line-builder';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { TextLine } from 'src/app/models/text/text-line';
 import { TextRow } from 'src/app/models/text/text-row';
+import { ResourceElement } from 'src/app/models/texto/corpus-element';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
+import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
+import { TFeature } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
+import { User } from 'src/app/models/user';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { RelationService } from 'src/app/services/relation.service';
+import { UserService } from 'src/app/services/user.service';
+import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -68,7 +74,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Annotazione in lavorazione */
   annotation = new Annotation();
   textoAnnotation = new TAnnotation();
-  offset: number|undefined;
+  offset: number | undefined;
   /**Annotation response */
   annotationsRes: any;
   /**Freccia di relazione */
@@ -132,6 +138,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   totalRecords = 0;
   //#endregion
 
+  currentUser!: User;
+  currentResource!: ResourceElement;
+
   /**
    * Costruttore per WorkspaceTextWindowComponent
    * @param annotationService {AnnotationService} servizi relativi alle annotazioni
@@ -147,13 +156,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private msgConfService: MessageConfigurationService,
     private relationService: RelationService,
     private layerState: LayerStateService,
-  ) { }
+    private userService: UserService,
+    private workspaceService: WorkspaceService,
+  ) {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+    ).subscribe(cu => {
+      this.currentUser = cu;
+    });
+  }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per caricare i dati iniziali del componente */
   ngOnInit(): void {
     if (!this.textId) {
       return;
     }
+
+    this.workspaceService.retrieveResourceElementById(this.textId).pipe(
+      take(1),
+    ).subscribe(resource => {
+      this.currentResource = resource;
+    });
 
     this.layers$.pipe(
       takeUntil(this.unsubscribe$),
@@ -174,6 +197,44 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
+    const newAnnFeat = new TAnnotationFeature();
+    newAnnFeat.annotation = annotation;
+    newAnnFeat.feature = feature;
+    newAnnFeat.value = value;
+    return this.annotationService.createAnnotationFeature(newAnnFeat);
+  }
+
+  onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+    this.textoAnnotation.user = { id: +this.currentUser.id! };
+    this.textoAnnotation.resource = this.currentResource;
+    this.annotationService.createAnnotation(this.textoAnnotation).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error}`));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(annotation => {
+      console.info('annotation salvata', annotation)
+      const annFeatObsList: Observable<TAnnotationFeature>[] = [];
+      featuresList.forEach(feature => {
+        annFeatObsList.push(this.saveFeatureAnnotation(annotation, feature.feature, feature.value));
+      });
+      if (annFeatObsList.length === 0) {
+        throw Error('No feature to save in annotation');
+      }
+      forkJoin(annFeatObsList).pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error}`));
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(annotationFeature => {
+        console.info('annotation features salvate:', annotationFeature);
+      });
+    });
   }
 
   /**
@@ -215,7 +276,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       // this.annotationService._retrieveText(this.textId),
       this.annotationService.retrieveTextSplitted(this.textId, { start: this.first, end: lastIndex }),
       this.annotationService.retrieveByNodeId(this.textId),
-      this.relationService.retrieveByTextId(this.textId)
+      this.relationService.retrieveByTextId(this.textId),
+      this.annotationService.retrieveResourceAnnotations(this.textId, { start: this.first, end: lastIndex }),
     ]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
@@ -223,13 +285,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
-    ).subscribe(([textResponse, annotationsResponse, relationsResponse]) => {
+    ).subscribe(([textResponse, annotationsResponse, relationsResponse, tAnnotationsResponse]) => {
       // this.layersList = layersResponse;
       this.totalRecords = textResponse.count!;
 
       if (this.selectedLayers) {
         this.visibleLayers = this.selectedLayers;
       }
+
+      console.info('annotazioni presenti:', tAnnotationsResponse);
 
       // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
       //   this.visibleLayers = this.selectedLayers = this.layersList;
@@ -410,8 +474,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
     this.textoAnnotation.layer = this.selectedLayer;
-    this.textoAnnotation.start = (this.offset??0) + startIndex;
-    this.textoAnnotation.end = (this.offset??0) + endIndex;
+    this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
+    this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
     this.selctedText = text;
     this.annotation.layer = this.selectedLayer?.id;
     this.annotation.layerName = this.selectedLayer?.name;
