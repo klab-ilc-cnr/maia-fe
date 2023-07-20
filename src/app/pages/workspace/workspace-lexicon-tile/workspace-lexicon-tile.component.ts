@@ -180,6 +180,27 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
+    if (root.data?.uri === uri) {
+      root.data.label = newValue;
+      root.data.name = newValue;
+      return true;
+    }
+
+    if (!root.children) return false;
+
+    for (const child of root.children) {
+      const found = this.findAndModifyEntry(child, uri, newValue);
+      if (found) return true;
+    }
+    return false;
+  }
+
+  private onLexiconEdiTreeLabel(res: any): void {
+    this.findAndModifyEntry({children: this.results}, res.uri, res.newValue);
+    this.results = [...this.results];
+  }
+
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
     this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 203;
@@ -192,12 +213,19 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     ];
 
     this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
-      if ('option' in res && res.option === 'tag_clicked') {
-        this.alternateLabelInstanceName();
-        this.showLabelName = !this.showLabelName;
-      }
-      if ('option' in res && res.option === 'lexicon_edit_update_tree') {
-        this.loadNodes();
+      switch (res.option) {
+        case 'tag_clicked':
+          this.alternateLabelInstanceName();
+          this.showLabelName = !this.showLabelName;
+          break;
+        case 'lexicon_edit_update_tree':
+          this.loadNodes();
+          break;
+        case 'lexicon_edit_label':
+            this.onLexiconEdiTreeLabel(res);
+            break;
+        default:
+          break;
       }
     });
 
