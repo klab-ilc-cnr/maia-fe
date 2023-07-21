@@ -267,7 +267,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
         if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
-          const sAnn = a.spans.map((sc: SpanCoordinates) => {
+          const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
             let { spans, ...newAnn } = a;
             return {
               ...newAnn,
@@ -1565,7 +1565,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           width: w,
           endX: endX,
           height: this.visualConfig.annotationHeight,
-          yOffset: yAnnOffset,
+          yOffset: yAnnOffset, //permette di distribuire in verticale le annotazioni
           id: ann.id
         })
 
@@ -1579,10 +1579,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           },
           height: this.visualConfig.stdTextLineHeight - 2,
           width: w + 2,
-          id: this.generateHighlightId(ann.id)
+          id: this.generateHighlightId(ann.id) //serve successivamente per riaprire annotazione //TODO verificare come gestire con nuovo BE
         })
       })
 
+      //vado a verificare se sono state già inserite delle torri nella parola/e corrente
       const minorTowers = lineTowers.filter((lt) => (lt.spanCoordinates.start >= t.span.start && lt.spanCoordinates.end <= t.span.end) || (lt.spanCoordinates.start < t.span.start && lt.spanCoordinates.end > t.span.start) || (lt.spanCoordinates.start < t.span.end && lt.spanCoordinates.end > t.span.end));
 
       let yOffset = 0;
@@ -1955,6 +1956,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Raggruppa le annotazioni nelle torri, per vedere quelle che hanno gli stessi limiti (annotazioni su una stessa parola vanno a formare una torre)
+   * @param annotations
+   * @returns
+   */
   private sortFragmentsIntoTowers(annotations: any[]) {
     const towers = annotations.reduce((a, { span, ...rest }) => {
       const key = `${span.start}-${span.end}`;
