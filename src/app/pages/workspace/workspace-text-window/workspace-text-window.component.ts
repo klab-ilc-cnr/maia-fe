@@ -43,7 +43,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private selectionStart?: number;
   /**Indice di fine selezione */
   private selectionEnd?: number;
-  selctedText = '';
+  selectedTText = '';
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -77,6 +77,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   offset: number | undefined;
   /**Annotation response */
   annotationsRes: any;
+  textoAnnotationsRes: TAnnotation[] = [];
   /**Freccia di relazione */
   dragArrow: any = {
     m: "",
@@ -325,6 +326,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.textRes = textResponse.data || [];
       this.offset = textResponse.offset;
       this.annotationsRes = annotationsResponse;
+      this.textoAnnotationsRes = tAnnotationsResponse;
 
       this.simplifiedAnns = [];
       this.simplifiedArcs = relationsResponse;
@@ -500,7 +502,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
-    this.selctedText = text;
+    this.selectedTText = text;
     this.annotation.layer = this.selectedLayer?.id;
     this.annotation.layerName = this.selectedLayer?.name;
     this.annotation.spans = new Array<SpanCoordinates>();
@@ -537,20 +539,25 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.showEditorAndHideOthers(EditorType.Annotation); //visualizzo l'editor di annotazione
 
-    const ann = this.annotationsRes.annotations.find((a: any) => a.id == id); //cerca fra le annotazioni quella corrente attraverso l'id
+    // const ann = this.annotationsRes.annotations.find((a: any) => a.id == id); //cerca fra le annotazioni quella corrente attraverso l'id
+    const ann = this.textoAnnotationsRes.find((a: TAnnotation) => a.id == id); //cerca fra le annotazioni quella corrente attraverso l'id
 
     if (!ann) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Annotazione non trovata'));
       return;
     }
 
-    // if (this._editIsLocked) {
+    // if (this._editIsLocked) { //TODO implementare gestione se edit non permesso
 
     // }
 
-    this.annotation = { ...ann }
+    // this.annotation = { ...ann }
+    this.textoAnnotation = ann;
+    const computedStart = this.textoAnnotation.start! - (this.offset??0);
+    const computedEnd = this.textoAnnotation.end! - (this.offset??0);
+    this.selectedTText = this.textRes.join('').substring(computedStart, computedEnd);
     // this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
-    this.annotation.layerName = this.selectedLayer?.name;
+    // this.annotation.layerName = this.selectedLayer?.name;
 
     //this._editIsLocked = true;
   }
@@ -1635,7 +1642,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     const localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
 
-    // Da completare la gestione delle annotazioni su più linee
+    // Da completare la gestione delle annotazioni su più linee //TODO implementare gestione annotazioni su tower diverse
     // let localAnns = this.simplifiedAnns.filter((a: any) =>
     //   (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
     //   (a.span.start < (startIndex || 0) && a.span.end >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||

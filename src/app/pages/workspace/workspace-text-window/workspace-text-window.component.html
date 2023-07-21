@@ -127,7 +127,7 @@
   </div>
   <div class="col-4 ps-0">
     <div class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
-      <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selctedText"
+      <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
       (onSave)="onSaveAnnotationFeatures($event)"></app-text-annotation-editor>
       <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
         (onSave)="onAnnotationSaved()"

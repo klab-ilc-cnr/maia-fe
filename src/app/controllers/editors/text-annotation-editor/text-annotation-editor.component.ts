@@ -124,6 +124,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     this.annotationForm.controls.text.setValue(this.annotationFragment);
     this.features.forEach(f => {
       const controlName = f.feature?.name;
+      const existingValue: string = this.annotationModel.features?.find(af => af.feature?.name === controlName)?.value ?? '';
       const featureType = f.feature?.type;
       let newControl: FormControl;
       if (!controlName) {
@@ -144,6 +145,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
           break;
       }
       this.featureForm.addControl(controlName, newControl);
+      this.featureForm.get(controlName)?.setValue(existingValue)
     });
   }
 

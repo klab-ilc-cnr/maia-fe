@@ -38,7 +38,7 @@
                 </div>
                 <div *ngSwitchCase="featureTypes.TAGSET">
                   <p-dropdown [formControlName]="feature.feature!.name!" [options]="(feature.tagsetItems|async)|| []"
-                    [filter]="true" [showClear]="true" optionLabel="name" appendTo="body"
+                    [filter]="true" [showClear]="true" optionLabel="name" optionValue="name" appendTo="body"
                     emptyFilterMessage="No element found" placeholder="Select a value">
                   </p-dropdown>
                 </div>
