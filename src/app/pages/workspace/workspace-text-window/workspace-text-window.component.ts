@@ -231,8 +231,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error}`));
           return throwError(() => new Error(error.error));
         }),
-      ).subscribe(annotationFeature => {
-        console.info('annotation features salvate:', annotationFeature);
+      ).subscribe(() => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+        this.onAnnotationSaved();
       });
     });
   }
@@ -328,35 +329,59 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.simplifiedAnns = [];
       this.simplifiedArcs = relationsResponse;
 
-      const layersIndex = new Array<string>();
+      const layersIndex = new Array<number>();
 
       this.visibleLayers.forEach(l => {
         if (l.id) {
-          layersIndex.push(l.id?.toString())
+          layersIndex.push(l.id)
         }
-      })
+      });
 
-      this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
-        if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
-          const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
-            let { spans, ...newAnn } = a;
-            return {
-              ...newAnn,
-              span: sc
-            }
-          })
-
-          this.simplifiedAnns.push(...sAnn);
+      tAnnotationsResponse.forEach(async (a: TAnnotation) => {
+        if(a.start && a.end && layersIndex.includes(a.layer!.id!)) {
+          const annFeat = a.features ?? [];
+          let dictFeat = {};
+          annFeat.forEach(f => {
+            dictFeat = {...dictFeat, [f.feature!.name!]: f.value};
+          });
+          console.info('ann features come dizionario', dictFeat) 
+          const sAnn = {
+            span: <SpanCoordinates>{
+              start: a.start - (this.offset??0),
+              end: a.end - (this.offset??0)
+            },
+            layer: a.layer?.id,
+            layerName: a.layer?.name,
+            value: undefined, //TODO non chiaro quale sia il valore
+            imported: undefined,
+            attributes: <Record<string,any>>{...dictFeat},
+            id: a.id,
+          };
+          this.simplifiedAnns.push(sAnn);
         }
+      });
 
-        /*           if (a.attributes && a.attributes["relations"]) {
-                    let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-                      if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
-                        this.simplifiedArcs.push(r);
-                      }
-                    })
-                  } */
-      })
+      // this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
+      //   if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
+      //     const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
+      //       let { spans, ...newAnn } = a;
+      //       return {
+      //         ...newAnn,
+      //         span: sc
+      //       }
+      //     })
+
+      //     this.simplifiedAnns.push(...sAnn);
+      //   }
+
+      //   /*           if (a.attributes && a.attributes["relations"]) {
+      //               let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
+      //                 if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
+      //                   this.simplifiedArcs.push(r);
+      //                 }
+      //               })
+      //             } */
+      // })
 
       this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
 
@@ -403,7 +428,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
-    this.annotation = new Annotation();
     this.textoAnnotation = new TAnnotation();
     this.loadData();
   }

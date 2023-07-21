@@ -190,5 +190,9 @@ export class AnnotationService {
     );
   }
 
+  public retrieveAnnotationFeaturesById(annotationId: number): Observable<TAnnotationFeature[]> {
+    return this.http.get<TAnnotationFeature[]>(`${this.textoUrl}/texto/annotation/${annotationId}/features`);
+  }
+
   //#endregion
 }
