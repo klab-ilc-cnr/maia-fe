@@ -194,5 +194,12 @@ export class AnnotationService {
     return this.http.get<TAnnotationFeature[]>(`${this.textoUrl}/texto/annotation/${annotationId}/features`);
   }
 
+  public updateAnnotationFeature(annFeatId: number, annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
+    return this.http.post<TAnnotationFeature>(
+      `${this.textoUrl}/texto/annotationFeature/update`,
+      annotationFeature
+    );
+  }
+
   //#endregion
 }

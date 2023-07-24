@@ -208,39 +208,56 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return this.annotationService.createAnnotationFeature(newAnnFeat);
   }
 
-  onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
-    if(this.textoAnnotation.id) {
-      console.info('is update')  //TODO implementa meccanismo d update annotazione esistente
-      return
-    }
-    this.textoAnnotation.user = { id: +this.currentUser.id! };
-    this.textoAnnotation.resource = this.currentResource;
-    this.annotationService.createAnnotation(this.textoAnnotation).pipe(
-      take(1),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error}`));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(annotation => {
-      console.info('annotation salvata', annotation)
-      const annFeatObsList: Observable<TAnnotationFeature>[] = [];
-      featuresList.forEach(feature => {
-        annFeatObsList.push(this.saveFeatureAnnotation(annotation, feature.feature, feature.value));
-      });
-      if (annFeatObsList.length === 0) {
-        throw Error('No feature to save in annotation');
-      }
-      forkJoin(annFeatObsList).pipe(
-        takeUntil(this.unsubscribe$),
+  private createNewAnnotation(annotation: TAnnotation) {
+    const promise = new Promise<TAnnotation>((resolve, reject) => {
+      this.annotationService.createAnnotation(annotation).pipe(
+        take(1),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error}`));
+          reject(error);
           return throwError(() => new Error(error.error));
         }),
-      ).subscribe(() => {
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-        this.onAnnotationSaved();
+      ).subscribe(newAnn => {
+        resolve(newAnn);
       });
     });
+    return promise;
+  }
+
+  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+    let workingAnnotation = this.textoAnnotation;
+    if (!this.textoAnnotation.id) {
+      this.textoAnnotation.user = { id: +this.currentUser.id! };
+      this.textoAnnotation.resource = this.currentResource;
+      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
+    }
+    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    for (const fl of featuresList) {
+      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
+      if (existingFeature && existingFeature.value === fl.value) {
+        continue;
+      }
+      if (!existingFeature) {
+        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
+        continue;
+      }
+      const updateAnnFeat = <TAnnotationFeature>{
+        ...existingFeature,
+        value: fl.value,
+      };
+      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat.id!, updateAnnFeat));
+    }
+    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error}`));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+      this.onAnnotationSaved();
+    })
   }
 
   /**
@@ -344,23 +361,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       });
 
       tAnnotationsResponse.forEach(async (a: TAnnotation) => {
-        if(a.start && a.end && layersIndex.includes(a.layer!.id!)) {
+        if (a.start && a.end && layersIndex.includes(a.layer!.id!)) {
           const annFeat = a.features ?? [];
           let dictFeat = {};
           annFeat.forEach(f => {
-            dictFeat = {...dictFeat, [f.feature!.name!]: f.value};
+            dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
           });
-          console.info('ann features come dizionario', dictFeat) 
+          console.info('ann features come dizionario', dictFeat)
           const sAnn = {
             span: <SpanCoordinates>{
-              start: a.start - (this.offset??0),
-              end: a.end - (this.offset??0)
+              start: a.start - (this.offset ?? 0),
+              end: a.end - (this.offset ?? 0)
             },
             layer: a.layer?.id,
             layerName: a.layer?.name,
             value: undefined, //TODO non chiaro quale sia il valore
             imported: undefined,
-            attributes: <Record<string,any>>{...dictFeat},
+            attributes: <Record<string, any>>{ ...dictFeat },
             id: a.id,
           };
           this.simplifiedAnns.push(sAnn);
@@ -557,8 +574,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     // this.annotation = { ...ann }
     this.textoAnnotation = ann;
-    const computedStart = this.textoAnnotation.start! - (this.offset??0);
-    const computedEnd = this.textoAnnotation.end! - (this.offset??0);
+    const computedStart = this.textoAnnotation.start! - (this.offset ?? 0);
+    const computedEnd = this.textoAnnotation.end! - (this.offset ?? 0);
     this.selectedTText = this.textRes.join('').substring(computedStart, computedEnd);
     // this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
     // this.annotation.layerName = this.selectedLayer?.name;

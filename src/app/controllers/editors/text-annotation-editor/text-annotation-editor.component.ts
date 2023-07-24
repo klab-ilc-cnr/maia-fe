@@ -96,7 +96,6 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   onSubmitAnnotation() {
-    console.info('list for saving', this.createFeatureValueList());
     this.onSave.emit(this.createFeatureValueList());
   }
 
