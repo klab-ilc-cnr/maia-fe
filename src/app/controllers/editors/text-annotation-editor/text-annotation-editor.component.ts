@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
+import { User } from 'src/app/models/user';
 import { LayerService } from 'src/app/services/layer.service';
 import { TagsetService } from 'src/app/services/tagset.service';
+import { UserService } from 'src/app/services/user.service';
 import { uriValidator } from 'src/app/validators/uri-validator.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
@@ -31,7 +33,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     feature: new FormGroup({})
   });
   get featureForm(): FormGroup { return this.annotationForm.get('feature') as FormGroup }
-
+  currentUser!: User;
   @Input()
   get annotationModel(): TAnnotation { return this._annotation; }
   set annotationModel(annotation: TAnnotation) {
@@ -53,7 +55,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
 
   public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel || !this.annotationModel?.layer || !this.annotationModel?.layer.id || !this.annotationModel.start || !this.annotationModel.end) }
 
-  public get shouldBeDisabled(): boolean {
+  public get shouldBeDisabled(): boolean { //FIXME sostituire con una pipe
     if (!this.isEditing) {
       return true; //sempre vero se è un nuovo inserimento
     }
@@ -64,13 +66,6 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     return false; //FIXME inserire una verifica sulla presenza di relazioni in entrata o in uscita per bloccare l'eliminazione dell'annotazione
   }
 
-  public get shouldBeEditable(): boolean { //FIXME gestione sulla base delle autorizzazioni utente da implementare
-    if (!this.isEditing) {
-      return true; //TODO verificare, qua sempre vero se non siamo in modifica ma probabilmente deve essere collegato al ruolo dell'utente
-    }
-    return false;
-  }
-
   private _annotation: TAnnotation = new TAnnotation();
 
   @Output() onSave = new EventEmitter<{ feature: TFeature, value: string }[]>();
@@ -78,7 +73,14 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   constructor(
     private layerService: LayerService,
     private tagsetService: TagsetService,
-  ) { }
+    private userService: UserService,
+  ) {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+    ).subscribe(cu => {
+      this.currentUser = cu;
+    });
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
