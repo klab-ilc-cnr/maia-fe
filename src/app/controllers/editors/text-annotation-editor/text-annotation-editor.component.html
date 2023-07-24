@@ -56,8 +56,9 @@
             </div>
           </form>
         </ng-template>
-        <div class="d-block" *ngIf="shouldBeEditable">
-          <button pButton pRipple type="submit" icon="pi pi-save" label="Save" class="w-100 mb-2 p-button-sm"></button>
+        <!-- <div class="d-block" *ngIf="shouldBeEditable"> -->
+          <div class="d-block" *ngIf="annotationModel.id"> <!--TODO ottimizzare la gestione della visualizzazione dei pulsanti di interazione-->
+            <button pButton pRipple type="submit" icon="pi pi-save" label="Save" class="w-100 mb-2 p-button-sm"></button>
           <button pButton pRipple type="button" icon="pi pi-times" label="Cancel"
             class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>
           <button pButton pRipple type="button" icon="fa-solid fa-eraser" label="Clean"

@@ -209,6 +209,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+    if(this.textoAnnotation.id) {
+      console.info('is update')  //TODO implementa meccanismo d update annotazione esistente
+      return
+    }
     this.textoAnnotation.user = { id: +this.currentUser.id! };
     this.textoAnnotation.resource = this.currentResource;
     this.annotationService.createAnnotation(this.textoAnnotation).pipe(
