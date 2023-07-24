@@ -56,7 +56,7 @@
             </div>
           </form>
         </ng-template>
-          <div class="d-block" *ngIf="annotationModel && (annotationModel.user!.id | shouldBeEditable : currentUser)">
+          <div class="d-block" *ngIf="!annotationModel.id || (annotationModel.user!.id | shouldBeEditable : currentUser)">
             <button pButton pRipple type="submit" icon="pi pi-save" label="Save" class="w-100 mb-2 p-button-sm"></button>
           <button pButton pRipple type="button" icon="pi pi-times" label="Cancel"
             class="w-100 mb-2 p-button-sm p-button-secondary" (click)="onCancelBtn()"></button>
