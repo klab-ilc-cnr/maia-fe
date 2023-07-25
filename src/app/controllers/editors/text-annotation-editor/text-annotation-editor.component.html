@@ -63,10 +63,11 @@
           <button pButton pRipple type="button" icon="fa-solid fa-eraser" label="Clean"
             class="w-100 mb-2 p-button-sm p-button-help" (click)="onClearBtn()"></button>
           <button pButton pRipple type="button" icon="pi pi-trash" label="Delete"
-            class="w-100 mb-2 p-button-sm p-button-danger" [disabled]="shouldBeDisabled"
-            (click)="showDeleteModal()"></button>
+            class="w-100 mb-2 p-button-sm p-button-danger" [disabled]="!annotationModel.id || annotationModel.id === undefined"
+            (click)="showDeleteModal()"></button> <!--TODO inserire nuova pipe per la gestione della disabilitazione se non in edit o se sono presenti relazioni-->
         </div>
       </form>
     </div>
   </ng-template>
 </div>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

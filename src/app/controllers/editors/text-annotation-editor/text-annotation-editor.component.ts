@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, take, takeUntil, throwError } from 'rxjs';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
@@ -10,6 +10,12 @@ import { TagsetService } from 'src/app/services/tagset.service';
 import { UserService } from 'src/app/services/user.service';
 import { uriValidator } from 'src/app/validators/uri-validator.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
+import Swal from 'sweetalert2';
+import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
+import { AnnotationService } from 'src/app/services/annotation.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 export interface FeatForAnn {
   feature: TFeature | undefined;
@@ -70,11 +76,35 @@ export class TextAnnotationEditorComponent implements OnDestroy {
 
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<{ feature: TFeature, value: string }[]>();
+  @Output() onDelete = new EventEmitter<void>();
+
+  private deleteAnnotation = (id: number): void => {
+    this.showOperationInProgress('Deletion in progress');
+    const successMsg = 'Annotation successfully removed';
+    this.annotationService.deleteAnnotationById(id).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Deleting annotation failed: ${error.error}`));
+        Swal.close();
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      Swal.close();
+      this.onDelete.emit();
+    })
+  }
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
+
 
   constructor(
     private layerService: LayerService,
     private tagsetService: TagsetService,
     private userService: UserService,
+    private annotationService: AnnotationService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
   ) {
     this.userService.retrieveCurrentUser().pipe(
       take(1),
@@ -101,7 +131,12 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   showDeleteModal() {
-    //TODO da implementare
+    if(!this.annotationModel.id || this.annotationModel.id === undefined) {
+      return;
+    }
+    const confirmMessage = 'You are about to delete an annotation';
+    this.popupDeleteItem.confirmMessage = confirmMessage;
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteAnnotation(this.annotationModel.id!), this.annotationModel.id);
   }
 
   private createFeatureValueList(): { feature: TFeature, value: string }[] {
@@ -163,4 +198,23 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       this.createForm();
     });
   }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: 'warning',
+      titleText: message,
+      text: 'please wait',
+      customClass: {
+        container: 'swal2-container'
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
 }

@@ -438,13 +438,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
-    this.annotation = new Annotation();
     this.textoAnnotation = new TAnnotation();
   }
 
   /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationDeleted() {
-    this.annotation = new Annotation();
     this.textoAnnotation = new TAnnotation();
     this.loadData();
   }
