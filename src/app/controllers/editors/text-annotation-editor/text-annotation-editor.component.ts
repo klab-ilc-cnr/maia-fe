@@ -68,6 +68,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
 
   private _annotation: TAnnotation = new TAnnotation();
 
+  @Output() onCancel = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<{ feature: TFeature, value: string }[]>();
 
   constructor(
@@ -88,7 +89,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   onCancelBtn() {
-    //TODO da implementare
+    this.onCancel.emit();
   }
 
   onClearBtn() {
