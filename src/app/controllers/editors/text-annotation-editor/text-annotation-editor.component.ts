@@ -1,21 +1,21 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, take, takeUntil, throwError } from 'rxjs';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { User } from 'src/app/models/user';
+import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerService } from 'src/app/services/layer.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { TagsetService } from 'src/app/services/tagset.service';
 import { UserService } from 'src/app/services/user.service';
 import { uriValidator } from 'src/app/validators/uri-validator.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
-import { AnnotationService } from 'src/app/services/annotation.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MessageService } from 'primeng/api';
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 export interface FeatForAnn {
   feature: TFeature | undefined;
@@ -173,6 +173,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
           newControl = new FormControl<string>('', whitespacesValidator);
           break;
         case this.featureTypes.URI:
+        case this.featureTypes.LEXICAL_ENTRY:
           newControl = new FormControl<string>('', uriValidator);
           break;
         default:

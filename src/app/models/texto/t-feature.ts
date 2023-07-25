@@ -5,6 +5,9 @@ export enum TFeatureType {
   STRING = 'STRING',
   URI = 'URI',
   TAGSET = 'TAGSET',
+  LEXICAL_ENTRY = "LEXICAL_ENTRY",
+  FORM = "FORM",
+  SENSE = "SENSE",
 }
 
 export class TFeature extends TTagset {
