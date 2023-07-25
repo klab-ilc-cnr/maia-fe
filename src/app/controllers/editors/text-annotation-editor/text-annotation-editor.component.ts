@@ -110,12 +110,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         throw Error('Feature missing name');
       }
       const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
-      if (featValue !== '') {
-        result.push(<{ feature: TFeature, value: string }>{
-          feature: feature.feature,
-          value: typeof (featValue) === 'string' ? featValue : featValue.name
-        });
-      }
+      result.push(<{ feature: TFeature, value: string }>{
+        feature: feature.feature,
+        value: typeof (featValue) === 'string' ? featValue : featValue.name
+      });
     });
     return result;
   }
