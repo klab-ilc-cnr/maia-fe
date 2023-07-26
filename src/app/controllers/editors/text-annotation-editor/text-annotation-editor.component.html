@@ -53,7 +53,16 @@
                   </div>
                 </div>
                 <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
-                  <app-generic-autocomplete field="label" valueField="lexicalEntry" [filterFn]="lexEntryList" (selected)="setIndirectValue($event, feature.feature!.name!)" [currentValue]="featureForm.get(feature.feature!.name!)!.value" [initialValueFn]="lexEntryById"></app-generic-autocomplete>
+                  <app-generic-autocomplete field="label" valueField="lexicalEntry" [filterFn]="lexEntryList"
+                    (selected)="setIndirectValue($event, feature.feature!.name!)"
+                    [currentValue]="featureForm.get(feature.feature!.name!)!.value"
+                    [initialValueFn]="lexEntryById"></app-generic-autocomplete>
+                </div>
+                <div *ngSwitchCase="featureTypes.FORM">
+                  <app-generic-autocomplete field="label" valueField="form" [filterFn]="formList"
+                    (selected)="setIndirectValue($event, feature.feature!.name!)"
+                    [currentValue]="featureForm.get(feature.feature!.name!)!.value"
+                    [initialValueFn]="formById"></app-generic-autocomplete>
                 </div>
               </div>
             </div>

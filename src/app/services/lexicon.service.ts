@@ -136,6 +136,13 @@ export class LexiconService {
     return this.http.get<FormCore>(`${this.lexoUrl}lexicon/data/form?id=${encodedFormID}&aspect=core`);
   }
 
+  getFormList(parameters: any): Observable<any> {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/data/filteredForms`,
+      parameters
+    );
+  }
+
   /**
    * GET che recupera la lista dei tipi di forma
    * @returns {Observable<OntolexType[]>} observable della lista dei tipi di forma

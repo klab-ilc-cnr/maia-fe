@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, map, take, takeUntil, throwError } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { FormListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
@@ -91,6 +92,34 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     map(resp => resp.list)
   );
   lexEntryById = (id: string) => this.lexiconService.getLexicalEntry(id);
+
+  formList = (text: string) => this.lexiconService.getFormList({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    representationType: "writtenRep",
+    author: '',
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map((resp: any) => resp.list),
+  );
+  formById = (id: string) => this.lexiconService.getForm(id).pipe(
+    map(form => {
+      const label = form.label.find(e => e.propertyID === 'writtenRep')?.propertyValue;
+      return <FormListItem>{
+        creator: form.creator,
+        lastUpdate: form.lastUpdate,
+        creationDate: form.creationDate,
+        confidence: form.confidence,
+        type: form.type,
+        label: label,
+        note: form.note,
+        phoneticRep: form.phoneticRep,
+        lexicalEntry: form.lexicalEntry,
+        form: form.form,
+      };
+    })
+  );
 
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<{ feature: TFeature, value: string }[]>();
@@ -197,6 +226,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
           break;
         case this.featureTypes.URI:
         case this.featureTypes.LEXICAL_ENTRY:
+        case this.featureTypes.FORM:
           newControl = new FormControl<string>('', uriValidator);
           break;
         default:
