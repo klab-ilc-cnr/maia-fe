@@ -2,13 +2,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, map, take, takeUntil, throwError } from 'rxjs';
+import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { User } from 'src/app/models/user';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerService } from 'src/app/services/layer.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { TagsetService } from 'src/app/services/tagset.service';
 import { UserService } from 'src/app/services/user.service';
@@ -74,6 +76,22 @@ export class TextAnnotationEditorComponent implements OnDestroy {
 
   private _annotation: TAnnotation = new TAnnotation();
 
+  lexEntryList = (text: string) => this.lexiconService.getLexicalEntriesList({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    type: '',
+    pos: '',
+    formType: '',
+    author: '',
+    lang: '',
+    status: '',
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map(resp => resp.list)
+  );
+  lexEntryById = (id: string) => this.lexiconService.getLexicalEntry(id);
+
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<{ feature: TFeature, value: string }[]>();
   @Output() onDelete = new EventEmitter<void>();
@@ -105,6 +123,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     private annotationService: AnnotationService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
+    private lexiconService: LexiconService,
   ) {
     this.userService.retrieveCurrentUser().pipe(
       take(1),
@@ -124,6 +143,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
 
   onClearBtn() {
     this.featureForm.reset(); //Svuoto solamente la parte relativa alle feature, perché layer e testo selezionato sono indipendenti
+  }
+
+  setIndirectValue(value: any, featureFieldName: string) {
+    this.featureForm.get(featureFieldName)?.setValue(value);
   }
 
   onSubmitAnnotation() {

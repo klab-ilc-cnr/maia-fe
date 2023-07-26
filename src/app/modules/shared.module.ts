@@ -39,6 +39,7 @@ import { TreeTableModule } from 'primeng/treetable';
 import { PopupDeleteItemComponent } from '../controllers/popup/popup-delete-item/popup-delete-item.component';
 import { AutocompleteCheckboxComponent } from '../forms/autocomplete-checkbox/autocomplete-checkbox.component';
 import { DoubleAutocompleteComponent } from '../forms/double-autocomplete/double-autocomplete.component';
+import { GenericAutocompleteComponent } from '../forms/generic-autocomplete/generic-autocomplete.component';
 import { ShouldBeEditablePipe } from '../pipes/should-be-editable.pipe';
 import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.directive';
 import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value-not-duplicate-name.directive';
@@ -94,6 +95,7 @@ const COMPONENTS = [
   PopupDeleteItemComponent,
   AutocompleteCheckboxComponent,
   DoubleAutocompleteComponent,
+  GenericAutocompleteComponent,
 ];
 
 const PIPES = [
