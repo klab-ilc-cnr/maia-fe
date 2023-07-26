@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, map, take, takeUntil, throwError } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { FormListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
@@ -118,7 +118,44 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         lexicalEntry: form.lexicalEntry,
         form: form.form,
       };
-    })
+    }),
+  );
+
+  senseList = (text: string) => this.lexiconService.getFilteredSenses({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    type: "",
+    field: "",
+    pos: '',
+    formType: "entry",
+    author: "",
+    lang: "",
+    status: "",
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map((resp: any) => resp.list),
+  );
+  senseById = (id: string) => this.lexiconService.getSense(id).pipe(
+    map(sense => {
+      const definition = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue;
+      return <SenseListItem>{
+        creator: sense.creator,
+        lastUpdate: sense.lastUpdate,
+        creationDate: sense.creationDate,
+        confidence: sense.confidence,
+        sense: sense.sense,
+        hasChildren: false,
+        definition: definition,
+        note: sense.note,
+        usage: sense.usage,
+        concept: sense.concept,
+        description: sense.description,
+        gloss: sense.gloss,
+        senseExample: sense.senseExample,
+        senseTranslation: sense.senseTranslation
+      };
+    }),
   );
 
   @Output() onCancel = new EventEmitter<void>();
@@ -227,6 +264,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         case this.featureTypes.URI:
         case this.featureTypes.LEXICAL_ENTRY:
         case this.featureTypes.FORM:
+        case this.featureTypes.SENSE:
           newControl = new FormControl<string>('', uriValidator);
           break;
         default:

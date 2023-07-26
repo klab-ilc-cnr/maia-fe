@@ -64,6 +64,12 @@
                     [currentValue]="featureForm.get(feature.feature!.name!)!.value"
                     [initialValueFn]="formById"></app-generic-autocomplete>
                 </div>
+                <div *ngSwitchCase="featureTypes.SENSE">
+                  <app-generic-autocomplete field="definition" valueField="sense" [filterFn]="senseList"
+                    (selected)="setIndirectValue($event, feature.feature!.name!)"
+                    [currentValue]="featureForm.get(feature.feature!.name!)!.value"
+                    [initialValueFn]="senseById"></app-generic-autocomplete>
+                </div>
               </div>
             </div>
           </form>

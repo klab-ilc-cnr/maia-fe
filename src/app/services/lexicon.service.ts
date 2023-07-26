@@ -126,6 +126,13 @@ export class LexiconService {
     return this.http.post<{ totalHits: number, list: any[] }>(`${this.lexoUrl}lexicon/data/filteredLexicalConcepts`, parameters)
   }
 
+  getFilteredSenses(parameters: any) {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/data/filteredSenses`,
+      parameters,
+    );
+  }
+
   /**
    * GET che recupera i dati di una forma
    * @param formID {string} identificativo della forma
