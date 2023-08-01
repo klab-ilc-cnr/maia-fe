@@ -5,6 +5,8 @@ import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature'
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { PaginatedResponse } from '../models/texto/paginated-response';
+import { TAnnotation } from '../models/texto/t-annotation';
+import { TAnnotationFeature } from '../models/texto/t-annotation-feature';
 
 /**Classe dei servizi per le annotazioni */
 @Injectable({
@@ -110,6 +112,18 @@ export class AnnotationService {
     );
   }
 
+  public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable<TAnnotation[]> {
+    const uuid = uuidv4();
+    return this.http.post<TAnnotation[]>(
+      `${this.textoUrl}/texto/resource/${resourceId}/annotations`,
+      slice,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid }),
+      }
+    );
+  }
+
+
   /**
    * GET che recupera il contenuto dato l'id di un nodo (testuale?) //TODO verificare sullo swagger di cash
    * @param nodeId {number} identificativo numerico
@@ -142,7 +156,7 @@ export class AnnotationService {
    * @param annFeature {AnnotationFeature} feature dell'annotazione
    * @returns {Observable<any>} observable della nuova feature dell'annotazione
    */
-  public createAnnotationFeature(annFeature: AnnotationFeature): Observable<any> {
+  public _createAnnotationFeature(annFeature: AnnotationFeature): Observable<any> {
     return this.http.post<any>(`${this.annotationUrl}`, annFeature);
   }
 
@@ -159,4 +173,37 @@ export class AnnotationService {
   public deleteAnnotationFeature(id: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.annotationUrl}/${id}`);
   }
+
+  //#region TEXTO BACK END
+
+  public createAnnotation(annotation: TAnnotation): Observable<TAnnotation> {
+    return this.http.post<TAnnotation>(
+      `${this.textoUrl}/texto/annotation/create`,
+      annotation,
+    );
+  }
+
+  public deleteAnnotationById(annotationId: number) {
+    return this.http.get(`${this.textoUrl}/texto/annotation/${annotationId}/remove`);
+  }
+
+  public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
+    return this.http.post<TAnnotationFeature>(
+      `${this.textoUrl}/texto/annotationFeature/create`,
+      annotationFeature,
+    );
+  }
+
+  public retrieveAnnotationFeaturesById(annotationId: number): Observable<TAnnotationFeature[]> {
+    return this.http.get<TAnnotationFeature[]>(`${this.textoUrl}/texto/annotation/${annotationId}/features`);
+  }
+
+  public updateAnnotationFeature(annFeatId: number, annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
+    return this.http.post<TAnnotationFeature>(
+      `${this.textoUrl}/texto/annotationFeature/update`,
+      annotationFeature
+    );
+  }
+
+  //#endregion
 }

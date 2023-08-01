@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Subject, catchError, forkJoin, of, switchMap, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
@@ -14,12 +14,19 @@ import { LineBuilder } from 'src/app/models/text/line-builder';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { TextLine } from 'src/app/models/text/text-line';
 import { TextRow } from 'src/app/models/text/text-row';
+import { ResourceElement } from 'src/app/models/texto/corpus-element';
+import { TAnnotation } from 'src/app/models/texto/t-annotation';
+import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
+import { TFeature } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
+import { User } from 'src/app/models/user';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { RelationService } from 'src/app/services/relation.service';
+import { UserService } from 'src/app/services/user.service';
+import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -36,6 +43,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private selectionStart?: number;
   /**Indice di fine selezione */
   private selectionEnd?: number;
+  selectedTText = '';
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -65,8 +73,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Annotazione in lavorazione */
   annotation = new Annotation();
+  textoAnnotation = new TAnnotation();
+  offset: number | undefined;
   /**Annotation response */
   annotationsRes: any;
+  textoAnnotationsRes: TAnnotation[] = [];
   /**Freccia di relazione */
   dragArrow: any = {
     m: "",
@@ -128,6 +139,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   totalRecords = 0;
   //#endregion
 
+  currentUser!: User;
+  currentResource!: ResourceElement;
+
   /**
    * Costruttore per WorkspaceTextWindowComponent
    * @param annotationService {AnnotationService} servizi relativi alle annotazioni
@@ -143,13 +157,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private msgConfService: MessageConfigurationService,
     private relationService: RelationService,
     private layerState: LayerStateService,
-  ) { }
+    private userService: UserService,
+    private workspaceService: WorkspaceService,
+  ) {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+    ).subscribe(cu => {
+      this.currentUser = cu;
+    });
+  }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per caricare i dati iniziali del componente */
   ngOnInit(): void {
     if (!this.textId) {
       return;
     }
+
+    this.workspaceService.retrieveResourceElementById(this.textId).pipe(
+      take(1),
+    ).subscribe(resource => {
+      this.currentResource = resource;
+    });
 
     this.layers$.pipe(
       takeUntil(this.unsubscribe$),
@@ -170,6 +198,66 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
+    const newAnnFeat = new TAnnotationFeature();
+    newAnnFeat.annotation = annotation;
+    newAnnFeat.feature = feature;
+    newAnnFeat.value = value;
+    return this.annotationService.createAnnotationFeature(newAnnFeat);
+  }
+
+  private createNewAnnotation(annotation: TAnnotation) {
+    const promise = new Promise<TAnnotation>((resolve, reject) => {
+      this.annotationService.createAnnotation(annotation).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error}`));
+          reject(error);
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(newAnn => {
+        resolve(newAnn);
+      });
+    });
+    return promise;
+  }
+
+  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+    let workingAnnotation = this.textoAnnotation;
+    if (!this.textoAnnotation.id) {
+      this.textoAnnotation.user = { id: +this.currentUser.id! };
+      this.textoAnnotation.resource = this.currentResource;
+      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
+    }
+    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    for (const fl of featuresList) {
+      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
+      if (existingFeature && existingFeature.value === fl.value) {
+        continue;
+      }
+      if (!existingFeature) {
+        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
+        continue;
+      }
+      const updateAnnFeat = <TAnnotationFeature>{
+        ...existingFeature,
+        value: fl.value,
+      };
+      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat.id!, updateAnnFeat));
+    }
+    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error}`));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+      this.onAnnotationSaved();
+    })
   }
 
   /**
@@ -197,6 +285,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.relation = new Relation();
 
     this.loaderService.show();
@@ -210,7 +299,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       // this.annotationService._retrieveText(this.textId),
       this.annotationService.retrieveTextSplitted(this.textId, { start: this.first, end: lastIndex }),
       this.annotationService.retrieveByNodeId(this.textId),
-      this.relationService.retrieveByTextId(this.textId)
+      this.relationService.retrieveByTextId(this.textId),
+      this.annotationService.retrieveResourceAnnotations(this.textId, { start: this.first, end: lastIndex }),
     ]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
@@ -218,7 +308,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
-    ).subscribe(([textResponse, annotationsResponse, relationsResponse]) => {
+    ).subscribe(([textResponse, annotationsResponse, relationsResponse, tAnnotationsResponse]) => {
       // this.layersList = layersResponse;
       this.totalRecords = textResponse.count!;
 
@@ -248,44 +338,70 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       // this.annotation.layer = this.selectedLayer;
       // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+      this.textoAnnotation.layer = this.selectedLayer;
       this.annotation.layer = this.selectedLayer?.id;
       this.annotation.layerName = this.selectedLayer?.name;
 
       this.textRes = textResponse.data || [];
+      this.offset = textResponse.offset;
       this.annotationsRes = annotationsResponse;
+      this.textoAnnotationsRes = tAnnotationsResponse;
 
       this.simplifiedAnns = [];
       this.simplifiedArcs = relationsResponse;
 
-      const layersIndex = new Array<string>();
+      const layersIndex = new Array<number>();
 
       this.visibleLayers.forEach(l => {
         if (l.id) {
-          layersIndex.push(l.id?.toString())
+          layersIndex.push(l.id)
         }
-      })
+      });
 
-      this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
-        if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
-          const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
-            let { spans, ...newAnn } = a;
-            return {
-              ...newAnn,
-              span: sc
-            }
-          })
-
-          this.simplifiedAnns.push(...sAnn);
+      tAnnotationsResponse.forEach(async (a: TAnnotation) => {
+        if (a.start && a.end && layersIndex.includes(a.layer!.id!)) {
+          const annFeat = a.features ?? [];
+          let dictFeat = {};
+          annFeat.forEach(f => {
+            dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
+          });
+          const sAnn = {
+            span: <SpanCoordinates>{
+              start: a.start - (this.offset ?? 0),
+              end: a.end - (this.offset ?? 0)
+            },
+            layer: a.layer?.id,
+            layerName: a.layer?.name,
+            value: undefined, //TODO non chiaro quale sia il valore
+            imported: undefined,
+            attributes: <Record<string, any>>{ ...dictFeat },
+            id: a.id,
+          };
+          this.simplifiedAnns.push(sAnn);
         }
+      });
 
-        /*           if (a.attributes && a.attributes["relations"]) {
-                    let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-                      if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
-                        this.simplifiedArcs.push(r);
-                      }
-                    })
-                  } */
-      })
+      // this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
+      //   if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
+      //     const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
+      //       let { spans, ...newAnn } = a;
+      //       return {
+      //         ...newAnn,
+      //         span: sc
+      //       }
+      //     })
+
+      //     this.simplifiedAnns.push(...sAnn);
+      //   }
+
+      //   /*           if (a.attributes && a.attributes["relations"]) {
+      //               let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
+      //                 if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
+      //                   this.simplifiedArcs.push(r);
+      //                 }
+      //               })
+      //             } */
+      // })
 
       this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
 
@@ -319,18 +435,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
-    this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
   }
 
   /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationDeleted() {
-    this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.loadData();
   }
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
-    this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.loadData();
   }
 
@@ -343,6 +459,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onRelationCancel() {
     this.relation = new Relation();
     this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
 
@@ -371,7 +488,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!selection) { //caso senza selezione, esco dal metodo
       return;
     }
-
+    this.textoAnnotation = new TAnnotation();
     this.annotation = new Annotation();
 
     let startIndex = selection.startIndex;
@@ -396,6 +513,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+    this.textoAnnotation.layer = this.selectedLayer;
+    this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
+    this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
+    this.selectedTText = text;
     this.annotation.layer = this.selectedLayer?.id;
     this.annotation.layerName = this.selectedLayer?.name;
     this.annotation.spans = new Array<SpanCoordinates>();
@@ -430,20 +551,25 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.showEditorAndHideOthers(EditorType.Annotation); //visualizzo l'editor di annotazione
 
-    const ann = this.annotationsRes.annotations.find((a: any) => a.id == id); //cerca fra le annotazioni quella corrente attraverso l'id
+    // const ann = this.annotationsRes.annotations.find((a: any) => a.id == id); //cerca fra le annotazioni quella corrente attraverso l'id
+    const ann = this.textoAnnotationsRes.find((a: TAnnotation) => a.id == id); //cerca fra le annotazioni quella corrente attraverso l'id
 
     if (!ann) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Annotazione non trovata'));
       return;
     }
 
-    // if (this._editIsLocked) {
+    // if (this._editIsLocked) { //TODO implementare gestione se edit non permesso
 
     // }
 
-    this.annotation = { ...ann }
+    // this.annotation = { ...ann }
+    this.textoAnnotation = ann;
+    const computedStart = this.textoAnnotation.start! - (this.offset ?? 0);
+    const computedEnd = this.textoAnnotation.end! - (this.offset ?? 0);
+    this.selectedTText = this.textRes.join('').substring(computedStart, computedEnd);
     // this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
-    this.annotation.layerName = this.selectedLayer?.name;
+    // this.annotation.layerName = this.selectedLayer?.name;
 
     //this._editIsLocked = true;
   }
@@ -648,7 +774,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che aggiorna le dimensioni dell'editor di testo */
   updateTextEditorSize() {
-    this.renderData();
+    // this.renderData();
+    this.loadData();
   }
 
   /**
@@ -1526,15 +1653,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const lineTowers = new Array();
     const lineHighlights = new Array<TextHighlight>();
 
-    const localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
+    // const localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
 
-    // Da completare la gestione delle annotazioni su più linee
-    // let localAnns = this.simplifiedAnns.filter((a: any) =>
-    //   (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
-    //   (a.span.start < (startIndex || 0) && a.span.end >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
-    //   (a.span.start >= (startIndex || 0) && a.span.start <= (endIndex || 0) && a.span.end > (endIndex || 0)));
+    // Da completare la gestione delle annotazioni su più linee //TODO implementare gestione annotazioni su tower diverse
+    const localAnns = this.simplifiedAnns.filter((a: any) =>
+      (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
+      (a.span.start < (startIndex || 0) && a.span.end >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
+      (a.span.start >= (startIndex || 0) && a.span.start <= (endIndex || 0) && a.span.end > (endIndex || 0)));
 
     localAnns.sort((a: any, b: any) => (a.span.end - a.span.start) - (b.span.end - b.span.start));
+
+    localAnns.map((a: any) => {
+      if(a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) {
+        return a;
+      }
+      const temp = {...a};
+      if(a.span.start < (startIndex||0)) {
+        const difference = startIndex - a.span.start;
+        temp.span.end = a.span.end - difference;
+      }
+      return temp;
+    });
 
     const towers = this.sortFragmentsIntoTowers(localAnns);
 

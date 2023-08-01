@@ -126,6 +126,13 @@ export class LexiconService {
     return this.http.post<{ totalHits: number, list: any[] }>(`${this.lexoUrl}lexicon/data/filteredLexicalConcepts`, parameters)
   }
 
+  getFilteredSenses(parameters: any) {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/data/filteredSenses`,
+      parameters,
+    );
+  }
+
   /**
    * GET che recupera i dati di una forma
    * @param formID {string} identificativo della forma
@@ -134,6 +141,13 @@ export class LexiconService {
   getForm(formID: string): Observable<FormCore> {
     const encodedFormID = this.commonService.encodeUrl(formID);
     return this.http.get<FormCore>(`${this.lexoUrl}lexicon/data/form?id=${encodedFormID}&aspect=core`);
+  }
+
+  getFormList(parameters: any): Observable<any> {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/data/filteredForms`,
+      parameters
+    );
   }
 
   /**

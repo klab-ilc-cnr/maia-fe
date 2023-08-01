@@ -34,14 +34,15 @@ import { LexEntryEditorComponent } from './controllers/editors/lex-entry-editor/
 import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 // import { SenseEditorComponent } from './controllers/editors/sense-editor/sense-editor.component';
+import { BaseMetadataEditorComponent } from './controllers/editors/base-metadata-editor/base-metadata-editor.component';
+import { FormMetadataEditorComponent } from './controllers/editors/form-metadata-editor/form-metadata-editor.component';
+import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
+import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
+import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
 import { TabsFormComponent } from './controllers/tab-controllers/tabs-form/tabs-form.component';
 import { TabsLexicalEntryComponent } from './controllers/tab-controllers/tabs-lexical-entry/tabs-lexical-entry.component';
 import { TabsSenseComponent } from './controllers/tab-controllers/tabs-sense/tabs-sense.component';
 import { SharedModule } from './modules/shared.module';
-import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
-import { FormMetadataEditorComponent } from './controllers/editors/form-metadata-editor/form-metadata-editor.component';
-import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
-import { BaseMetadataEditorComponent } from './controllers/editors/base-metadata-editor/base-metadata-editor.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { BaseMetadataEditorComponent } from './controllers/editors/base-metadata
     FormCoreEditorComponent,
     SenseCoreEditorComponent,
     SemanticRelEditorComponent,
+    TextAnnotationEditorComponent,
   ],
   imports: [
     BrowserModule,

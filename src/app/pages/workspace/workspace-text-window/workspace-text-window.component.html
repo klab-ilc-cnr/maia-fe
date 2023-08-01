@@ -127,11 +127,13 @@
   </div>
   <div class="col-4 ps-0">
     <div class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
-      <app-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="annotation" [fileId]="textId"
+      <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
+      (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
+      <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
         (onSave)="onAnnotationSaved()"
         (onDelete)="onAnnotationDeleted()"
         (onCancel)="onAnnotationCancel()">
-      </app-annotation-editor>
+      </app-annotation-editor> -->
       <app-relation-editor *ngIf="showRelationEditor"
         [relationModel]="relation"
         [sourceAnn]="sourceAnn"
