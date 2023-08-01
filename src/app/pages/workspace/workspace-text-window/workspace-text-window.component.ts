@@ -316,8 +316,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.visibleLayers = this.selectedLayers;
       }
 
-      console.info('annotazioni presenti:', tAnnotationsResponse);
-
       // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
       //   this.visibleLayers = this.selectedLayers = this.layersList;
       // }
@@ -367,7 +365,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           annFeat.forEach(f => {
             dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
           });
-          console.info('ann features come dizionario', dictFeat)
           const sAnn = {
             span: <SpanCoordinates>{
               start: a.start - (this.offset ?? 0),
@@ -488,8 +485,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onSelectionChange(event: any): void {
     const selection = this.getCurrentTextSelection();
 
-    console.info('selection indexes', selection);
-
     if (!selection) { //caso senza selezione, esco dal metodo
       return;
     }
@@ -535,8 +530,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.annotation.attributes["metadata"] = new AnnotationMetadata();
 
     this.annotation.value = text;
-
-    console.info('texto annotation', this.textoAnnotation)
 
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
@@ -781,7 +774,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che aggiorna le dimensioni dell'editor di testo */
   updateTextEditorSize() {
-    this.renderData();
+    // this.renderData();
+    this.loadData();
   }
 
   /**
@@ -1659,15 +1653,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const lineTowers = new Array();
     const lineHighlights = new Array<TextHighlight>();
 
-    const localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
+    // const localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
 
     // Da completare la gestione delle annotazioni su più linee //TODO implementare gestione annotazioni su tower diverse
-    // let localAnns = this.simplifiedAnns.filter((a: any) =>
-    //   (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
-    //   (a.span.start < (startIndex || 0) && a.span.end >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
-    //   (a.span.start >= (startIndex || 0) && a.span.start <= (endIndex || 0) && a.span.end > (endIndex || 0)));
+    const localAnns = this.simplifiedAnns.filter((a: any) =>
+      (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
+      (a.span.start < (startIndex || 0) && a.span.end >= (startIndex || 0) && a.span.end <= (endIndex || 0)) ||
+      (a.span.start >= (startIndex || 0) && a.span.start <= (endIndex || 0) && a.span.end > (endIndex || 0)));
 
     localAnns.sort((a: any, b: any) => (a.span.end - a.span.start) - (b.span.end - b.span.start));
+
+    localAnns.map((a: any) => {
+      if(a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) {
+        return a;
+      }
+      const temp = {...a};
+      if(a.span.start < (startIndex||0)) {
+        const difference = startIndex - a.span.start;
+        temp.span.end = a.span.end - difference;
+      }
+      return temp;
+    });
 
     const towers = this.sortFragmentsIntoTowers(localAnns);
 
