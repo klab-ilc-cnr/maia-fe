@@ -1,20 +1,23 @@
-import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
-import { FeatureForAnnotation } from 'src/app/models/feature/feature-for-annotation';
-import { LoaderService } from 'src/app/services/loader.service';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
+import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
+import { FeatureForAnnotation } from 'src/app/models/feature/feature-for-annotation';
+import { FeatureType } from 'src/app/models/feature/feature-type';
+import { Roles } from 'src/app/models/roles';
+import { TAnnotation } from 'src/app/models/texto/t-annotation';
+import { TFeature } from 'src/app/models/texto/t-feature';
 import { AnnotationService } from 'src/app/services/annotation.service';
+import { FeatureService } from 'src/app/services/feature.service';
 import { LayerService } from 'src/app/services/layer.service';
+import { LoaderService } from 'src/app/services/loader.service';
+import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
-import { FeatureService } from 'src/app/services/feature.service';
-import { LoggedUserService } from 'src/app/services/logged-user.service';
-import { Roles } from 'src/app/models/roles';
-import { FeatureType } from 'src/app/models/feature/feature-type';
 
 /**Classe dell'editor delle annotazioni */
 @Component({
@@ -22,8 +25,8 @@ import { FeatureType } from 'src/app/models/feature/feature-type';
   templateUrl: './annotation-editor.component.html',
   styleUrls: ['./annotation-editor.component.scss']
 })
-export class AnnotationEditorComponent implements OnInit {
-
+export class AnnotationEditorComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$ = new Subject();
   /**
    * @private
    * Effettua la cancellazione dell'annotazione
@@ -62,6 +65,20 @@ export class AnnotationEditorComponent implements OnInit {
       })
   }
 
+  @Input()
+  get textoAnnotationModel(): TAnnotation { return this._textoAnnotation; }
+  set textoAnnotationModel(annotation: TAnnotation) {
+    this._textoAnnotation = annotation;
+    const layerId = this._textoAnnotation.layer!.id!;
+    this.layerService.retrieveLayerFeatureList(layerId).pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(features => {
+      this.textoFeatures = features;
+      console.info('texto features for layer',features)
+    });
+
+  }
+
   /**Annotazione in lavorazione */
   @Input()
   /**Getter dell'annotazione in lavorazione */
@@ -98,7 +115,7 @@ export class AnnotationEditorComponent implements OnInit {
             {
               annotation.attributes['features'] = new Array(annotation.attributes['features']);
             }
-            
+
             let elem = annotation.attributes['features'].find((f: any) => f.id == feature.id);
 
             if (elem && feature.type == FeatureType.TAGSET ) {
@@ -121,6 +138,8 @@ export class AnnotationEditorComponent implements OnInit {
   }
   /**Annotazione in lavorazione (default a new) */
   private _annotation: Annotation = new Annotation();
+  private _textoAnnotation: TAnnotation = new TAnnotation();
+  textoFeatures: TFeature[] = [];
 
   /**Identificativo numerico del file in annotazione */
   @Input() fileId: number | undefined;
@@ -195,7 +214,7 @@ export class AnnotationEditorComponent implements OnInit {
    * @param workspaceService {WorkspaceService} servizi relativi ai workspace  //TODO verificare cancellazione per mancato uso
    * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
    * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param layerService {LayerService} servizi relativi ai layer  //TODO verificare cancellazione per mancato uso 
+   * @param layerService {LayerService} servizi relativi ai layer
    * @param featureService {FeatureService} servizi relativi alle feature
    * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
@@ -205,7 +224,7 @@ export class AnnotationEditorComponent implements OnInit {
     private workspaceService: WorkspaceService,//TODO verificare cancellazione per mancato uso
     private loggedUserService: LoggedUserService,
     private loaderService: LoaderService,
-    private layerService: LayerService,//TODO verificare cancellazione per mancato uso
+    private layerService: LayerService,
     private featureService: FeatureService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService
@@ -218,6 +237,8 @@ export class AnnotationEditorComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal */
   ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
     Swal.close();
   }
 
@@ -344,7 +365,7 @@ export class AnnotationEditorComponent implements OnInit {
                     }) */
         }
         else {
-          this.annotationService.createAnnotationFeature(annFeatures).subscribe({
+          this.annotationService._createAnnotationFeature(annFeatures).subscribe({
             next: () => {
               this.loaderService.hide();
               this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));

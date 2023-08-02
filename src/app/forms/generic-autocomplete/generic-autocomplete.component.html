@@ -1,0 +1,4 @@
+<p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
+    appendTo="body" [virtualScroll]="true" (onSelect)="onSelectSuggestion($event)" [field]="field"
+    [forceSelection]="true" [(ngModel)]="valueToShow"
+    [showEmptyMessage]="true" emptyMessage="No matching"></p-autoComplete>

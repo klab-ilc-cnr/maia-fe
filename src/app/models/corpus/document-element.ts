@@ -1,4 +1,4 @@
-import { ElementType } from './element-type';
+import { _ElementType } from './element-type';
 import { DocumentMetadata } from "./document-metadata"
 
 /**Classe che rappresenta un elemento del sistema documentale */
@@ -8,7 +8,7 @@ export class DocumentElement {
   /**Nome dell'elemento */
   name: string | undefined
   /**Tipo di elemento (cartella o file) */
-  type!: ElementType
+  type!: _ElementType
   /**Identificativo numerico dell'elemento */
   'element-id': number
   /**Metadati dell'elemento */

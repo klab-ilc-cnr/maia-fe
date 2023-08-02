@@ -1,0 +1,2800 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>maia-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  FormCoreEditorComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/controllers/editors/form-core-editor/form-core-editor.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente dell&#39;editor di lavorazione del core di una forma</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-form-core-editor</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./form-core-editor.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./form-core-editor.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#_morphology" >_morphology</a>
+                            </li>
+                            <li>
+                                <a href="#currentUser" >currentUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteForm" >deleteForm</a>
+                            </li>
+                            <li>
+                                <a href="#emptyField" >emptyField</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                <a href="#labelFormItems" >labelFormItems</a>
+                            </li>
+                            <li>
+                                <a href="#morphRelations$" >morphRelations$</a>
+                            </li>
+                            <li>
+                                <a href="#morphRelationValues" >morphRelationValues</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
+                            </li>
+                            <li>
+                                <a href="#pos$" >pos$</a>
+                            </li>
+                            <li>
+                                <a href="#representationItems" >representationItems</a>
+                            </li>
+                            <li>
+                                <a href="#types$" >types$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#manageUpdateObservable" >manageUpdateObservable</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onAddLabelField" >onAddLabelField</a>
+                            </li>
+                            <li>
+                                <a href="#onAddMorphology" >onAddMorphology</a>
+                            </li>
+                            <li>
+                                <a href="#onDeleteLexicalForm" >onDeleteLexicalForm</a>
+                            </li>
+                            <li>
+                                <a href="#onMorphSelection" >onMorphSelection</a>
+                            </li>
+                            <li>
+                                <a href="#onRemoveLabelElement" >onRemoveLabelElement</a>
+                            </li>
+                            <li>
+                                <a href="#onRemoveMorph" >onRemoveMorph</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#removeRelation" >removeRelation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationFailed" >showOperationFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showOperationInProgress" >showOperationInProgress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateForm" >updateForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateLinguisticRelation" >updateLinguisticRelation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateListControlList" >updateListControlList</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#formEntry" >formEntry</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#morphology" >morphology</a>
+                                </li>
+                                <li>
+                                    <a href="#label" >label</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(globalState: <a href="../injectables/GlobalStateService.html" target="_self">GlobalStateService</a>, lexiconService: <a href="../injectables/LexiconService.html" target="_self">LexiconService</a>, userService: <a href="../injectables/UserService.html" target="_self">UserService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, commonService: <a href="../injectables/CommonService.html" target="_self">CommonService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:95</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Costruttore per FormCoreEditorComponent</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>globalState</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GlobalStateService.html" target="_self" >GlobalStateService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi per il recupero dello stato globale del lessico</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>lexiconService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LexiconService.html" target="_self" >LexiconService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi al lessico</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi relativi agli utenti</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                    <code>MessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>api primeng</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>msgConfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi di configurazione dei messaggi</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>commonService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommonService.html" target="_self" >CommonService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>servizi di utilità generale</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="formEntry"></a>
+                        <b>formEntry</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/FormCore.html" target="_self" >FormCore</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:30</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Forma in lavorazione</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="manageUpdateObservable"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>manageUpdateObservable</b></span>
+                        <a href="#manageUpdateObservable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="276"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:276</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che gestisce l&#39;observable di update</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>updateObs</td>
+                                    <td>
+                                            <code>Observable&lt;string&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>observable del timestamp di ultimo aggiornamento</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>relation</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>relazione aggiornata</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="190"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:190</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnDestroy, utilizzato per l&#39;emissione e chiusura del subject di gestione delle subscribe</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:158</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo dell&#39;interfaccia OnInit, utilizzato per la valorizzazione iniziale del componente e del form</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onAddLabelField"></a>
+                    <span class="name">
+                        <span ><b>onAddLabelField</b></span>
+                        <a href="#onAddLabelField"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onAddLabelField(property: <a href="../interfaces/PropertyElement.html" target="_self">PropertyElement</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="199"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:199</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per l&#39;aggiunta di un campo del gruppo label</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>property</td>
+                                    <td>
+                                                <code><a href="../interfaces/PropertyElement.html" target="_self" >PropertyElement</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>proprietà selezionata</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onAddMorphology"></a>
+                    <span class="name">
+                        <span ><b>onAddMorphology</b></span>
+                        <a href="#onAddMorphology"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onAddMorphology()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="206"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:206</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo di aggiunta di una riga di tratti morfologici</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDeleteLexicalForm"></a>
+                    <span class="name">
+                        <span ><b>onDeleteLexicalForm</b></span>
+                        <a href="#onDeleteLexicalForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDeleteLexicalForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="213"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:213</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per la cancellazione della forma</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onMorphSelection"></a>
+                    <span class="name">
+                        <span ><b>onMorphSelection</b></span>
+                        <a href="#onMorphSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onMorphSelection(event: literal type, index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="224"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:224</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che salva la selezione di un tratto morfologico e del suo valore</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>evento emesso dal componente su selezione</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>indice nella lista dei campi di morfologia</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRemoveLabelElement"></a>
+                    <span class="name">
+                        <span ><b>onRemoveLabelElement</b></span>
+                        <a href="#onRemoveLabelElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRemoveLabelElement(labelFieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="237"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:237</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che rimuove un elemento dalla lista di campi delle label</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>labelFieldName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>nome del field label da rimuobre</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRemoveMorph"></a>
+                    <span class="name">
+                        <span ><b>onRemoveMorph</b></span>
+                        <a href="#onRemoveMorph"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRemoveMorph(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="248"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:248</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che rimuove un elemento dalla lista dei tratti morfologici</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>indice del tratto morfologico nella lista</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeRelation"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>removeRelation</b></span>
+                        <a href="#removeRelation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeRelation(updater: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="294"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:294</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo di rimozione di una relazione</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>updater</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>oggetto di aggiornamento</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationFailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationFailed</b></span>
+                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="356"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:356</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione fallita</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorMessage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio di errore</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showOperationInProgress"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showOperationInProgress</b></span>
+                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="369"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:369</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che visualizza il popup di operazione in corso</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>messaggio da visualizzare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>updateForm</b></span>
+                        <a href="#updateForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateForm(relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="315"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:315</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che aggiorna una forma</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>relation</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>relazione da aggiornare</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>nuovo valore dellazione</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLinguisticRelation"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>updateLinguisticRelation</b></span>
+                        <a href="#updateLinguisticRelation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateLinguisticRelation(type: <a href="../undefineds/LINGUISTIC_RELATION_TYPE.html" target="_self">LINGUISTIC_RELATION_TYPE</a>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, currentValue?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="337"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:337</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo per l&#39;aggiornamento di una relazione linguistica</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#LINGUISTIC_RELATION_TYPE" target="_self" >LINGUISTIC_RELATION_TYPE</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>tipo di relazione linguistica</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>relation</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>relazione da aggiornare</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>nuovo valore</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>currentValue</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
+                                        <p>eventuale valore corrente</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateListControlList"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>updateListControlList</b></span>
+                        <a href="#updateListControlList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateListControlList(list: FormArray<any>, controlList: literal type[], index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, value: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="389"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:389</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che aggiorna la lista del formarray e la relativa lista di controllo con il nuovo valore</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>list</td>
+                                    <td>
+                                            <code>FormArray&lt;any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>lista di elementi del campo formarray</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>controlList</td>
+                                    <td>
+                                            <code>literal type[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>: string, value: string, external: boolean }[]} lista di controllo</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>indice dell&#39;elemento nelle liste</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>valore aggiornato</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_morphology"></a>
+                    <span class="name">
+                        <span ><b>_morphology</b></span>
+                        <a href="#_morphology"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di controllo dei tratti morfologici</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentUser"></a>
+                    <span class="name">
+                        <span ><b>currentUser</b></span>
+                        <a href="#currentUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/User.html" target="_self" >User</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Utente loggato</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteForm</b></span>
+                        <a href="#deleteForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:79</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Funzione di cancellazione di una forma</p>
+</div>
+                </td>
+            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>formId</td>
+                                                    <td>
+                                                            <code><p>identificativo della forma</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="emptyField"></a>
+                    <span class="name">
+                        <span ><b>emptyField</b></span>
+                        <a href="#emptyField"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;-- Select --&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Stringa per il campo vuoto</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FormGroup({
+    pos: new FormControl&lt;string&gt;(&#x27;&#x27;),
+    type: new FormControl&lt;string&gt;(&#x27;&#x27;),
+    label: new FormGroup({}),
+    morphology: new FormArray&lt;FormControl&gt;([]),
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Form di lavorazione della forma</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="labelFormItems"></a>
+                    <span class="name">
+                        <span ><b>labelFormItems</b></span>
+                        <a href="#labelFormItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/PropertyElement.html" target="_self" >PropertyElement[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di controllo dei campi label</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="morphRelations$"></a>
+                    <span class="name">
+                        <span ><b>morphRelations$</b></span>
+                        <a href="#morphRelations$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.globalState.morphologies$.pipe(
+    switchMap(list &#x3D;&gt; {
+      const mappedElements &#x3D; list.map(l &#x3D;&gt; &lt;{ label: string, id: string }&gt;{ label: l.propertyLabel, id: l.propertyId });
+      return of(mappedElements);
+    }),
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable delle relazioni morfologiche</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="morphRelationValues"></a>
+                    <span class="name">
+                        <span ><b>morphRelationValues</b></span>
+                        <a href="#morphRelationValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Funzione di filtro delle relazioni morfologiche</p>
+</div>
+                </td>
+            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">
+                                <b>Parameters :</b>
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                    <td>relation</td>
+                                                    <td>
+                                                            <code><p>relazione selezionata</p>
+</code>
+                                                    </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al popup di conferma cancellazione</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pos$"></a>
+                    <span class="name">
+                        <span ><b>pos$</b></span>
+                        <a href="#pos$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.globalState.pos$</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable dei valori pos disponibili</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="representationItems"></a>
+                    <span class="name">
+                        <span ><b>representationItems</b></span>
+                        <a href="#representationItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[{
+    label: &#x27;Variant&#x27;,
+    command: () &#x3D;&gt; {
+      console.info(&#x27;variant&#x27;);
+    }
+  }]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista di voci del menu di aggiunta di un nuovo elemento di representations</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="types$"></a>
+                    <span class="name">
+                        <span ><b>types$</b></span>
+                        <a href="#types$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.globalState.formEntryTypes$</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable dei tipi di forma</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject per la gestione della cancellazione delle subscribe</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="morphology"></a>
+                        <span class="name"><b>morphology</b><a href="#morphology"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>morphology()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:41</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter del form array dei tratti morfologici</p>
+</div>
+
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="label"></a>
+                        <span class="name"><b>label</b><a href="#label"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>label()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:56</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter del form group delle label</p>
+</div>
+
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, Input, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { FormArray, FormControl, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
+import { FormCore, PropertyElement } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { FormUpdater, LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { User } from &#x27;src/app/models/user&#x27;;
+import { CommonService } from &#x27;src/app/services/common.service&#x27;;
+import { GlobalStateService } from &#x27;src/app/services/global-state.service&#x27;;
+import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
+/**Componente dell&#x27;editor di lavorazione del core di una forma */
+@Component({
+  selector: &#x27;app-form-core-editor&#x27;,
+  templateUrl: &#x27;./form-core-editor.component.html&#x27;,
+  styleUrls: [&#x27;./form-core-editor.component.scss&#x27;]
+})
+export class FormCoreEditorComponent implements OnInit, OnDestroy {
+  /**Subject per la gestione della cancellazione delle subscribe */
+  private readonly unsubscribe$ &#x3D; new Subject();
+  /**Stringa per il campo vuoto */
+  emptyField &#x3D; &#x27;-- Select --&#x27;
+  /**Utente loggato */
+  currentUser!: User;
+  /**Forma in lavorazione */
+  @Input() formEntry!: FormCore;
+  /**Form di lavorazione della forma */
+  form &#x3D; new FormGroup({
+    pos: new FormControl&lt;string&gt;(&#x27;&#x27;),
+    type: new FormControl&lt;string&gt;(&#x27;&#x27;),
+    label: new FormGroup({}),
+    morphology: new FormArray&lt;FormControl&gt;([]),
+  });
+  /**Lista di controllo dei tratti morfologici */
+  _morphology: { relation: string, value: string, external: boolean }[] &#x3D; [];
+  /**Getter del form array dei tratti morfologici */
+  get morphology() { return this.form.controls[&#x27;morphology&#x27;] as FormArray; }
+  /**Observable dei valori pos disponibili */
+  pos$ &#x3D; this.globalState.pos$;
+  /**Observable dei tipi di forma */
+  types$ &#x3D; this.globalState.formEntryTypes$;
+  /**Lista di controllo dei campi label */
+  labelFormItems: PropertyElement[] &#x3D; [];
+  /**Lista di voci del menu di aggiunta di un nuovo elemento di representations */
+  representationItems: { label: string, command: any }[] &#x3D; [{
+    label: &#x27;Variant&#x27;,
+    command: () &#x3D;&gt; {
+      console.info(&#x27;variant&#x27;);
+    }
+  }];
+  /**Getter del form group delle label */
+  get label() { return this.form.controls.label; }
+  /**Observable delle relazioni morfologiche */
+  morphRelations$ &#x3D; this.globalState.morphologies$.pipe(
+    switchMap(list &#x3D;&gt; {
+      const mappedElements &#x3D; list.map(l &#x3D;&gt; &lt;{ label: string, id: string }&gt;{ label: l.propertyLabel, id: l.propertyId });
+      return of(mappedElements);
+    }),
+  );
+  /**
+   * Funzione di filtro delle relazioni morfologiche
+   * @param relation {string} relazione selezionata
+   * @returns {Observable&lt;OntolexType[]&gt;} observable della lista di valori associati a una relazione
+   */
+  morphRelationValues &#x3D; (relation: string) &#x3D;&gt; this.globalState.morphologies$.pipe(
+    switchMap(list &#x3D;&gt; {
+      const values &#x3D; list.find(morph &#x3D;&gt; morph.propertyId &#x3D;&#x3D;&#x3D; relation)?.propertyValues ?? [];
+      return of(values);
+    }),
+  );
+  /**
+   * Funzione di cancellazione di una forma
+   * @param formId {string} identificativo della forma
+   */
+  private deleteForm &#x3D; (formId: string) &#x3D;&gt; {
+    this.showOperationInProgress(&quot;Deletion in progress&quot;);
+    const successMsg &#x3D; &quot;Successfully removed form&quot;;
+    this.lexiconService.deleteForm(formId).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.showOperationFailed(&quot;Deletion failed: &quot; + error.message);
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(() &#x3D;&gt; {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.formEntry.lexicalEntry, isRemove: true });
+      Swal.close();
+    });
+  }
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
+  /**
+   * Costruttore per FormCoreEditorComponent
+   * @param globalState {GlobalStateService} servizi per il recupero dello stato globale del lessico
+   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * @param userService {UserService} servizi relativi agli utenti
+   * @param messageService {MessageService} api primeng
+   * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
+   * @param commonService {CommonService} servizi di utilità generale
+   */
+  constructor(
+    private globalState: GlobalStateService,
+    private lexiconService: LexiconService,
+    private userService: UserService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private commonService: CommonService,
+  ) {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+    ).subscribe(cu &#x3D;&gt; {
+      this.currentUser &#x3D; cu;
+    });
+
+    this.form.controls.type.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      distinctUntilChanged(),
+    ).subscribe(newValue &#x3D;&gt; {
+      if (!newValue?.endsWith(&#x27;#&#x27; + this.formEntry.type)) {
+        this.updateForm(&#x27;type&#x27;, newValue ?? &#x27;&#x27;).then(() &#x3D;&gt; {
+          this.formEntry &#x3D; &lt;FormCore&gt;{ ...this.formEntry, type: newValue?.split(&#x27;#&#x27;)[1] };
+        });
+      }
+    });
+
+    this.label.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(500),
+      distinctUntilChanged(),
+    ).subscribe((resp: { [key: string]: any }) &#x3D;&gt; {
+      for (const key in resp) {
+        const currentPropertyId &#x3D; this.labelFormItems.findIndex(e &#x3D;&gt; e.propertyID &#x3D;&#x3D;&#x3D; key);
+        if (currentPropertyId !&#x3D;&#x3D; -1 &amp;&amp; this.labelFormItems[currentPropertyId].propertyValue !&#x3D;&#x3D; resp[key]) {
+          this.updateForm(key, resp[key]).then(() &#x3D;&gt; {
+            if (resp[key] &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+              this.labelFormItems &#x3D; this.labelFormItems.filter(item &#x3D;&gt; item.propertyID !&#x3D;&#x3D; key);
+              this.representationItems.push({
+                label: key,
+                command: () &#x3D;&gt; {
+                  this.onAddLabelField(&lt;PropertyElement&gt;{ propertyID: key, propertyValue: &#x27;&#x27; });
+                },
+              });
+              return;
+            }
+            this.labelFormItems[currentPropertyId] &#x3D; &lt;PropertyElement&gt;{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
+          });
+        }
+      }
+    });
+  }
+
+  /**Metodo dell&#x27;interfaccia OnInit, utilizzato per la valorizzazione iniziale del componente e del form */
+  ngOnInit(): void {
+    const pos &#x3D; this.formEntry.inheritedMorphology.find(m &#x3D;&gt; m.trait.endsWith(&#x27;partOfSpeech&#x27;))?.value;
+    if (pos) {
+      this.form.get(&#x27;pos&#x27;)?.setValue(pos);
+    }
+    this.form.get(&#x27;pos&#x27;)?.disable();
+    if (this.formEntry.type) this.form.get(&#x27;type&#x27;)?.setValue(&#x27;http://www.w3.org/ns/lemon/ontolex#&#x27; + this.formEntry.type);
+
+    for (const label of this.formEntry.label) {
+      if (label.propertyValue &#x3D;&#x3D;&#x3D; &#x27;&#x27; &amp;&amp; label.propertyID !&#x3D;&#x3D; &#x27;variant&#x27;) { //TODO capire come gestire il caso variant
+        if (label.propertyID &#x3D;&#x3D;&#x3D; &#x27;writtenRep&#x27;) {
+          this.label.addControl(label.propertyID, new FormControl&lt;string&gt;(label.propertyValue, Validators.required));
+        }
+        this.representationItems.push({
+          label: label.propertyID,
+          command: () &#x3D;&gt; {
+            this.onAddLabelField(label)
+          },
+        });
+        continue;
+      }
+      this.onAddLabelField(label);
+    }
+
+    this.formEntry.morphology.forEach(m &#x3D;&gt; {
+      const morphElement &#x3D; { relation: m.trait, value: m.value, external: false };
+      this.morphology.push(new FormControl(morphElement));
+      this._morphology.push(&lt;{ relation: string, value: string, external: boolean }&gt;{ ...morphElement });
+    });
+  }
+
+  /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per l&#x27;emissione e chiusura del subject di gestione delle subscribe */
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
+  }
+
+  /**
+   * Metodo per l&#x27;aggiunta di un campo del gruppo label
+   * @param property {PropertyElement} proprietà selezionata
+   */
+  onAddLabelField(property: PropertyElement) {
+    this.labelFormItems.push(property);
+    this.label.addControl(property.propertyID, new FormControl&lt;string&gt;(property.propertyValue));
+    this.representationItems &#x3D; this.representationItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; property.propertyID);
+  }
+
+  /**Metodo di aggiunta di una riga di tratti morfologici */
+  onAddMorphology() {
+    const newMorph &#x3D; { relation: &#x27;&#x27;, value: &#x27;&#x27;, external: false };
+    this.morphology.push(new FormControl(newMorph));
+    this._morphology.push(&lt;{ relation: string, value: string, external: boolean }&gt;{ ...newMorph });
+  }
+
+  /**Metodo per la cancellazione della forma */
+  onDeleteLexicalForm() {
+    const confirmMsg &#x3D; &quot;You are about to delete a form&quot;;
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteForm(this.formEntry.form), this.formEntry.form);
+  }
+
+  /**
+   * Metodo che salva la selezione di un tratto morfologico e del suo valore
+   * @param event {{ relation: string, value: string, external: boolean }} evento emesso dal componente su selezione
+   * @param index {number} indice nella lista dei campi di morfologia
+   */
+  onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
+    const currentValue &#x3D; this._morphology[index].value;
+    if (currentValue !&#x3D;&#x3D; event.value) {
+      this.updateLinguisticRelation(LINGUISTIC_RELATION_TYPE.MORPHOLOGY, event.relation, event.value, currentValue).then(() &#x3D;&gt; {
+        this.updateListControlList(this.morphology, this._morphology, index, event);
+      });
+    }
+  }
+
+  /**
+   * Metodo che rimuove un elemento dalla lista di campi delle label
+   * @param labelFieldName {string} nome del field label da rimuobre
+   */
+  onRemoveLabelElement(labelFieldName: string) {
+    const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${labelFieldName}&quot;?&#x60;;
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; { this.label.get(labelFieldName)?.setValue(&#x27;&#x27;); });
+  }
+
+  /**
+   * Metodo che rimuove un elemento dalla lista dei tratti morfologici
+   * @param index {number} indice del tratto morfologico nella lista
+   * @returns {void}
+   */
+  onRemoveMorph(index: number) {
+    const currentValue &#x3D; this._morphology[index].value;
+    if (!currentValue || currentValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+      this.morphology.removeAt(index);
+      this._morphology.splice(index, 1);
+      return;
+    }
+    if (currentValue &amp;&amp; currentValue !&#x3D;&#x3D; &#x27;&#x27;) {
+      const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${currentValue}&quot;?&#x60;;
+      this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+      this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; {
+        this.removeRelation({ relation: this._morphology[index].relation, value: currentValue }).then(
+          () &#x3D;&gt; {
+            this.morphology.removeAt(index);
+            this._morphology.splice(index, 1);
+          },
+          () &#x3D;&gt; null
+        );
+      });
+    }
+  }
+
+  /**
+   * @private
+   * Metodo che gestisce l&#x27;observable di update
+   * @param updateObs {Observable&lt;string&gt;} observable del timestamp di ultimo aggiornamento
+   * @param relation {string} relazione aggiornata
+   */
+  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string) {
+    updateObs.pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;&quot;${relation}&quot; update failed &#x60;));
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(resp &#x3D;&gt; {
+      this.formEntry &#x3D; &lt;FormCore&gt;{ ...this.formEntry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;&quot;${relation}&quot; update success &#x60;));
+      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.formEntry.lexicalEntry });
+    });
+  }
+  /**
+   * @private
+   * Metodo di rimozione di una relazione
+   * @param updater {{ relation: string, value: string }} oggetto di aggiornamento
+   */
+  private async removeRelation(updater: { relation: string, value: string }) {
+    this.lexiconService.deleteRelation(this.formEntry.form, updater).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${this.formEntry.label} removing &quot;${updater.value}&quot; failed &#x60;));
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(resp &#x3D;&gt; {
+      this.formEntry &#x3D; &lt;FormCore&gt;{ ...this.formEntry, lastUpdate: resp };
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${this.formEntry.label} removing &quot;${updater.value}&quot; success &#x60;));
+      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.formEntry.lexicalEntry });
+    });
+  }
+
+  /**
+   * @private
+   * Metodo che aggiorna una forma
+   * @param relation {string} relazione da aggiornare
+   * @param value {string} nuovo valore dellazione
+   * @returns {Promise&lt;void&gt;}
+   */
+  private async updateForm(relation: string, value: string) {
+    if (!this.currentUser.name) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
+      return;
+    }
+    const updater &#x3D; &lt;FormUpdater&gt;{
+      relation: this.commonService.getFormUpdateRelation(relation),
+      value: value,
+    };
+    const updateObs &#x3D; this.lexiconService.updateLexicalForm(this.currentUser.name, this.formEntry.form, updater);
+    this.manageUpdateObservable(updateObs, relation);
+  }
+
+  /**
+   * @private
+   * Metodo per l&#x27;aggiornamento di una relazione linguistica
+   * @param type {LINGUISTIC_RELATION_TYPE} tipo di relazione linguistica
+   * @param relation {string} relazione da aggiornare
+   * @param value {any} nuovo valore
+   * @param currentValue {any} eventuale valore corrente
+   * @returns {Promise&lt;void&gt;}
+   */
+  private async updateLinguisticRelation(type: LINGUISTIC_RELATION_TYPE, relation: string, value: any, currentValue?: any) {
+    if (!this.currentUser.name) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
+      return;
+    }
+    const updater &#x3D; &lt;LinguisticRelationUpdater&gt;{
+      type: type,
+      relation: relation,
+      value: value,
+      currentValue: currentValue ?? &#x27;&#x27;
+    };
+    this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.formEntry.form, updater), relation);
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: &#x27;error&#x27;,
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;please wait&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
+  /**
+   * Metodo che aggiorna la lista del formarray e la relativa lista di controllo con il nuovo valore
+   * @param list {FormArrya&lt;any&gt;} lista di elementi del campo formarray
+   * @param controlList { relation: string, value: string, external: boolean }[]} lista di controllo
+   * @param index {number} indice dell&#x27;elemento nelle liste
+   * @param value {{ relation: string, value: string, external: boolean }} valore aggiornato
+   */
+  private updateListControlList(list: FormArray&lt;any&gt;, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
+    list.at(index).setValue(value);
+    controlList[index] &#x3D; &lt;{ relation: string, value: string, external: boolean }&gt;{ ...value };
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div *ngIf&#x3D;&quot;formEntry&quot; class&#x3D;&quot;card&quot; [style]&#x3D;&quot;{&#x27;height&#x27;: &#x27;100%&#x27;, &#x27;overflow-y&#x27;: &#x27;scroll&#x27;}&quot;&gt;
+  &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;formgrid grid&quot;&gt;
+    &lt;div class&#x3D;&quot;field col-6&quot; style&#x3D;&quot;align-self: center;&quot;&gt;
+      &lt;em&gt;Last update: {{formEntry.lastUpdate | date: &#x27;medium&#x27;}}&lt;/em&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-6&quot;&gt;
+      &lt;button pButton type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-danger&quot; style&#x3D;&quot;float: right;&quot;
+        pTooltip&#x3D;&quot;Delete lexical form&quot; (click)&#x3D;&quot;onDeleteLexicalForm()&quot;&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-6&quot;&gt;
+      &lt;label for&#x3D;&quot;pos&quot;&gt;Part-of-Speech&lt;/label&gt;
+      &lt;p-dropdown [options]&#x3D;&quot;(pos$|async) || []&quot; optionLabel&#x3D;&quot;valueLabel&quot; optionValue&#x3D;&quot;valueId&quot;
+        [placeholder]&#x3D;&quot;emptyField&quot; formControlName&#x3D;&quot;pos&quot; name&#x3D;&quot;pos&quot; styleClass&#x3D;&quot;w-full&quot;&gt;&lt;/p-dropdown&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-6&quot;&gt;
+      &lt;label for&#x3D;&quot;type&quot;&gt;Type&lt;/label&gt;
+      &lt;p-dropdown [options]&#x3D;&quot;(types$|async)||[]&quot; optionLabel&#x3D;&quot;valueLabel&quot; optionValue&#x3D;&quot;valueId&quot; [filter]&#x3D;&quot;true&quot;
+        filterBy&#x3D;&quot;valueLabel&quot; [placeholder]&#x3D;&quot;emptyField&quot; formControlName&#x3D;&quot;type&quot; name&#x3D;&quot;type&quot;
+        styleClass&#x3D;&quot;w-full&quot;&gt;&lt;/p-dropdown&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+      &lt;p-fieldset&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+          &lt;p-menu #menuRepresentation [model]&#x3D;&quot;representationItems&quot; [popup]&#x3D;&quot;true&quot; appendTo&#x3D;&quot;body&quot;&gt;&lt;/p-menu&gt;
+          Representation &lt;button pButton pRipple icon&#x3D;&quot;pi pi-plus&quot; type&#x3D;&quot;button&quot;
+            (click)&#x3D;&quot;menuRepresentation.toggle($event)&quot;
+            class&#x3D;&quot;p-button-rounded p-button-success mx-2 fieldset-small&quot;&gt;&lt;/button&gt;
+        &lt;/ng-template&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;content&quot;&gt;
+          &lt;form [formGroup]&#x3D;&quot;form.controls.label&quot;&gt;
+            &lt;div class&#x3D;&quot;field col-12&quot; *ngFor&#x3D;&quot;let control of labelFormItems&quot;&gt;
+              &lt;label [for]&#x3D;&quot;control.propertyID&quot;&gt;{{control.propertyID}}&lt;/label&gt;
+              &lt;span class&#x3D;&quot;justify-content-between&quot;&gt;
+                &lt;input pInputText [formControlName]&#x3D;&quot;control.propertyID&quot; type&#x3D;&quot;text&quot; [name]&#x3D;&quot;control.propertyID&quot;
+                  class&#x3D;&quot;col-10 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary&quot;&gt;
+                &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-times&quot; *ngIf&#x3D;&quot;control.propertyID!&#x3D;&#x3D;&#x27;writtenRep&#x27;&quot;
+                  class&#x3D;&quot; col-1 p-button-rounded p-button-danger p-button-text&quot;
+                  (click)&#x3D;&quot;onRemoveLabelElement(control.propertyID)&quot;&gt;&lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/ng-template&gt;
+      &lt;/p-fieldset&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;field col-12&quot;&gt;
+      &lt;p-fieldset&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+          Morphological traits&lt;button pButton pRipple icon&#x3D;&quot;pi pi-plus&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;onAddMorphology()&quot;
+            class&#x3D;&quot;p-button-rounded p-button-success mx-2 fieldset-small&quot;&gt;&lt;/button&gt;
+        &lt;/ng-template&gt;
+        &lt;ng-template pTemplate&#x3D;&quot;content&quot;&gt;
+          &lt;app-double-autocomplete *ngFor&#x3D;&quot;let morph of morphology.controls; index as index&quot;
+            [relations$]&#x3D;&quot;morphRelations$&quot; [valuesFilterFn]&#x3D;&quot;morphRelationValues&quot; (remove)&#x3D;&quot;onRemoveMorph(index)&quot;
+            (selected)&#x3D;&quot;onMorphSelection($event, index)&quot; valueId&#x3D;&quot;valueId&quot; valueLabel&#x3D;&quot;valueLabel&quot;
+            [isCheckboxVisible]&#x3D;&quot;false&quot; [relationField]&#x3D;&quot;morph.value.relation&quot;
+            [valueField]&#x3D;&quot;morph.value.value&quot;&gt;&lt;/app-double-autocomplete&gt;
+        &lt;/ng-template&gt;
+      &lt;/p-fieldset&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./form-core-editor.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">label {
+  width: 100%;
+}
+
+p-selectButton {
+  float: right;
+}
+
+::ng-deep legend {
+  width: auto;
+  float: inherit;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.fieldset-small {
+  height: 1.5rem !important;
+  width: 1.5rem;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div *ngIf="formEntry" class="card" [style]="{\'height\': \'100%\', \'overflow-y\': \'scroll\'}">  <form [formGroup]="form" class="formgrid grid">    <div class="field col-6" style="align-self: center;">      <em>Last update: {{formEntry.lastUpdate | date: \'medium\'}}</em>    </div>    <div class="field col-6">      <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"        pTooltip="Delete lexical form" (click)="onDeleteLexicalForm()"></button>    </div>    <div class="field col-6">      <label for="pos">Part-of-Speech</label>      <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId"        [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>    </div>    <div class="field col-6">      <label for="type">Type</label>      <p-dropdown [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" [filter]="true"        filterBy="valueLabel" [placeholder]="emptyField" formControlName="type" name="type"        styleClass="w-full"></p-dropdown>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          <p-menu #menuRepresentation [model]="representationItems" [popup]="true" appendTo="body"></p-menu>          Representation <button pButton pRipple icon="pi pi-plus" type="button"            (click)="menuRepresentation.toggle($event)"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <form [formGroup]="form.controls.label">            <div class="field col-12" *ngFor="let control of labelFormItems">              <label [for]="control.propertyID">{{control.propertyID}}</label>              <span class="justify-content-between">                <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"                  class="col-10 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">                <button pButton pRipple type="button" icon="pi pi-times" *ngIf="control.propertyID!==\'writtenRep\'"                  class=" col-1 p-button-rounded p-button-danger p-button-text"                  (click)="onRemoveLabelElement(control.propertyID)"></button>              </span>            </div>          </form>        </ng-template>      </p-fieldset>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          Morphological traits<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"            [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"            [isCheckboxVisible]="false" [relationField]="morph.value.relation"            [valueField]="morph.value.value"></app-double-autocomplete>        </ng-template>      </p-fieldset>    </div>  </form></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'FormCoreEditorComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'FormCoreEditorComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

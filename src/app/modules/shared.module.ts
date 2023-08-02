@@ -1,43 +1,50 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { ListboxModule } from 'primeng/listbox';
-import { MenubarModule } from 'primeng/menubar';
-import { DialogModule } from 'primeng/dialog';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
-import { ColorPickerModule } from 'primeng/colorpicker';
-import { TreeModule } from 'primeng/tree';
-import { TooltipModule } from 'primeng/tooltip';
-import { ContextMenuModule } from 'primeng/contextmenu';
-import { TreeSelectModule } from 'primeng/treeselect';
-import { PanelModule } from 'primeng/panel';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { CheckboxModule } from 'primeng/checkbox';
-import { TreeTableModule } from 'primeng/treetable';
-import { SkeletonModule } from 'primeng/skeleton';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { TagModule } from 'primeng/tag';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
 import { FieldsetModule } from 'primeng/fieldset';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
+import { MenubarModule } from 'primeng/menubar';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PaginatorModule } from 'primeng/paginator';
+import { PanelModule } from 'primeng/panel';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { SkeletonModule } from 'primeng/skeleton';
 import { SplitterModule } from 'primeng/splitter';
+import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ToolbarModule } from 'primeng/toolbar';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value-not-duplicate-name.directive';
-import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.directive';
-import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
-import { UriValidator } from '../validators/uri-validator.directive';
+import { TooltipModule } from 'primeng/tooltip';
+import { TreeModule } from 'primeng/tree';
+import { TreeSelectModule } from 'primeng/treeselect';
+import { TreeTableModule } from 'primeng/treetable';
 import { PopupDeleteItemComponent } from '../controllers/popup/popup-delete-item/popup-delete-item.component';
+import { AutocompleteCheckboxComponent } from '../forms/autocomplete-checkbox/autocomplete-checkbox.component';
+import { DoubleAutocompleteComponent } from '../forms/double-autocomplete/double-autocomplete.component';
+import { GenericAutocompleteComponent } from '../forms/generic-autocomplete/generic-autocomplete.component';
+import { ShouldBeEditablePipe } from '../pipes/should-be-editable.pipe';
+import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.directive';
+import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value-not-duplicate-name.directive';
+import { UriValidator } from '../validators/uri-validator.directive';
+import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -71,7 +78,10 @@ const PRIMENG_MODULES = [
   MenuModule,
   EditorModule,
   TabViewModule,
-  AutoCompleteModule
+  AutoCompleteModule,
+  CardModule,
+  InputNumberModule,
+  PaginatorModule,
 ];
 
 const DIRECTIVES = [
@@ -82,13 +92,21 @@ const DIRECTIVES = [
 ];
 
 const COMPONENTS = [
-  PopupDeleteItemComponent
+  PopupDeleteItemComponent,
+  AutocompleteCheckboxComponent,
+  DoubleAutocompleteComponent,
+  GenericAutocompleteComponent,
+];
+
+const PIPES = [
+  ShouldBeEditablePipe,
 ];
 
 @NgModule({
   declarations: [
     DIRECTIVES,
-    COMPONENTS
+    COMPONENTS,
+    PIPES,
   ],
   imports: [
     CommonModule,
@@ -102,7 +120,8 @@ const COMPONENTS = [
     ReactiveFormsModule,
     PRIMENG_MODULES,
     DIRECTIVES,
-    COMPONENTS
+    COMPONENTS,
+    PIPES,
   ]
 })
 export class SharedModule { }

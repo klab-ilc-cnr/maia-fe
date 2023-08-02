@@ -1,8 +1,10 @@
-import { Tagset } from './../models/tagset/tagset';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { TTagset } from '../models/texto/t-tagset';
+import { TTagsetItem } from '../models/texto/t-tagset-item';
+import { Tagset } from './../models/tagset/tagset';
 
 /**Classe dei servizi relativi ai tagset */
 @Injectable({
@@ -11,10 +13,11 @@ import { environment } from 'src/environments/environment';
 export class TagsetService {
 
   /**
-   * @private 
+   * @private
    * Url per le chiamate relative ai tagset
    */
   private tagsetUrl: string;
+  private textoUrl: string;
 
   /**
    * Costruttore per TagsetService
@@ -22,6 +25,7 @@ export class TagsetService {
    */
   constructor(private http: HttpClient) {
     this.tagsetUrl = environment.tagsetUrl; //recupero l'url dall'environment
+    this.textoUrl = environment.textoUrl;
   }
 
   /**
@@ -34,7 +38,7 @@ export class TagsetService {
     // FINE MOCK
 
     /* La seguente riga è da DECOMMENTARE dopo aver demockato */
-     return this.http.get<Tagset[]>(this.tagsetUrl);
+    return this.http.get<Tagset[]>(this.tagsetUrl);
   }
 
   /**
@@ -48,7 +52,7 @@ export class TagsetService {
     // FINE MOCK
 
     /* La seguente riga è da DECOMMENTARE dopo aver demockato */
-     return this.http.get<Tagset>(`${this.tagsetUrl}/${id}`);
+    return this.http.get<Tagset>(`${this.tagsetUrl}/${id}`);
   }
 
   /**
@@ -91,4 +95,54 @@ export class TagsetService {
   public retrieveCanBeDeleted(id: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.tagsetUrl}/canbedeleted/${id}`);
   }
+
+  //#region TEXTO
+  public createTagset(newTagset: TTagset): Observable<TTagset> {
+    return this.http.post<TTagset>(
+      `${this.textoUrl}/texto/tagset/create`,
+      newTagset
+    );
+  }
+
+  public createTagsetItem(newTagsetItem: TTagsetItem): Observable<TTagsetItem> {
+    return this.http.post<TTagsetItem>(
+      `${this.textoUrl}/texto/tagsetItem/create`,
+      newTagsetItem
+    );
+  }
+
+  public getTagsetById(tagsetId: number): Observable<TTagset> {
+    return this.http.get<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}`);
+  }
+
+  public getTagsetItemsById(tagsetId: number): Observable<TTagsetItem[]> {
+    return this.http.get<TTagsetItem[]>(`${this.textoUrl}/texto/tagset/${tagsetId}/items`);
+  }
+
+  public getTagsetsList(): Observable<TTagset[]> {
+    return this.http.get<TTagset[]>(`${this.textoUrl}/texto/tagset/list`);
+  }
+
+  public removeTagsetById(tagsetId: number) {
+    return this.http.get<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}/remove`);
+  }
+
+  public removeTagsetItemById(tagsetItemId: number) {
+    return this.http.get<TTagsetItem>(`${this.textoUrl}/texto/tagsetItem/${tagsetItemId}/remove`);
+  }
+
+  public updateTagset(updatedTagset: TTagset): Observable<TTagset> {
+    return this.http.post<TTagset>(
+      `${this.textoUrl}/texto/tagset/${updatedTagset.id}/update`,
+      updatedTagset,
+    );
+  }
+
+  public updateTagsetItem(updatedTagsetItem: TTagsetItem): Observable<TTagsetItem> {
+    return this.http.post<TTagsetItem>(
+      `${this.textoUrl}/texto/tagsetItem/${updatedTagsetItem.id}/update`,
+      updatedTagsetItem,
+    );
+  }
+  //#endregion
 }

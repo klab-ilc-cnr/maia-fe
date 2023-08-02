@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -134,6 +134,9 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#_selectedFile" >_selectedFile</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Public</span>
                                 <a href="#cols" >cols</a>
                             </li>
@@ -142,12 +145,30 @@
                                 <a href="#counter" >counter</a>
                             </li>
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#filterForm" >filterForm</a>
+                                <a href="#filteredBase" >filteredBase</a>
+                            </li>
+                            <li>
+                                <a href="#filteredLanguages$" >filteredLanguages$</a>
+                            </li>
+                            <li>
+                                <a href="#filteredPrefix" >filteredPrefix</a>
+                            </li>
+                            <li>
+                                <a href="#inputAuthor" >inputAuthor</a>
+                            </li>
+                            <li>
+                                <a href="#isOverwriteLexicon" >isOverwriteLexicon</a>
+                            </li>
+                            <li>
+                                <a href="#isUploadLexiconVisible" >isUploadLexiconVisible</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#isVisibleCheckbox" >isVisibleCheckbox</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#languageItems" >languageItems</a>
                             </li>
                             <li>
                                 <a href="#lexicalEntryTree" >lexicalEntryTree</a>
@@ -157,12 +178,19 @@
                                 <a href="#LexicalEntryType" >LexicalEntryType</a>
                             </li>
                             <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#lexiconUploaderForm" >lexiconUploaderForm</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Private</span>
                                 <a href="#limit" >limit</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#namespaceList" >namespaceList</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -175,6 +203,10 @@
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#pendingFilters" >pendingFilters</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#popupDeleteItem" >popupDeleteItem</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -198,7 +230,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#selectAuthors" >selectAuthors</a>
+                                <a href="#selectAuthors$" >selectAuthors$</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -206,7 +238,14 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#selectedBaseIRI" >selectedBaseIRI</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#selectedEntry" >selectedEntry</a>
+                            </li>
+                            <li>
+                                <a href="#selectedFile" >selectedFile</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -219,6 +258,9 @@
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#selectedPartOfSpeech" >selectedPartOfSpeech</a>
+                            </li>
+                            <li>
+                                <a href="#selectedPrefix" >selectedPrefix</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -235,6 +277,14 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#selectedUploadLanguage" >selectedUploadLanguage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#selectedUploadPrefix" >selectedUploadPrefix</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#selectEntries" >selectEntries</a>
                             </li>
                             <li>
@@ -243,15 +293,19 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#selectPartOfSpeech" >selectPartOfSpeech</a>
+                                <a href="#selectLanguages$" >selectLanguages$</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#selectStatuses" >selectStatuses</a>
+                                <a href="#selectPartOfSpeech$" >selectPartOfSpeech$</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#selectTypes" >selectTypes</a>
+                                <a href="#selectStatuses$" >selectStatuses$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#selectTypes$" >selectTypes$</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -285,8 +339,13 @@
                                 <a href="#filter" >filter</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#initSelectFields" >initSelectFields</a>
+                                <a href="#filterBase" >filterBase</a>
+                            </li>
+                            <li>
+                                <a href="#filterLanguage" >filterLanguage</a>
+                            </li>
+                            <li>
+                                <a href="#filterPrefix" >filterPrefix</a>
                             </li>
                             <li>
                                 <a href="#lexicalEntryDoubleClickHandler" >lexicalEntryDoubleClickHandler</a>
@@ -325,6 +384,15 @@
                                 <a href="#onRemoveNodes" >onRemoveNodes</a>
                             </li>
                             <li>
+                                <a href="#onSelectFile" >onSelectFile</a>
+                            </li>
+                            <li>
+                                <a href="#onSelectPrefixBaseIRI" >onSelectPrefixBaseIRI</a>
+                            </li>
+                            <li>
+                                <a href="#onUploadNewLexicon" >onUploadNewLexicon</a>
+                            </li>
+                            <li>
                                 <a href="#reset" >reset</a>
                             </li>
                             <li>
@@ -334,6 +402,10 @@
                             <li>
                                     <span class="modifier">Private</span>
                                 <a href="#selectChildNodes" >selectChildNodes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showDeleteModal" >showDeleteModal</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -361,12 +433,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(messageService: MessageService, lexiconService: <a href="../injectables/LexiconService.html" target="_self">LexiconService</a>, commonService: <a href="../injectables/CommonService.html" target="_self">CommonService</a>, elem: <a href="https://angular.io/api/core/ElementRef" target="_blank">ElementRef</a>, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, loggedUserService: <a href="../injectables/LoggedUserService.html" target="_self">LoggedUserService</a>)</code>
+<code>constructor(messageService: MessageService, lexiconService: <a href="../injectables/LexiconService.html" target="_self">LexiconService</a>, commonService: <a href="../injectables/CommonService.html" target="_self">CommonService</a>, elem: <a href="https://angular.io/api/core/ElementRef" target="_blank">ElementRef</a>, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, loggedUserService: <a href="../injectables/LoggedUserService.html" target="_self">LoggedUserService</a>, globalState: <a href="../injectables/GlobalStateService.html" target="_self">GlobalStateService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:87</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="155" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:155</a></div>
                             </td>
                         </tr>
 
@@ -482,6 +554,20 @@
 
                                                         </td>
                                                 </tr>
+                                                <tr>
+                                                        <td>globalState</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GlobalStateService.html" target="_self" >GlobalStateService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -520,8 +606,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="204"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:204</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="263"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:263</a></div>
                 </td>
             </tr>
 
@@ -561,8 +647,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="456"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:456</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="614"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:614</a></div>
                 </td>
             </tr>
 
@@ -632,8 +718,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="402"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:402</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="554"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:554</a></div>
                 </td>
             </tr>
 
@@ -655,35 +741,196 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="initSelectFields"></a>
+                    <a name="filterBase"></a>
                     <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>initSelectFields</b></span>
-                        <a href="#initSelectFields"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>filterBase</b></span>
+                        <a href="#filterBase"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>initSelectFields()</code>
+<code>filterBase(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="541"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:541</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="267"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:267</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che inizializza i valori dei campi select</p>
-</div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterLanguage"></a>
+                    <span class="name">
+                        <span ><b>filterLanguage</b></span>
+                        <a href="#filterLanguage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filterLanguage(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="279"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:279</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterPrefix"></a>
+                    <span class="name">
+                        <span ><b>filterPrefix</b></span>
+                        <a href="#filterPrefix"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filterPrefix(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="289"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:289</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                     </div>
                     <div class="io-description">
@@ -717,8 +964,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="364"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:364</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="476"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:476</a></div>
                 </td>
             </tr>
 
@@ -807,8 +1054,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="157"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:157</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="216"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:216</a></div>
                 </td>
             </tr>
 
@@ -846,8 +1093,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="117"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:117</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="179"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:179</a></div>
                 </td>
             </tr>
 
@@ -885,8 +1132,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="122"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:122</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="184"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:184</a></div>
                 </td>
             </tr>
 
@@ -917,15 +1164,15 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onAddNewLexicalEntry()</code>
+<code>onAddNewLexicalEntry(language: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="209"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:209</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="302"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:302</a></div>
                 </td>
             </tr>
 
@@ -936,8 +1183,40 @@
 </div>
 
                     <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>language</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -963,8 +1242,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="417"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:417</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="569"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:569</a></div>
                 </td>
             </tr>
 
@@ -1002,8 +1281,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="221"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:221</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="333"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:333</a></div>
                 </td>
             </tr>
 
@@ -1041,8 +1320,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="230"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:230</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="342"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:342</a></div>
                 </td>
             </tr>
 
@@ -1117,8 +1396,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="242"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:242</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="354"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:354</a></div>
                 </td>
             </tr>
 
@@ -1193,8 +1472,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="355"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:355</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="467"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:467</a></div>
                 </td>
             </tr>
 
@@ -1269,8 +1548,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="382"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:382</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="494"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:494</a></div>
                 </td>
             </tr>
 
@@ -1345,8 +1624,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="387"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:387</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="499"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:499</a></div>
                 </td>
             </tr>
 
@@ -1355,6 +1634,193 @@
                 <td class="col-md-4">
                     <div class="io-description"><p>Metodo che gestisce la rimozione dei nodi selezionati</p>
 </div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSelectFile"></a>
+                    <span class="name">
+                        <span ><b>onSelectFile</b></span>
+                        <a href="#onSelectFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSelectFile(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="515"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:515</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSelectPrefixBaseIRI"></a>
+                    <span class="name">
+                        <span ><b>onSelectPrefixBaseIRI</b></span>
+                        <a href="#onSelectPrefixBaseIRI"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSelectPrefixBaseIRI(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isPrefix: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="522"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:522</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isPrefix</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onUploadNewLexicon"></a>
+                    <span class="name">
+                        <span ><b>onUploadNewLexicon</b></span>
+                        <a href="#onUploadNewLexicon"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onUploadNewLexicon()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="534"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:534</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -1384,8 +1850,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="409"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:409</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="561"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:561</a></div>
                 </td>
             </tr>
 
@@ -1425,8 +1891,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="483"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:483</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="647"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:647</a></div>
                 </td>
             </tr>
 
@@ -1471,8 +1937,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="643"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:643</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="706"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:706</a></div>
                 </td>
             </tr>
 
@@ -1531,6 +1997,77 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="showDeleteModal"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>showDeleteModal</b></span>
+                        <a href="#showDeleteModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>showDeleteModal(nodesToDelete: TreeNode[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="574"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:574</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nodesToDelete</td>
+                                    <td>
+                                            <code>TreeNode[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="treeTraversalAlternateLabelInstanceName"></a>
                     <span class="name">
                         <span class="modifier">Private</span>
@@ -1549,8 +2086,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="522"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:522</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="686"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:686</a></div>
                 </td>
             </tr>
 
@@ -1627,8 +2164,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="502"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:502</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="666"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:666</a></div>
                 </td>
             </tr>
 
@@ -1661,6 +2198,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="_selectedFile"></a>
+                    <span class="name">
+                        <span ><b>_selectedFile</b></span>
+                        <a href="#_selectedFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>File</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="153" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:153</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="cols"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -1677,7 +2240,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:59</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:108</a></div>
                         </td>
                     </tr>
 
@@ -1710,7 +2273,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -1727,32 +2290,153 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="filterForm"></a>
+                    <a name="filteredBase"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>filterForm</b></span>
-                        <a href="#filterForm"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>filteredBase</b></span>
+                        <a href="#filteredBase"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <i>Type : </i>    <code>string[]</code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:31</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:150</a></div>
                         </td>
                     </tr>
 
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Form dei filtri</p>
-</div>
+                    <a name="filteredLanguages$"></a>
+                    <span class="name">
+                        <span ><b>filteredLanguages$</b></span>
+                        <a href="#filteredLanguages$"><span class="icon ion-ios-link"></span></a>
+                    </span>
                 </td>
             </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Observable&lt;SelectItem[]&gt;</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filteredPrefix"></a>
+                    <span class="name">
+                        <span ><b>filteredPrefix</b></span>
+                        <a href="#filteredPrefix"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="149" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="inputAuthor"></a>
+                    <span class="name">
+                        <span ><b>inputAuthor</b></span>
+                        <a href="#inputAuthor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="155" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:155</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isOverwriteLexicon"></a>
+                    <span class="name">
+                        <span ><b>isOverwriteLexicon</b></span>
+                        <a href="#isOverwriteLexicon"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isUploadLexiconVisible"></a>
+                    <span class="name">
+                        <span ><b>isUploadLexiconVisible</b></span>
+                        <a href="#isUploadLexiconVisible"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1775,7 +2459,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:81</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:130</a></div>
                         </td>
                     </tr>
 
@@ -1785,6 +2469,41 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="languageItems"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>languageItems</b></span>
+                        <a href="#languageItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[literal type]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[{
+    label: &#x27;Languages&#x27;,
+    items: []
+  }]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:143</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1816,7 +2535,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:84</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:133</a></div>
                         </td>
                     </tr>
 
@@ -1843,12 +2562,12 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>LexicalEntryType</code>
+                        <i>Default value : </i><code>LexicalEntryTypeOld</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:75</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:124</a></div>
                         </td>
                     </tr>
 
@@ -1858,6 +2577,42 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lexiconUploaderForm"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>lexiconUploaderForm</b></span>
+                        <a href="#lexiconUploaderForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;lexiconUploaderForm&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:135</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1881,7 +2636,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -1913,7 +2668,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:65</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:114</a></div>
                         </td>
                     </tr>
 
@@ -1923,6 +2678,37 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="namespaceList"></a>
+                    <span class="name">
+                        <span ><b>namespaceList</b></span>
+                        <a href="#namespaceList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Namespace.html" target="_self" >Namespace[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:148</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1946,7 +2732,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -1979,7 +2765,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -2012,13 +2798,55 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:71</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:120</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Definisce se ci sono filtri pendenti</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popupDeleteItem"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>popupDeleteItem</b></span>
+                        <a href="#popupDeleteItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/PopupDeleteItemComponent.html" target="_self" >PopupDeleteItemComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;popupDeleteItem&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:138</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Riferimento al popup di conferma cancellazione di un&#39;annotazione</p>
 </div>
                 </td>
             </tr>
@@ -2039,7 +2867,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/LexicalEntry.html" target="_self" >TreeNode&lt;LexicalEntry&gt;[]</a></code>
+                        <i>Type : </i>        <code><a href="../classes/LexicalEntryOld.html" target="_self" >TreeNode&lt;LexicalEntryOld&gt;[]</a></code>
 
                     </td>
                 </tr>
@@ -2050,7 +2878,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:78</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:127</a></div>
                         </td>
                     </tr>
 
@@ -2083,7 +2911,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:87</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="141" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:141</a></div>
                         </td>
                     </tr>
 
@@ -2115,7 +2943,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -2148,7 +2976,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:69</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:118</a></div>
                         </td>
                     </tr>
 
@@ -2181,7 +3009,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:73</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:122</a></div>
                         </td>
                     </tr>
 
@@ -2198,23 +3026,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="selectAuthors"></a>
+                    <a name="selectAuthors$"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>selectAuthors</b></span>
-                        <a href="#selectAuthors"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>selectAuthors$</b></span>
+                        <a href="#selectAuthors$"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>SelectItem[]</code>
-
+                        <i>Default value : </i><code>this.globalState.authors$.pipe(
+    switchMap(authors &#x3D;&gt; {
+      authors.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label));
+      return of(authors.map((a: any) &#x3D;&gt; &lt;SelectItem&gt;{ label: a.label, value: a.label }));
+    }),
+  )</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:39</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -2247,7 +3079,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:51</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -2257,6 +3089,33 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedBaseIRI"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>selectedBaseIRI</b></span>
+                        <a href="#selectedBaseIRI"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:96</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -2280,7 +3139,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:57</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:106</a></div>
                         </td>
                     </tr>
 
@@ -2290,6 +3149,32 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedFile"></a>
+                    <span class="name">
+                        <span ><b>selectedFile</b></span>
+                        <a href="#selectedFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="152" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:152</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -2313,7 +3198,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:47</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:93</a></div>
                         </td>
                     </tr>
 
@@ -2351,7 +3236,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:61</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="110" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:110</a></div>
                         </td>
                     </tr>
 
@@ -2384,7 +3269,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:53</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:102</a></div>
                         </td>
                     </tr>
 
@@ -2394,6 +3279,32 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedPrefix"></a>
+                    <span class="name">
+                        <span ><b>selectedPrefix</b></span>
+                        <a href="#selectedPrefix"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="151" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:151</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -2417,7 +3328,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:55</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -2445,13 +3356,13 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/LexicalEntry.html" target="_self" >TreeNode&lt;LexicalEntry&gt;</a></code>
+                        <i>Type : </i>        <code><a href="../classes/LexicalEntryOld.html" target="_self" >TreeNode&lt;LexicalEntryOld&gt;</a></code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:63</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -2484,7 +3395,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:49</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -2494,6 +3405,60 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedUploadLanguage"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>selectedUploadLanguage</b></span>
+                        <a href="#selectedUploadLanguage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedUploadPrefix"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>selectedUploadPrefix</b></span>
+                        <a href="#selectedUploadPrefix"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -2515,9 +3480,17 @@
 
                     </td>
                 </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { label: formTypeEnum.entry, value: formTypeEnum.entry },
+    { label: formTypeEnum.flexed, value: formTypeEnum.flexed }
+  ]</code>
+                    </td>
+                </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:88</a></div>
                         </td>
                     </tr>
 
@@ -2550,7 +3523,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:35</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:43</a></div>
                         </td>
                     </tr>
 
@@ -2567,23 +3540,66 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="selectPartOfSpeech"></a>
+                    <a name="selectLanguages$"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>selectPartOfSpeech</b></span>
-                        <a href="#selectPartOfSpeech"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>selectLanguages$</b></span>
+                        <a href="#selectLanguages$"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>SelectItem[]</code>
-
+                        <i>Default value : </i><code>this.globalState.languages$.pipe(
+    switchMap(languages &#x3D;&gt; {
+      languages.sort((a: LexiconStatistics, b: LexiconStatistics) &#x3D;&gt; a.label!.localeCompare(b.label!));
+      this.languageItems[0].items &#x3D; languages.map(l &#x3D;&gt; {
+        return {
+          label: l.label,
+          command: () &#x3D;&gt; {
+            this.onAddNewLexicalEntry(l.label!);
+          }
+        }
+      });
+      return of(languages.map(l &#x3D;&gt; &lt;SelectItem&gt;{ label: l.label, value: l.label }));
+    }),
+  )</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:41</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectPartOfSpeech$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>selectPartOfSpeech$</b></span>
+                        <a href="#selectPartOfSpeech$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.globalState.statisticsPos$.pipe(
+    switchMap(partOfSpeech &#x3D;&gt; {
+      partOfSpeech.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label));
+      return of(partOfSpeech.map((pos: any) &#x3D;&gt; &lt;SelectItem&gt;{ label: pos.label, value: pos.label }));
+    }),
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:74</a></div>
                         </td>
                     </tr>
 
@@ -2600,23 +3616,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="selectStatuses"></a>
+                    <a name="selectStatuses$"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>selectStatuses</b></span>
-                        <a href="#selectStatuses"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>selectStatuses$</b></span>
+                        <a href="#selectStatuses$"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>SelectItem[]</code>
-
+                        <i>Default value : </i><code>this.globalState.statisticStatuses$.pipe(
+    switchMap(statuses &#x3D;&gt; {
+      statuses.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label));
+      return of(statuses.map((s: any) &#x3D;&gt; &lt;SelectItem&gt;{ label: s.label, value: s.label }));
+    }),
+  )</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:43</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:81</a></div>
                         </td>
                     </tr>
 
@@ -2633,23 +3653,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="selectTypes"></a>
+                    <a name="selectTypes$"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>selectTypes</b></span>
-                        <a href="#selectTypes"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>selectTypes$</b></span>
+                        <a href="#selectTypes$"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>SelectItem[]</code>
-
+                        <i>Default value : </i><code>this.globalState.lexicalEntryTypes$.pipe(
+    switchMap(types &#x3D;&gt; {
+      types.sort((a: OntolexType, b: OntolexType) &#x3D;&gt; a.valueLabel!.localeCompare(b.valueLabel!));
+      return of(types.map(t &#x3D;&gt; &lt;SelectItem&gt;{ label: t.valueLabel, value: t.valueId }));
+    }),
+  )</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -2683,7 +3707,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:67</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:116</a></div>
                         </td>
                     </tr>
 
@@ -2716,7 +3740,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -2735,12 +3759,20 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, ElementRef, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, ElementRef, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
 import { MessageService, SelectItem, TreeNode } from &#x27;primeng/api&#x27;;
-import { forkJoin, Observable, Subscription, take } from &#x27;rxjs&#x27;;
-import { formTypeEnum, LexicalEntryRequest, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
-import { LexicalEntry, LexicalEntryType } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { Observable, Subscription, catchError, forkJoin, of, switchMap, take, throwError } from &#x27;rxjs&#x27;;
+import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
+import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
+import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { LexiconStatistics } from &#x27;src/app/models/lexicon/lexicon-statistics&#x27;;
+import { LEXICAL_ENTRY_RELATIONS, LexicalEntryUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { Namespace } from &#x27;src/app/models/lexicon/namespace.model&#x27;;
+import { OntolexType } from &#x27;src/app/models/lexicon/ontolex-type.model&#x27;;
 import { CommonService } from &#x27;src/app/services/common.service&#x27;;
+import { GlobalStateService } from &#x27;src/app/services/global-state.service&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
@@ -2751,6 +3783,8 @@ import { MessageConfigurationService } from &#x27;src/app/services/message-confi
   styleUrls: [&#x27;./workspace-lexicon-tile.component.scss&#x27;]
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
+
+  isUploadLexiconVisible &#x3D; false;
 
   /**Sottoscrizione usata per la gestione del click sull&#x27;icona tag */
   private subscription!: Subscription;
@@ -2764,24 +3798,63 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Numero totale entrate lessicali */
   public counter: number | undefined;
-  /**Form dei filtri */ //TODO verificare perché non ne trovo l&#x27;uso
-  public filterForm: any;
   /**Definisce se c&#x27;è lo spinner di ricerca in corso */
   public searchIconSpinner &#x3D; false;
   /**Lista delle lingue selezionabili */
   public selectLanguages!: SelectItem[];
+  filteredLanguages$!: Observable&lt;SelectItem[]&gt;;
   /**Lista dei tipi selezionabili */
-  public selectTypes!: SelectItem[];
+  public selectTypes$ &#x3D; this.globalState.lexicalEntryTypes$.pipe(
+    switchMap(types &#x3D;&gt; {
+      types.sort((a: OntolexType, b: OntolexType) &#x3D;&gt; a.valueLabel!.localeCompare(b.valueLabel!));
+      return of(types.map(t &#x3D;&gt; &lt;SelectItem&gt;{ label: t.valueLabel, value: t.valueId }));
+    }),
+  );
+  public selectLanguages$ &#x3D; this.globalState.languages$.pipe(
+    switchMap(languages &#x3D;&gt; {
+      languages.sort((a: LexiconStatistics, b: LexiconStatistics) &#x3D;&gt; a.label!.localeCompare(b.label!));
+      this.languageItems[0].items &#x3D; languages.map(l &#x3D;&gt; {
+        return {
+          label: l.label,
+          command: () &#x3D;&gt; {
+            this.onAddNewLexicalEntry(l.label!);
+          }
+        }
+      });
+      return of(languages.map(l &#x3D;&gt; &lt;SelectItem&gt;{ label: l.label, value: l.label }));
+    }),
+  );
   /**Lista degli autori selezionabili */
-  public selectAuthors!: SelectItem[];
+  public selectAuthors$ &#x3D; this.globalState.authors$.pipe(
+    switchMap(authors &#x3D;&gt; {
+      authors.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label));
+      return of(authors.map((a: any) &#x3D;&gt; &lt;SelectItem&gt;{ label: a.label, value: a.label }));
+    }),
+  );
   /**Lista delle POS selezionabili */
-  public selectPartOfSpeech!: SelectItem[];
+  public selectPartOfSpeech$ &#x3D; this.globalState.statisticsPos$.pipe(
+    switchMap(partOfSpeech &#x3D;&gt; {
+      partOfSpeech.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label));
+      return of(partOfSpeech.map((pos: any) &#x3D;&gt; &lt;SelectItem&gt;{ label: pos.label, value: pos.label }));
+    }),
+  );
   /**Lista degli status di lavorazione selezionabili */
-  public selectStatuses!: SelectItem[];
+  public selectStatuses$ &#x3D; this.globalState.statisticStatuses$.pipe(
+    switchMap(statuses &#x3D;&gt; {
+      statuses.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label));
+      return of(statuses.map((s: any) &#x3D;&gt; &lt;SelectItem&gt;{ label: s.label, value: s.label }));
+    }),
+  );
   /**Lista del tipo di entrate selezionabili */
-  public selectEntries!: SelectItem[];
+  public selectEntries: SelectItem[] &#x3D; [
+    { label: formTypeEnum.entry, value: formTypeEnum.entry },
+    { label: formTypeEnum.flexed, value: formTypeEnum.flexed }
+  ];
   /**Lingua selezionata */
   public selectedLanguage: any;
+  public selectedUploadLanguage: any;
+  public selectedUploadPrefix: any;
+  public selectedBaseIRI: any;
   /**Tipo selezionato */
   public selectedType: any;
   /**Autore selezionato */
@@ -2797,7 +3870,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Nodo dell&#x27;albero selezionato */
   public selectedNodes: TreeNode[] &#x3D; [];
   /**Sottonodo dell&#x27;albero selezionato */
-  public selectedSubTree?: TreeNode&lt;LexicalEntry&gt;;
+  public selectedSubTree?: TreeNode&lt;LexicalEntryOld&gt;;
   /**Definisce se è in corso il caricamento */
   public loading &#x3D; false;
   /**Definisce se mostrare l&#x27;etichetta o il nome dell&#x27;entrata */
@@ -2809,10 +3882,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Testo cercato */
   public searchTextInput!: string;
   /**Messa a disposizione dei tipi di entrata lessicale per il template */
-  public LexicalEntryType &#x3D; LexicalEntryType;
+  public LexicalEntryType &#x3D; LexicalEntryTypeOld;
 
   /**Lista dei nodi entrata lessicale */
-  public results: TreeNode&lt;LexicalEntry&gt;[] &#x3D; [];
+  public results: TreeNode&lt;LexicalEntryOld&gt;[] &#x3D; [];
 
   /**Definisce se sono visibili le checkbox nel tree table */
   public isVisibleCheckbox &#x3D; false;
@@ -2820,8 +3893,27 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Riferimento all&#x27;entrata lessicale nell&#x27;albero */ //TODO verificare perché non è chiaro dove sia richiamata
   @ViewChild(&#x27;lexicalEntry&#x27;) lexicalEntryTree: any;
 
+  @ViewChild(&#x27;lexiconUploaderForm&#x27;) public lexiconUploaderForm!: NgForm;
+
+  /**Riferimento al popup di conferma cancellazione di un&#x27;annotazione */
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
   /**Altezza calcolata per lo scroller */
   public scrollHeight!: number;
+
+  public languageItems: [{ label: string, items: any[] }] &#x3D; [{
+    label: &#x27;Languages&#x27;,
+    items: []
+  }];
+
+  namespaceList: Namespace[] &#x3D; [];
+  filteredPrefix!: string[];
+  filteredBase!: string[];
+  selectedPrefix: any;
+  selectedFile!: any;
+  _selectedFile!: File;
+  isOverwriteLexicon &#x3D; false;
+  inputAuthor!: string;
 
   /* @ViewChild(&#x27;tt&#x27;) public tt!: TreeTable; */
 
@@ -2840,15 +3932,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     private commonService: CommonService,
     private elem: ElementRef,
     private msgConfService: MessageConfigurationService,
-    private loggedUserService: LoggedUserService
+    private loggedUserService: LoggedUserService,
+    private globalState: GlobalStateService,
   ) { }
-
-  //  ngAfterViewInit() {
-  // this.tt.onNodeSelect
-  //   .subscribe((event: any) &#x3D;&gt; {
-
-  //   })
-  // }
 
   /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy() {
@@ -2863,12 +3949,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { field: &#x27;name&#x27;, header: &#x27;&#x27;, width: &#x27;70%&#x27;, display: &#x27;true&#x27; },
       { field: &#x27;note&#x27;, width: &#x27;10%&#x27;, display: &#x27;true&#x27; },
       { field: &#x27;creator&#x27;, header: &#x27;Autore&#x27;, width: &#x27;10%&#x27;, display: &#x27;true&#x27; },
-      { field: &#x27;creationDate&#x27;, header: &#x27;Data creazione&#x27;, display: &#x27;false&#x27; },
-      { field: &#x27;lastUpdate&#x27;, header: &#x27;Data modifica&#x27;, display: &#x27;false&#x27; },
       { field: &#x27;status&#x27;, header: &#x27;Stato&#x27;, width: &#x27;10%&#x27;, display: &#x27;true&#x27; },
-      { field: &#x27;type&#x27;, display: &#x27;false&#x27; },
-      { field: &#x27;uri&#x27;, display: &#x27;false&#x27; },
-      { field: &#x27;sub&#x27;, display: &#x27;false&#x27; }
     ];
 
     this.subscription &#x3D; this.commonService.notifyObservable$.subscribe((res) &#x3D;&gt; {
@@ -2885,56 +3966,58 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.showLabelName &#x3D; true;
 
     this.resetFilters();
-    this.initSelectFields();
     this.updateFilterParameters();
 
+    this.lexiconService.getNamespaces().pipe(take(1)).subscribe(ns &#x3D;&gt; {
+      this.namespaceList &#x3D; ns;
+    });
   }
 
   /**Metodo che esegue il caricamento dei nodi */
   loadNodes() {
     this.loading &#x3D; true;
 
-    this.lexiconService.getLexicalEntriesList(this.parameters).subscribe({
-      next: (data: any) &#x3D;&gt; {
-        this.results &#x3D; [];
-        this.results &#x3D; data[&#x27;list&#x27;].map((val: any) &#x3D;&gt; ({
+    this.lexiconService.getLexicalEntriesList(this.parameters).pipe(
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe((data: LexicalEntriesResponse) &#x3D;&gt; {
+      this.results &#x3D; [];
+      this.results &#x3D; data.list.map((val: LexicalEntryListItem) &#x3D;&gt; ({
+        data: {
+          name: this.showLabelName ? val.label : val.lexicalEntry,
+          instanceName: val.lexicalEntry,
+          label: val.label,
+          note: val[&#x27;note&#x27;],
+          creator: val[&#x27;creator&#x27;],
+          creationDate: val[&#x27;creationDate&#x27;] ? new Date(val[&#x27;creationDate&#x27;]).toLocaleString() : &#x27;&#x27;,
+          lastUpdate: val[&#x27;lastUpdate&#x27;] ? new Date(val[&#x27;lastUpdate&#x27;]).toLocaleString() : &#x27;&#x27;,
+          status: val[&#x27;status&#x27;],
+          uri: val[&#x27;lexicalEntry&#x27;],
+          type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+          sub: val.pos
+        },
+        children: [{
           data: {
-            name: this.showLabelName ? val[&#x27;label&#x27;] : val[&#x27;lexicalEntryInstanceName&#x27;],
-            instanceName: val[&#x27;lexicalEntryInstanceName&#x27;],
-            label: val[&#x27;label&#x27;],
-            note: val[&#x27;note&#x27;],
-            creator: val[&#x27;creator&#x27;],
-            creationDate: val[&#x27;creationDate&#x27;] ? new Date(val[&#x27;creationDate&#x27;]).toLocaleString() : &#x27;&#x27;,
-            lastUpdate: val[&#x27;lastUpdate&#x27;] ? new Date(val[&#x27;lastUpdate&#x27;]).toLocaleString() : &#x27;&#x27;,
-            status: val[&#x27;status&#x27;],
-            uri: val[&#x27;lexicalEntry&#x27;],
-            type: LexicalEntryType.LEXICAL_ENTRY,
-            sub: val[&#x27;pos&#x27;]
-          },
-          children: [{
-            data: {
-              name: &#x27;form (0)&#x27;,
-              instanceName: &#x27;_form_&#x27; + val[&#x27;lexicalEntryInstanceName&#x27;],
-              type: LexicalEntryType.FORMS_ROOT
-            }
-          },
-          {
-            data: {
-              name: &#x27;sense (0)&#x27;,
-              instanceName: &#x27;_sense_&#x27; + val[&#x27;lexicalEntryInstanceName&#x27;],
-              type: LexicalEntryType.SENSES_ROOT
-            }
-          }]
-        }))
-        this.counter &#x3D; data[&#x27;totalHits&#x27;];
+            name: &#x27;form (0)&#x27;,
+            instanceName: &#x27;_form_&#x27; + val.lexicalEntry,
+            type: LexicalEntryTypeOld.FORMS_ROOT
+          }
+        },
+        {
+          data: {
+            name: &#x27;sense (0)&#x27;,
+            instanceName: &#x27;_sense_&#x27; + val.lexicalEntry,
+            type: LexicalEntryTypeOld.SENSES_ROOT
+          }
+        }]
+      }))
+      this.counter &#x3D; data.totalHits;
 
-        this.loading &#x3D; false;
-        this.pendingFilters &#x3D; false;
-      },
-      error: (error: Error) &#x3D;&gt; {
-        console.error(error.message)
-      }
-    })
+      this.loading &#x3D; false;
+      this.pendingFilters &#x3D; false;
+    });
   }
 
   /**Metodo che, per ogni nodo dell&#x27;albero, sostituisce in visualizzazione la sua label con l&#x27;instanceName o viceversa */
@@ -2942,15 +4025,68 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.results.forEach(node &#x3D;&gt; this.treeTraversalAlternateLabelInstanceName(node))
   }
 
+  filterBase(event: any) {
+    const filtered &#x3D; [];
+    const query &#x3D; event.query;
+
+    for (const namespace of this.namespaceList) {
+      if (namespace.base.toLowerCase().includes(query.toLowerCase())) {
+        filtered.push(namespace.base);
+      }
+    }
+    this.filteredBase &#x3D; filtered;
+  }
+
+  filterLanguage(event: any) {
+    const query &#x3D; event.query;
+    this.filteredLanguages$ &#x3D; this.selectLanguages$.pipe(
+      switchMap(si &#x3D;&gt; {
+        const result &#x3D; si.filter(s &#x3D;&gt; s.label!.toLowerCase().includes(query.toLowerCase()));
+        return of(result);
+      }),
+    );
+  }
+
+  filterPrefix(event: any) {
+    const filtered &#x3D; [];
+    const query &#x3D; event.query;
+
+    for (const namespace of this.namespaceList) {
+      if (namespace.prefix.toLowerCase().indexOf(query.toLowerCase()) &#x3D;&#x3D;&#x3D; 0) {
+        filtered.push(namespace.prefix)
+      }
+    }
+    this.filteredPrefix &#x3D; filtered;
+  }
+
   /**Metodo che gestisce l&#x27;inserimento di una nuova entrata lessicale */
-  onAddNewLexicalEntry() {
+  onAddNewLexicalEntry(language: string) {
     const currentUser &#x3D; this.loggedUserService.currentUser;
     const creator &#x3D; currentUser?.name + &#x27;.&#x27; + currentUser?.surname;
-    this.lexiconService.getNewLexicalEntry(creator).pipe(take(1)).subscribe(lexEntry &#x3D;&gt; {
-      const successMsg &#x3D; &quot;Creata una nuova entrata lessicale&quot;;
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-      this.searchTextInput &#x3D; lexEntry.lexicalEntryInstanceName;
-      this.filter();
+    this.lexiconService.getNewLexicalEntry(creator).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(lexEntry &#x3D;&gt; {
+      const updater: LexicalEntryUpdater &#x3D; {
+        relation: LEXICAL_ENTRY_RELATIONS.ENTRY,
+        value: language
+      };
+      this.lexiconService.updateLexicalEntry(creator, lexEntry.lexicalEntry, updater).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) &#x3D;&gt; {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+          return throwError(() &#x3D;&gt; new Error(error.error));
+        }),
+      ).subscribe(() &#x3D;&gt; {
+        const successMsg &#x3D; &quot;Creata una nuova entrata lessicale&quot;;
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+        this.searchTextInput &#x3D; lexEntry.label;
+        this.filter();
+      },
+      );
     })
   }
 
@@ -2981,108 +4117,108 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const node &#x3D; event.node;
 
     switch (event.node.data.type) {
-      case LexicalEntryType.LEXICAL_ENTRY:
-        this.lexiconService.getElements(event.node.data.instanceName).subscribe({
-          next: (data: any) &#x3D;&gt; {
-            const formCildNode &#x3D; event.node.children.find((el: any) &#x3D;&gt; el.data.type &#x3D;&#x3D;&#x3D; LexicalEntryType.FORMS_ROOT);
-            const senseCildNode &#x3D; event.node.children.find((el: any) &#x3D;&gt; el.data.type &#x3D;&#x3D;&#x3D; LexicalEntryType.SENSES_ROOT);
-            const countFormChildren &#x3D; data[&#x27;elements&#x27;].find((el: { label: string; }) &#x3D;&gt; el.label &#x3D;&#x3D;&#x3D; &#x27;form&#x27;).count;
-            const countSenseChildren &#x3D; data[&#x27;elements&#x27;].find((el: { label: string; }) &#x3D;&gt; el.label &#x3D;&#x3D;&#x3D; &#x27;sense&#x27;).count;
+      case LexicalEntryTypeOld.LEXICAL_ENTRY:
+        this.lexiconService.getElements(event.node.data.instanceName).pipe(
+          catchError((error: HttpErrorResponse) &#x3D;&gt; {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            return throwError(() &#x3D;&gt; new Error(error.error));
+          }),
+        ).subscribe((data: any) &#x3D;&gt; {
+          const formCildNode &#x3D; event.node.children.find((el: any) &#x3D;&gt; el.data.type &#x3D;&#x3D;&#x3D; LexicalEntryTypeOld.FORMS_ROOT);
+          const senseCildNode &#x3D; event.node.children.find((el: any) &#x3D;&gt; el.data.type &#x3D;&#x3D;&#x3D; LexicalEntryTypeOld.SENSES_ROOT);
+          const countFormChildren &#x3D; data[&#x27;elements&#x27;].find((el: { label: string; }) &#x3D;&gt; el.label &#x3D;&#x3D;&#x3D; &#x27;form&#x27;).count;
+          const countSenseChildren &#x3D; data[&#x27;elements&#x27;].find((el: { label: string; }) &#x3D;&gt; el.label &#x3D;&#x3D;&#x3D; &#x27;sense&#x27;).count;
 
-            formCildNode.data.name &#x3D; &#x60;form (${countFormChildren})&#x60;;
+          formCildNode.data.name &#x3D; &#x60;form (${countFormChildren})&#x60;;
 
-            if (countFormChildren &gt; 0) {
-              // formCildNode.children &#x3D; [{ data: { name: &#x27;&#x27; } }];
-              formCildNode.leaf &#x3D; false;
-            }
-
-            senseCildNode.data.name &#x3D; &#x60;sense (${countSenseChildren})&#x60;;
-
-            if (countSenseChildren &gt; 0) {
-              // senseCildNode.children &#x3D; [{ data: { name: &#x27;&#x27; } }];
-              senseCildNode.leaf &#x3D; false;
-            }
-
-            this.selectChildNodes(node);
-
-            this.loading &#x3D; false;
-          },
-          error: (error: Error) &#x3D;&gt; {
-            console.error(error.message);
+          if (countFormChildren &gt; 0) {
+            // formCildNode.children &#x3D; [{ data: { name: &#x27;&#x27; } }];
+            formCildNode.leaf &#x3D; false;
           }
+
+          senseCildNode.data.name &#x3D; &#x60;sense (${countSenseChildren})&#x60;;
+
+          if (countSenseChildren &gt; 0) {
+            // senseCildNode.children &#x3D; [{ data: { name: &#x27;&#x27; } }];
+            senseCildNode.leaf &#x3D; false;
+          }
+
+          this.selectChildNodes(node);
+
+          this.loading &#x3D; false;
         });
         break;
-      case LexicalEntryType.FORMS_ROOT:
-        this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).subscribe({
-          next: (data: any) &#x3D;&gt; {
-            const mappedChildren: any[] &#x3D; data.map((val: any) &#x3D;&gt; ({
-              data: {
-                name: this.showLabelName ? val[&#x27;label&#x27;] : val[&#x27;formInstanceName&#x27;],
-                instanceName: val[&#x27;formInstanceName&#x27;],
-                label: val[&#x27;label&#x27;],
-                note: val[&#x27;note&#x27;],
-                creator: val[&#x27;creator&#x27;],
-                creationDate: val[&#x27;creationDate&#x27;] ? new Date(val[&#x27;creationDate&#x27;]).toLocaleString() : &#x27;&#x27;,
-                lastUpdate: val[&#x27;lastUpdate&#x27;] ? new Date(val[&#x27;lastUpdate&#x27;]).toLocaleString() : &#x27;&#x27;,
-                status: val[&#x27;status&#x27;],
-                uri: val[&#x27;form&#x27;],
-                type: LexicalEntryType.FORM,
-                sub: this.lexiconService.concatenateMorphology(val[&#x27;morphology&#x27;])
-              },
-              parent: node
-            }));
-            const sortedChildren &#x3D; mappedChildren.sort((a, b) &#x3D;&gt; a.data.label &#x3D;&#x3D;&#x3D; b.data.label ? 0 : (a.data.label &gt; b.data.label ? 1 : -1));
-            event.node.children &#x3D; sortedChildren;
+      case LexicalEntryTypeOld.FORMS_ROOT:
+        this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).pipe(
+          catchError((error: HttpErrorResponse) &#x3D;&gt; {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            return throwError(() &#x3D;&gt; new Error(error.error));
+          }),
+        ).subscribe((data: FormListItem[]) &#x3D;&gt; {
+          const mappedChildren: any[] &#x3D; data.map((val: FormListItem) &#x3D;&gt; ({
+            data: {
+              name: this.showLabelName ? val.label : val.form,
+              instanceName: val.form,
+              label: val.label,
+              note: val.note,
+              creator: val.creator,
+              creationDate: val.creationDate ? new Date(val.creationDate).toLocaleString() : &#x27;&#x27;,
+              lastUpdate: val.lastUpdate ? new Date(val.lastUpdate).toLocaleString() : &#x27;&#x27;,
+              status: null,
+              uri: val[&#x27;form&#x27;],
+              type: LexicalEntryTypeOld.FORM,
+              sub: this.lexiconService.concatenateMorphology(val.morphology),
+              isCanonical: val.type &#x3D;&#x3D;&#x3D; &#x27;canonicalForm&#x27;
+            },
+            parent: node
+          }));
+          const sortedChildren &#x3D; mappedChildren.sort((a, b) &#x3D;&gt; a.data.label &#x3D;&#x3D;&#x3D; b.data.label ? 0 : (a.data.label &gt; b.data.label ? 1 : -1));
+          event.node.children &#x3D; sortedChildren;
 
-            this.selectChildNodes(node);
+          this.selectChildNodes(node);
 
-            this.selectedNodes &#x3D; [...this.selectedNodes]
+          this.selectedNodes &#x3D; [...this.selectedNodes]
 
-            //refresh the data
-            this.results &#x3D; [...this.results];
+          //refresh the data
+          this.results &#x3D; [...this.results];
 
-            this.loading &#x3D; false;
-          },
-          error: (error: Error) &#x3D;&gt; {
-            console.error(error.message);
-          }
-        })
+          this.loading &#x3D; false;
+        });
         break;
-      case LexicalEntryType.SENSES_ROOT:
-        this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).subscribe({
-          next: (data: any) &#x3D;&gt; {
-            event.node.children &#x3D; data.map((val: any) &#x3D;&gt; ({
-              data: {
-                name: this.showLabelName ? val[&#x27;label&#x27;] : val[&#x27;senseInstanceName&#x27;],
-                instanceName: val[&#x27;senseInstanceName&#x27;],
-                label: val[&#x27;label&#x27;],
-                note: val[&#x27;note&#x27;],
-                creator: val[&#x27;creator&#x27;],
-                creationDate: val[&#x27;creationDate&#x27;] ? new Date(val[&#x27;creationDate&#x27;]).toLocaleString() : &#x27;&#x27;,
-                lastUpdate: val[&#x27;lastUpdate&#x27;] ? new Date(val[&#x27;lastUpdate&#x27;]).toLocaleString() : &#x27;&#x27;,
-                status: val[&#x27;status&#x27;],
-                uri: val[&#x27;sense&#x27;],
-                type: LexicalEntryType.SENSE
-              }
-            }));
+      case LexicalEntryTypeOld.SENSES_ROOT:
+        this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).pipe(
+          catchError((error: HttpErrorResponse) &#x3D;&gt; {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            return throwError(() &#x3D;&gt; new Error(error.error));
+          }),
+        ).subscribe((data: SenseListItem[]) &#x3D;&gt; {
+          event.node.children &#x3D; data.map((val: SenseListItem) &#x3D;&gt; ({
+            data: {
+              name: this.showLabelName ? val.label : val.sense,
+              instanceName: val.sense,
+              label: val.label,
+              note: val.note,
+              creator: val.creator,
+              creationDate: val.creationDate ? new Date(val.creationDate).toLocaleString() : &#x27;&#x27;,
+              lastUpdate: val.lastUpdate ? new Date(val.lastUpdate).toLocaleString() : &#x27;&#x27;,
+              status: null,
+              uri: val.sense,
+              type: LexicalEntryTypeOld.SENSE
+            }
+          }));
 
-            this.selectChildNodes(node);
+          this.selectChildNodes(node);
 
-            this.selectedNodes &#x3D; [...this.selectedNodes];
+          this.selectedNodes &#x3D; [...this.selectedNodes];
 
-            //refresh the data
-            this.results &#x3D; [...this.results];
+          //refresh the data
+          this.results &#x3D; [...this.results];
 
-            this.loading &#x3D; false;
-          },
-          error: (error: Error) &#x3D;&gt; {
-            console.error(error.message);
-          }
-        })
+          this.loading &#x3D; false;
+        });
         break;
     }
 
-    console.info(this.selectedNodes)
   }
 
   /**
@@ -3105,7 +4241,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         } else {
      */
     const node &#x3D; rowNode?.node;
-    if (node?.data?.type &#x3D;&#x3D;&#x3D; undefined || (node?.data?.type &#x3D;&#x3D; LexicalEntryType.FORMS_ROOT || node?.data?.type &#x3D;&#x3D; LexicalEntryType.SENSES_ROOT)) {
+    if (node?.data?.type &#x3D;&#x3D;&#x3D; undefined || (node?.data?.type &#x3D;&#x3D; LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type &#x3D;&#x3D; LexicalEntryTypeOld.SENSES_ROOT)) {
       return;
     }
     this.commonService.notifyOther({ option: &#x27;onLexiconTreeElementDoubleClickEvent&#x27;, value: [node, this.showLabelName] });
@@ -3122,17 +4258,57 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo che gestisce la rimozione dei nodi selezionati */
   onRemoveNodes(): void {
-    const filteredSelectedNodes &#x3D; this.selectedNodes.filter((n: TreeNode&lt;any&gt;) &#x3D;&gt; n.data.type !&#x3D;&#x3D; LexicalEntryType.FORMS_ROOT &amp;&amp; n.data.type !&#x3D;&#x3D; LexicalEntryType.SENSES_ROOT);
+    const filteredSelectedNodes &#x3D; this.selectedNodes.filter((n: TreeNode&lt;any&gt;) &#x3D;&gt; n.data.type !&#x3D;&#x3D; LexicalEntryTypeOld.FORMS_ROOT &amp;&amp; n.data.type !&#x3D;&#x3D; LexicalEntryTypeOld.SENSES_ROOT);
 
     const nodesToDelete: TreeNode&lt;any&gt;[] &#x3D; [];
     filteredSelectedNodes.forEach(el &#x3D;&gt; {
-      if (el.data.type &#x3D;&#x3D;&#x3D; LexicalEntryType.LEXICAL_ENTRY ||
+      if (el.data.type &#x3D;&#x3D;&#x3D; LexicalEntryTypeOld.LEXICAL_ENTRY ||
         filteredSelectedNodes.findIndex(e &#x3D;&gt; e.data.instanceName &#x3D;&#x3D;&#x3D; el.parent?.parent?.data.instanceName) &#x3D;&#x3D;&#x3D; -1) {
         nodesToDelete.push(el);
       }
     });
 
-    this.deleteNodes(nodesToDelete);
+    this.showDeleteModal(nodesToDelete);
+
+    // this.deleteNodes(nodesToDelete);
+  }
+
+  onSelectFile(event: Event) {
+    const element &#x3D; event.currentTarget as HTMLInputElement;
+    const fileList: FileList | null &#x3D; element.files!;
+
+    this._selectedFile &#x3D; fileList[0];
+  }
+
+  onSelectPrefixBaseIRI(value: string, isPrefix: boolean) {
+    const namespace &#x3D; isPrefix ? this.namespaceList.find(ns &#x3D;&gt; ns.prefix &#x3D;&#x3D;&#x3D; value) : this.namespaceList.find(ns &#x3D;&gt; ns.base &#x3D;&#x3D;&#x3D; value);
+    if (namespace &#x3D;&#x3D;&#x3D; undefined) {
+      return;
+    }
+    if (isPrefix) {
+      this.selectedBaseIRI &#x3D; namespace.base;
+      return;
+    }
+    this.selectedUploadPrefix &#x3D; namespace.prefix;
+  }
+
+  onUploadNewLexicon(): void {
+    const lexUpForm &#x3D; this.lexiconUploaderForm.value;
+    const fileData &#x3D; new FormData();
+    fileData.append(&#x27;file&#x27;, this._selectedFile);
+
+    this.lexiconService.uploadConll(lexUpForm[&#x27;prefix&#x27;], lexUpForm[&#x27;baseIRI&#x27;], lexUpForm[&#x27;author&#x27;], lexUpForm[&#x27;language&#x27;], lexUpForm[&#x27;drop&#x27;], fileData).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(
+      () &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&quot;Lexicon uploaded&quot;));
+        this.filter();
+        this.isUploadLexiconVisible &#x3D; false;
+      });
   }
 
   /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */
@@ -3154,6 +4330,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   onChangeFilter() {
     this.pendingFilters &#x3D; true;
     this.filter();
+  }
+
+  private showDeleteModal(nodesToDelete: TreeNode[]): void {
+    const confirmMsg &#x3D; &#x27;You are about to delete selected lexical entries&#x27;;
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteNodes(nodesToDelete), &#x27;delete_lex_nodes&#x27;);
   }
 
   /**
@@ -3194,23 +4376,29 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const httpDelete: Observable&lt;string&gt;[] &#x3D; [];
     nodesToDelete.forEach(tn &#x3D;&gt; {
       switch (tn.data.type) {
-        case LexicalEntryType.LEXICAL_ENTRY:
+        case LexicalEntryTypeOld.LEXICAL_ENTRY:
           httpDelete.push(this.lexiconService.deleteLexicalEntry(tn.data.instanceName));
           break;
-        case LexicalEntryType.FORM:
+        case LexicalEntryTypeOld.FORM:
           httpDelete.push(this.lexiconService.deleteForm(tn.data.instanceName));
           break;
-        case LexicalEntryType.SENSE:
+        case LexicalEntryTypeOld.SENSE:
           httpDelete.push(this.lexiconService.deleteLexicalSense(tn.data.instanceName));
           break;
       }
     });
-    forkJoin(httpDelete).pipe(take(1)).subscribe(() &#x3D;&gt; {
+    forkJoin(httpDelete).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(() &#x3D;&gt; {
       const successMsg &#x3D; &quot;Elementi rimossi&quot;;
+      this.selectedNodes &#x3D; [];
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       this.loadNodes();
     });
-
   }
 
   /**
@@ -3273,107 +4461,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**
    * @private
-   * Metodo che inizializza i valori dei campi select
-   */
-  private initSelectFields() {
-    this.lexiconService.getLanguages().subscribe({
-      next: (languages: any) &#x3D;&gt; {
-        this.selectLanguages &#x3D; [];
-        languages.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label))
-
-        for (let i &#x3D; 0; i &lt; languages.length; i++) {
-          this.selectLanguages.push({ label: &#x60;${languages[i].label}&#x60;, value: languages[i].label });
-        }
-      },
-      error: (error: Error) &#x3D;&gt; { console.error(error.message); }
-    });
-
-    this.lexiconService.getTypes().subscribe({
-      next: (types: any) &#x3D;&gt; {
-        this.selectTypes &#x3D; [];
-        types.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label))
-
-        for (let i &#x3D; 0; i &lt; types.length; i++) {
-          this.selectTypes.push({ label: &#x60;${types[i].label}&#x60;, value: types[i].label });
-        }
-      },
-      error: (error: Error) &#x3D;&gt; { console.error(error.message); }
-    });
-
-    this.lexiconService.getAuthors().subscribe({
-      next: (authors: any) &#x3D;&gt; {
-        this.selectAuthors &#x3D; [];
-        authors.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label))
-
-        for (let i &#x3D; 0; i &lt; authors.length; i++) {
-          this.selectAuthors.push({ label: &#x60;${authors[i].label}&#x60;, value: authors[i].label });
-        }
-      },
-      error: (error: Error) &#x3D;&gt; { console.error(error.message); }
-    });
-
-    this.lexiconService.getPos().subscribe({
-      next: (partOfSpeech: any) &#x3D;&gt; {
-        this.selectPartOfSpeech &#x3D; [];
-        partOfSpeech.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label))
-
-        for (let i &#x3D; 0; i &lt; partOfSpeech.length; i++) {
-          this.selectPartOfSpeech.push({ label: &#x60;${partOfSpeech[i].label}&#x60;, value: partOfSpeech[i].label });
-        }
-      },
-      error: (error: Error) &#x3D;&gt; { console.error(error.message); }
-    })
-
-    this.lexiconService.getStatus().subscribe({
-      next: (statuses: any) &#x3D;&gt; {
-        this.selectStatuses &#x3D; [];
-        statuses.sort((a: any, b: any) &#x3D;&gt; a.label.localeCompare(b.label))
-
-        for (let i &#x3D; 0; i &lt; statuses.length; i++) {
-          this.selectStatuses.push({ label: &#x60;${statuses[i].label}&#x60;, value: statuses[i].label });
-        }
-      },
-      error: (error: Error) &#x3D;&gt; { console.error(error.message); }
-    })
-
-    this.selectEntries &#x3D; [
-      { label: formTypeEnum.entry, value: formTypeEnum.entry },
-      { label: formTypeEnum.flexed, value: formTypeEnum.flexed }
-    ]
-  }
-
-  /*   private initSelectFields() {
-      this.lexiconService.getLanguages().subscribe({
-        next: (data: any) &#x3D;&gt; {
-          this.languages &#x3D; data;
-        },
-        error: (error: Error) &#x3D;&gt; {console.error(error.message);}
-      });
-
-      this.lexiconService.getTypes().subscribe({
-        next: (data: any) &#x3D;&gt; {
-          this.types &#x3D; data;
-        },
-        error: (error: Error) &#x3D;&gt; {console.error(error.message);}
-      });
-
-      this.lexiconService.getAuthors().subscribe({
-        next: (data: any) &#x3D;&gt; {
-          this.authors &#x3D; data;
-        },
-        error: (error: Error) &#x3D;&gt; {console.error(error.message);}
-      });
-
-      this.lexiconService.getPos().subscribe({
-        next: (data: any) &#x3D;&gt; {
-          this.partOfSpeech &#x3D; data;
-        },
-        error: (error: Error) &#x3D;&gt; {console.error(error.message);}
-      })
-    } */
-
-  /**
-   * @private
    * Metodo che gestisce la selezione dei nodi figli del nodo selezionato
    * @param node {TreeNode} nodo selezionato
    */
@@ -3394,12 +4481,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;p-toolbar&gt;
   &lt;div class&#x3D;&quot;p-toolbar-group-start&quot;&gt;
-    &lt;button pButton pRipple icon&#x3D;&quot;pi pi-plus&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot; (click)&#x3D;&quot;onAddNewLexicalEntry()&quot;&gt;&lt;/button&gt;
+    &lt;p-toast&gt;&lt;/p-toast&gt;
+    &lt;p-menu #menu [model]&#x3D;&quot;languageItems&quot; [popup]&#x3D;&quot;true&quot; appendTo&#x3D;&quot;body&quot;&gt;&lt;/p-menu&gt;
+    &lt;!-- &lt;button pButton pRipple icon&#x3D;&quot;pi pi-plus&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot;
+      (click)&#x3D;&quot;onAddNewLexicalEntry()&quot;&gt;&lt;/button&gt; --&gt;
+    &lt;button pButton pRipple icon&#x3D;&quot;pi pi-plus&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot;
+      (click)&#x3D;&quot;menu.toggle($event)&quot; pTooltip&#x3D;&quot;Add lexical entry&quot; tooltipPosition&#x3D;&quot;bottom&quot;&gt;&lt;/button&gt;
     &lt;button pButton pRipple icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-rounded p-button-danger mx-2&quot;
-      [disabled]&#x3D;&quot;selectedNodes.length &#x3D;&#x3D;&#x3D; 0&quot; (click)&#x3D;&quot;onRemoveNodes()&quot;&gt;&lt;/button&gt;
+      [disabled]&#x3D;&quot;selectedNodes.length &#x3D;&#x3D;&#x3D; 0&quot; (click)&#x3D;&quot;onRemoveNodes()&quot; pTooltip&#x3D;&quot;Remove&quot;
+      tooltipPosition&#x3D;&quot;bottom&quot;&gt;&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class&#x3D;&quot;p-toolbar-group-end&quot;&gt;
-    &lt;button pButton pRipple icon&#x3D;&quot;pi pi-file-export&quot; class&#x3D;&quot;p-button-rounded mx-2&quot;&gt;&lt;/button&gt;
+    &lt;button pButton pRipple icon&#x3D;&quot;pi pi-file-import&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot;
+      pTooltip&#x3D;&quot;Upload CoNLL&quot; tooltipPosition&#x3D;&quot;bottom&quot;
+      (click)&#x3D;&quot;isUploadLexiconVisible &#x3D; !isUploadLexiconVisible&quot;&gt;&lt;/button&gt;
+    &lt;button pButton pRipple icon&#x3D;&quot;pi pi-file-export&quot; class&#x3D;&quot;p-button-rounded mx-2&quot; pTooltip&#x3D;&quot;Export&quot;
+      tooltipPosition&#x3D;&quot;bottom&quot;&gt;&lt;/button&gt;
   &lt;/div&gt;
 &lt;/p-toolbar&gt;
 &lt;div class&#x3D;&quot;grid p-fluid input-search&quot;&gt;
@@ -3448,23 +4545,23 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   &lt;/div&gt;
   &lt;div class&#x3D;&quot;flex flex-row&quot;&gt;
     &lt;p-dropdown class&#x3D;&quot;flex align-items-center justify-content-center m-2 &quot; (onChange)&#x3D;&quot;onChangeFilter()&quot;
-      [options]&#x3D;&quot;selectTypes&quot; [(ngModel)]&#x3D;&quot;selectedType&quot; placeholder&#x3D;&quot;Tipo&quot; [showClear]&#x3D;&quot;true&quot;&gt;
+      [options]&#x3D;&quot;(selectTypes$|async) || []&quot; [(ngModel)]&#x3D;&quot;selectedType&quot; placeholder&#x3D;&quot;Type&quot; [showClear]&#x3D;&quot;true&quot;&gt;
     &lt;/p-dropdown&gt;
     &lt;p-dropdown class&#x3D;&quot;flex align-items-center justify-content-center m-2 &quot; (onChange)&#x3D;&quot;onChangeFilter()&quot;
-      [options]&#x3D;&quot;selectPartOfSpeech&quot; [(ngModel)]&#x3D;&quot;selectedPartOfSpeech&quot; placeholder&#x3D;&quot;Pos&quot; [showClear]&#x3D;&quot;true&quot;
-      [filter]&#x3D;&quot;true&quot; filterBy&#x3D;&quot;label&quot;&gt;
+      [options]&#x3D;&quot;(selectPartOfSpeech$ |async)|| []&quot; [(ngModel)]&#x3D;&quot;selectedPartOfSpeech&quot; placeholder&#x3D;&quot;Pos&quot;
+      [showClear]&#x3D;&quot;true&quot; [filter]&#x3D;&quot;true&quot; filterBy&#x3D;&quot;label&quot;&gt;
     &lt;/p-dropdown&gt;
     &lt;p-dropdown class&#x3D;&quot;flex align-items-center justify-content-center m-2 &quot; (onChange)&#x3D;&quot;onChangeFilter()&quot;
-      [options]&#x3D;&quot;selectLanguages&quot; [(ngModel)]&#x3D;&quot;selectedLanguage&quot; placeholder&#x3D;&quot;Lingua&quot; [showClear]&#x3D;&quot;true&quot;&gt;
+      [options]&#x3D;&quot;(selectLanguages$|async)||[]&quot; [(ngModel)]&#x3D;&quot;selectedLanguage&quot; placeholder&#x3D;&quot;Language&quot; [showClear]&#x3D;&quot;true&quot;&gt;
     &lt;/p-dropdown&gt;
   &lt;/div&gt;
   &lt;div class&#x3D;&quot;flex flex-row&quot;&gt;
     &lt;p-dropdown class&#x3D;&quot;flex align-items-center justify-content-center m-2 &quot; (onChange)&#x3D;&quot;onChangeFilter()&quot;
-      [options]&#x3D;&quot;selectAuthors&quot; [(ngModel)]&#x3D;&quot;selectedAuthor&quot; placeholder&#x3D;&quot;Autore&quot; [showClear]&#x3D;&quot;true&quot; [filter]&#x3D;&quot;true&quot;
-      filterBy&#x3D;&quot;label&quot;&gt;
+      [options]&#x3D;&quot;(selectAuthors$|async) || []&quot; [(ngModel)]&#x3D;&quot;selectedAuthor&quot; placeholder&#x3D;&quot;Author&quot; [showClear]&#x3D;&quot;true&quot;
+      [filter]&#x3D;&quot;true&quot; filterBy&#x3D;&quot;label&quot;&gt;
     &lt;/p-dropdown&gt;
     &lt;p-dropdown class&#x3D;&quot;flex align-items-center justify-content-center m-2 &quot; (onChange)&#x3D;&quot;onChangeFilter()&quot;
-      [options]&#x3D;&quot;selectStatuses&quot; [(ngModel)]&#x3D;&quot;selectedStatus&quot; placeholder&#x3D;&quot;Status&quot; [showClear]&#x3D;&quot;true&quot;&gt;
+      [options]&#x3D;&quot;(selectStatuses$ | async) || []&quot; [(ngModel)]&#x3D;&quot;selectedStatus&quot; placeholder&#x3D;&quot;Status&quot; [showClear]&#x3D;&quot;true&quot;&gt;
     &lt;/p-dropdown&gt;
     &lt;p-dropdown class&#x3D;&quot;flex align-items-center justify-content-center m-2 &quot; (onChange)&#x3D;&quot;onChangeFilter()&quot;
       [options]&#x3D;&quot;selectEntries&quot; [(ngModel)]&#x3D;&quot;selectedEntry&quot; placeholder&#x3D;&quot;Entry&quot; [showClear]&#x3D;&quot;true&quot;&gt;
@@ -3498,7 +4595,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         &lt;span *ngIf&#x3D;&quot;col.field &#x3D;&#x3D;&#x3D; &#x27;name&#x27; &amp;&amp; rowData[&#x27;type&#x27;] &#x3D;&#x3D; LexicalEntryType.LEXICAL_ENTRY&quot;&gt;{{
           rowData[col.field] }}&lt;/span&gt;
         &lt;span *ngIf&#x3D;&quot;col.field &#x3D;&#x3D;&#x3D; &#x27;name&#x27; &amp;&amp; rowData[&#x27;type&#x27;] !&#x3D;&#x3D; LexicalEntryType.LEXICAL_ENTRY&quot;
-          [pTooltip]&#x3D;&quot;rowData[&#x27;sub&#x27;]&quot;&gt;{{ rowData[col.field] }}&lt;/span&gt;
+          [pTooltip]&#x3D;&quot;rowData[&#x27;sub&#x27;]&quot; tooltipPosition&#x3D;&quot;bottom&quot;
+          [style.fontWeight]&#x3D;&quot;rowData[&#x27;isCanonical&#x27;] ? &#x27;bold&#x27; : &#x27;&#x27;&quot;&gt;{{ rowData[col.field] }}&lt;/span&gt;
         &lt;sub *ngIf&#x3D;&quot;col.field &#x3D;&#x3D;&#x3D; &#x27;name&#x27; &amp;&amp; rowData[&#x27;type&#x27;] &#x3D;&#x3D; LexicalEntryType.LEXICAL_ENTRY&quot;&gt;{{rowData[&#x27;sub&#x27;]}}&lt;/sub&gt;
       &lt;/td&gt;
     &lt;/tr&gt;
@@ -3524,6 +4622,62 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     &lt;span&gt;&lt;i&gt;test~0.8&lt;/i&gt;&lt;/span&gt;
   &lt;/ng-template&gt;
 &lt;/p-overlayPanel&gt;
+
+&lt;p-dialog [(visible)]&#x3D;&quot;isUploadLexiconVisible&quot; [style]&#x3D;&quot;{ width: &#x27;40vw&#x27; }&quot;&gt;
+  &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
+    &lt;h5 class&#x3D;&quot;modal-title&quot;&gt;Importa nuovo lessico&lt;/h5&gt;
+  &lt;/ng-template&gt;
+  &lt;ng-template pTemplate&#x3D;&quot;content&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;form #lexiconUploaderForm&#x3D;&quot;ngForm&quot; id&#x3D;&quot;lexiconUploaderForm&quot; class&#x3D;&quot;validated&quot;&gt;
+        &lt;div class&#x3D;&quot;formgrid grid&quot;&gt;
+          &lt;div class&#x3D;&quot;field col-6&quot;&gt;
+            &lt;label for&#x3D;&quot;language&quot;&gt;Lingua *&lt;/label&gt;
+            &lt;p-autoComplete #language&#x3D;&quot;ngModel&quot; name&#x3D;&quot;language&quot; [(ngModel)]&#x3D;&quot;selectedUploadLanguage&quot;
+              [suggestions]&#x3D;&quot;(filteredLanguages$ | async) || []&quot; field&#x3D;&quot;label&quot; (completeMethod)&#x3D;&quot;filterLanguage($event)&quot;
+              [required]&#x3D;&quot;true&quot;&gt;&lt;/p-autoComplete&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;field col-6&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Sovrascrivi&lt;/label&gt;
+            &lt;p-inputSwitch #drop&#x3D;&quot;ngModel&quot; name&#x3D;&quot;drop&quot; [(ngModel)]&#x3D;&quot;isOverwriteLexicon&quot;&gt;&lt;/p-inputSwitch&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group field col-6&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Prefisso *&lt;/label&gt;
+            &lt;p-autoComplete #prefix&#x3D;&quot;ngModel&quot; name&#x3D;&quot;prefix&quot; [(ngModel)]&#x3D;&quot;selectedUploadPrefix&quot;
+              [suggestions]&#x3D;&quot;filteredPrefix&quot; (completeMethod)&#x3D;&quot;filterPrefix($event)&quot;
+              (onSelect)&#x3D;&quot;onSelectPrefixBaseIRI($event, true)&quot; [required]&#x3D;&quot;true&quot;&gt;&lt;/p-autoComplete&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group field col-6&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Base IRI *&lt;/label&gt;
+            &lt;p-autoComplete #baseIRI&#x3D;&quot;ngModel&quot; name&#x3D;&quot;baseIRI&quot; [(ngModel)]&#x3D;&quot;selectedBaseIRI&quot; [suggestions]&#x3D;&quot;filteredBase&quot;
+              (completeMethod)&#x3D;&quot;filterBase($event)&quot; (onSelect)&#x3D;&quot;onSelectPrefixBaseIRI($event, false)&quot;
+              [required]&#x3D;&quot;true&quot;&gt;&lt;/p-autoComplete&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;field col-6&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Autore *&lt;/label&gt;
+            &lt;input type&#x3D;&quot;text&quot; #author&#x3D;&quot;ngModel&quot; name&#x3D;&quot;author&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;inputAuthor&quot; required&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group field col-6&quot;&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Scegli file *&lt;/label&gt;
+            &lt;input #uploadFile&#x3D;&quot;ngModel&quot; name&#x3D;&quot;uploadFile&quot; [(ngModel)]&#x3D;&quot;selectedFile&quot; type&#x3D;&quot;file&quot; class&#x3D;&quot;form-control&quot;
+              id&#x3D;&quot;lexiconUploader&quot; required accept&#x3D;&quot;.tsv&quot; (change)&#x3D;&quot;onSelectFile($event)&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/ng-template&gt;
+  &lt;ng-template pTemplate&#x3D;&quot;footer&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+      &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-secondary&quot; (click)&#x3D;&quot;isUploadLexiconVisible &#x3D; false&quot;&gt;
+        Annulla
+      &lt;/button&gt;
+      &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot; (click)&#x3D;&quot;onUploadNewLexicon()&quot;&gt;
+        Conferma
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/ng-template&gt;
+&lt;/p-dialog&gt;
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
 </code></pre>
     </div>
 
@@ -3541,6 +4695,15 @@ div.grid.p-fluid.input-search {
 
 td:has(sub) {
     overflow-x: clip;
+}
+
+#lexiconUploaderForm {
+  label,
+  input[type&#x3D;&quot;text&quot;],
+  ::ng-deep p-autocomplete .p-component,
+  ::ng-deep p-dropdown .p-component {
+    width: 100%;
+  }
 }
 </code></pre>
     </div>
@@ -3570,8 +4733,8 @@ td:has(sub) {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><p-toolbar>  <div class="p-toolbar-group-start">    <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2" (click)="onAddNewLexicalEntry()"></button>    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"      [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()"></button>  </div>  <div class="p-toolbar-group-end">    <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"></button>  </div></p-toolbar><div class="grid p-fluid input-search">  <div class="flex card-container w-full">    <div class="p-inputgroup">      <p-button pTooltip="aggiorna risultati" class="mr-2" icon="pi pi-spinner" [loading]="loading"        (onClick)="loadNodes()"></p-button>      <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)"        icon="pi pi-info-circle"></button>      <input id="searchInput" class="flex-grow-1 flex align-items-center justify-content-center"        [(ngModel)]="searchTextInput" type="text" pInputText size="15" placeholder="*" (ngModelChange)="filter()"        (keyup)="onChangeFilter()" />      <button pButton pRipple type="button" icon="pi pi-filter-slash" pTooltip="Reset" class="p-button-secondary"        (click)="reset()"></button>      <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic">        {{counter}}</span>    </div>  </div></div><p-panel iconPos="left" header="Filtri" [toggleable]="true" [collapsed]="true"  (collapsedChange)="onCollapseChange($event)">  <div class="flex flex-row">    <div class="flex align-items-center justify-content-center m-3 field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"        inputId="equals"></p-radioButton>      <label for="equals">Equals</label>    </div>    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode"        inputId="startsWith"></p-radioButton>      <label for="startsWith">StartsWith</label>    </div>  </div>  <div class="flex flex-row">    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode"        inputId="contains"></p-radioButton>      <label for="contains">Contains</label>    </div>    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode"        inputId="end"></p-radioButton>      <label for="end">End</label>    </div>  </div>  <div class="flex flex-row">    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="selectTypes" [(ngModel)]="selectedType" placeholder="Tipo" [showClear]="true">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="selectPartOfSpeech" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos" [showClear]="true"      [filter]="true" filterBy="label">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="selectLanguages" [(ngModel)]="selectedLanguage" placeholder="Lingua" [showClear]="true">    </p-dropdown>  </div>  <div class="flex flex-row">    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="selectAuthors" [(ngModel)]="selectedAuthor" placeholder="Autore" [showClear]="true" [filter]="true"      filterBy="label">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="selectStatuses" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true">    </p-dropdown>  </div></p-panel><div class="flex justify-content-end">  <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"    pTooltip="Selection" (click)="onChangeSelectionView()"></button></div><p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"  [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"  [scrollable]="true" [scrollHeight]="scrollHeight +\'px\'">  <ng-template pTemplate="colgroup" let-columns>    <colgroup>      <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">    </colgroup>  </ng-template>  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">    <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">      <td *ngFor="let col of cols; let i = index">        <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>        <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>        <app-icon-lock *ngIf="col.field === \'status\' && rowData[col.field]"          [status]="rowData[col.field]"></app-icon-lock>        <app-icon-note *ngIf="col.field ===\'note\' && rowData[col.field]"></app-icon-note>        <app-icon-author *ngIf="col.field === \'creator\' && rowData[\'creator\']" [isBot]="false"          [tooltip]="\'<em>Autore</em>: \'+rowData[\'creator\']+\'<br><em>Creato il</em>: \'+ rowData[\'creationDate\']+\'<br><em>Ultima modifica</em>: \'+ rowData[\'lastUpdate\']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->        <span *ngIf="col.field === \'name\' && rowData[\'type\'] == LexicalEntryType.LEXICAL_ENTRY">{{          rowData[col.field] }}</span>        <span *ngIf="col.field === \'name\' && rowData[\'type\'] !== LexicalEntryType.LEXICAL_ENTRY"          [pTooltip]="rowData[\'sub\']">{{ rowData[col.field] }}</span>        <sub *ngIf="col.field === \'name\' && rowData[\'type\'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData[\'sub\']}}</sub>      </td>    </tr>  </ng-template>  <ng-template pTemplate="emptymessage">    <tr>      <td [attr.colspan]="cols.length">Nessun risultato</td>    </tr>  </ng-template></p-treeTable><p-overlayPanel #op [dismissable]="true">  <ng-template pTemplate>    <h3>Search examples</h3>    <br>    <span><b>Multiple character wildcard search:</b></span>    <span><i>te*</i></span>    <br><span><b>Single character wildcard search:</b></span>    <span><i>te?t</i></span><br>    <b>Fuzzy search:</b>    <span><i>test~</i></span>    <br><b>Weighted fuzzy search:</b>    <span><i>test~0.8</i></span>  </ng-template></p-overlayPanel></div>'
-    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+        var COMPONENT_TEMPLATE = '<div><p-toolbar>  <div class="p-toolbar-group-start">    <p-toast></p-toast>    <p-menu #menu [model]="languageItems" [popup]="true" appendTo="body"></p-menu>    <!-- <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"      (click)="onAddNewLexicalEntry()"></button> -->    <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"      (click)="menu.toggle($event)" pTooltip="Add lexical entry" tooltipPosition="bottom"></button>    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"      [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()" pTooltip="Remove"      tooltipPosition="bottom"></button>  </div>  <div class="p-toolbar-group-end">    <button pButton pRipple icon="pi pi-file-import" class="p-button-rounded p-button-success mx-2"      pTooltip="Upload CoNLL" tooltipPosition="bottom"      (click)="isUploadLexiconVisible = !isUploadLexiconVisible"></button>    <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2" pTooltip="Export"      tooltipPosition="bottom"></button>  </div></p-toolbar><div class="grid p-fluid input-search">  <div class="flex card-container w-full">    <div class="p-inputgroup">      <p-button pTooltip="aggiorna risultati" class="mr-2" icon="pi pi-spinner" [loading]="loading"        (onClick)="loadNodes()"></p-button>      <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)"        icon="pi pi-info-circle"></button>      <input id="searchInput" class="flex-grow-1 flex align-items-center justify-content-center"        [(ngModel)]="searchTextInput" type="text" pInputText size="15" placeholder="*" (ngModelChange)="filter()"        (keyup)="onChangeFilter()" />      <button pButton pRipple type="button" icon="pi pi-filter-slash" pTooltip="Reset" class="p-button-secondary"        (click)="reset()"></button>      <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic">        {{counter}}</span>    </div>  </div></div><p-panel iconPos="left" header="Filtri" [toggleable]="true" [collapsed]="true"  (collapsedChange)="onCollapseChange($event)">  <div class="flex flex-row">    <div class="flex align-items-center justify-content-center m-3 field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"        inputId="equals"></p-radioButton>      <label for="equals">Equals</label>    </div>    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode"        inputId="startsWith"></p-radioButton>      <label for="startsWith">StartsWith</label>    </div>  </div>  <div class="flex flex-row">    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode"        inputId="contains"></p-radioButton>      <label for="contains">Contains</label>    </div>    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">      <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode"        inputId="end"></p-radioButton>      <label for="end">End</label>    </div>  </div>  <div class="flex flex-row">    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="(selectTypes$|async) || []" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="(selectPartOfSpeech$ |async)|| []" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos"      [showClear]="true" [filter]="true" filterBy="label">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="(selectLanguages$|async)||[]" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true">    </p-dropdown>  </div>  <div class="flex flex-row">    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="(selectAuthors$|async) || []" [(ngModel)]="selectedAuthor" placeholder="Author" [showClear]="true"      [filter]="true" filterBy="label">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="(selectStatuses$ | async) || []" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true">    </p-dropdown>    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"      [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true">    </p-dropdown>  </div></p-panel><div class="flex justify-content-end">  <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"    pTooltip="Selection" (click)="onChangeSelectionView()"></button></div><p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"  [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"  [scrollable]="true" [scrollHeight]="scrollHeight +\'px\'">  <ng-template pTemplate="colgroup" let-columns>    <colgroup>      <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">    </colgroup>  </ng-template>  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">    <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">      <td *ngFor="let col of cols; let i = index">        <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>        <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>        <app-icon-lock *ngIf="col.field === \'status\' && rowData[col.field]"          [status]="rowData[col.field]"></app-icon-lock>        <app-icon-note *ngIf="col.field ===\'note\' && rowData[col.field]"></app-icon-note>        <app-icon-author *ngIf="col.field === \'creator\' && rowData[\'creator\']" [isBot]="false"          [tooltip]="\'<em>Autore</em>: \'+rowData[\'creator\']+\'<br><em>Creato il</em>: \'+ rowData[\'creationDate\']+\'<br><em>Ultima modifica</em>: \'+ rowData[\'lastUpdate\']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->        <span *ngIf="col.field === \'name\' && rowData[\'type\'] == LexicalEntryType.LEXICAL_ENTRY">{{          rowData[col.field] }}</span>        <span *ngIf="col.field === \'name\' && rowData[\'type\'] !== LexicalEntryType.LEXICAL_ENTRY"          [pTooltip]="rowData[\'sub\']" tooltipPosition="bottom"          [style.fontWeight]="rowData[\'isCanonical\'] ? \'bold\' : \'\'">{{ rowData[col.field] }}</span>        <sub *ngIf="col.field === \'name\' && rowData[\'type\'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData[\'sub\']}}</sub>      </td>    </tr>  </ng-template>  <ng-template pTemplate="emptymessage">    <tr>      <td [attr.colspan]="cols.length">Nessun risultato</td>    </tr>  </ng-template></p-treeTable><p-overlayPanel #op [dismissable]="true">  <ng-template pTemplate>    <h3>Search examples</h3>    <br>    <span><b>Multiple character wildcard search:</b></span>    <span><i>te*</i></span>    <br><span><b>Single character wildcard search:</b></span>    <span><i>te?t</i></span><br>    <b>Fuzzy search:</b>    <span><i>test~</i></span>    <br><b>Weighted fuzzy search:</b>    <span><i>test~0.8</i></span>  </ng-template></p-overlayPanel><p-dialog [(visible)]="isUploadLexiconVisible" [style]="{ width: \'40vw\' }">  <ng-template pTemplate="header">    <h5 class="modal-title">Importa nuovo lessico</h5>  </ng-template>  <ng-template pTemplate="content">    <div class="modal-content">      <form #lexiconUploaderForm="ngForm" id="lexiconUploaderForm" class="validated">        <div class="formgrid grid">          <div class="field col-6">            <label for="language">Lingua *</label>            <p-autoComplete #language="ngModel" name="language" [(ngModel)]="selectedUploadLanguage"              [suggestions]="(filteredLanguages$ | async) || []" field="label" (completeMethod)="filterLanguage($event)"              [required]="true"></p-autoComplete>          </div>          <div class="field col-6">            <label class="form-label">Sovrascrivi</label>            <p-inputSwitch #drop="ngModel" name="drop" [(ngModel)]="isOverwriteLexicon"></p-inputSwitch>          </div>          <div class="form-group field col-6">            <label class="form-label">Prefisso *</label>            <p-autoComplete #prefix="ngModel" name="prefix" [(ngModel)]="selectedUploadPrefix"              [suggestions]="filteredPrefix" (completeMethod)="filterPrefix($event)"              (onSelect)="onSelectPrefixBaseIRI($event, true)" [required]="true"></p-autoComplete>          </div>          <div class="form-group field col-6">            <label class="form-label">Base IRI *</label>            <p-autoComplete #baseIRI="ngModel" name="baseIRI" [(ngModel)]="selectedBaseIRI" [suggestions]="filteredBase"              (completeMethod)="filterBase($event)" (onSelect)="onSelectPrefixBaseIRI($event, false)"              [required]="true"></p-autoComplete>          </div>          <div class="field col-6">            <label class="form-label">Autore *</label>            <input type="text" #author="ngModel" name="author" class="form-control" [(ngModel)]="inputAuthor" required>          </div>          <div class="form-group field col-6">            <label class="form-label">Scegli file *</label>            <input #uploadFile="ngModel" name="uploadFile" [(ngModel)]="selectedFile" type="file" class="form-control"              id="lexiconUploader" required accept=".tsv" (change)="onSelectFile($event)">          </div>        </div>      </form>    </div>  </ng-template>  <ng-template pTemplate="footer">    <div class="modal-footer">      <button type="button" class="btn btn-secondary" (click)="isUploadLexiconVisible = false">        Annulla      </button>      <button type="button" class="btn btn-primary" (click)="onUploadNewLexicon()">        Conferma      </button>    </div>  </ng-template></p-dialog><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
     var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'WorkspaceLexiconTileComponent'};
 </script>

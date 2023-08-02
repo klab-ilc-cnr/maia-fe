@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -61,6 +61,9 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
+                            <a href="#_ElementType" title="src/app/models/corpus/element-type.ts" ><b>_ElementType</b>&nbsp;&nbsp;&nbsp;(src/.../element-type.ts)</a>
+                        </li>
+                        <li>
                             <a href="#EditorType" title="src/app/models/editor-type.ts" ><b>EditorType</b>&nbsp;&nbsp;&nbsp;(src/.../editor-type.ts)</a>
                         </li>
                         <li>
@@ -76,6 +79,12 @@
                             <a href="#formTypeEnum" title="src/app/models/lexicon/lexical-entry-request.model.ts" ><b>formTypeEnum</b>&nbsp;&nbsp;&nbsp;(src/.../lexical-entry-request.model.ts)</a>
                         </li>
                         <li>
+                            <a href="#GENERIC_RELATION_TYPE" title="src/app/models/lexicon/lexicon-updater.ts" ><b>GENERIC_RELATION_TYPE</b>&nbsp;&nbsp;&nbsp;(src/.../lexicon-updater.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GENERIC_RELATIONS" title="src/app/models/lexicon/lexicon-updater.ts" ><b>GENERIC_RELATIONS</b>&nbsp;&nbsp;&nbsp;(src/.../lexicon-updater.ts)</a>
+                        </li>
+                        <li>
                             <a href="#LEXICAL_ENTRY_RELATIONS" title="src/app/models/lexicon/lexicon-updater.ts" ><b>LEXICAL_ENTRY_RELATIONS</b>&nbsp;&nbsp;&nbsp;(src/.../lexicon-updater.ts)</a>
                         </li>
                         <li>
@@ -85,7 +94,10 @@
                             <a href="#LexicalEntryType" title="src/app/models/lexicon/lexical-entry.model.ts" ><b>LexicalEntryType</b>&nbsp;&nbsp;&nbsp;(src/.../lexical-entry.model.ts)</a>
                         </li>
                         <li>
-                            <a href="#LINGUISTIC_RELATIONS" title="src/app/models/lexicon/lexicon-updater.ts" ><b>LINGUISTIC_RELATIONS</b>&nbsp;&nbsp;&nbsp;(src/.../lexicon-updater.ts)</a>
+                            <a href="#LexicalEntryTypeOld" title="src/app/models/lexicon/lexical-entry.model.ts" ><b>LexicalEntryTypeOld</b>&nbsp;&nbsp;&nbsp;(src/.../lexical-entry.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LINGUISTIC_RELATION_TYPE" title="src/app/models/lexicon/lexicon-updater.ts" ><b>LINGUISTIC_RELATION_TYPE</b>&nbsp;&nbsp;&nbsp;(src/.../lexicon-updater.ts)</a>
                         </li>
                         <li>
                             <a href="#Roles" title="src/app/models/roles.ts" ><b>Roles</b>&nbsp;&nbsp;&nbsp;(src/.../roles.ts)</a>
@@ -94,7 +106,13 @@
                             <a href="#searchModeEnum" title="src/app/models/lexicon/lexical-entry-request.model.ts" ><b>searchModeEnum</b>&nbsp;&nbsp;&nbsp;(src/.../lexical-entry-request.model.ts)</a>
                         </li>
                         <li>
+                            <a href="#TFeatureType" title="src/app/models/texto/t-feature.ts" ><b>TFeatureType</b>&nbsp;&nbsp;&nbsp;(src/.../t-feature.ts)</a>
+                        </li>
+                        <li>
                             <a href="#TileType" title="src/app/models/tile/tile-type.model.ts" ><b>TileType</b>&nbsp;&nbsp;&nbsp;(src/.../tile-type.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TStatus" title="src/app/models/texto/t-status.ts" ><b>TStatus</b>&nbsp;&nbsp;&nbsp;(src/.../t-status.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -103,6 +121,75 @@
     </table>
 </section>
 
+    <h3>src/app/models/corpus/element-type.ts</h3>
+    <section>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="_ElementType"></a>
+                        <span class="name "><b>_ElementType</b><a href="#_ElementType"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Enum dei tipi di elementi del corpus (cartelle e file)</p>
+</div>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Directory
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>directory</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;File
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>file</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ElementType"></a>
+                        <span class="name "><b>ElementType</b><a href="#ElementType"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;FOLDER
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>Folder</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;RESOURCE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>Resource</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
     <h3>src/app/models/editor-type.ts</h3>
     <section>
         <table class="table table-sm table-bordered">
@@ -137,45 +224,6 @@
                         <tr>
                             <td class="col-md-4">
                                 <i>Value : </i><code>relation</code>
-                            </td>
-                        </tr>
-            </tbody>
-        </table>
-</section>
-    <h3>src/app/models/corpus/element-type.ts</h3>
-    <section>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="ElementType"></a>
-                        <span class="name "><b>ElementType</b><a href="#ElementType"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-description"><p>Enum dei tipi di elementi del corpus (cartelle e file)</p>
-</div>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                &nbsp;Directory
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>directory</code>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                &nbsp;File
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>file</code>
                             </td>
                         </tr>
             </tbody>
@@ -253,7 +301,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>type</code>
+                                <i>Value : </i><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code>
                             </td>
                         </tr>
                         <tr>
@@ -263,7 +311,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>note</code>
+                                <i>Value : </i><code>http://www.w3.org/2004/02/skos/core#note</code>
                             </td>
                         </tr>
                         <tr>
@@ -273,7 +321,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>writtenRep</code>
+                                <i>Value : </i><code>http://www.w3.org/ns/lemon/ontolex#writtenRep</code>
                             </td>
                         </tr>
                         <tr>
@@ -283,7 +331,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>phoneticRep</code>
+                                <i>Value : </i><code>http://www.w3.org/ns/lemon/ontolex#phoneticRep</code>
                             </td>
                         </tr>
                         <tr>
@@ -293,7 +341,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>pronunciation</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#pronunciation</code>
                             </td>
                         </tr>
                         <tr>
@@ -303,7 +351,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>romanization</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#romanization</code>
                             </td>
                         </tr>
                         <tr>
@@ -313,7 +361,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>segmentation</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#segmentation</code>
                             </td>
                         </tr>
                         <tr>
@@ -323,7 +371,97 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>transliteration</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#transliteration</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;CONFIDENCE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#confidence</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="GENERIC_RELATION_TYPE"></a>
+                        <span class="name "><b>GENERIC_RELATION_TYPE</b><a href="#GENERIC_RELATION_TYPE"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;REFERENCE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>reference</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;BIBLIOGRAPHY
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>bibliography</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;ATTESTATION
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>attestation</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;MULTIMEDIA
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>multimedia</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="GENERIC_RELATIONS"></a>
+                        <span class="name "><b>GENERIC_RELATIONS</b><a href="#GENERIC_RELATIONS"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;SEEALSO
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>http://www.w3.org/2000/01/rdf-schema#seeAlso</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;SAMEAS
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>http://www.w3.org/2002/07/owl#sameAs</code>
                             </td>
                         </tr>
             </tbody>
@@ -349,7 +487,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>label</code>
+                                <i>Value : </i><code>http://www.w3.org/2000/01/rdf-schema#label</code>
                             </td>
                         </tr>
                         <tr>
@@ -359,27 +497,17 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>type</code>
+                                <i>Value : </i><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code>
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;LANGUAGE
+                                &nbsp;TERM_STATUS
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>language</code>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                &nbsp;STATUS
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>status</code>
+                                <i>Value : </i><code>http://www.w3.org/2003/06/sw-vocab-status/ns#term_status</code>
                             </td>
                         </tr>
                         <tr>
@@ -389,7 +517,37 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>note</code>
+                                <i>Value : </i><code>http://www.w3.org/2004/02/skos/core#note</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;ENTRY
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>http://www.w3.org/ns/lemon/lime#entry</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;DENOTES
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>http://www.w3.org/ns/lemon/ontolex#denotes</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;CONFIDENCE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#confidence</code>
                             </td>
                         </tr>
             </tbody>
@@ -415,7 +573,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>note</code>
+                                <i>Value : </i><code>http://www.w3.org/2004/02/skos/core#note</code>
                             </td>
                         </tr>
                         <tr>
@@ -425,7 +583,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>usage</code>
+                                <i>Value : </i><code>http://www.w3.org/ns/lemon/ontolex#usage</code>
                             </td>
                         </tr>
                         <tr>
@@ -435,7 +593,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>reference</code>
+                                <i>Value : </i><code>http://www.w3.org/ns/lemon/ontolex#reference</code>
                             </td>
                         </tr>
                         <tr>
@@ -445,7 +603,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>subject</code>
+                                <i>Value : </i><code>http://purl.org/dc/terms/subject</code>
                             </td>
                         </tr>
                         <tr>
@@ -455,7 +613,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>definition</code>
+                                <i>Value : </i><code>http://www.w3.org/2004/02/skos/core#definition</code>
                             </td>
                         </tr>
                         <tr>
@@ -465,7 +623,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>description</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#description</code>
                             </td>
                         </tr>
                         <tr>
@@ -475,7 +633,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>explanation</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#explanation</code>
                             </td>
                         </tr>
                         <tr>
@@ -485,7 +643,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>gloss</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#gloss</code>
                             </td>
                         </tr>
                         <tr>
@@ -495,7 +653,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>senseExample</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#senseExample</code>
                             </td>
                         </tr>
                         <tr>
@@ -505,7 +663,17 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>senseTranslation</code>
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#senseTranslation</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;CONFIDENCE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>http://www.lexinfo.net/ontology/3.0/lexinfo#confidence</code>
                             </td>
                         </tr>
             </tbody>
@@ -514,8 +682,8 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="LINGUISTIC_RELATIONS"></a>
-                        <span class="name "><b>LINGUISTIC_RELATIONS</b><a href="#LINGUISTIC_RELATIONS"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="LINGUISTIC_RELATION_TYPE"></a>
+                        <span class="name "><b>LINGUISTIC_RELATION_TYPE</b><a href="#LINGUISTIC_RELATION_TYPE"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
                     <tr>
@@ -592,6 +760,16 @@
                         <tr>
                             <td class="col-md-4">
                                 <i>Value : </i><code>etyLink</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;LEXICON
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>lexicon</code>
                             </td>
                         </tr>
             </tbody>
@@ -700,6 +878,56 @@
                     <td class="col-md-4">
                         <a name="LexicalEntryType"></a>
                         <span class="name "><b>LexicalEntryType</b><a href="#LexicalEntryType"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;LEXICAL_ENTRY
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>LexicalEntry</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;AFFIX
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>Affix</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;MULTI_WORD_EXPRESSION
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>MultiWordExpression</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;WORD
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>Word</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="LexicalEntryTypeOld"></a>
+                        <span class="name "><b>LexicalEntryTypeOld</b><a href="#LexicalEntryTypeOld"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
                     <tr>
@@ -815,6 +1043,49 @@
             </tbody>
         </table>
 </section>
+    <h3>src/app/models/texto/t-feature.ts</h3>
+    <section>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="TFeatureType"></a>
+                        <span class="name "><b>TFeatureType</b><a href="#TFeatureType"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;STRING
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>STRING</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;URI
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>URI</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;TAGSET
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>TAGSET</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
     <h3>src/app/models/tile/tile-type.model.ts</h3>
     <section>
         <table class="table table-sm table-bordered">
@@ -889,6 +1160,59 @@
                         <tr>
                             <td class="col-md-4">
                                 <i>Value : </i><code>LEXICON_EDIT</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <h3>src/app/models/texto/t-status.ts</h3>
+    <section>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="TStatus"></a>
+                        <span class="name "><b>TStatus</b><a href="#TStatus"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;GHOST
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>GHOST</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;VALID
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>VALID</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;REMOVED
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>REMOVED</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;HISTORY
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>HISTORY</code>
                             </td>
                         </tr>
             </tbody>

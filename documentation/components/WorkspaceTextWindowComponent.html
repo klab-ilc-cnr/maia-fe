@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -75,6 +75,7 @@
     </p>
     <p class="comment">
                     <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
     </p>
 
 
@@ -91,6 +92,12 @@
 
 
 
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                                <code><a href="../injectables/LayerStateService.html" target="_self" >LayerStateService</a></code>
+                </td>
+            </tr>
 
 
             <tr>
@@ -134,10 +141,6 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#_editIsLocked" >_editIsLocked</a>
-                            </li>
-                            <li>
                                 <a href="#annotation" >annotation</a>
                             </li>
                             <li>
@@ -150,7 +153,7 @@
                                 <a href="#height" >height</a>
                             </li>
                             <li>
-                                <a href="#layerOptions" >layerOptions</a>
+                                <a href="#layers$" >layers$</a>
                             </li>
                             <li>
                                 <a href="#layersList" >layersList</a>
@@ -219,6 +222,11 @@
                             </li>
                             <li>
                                 <a href="#textRes" >textRes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
                             </li>
                             <li>
                                 <a href="#visibleLayers" >visibleLayers</a>
@@ -351,6 +359,9 @@
                                 <a href="#mouseMoved" >mouseMoved</a>
                             </li>
                             <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
@@ -447,12 +458,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(annotationService: <a href="../injectables/AnnotationService.html" target="_self">AnnotationService</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, workspaceService: <a href="../injectables/WorkspaceService.html" target="_self">WorkspaceService</a>, layerService: <a href="../injectables/LayerService.html" target="_self">LayerService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, relationService: <a href="../injectables/RelationService.html" target="_self">RelationService</a>)</code>
+<code>constructor(annotationService: <a href="../injectables/AnnotationService.html" target="_self">AnnotationService</a>, loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, relationService: <a href="../injectables/RelationService.html" target="_self">RelationService</a>, layerState: <a href="../injectables/LayerStateService.html" target="_self">LayerStateService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:118</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:120</a></div>
                             </td>
                         </tr>
 
@@ -505,38 +516,6 @@
                                                         </td>
                                                 </tr>
                                                 <tr>
-                                                        <td>workspaceService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/WorkspaceService.html" target="_self" >WorkspaceService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi relativi ai workspace //TODO valutare rimozione per mancato utilizzo</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>layerService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/LayerService.html" target="_self" >LayerService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi relativi ai layer</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
                                                         <td>messageService</td>
                                                   
                                                         <td>
@@ -584,6 +563,20 @@
 
                                                         </td>
                                                 </tr>
+                                                <tr>
+                                                        <td>layerState</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LayerStateService.html" target="_self" >LayerStateService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -622,8 +615,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="157"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:157</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="170"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:170</a></div>
                 </td>
             </tr>
 
@@ -700,8 +693,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="609"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:609</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="633"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:633</a></div>
                 </td>
             </tr>
 
@@ -746,8 +739,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="626"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:626</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="650"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:650</a></div>
                 </td>
             </tr>
 
@@ -889,8 +882,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="651"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:651</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="675"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:675</a></div>
                 </td>
             </tr>
 
@@ -984,8 +977,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="661"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:661</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="685"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:685</a></div>
                 </td>
             </tr>
 
@@ -1055,8 +1048,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="800"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:800</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="824"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:824</a></div>
                 </td>
             </tr>
 
@@ -1166,8 +1159,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="854"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:854</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="878"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:878</a></div>
                 </td>
             </tr>
 
@@ -1245,8 +1238,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="874"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:874</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="898"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:898</a></div>
                 </td>
             </tr>
 
@@ -1388,8 +1381,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="966"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:966</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="990"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:990</a></div>
                 </td>
             </tr>
 
@@ -1531,8 +1524,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1055"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1055</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1079"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1079</a></div>
                 </td>
             </tr>
 
@@ -1674,8 +1667,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1144"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1144</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1168"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1168</a></div>
                 </td>
             </tr>
 
@@ -1815,8 +1808,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="513"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:513</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="537"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:537</a></div>
                 </td>
             </tr>
 
@@ -1891,8 +1884,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="533"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:533</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="557"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:557</a></div>
                 </td>
             </tr>
 
@@ -1985,8 +1978,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1247"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1247</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1271"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1271</a></div>
                 </td>
             </tr>
 
@@ -2064,8 +2057,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1258"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1258</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1282"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1282</a></div>
                 </td>
             </tr>
 
@@ -2159,8 +2152,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1277"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1277</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1301"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1301</a></div>
                 </td>
             </tr>
 
@@ -2254,8 +2247,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1282"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1282</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1306"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1306</a></div>
                 </td>
             </tr>
 
@@ -2325,8 +2318,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1350"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1350</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1374"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1374</a></div>
                 </td>
             </tr>
 
@@ -2396,8 +2389,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1366"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1366</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1390"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1390</a></div>
                 </td>
             </tr>
 
@@ -2475,8 +2468,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1370"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1370</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1394"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1394</a></div>
                 </td>
             </tr>
 
@@ -2514,8 +2507,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1375"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1375</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1399"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1399</a></div>
                 </td>
             </tr>
 
@@ -2597,8 +2590,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1393"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1393</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1417"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1417</a></div>
                 </td>
             </tr>
 
@@ -2644,8 +2637,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1418"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1418</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1442"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1442</a></div>
                 </td>
             </tr>
 
@@ -2715,8 +2708,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1422"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1422</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1446"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1446</a></div>
                 </td>
             </tr>
 
@@ -2810,8 +2803,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1440"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1440</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1464"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1464</a></div>
                 </td>
             </tr>
 
@@ -2905,8 +2898,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1436"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1436</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1460"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1460</a></div>
                 </td>
             </tr>
 
@@ -2976,8 +2969,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1446"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1446</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1470"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1470</a></div>
                 </td>
             </tr>
 
@@ -3013,8 +3006,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="166"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:166</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="179"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:179</a></div>
                 </td>
             </tr>
 
@@ -3057,8 +3050,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="260"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:260</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="280"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:280</a></div>
                 </td>
             </tr>
 
@@ -3117,6 +3110,43 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="161"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:161</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="ngOnInit"></a>
                     <span class="name">
                         <span ><b>ngOnInit</b></span>
@@ -3133,8 +3163,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="141"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:141</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:140</a></div>
                 </td>
             </tr>
 
@@ -3172,8 +3202,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="276"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:276</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="296"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:296</a></div>
                 </td>
             </tr>
 
@@ -3211,8 +3241,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="281"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:281</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="301"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:301</a></div>
                 </td>
             </tr>
 
@@ -3250,8 +3280,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="287"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:287</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="307"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:307</a></div>
                 </td>
             </tr>
 
@@ -3289,8 +3319,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="293"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:293</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="313"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:313</a></div>
                 </td>
             </tr>
 
@@ -3362,8 +3392,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1456"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1456</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1480"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1480</a></div>
                 </td>
             </tr>
 
@@ -3439,8 +3469,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="298"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:298</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="318"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:318</a></div>
                 </td>
             </tr>
 
@@ -3478,8 +3508,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="305"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:305</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="325"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:325</a></div>
                 </td>
             </tr>
 
@@ -3517,8 +3547,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="312"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:312</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="332"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:332</a></div>
                 </td>
             </tr>
 
@@ -3556,8 +3586,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="323"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:323</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="343"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:343</a></div>
                 </td>
             </tr>
 
@@ -3632,8 +3662,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="373"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:373</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="396"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:396</a></div>
                 </td>
             </tr>
 
@@ -3708,8 +3738,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="407"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:407</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="431"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:431</a></div>
                 </td>
             </tr>
 
@@ -3784,8 +3814,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="447"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:447</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="471"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:471</a></div>
                 </td>
             </tr>
 
@@ -3860,8 +3890,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="467"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:467</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="491"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:491</a></div>
                 </td>
             </tr>
 
@@ -3938,8 +3968,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1460"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1460</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1484"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1484</a></div>
                 </td>
             </tr>
 
@@ -4009,8 +4039,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1476"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1476</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1500"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1500</a></div>
                 </td>
             </tr>
 
@@ -4104,8 +4134,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1583"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1583</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1607"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1607</a></div>
                 </td>
             </tr>
 
@@ -4215,8 +4245,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1748"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1748</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1772"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1772</a></div>
                 </td>
             </tr>
 
@@ -4261,8 +4291,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1885"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1885</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1910"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1910</a></div>
                 </td>
             </tr>
 
@@ -4339,8 +4369,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1907"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1907</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1932"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:1932</a></div>
                 </td>
             </tr>
 
@@ -4408,8 +4438,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="488"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:488</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="512"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:512</a></div>
                 </td>
             </tr>
 
@@ -4500,8 +4530,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="586"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:586</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="610"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:610</a></div>
                 </td>
             </tr>
 
@@ -4576,8 +4606,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="595"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:595</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="619"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:619</a></div>
                 </td>
             </tr>
 
@@ -4652,8 +4682,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="601"
-                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:601</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="625"
+                            class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:625</a></div>
                 </td>
             </tr>
 
@@ -4681,44 +4711,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="_editIsLocked"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>_editIsLocked</b></span>
-                        <a href="#_editIsLocked"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>false</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:34</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Definisce se la modifica è bloccata</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="annotation"></a>
                     <span class="name">
                         <span ><b>annotation</b></span>
@@ -4733,7 +4725,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:63</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -4765,7 +4757,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:65</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -4809,7 +4801,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:67</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -4846,7 +4838,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:76</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:78</a></div>
                         </td>
                     </tr>
 
@@ -4863,30 +4855,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="layerOptions"></a>
+                    <a name="layers$"></a>
                     <span class="name">
-                        <span ><b>layerOptions</b></span>
-                        <a href="#layerOptions"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>layers$</b></span>
+                        <a href="#layers$"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>new Array&lt;SelectItem&gt;()</code>
+                        <i>Default value : </i><code>this.layerState.layers$.pipe(
+    switchMap(layers &#x3D;&gt; of(layers.sort((a, b) &#x3D;&gt; (a.name &amp;&amp; b.name &amp;&amp; a.name.toLowerCase() &gt; b.name.toLowerCase()) ? 1 : -1))),
+  )</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:78</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:30</a></div>
                         </td>
                     </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Lista delle opzioni layer</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>
@@ -4903,7 +4891,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/Layer.html" target="_self" >Layer[]</a></code>
+                        <i>Type : </i>    <code>TLayer[]</code>
 
                     </td>
                 </tr>
@@ -4914,7 +4902,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:80</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:82</a></div>
                         </td>
                     </tr>
 
@@ -4945,7 +4933,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:82</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -4982,7 +4970,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:84</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:86</a></div>
                         </td>
                     </tr>
 
@@ -5008,13 +4996,13 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <i>Type : </i>    <code>TLayer | undefined</code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:86</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:88</a></div>
                         </td>
                     </tr>
 
@@ -5040,13 +5028,13 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/Layer.html" target="_self" >Layer[] | undefined</a></code>
+                        <i>Type : </i>    <code>TLayer[] | undefined</code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:88</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -5080,7 +5068,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -5114,7 +5102,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -5151,7 +5139,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:90</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:92</a></div>
                         </td>
                     </tr>
 
@@ -5171,18 +5159,12 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
                         <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:92</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -5208,18 +5190,12 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
                         <i>Default value : </i><code>false</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:94</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:96</a></div>
                         </td>
                     </tr>
 
@@ -5251,7 +5227,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:96</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -5288,7 +5264,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:98</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -5319,7 +5295,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:102</a></div>
                         </td>
                     </tr>
 
@@ -5350,7 +5326,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:102</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -5392,7 +5368,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:118</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:120</a></div>
                         </td>
                     </tr>
 
@@ -5429,7 +5405,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:103</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:105</a></div>
                         </td>
                     </tr>
 
@@ -5454,7 +5430,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:105</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:107</a></div>
                         </td>
                     </tr>
 
@@ -5485,7 +5461,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:107</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:109</a></div>
                         </td>
                     </tr>
 
@@ -5522,7 +5498,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:109</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:111</a></div>
                         </td>
                     </tr>
 
@@ -5554,7 +5530,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:111</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:113</a></div>
                         </td>
                     </tr>
 
@@ -5586,7 +5562,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:113</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:115</a></div>
                         </td>
                     </tr>
 
@@ -5603,6 +5579,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="visibleLayers"></a>
                     <span class="name">
                         <span ><b>visibleLayers</b></span>
@@ -5612,7 +5615,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/Layer.html" target="_self" >Layer[]</a></code>
+                        <i>Type : </i>    <code>TLayer[]</code>
 
                     </td>
                 </tr>
@@ -5623,7 +5626,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:115</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -5685,7 +5688,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -5704,40 +5707,42 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EditorType } from &#x27;src/app/models/editor-type&#x27;;
-import { LineBuilder } from &#x27;src/app/models/text/line-builder&#x27;;
-import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
-import { AnnotationService } from &#x27;src/app/services/annotation.service&#x27;;
-import { SpanCoordinates } from &#x27;src/app/models/annotation/span-coordinates&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { Subject, forkJoin, of, switchMap, takeUntil } from &#x27;rxjs&#x27;;
 import { Annotation } from &#x27;src/app/models/annotation/annotation&#x27;;
-import { WorkspaceService } from &#x27;src/app/services/workspace.service&#x27;;
-import { Component, ElementRef, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
-import { TextRow } from &#x27;src/app/models/text/text-row&#x27;;
-import { MessageService, SelectItem } from &#x27;primeng/api&#x27;;
-import { LayerService } from &#x27;src/app/services/layer.service&#x27;;
+import { AnnotationMetadata } from &#x27;src/app/models/annotation/annotation-metadata&#x27;;
+import { SpanCoordinates } from &#x27;src/app/models/annotation/span-coordinates&#x27;;
+import { EditorType } from &#x27;src/app/models/editor-type&#x27;;
 import { Layer } from &#x27;src/app/models/layer/layer.model&#x27;;
-import { TextLine } from &#x27;src/app/models/text/text-line&#x27;;
-import { forkJoin } from &#x27;rxjs&#x27;;
-import { TextHighlight } from &#x27;src/app/models/text/text-highlight&#x27;;
-import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import { Relation } from &#x27;src/app/models/relation/relation&#x27;;
 import { Relations } from &#x27;src/app/models/relation/relations&#x27;;
-import { AnnotationMetadata } from &#x27;src/app/models/annotation/annotation-metadata&#x27;;
+import { LineBuilder } from &#x27;src/app/models/text/line-builder&#x27;;
+import { TextHighlight } from &#x27;src/app/models/text/text-highlight&#x27;;
+import { TextLine } from &#x27;src/app/models/text/text-line&#x27;;
+import { TextRow } from &#x27;src/app/models/text/text-row&#x27;;
+import { TLayer } from &#x27;src/app/models/texto/t-layer&#x27;;
+import { AnnotationService } from &#x27;src/app/services/annotation.service&#x27;;
+import { LayerStateService } from &#x27;src/app/services/layer-state.service&#x27;;
+import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import { RelationService } from &#x27;src/app/services/relation.service&#x27;;
 
 @Component({
   selector: &#x27;app-workspace-text-window&#x27;,
   templateUrl: &#x27;./workspace-text-window.component.html&#x27;,
-  styleUrls: [&#x27;./workspace-text-window.component.scss&#x27;]
+  styleUrls: [&#x27;./workspace-text-window.component.scss&#x27;],
+  providers: [LayerStateService],
 })
-export class WorkspaceTextWindowComponent implements OnInit {
-
+export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$ &#x3D; new Subject();
+  layers$ &#x3D; this.layerState.layers$.pipe(
+    switchMap(layers &#x3D;&gt; of(layers.sort((a, b) &#x3D;&gt; (a.name &amp;&amp; b.name &amp;&amp; a.name.toLowerCase() &gt; b.name.toLowerCase()) ? 1 : -1))),
+  );
   /**Indice di inizio selezione */
   private selectionStart?: number;
   /**Indice di fine selezione */
   private selectionEnd?: number;
-  /**Definisce se la modifica è bloccata */ //TODO non in uso, verificare
-  private _editIsLocked: boolean &#x3D; false;
   /**Configurazione di visualizzazione iniziale */
   private visualConfig &#x3D; {
     draggedArcHeight: 30,
@@ -5781,23 +5786,23 @@ export class WorkspaceTextWindowComponent implements OnInit {
   /**Altezza del pannello di testo */
   height: number &#x3D; window.innerHeight / 2;
   /**Lista delle opzioni layer */
-  layerOptions &#x3D; new Array&lt;SelectItem&gt;();
+  // layerOptions &#x3D; new Array&lt;SelectItem&gt;();
   /**Lista dei layer */
-  layersList: Layer[] &#x3D; [];
+  layersList: TLayer[] &#x3D; [];
   /**Relazione in lavorazione */
   relation &#x3D; new Relation();
   /**Righe di testo */
   rows: TextRow[] &#x3D; [];
   /**Layer selezionato */
-  selectedLayer: any;
+  selectedLayer: TLayer|undefined;
   /**Lista di layer selezionati */
-  selectedLayers: Layer[] | undefined;
+  selectedLayers: TLayer[] | undefined;
 
-  sentnumVerticalLine: string &#x3D; &quot;M 0 0&quot;;
+  sentnumVerticalLine &#x3D; &quot;M 0 0&quot;;
   /**Definisce se visualizzare l&#x27;editor di annotazione */
-  showAnnotationEditor: boolean &#x3D; false;
+  showAnnotationEditor &#x3D; false;
   /**Definisce se visualizzare l&#x27;editor delle relazioni */
-  showRelationEditor: boolean &#x3D; false;
+  showRelationEditor &#x3D; false;
   /**Annotazioni semplificate */
   simplifiedAnns: any;
   /**Lista di archi di relazione semplificati */
@@ -5806,7 +5811,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   sourceAnn &#x3D; new Annotation();
   /**Layer sorgente dell&#x27;annotazione */
   sourceLayer &#x3D; new Layer();
-  svgHeight: number &#x3D; 0;
+  svgHeight &#x3D; 0;
   /**Annotazione target della relazione */
   targetAnn &#x3D; new Annotation();
   /**Layer target della relazione */
@@ -5818,7 +5823,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   /**Text response */
   textRes: any;
   /**Lista dei layer visibili */
-  visibleLayers: Layer[] &#x3D; [];
+  visibleLayers: TLayer[] &#x3D; [];
 
   /**Riferimento all&#x27;elemento svg */
   @ViewChild(&#x27;svg&#x27;) public svg!: ElementRef;
@@ -5827,8 +5832,6 @@ export class WorkspaceTextWindowComponent implements OnInit {
    * Costruttore per WorkspaceTextWindowComponent
    * @param annotationService {AnnotationService} servizi relativi alle annotazioni
    * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param workspaceService {WorkspaceService} servizi relativi ai workspace //TODO valutare rimozione per mancato utilizzo
-   * @param layerService {LayerService} servizi relativi ai layer
    * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
    * @param relationService {RelationService} servizi relativi alle relazioni
@@ -5836,11 +5839,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
   constructor(
     private annotationService: AnnotationService,
     private loaderService: LoaderService,
-    private workspaceService: WorkspaceService,
-    private layerService: LayerService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private relationService: RelationService
+    private relationService: RelationService,
+    private layerState: LayerStateService,
   ) { }
 
   /**Metodo dell&#x27;interfaccia OnInit, utilizzato per caricare i dati iniziali del componente */
@@ -5849,11 +5851,25 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
+    this.layers$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(list &#x3D;&gt; {
+      this.layersList &#x3D; list;
+      if(!this.selectedLayers) {
+        this.selectedLayers &#x3D; this.visibleLayers &#x3D; list;
+      }
+    });
+
     this.showAnnotationEditor &#x3D; true;
 
     this.updateHeight(this.height);
 
     this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -5880,36 +5896,43 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.loaderService.show();
 
     forkJoin([
-      this.layerService.retrieveLayers(),
-      this.annotationService.retrieveText(this.textId),
+      // this.layerService.retrieveLayers(),
+      // this.annotationService._retrieveText(this.textId),
+      this.annotationService.retrieveText(this.textId, { start: 0, end: null }),
       this.annotationService.retrieveByNodeId(this.textId),
       this.relationService.retrieveByTextId(this.textId)
     ]).subscribe({
-      next: ([layersResponse, textResponse, annotationsResponse, relationsResponse]) &#x3D;&gt; {
-        this.layersList &#x3D; layersResponse;
+      next: ([textResponse, annotationsResponse, relationsResponse]) &#x3D;&gt; {
+        // this.layersList &#x3D; layersResponse;
 
-        if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
-          this.visibleLayers &#x3D; this.selectedLayers &#x3D; this.layersList;
-        }
-        else {
+        if(this.selectedLayers) {
           this.visibleLayers &#x3D; this.selectedLayers;
         }
 
-        this.layerOptions &#x3D; layersResponse.map(item &#x3D;&gt; ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
+        // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
+        //   this.visibleLayers &#x3D; this.selectedLayers &#x3D; this.layersList;
+        // }
+        // else {
+        //   this.visibleLayers &#x3D; this.selectedLayers;
+        // }
 
-        this.layerOptions.sort((a, b) &#x3D;&gt; (a.label &amp;&amp; b.label &amp;&amp; a.label.toLowerCase() &gt; b.label.toLowerCase()) ? 1 : -1);
+        // this.layerOptions &#x3D; layersResponse.map(item &#x3D;&gt; ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
 
-        this.layerOptions.unshift({
-          label: &quot;Nessuna annotazione&quot;,
-          value: -1
-        });
+        // this.layerOptions.sort((a, b) &#x3D;&gt; (a.label &amp;&amp; b.label &amp;&amp; a.label.toLowerCase() &gt; b.label.toLowerCase()) ? 1 : -1);
+
+        // this.layerOptions.unshift({
+        //   label: &quot;Nessuna annotazione&quot;,
+        //   value: -1
+        // });
 
         if (!this.selectedLayer) {
-          this.selectedLayer &#x3D; -1;
+          this.selectedLayer &#x3D; undefined;
         }
 
-        this.annotation.layer &#x3D; this.selectedLayer;
-        this.annotation.layerName &#x3D; this.layerOptions.find(l &#x3D;&gt; l.value &#x3D;&#x3D; this.selectedLayer)?.label;
+        // this.annotation.layer &#x3D; this.selectedLayer;
+        // this.annotation.layerName &#x3D; this.layerOptions.find(l &#x3D;&gt; l.value &#x3D;&#x3D; this.selectedLayer)?.label;
+        this.annotation.layer &#x3D; this.selectedLayer?.id;
+        this.annotation.layerName &#x3D; this.selectedLayer?.name;
 
         this.textRes &#x3D; textResponse;
         this.annotationsRes &#x3D; annotationsResponse;
@@ -5917,7 +5940,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         this.simplifiedAnns &#x3D; [];
         this.simplifiedArcs &#x3D; relationsResponse;
 
-        let layersIndex &#x3D; new Array&lt;string&gt;();
+        const layersIndex &#x3D; new Array&lt;string&gt;();
 
         this.visibleLayers.forEach(l &#x3D;&gt; {
           if (l.id) {
@@ -5927,7 +5950,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
         this.annotationsRes.annotations.forEach((a: Annotation) &#x3D;&gt; { //cicla sulle annotazioni nella risposta
           if (a.spans &amp;&amp; layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
-            let sAnn &#x3D; a.spans.map((sc: SpanCoordinates) &#x3D;&gt; {
+            const sAnn &#x3D; a.spans.map((sc: SpanCoordinates) &#x3D;&gt; {
               let { spans, ...newAnn } &#x3D; a;
               return {
                 ...newAnn,
@@ -5968,10 +5991,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
       this.dragArrow.visibility &#x3D; &quot;visible&quot;;
       this.svg.nativeElement.classList.add(&#x27;unselectable&#x27;);
 
-      let x1 &#x3D; this.dragArrow.x1
-      let y1 &#x3D; Math.min(...[this.dragArrow.y1, event.offsetY]) - this.visualConfig.draggedArcHeight;
-      let x2 &#x3D; event.offsetX
-      let y2 &#x3D; y1
+      const x1 &#x3D; this.dragArrow.x1
+      const y1 &#x3D; Math.min(...[this.dragArrow.y1, event.offsetY]) - this.visualConfig.draggedArcHeight;
+      const x2 &#x3D; event.offsetX
+      const y2 &#x3D; y1
 
       this.dragArrow.c &#x3D; &quot;C &quot; + x1 + &quot; &quot; + y1 + &quot;, &quot; + x2 + &quot; &quot; + y2 + &quot;, &quot; + event.offsetX + &quot; &quot; + event.offsetY
       return;
@@ -6037,10 +6060,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let startIndex &#x3D; selection.startIndex;
     let endIndex &#x3D; selection.endIndex;
-    let text &#x3D; this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato
+    // let text &#x3D; this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato //TODO OGGETTO RICEVUTO è SOLO TESTO, NON JSON
+    const text &#x3D; this.textRes.substring(startIndex, endIndex);
 
-    if (!this.onlySpaces(text)) { 
-      let originalLength &#x3D; text.length;
+    if (!this.onlySpaces(text)) {
+      const originalLength &#x3D; text.length;
       let newText &#x3D; text.trimStart();
       let newLength &#x3D; newText.length;
 
@@ -6052,10 +6076,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
       endIndex &#x3D; endIndex - (originalLength - newLength);
     }
 
-    let relations &#x3D; new Relations();
+    const relations &#x3D; new Relations();
 
-    this.annotation.layer &#x3D; this.selectedLayer;
-    this.annotation.layerName &#x3D; this.layerOptions.find(l &#x3D;&gt; l.value &#x3D;&#x3D; this.selectedLayer)?.label;
+    // this.annotation.layer &#x3D; this.selectedLayer;
+    // this.annotation.layerName &#x3D; this.layerOptions.find(l &#x3D;&gt; l.value &#x3D;&#x3D; this.selectedLayer)?.label;
+    this.annotation.layer &#x3D; this.selectedLayer?.id;
+    this.annotation.layerName &#x3D; this.selectedLayer?.name;
     this.annotation.spans &#x3D; new Array&lt;SpanCoordinates&gt;();
     this.annotation.spans.push({
       start: startIndex,
@@ -6088,7 +6114,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     this.showEditorAndHideOthers(EditorType.Annotation); //visualizzo l&#x27;editor di annotazione
 
-    let ann &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; id); //cerca fra le annotazioni quella corrente attraverso l&#x27;id
+    const ann &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; id); //cerca fra le annotazioni quella corrente attraverso l&#x27;id
 
     if (!ann) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Annotazione non trovata&#x27;));
@@ -6100,7 +6126,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     // }
 
     this.annotation &#x3D; { ...ann }
-    this.annotation.layerName &#x3D; this.layerOptions.find(l &#x3D;&gt; l.value &#x3D;&#x3D; Number.parseInt(ann.layer))?.label;
+    // this.annotation.layerName &#x3D; this.layerOptions.find(l &#x3D;&gt; l.value &#x3D;&#x3D; Number.parseInt(ann.layer))?.label;
+    this.annotation.layerName &#x3D; this.selectedLayer?.name;
 
     //this._editIsLocked &#x3D; true;
   }
@@ -6120,7 +6147,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
-    let rel &#x3D; this.simplifiedArcs.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; id)
+    const rel &#x3D; this.simplifiedArcs.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; id)
 
     if (!rel) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Relazione non trovata&#x27;));
@@ -6131,8 +6158,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.sourceAnn &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; rel?.srcAnnotationId);
     this.targetAnn &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; rel?.targetAnnotationId);
 
-    let sLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.sourceAnn.layer));
-    let tLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.targetAnn.layer));
+    const sLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.sourceAnn.layer));
+    const tLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.targetAnn.layer));
 
     if (!sLayer || !tLayer) {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x27;Impossibile visualizzare la relazione selezionata&#x27;));
@@ -6153,7 +6180,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   overEnterRelation(id: number) {
     $(&#x27;*[data-relation-id&#x3D;&quot;&#x27; + id + &#x27;&quot;]&#x27;).addClass(&quot;filtered&quot;);
 
-    let arc &#x3D; this.simplifiedArcs.find(ar &#x3D;&gt; ar.id &#x3D;&#x3D; id);
+    const arc &#x3D; this.simplifiedArcs.find(ar &#x3D;&gt; ar.id &#x3D;&#x3D; id);
 
     if (!arc || !arc.srcAnnotationId || !arc.targetAnnotationId) {
       return;
@@ -6173,7 +6200,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   overLeaveRelation(id: number) {
     $(&#x27;*[data-relation-id&#x3D;&quot;&#x27; + id + &#x27;&quot;]&#x27;).removeClass(&quot;filtered&quot;);
 
-    let arc &#x3D; this.simplifiedArcs.find(ar &#x3D;&gt; ar.id &#x3D;&#x3D; id);
+    const arc &#x3D; this.simplifiedArcs.find(ar &#x3D;&gt; ar.id &#x3D;&#x3D; id);
 
     if (!arc || !arc.srcAnnotationId || !arc.targetAnnotationId) {
       return;
@@ -6196,7 +6223,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
-    let ann &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; annotation.id);
+    const ann &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; annotation.id);
 
     if (!ann) {
       return;
@@ -6246,7 +6273,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
       return;
     }
 
-    let ann &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; annotation.id);
+    const ann &#x3D; this.annotationsRes.annotations.find((a: any) &#x3D;&gt; a.id &#x3D;&#x3D; annotation.id);
 
     if (!ann) {
       this.endDrawing(event)
@@ -6258,8 +6285,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.sourceAnn &#x3D; JSON.parse(JSON.stringify(this.dragArrow.sourceAnn));
     this.targetAnn &#x3D; JSON.parse(JSON.stringify(this.dragArrow.targetAnn));
 
-    let sLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.sourceAnn.layer));
-    let tLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.targetAnn.layer));
+    const sLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.sourceAnn.layer));
+    const tLayer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(this.targetAnn.layer));
 
     if (!sLayer || !tLayer) {
       this.endDrawing(event)
@@ -6269,7 +6296,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     this.sourceLayer &#x3D; sLayer;
     this.targetLayer &#x3D; tLayer;
 
-    let relation &#x3D; new Relation();
+    const relation &#x3D; new Relation();
 
     relation.name &#x3D; &quot;Relation&quot;;
     relation.srcAnnotationId &#x3D; this.dragArrow.sourceAnn.id;
@@ -6335,17 +6362,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
       spaceFactor &#x3D; 2;
     }
 
-    let towerH &#x3D; this.getMaxTowerAroundAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
-    let yBaseOffset &#x3D; this.visualConfig.arcSpacing * spaceFactor;
+    const towerH &#x3D; this.getMaxTowerAroundAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
+    const yBaseOffset &#x3D; this.visualConfig.arcSpacing * spaceFactor;
     let yOffset &#x3D; yBaseOffset;
 
     if (towerH &gt; 0) {
       yOffset +&#x3D; towerH;
     }
 
-    let maxRelationOffset &#x3D; this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
-    let adjustOffset &#x3D; yOffset &#x3D;&#x3D; yBaseOffset ? yOffset : 0;
-    let newPossibleOffset &#x3D; adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2 / spaceFactor;
+    const maxRelationOffset &#x3D; this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
+    const adjustOffset &#x3D; yOffset &#x3D;&#x3D; yBaseOffset ? yOffset : 0;
+    const newPossibleOffset &#x3D; adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2 / spaceFactor;
 
     if (maxRelationOffset &gt;&#x3D; 0 &amp;&amp; newPossibleOffset &gt; yOffset) {
       yOffset &#x3D; newPossibleOffset;
@@ -6365,19 +6392,19 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private createLine(auxLineBuilder: any) {
-    let startIndex &#x3D; auxLineBuilder.startLine;
-    let endIndex &#x3D; auxLineBuilder.startLine + auxLineBuilder.line.text.length;
+    const startIndex &#x3D; auxLineBuilder.startLine;
+    const endIndex &#x3D; auxLineBuilder.startLine + auxLineBuilder.line.text.length;
 
-    let resAnns &#x3D; this.renderAnnotationsForLine(startIndex, endIndex);
-    let lineTowers &#x3D; resAnns.lineTowers;
-    let lineHighlights &#x3D; resAnns.lineHighLights;
+    const resAnns &#x3D; this.renderAnnotationsForLine(startIndex, endIndex);
+    const lineTowers &#x3D; resAnns.lineTowers;
+    const lineHighlights &#x3D; resAnns.lineHighLights;
 
-    let resArcs &#x3D; this.renderArcsForLine(startIndex, endIndex, lineTowers);
+    const resArcs &#x3D; this.renderArcsForLine(startIndex, endIndex, lineTowers);
 
     let lineHeight &#x3D; this.getStdLineHeight();
 
     if (lineTowers.length &gt; 0) {
-      let towerH &#x3D; this.getMaxTowerPosition(lineTowers)
+      const towerH &#x3D; this.getMaxTowerPosition(lineTowers)
       lineHeight &#x3D; this.getStdLineHeight() + towerH + this.visualConfig.curlyHeight + 1;
     }
 
@@ -6387,15 +6414,15 @@ export class WorkspaceTextWindowComponent implements OnInit {
       arcH &#x3D; this.getMaxArcOffset(resArcs) + 2 + this.visualConfig.arcSpacing;
     }
 
-    let newPossibleHeight &#x3D; this.getStdLineHeight() + arcH;
+    const newPossibleHeight &#x3D; this.getStdLineHeight() + arcH;
 
     if (newPossibleHeight &gt; lineHeight) {
       lineHeight &#x3D; newPossibleHeight;
     }
 
-    let yStartLine &#x3D; auxLineBuilder.yStartLine + lineHeight;
-    let yText &#x3D; yStartLine - this.visualConfig.spaceAfterTextLine;
-    let yAnnotation &#x3D; yText - this.visualConfig.stdTextLineHeight - this.visualConfig.spaceBeforeTextLine - 1;
+    const yStartLine &#x3D; auxLineBuilder.yStartLine + lineHeight;
+    const yText &#x3D; yStartLine - this.visualConfig.spaceAfterTextLine;
+    const yAnnotation &#x3D; yText - this.visualConfig.stdTextLineHeight - this.visualConfig.spaceBeforeTextLine - 1;
 
     lineTowers.forEach((t) &#x3D;&gt; {
       t.tower.forEach((ann: any) &#x3D;&gt; {
@@ -6409,15 +6436,15 @@ export class WorkspaceTextWindowComponent implements OnInit {
     })
 
     resArcs.forEach((ar) &#x3D;&gt; {
-      let sAnn &#x3D; this.findAnnotationInTowers(ar.relation.sourceAnn.id, lineTowers);
-      let tAnn &#x3D; this.findAnnotationInTowers(ar.relation.targetAnn.id, lineTowers);
+      const sAnn &#x3D; this.findAnnotationInTowers(ar.relation.sourceAnn.id, lineTowers);
+      const tAnn &#x3D; this.findAnnotationInTowers(ar.relation.targetAnn.id, lineTowers);
 
       switch (ar.type) {
         case &quot;includedArc&quot;: {
           ar.start.y &#x3D; sAnn.y + this.visualConfig.annotationHeight / 2;
           ar.end.y &#x3D; tAnn.y + this.visualConfig.annotationHeight / 2;
 
-          let diffH &#x3D; yAnnotation - Math.max(ar.start.y, ar.end.y)
+          const diffH &#x3D; yAnnotation - Math.max(ar.start.y, ar.end.y)
           ar.yArcOffset &#x3D; yAnnotation + diffH - ar.yArcOffset;
 
           break;
@@ -6427,7 +6454,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
           ar.start.y &#x3D; sAnn.y + this.visualConfig.annotationHeight / 2;
           ar.end.y &#x3D; sAnn.y + this.visualConfig.annotationHeight / 2;
 
-          let diffH &#x3D; yAnnotation - Math.max(ar.start.y, ar.end.y)
+          const diffH &#x3D; yAnnotation - Math.max(ar.start.y, ar.end.y)
           ar.yArcOffset &#x3D; yAnnotation + diffH - ar.yArcOffset;
 
           break;
@@ -6437,7 +6464,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
           ar.start.y &#x3D; tAnn.y + this.visualConfig.annotationHeight / 2;
           ar.end.y &#x3D; tAnn.y + this.visualConfig.annotationHeight / 2;
 
-          let diffH &#x3D; yAnnotation - Math.max(ar.start.y, ar.end.y)
+          const diffH &#x3D; yAnnotation - Math.max(ar.start.y, ar.end.y)
           ar.yArcOffset &#x3D; yAnnotation + diffH - ar.yArcOffset;
 
           break;
@@ -6455,7 +6482,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         }
       }
 
-      let paths &#x3D; this.generateArcPath(ar);
+      const paths &#x3D; this.generateArcPath(ar);
 
       ar.firstSegmentPath &#x3D; paths.firstSegmentPath;
       ar.secondSegmentPath &#x3D; paths.secondSegmentPath;
@@ -6471,13 +6498,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
       }
     })
 
-    let yHighlight &#x3D; yText - this.visualConfig.stdTextLineHeight + 5;
+    const yHighlight &#x3D; yText - this.visualConfig.stdTextLineHeight + 5;
 
     lineHighlights.forEach((h) &#x3D;&gt; {
       h.coordinates.y &#x3D; yHighlight;
     })
 
-    let line &#x3D; {
+    const line &#x3D; {
       text: auxLineBuilder.line.text,
       words: auxLineBuilder.line.words,
       height: lineHeight,
@@ -6517,8 +6544,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
         annotation.attributes[&#x27;features&#x27;] &#x3D; new Array(annotation.attributes[&#x27;features&#x27;]);
       }
 
-      let features &#x3D; annotation.attributes[&#x27;features&#x27;];
-      let stringsToJoin &#x3D; new Array&lt;string&gt;();
+      const features &#x3D; annotation.attributes[&#x27;features&#x27;];
+      const stringsToJoin &#x3D; new Array&lt;string&gt;();
       features.forEach((f: any) &#x3D;&gt; {
         if (f.value &amp;&amp; !f.valueLabel) {
           stringsToJoin.push(f.value as unknown as string);
@@ -6536,7 +6563,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
     labelText &#x3D; labelText.trim();
 
     let labelLength &#x3D; this.getComputedTextLength(labelText, this.visualConfig.annotationFont);
-    let oneCharW &#x3D; this.getComputedTextLength(&#x27;.&#x27;, this.visualConfig.annotationFont);
+    const oneCharW &#x3D; this.getComputedTextLength(&#x27;.&#x27;, this.visualConfig.annotationFont);
 
     let counter &#x3D; 0;
     if (labelLength &gt; maxLengthComputed) {
@@ -6567,8 +6594,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
       labelText &#x3D; name.trim().substring(0, this.visualConfig.labelMaxLength);
     }
 
-    let textWidth &#x3D; this.getComputedTextLength(labelText, this.visualConfig.arcFont);
-    let labelWidth &#x3D; textWidth + this.visualConfig.labelPaddingXAxis * 2;
+    const textWidth &#x3D; this.getComputedTextLength(labelText, this.visualConfig.arcFont);
+    const labelWidth &#x3D; textWidth + this.visualConfig.labelPaddingXAxis * 2;
 
     return {
       labelText: labelText,
@@ -6578,17 +6605,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private elaborateEndedArc(r: any, lineTowers: Array&lt;any&gt;, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array&lt;any&gt;, isFromLeftToRight: boolean) {
-    let arcType &#x3D; &quot;endedArc&quot;;
+    const arcType &#x3D; &quot;endedArc&quot;;
 
     // ComputeStartAndEndXPosition
-    let xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+    const xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
     let startArcX &#x3D; xPositionRes.startArcX;
-    let endArcX &#x3D; xPositionRes.endArcX;
+    const endArcX &#x3D; xPositionRes.endArcX;
 
     // ElaborateArcLabel
-    let arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
-    let labelText &#x3D; arcLabelRes.labelText;
-    let textWidth &#x3D; arcLabelRes.textWidth;
+    const arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
+    const labelText &#x3D; arcLabelRes.labelText;
+    const textWidth &#x3D; arcLabelRes.textWidth;
     let labelWidth &#x3D; arcLabelRes.labelWidth;
 
     let endSecondSegment &#x3D; endArcX;
@@ -6604,26 +6631,26 @@ export class WorkspaceTextWindowComponent implements OnInit {
       endSecondSegment +&#x3D; this.visualConfig.arcAngleOffset;
     }
 
-    let startFirstSegment &#x3D; startArcX;
+    const startFirstSegment &#x3D; startArcX;
 
-    let arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
+    const arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
 
-    let arcSize &#x3D; Math.abs(endArcX - startArcX);
-    let circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
+    const arcSize &#x3D; Math.abs(endArcX - startArcX);
+    const circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
 
     if (circleVisible) {
       labelWidth &#x3D; this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
 
-    let signChange &#x3D; isFromLeftToRight ? 1 : -1;
-    let endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
-    let startSecondSegment &#x3D; endFirstSegment + signChange * labelWidth;
+    const signChange &#x3D; isFromLeftToRight ? 1 : -1;
+    const endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+    const startSecondSegment &#x3D; endFirstSegment + signChange * labelWidth;
 
-    let labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
-    let labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
-    let startXText &#x3D; startFirstSegment + signChange * arcCenter
+    const labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
+    const labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
+    const startXText &#x3D; startFirstSegment + signChange * arcCenter
 
-    let yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+    const yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
     // let sAnn &#x3D; this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
     // let tAnn &#x3D; this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
@@ -6631,9 +6658,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
     // let yAnnOffset &#x3D; Math.max(sAnn.yOffset, tAnn.yOffset);
     // yOffset -&#x3D; yAnnOffset;
 
-    let yLabel &#x3D; yOffset;
+    const yLabel &#x3D; yOffset;
 
-    let arc &#x3D; {
+    const arc &#x3D; {
       start: {
         x: startArcX,
         y: 0,
@@ -6670,17 +6697,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private elaborateInLineArc(r: any, lineTowers: Array&lt;any&gt;, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array&lt;any&gt;, isFromLeftToRight: boolean) {
-    let arcType &#x3D; &quot;includedArc&quot;;
+    const arcType &#x3D; &quot;includedArc&quot;;
 
     // ComputeStartAndEndXPosition
-    let xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
-    let startArcX &#x3D; xPositionRes.startArcX;
-    let endArcX &#x3D; xPositionRes.endArcX;
+    const xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+    const startArcX &#x3D; xPositionRes.startArcX;
+    const endArcX &#x3D; xPositionRes.endArcX;
 
     // ElaborateArcLabel
-    let arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
-    let labelText &#x3D; arcLabelRes.labelText;
-    let textWidth &#x3D; arcLabelRes.textWidth;
+    const arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
+    const labelText &#x3D; arcLabelRes.labelText;
+    const textWidth &#x3D; arcLabelRes.textWidth;
     let labelWidth &#x3D; arcLabelRes.labelWidth;
 
     let startFirstSegment &#x3D; startArcX;
@@ -6695,24 +6722,24 @@ export class WorkspaceTextWindowComponent implements OnInit {
       endSecondSegment +&#x3D; this.visualConfig.arcAngleOffset;
     }
 
-    let arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
+    const arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
 
-    let arcSize &#x3D; Math.abs(endArcX - startArcX);
-    let circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
+    const arcSize &#x3D; Math.abs(endArcX - startArcX);
+    const circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
 
     if (circleVisible) {
       labelWidth &#x3D; this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
 
-    let signChange &#x3D; isFromLeftToRight ? 1 : -1;
-    let endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
-    let startSecondSegment &#x3D; endFirstSegment + signChange * labelWidth;
+    const signChange &#x3D; isFromLeftToRight ? 1 : -1;
+    const endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+    const startSecondSegment &#x3D; endFirstSegment + signChange * labelWidth;
 
-    let labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
-    let labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
-    let startXText &#x3D; startFirstSegment + signChange * arcCenter
+    const labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
+    const labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
+    const startXText &#x3D; startFirstSegment + signChange * arcCenter
 
-    let yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+    const yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
     // let sAnn &#x3D; this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
     // let tAnn &#x3D; this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
@@ -6720,9 +6747,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
     // let yAnnOffset &#x3D; Math.max(sAnn.yOffset, tAnn.yOffset);
     // yOffset -&#x3D; yAnnOffset;
 
-    let yLabel &#x3D; yOffset;
+    const yLabel &#x3D; yOffset;
 
-    let arc &#x3D; {
+    const arc &#x3D; {
       start: {
         x: startArcX,
         y: r.sourceTower.yTowerOffset,
@@ -6759,17 +6786,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private elaboratePassingArc(r: any, lineTowers: Array&lt;any&gt;, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array&lt;any&gt;, isFromLeftToRight: boolean) {
-    let arcType &#x3D; &quot;passingArc&quot;;
+    const arcType &#x3D; &quot;passingArc&quot;;
 
     // ComputeStartAndEndXPosition
-    let xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+    const xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
     let startArcX &#x3D; xPositionRes.startArcX;
     let endArcX &#x3D; xPositionRes.endArcX;
 
     // ElaborateArcLabel
-    let arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
-    let labelText &#x3D; arcLabelRes.labelText;
-    let textWidth &#x3D; arcLabelRes.textWidth;
+    const arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
+    const labelText &#x3D; arcLabelRes.labelText;
+    const textWidth &#x3D; arcLabelRes.textWidth;
     let labelWidth &#x3D; arcLabelRes.labelWidth;
 
     if (isFromLeftToRight) {
@@ -6781,27 +6808,27 @@ export class WorkspaceTextWindowComponent implements OnInit {
       endArcX &#x3D; this.visualConfig.stdTextOffsetX;
     }
 
-    let startFirstSegment &#x3D; startArcX;
-    let endSecondSegment &#x3D; endArcX;
+    const startFirstSegment &#x3D; startArcX;
+    const endSecondSegment &#x3D; endArcX;
 
-    let arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
+    const arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
 
-    let arcSize &#x3D; Math.abs(endArcX - startArcX);
-    let circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
+    const arcSize &#x3D; Math.abs(endArcX - startArcX);
+    const circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
 
     if (circleVisible) {
       labelWidth &#x3D; this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
 
-    let signChange &#x3D; isFromLeftToRight ? 1 : -1;
-    let endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
-    let startSecondSegment &#x3D; endFirstSegment + signChange * labelWidth;
+    const signChange &#x3D; isFromLeftToRight ? 1 : -1;
+    const endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+    const startSecondSegment &#x3D; endFirstSegment + signChange * labelWidth;
 
-    let labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
-    let labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
+    const labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
+    const labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
     let startXText &#x3D; startFirstSegment + signChange * arcCenter
     startXText &#x3D; startFirstSegment + signChange * arcCenter
-    let yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+    const yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
     // let sAnn &#x3D; this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
     // let tAnn &#x3D; this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
@@ -6809,9 +6836,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
     // let yAnnOffset &#x3D; Math.max(sAnn.yOffset, tAnn.yOffset);
     // yOffset -&#x3D; yAnnOffset;
 
-    let yLabel &#x3D; yOffset;
+    const yLabel &#x3D; yOffset;
 
-    let arc &#x3D; {
+    const arc &#x3D; {
       start: {
         x: startArcX,
         y: 0,
@@ -6848,17 +6875,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private elaborateStartedArc(r: any, lineTowers: Array&lt;any&gt;, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array&lt;any&gt;, isFromLeftToRight: boolean) {
-    let arcType &#x3D; &quot;startedArc&quot;;
+    const arcType &#x3D; &quot;startedArc&quot;;
 
     // ComputeStartAndEndXPosition
-    let xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
-    let startArcX &#x3D; xPositionRes.startArcX;
+    const xPositionRes &#x3D; this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+    const startArcX &#x3D; xPositionRes.startArcX;
     let endArcX &#x3D; xPositionRes.endArcX;
 
     // ElaborateArcLabel
-    let arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
-    let labelText &#x3D; arcLabelRes.labelText;
-    let textWidth &#x3D; arcLabelRes.textWidth;
+    const arcLabelRes &#x3D; this.elaborateArcLabel(r.relation.name)
+    const labelText &#x3D; arcLabelRes.labelText;
+    const textWidth &#x3D; arcLabelRes.textWidth;
     let labelWidth &#x3D; arcLabelRes.labelWidth;
 
     let startFirstSegment &#x3D; startArcX;
@@ -6876,17 +6903,17 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     let endSecondSegment &#x3D; endArcX;
 
-    let arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
+    const arcCenter &#x3D; Math.abs(endSecondSegment - startFirstSegment) / 2;
 
-    let arcSize &#x3D; Math.abs(endArcX - startArcX);
-    let circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
+    const arcSize &#x3D; Math.abs(endArcX - startArcX);
+    const circleVisible &#x3D; labelWidth &gt;&#x3D; arcSize || textWidth &#x3D;&#x3D; 0;
 
     if (circleVisible) {
       labelWidth &#x3D; this.visualConfig.arcCircleLabelPlaceholderWidth;
     }
 
-    let signChange &#x3D; isFromLeftToRight ? 1 : -1;
-    let endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+    const signChange &#x3D; isFromLeftToRight ? 1 : -1;
+    const endFirstSegment &#x3D; startFirstSegment + signChange * (arcCenter - labelWidth / 2);
     let startSecondSegment &#x3D; endFirstSegment + signChange * labelWidth;
 
     if (startSecondSegment &lt; this.visualConfig.stdTextOffsetX) {
@@ -6894,11 +6921,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
       endSecondSegment &#x3D; this.visualConfig.stdTextOffsetX - 1;
     }
 
-    let labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
-    let labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
-    let startXText &#x3D; startFirstSegment + signChange * arcCenter
+    const labelStartX &#x3D; Math.min(startSecondSegment, endFirstSegment);
+    const labelEndX &#x3D; Math.max(startSecondSegment, endFirstSegment);
+    const startXText &#x3D; startFirstSegment + signChange * arcCenter
 
-    let yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+    const yOffset &#x3D; this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
 
     // let sAnn &#x3D; this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
     // let tAnn &#x3D; this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
@@ -6906,9 +6933,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
     // let yAnnOffset &#x3D; Math.max(sAnn.yOffset, tAnn.yOffset);
     // yOffset -&#x3D; yAnnOffset;
 
-    let yLabel &#x3D; yOffset;
+    const yLabel &#x3D; yOffset;
 
-    let arc &#x3D; {
+    const arc &#x3D; {
       start: {
         x: startArcX,
         y: r.sourceTower.yTowerOffset,
@@ -6991,13 +7018,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     switch (ar.type) {
       case &quot;includedArc&quot;: {
-        let moveToArcStart &#x3D; &quot;M &quot; + ar.start.x + &quot; &quot; + ar.start.y;
-        let moveToFirstStart &#x3D; &quot;L &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToArcStart &#x3D; &quot;M &quot; + ar.start.x + &quot; &quot; + ar.start.y;
+        const moveToFirstStart &#x3D; &quot;L &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
 
-        let moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
-        let moveToArcEnd &#x3D; &quot;L &quot; + ar.end.x + &quot; &quot; + ar.end.y;
+        const moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToArcEnd &#x3D; &quot;L &quot; + ar.end.x + &quot; &quot; + ar.end.y;
 
         firstArcSegment &#x3D; moveToArcStart + &quot; &quot; + moveToFirstStart + &quot; &quot; + lineFirstSegment;
         secondArcSegment &#x3D; moveToSecondStart + &quot; &quot; + lineSecondSegment + &quot; &quot; + moveToArcEnd;
@@ -7005,12 +7032,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
       }
 
       case &quot;startedArc&quot;: {
-        let moveToArcStart &#x3D; &quot;M &quot; + ar.start.x + &quot; &quot; + ar.start.y;
-        let moveToFirstStart &#x3D; &quot;L &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToArcStart &#x3D; &quot;M &quot; + ar.start.x + &quot; &quot; + ar.start.y;
+        const moveToFirstStart &#x3D; &quot;L &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
 
-        let moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
 
         firstArcSegment &#x3D; moveToArcStart + &quot; &quot; + moveToFirstStart + &quot; &quot; + lineFirstSegment;
         secondArcSegment &#x3D; moveToSecondStart + &quot; &quot; + lineSecondSegment;
@@ -7018,12 +7045,12 @@ export class WorkspaceTextWindowComponent implements OnInit {
       }
 
       case &quot;endedArc&quot;: {
-        let moveToFirstStart &#x3D; &quot;M &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToFirstStart &#x3D; &quot;M &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
 
-        let moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
-        let moveToArcEnd &#x3D; &quot;L &quot; + ar.end.x + &quot; &quot; + ar.end.y;
+        const moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToArcEnd &#x3D; &quot;L &quot; + ar.end.x + &quot; &quot; + ar.end.y;
 
         firstArcSegment &#x3D; moveToFirstStart + &quot; &quot; + lineFirstSegment;
         secondArcSegment &#x3D; moveToSecondStart + &quot; &quot; + lineSecondSegment + &quot; &quot; + moveToArcEnd;
@@ -7031,11 +7058,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
       }
 
       case &quot;passingArc&quot;: {
-        let moveToFirstStart &#x3D; &quot;M &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToFirstStart &#x3D; &quot;M &quot; + ar.firstSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineFirstSegment &#x3D; &quot;L &quot; + ar.firstSegment.end + &quot; &quot; + ar.yArcOffset;
 
-        let moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
-        let lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
+        const moveToSecondStart &#x3D; &quot;M &quot; + ar.secondSegment.start + &quot; &quot; + ar.yArcOffset;
+        const lineSecondSegment &#x3D; &quot;L &quot; + ar.secondSegment.end + &quot; &quot; + ar.yArcOffset;
 
         firstArcSegment &#x3D; moveToFirstStart + &quot; &quot; + lineFirstSegment;
         secondArcSegment &#x3D; moveToSecondStart + &quot; &quot; + lineSecondSegment;
@@ -7054,11 +7081,11 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private generateCurlyPath(ann: any): string {
-    let y &#x3D; (ann.y + this.visualConfig.annotationHeight + 2)
-    let move &#x3D; &quot;M &quot; + ann.startX + &quot; &quot; + (y + this.visualConfig.curlyHeight);
-    let x &#x3D; ann.startX + (ann.endX - ann.startX) / 2
-    let curve1 &#x3D; &quot;C &quot; + ann.startX + &quot; &quot; + y + &quot;, &quot; + x + &quot; &quot; + (y + this.visualConfig.curlyHeight) + &quot;, &quot; + x + &quot; &quot; + y
-    let curve2 &#x3D; &quot;C &quot; + x + &quot; &quot; + (y + this.visualConfig.curlyHeight) + &quot;, &quot; + ann.endX + &quot; &quot; + y + &quot;, &quot; + ann.endX + &quot; &quot; + (y + this.visualConfig.curlyHeight)
+    const y &#x3D; (ann.y + this.visualConfig.annotationHeight + 2)
+    const move &#x3D; &quot;M &quot; + ann.startX + &quot; &quot; + (y + this.visualConfig.curlyHeight);
+    const x &#x3D; ann.startX + (ann.endX - ann.startX) / 2
+    const curve1 &#x3D; &quot;C &quot; + ann.startX + &quot; &quot; + y + &quot;, &quot; + x + &quot; &quot; + (y + this.visualConfig.curlyHeight) + &quot;, &quot; + x + &quot; &quot; + y
+    const curve2 &#x3D; &quot;C &quot; + x + &quot; &quot; + (y + this.visualConfig.curlyHeight) + &quot;, &quot; + ann.endX + &quot; &quot; + y + &quot;, &quot; + ann.endX + &quot; &quot; + (y + this.visualConfig.curlyHeight)
 
     return move + &quot; &quot; + curve1 + &quot; &quot; + curve2;
   }
@@ -7074,7 +7101,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private generateSentnumVerticalLine() {
-    let x &#x3D; this.visualConfig.stdSentnumOffsetX + this.visualConfig.spaceBeforeVerticalLine;
+    const x &#x3D; this.visualConfig.stdSentnumOffsetX + this.visualConfig.spaceBeforeVerticalLine;
     return &quot;M &quot; + x + &quot; 0 L &quot; + x + &quot; &quot; + this.svgHeight;
   }
 
@@ -7126,10 +7153,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private getMaxArcOffsetInRange(array: Array&lt;any&gt;, startX: number, endX: number) {
-    let min &#x3D; Math.min(startX, endX);
-    let max &#x3D; Math.max(startX, endX);
+    const min &#x3D; Math.min(startX, endX);
+    const max &#x3D; Math.max(startX, endX);
 
-    let filteredArcs &#x3D; array.filter((ar: any) &#x3D;&gt; (ar.start.x &gt;&#x3D; min &amp;&amp; ar.end.x &lt;&#x3D; max) ||
+    const filteredArcs &#x3D; array.filter((ar: any) &#x3D;&gt; (ar.start.x &gt;&#x3D; min &amp;&amp; ar.end.x &lt;&#x3D; max) ||
       (ar.start.x &lt; min &amp;&amp; ar.end.x &gt;&#x3D; min &amp;&amp; ar.end.x &lt;&#x3D; max) ||
       (ar.start.x &gt; max &amp;&amp; ar.end.x &gt;&#x3D; min &amp;&amp; ar.end.x &lt;&#x3D; max) ||
       (ar.start.x &gt;&#x3D; min &amp;&amp; ar.start.x &lt;&#x3D; max &amp;&amp; ar.end.x &lt; min) ||
@@ -7144,7 +7171,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private getMaxTowerAroundAnns(lineTowers: Array&lt;any&gt;, start: number, end: number) {
-    let filteredTowers &#x3D; lineTowers.filter((t: any) &#x3D;&gt; (t.spanCoordinates.start &gt;&#x3D; start &amp;&amp; t.spanCoordinates.end &lt;&#x3D; end) || (t.spanCoordinates.start &lt; start &amp;&amp; t.spanCoordinates.end &gt; start) || (t.spanCoordinates.start &lt; end &amp;&amp; t.spanCoordinates.end &gt; end));
+    const filteredTowers &#x3D; lineTowers.filter((t: any) &#x3D;&gt; (t.spanCoordinates.start &gt;&#x3D; start &amp;&amp; t.spanCoordinates.end &lt;&#x3D; end) || (t.spanCoordinates.start &lt; start &amp;&amp; t.spanCoordinates.end &gt; start) || (t.spanCoordinates.start &lt; end &amp;&amp; t.spanCoordinates.end &gt; end));
 
     return this.getMaxTowerPosition(filteredTowers);
   }
@@ -7180,10 +7207,10 @@ export class WorkspaceTextWindowComponent implements OnInit {
    * @returns {{lineTowers: any[], lineHighLights:TextHighlight[]}} dati delle annotazioni per la line
    */
   private renderAnnotationsForLine(startIndex: number, endIndex: number) {
-    let lineTowers &#x3D; new Array();
-    let lineHighlights &#x3D; new Array&lt;TextHighlight&gt;();
+    const lineTowers &#x3D; new Array();
+    const lineHighlights &#x3D; new Array&lt;TextHighlight&gt;();
 
-    let localAnns &#x3D; this.simplifiedAnns.filter((a: any) &#x3D;&gt; (a.span.start &gt;&#x3D; (startIndex || 0) &amp;&amp; a.span.end &lt;&#x3D; (endIndex || 0)));
+    const localAnns &#x3D; this.simplifiedAnns.filter((a: any) &#x3D;&gt; (a.span.start &gt;&#x3D; (startIndex || 0) &amp;&amp; a.span.end &lt;&#x3D; (endIndex || 0)));
 
     // Da completare la gestione delle annotazioni su più linee
     // let localAnns &#x3D; this.simplifiedAnns.filter((a: any) &#x3D;&gt;
@@ -7193,19 +7220,19 @@ export class WorkspaceTextWindowComponent implements OnInit {
 
     localAnns.sort((a: any, b: any) &#x3D;&gt; (a.span.end - a.span.start) - (b.span.end - b.span.start));
 
-    let towers &#x3D; this.sortFragmentsIntoTowers(localAnns);
+    const towers &#x3D; this.sortFragmentsIntoTowers(localAnns);
 
     towers.forEach((t: any) &#x3D;&gt; {
-      let annTower &#x3D; new Array();
+      const annTower &#x3D; new Array();
       let yAnnOffset &#x3D; 0;
 
       t.anns.forEach((ann: any) &#x3D;&gt; {
-        let layer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(ann.layer));
-        let startX &#x3D; this.getComputedTextLength(this.randomString(t.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        let w &#x3D; this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
-        let endX &#x3D; startX + w;
-        let text &#x3D; this.elaborateAnnotationLabel(layer, ann, w);
-        let textAnnLenght &#x3D; this.getComputedTextLength(text, this.visualConfig.annotationFont);
+        const layer &#x3D; this.layersList.find(l &#x3D;&gt; l.id &#x3D;&#x3D; Number.parseInt(ann.layer));
+        const startX &#x3D; this.getComputedTextLength(this.randomString(t.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+        const w &#x3D; this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
+        const endX &#x3D; startX + w;
+        const text &#x3D; this.elaborateAnnotationLabel(layer, ann, w);
+        const textAnnLenght &#x3D; this.getComputedTextLength(text, this.visualConfig.annotationFont);
 
         // console.log(w, startX + (w/2) - (textAnnLenght/2), this.randomString(t.span.end - t.span.start))
 
@@ -7240,13 +7267,13 @@ export class WorkspaceTextWindowComponent implements OnInit {
         })
       })
 
-      let minorTowers &#x3D; lineTowers.filter((lt) &#x3D;&gt; (lt.spanCoordinates.start &gt;&#x3D; t.span.start &amp;&amp; lt.spanCoordinates.end &lt;&#x3D; t.span.end) || (lt.spanCoordinates.start &lt; t.span.start &amp;&amp; lt.spanCoordinates.end &gt; t.span.start) || (lt.spanCoordinates.start &lt; t.span.end &amp;&amp; lt.spanCoordinates.end &gt; t.span.end));
+      const minorTowers &#x3D; lineTowers.filter((lt) &#x3D;&gt; (lt.spanCoordinates.start &gt;&#x3D; t.span.start &amp;&amp; lt.spanCoordinates.end &lt;&#x3D; t.span.end) || (lt.spanCoordinates.start &lt; t.span.start &amp;&amp; lt.spanCoordinates.end &gt; t.span.start) || (lt.spanCoordinates.start &lt; t.span.end &amp;&amp; lt.spanCoordinates.end &gt; t.span.end));
 
       let yOffset &#x3D; 0;
 
       yOffset &#x3D; minorTowers.reduce((acc: any, o: any) &#x3D;&gt; acc + o.towerHeight, 0);
 
-      let minorTowersGroupedByYtowerOffset &#x3D; minorTowers.reduce((a, { yTowerOffset, ...rest }) &#x3D;&gt; {
+      const minorTowersGroupedByYtowerOffset &#x3D; minorTowers.reduce((a, { yTowerOffset, ...rest }) &#x3D;&gt; {
         const key &#x3D; &#x60;${yTowerOffset}&#x60;;
         a[key] &#x3D; a[key] || { yTowerOffset, towers: [] };
         a[key][&quot;towers&quot;].push(rest)
@@ -7257,8 +7284,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
       towersGroups &#x3D; Object.values(minorTowersGroupedByYtowerOffset);
 
       if (towersGroups.length &gt; 0) {
-        let maxGroup: any &#x3D; towersGroups.reduce((max: any, tGroup: any) &#x3D;&gt; max.yTowerOffset &gt; tGroup.yTowerOffset ? max : tGroup);
-        let higherTowersGroupHeight &#x3D; Math.max(...maxGroup.towers.map((o: any) &#x3D;&gt; (o.towerHeight)))
+        const maxGroup: any &#x3D; towersGroups.reduce((max: any, tGroup: any) &#x3D;&gt; max.yTowerOffset &gt; tGroup.yTowerOffset ? max : tGroup);
+        const higherTowersGroupHeight &#x3D; Math.max(...maxGroup.towers.map((o: any) &#x3D;&gt; (o.towerHeight)))
 
         yOffset &#x3D; maxGroup.yTowerOffset + higherTowersGroupHeight;
         yOffset +&#x3D; (this.visualConfig.curlyHeight + 3);
@@ -7287,22 +7314,22 @@ export class WorkspaceTextWindowComponent implements OnInit {
    * @returns {any[]} lista degli archi per la line
    */
   private renderArcsForLine(startIndex: number, endIndex: number, lineTowers: Array&lt;any&gt;) {
-    let lineArcs &#x3D; new Array();
-    let relationsIncludedInLine &#x3D; new Array();
-    let relationsStartedInLine &#x3D; new Array();
-    let relationsEndedInLine &#x3D; new Array();
-    let relationsPassignThroughLine &#x3D; new Array();
+    const lineArcs &#x3D; new Array();
+    const relationsIncludedInLine &#x3D; new Array();
+    const relationsStartedInLine &#x3D; new Array();
+    const relationsEndedInLine &#x3D; new Array();
+    const relationsPassignThroughLine &#x3D; new Array();
 
-    for (let ar of this.simplifiedArcs) {
+    for (const ar of this.simplifiedArcs) {
       if (!ar.srcAnnotationId || !ar.targetAnnotationId) {
         break;
       }
 
-      let sourceAnn &#x3D; this.findAnnotationById(ar.srcAnnotationId);
-      let targetAnn &#x3D; this.findAnnotationById(ar.targetAnnotationId);
+      const sourceAnn &#x3D; this.findAnnotationById(ar.srcAnnotationId);
+      const targetAnn &#x3D; this.findAnnotationById(ar.targetAnnotationId);
 
-      let sourceTower &#x3D; this.findTowerByAnnotationId(ar.srcAnnotationId, lineTowers);
-      let targetTower &#x3D; this.findTowerByAnnotationId(ar.targetAnnotationId, lineTowers);
+      const sourceTower &#x3D; this.findTowerByAnnotationId(ar.srcAnnotationId, lineTowers);
+      const targetTower &#x3D; this.findTowerByAnnotationId(ar.targetAnnotationId, lineTowers);
 
       if (!sourceAnn || !targetAnn) {
         break;
@@ -7454,36 +7481,37 @@ export class WorkspaceTextWindowComponent implements OnInit {
   private renderData() {
     this.rows &#x3D; [];
 
-    let rawText &#x3D; JSON.parse(JSON.stringify(this.textRes.text));
-    let rawAnns &#x3D; JSON.parse(JSON.stringify(this.annotationsRes.annotations));
-    let sentences &#x3D; rawText.split(/(?&lt;&#x3D;[\.!\?])/g);
-    let row_id &#x3D; 0;
+    // let rawText &#x3D; JSON.parse(JSON.stringify(this.textRes.text)); //TODO ARRIVA GIà COME RAW TEXT
+    const rawText &#x3D; this.textRes;
+    const rawAnns &#x3D; JSON.parse(JSON.stringify(this.annotationsRes.annotations));
+    const sentences &#x3D; rawText.split(/(?&lt;&#x3D;[\.!\?])/g);
+    const row_id &#x3D; 0;
     let start &#x3D; 0;
-    let end &#x3D; rawText.length;
+    const end &#x3D; rawText.length;
 
-    let width &#x3D; this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
+    const width &#x3D; this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
 
-    let textFont &#x3D; getComputedStyle(document.documentElement).getPropertyValue(&#x27;--text-font-size&#x27;) + &quot; &quot; + getComputedStyle(document.documentElement).getPropertyValue(&#x27;--text-font-family&#x27;);
+    const textFont &#x3D; getComputedStyle(document.documentElement).getPropertyValue(&#x27;--text-font-size&#x27;) + &quot; &quot; + getComputedStyle(document.documentElement).getPropertyValue(&#x27;--text-font-family&#x27;);
     this.visualConfig.textFont &#x3D; textFont;
 
-    let annFont &#x3D; getComputedStyle(document.documentElement).getPropertyValue(&#x27;--annotation-font-size&#x27;) + &quot; &quot; + getComputedStyle(document.documentElement).getPropertyValue(&#x27;--annotations-font-family&#x27;)
+    const annFont &#x3D; getComputedStyle(document.documentElement).getPropertyValue(&#x27;--annotation-font-size&#x27;) + &quot; &quot; + getComputedStyle(document.documentElement).getPropertyValue(&#x27;--annotations-font-family&#x27;)
     this.visualConfig.annotationFont &#x3D; annFont;
 
-    let arcFont &#x3D; getComputedStyle(document.documentElement).getPropertyValue(&#x27;--arc-font-size&#x27;) + &quot; &quot; + getComputedStyle(document.documentElement).getPropertyValue(&#x27;--arc-font-family&#x27;)
+    const arcFont &#x3D; getComputedStyle(document.documentElement).getPropertyValue(&#x27;--arc-font-size&#x27;) + &quot; &quot; + getComputedStyle(document.documentElement).getPropertyValue(&#x27;--arc-font-family&#x27;)
     this.visualConfig.arcFont &#x3D; arcFont;
 
     let linesCounter &#x3D; 0;
     let yStartRow &#x3D; 0;
-    let lineBuilder &#x3D; new LineBuilder;
+    const lineBuilder &#x3D; new LineBuilder;
 
     lineBuilder.yStartLine &#x3D; 0;
 
     sentences.forEach((s: any, index: number) &#x3D;&gt; {
-      let sWidth &#x3D; this.getComputedTextLength(s, this.visualConfig.textFont);
+      const sWidth &#x3D; this.getComputedTextLength(s, this.visualConfig.textFont);
 
-      let sLines &#x3D; new Array&lt;TextLine&gt;();
+      const sLines &#x3D; new Array&lt;TextLine&gt;();
 
-      let words &#x3D; s.split(/(?&lt;&#x3D;\s)/g);
+      const words &#x3D; s.split(/(?&lt;&#x3D;\s)/g);
 
       lineBuilder.startLine &#x3D; start;
 
@@ -7494,7 +7522,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         lineBuilder.line.text &#x3D; &quot;&quot;;
 
         words.forEach((w: any) &#x3D;&gt; {
-          let wordWidth &#x3D; this.getComputedTextLength(w, this.visualConfig.textFont);
+          const wordWidth &#x3D; this.getComputedTextLength(w, this.visualConfig.textFont);
 
           if ((lineWidth + wordWidth) &lt;&#x3D; width) {
             lineBuilder.line.text +&#x3D; w;
@@ -7508,7 +7536,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
             lineBuilder.line.words.push(w);
           }
           else {
-            let line &#x3D; this.createLine(lineBuilder);
+            const line &#x3D; this.createLine(lineBuilder);
             lineBuilder.yStartLine +&#x3D; line.height;
 
             sLines.push(JSON.parse(JSON.stringify(line)));
@@ -7530,7 +7558,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
           }
 
           if (wordAddedCounter &#x3D;&#x3D; words.length) {
-            let line &#x3D; this.createLine(lineBuilder);
+            const line &#x3D; this.createLine(lineBuilder);
             lineBuilder.yStartLine +&#x3D; line.height;
 
             sLines.push(JSON.parse(JSON.stringify(line)));
@@ -7545,7 +7573,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
         lineBuilder.line.text &#x3D; s;
         lineBuilder.line.words &#x3D; words;
 
-        let line &#x3D; this.createLine(lineBuilder);
+        const line &#x3D; this.createLine(lineBuilder);
         lineBuilder.yStartLine +&#x3D; line.height;
 
         sLines.push(JSON.parse(JSON.stringify(line)));
@@ -7554,9 +7582,9 @@ export class WorkspaceTextWindowComponent implements OnInit {
         linesCounter++;
       }
 
-      let sLinesCopy &#x3D; JSON.parse(JSON.stringify(sLines));
+      const sLinesCopy &#x3D; JSON.parse(JSON.stringify(sLines));
 
-      let rowHeight &#x3D; sLinesCopy.reduce((acc: any, o: any) &#x3D;&gt; acc + o.height, 0);
+      const rowHeight &#x3D; sLinesCopy.reduce((acc: any, o: any) &#x3D;&gt; acc + o.height, 0);
 
       this.rows?.push({
         id: row_id + 1,
@@ -7611,7 +7639,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   }
 
   private sortFragmentsIntoTowers(annotations: any[]) {
-    let towers &#x3D; annotations.reduce((a, { span, ...rest }) &#x3D;&gt; {
+    const towers &#x3D; annotations.reduce((a, { span, ...rest }) &#x3D;&gt; {
       const key &#x3D; &#x60;${span.start}-${span.end}&#x60;;
       a[key] &#x3D; a[key] || { span, anns: [] };
       a[key][&quot;anns&quot;].push(rest)
@@ -7633,8 +7661,8 @@ export class WorkspaceTextWindowComponent implements OnInit {
   &lt;div class&#x3D;&quot;col-sm-6&quot;&gt;
     &lt;label class&#x3D;&quot;col-sm-2 col-form-label&quot;&gt;Layer&lt;/label&gt;
     &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
-      &lt;p-dropdown #layer&#x3D;&quot;ngModel&quot; name&#x3D;&quot;layer&quot; appendTo&#x3D;&quot;body&quot; [(ngModel)]&#x3D;&quot;selectedLayer&quot;
-        placeholder&#x3D;&quot;Seleziona un layer&quot; [options]&#x3D;&quot;layerOptions&quot; [filter]&#x3D;&quot;true&quot; [showClear]&#x3D;&quot;true&quot; (onChange)&#x3D;&quot;onChangeLayerSelection($event)&quot;  [required]&#x3D;&quot;true&quot;&gt;
+      &lt;p-dropdown #layer&#x3D;&quot;ngModel&quot; name&#x3D;&quot;layer&quot; appendTo&#x3D;&quot;body&quot; [(ngModel)]&#x3D;&quot;selectedLayer&quot; optionLabel&#x3D;&quot;name&quot;
+        placeholder&#x3D;&quot;Select a layer&quot; [options]&#x3D;&quot;(layers$|async) || []&quot; [filter]&#x3D;&quot;true&quot; [showClear]&#x3D;&quot;true&quot; (onChange)&#x3D;&quot;onChangeLayerSelection($event)&quot;  [required]&#x3D;&quot;true&quot;&gt;
       &lt;/p-dropdown&gt;
       &lt;div *ngIf&#x3D;&quot;layer.invalid &amp;&amp; (layer.touched || layer.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
         &lt;div *ngIf&#x3D;&quot;layer.errors?.[&#x27;required&#x27;]&quot;&gt;
@@ -7646,7 +7674,7 @@ export class WorkspaceTextWindowComponent implements OnInit {
   &lt;div class&#x3D;&quot;col-sm-6&quot;&gt;
     &lt;label class&#x3D;&quot;col-sm-2 col-form-label&quot;&gt;Visibilità&lt;/label&gt;
     &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
-      &lt;p-multiSelect [options]&#x3D;&quot;layersList&quot; [(ngModel)]&#x3D;&quot;selectedLayers&quot; defaultLabel&#x3D;&quot;Selezione i layer da visualizzare&quot; optionLabel&#x3D;&quot;name&quot; class&#x3D;&quot;multiselect-custom&quot; display&#x3D;&quot;chip&quot; (onChange)&#x3D;&quot;changeVisibleLayers($event)&quot;&gt;
+      &lt;p-multiSelect [options]&#x3D;&quot;(layers$|async) || []&quot; [(ngModel)]&#x3D;&quot;selectedLayers&quot; defaultLabel&#x3D;&quot;Selezione i layer da visualizzare&quot; optionLabel&#x3D;&quot;name&quot; class&#x3D;&quot;multiselect-custom&quot; display&#x3D;&quot;chip&quot; (onChange)&#x3D;&quot;changeVisibleLayers($event)&quot;&gt;
         &lt;ng-template let-value pTemplate&#x3D;&quot;selectedItems&quot;&gt;
           &lt;div class&#x3D;&quot;layer-item-value&quot; *ngFor&#x3D;&quot;let option of selectedLayers&quot; [ngStyle]&#x3D;&quot;{&#x27;border-color&#x27;: option.color}&quot;&gt;
             &lt;span class&#x3D;&quot;pe-2&quot;&gt;
@@ -7970,8 +7998,8 @@ path {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="toolbar"></div><div class="form-group row mx-0 px-0 justify-content-center">  <div class="col-sm-6">    <label class="col-sm-2 col-form-label">Layer</label>    <div class="p-fluid">      <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer"        placeholder="Seleziona un layer" [options]="layerOptions" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="true">      </p-dropdown>      <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">        <div *ngIf="layer.errors?.[\'required\']">          Seleziona un layer        </div>      </div>    </div>  </div>  <div class="col-sm-6">    <label class="col-sm-2 col-form-label">Visibilità</label>    <div class="p-fluid">      <p-multiSelect [options]="layersList" [(ngModel)]="selectedLayers" defaultLabel="Selezione i layer da visualizzare" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">        <ng-template let-value pTemplate="selectedItems">          <div class="layer-item-value" *ngFor="let option of selectedLayers" [ngStyle]="{\'border-color\': option.color}">            <span class="pe-2">              <i class="fa-solid fa-palette" [ngStyle]="{\'color\': option.color}" style="font-size: 1.5rem;"></i>            </span>            <span>              {{ option.name }}            </span>          </div>          <div *ngIf="!selectedLayers || selectedLayers.length === 0">            Selezione i layer da visualizzare          </div>        </ng-template>        <ng-template let-layer pTemplate="item">          <div class="country-item">            <span class="pe-2">              <i class="fa-solid fa-palette" [ngStyle]="{\'color\': layer.color}" style="font-size: 1.5rem;"></i>            </span>            <span>              {{ layer.name }}            </span>          </div>        </ng-template>      </p-multiSelect>    </div>  </div></div><div class="row mx-0">  <div class="col-8" >    <div class="text-container" [ngStyle]="{\'height.px\': textContainerHeight}">      <div id="svg" [ngStyle]="{\'height.px\': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >        <svg class="text-editor" [attr.height]="svgHeight">          <defs>            <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">              <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>            </marker>            <marker id="arrow_triangle_5_black" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="black">              <polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"/>            </marker>            <!-- <marker id="drag_arrow" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">              <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>            </marker> -->            <marker></marker>          </defs>          <g class="background">            <rect *ngFor="let row of rows; index as i" class="background" [ngClass]="{\'background0\': i%2, \'background1 bordered\': !(i%2)}" [attr.height]="row.height" [attr.y]="row.yBG"></rect>          </g>          <g class="glow">          </g>          <g class="highlight">            <g *ngFor="let row of rows">              <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="line.x" [attr.height]="line.height! + 4" class="span">                <g *ngFor="let h of line.highlights">                  <rect [attr.id]="h.id" [attr.x]="h.coordinates.x" [attr.y]="h.coordinates.y" [attr.height]="h.height" [attr.width]="h.width" [attr.fill]="h.bgColor" [attr.stroke]="h.bgColor" stroke-width="0px" rx="3px" ry="3px" stroke-linejoin="round"></rect>                </g>              </g>            </g>          </g>          <g class="text">            <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">              <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-index]="line.startIndex" [attr.end-index]="line.endIndex">                <tspan *ngFor="let w of line.words" [attr.y]="line.yText" style="white-space: pre;">{{w}}</tspan>              </tspan>            </text>            <!-- <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="37" [attr.height]="row.height" (mouseup)="selectionchange($event)">{{row.text}}</text> -->          </g>          <!-- Generare n gruppi per archi e annotazioni -->          <g *ngFor="let row of rows">            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="arc">              <g *ngFor="let arc of line.arcs">                <rect *ngIf="arc.circleVisible; else elseBlock" [attr.x]="arc.circleStartX" [attr.y]="arc.circleStartY" [attr.height]="arc.circleHeight" [attr.width]="arc.circleWidth" fill="black" stroke="black" stroke-width="0.5px" rx="3px" ry="3px" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)"></rect>                <ng-template #elseBlock>                  <text [attr.x]="arc.label.startXText" [attr.y]="arc.label.yArcLabel" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)">{{arc.label.text}}</text>                </ng-template>                <path [attr.d]="arc.firstSegmentPath" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />                <path [attr.d]="arc.secondSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />              </g>            </g>          </g>          <g *ngFor="let row of rows">            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">              <g *ngFor="let anns of line.annotationsTowers">                <g *ngFor="let a of anns.tower">                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" [attr.id]="a.id" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px" (mousedown)="startDrawing($event, a)" (mouseup)="endDrawingAndCreateRelation($event, a)"></rect>                  <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{\'color\': a.color}">{{a.text}}</text>                </g>                <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>              </g>            </g>          </g>          <!-- -->          <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />          <g class="sentnum unselectable">            <text *ngFor="let row of rows; index as i" [attr.y]="row.ySentnum" [attr.x]="row.xSentnum" [attr.height]="row.height">              {{i+1}}            </text>            <path [attr.d]="sentnumVerticalLine"></path>          </g>        </svg>      </div>    </div>  </div>  <div class="col-4 ps-0">    <div class="editor-container" [ngStyle]="{\'height.px\': textContainerHeight}">      <app-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="annotation" [fileId]="textId"        (onSave)="onAnnotationSaved()"        (onDelete)="onAnnotationDeleted()"        (onCancel)="onAnnotationCancel()">      </app-annotation-editor>      <app-relation-editor *ngIf="showRelationEditor"        [relationModel]="relation"        [sourceAnn]="sourceAnn"        [targetAnn]="targetAnn"        [sourceLayer]="sourceLayer"        [targetLayer]="targetLayer"        (onSave)="onRelationSaved()"        (onDelete)="onRelationDeleted()"        (onCancel)="onRelationCancel()">      </app-relation-editor>    </div>  </div></div></div>'
-    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+        var COMPONENT_TEMPLATE = '<div><div class="toolbar"></div><div class="form-group row mx-0 px-0 justify-content-center">  <div class="col-sm-6">    <label class="col-sm-2 col-form-label">Layer</label>    <div class="p-fluid">      <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"        placeholder="Select a layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="true">      </p-dropdown>      <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">        <div *ngIf="layer.errors?.[\'required\']">          Seleziona un layer        </div>      </div>    </div>  </div>  <div class="col-sm-6">    <label class="col-sm-2 col-form-label">Visibilità</label>    <div class="p-fluid">      <p-multiSelect [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Selezione i layer da visualizzare" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">        <ng-template let-value pTemplate="selectedItems">          <div class="layer-item-value" *ngFor="let option of selectedLayers" [ngStyle]="{\'border-color\': option.color}">            <span class="pe-2">              <i class="fa-solid fa-palette" [ngStyle]="{\'color\': option.color}" style="font-size: 1.5rem;"></i>            </span>            <span>              {{ option.name }}            </span>          </div>          <div *ngIf="!selectedLayers || selectedLayers.length === 0">            Selezione i layer da visualizzare          </div>        </ng-template>        <ng-template let-layer pTemplate="item">          <div class="country-item">            <span class="pe-2">              <i class="fa-solid fa-palette" [ngStyle]="{\'color\': layer.color}" style="font-size: 1.5rem;"></i>            </span>            <span>              {{ layer.name }}            </span>          </div>        </ng-template>      </p-multiSelect>    </div>  </div></div><div class="row mx-0">  <div class="col-8" >    <div class="text-container" [ngStyle]="{\'height.px\': textContainerHeight}">      <div id="svg" [ngStyle]="{\'height.px\': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >        <svg class="text-editor" [attr.height]="svgHeight">          <defs>            <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">              <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>            </marker>            <marker id="arrow_triangle_5_black" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="black">              <polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"/>            </marker>            <!-- <marker id="drag_arrow" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">              <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>            </marker> -->            <marker></marker>          </defs>          <g class="background">            <rect *ngFor="let row of rows; index as i" class="background" [ngClass]="{\'background0\': i%2, \'background1 bordered\': !(i%2)}" [attr.height]="row.height" [attr.y]="row.yBG"></rect>          </g>          <g class="glow">          </g>          <g class="highlight">            <g *ngFor="let row of rows">              <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="line.x" [attr.height]="line.height! + 4" class="span">                <g *ngFor="let h of line.highlights">                  <rect [attr.id]="h.id" [attr.x]="h.coordinates.x" [attr.y]="h.coordinates.y" [attr.height]="h.height" [attr.width]="h.width" [attr.fill]="h.bgColor" [attr.stroke]="h.bgColor" stroke-width="0px" rx="3px" ry="3px" stroke-linejoin="round"></rect>                </g>              </g>            </g>          </g>          <g class="text">            <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">              <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-index]="line.startIndex" [attr.end-index]="line.endIndex">                <tspan *ngFor="let w of line.words" [attr.y]="line.yText" style="white-space: pre;">{{w}}</tspan>              </tspan>            </text>            <!-- <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="37" [attr.height]="row.height" (mouseup)="selectionchange($event)">{{row.text}}</text> -->          </g>          <!-- Generare n gruppi per archi e annotazioni -->          <g *ngFor="let row of rows">            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="arc">              <g *ngFor="let arc of line.arcs">                <rect *ngIf="arc.circleVisible; else elseBlock" [attr.x]="arc.circleStartX" [attr.y]="arc.circleStartY" [attr.height]="arc.circleHeight" [attr.width]="arc.circleWidth" fill="black" stroke="black" stroke-width="0.5px" rx="3px" ry="3px" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)"></rect>                <ng-template #elseBlock>                  <text [attr.x]="arc.label.startXText" [attr.y]="arc.label.yArcLabel" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)">{{arc.label.text}}</text>                </ng-template>                <path [attr.d]="arc.firstSegmentPath" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />                <path [attr.d]="arc.secondSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />              </g>            </g>          </g>          <g *ngFor="let row of rows">            <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">              <g *ngFor="let anns of line.annotationsTowers">                <g *ngFor="let a of anns.tower">                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" [attr.id]="a.id" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px" (mousedown)="startDrawing($event, a)" (mouseup)="endDrawingAndCreateRelation($event, a)"></rect>                  <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{\'color\': a.color}">{{a.text}}</text>                </g>                <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>              </g>            </g>          </g>          <!-- -->          <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />          <g class="sentnum unselectable">            <text *ngFor="let row of rows; index as i" [attr.y]="row.ySentnum" [attr.x]="row.xSentnum" [attr.height]="row.height">              {{i+1}}            </text>            <path [attr.d]="sentnumVerticalLine"></path>          </g>        </svg>      </div>    </div>  </div>  <div class="col-4 ps-0">    <div class="editor-container" [ngStyle]="{\'height.px\': textContainerHeight}">      <app-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="annotation" [fileId]="textId"        (onSave)="onAnnotationSaved()"        (onDelete)="onAnnotationDeleted()"        (onCancel)="onAnnotationCancel()">      </app-annotation-editor>      <app-relation-editor *ngIf="showRelationEditor"        [relationModel]="relation"        [sourceAnn]="sourceAnn"        [targetAnn]="targetAnn"        [sourceLayer]="sourceLayer"        [targetLayer]="targetLayer"        (onSave)="onRelationSaved()"        (onDelete)="onRelationDeleted()"        (onCancel)="onRelationCancel()">      </app-relation-editor>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
     var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'WorkspaceTextWindowComponent'};
 </script>

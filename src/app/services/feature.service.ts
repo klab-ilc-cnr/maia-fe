@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Feature } from '../models/feature/feature';
-
+import { TFeature } from '../models/texto/t-feature';
+import { v4 as uuidv4 } from 'uuid';
 /**Classe dei servizi relativi alle feature */
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class FeatureService {
 
   /**Url per le richieste relative alle feature */
   private featureUrl: string;
+  private textoUrl: string;
 
   /**
    * Costruttore per FeatureService
@@ -19,6 +21,7 @@ export class FeatureService {
    */
   constructor(private http: HttpClient) {
     this.featureUrl = environment.featureUrl;
+    this.textoUrl = environment.textoUrl;
   }
 
   /**
@@ -36,7 +39,7 @@ export class FeatureService {
    * @param item {any} la feature in creazione
    * @returns {Observable<any>} observable della feature in creazione
    */
-  public createFeature(item: any): Observable<any> {
+  public _createFeature(item: any): Observable<any> {
     return this.http.post<any>(`${this.featureUrl}`, item);
   }
 
@@ -69,4 +72,34 @@ export class FeatureService {
 
     return this.http.get<boolean>(`${this.featureUrl}/canbedeleted/${layerId}/${featureId}`);
   }
+
+  //#region TEXTO
+
+  public createFeature(newFeature: TFeature): Observable<TFeature> {
+    const uuid = uuidv4();
+    return this.http.post<TFeature>(
+      `${this.textoUrl}/texto/feature/create`,
+      newFeature,
+      { headers: new HttpHeaders({ 'UUID': uuid }) },
+    );
+  }
+
+  public removeFeatureById(featureId: number): Observable<TFeature> {
+    const uuid = uuidv4();
+    return this.http.get<TFeature>(
+      `${this.textoUrl}/texto/feature/${featureId}/remove`,
+      { headers: new HttpHeaders({ 'UUID': uuid }) },
+    );
+  }
+
+  public updateFeatureById(updatedFeature: TFeature): Observable<TFeature> {
+    const uuid = uuidv4();
+    return this.http.post<TFeature>(
+      `${this.textoUrl}/texto/feature/${updatedFeature.id}/update`,
+      updatedFeature,
+      { headers: new HttpHeaders({ 'UUID': uuid }) },
+    );
+  }
+  
+  //#endregion
 }

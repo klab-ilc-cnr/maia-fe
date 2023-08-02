@@ -2,14 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
-import { FormUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
-import { Morphology } from '../models/lexicon/morphology.model';
-import { OntolexType } from '../models/lexicon/ontolex-type.model';
-import { LexicalEntriesResponse } from '../models/lexicon/lexical-entry-request.model';
-import { CommonService } from './common.service';
+import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
+import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
+import { FormUpdater, GenericRelationUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
+import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
+import { Morphology } from '../models/lexicon/morphology.model';
 import { Namespace } from '../models/lexicon/namespace.model';
+import { OntolexType } from '../models/lexicon/ontolex-type.model';
+import { CommonService } from './common.service';
 
 /**Classe dei servizi relativi al lessico */
 @Injectable({
@@ -19,13 +20,13 @@ export class LexiconService {
 
   /**Url per le chiamate relative a LexO */
   private lexoUrl: string;
-  /**Chiave per le chiamate in scrittura */
-  private writeKey = 'PRINitant19';
+  /**IRI codificato di base per la creazione di nuovi elementi del lessico */
   private encodedBaseIRI: string;
 
   /**
    * Costruttore per LexiconService
    * @param http {HttpClient} effettua le chiamate HTTP
+   * @param commonService {CommonService} servizi di utilità generale
    */
   constructor(
     private http: HttpClient,
@@ -117,6 +118,22 @@ export class LexiconService {
   }
 
   /**
+   * POST di recupero della lista filtrata dei concetti lessicali
+   * @param parameters {{ text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number }} parametri per il fltro
+   * @returns {Observable<{totalHits: number, list: any[]}>} observable della lista di concetti lessicali recuperato
+   */
+  getFilteredLexicalConcepts(parameters: { text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number }): Observable<{ totalHits: number, list: any[] }> { //TODO replace con response list corretto
+    return this.http.post<{ totalHits: number, list: any[] }>(`${this.lexoUrl}lexicon/data/filteredLexicalConcepts`, parameters)
+  }
+
+  getFilteredSenses(parameters: any) {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/data/filteredSenses`,
+      parameters,
+    );
+  }
+
+  /**
    * GET che recupera i dati di una forma
    * @param formID {string} identificativo della forma
    * @returns {Observable<any>}
@@ -126,12 +143,27 @@ export class LexiconService {
     return this.http.get<FormCore>(`${this.lexoUrl}lexicon/data/form?id=${encodedFormID}&aspect=core`);
   }
 
+  getFormList(parameters: any): Observable<any> {
+    return this.http.post(
+      `${this.lexoUrl}lexicon/data/filteredForms`,
+      parameters
+    );
+  }
+
   /**
    * GET che recupera la lista dei tipi di forma
    * @returns {Observable<OntolexType[]>} observable della lista dei tipi di forma
    */
   getFormTypes(): Observable<OntolexType[]> {
     return this.http.get<OntolexType[]>(`${this.lexoUrl}ontolex/data/formType`)
+  }
+
+  /**
+   * GET che recupera la lista di lingue disponibili per la selezione
+   * @returns {Observable<any>} observable della lista di lingue disponibili
+   */
+  getLanguages(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
   }
 
   /**
@@ -173,11 +205,14 @@ export class LexiconService {
   }
 
   /**
-   * GET che recupera la lista di lingue disponibili per la selezione
-   * @returns {Observable<any>} observable della lista di lingue disponibili
+   * GET che recupera la lista delle relazioni linguistiche di un'entrata lessicale per una data proprietà
+   * @param property {string} proprietà della quale si vogliono le relazioni linguistiche
+   * @param lexicalEntryId {string} identificativo dell'entrata lessicale
+   * @returns {Observable<LinguisticRelationModel[]>} observable della lista delle relazioni linguistiche
    */
-  getLanguages(): Observable<LexiconStatistics[]> {
-    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
+  getLinguisticRelations(property: string, lexicalEntryId: string): Observable<LinguisticRelationModel[]> {
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/lexicon/data/linguisticRelation?property=${property}&id=${encodedId}`);
   }
 
   /**
@@ -188,6 +223,10 @@ export class LexiconService {
     return this.http.get<Morphology[]>(`${this.lexoUrl}lexinfo/data/morphology`);
   }
 
+  /**
+   * GET che recupera la lista di namespace del lessico
+   * @returns {Observable<Namespace[]>} observable della lista di namespace
+   */
   getNamespaces(): Observable<Namespace[]> {
     return this.http.get<Namespace[]>(`${this.lexoUrl}lexicon/statistics/namespaces`);
   }
@@ -275,11 +314,36 @@ export class LexiconService {
     return values.join(', ')
   }
 
-  uploadConll(prefix: string, baseIRI: string, author: string, language: string,drop: boolean, file: FormData): Observable<any> {
+  /**
+   * POST che carica un lessico a partire da un file conll
+   * @param prefix {string} prefisso del namespace
+   * @param baseIRI {string} base iri del namespace
+   * @param author {string} nome dell'autore
+   * @param language {string} lingua del lessico in upload
+   * @param drop {boolean} definisce se debba essere inserito in sovrascrittura
+   * @param file {FormData} file conll da caricare
+   * @returns {Observable<any>} observable dell'esito dell'upload
+   */
+  uploadConll(prefix: string, baseIRI: string, author: string, language: string, drop: boolean, file: FormData): Observable<any> {
     const encodedBaseIRI = this.commonService.encodeUrl(baseIRI);
     return this.http.post(
       `${this.lexoUrl}import/conll?prefix=${prefix}&baseIRI=${encodedBaseIRI}&author=${author}&language=${language}&drop=${drop}`,
       file
+    )
+  }
+
+  /**
+   * POST di aggiornamento di una relazione generica
+   * @param lexicalEntryID {string} identificativo dell'entrata lessicale
+   * @param updater {GenericRelationUpdater} informazioni di aggiornamento di una relazione generica
+   * @returns {Observable<string>} observable del timestamp di ultimo aggiornamento
+   */
+  updateGenericRelation(lexicalEntryID: string, updater: GenericRelationUpdater): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryID);
+    return this.http.post(
+      `${this.lexoUrl}lexicon/update/genericRelation?id=${encodedLexEntry}`,
+      updater,
+      { responseType: "text" }
     )
   }
 

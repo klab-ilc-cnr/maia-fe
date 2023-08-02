@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -90,6 +90,14 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#textoDebugUrl" >textoDebugUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#textoUrl" >textoUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                 <a href="#workspacesUrl" >workspacesUrl</a>
                             </li>
                         </ul>
@@ -106,7 +114,31 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#addFolder" >addFolder</a>
+                                <a href="#_addFolder" >_addFolder</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_moveElement" >_moveElement</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_removeElement" >_removeElement</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_renameElement" >_renameElement</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_retrieveCorpus" >_retrieveCorpus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#_uploadFile" >_uploadFile</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#addElement" >addElement</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -115,6 +147,18 @@
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#deleteWorkspace" >deleteWorkspace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getTextoCurrentUserId" >getTextoCurrentUserId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getTextoUserRootFolder" >getTextoUserRootFolder</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getWorkspaceName" >getWorkspaceName</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -183,7 +227,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/services/workspace.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/services/workspace.service.ts:30</a></div>
                             </td>
                         </tr>
 
@@ -237,26 +281,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="addFolder"></a>
+                    <a name="_addFolder"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>addFolder</b></span>
-                        <a href="#addFolder"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>_addFolder</b></span>
+                        <a href="#_addFolder"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>addFolder(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>_addFolder(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="263"
-                            class="link-to-prism">src/app/services/workspace.service.ts:263</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="344"
+                            class="link-to-prism">src/app/services/workspace.service.ts:344</a></div>
                 </td>
             </tr>
 
@@ -316,6 +360,572 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="_moveElement"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>_moveElement</b></span>
+                        <a href="#_moveElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_moveElement(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, target_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, type: <a href="../undefineds/_ElementType.html" target="_self">_ElementType</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="297"
+                            class="link-to-prism">src/app/services/workspace.service.ts:297</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>POST che richiede lo spostamento di un elemento documentale</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>element_id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>identificativo numerico dell&#39;elemento</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>target_id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>identificativo numerico del folder di destinazione</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#_ElementType" target="_self" >_ElementType</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>tipo di elemento documentale</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable dell&#39;elemento documentale modificato</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_removeElement"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>_removeElement</b></span>
+                        <a href="#_removeElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_removeElement(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, type: <a href="../undefineds/_ElementType.html" target="_self">_ElementType</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="261"
+                            class="link-to-prism">src/app/services/workspace.service.ts:261</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>POST che esegue la cancellazione di file o di una cartella del corpus</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>element_id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>identificativo numerico dell&#39;elemento</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#_ElementType" target="_self" >_ElementType</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>tipo di elemento da eliminare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable dell&#39;esito della cancellazione</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_renameElement"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>_renameElement</b></span>
+                        <a href="#_renameElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_renameElement(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, rename_string: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, type: <a href="../undefineds/_ElementType.html" target="_self">_ElementType</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="221"
+                            class="link-to-prism">src/app/services/workspace.service.ts:221</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>POST che richiede l&#39;aggiornamento del nome dell&#39;elemento documentale</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>element_id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>identificativo numerico dell&#39;elemento documentale</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>rename_string</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>nome da dare</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#_ElementType" target="_self" >_ElementType</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>tipo di elemento documentale (file o folder)</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable dell&#39;elemento documentale aggiornato</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_retrieveCorpus"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>_retrieveCorpus</b></span>
+                        <a href="#_retrieveCorpus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_retrieveCorpus()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="168"
+                            class="link-to-prism">src/app/services/workspace.service.ts:168</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>GET che recupera il sistema documentale</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/DocumentSystem.html" target="_self" >Observable&lt;DocumentSystem&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable del sistema documentale</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_uploadFile"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>_uploadFile</b></span>
+                        <a href="#_uploadFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_uploadFile(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, file: File)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="193"
+                            class="link-to-prism">src/app/services/workspace.service.ts:193</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>POST che esegue l&#39;upload di un file nel sistema documentale</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>element_id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>identificativo numerico del file</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>file</td>
+                                    <td>
+                                            <code>File</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>il file da caricare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable del file caricato nel sistema documentale</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addElement"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>addElement</b></span>
+                        <a href="#addElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addElement(elementType: <a href="../undefineds/ElementType.html" target="_self">ElementType</a>, parentFolderId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, elementName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="356"
+                            class="link-to-prism">src/app/services/workspace.service.ts:356</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>elementType</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#ElementType" target="_self" >ElementType</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>parentFolderId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>elementName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/CorpusElement.html" target="_self" >Observable&lt;CorpusElement&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="createWorkspace"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -334,8 +944,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">src/app/services/workspace.service.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/app/services/workspace.service.ts:68</a></div>
                 </td>
             </tr>
 
@@ -413,8 +1023,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="53"
-                            class="link-to-prism">src/app/services/workspace.service.ts:53</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/app/services/workspace.service.ts:59</a></div>
                 </td>
             </tr>
 
@@ -474,6 +1084,187 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getTextoCurrentUserId"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>getTextoCurrentUserId</b></span>
+                        <a href="#getTextoCurrentUserId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTextoCurrentUserId()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="379"
+                            class="link-to-prism">src/app/services/workspace.service.ts:379</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;TextoUser&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTextoUserRootFolder"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>getTextoUserRootFolder</b></span>
+                        <a href="#getTextoUserRootFolder"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTextoUserRootFolder(userId?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="383"
+                            class="link-to-prism">src/app/services/workspace.service.ts:383</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/FolderElement.html" target="_self" >Observable&lt;FolderElement&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getWorkspaceName"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>getWorkspaceName</b></span>
+                        <a href="#getWorkspaceName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getWorkspaceName(workspaceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">src/app/services/workspace.service.ts:72</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>workspaceId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="loadWorkspaceStatus"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -492,8 +1283,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="122"
-                            class="link-to-prism">src/app/services/workspace.service.ts:122</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="135"
+                            class="link-to-prism">src/app/services/workspace.service.ts:135</a></div>
                 </td>
             </tr>
 
@@ -564,23 +1355,21 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>moveElement(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, target_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, type: <a href="../undefineds/ElementType.html" target="_self">ElementType</a>)</code>
+                    <code>moveElement(elementType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, elementId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, targetId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="233"
-                            class="link-to-prism">src/app/services/workspace.service.ts:233</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="322"
+                            class="link-to-prism">src/app/services/workspace.service.ts:322</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>POST che richiede lo spostamento di un elemento documentale</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -591,12 +1380,23 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>element_id</td>
+                                    <td>elementType</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>elementId</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
@@ -606,13 +1406,9 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>identificativo numerico dell&#39;elemento</p>
-
-                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>target_id</td>
+                                    <td>targetId</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
@@ -622,26 +1418,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>identificativo numerico del folder di destinazione</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>type</td>
-                                    <td>
-                                                <code><a href="../miscellaneous/enumerations.html#ElementType" target="_self" >ElementType</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>tipo di elemento documentale</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -649,12 +1425,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable dell&#39;elemento documentale modificato</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -675,23 +1450,21 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>removeElement(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, type: <a href="../undefineds/ElementType.html" target="_self">ElementType</a>)</code>
+                    <code>removeElement(elementType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, elementId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="208"
-                            class="link-to-prism">src/app/services/workspace.service.ts:208</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="279"
+                            class="link-to-prism">src/app/services/workspace.service.ts:279</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>POST che esegue la cancellazione di file o di una cartella del corpus</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -702,12 +1475,23 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>element_id</td>
+                                    <td>elementType</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>elementId</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
@@ -717,26 +1501,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>identificativo numerico dell&#39;elemento</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>type</td>
-                                    <td>
-                                                <code><a href="../miscellaneous/enumerations.html#ElementType" target="_self" >ElementType</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>tipo di elemento da eliminare</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -744,12 +1508,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable dell&#39;esito della cancellazione</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -770,23 +1533,21 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>renameElement(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, rename_string: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, type: <a href="../undefineds/ElementType.html" target="_self">ElementType</a>)</code>
+                    <code>renameElement(elementType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, elementId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, newName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="183"
-                            class="link-to-prism">src/app/services/workspace.service.ts:183</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="240"
+                            class="link-to-prism">src/app/services/workspace.service.ts:240</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>POST che richiede l&#39;aggiornamento del nome dell&#39;elemento documentale</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -797,28 +1558,11 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>element_id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>identificativo numerico dell&#39;elemento documentale</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>rename_string</td>
+                                    <td>elementType</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
@@ -828,15 +1572,11 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>nome da dare</p>
-
-                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>type</td>
+                                    <td>elementId</td>
                                     <td>
-                                                <code><a href="../miscellaneous/enumerations.html#ElementType" target="_self" >ElementType</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
 
                                     <td>
@@ -844,10 +1584,18 @@
                                     </td>
 
 
+                                </tr>
+                                <tr>
+                                    <td>newName</td>
                                     <td>
-                                        <p>tipo di elemento documentale (file o folder)</p>
-
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
                                 </tr>
                             </tbody>
                         </table>
@@ -855,12 +1603,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable dell&#39;elemento documentale aggiornato</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -881,33 +1628,57 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieveCorpus()</code>
+                    <code>retrieveCorpus(userId?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="155"
-                            class="link-to-prism">src/app/services/workspace.service.ts:155</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="175"
+                            class="link-to-prism">src/app/services/workspace.service.ts:175</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera il sistema documentale</p>
-</div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/DocumentSystem.html" target="_self" >Observable&lt;DocumentSystem&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="../classes/CorpusElement.html" target="_self" >Observable&lt;CorpusElement[]&gt;</a></code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable del sistema documentale</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -935,8 +1706,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="143"
-                            class="link-to-prism">src/app/services/workspace.service.ts:143</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="156"
+                            class="link-to-prism">src/app/services/workspace.service.ts:156</a></div>
                 </td>
             </tr>
 
@@ -1014,8 +1785,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="132"
-                            class="link-to-prism">src/app/services/workspace.service.ts:132</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="145"
+                            class="link-to-prism">src/app/services/workspace.service.ts:145</a></div>
                 </td>
             </tr>
 
@@ -1061,8 +1832,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="113"
-                            class="link-to-prism">src/app/services/workspace.service.ts:113</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="126"
+                            class="link-to-prism">src/app/services/workspace.service.ts:126</a></div>
                 </td>
             </tr>
 
@@ -1108,8 +1879,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="75"
-                            class="link-to-prism">src/app/services/workspace.service.ts:75</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/services/workspace.service.ts:88</a></div>
                 </td>
             </tr>
 
@@ -1219,8 +1990,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/app/services/workspace.service.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/services/workspace.service.ts:50</a></div>
                 </td>
             </tr>
 
@@ -1291,23 +2062,21 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>uploadFile(element_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, file: File)</code>
+                    <code>uploadFile(resourceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, file: File)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="168"
-                            class="link-to-prism">src/app/services/workspace.service.ts:168</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="201"
+                            class="link-to-prism">src/app/services/workspace.service.ts:201</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>POST che esegue l&#39;upload di un file nel sistema documentale</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1318,12 +2087,11 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>element_id</td>
+                                    <td>resourceId</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
@@ -1333,10 +2101,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>identificativo numerico del file</p>
-
-                                    </td>
                                 </tr>
                                 <tr>
                                     <td>file</td>
@@ -1349,10 +2113,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>il file da caricare</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1360,12 +2120,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable del file caricato nel sistema documentale</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -1397,7 +2156,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/services/workspace.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/services/workspace.service.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -1407,6 +2166,60 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="textoDebugUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>textoDebugUrl</b></span>
+                        <a href="#textoDebugUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/services/workspace.service.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="textoUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>textoUrl</b></span>
+                        <a href="#textoUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/services/workspace.service.ts:29</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1430,7 +2243,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/services/workspace.service.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/services/workspace.service.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -1459,8 +2272,10 @@ import { Tile } from &#x27;../models/tile/tile.model&#x27;;
 import { WorkspaceChoice } from &#x27;../models/workspace-choice.model&#x27;;
 import { Workspace } from &#x27;../models/workspace.model&#x27;;
 import { DocumentSystem } from &#x27;../models/corpus/document-system&#x27;;
-import { ElementType } from &#x27;../models/corpus/element-type&#x27;;
+import { ElementType, _ElementType } from &#x27;../models/corpus/element-type&#x27;;
 import { v4 as uuidv4 } from &#x27;uuid&#x27;;
+import { CorpusElement, FolderElement } from &#x27;../models/texto/corpus-element&#x27;;
+import { TextoUser } from &#x27;../models/user&#x27;;
 
 const headers &#x3D; new HttpHeaders().set(&#x27;Content-Type&#x27;, &#x27;application/json&#x27;); //TODO verificare rimozione per mancato uso
 
@@ -1475,6 +2290,8 @@ export class WorkspaceService {
   private workspacesUrl: string;
   /**Url per le chiamate a cash */
   private cashUrl: string;
+  private textoUrl: string;
+  private textoDebugUrl: string;
 
   /**
    * Costruttore per WorkspaceService
@@ -1483,6 +2300,8 @@ export class WorkspaceService {
   constructor(private http: HttpClient) {
     this.workspacesUrl &#x3D; environment.workspacesUrl; //inizializzo i due url dall&#x27;environment
     this.cashUrl &#x3D; environment.cashUrl;
+    this.textoUrl &#x3D; environment.textoUrl;
+    this.textoDebugUrl &#x3D; environment.textoDebugUrl;
   }
 
   //WORKSPACE
@@ -1514,6 +2333,13 @@ export class WorkspaceService {
     return this.http.post&lt;WorkspaceChoice&gt;(&#x60;${this.workspacesUrl}&#x60;, workspace);
   }
 
+  public getWorkspaceName(workspaceId: number) {
+    return this.http.get(
+      &#x60;${this.workspacesUrl}/name/${workspaceId}&#x60;,
+      { responseType: &quot;text&quot; }
+    );
+  }
+
   //TILE
 
   /**
@@ -1524,7 +2350,7 @@ export class WorkspaceService {
    * @returns {Observable&lt;boolean&gt;} observable dell&#x27;esito (positivo/negativo) del salvataggio
    */
   public saveWorkspaceStatus(workspaceId: number, localStorageData: any, openTiles: Map&lt;string, Tile&lt;any&gt;&gt;): Observable&lt;boolean&gt; {
-    let tiles: Array&lt;Tile&lt;any&gt;&gt; &#x3D; [];
+    const tiles: Array&lt;Tile&lt;any&gt;&gt; &#x3D; [];
     for (const [tileId, tile] of openTiles.entries()) {
       //tile.tileConfig &#x3D; JSON.stringify(tile.tileConfig); //passo le configurazioni come stringa
 
@@ -1533,23 +2359,23 @@ export class WorkspaceService {
         delete tile.tileConfig.resizeit;
       }
 
-      let newTile &#x3D; new Tile(tile.id!, tile.workspaceId!, tile.content, JSON.stringify(tile.tileConfig), tile.type!)
+      const newTile &#x3D; new Tile(tile.id!, tile.workspaceId!, tile.content, JSON.stringify(tile.tileConfig), tile.type!)
       tiles.push(newTile);
     }
 
-    let workspace &#x3D; new Workspace(workspaceId, tiles, localStorageData);
+    const workspace &#x3D; new Workspace(workspaceId, tiles, localStorageData);
 
     return this.http.put&lt;boolean&gt;(
       &#x60;${this.workspacesUrl}/layout&#x60;,
       workspace
     );
 
-/*     let layoutSave$ &#x3D; this.http.put&lt;boolean&gt;(
-      &#x60;${this.workspacesUrl}/layout&#x60;,
-      workspace
-    );
+    /*     let layoutSave$ &#x3D; this.http.put&lt;boolean&gt;(
+          &#x60;${this.workspacesUrl}/layout&#x60;,
+          workspace
+        );
 
-    return layoutSave$; */
+        return layoutSave$; */
 
     /*     let tilesSave$ &#x3D; this.http.post&lt;boolean&gt;(&#x60;${this.workspacesUrl}/tiles/${workspaceId}&#x60;, tiles);
         return tilesSave$.pipe(combineLatestWith(layoutSave$)); //esegue entrambi i servizi */
@@ -1603,11 +2429,23 @@ export class WorkspaceService {
    * GET che recupera il sistema documentale
    * @returns {Observable&lt;DocumentSystem&gt;} observable del sistema documentale
    */
-  public retrieveCorpus(): Observable&lt;DocumentSystem&gt; {
-    let uuid &#x3D; uuidv4();
-
-    return this.http.get&lt;DocumentSystem&gt;(&#x60;${this.cashUrl}/api/getDocumentSystem?requestUUID&#x3D;${uuid}&#x60;);
+  public _retrieveCorpus(): Observable&lt;DocumentSystem&gt; {
+    const uuid &#x3D; uuidv4();
+    //SIM: aggiunto public/ nel path
+    return this.http.get&lt;DocumentSystem&gt;(&#x60;${this.cashUrl}/api/public/getDocumentSystem?requestUUID&#x3D;${uuid}&#x60;);
     //return this.http.get&lt;DocumentSystem&gt;(&#x27;assets/mock/files.json&#x27;)
+  }
+
+  public retrieveCorpus(userId?: number): Observable&lt;CorpusElement[]&gt; {
+    const uuid &#x3D; uuidv4();
+    const user &#x3D; userId ? &#x60;/${userId}&#x60; : &#x27;&#x27;;
+    return this.http.get&lt;CorpusElement[]&gt;(
+      &#x60;${this.textoUrl}/texto/user${user}/tree&#x60;,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      }
+    );
+    // return this.http.get(&#x60;${this.textoDebugUrl}/texto/user${user}/tree&#x60;); //DEBUG
   }
 
   /**
@@ -1616,25 +2454,38 @@ export class WorkspaceService {
    * @param file {File} il file da caricare
    * @returns {Observable&lt;any&gt;} observable del file caricato nel sistema documentale
    */
-  public uploadFile(element_id: number, file: File): Observable&lt;any&gt; {
-    let uuid &#x3D; uuidv4();
+  public _uploadFile(element_id: number, file: File): Observable&lt;any&gt; {
+    const uuid &#x3D; uuidv4();
 
-    let formData: FormData &#x3D; new FormData();
+    const formData: FormData &#x3D; new FormData();
     formData.append(&#x27;file&#x27;, file);
     return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/crud/uploadFile?requestUUID&#x3D;${uuid}&amp;element-id&#x3D;${element_id}&#x60;, formData);
+  }
+
+  public uploadFile(resourceId: number, file: File) {
+    const uuid &#x3D; uuidv4();
+    const formData &#x3D; new FormData();
+    formData.append(&#x27;file&#x27;, file);
+    return this.http.post(
+      &#x60;${this.textoUrl}/texto/resource/${resourceId}/upload&#x60;,
+      formData,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      }
+    );
   }
 
   /**
    * POST che richiede l&#x27;aggiornamento del nome dell&#x27;elemento documentale
    * @param element_id {number} identificativo numerico dell&#x27;elemento documentale
    * @param rename_string {string} nome da dare
-   * @param type {ElementType} tipo di elemento documentale (file o folder)
+   * @param type {_ElementType} tipo di elemento documentale (file o folder)
    * @returns {Observable&lt;any&gt;} observable dell&#x27;elemento documentale aggiornato
    */
-  public renameElement(element_id: number, rename_string: string, type: ElementType): Observable&lt;any&gt; {
-    let uuid &#x3D; uuidv4();
+  public _renameElement(element_id: number, rename_string: string, type: _ElementType): Observable&lt;any&gt; {
+    const uuid &#x3D; uuidv4();
 
-    let payload &#x3D; {
+    const payload &#x3D; {
       &quot;uuid&quot;: uuid,
       &quot;user-id&quot;: 0,
       &quot;element-id&quot;: element_id,
@@ -1643,23 +2494,38 @@ export class WorkspaceService {
 
     let operationUrl &#x3D; &quot;renameFolder&quot;;
 
-    if (type &#x3D;&#x3D; ElementType.File) {
+    if (type &#x3D;&#x3D; _ElementType.File) {
       operationUrl &#x3D; &quot;renameFile&quot;;
     }
 
     return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/crud/${operationUrl}&#x60;, payload);
   }
 
+  public renameElement(elementType: string, elementId: number, newName: string) {
+    const uuid &#x3D; uuidv4();
+    const operationUrl &#x3D; elementType &#x3D;&#x3D;&#x3D; ElementType.FOLDER ? &#x27;folder&#x27; : &#x27;resource&#x27;;
+    const payload &#x3D; {
+      name: newName
+    };
+    return this.http.post(
+      &#x60;${this.textoUrl}/texto/${operationUrl}/${elementId}/update&#x60;,
+      payload,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      }
+    );
+  }
+
   /**
    * POST che esegue la cancellazione di file o di una cartella del corpus
    * @param element_id {number} identificativo numerico dell&#x27;elemento
-   * @param type {ElementType} tipo di elemento da eliminare
+   * @param type {_ElementType} tipo di elemento da eliminare
    * @returns {Observable&lt;any&gt;} observable dell&#x27;esito della cancellazione
    */
-  public removeElement(element_id: number, type: ElementType): Observable&lt;any&gt; {
-    let uuid &#x3D; uuidv4();
+  public _removeElement(element_id: number, type: _ElementType): Observable&lt;any&gt; {
+    const uuid &#x3D; uuidv4();
 
-    let payload &#x3D; {
+    const payload &#x3D; {
       &quot;uuid&quot;: uuid,
       &quot;user-id&quot;: 0,
       &quot;element-id&quot;: element_id
@@ -1667,22 +2533,33 @@ export class WorkspaceService {
 
     let operationUrl &#x3D; &quot;removeFolder&quot;;
 
-    if (type &#x3D;&#x3D; ElementType.File) {
+    if (type &#x3D;&#x3D; _ElementType.File) {
       operationUrl &#x3D; &quot;removeFile&quot;;
     }
 
     return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/crud/${operationUrl}&#x60;, payload);
   }
 
+  public removeElement(elementType: string, elementId: number) {
+    const uuid &#x3D; uuidv4();
+    const operationUrl &#x3D; elementType &#x3D;&#x3D;&#x3D; ElementType.FOLDER ? &#x27;folder&#x27; : &#x27;resource&#x27;;
+    return this.http.get(
+      &#x60;${this.textoUrl}/texto/${operationUrl}/${elementId}/remove&#x60;,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      }
+    );
+  }
+
   /**
    * POST che richiede lo spostamento di un elemento documentale
    * @param element_id {number} identificativo numerico dell&#x27;elemento
    * @param target_id {number} identificativo numerico del folder di destinazione
-   * @param type {ElementType} tipo di elemento documentale
+   * @param type {_ElementType} tipo di elemento documentale
    * @returns {Observable&lt;any&gt;} observable dell&#x27;elemento documentale modificato
    */
-  public moveElement(element_id: number, target_id: number, type: ElementType): Observable&lt;any&gt; {
-    let uuid &#x3D; uuidv4();
+  public _moveElement(element_id: number, target_id: number, type: _ElementType): Observable&lt;any&gt; {
+    const uuid &#x3D; uuidv4();
 
     let realTargetId &#x3D; target_id;
     // To be able to move to the root it is necessary to change the target id from 0 to 1 (which in the db appears to be the root)
@@ -1690,7 +2567,7 @@ export class WorkspaceService {
       realTargetId &#x3D; 1;
     }
 
-    let payload &#x3D; {
+    const payload &#x3D; {
       &quot;uuid&quot;: uuid,
       &quot;user-id&quot;: 0,
       &quot;element-id&quot;: element_id,
@@ -1699,11 +2576,28 @@ export class WorkspaceService {
 
     let operationUrl &#x3D; &quot;moveFolder&quot;;
 
-    if (type &#x3D;&#x3D; ElementType.File) {
+    if (type &#x3D;&#x3D; _ElementType.File) {
       operationUrl &#x3D; &quot;moveFileTo&quot;;
     }
 
     return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/crud/${operationUrl}&#x60;, payload);
+  }
+
+  public moveElement(elementType: string, elementId: number, targetId: number) { //TODO sostituire elementType con una enum?
+    const uuid &#x3D; uuidv4();
+    const operationUrl &#x3D; elementType &#x3D;&#x3D;&#x3D; ElementType.FOLDER ? &#x27;folder&#x27; : &#x27;resource&#x27;;
+    const payload &#x3D; {
+      parent: {
+        id: targetId
+      }
+    };
+    return this.http.post(
+      &#x60;${this.textoUrl}/texto/${operationUrl}/${elementId}/update&#x60;,
+      payload,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      }
+    );
   }
 
   /**
@@ -1711,10 +2605,10 @@ export class WorkspaceService {
    * @param element_id {number} identificativo numerico dell&#x27;elemento
    * @returns {Observable&lt;any&gt;} observable della nuova cartella inserita
    */
-  public addFolder(element_id: number): Observable&lt;any&gt; {
-    let uuid &#x3D; uuidv4();
+  public _addFolder(element_id: number): Observable&lt;any&gt; {
+    const uuid &#x3D; uuidv4();
 
-    let payload &#x3D; {
+    const payload &#x3D; {
       &quot;uuid&quot;: uuid,
       &quot;user-id&quot;: 0,
       &quot;element-id&quot;: element_id
@@ -1722,8 +2616,38 @@ export class WorkspaceService {
 
     return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/crud/addFolder&#x60;, payload);
   }
+
+  public addElement(elementType: ElementType, parentFolderId: number, elementName: string, userId: number): Observable&lt;CorpusElement&gt; {
+    const uuid &#x3D; uuidv4();
+    const operationUrl &#x3D; elementType &#x3D;&#x3D;&#x3D; ElementType.FOLDER ? &#x27;folder&#x27; : &#x27;resource&#x27;;
+    const payload &#x3D; {
+      parent: {
+        id: parentFolderId
+      },
+      name: elementName,
+      user: {
+        id: userId
+      }
+    };
+
+    return this.http.post&lt;CorpusElement&gt;(
+      &#x60;${this.textoUrl}/texto/${operationUrl}/create&#x60;,
+      payload,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
+      }
+    )
+  }
   // FINE CHIAMATE CASH SERVER
 
+  public getTextoCurrentUserId(): Observable&lt;TextoUser&gt; {
+    return this.http.get&lt;TextoUser&gt;(&#x60;${this.textoUrl}/texto/user/me&#x60;)
+  }
+
+  public getTextoUserRootFolder(userId?: number): Observable&lt;FolderElement&gt; {
+    const operationUrl &#x3D; userId ? &#x60;/${userId}&#x60; : &#x27;&#x27;;
+    return this.http.get&lt;FolderElement&gt;(&#x60;${this.textoUrl}/texto/user${operationUrl}/home&#x60;);
+  }
 }
 </code></pre>
     </div>

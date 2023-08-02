@@ -1,0 +1,62 @@
+<div *ngIf="formEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
+  <form [formGroup]="form" class="formgrid grid">
+    <div class="field col-6" style="align-self: center;">
+      <em>Last update: {{formEntry.lastUpdate | date: 'medium'}}</em>
+    </div>
+    <div class="field col-6">
+      <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"
+        pTooltip="Delete lexical form" (click)="onDeleteLexicalForm()"></button>
+    </div>
+    <div class="field col-6">
+      <label for="pos">Part-of-Speech</label>
+      <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId"
+        [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>
+    </div>
+    <div class="field col-6">
+      <label for="type">Type</label>
+      <p-dropdown [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" [filter]="true"
+        filterBy="valueLabel" [placeholder]="emptyField" formControlName="type" name="type"
+        styleClass="w-full"></p-dropdown>
+    </div>
+    <div class="field col-12">
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          <p-menu #menuRepresentation [model]="representationItems" [popup]="true" appendTo="body"></p-menu>
+          Representation <button pButton pRipple icon="pi pi-plus" type="button"
+            (click)="menuRepresentation.toggle($event)"
+            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <form [formGroup]="form.controls.label">
+            <div class="field col-12" *ngFor="let control of labelFormItems">
+              <label [for]="control.propertyID">{{control.propertyID}}</label>
+              <span class="justify-content-between">
+                <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"
+                  class="col-10 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
+                <button pButton pRipple type="button" icon="pi pi-times" *ngIf="control.propertyID!=='writtenRep'"
+                  class=" col-1 p-button-rounded p-button-danger p-button-text"
+                  (click)="onRemoveLabelElement(control.propertyID)"></button>
+              </span>
+            </div>
+          </form>
+        </ng-template>
+      </p-fieldset>
+    </div>
+    <div class="field col-12">
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          Morphological traits<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
+            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"
+            [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"
+            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"
+            [isCheckboxVisible]="false" [relationField]="morph.value.relation"
+            [valueField]="morph.value.value"></app-double-autocomplete>
+        </ng-template>
+      </p-fieldset>
+    </div>
+  </form>
+</div>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

@@ -1,171 +1,118 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card">
-          <div class="page-header">
-            <h5>Gestore layer</h5>
-            <p-button label="Nuovo layer" icon="fa-solid fa-layer-group" styleClass="p-button-danger" (click)="showLayerModal()"
-              class="ms-start"></p-button>
-          </div>
-          <div class="card-body p-fluid">
-            <p-table #dt [value]="layers" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-              currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
-              [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
-              [globalFilterFields]="['name','color','description']">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="color">Colore<p-sortIcon field="color"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon>
-                    </th>
-                    <th></th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="caption">
-                  <div class="flex">
-                    <span class="p-input-icon-left ml-auto">
-                      <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Cerca" />
-                    </span>
-                  </div>
-                </ng-template>
-                <ng-template pTemplate="body" let-layer let-i="rowIndex">
-                  <tr>
-                    <td>{{layer.name}}</td>
-                    <td>
-                      <p-colorPicker [(ngModel)]="layers[i].color" [disabled]="true"></p-colorPicker>
-                    </td>
-                    <td>{{layer.description}}</td>
-                    <td>
-                      <button pButton pRipple icon="pi pi-pencil"
-                        class="p-button-rounded p-button-success p-mr-2 mx-2"
-                        (click)="showEditLayerModal(layer)"></button>
-                      <button pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
-                        (click)="viewLayerFeatures(layer)"></button>
-                      <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
-                        (click)="showDeleteLayerModal(layer)"></button>
-                    </td>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="summary">
-                  <div class="p-d-flex p-ai-center p-jc-between">
-                    In totale ci sono {{layers ? layers.length : 0 }} layer.
-                  </div>
-                </ng-template>
-            </p-table>
-          </div>
-        </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="page-header">
+        <h5>Layer manager</h5>
+        <p-button label="New layer" icon="fa-solid fa-layer-group" styleClass="p-button-danger"
+          (click)="showLayerModal()" class="ms-start"></p-button>
+      </div>
+      <div class="card-body p-fluid">
+        <p-table #dt [value]="(layers$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+          currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
+          [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
+          [globalFilterFields]="['name','color','description']">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="color">Color<p-sortIcon field="color"></p-sortIcon>
+              </th>
+              <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon>
+              </th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="caption">
+            <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search" />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="body" let-layer let-i="rowIndex">
+            <tr>
+              <td>{{layer.name}}</td>
+              <td>
+                <p-colorPicker [(ngModel)]="layer.color" [disabled]="true"></p-colorPicker>
+              </td>
+              <td>{{layer.description}}</td>
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 mx-2"
+                  (click)="showEditLayerModal(layer)"></button>
+                <button pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
+                  (click)="viewLayerFeatures(layer)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+                  (click)="showDeleteLayerModal(layer)"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+              In total there are {{(layers$|async)?.length}} layers.
+            </div>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
+  </div>
 </div>
 
-<div
-  class="modal fade"
-  id="layerModal"
-  tabindex="-1"
-  aria-labelledby="layerModalLabel"
-  aria-hidden="true"
->
+<p-dialog [header]="modalTitle" class="modal" [(visible)]="visibleEditNewLayer" [modal]="true"
+  [style]="{ minWidth: '30vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        (ngSubmit)="onSubmitLayerModal(layerForm)"
-        #layerForm="ngForm"
-        id="layerForm"
-        class="validated"
-
-      >
-        <input type="hidden" #id="ngModel" name="id" [(ngModel)]="layer.id">
-        <div class="modal-header">
-          <h5 class="modal-title" id="layerModalLabel">{{layerModalTitle}}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form (ngSubmit)="onSubmitLayerModal()" [formGroup]="tlayerForm" id="layerForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Nome *</label>
+            <label class="form-label">Name *</label>
             <div class="p-fluid">
-              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="layer.name"
-                required autofocus maxlength="300" placeholder="Nome layer" appWhitespacesValidator [appNotDuplicateName]="filteredLayerNames">
+              <input formControlName="name" type="text" name="name" class="form-control" autofocus maxlength="300"
+                placeholder="Layer name">
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
-                  Il nome è obbligatorio
+                  Name is mandatory
                 </div>
                 <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
-                  Il nome del layer non può contenere solo spazi vuoti
+                  The layer name cannot contain only blanks
                 </div>
                 <div *ngIf="name.errors?.['notDuplicateName']">
-                  Esiste già un layer con questo nome
+                  A layer with this name already exists
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Colore *</label>
+            <label class="form-label">Color *</label>
             <div class="p-fluid">
-              <p-colorPicker #color="ngModel" name="color" class="nopacity" [(ngModel)]="layer.color" required></p-colorPicker>
+              <p-colorPicker formControlName="color" name="color" class="nopacity"></p-colorPicker>
               <div *ngIf="color.invalid && (color.touched || color.dirty)" class="invalid-feedback">
                 <div *ngIf="color.errors?.['required']">
-                  Il colore è obbligatorio
+                  Color is mandatory
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Descrizione</label>
+            <label class="form-label">Description</label>
             <div class="p-fluid">
-              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="layer.description"></textarea>
+              <textarea rows="3" type="text" name="description" class="form-control"
+                formControlName="description"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Annulla
+          <button type="button" class="btn btn-secondary" (click)="visibleEditNewLayer = false;layerOnEdit=undefined;">
+            Cancel
           </button>
-          <button type="button" class="btn btn-primary" (click)="onSubmitLayerModal(layerForm)">
-            <span *ngIf="isEditing; else elseBlock">
-              Aggiorna
-            </span>
-            <ng-template #elseBlock>
-              <span>Aggiungi</span>
-            </ng-template>
+          <button type="submit" class="btn btn-primary"
+            [disabled]="tlayerForm.invalid || name.value === '' || color.value === ''">
+            {{layerOnEdit!==undefined ? 'Update' : 'Add'}}
           </button>
         </div>
       </form>
     </div>
   </div>
-</div>
-
-<!-- <p-dialog [(visible)]="layerDialog" [style]="{width: '450px'}" header="Dettagli layer" [modal]="true"
-    styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="form-group">
-            <label for="name">Nome</label>
-            <input class="form-control" type="text" pInputText id="name" [(ngModel)]="layer.name" required autofocus />
-            <br>
-            <small class="p-invalid" *ngIf="submitted && !layer.name">Il nome è obbligatorio.</small>
-        </div>
-        <div class="form-group">
-            <label for="name">Colore</label>
-            <p-colorPicker class="nopacity" [(ngModel)]="layer.color" required></p-colorPicker>
-            <br>
-            <small class="p-invalid" *ngIf="submitted && !layer.color">Il colore è obbligatorio.</small>
-        </div>
-        <div class="form-group">
-            <label for="description">Descrizione</label>
-            <textarea class="form-control" id="description" pInputTextarea [(ngModel)]="layer.description" rows="3"
-                cols="20"></textarea>
-        </div>
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annulla" icon="pi pi-times" class="p-button-text"
-            (click)="hideDialog()"></button>
-        <button pButton pRipple label="Salva" icon="pi pi-check" class="p-button-text" (click)="saveLayer()"></button>
-    </ng-template>
-</p-dialog> -->
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

@@ -1,19 +1,20 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { v4 as uuidv4 } from 'uuid';
 import { Layer } from '../models/layer/layer.model';
+import { TFeature } from '../models/texto/t-feature';
+import { TLayer } from '../models/texto/t-layer';
 
 /**Classe dei servizi relativi ai layer */
 @Injectable({
   providedIn: 'root'
 })
 export class LayerService {
-
+  private textoUrl: string;
   /**Url per le chiamate relative ai layer */
   private layerUrl: string;
-  /**Url per le chiamate relative alle feature */
-  private featureUrl: string; //TODO verificare se si può rimuovere in quanto non utilizzato
 
   /**
    * Costruttore per LayerService
@@ -21,7 +22,7 @@ export class LayerService {
    */
   constructor(private http: HttpClient) {
     this.layerUrl = environment.layersUrl; //inizializza gli url sulla base degli environment
-    this.featureUrl = environment.featureUrl;
+    this.textoUrl = environment.textoUrl;
   }
 
   /**
@@ -37,7 +38,7 @@ export class LayerService {
    * @param layer {Layer} layer modificato
    * @returns {Observable<Layer>} observable del layer modificato
    */
-  public updateLayer(layer: Layer): Observable<Layer> {
+  public _updateLayer(layer: Layer): Observable<Layer> {
     return this.http.put<Layer>(`${this.layerUrl}`, layer);
   }
 
@@ -55,11 +56,66 @@ export class LayerService {
    * @param layer {Layer} nuovo layer
    * @returns {Observable<Layer>} observable del nuovo layer
    */
-  public createLayer(layer: Layer): Observable<Layer> {
+  public _createLayer(layer: Layer): Observable<Layer> {
     return this.http.post<Layer>(`${this.layerUrl}`, layer);
   }
 
   //FEATURES
 
 
+  //#region TEXTO services
+
+  public createLayer(newLayer: TLayer): Observable<TLayer> {
+    const uuid = uuidv4();
+    return this.http.post<TLayer>(
+      `${this.textoUrl}/texto/layer/create`,
+      newLayer,
+      { headers: new HttpHeaders({ 'UUID': uuid }) },
+    );
+  }
+
+  public removeLayerById(layerId: number) {
+    const uuid = uuidv4();
+    return this.http.get(
+      `${this.textoUrl}/texto/layer/${layerId}/remove`,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid })
+      },
+    )
+  }
+
+  public retrieveLayerById(layerId: number): Observable<TLayer> {
+    const uuid = uuidv4();
+    return this.http.get<TLayer>(
+      `${this.textoUrl}/texto/layer/${layerId}`,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid })
+      },
+    )
+  }
+
+  public retrieveLayerFeatureList(layerId: number): Observable<TFeature[]> {
+    return this.http.get<TFeature[]>(`${this.textoUrl}/texto/layer/${layerId}/features`);
+  }
+
+  public retrieveLayerList(): Observable<TLayer[]> {
+    const uuid = uuidv4();
+    return this.http.get<TLayer[]>(
+      `${this.textoUrl}/texto/layer/list`,
+      {
+        headers: new HttpHeaders({ 'UUID': uuid })
+      },
+    )
+  }
+
+  public updateLayerById(updatedLayer: TLayer): Observable<TLayer> {
+    const uuid = uuidv4();
+    return this.http.post<TLayer>(
+      `${this.textoUrl}/texto/layer/${updatedLayer.id}/update`,
+      updatedLayer,
+      { headers: new HttpHeaders({ 'UUID': uuid }) },
+    );
+  }
+
+  //#endregion
 }

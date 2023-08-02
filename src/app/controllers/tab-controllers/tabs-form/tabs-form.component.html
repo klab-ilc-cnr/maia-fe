@@ -1,0 +1,9 @@
+<p-tabView [scrollable]="true" [(activeIndex)]="selectedTab">
+  <p-tabPanel header="Form">
+    <p-skeleton *ngIf="!formEntry" width="30rem" height="40rem"></p-skeleton>
+    <app-form-core-editor *ngIf="formEntry && selectedTab === 0" [formEntry]="formEntry"></app-form-core-editor>
+  </p-tabPanel>
+  <p-tabPanel header="Metadata">
+    <app-form-metadata-editor *ngIf="formEntry && selectedTab === 1" [entry$]="entry$" confidenceLabel="Form confidence"></app-form-metadata-editor>
+  </p-tabPanel>
+</p-tabView>

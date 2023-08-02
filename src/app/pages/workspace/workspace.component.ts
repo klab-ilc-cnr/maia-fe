@@ -1,29 +1,30 @@
-import { LayerService } from 'src/app/services/layer.service';
-import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
-import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
 import { Observable, Subscription, take } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
-import { Tile } from 'src/app/models/tile/tile.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
+import { Tile } from 'src/app/models/tile/tile.model';
+import { LayerService } from 'src/app/services/layer.service';
 import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
+import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
+import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
-import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
+import { MessageService } from 'primeng/api';
+import { Layer } from 'src/app/models/layer/layer.model';
+import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
+import { CorpusElement } from 'src/app/models/texto/corpus-element';
+import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
+import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
 import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
-import { MessageService } from 'primeng/api';
-import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
-import { Layer } from 'src/app/models/layer/layer.model';
-import { LoaderService } from 'src/app/services/loader.service';
-import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
-import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
 import { CommonService } from 'src/app/services/common.service';
-import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
+import { LoaderService } from 'src/app/services/loader.service';
+import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
-import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
+import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
+import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -233,7 +234,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loaderService.show();
         this.layerService.retrieveLayers().subscribe({
           next: (layers: Layer[]) => {
-            this.visibleLayers = layers;
+            this.visibleLayers = layers; //TODO da gestire
             this.loaderService.hide();
 
             if (this.workspaceId === this.newId) {
@@ -758,17 +759,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   private generateCorpusExplorerPanelConfiguration(ecPanelId: string) {
     const componentRef = this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
 
-    componentRef.instance.onTextSelectEvent //mappa l'evento di selezione di un testo nell'ec
-      .subscribe({
-        next: (event: any) => {
-          console.log("qui", event);
-
-          const textId = event.node.data?.['element-id'];
-          const title = event.node.label;
-
-          this.openTextPanel(textId, title.toLowerCase())
-        }
-      });
+    const subs = componentRef.instance.onTextSelectEvent //mappa l'evento di selezione di un testo nell'ec
+      .subscribe((resource: CorpusElement) => {
+        console.info('onTextSelectEvent ricevuto', resource);
+        const textId = resource.id;
+        const title = resource.name ?? '';
+        this.openTextPanel(textId, title?.toLowerCase());
+      }
+      );
 
     const element = componentRef.location.nativeElement;
 
@@ -792,6 +790,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         this.removeFromTileMap(panel.id, TileType.CORPUS);
         this.removeComponentFromList(panel.id);
+        subs.unsubscribe();
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
@@ -822,7 +821,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
     componentRef.instance.height = window.innerHeight / 3 * 2;
-    componentRef.instance.visibleLayers = this.visibleLayers;
+    // componentRef.instance.visibleLayers = this.visibleLayers;
 
     const element = componentRef.location.nativeElement;
 

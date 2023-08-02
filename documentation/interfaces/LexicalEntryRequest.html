@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -556,42 +556,54 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface LexicalEntryRequest {
-    /**Testo da cercare */
-    text: string,
-    /**Modalità di ricerca */
-    searchMode: searchModeEnum,
-    /**Tipo */
-    type: string,
-    /**POS */
-    pos: string,
-    /**Tipo di forma (entrata o forma flessa) */
-    formType: formTypeEnum | string,
-    /**Autore dell&#x27;entrata */
-    author: string,
-    /**Lingua dell&#x27;entrata */
-    lang: string,
-    /**Stato di lavorazione */
-    status: string,
-    /**offset */
-    offset: number,
-    /**Limite dei risultati */
-    limit: number
-  }
-  
-  /**Enum delle tipologie di ricerca disponibili */
-  export enum searchModeEnum {
-    equals &#x3D; &quot;equals&quot;,
-    startsWith &#x3D; &quot;startsWith&quot;,
-    contains &#x3D; &quot;contains&quot;,
-    endsWith &#x3D; &quot;endsWith&quot;
-  }
-  
-  /**Enum delle tipologie di forme disponibili */
-  export enum formTypeEnum {
-    flexed &#x3D; &quot;flexed&quot;,
-    entry &#x3D; &quot;entry&quot;
-  }</code></pre>
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { LexicalEntryListItem } from &quot;./lexical-entry.model&quot;
+
+/**Interfaccia che rappresenta i filtri della richiesta di un&#x27;entrata lessicale */
+export interface LexicalEntryRequest {
+  /**Testo da cercare */
+  text: string,
+  /**Modalità di ricerca */
+  searchMode: searchModeEnum,
+  /**Tipo */
+  type: string,
+  /**POS */
+  pos: string,
+  /**Tipo di forma (entrata o forma flessa) */
+  formType: formTypeEnum | string,
+  /**Autore dell&#x27;entrata */
+  author: string,
+  /**Lingua dell&#x27;entrata */
+  lang: string,
+  /**Stato di lavorazione */
+  status: string,
+  /**offset */
+  offset: number,
+  /**Limite dei risultati */
+  limit: number
+}
+
+export interface LexicalEntityResponseBase {
+  totalHits: number
+}
+
+export interface LexicalEntriesResponse extends LexicalEntityResponseBase {
+  list: LexicalEntryListItem[];
+}
+
+/**Enum delle tipologie di ricerca disponibili */
+export enum searchModeEnum {
+  equals &#x3D; &quot;equals&quot;,
+  startsWith &#x3D; &quot;startsWith&quot;,
+  contains &#x3D; &quot;contains&quot;,
+  endsWith &#x3D; &quot;endsWith&quot;
+}
+
+/**Enum delle tipologie di forme disponibili */
+export enum formTypeEnum {
+  flexed &#x3D; &quot;flexed&quot;,
+  entry &#x3D; &quot;entry&quot;
+}
+</code></pre>
     </div>
 </div>
 

@@ -18,3 +18,12 @@ export class User {
   /**Lista delle lingue associate all'utente */
   languages: Language[] | undefined;
 }
+
+export class TextoUser {
+  email: string | undefined;
+  enabled: boolean | undefined;
+  id!: number;
+  name: string | undefined;
+  role: {id: number} | undefined;
+  username: string | undefined;
+}

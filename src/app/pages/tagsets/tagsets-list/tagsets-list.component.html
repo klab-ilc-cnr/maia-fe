@@ -2,39 +2,86 @@
   <div class="col-12">
     <div class="card">
       <div class="page-header">
-        <h5>Gestore tagsets</h5>
-        <button pButton pRipple label="Nuovo tagset" icon="pi pi-tag" class="p-button-danger" (click)="onNew()"></button>
+        <h5>Tagsets manager</h5>
+        <button pButton pRipple label="New tagset" icon="pi pi-tag" class="p-button-danger" (click)="onNew()"></button>
       </div>
       <div class="card-body p-fluid">
-        <p-table #dt [value]="tagsets" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-          currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
+        <p-table [value]="(tagsets$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+          currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
           [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
-            <ng-template pTemplate="header">
-              <tr>
-                <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon></th>
-                <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon></th>
-                <th></th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-tagset let-i="rowIndex">
-              <tr>
-                <td>{{tagset.name}}</td>
-                <td>{{tagset.description}}</td>
-                <td>
-                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="onEdit(tagset)"></button>
-                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="onDelete(tagset)"></button>
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-              <div class="p-d-flex p-ai-center p-jc-between">
-                In totale ci sono {{ tagsets ? tagsets.length : 0 }} tagsets.
-              </div>
-            </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+              <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-tagset let-i="rowIndex">
+            <tr>
+              <td>{{tagset.name}}</td>
+              <td>{{tagset.description}}</td>
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2"
+                  (click)="onEdit(tagset)"></button>
+                  <button pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
+                  (click)="onEditTagsetItems(tagset)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+                  (click)="onDelete(tagset)"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+              In total there are {{ tagsetTotal$|async }} tagsets.
+            </div>
+          </ng-template>
         </p-table>
       </div>
     </div>
   </div>
 </div>
+<p-dialog [header]="modalTitle" class="modal" [(visible)]="visibleEditNewTagset" [modal]="true"
+  [style]="{ minWidth: '30vw', maxWidth: '50vw' }" appendTo="body">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmitTagsetModal()" [formGroup]="tagsetForm" id="tagsetForm" class="validated">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Name *</label>
+            <div class="p-fluid">
+              <input type="text" name="name" class="form-control" formControlName="name" autofocus maxlength="300"
+                placeholder="Tagset name">
+              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
+                <div *ngIf="name.errors?.['required']">
+                  Name is mandatory
+                </div>
+                <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                  The tagset name cannot contain only blanks
+                </div>
+                <div *ngIf="name.errors?.['notDuplicateName']">
+                  A tagset with this name already exists
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <div class="p-fluid">
+              <textarea rows="3" formControlName="description" type="text" name="description"
+                class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="visibleEditNewTagset=false;">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary"
+            [disabled]="tagsetForm.invalid || name.value === ''">{{tagsetOnEdit!==undefined? 'Update': 'Add'}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

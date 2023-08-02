@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>projectx-fe documentation</title>
+        <title>maia-fe documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">projectx-fe documentation</a>
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -98,6 +98,13 @@
 
 
 
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                                <code><a href="../injectables/LayerStateService.html" target="_self" >LayerStateService</a></code>
+                                <code><a href="../injectables/TagsetStateService.html" target="_self" >TagsetStateService</a></code>
+                </td>
+            </tr>
 
 
             <tr>
@@ -145,23 +152,38 @@
                                 <a href="#deleteFeature" >deleteFeature</a>
                             </li>
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#featureForm" >featureForm</a>
+                                <a href="#featureModel" >featureModel</a>
                             </li>
                             <li>
-                                <a href="#featureModel" >featureModel</a>
+                                <a href="#featureNames" >featureNames</a>
+                            </li>
+                            <li>
+                                <a href="#featureOnEdit" >featureOnEdit</a>
                             </li>
                             <li>
                                 <a href="#features" >features</a>
                             </li>
                             <li>
+                                <a href="#features$" >features$</a>
+                            </li>
+                            <li>
+                                <a href="#featuresForm" >featuresForm</a>
+                            </li>
+                            <li>
                                 <a href="#featureTypeOptions" >featureTypeOptions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#featureTypes" >featureTypes</a>
                             </li>
                             <li>
                                 <a href="#layerId" >layerId</a>
                             </li>
                             <li>
                                 <a href="#layerInfo" >layerInfo</a>
+                            </li>
+                            <li>
+                                <a href="#newEditTitle" >newEditTitle</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -172,6 +194,23 @@
                             </li>
                             <li>
                                 <a href="#tagsetOptions" >tagsetOptions</a>
+                            </li>
+                            <li>
+                                <a href="#tagsets$" >tagsets$</a>
+                            </li>
+                            <li>
+                                <a href="#tlayer" >tlayer</a>
+                            </li>
+                            <li>
+                                <a href="#tlayer$" >tlayer$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
+                            </li>
+                            <li>
+                                <a href="#visibleEditNewFeature" >visibleEditNewFeature</a>
                             </li>
                         </ul>
                     </td>
@@ -189,13 +228,6 @@
                                 <a href="#back" >back</a>
                             </li>
                             <li>
-                                <a href="#featureTypeChange" >featureTypeChange</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#loadDetails" >loadDetails</a>
-                            </li>
-                            <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
                             </li>
                             <li>
@@ -205,18 +237,6 @@
                                 <a href="#onSubmitFeatureModal" >onSubmitFeatureModal</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#resetForm" >resetForm</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#save" >save</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#saveWithFormErrors" >saveWithFormErrors</a>
-                            </li>
-                            <li>
                                 <a href="#showDeleteFeatureModal" >showDeleteFeatureModal</a>
                             </li>
                             <li>
@@ -224,14 +244,6 @@
                             </li>
                             <li>
                                 <a href="#showFeatureModal" >showFeatureModal</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#showOperationFailed" >showOperationFailed</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#showOperationInProgress" >showOperationInProgress</a>
                             </li>
                         </ul>
                     </td>
@@ -250,19 +262,19 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                    <a href="#name" >name</a>
+                                </li>
+                                <li>
+                                    <a href="#type" >type</a>
+                                </li>
+                                <li>
+                                    <a href="#tagset" >tagset</a>
+                                </li>
+                                <li>
+                                    <a href="#description" >description</a>
+                                </li>
+                                <li>
                                     <a href="#isEditing" >isEditing</a>
-                                </li>
-                                <li>
-                                    <a href="#featureModalTitle" >featureModalTitle</a>
-                                </li>
-                                <li>
-                                    <a href="#featureType" >featureType</a>
-                                </li>
-                                <li>
-                                    <a href="#filteredFeatureNames" >filteredFeatureNames</a>
-                                </li>
-                                <li>
-                                    <a href="#title" >title</a>
                                 </li>
                             </ul>
                         </td>
@@ -277,12 +289,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(loaderService: <a href="../injectables/LoaderService.html" target="_self">LoaderService</a>, layerService: <a href="../injectables/LayerService.html" target="_self">LayerService</a>, featureService: <a href="../injectables/FeatureService.html" target="_self">FeatureService</a>, tagsetService: <a href="../injectables/TagsetService.html" target="_self">TagsetService</a>, messageService: MessageService, msgConfService: <a href="../injectables/MessageConfigurationService.html" target="_self">MessageConfigurationService</a>, route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>)</code>
+<code>constructor(route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, layerState: <a href="../injectables/LayerStateService.html" target="_self">LayerStateService</a>, tagsetState: <a href="../injectables/TagsetStateService.html" target="_self">TagsetStateService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:121</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:78</a></div>
                             </td>
                         </tr>
 
@@ -302,102 +314,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                                <tr>
-                                                        <td>loaderService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/LoaderService.html" target="_self" >LoaderService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi per la gestione del segnale di caricamento</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>layerService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/LayerService.html" target="_self" >LayerService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi relativi ai layer</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>featureService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/FeatureService.html" target="_self" >FeatureService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi relativi alle feature</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>tagsetService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/TagsetService.html" target="_self" >TagsetService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi relativi ai tagset</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>messageService</td>
-                                                  
-                                                        <td>
-                                                                    <code>MessageService</code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi per la gestione dei messaggi</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>msgConfService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/MessageConfigurationService.html" target="_self" >MessageConfigurationService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>servizi per la configurazione dei messaggi per messageService</p>
-
-                                                        </td>
-                                                </tr>
                                                 <tr>
                                                         <td>route</td>
                                                   
@@ -428,6 +344,34 @@
                                                         <td>
                                                                 <p>servizi per la navigazione fra le viste</p>
 
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>layerState</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LayerStateService.html" target="_self" >LayerStateService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>tagsetState</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/TagsetStateService.html" target="_self" >TagsetStateService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
                                                         </td>
                                                 </tr>
                                         </tbody>
@@ -468,8 +412,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="166"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:166</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="137"
+                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:137</a></div>
                 </td>
             </tr>
 
@@ -482,160 +426,6 @@
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="featureTypeChange"></a>
-                    <span class="name">
-                        <span ><b>featureTypeChange</b></span>
-                        <a href="#featureTypeChange"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>featureTypeChange(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="174"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:174</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che al variare della selezione del tipo di feature azzera l&#39;identificativo del tagset associato alla feature</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>evento emesso alla variazione della selezione sulla dropdown dei tipi di feature</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="loadDetails"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>loadDetails</b></span>
-                        <a href="#loadDetails"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>loadDetails(layerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="231"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:231</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che recupera i dettagli di un layer</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>layerId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>identificativo del layer</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -661,8 +451,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="161"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:161</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:131</a></div>
                 </td>
             </tr>
 
@@ -700,8 +490,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="146"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:146</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:105</a></div>
                 </td>
             </tr>
 
@@ -732,15 +522,15 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onSubmitFeatureModal(form: <a href="https://angular.io/api/forms/NgForm" target="_blank">NgForm</a>)</code>
+<code>onSubmitFeatureModal()</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="185"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:185</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="145"
+                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:145</a></div>
                 </td>
             </tr>
 
@@ -750,38 +540,6 @@
                     <div class="io-description"><p>Metodo che sottomette il form della feature per salvarne i dati</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>form</td>
-                                    <td>
-                                                <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>form della feature</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                     <div>
                     </div>
                     <div class="io-description">
@@ -790,134 +548,6 @@
                     </div>
                     <div class="io-description">
                         
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="resetForm"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>resetForm</b></span>
-                        <a href="#resetForm"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>resetForm()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="273"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:273</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo privato che inizializza un modello di Feature e imposta il form della feature a nuovo</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="save"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>save</b></span>
-                        <a href="#save"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>save()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="283"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:283</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo privato per salvare una feature</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="saveWithFormErrors"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>saveWithFormErrors</b></span>
-                        <a href="#saveWithFormErrors"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>saveWithFormErrors()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="324"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:324</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo privato che segnala tutti i campi del form come touched per evidenziare gli errori</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
                     </div>
                 </td>
             </tr>
@@ -936,15 +566,15 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>showDeleteFeatureModal(feature: <a href="../classes/Feature.html" target="_self">Feature</a>)</code>
+<code>showDeleteFeatureModal(feature: <a href="../classes/TFeature.html" target="_self">TFeature</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="205"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:205</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="172"
+                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:172</a></div>
                 </td>
             </tr>
 
@@ -970,7 +600,7 @@
                                 <tr>
                                     <td>feature</td>
                                     <td>
-                                                <code><a href="../classes/Feature.html" target="_self" >Feature</a></code>
+                                                <code><a href="../classes/TFeature.html" target="_self" >TFeature</a></code>
                                     </td>
 
                                     <td>
@@ -1012,15 +642,15 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>showEditFeatureModal(feature: <a href="../classes/Feature.html" target="_self">Feature</a>)</code>
+<code>showEditFeatureModal(feature: <a href="../classes/TFeature.html" target="_self">TFeature</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="216"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:216</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="182"
+                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:182</a></div>
                 </td>
             </tr>
 
@@ -1046,7 +676,7 @@
                                 <tr>
                                     <td>feature</td>
                                     <td>
-                                                <code><a href="../classes/Feature.html" target="_self" >Feature</a></code>
+                                                <code><a href="../classes/TFeature.html" target="_self" >TFeature</a></code>
                                     </td>
 
                                     <td>
@@ -1095,8 +725,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="194"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:194</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="160"
+                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:160</a></div>
                 </td>
             </tr>
 
@@ -1109,162 +739,6 @@
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="showOperationFailed"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>showOperationFailed</b></span>
-                        <a href="#showOperationFailed"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>showOperationFailed(errorMessage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="332"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:332</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo privato per visualizzare il popup di operazione fallita</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>errorMessage</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>messaggio di errore</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="showOperationInProgress"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>showOperationInProgress</b></span>
-                        <a href="#showOperationInProgress"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>showOperationInProgress(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="344"
-                            class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:344</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo privato per la visualizzazione di un popup di operazione in corso</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>message</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>messaggio da visualizzare</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -1295,7 +769,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -1343,48 +817,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="featureForm"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>featureForm</b></span>
-                        <a href="#featureForm"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/NgForm" target="_blank" >NgForm</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @ViewChild(NgForm)<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="119" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:119</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Riferimento al form della feature</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="featureModel"></a>
                     <span class="name">
                         <span ><b>featureModel</b></span>
@@ -1405,7 +837,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:109</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -1415,6 +847,63 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="featureNames"></a>
+                    <span class="name">
+                        <span ><b>featureNames</b></span>
+                        <a href="#featureNames"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="featureOnEdit"></a>
+                    <span class="name">
+                        <span ><b>featureOnEdit</b></span>
+                        <a href="#featureOnEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TFeature | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1442,7 +931,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:107</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -1452,6 +941,61 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="features$"></a>
+                    <span class="name">
+                        <span ><b>features$</b></span>
+                        <a href="#features$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.layerState.features$</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="featuresForm"></a>
+                    <span class="name">
+                        <span ><b>featuresForm</b></span>
+                        <a href="#featuresForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FormGroup({
+    name: new FormControl&lt;string&gt;(&#x27;&#x27;, [Validators.required, whitespacesValidator]),
+    type: new FormControl&lt;string&gt;(&#x27;&#x27;, Validators.required),
+    tagset: new FormControl&lt;TTagset | null&gt;(null),
+    description: new FormControl&lt;string&gt;(&#x27;&#x27;),
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1473,7 +1017,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:112</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -1483,6 +1027,32 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="featureTypes"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>featureTypes</b></span>
+                        <a href="#featureTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>TFeatureType</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1505,7 +1075,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:103</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -1537,7 +1107,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:105</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -1547,6 +1117,37 @@
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newEditTitle"></a>
+                    <span class="name">
+                        <span ><b>newEditTitle</b></span>
+                        <a href="#newEditTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
 
         </tbody>
     </table>
@@ -1579,7 +1180,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:121</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:78</a></div>
                         </td>
                     </tr>
 
@@ -1616,7 +1217,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:114</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -1647,7 +1248,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:116</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:75</a></div>
                         </td>
                     </tr>
 
@@ -1660,12 +1261,228 @@
 
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tagsets$"></a>
+                    <span class="name">
+                        <span ><b>tagsets$</b></span>
+                        <a href="#tagsets$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.tagsetState.tagsets$</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tlayer"></a>
+                    <span class="name">
+                        <span ><b>tlayer</b></span>
+                        <a href="#tlayer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/TLayer.html" target="_self" >TLayer</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tlayer$"></a>
+                    <span class="name">
+                        <span ><b>tlayer$</b></span>
+                        <a href="#tlayer$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.layerState.layer$</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="visibleEditNewFeature"></a>
+                    <span class="name">
+                        <span ><b>visibleEditNewFeature</b></span>
+                        <a href="#visibleEditNewFeature"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
 </section>
 
     <section>
     <h3 id="accessors">
         Accessors
     </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="name"></a>
+                        <span class="name"><b>name</b><a href="#name"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>name()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:38</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="type"></a>
+                        <span class="name"><b>type</b><a href="#type"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>type()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:39</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="tagset"></a>
+                        <span class="name"><b>tagset</b><a href="#tagset"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>tagset()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:40</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="description"></a>
+                        <span class="name"><b>description</b><a href="#description"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>description()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:41</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -1682,7 +1499,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:60</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:57</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -1699,242 +1516,69 @@
 
             </tbody>
         </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="featureModalTitle"></a>
-                        <span class="name"><b>featureModalTitle</b><a href="#featureModalTitle"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>featureModalTitle()</code></span>
-                    </td>
-                </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:69</a></div>
-                                </td>
-                            </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>Getter del titolo di una feature per il modale</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="featureType"></a>
-                        <span class="name"><b>featureType</b><a href="#featureType"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>featureType()</code></span>
-                    </td>
-                </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:78</a></div>
-                                </td>
-                            </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>Getter che definisce se una feature è di tipo tagset</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="filteredFeatureNames"></a>
-                        <span class="name"><b>filteredFeatureNames</b><a href="#filteredFeatureNames"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>filteredFeatureNames()</code></span>
-                    </td>
-                </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:83</a></div>
-                                </td>
-                            </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>Getter che restituisce la lista dei nomi delle feature associate</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>    <code>string[]</code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="title"></a>
-                        <span class="name"><b>title</b><a href="#title"><span class="icon ion-ios-link"></span></a></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>title()</code></span>
-                    </td>
-                </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/layers/layers-view/layers-view.component.ts:94</a></div>
-                                </td>
-                            </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description"><p>Getter del titolo del layer</p>
-</div>
-
-                                <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                </div>
-                        </td>
-                    </tr>
-
-            </tbody>
-        </table>
 </section>
 </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { FeatureService } from &#x27;src/app/services/feature.service&#x27;;
-import { LoaderService } from &#x27;src/app/services/loader.service&#x27;;
-import { TagsetService } from &#x27;src/app/services/tagset.service&#x27;;
-import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
-import { MessageService, SelectItem } from &#x27;primeng/api&#x27;;
-import { LayerService } from &#x27;src/app/services/layer.service&#x27;;
-import { Component, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { FormControl, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
 import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
-import { Layer } from &#x27;src/app/models/layer/layer.model&#x27;;
-import { Feature } from &#x27;src/app/models/feature/feature&#x27;;
-import { NgForm } from &#x27;@angular/forms&#x27;;
-import { FeatureType } from &#x27;src/app/models/feature/feature-type&#x27;;
-import { Tagset } from &#x27;src/app/models/tagset/tagset&#x27;;
-import Swal from &#x27;sweetalert2&#x27;;
+import { SelectItem } from &#x27;primeng/api&#x27;;
+import { Subject, takeUntil } from &#x27;rxjs&#x27;;
 import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
 import { CreateFeature } from &#x27;src/app/models/feature/create-feature&#x27;;
-
-/**Variabile globale (jQuery?) */
-declare var $: any; //TODO verificare natura di questo elemento
+import { Feature } from &#x27;src/app/models/feature/feature&#x27;;
+import { Layer } from &#x27;src/app/models/layer/layer.model&#x27;;
+import { Tagset } from &#x27;src/app/models/tagset/tagset&#x27;;
+import { TFeature, TFeatureType } from &#x27;src/app/models/texto/t-feature&#x27;;
+import { TLayer } from &#x27;src/app/models/texto/t-layer&#x27;;
+import { TTagset } from &#x27;src/app/models/texto/t-tagset&#x27;;
+import { LayerStateService } from &#x27;src/app/services/layer-state.service&#x27;;
+import { TagsetStateService } from &#x27;src/app/services/tagset-state.service&#x27;;
+import { nameDuplicateValidator } from &#x27;src/app/validators/not-duplicate-name.directive&#x27;;
+import { whitespacesValidator } from &#x27;src/app/validators/whitespaces-validator.directive&#x27;;
 
 /**Componente della vista di dettaglio di un layer corredata dall&#x27;elenco delle feature */
 @Component({
   selector: &#x27;app-layers-view&#x27;,
   templateUrl: &#x27;./layers-view.component.html&#x27;,
-  styleUrls: [&#x27;./layers-view.component.scss&#x27;]
+  styleUrls: [&#x27;./layers-view.component.scss&#x27;],
+  providers: [LayerStateService, TagsetStateService]
 })
 export class LayersViewComponent implements OnInit {
+  private readonly unsubscribe$ &#x3D; new Subject();
+  visibleEditNewFeature &#x3D; false;
+  tlayer!: TLayer;
+  tlayer$ &#x3D; this.layerState.layer$;
+  features$ &#x3D; this.layerState.features$;
+  featuresForm &#x3D; new FormGroup({
+    name: new FormControl&lt;string&gt;(&#x27;&#x27;, [Validators.required, whitespacesValidator]),
+    type: new FormControl&lt;string&gt;(&#x27;&#x27;, Validators.required),
+    tagset: new FormControl&lt;TTagset | null&gt;(null),
+    description: new FormControl&lt;string&gt;(&#x27;&#x27;),
+  });
+  get name() { return this.featuresForm.controls.name; }
+  get type() { return this.featuresForm.controls.type; }
+  get tagset() { return this.featuresForm.controls.tagset; }
+  get description() { return this.featuresForm.controls.description; }
+  tagsets$ &#x3D; this.tagsetState.tagsets$;
+  featureNames: string[] &#x3D; [];
+  public featureTypes &#x3D; TFeatureType;
+  featureOnEdit: TFeature | undefined;
+  newEditTitle &#x3D; &#x27;&#x27;;
   /**
    * Effettua la rimozione di una feature
    * @param id {number} identificativo numerico della feature
    * @param name {string} nome della feature
    */
-  private deleteFeature &#x3D; (id: number, name: string): void &#x3D;&gt; {
-    this.showOperationInProgress(&#x27;Sto cancellando&#x27;);
-
-    let errorMsg &#x3D; &#x27;Errore nell\&#x27;eliminare la feature \&#x27;&#x27; + name + &#x27;\&#x27;&#x27;;
-    let failMsg &#x3D; &#x27;La feature \&#x27;&#x27; + name + &#x27;\&#x27; è parte di un\&#x27;annotazione&#x27;;
-    let successMsg &#x3D; &#x27;Feature \&#x27;&#x27; + name + &#x27;\&#x27; eliminato con successo&#x27;;
-
-    this.featureService
-        .deleteFeature(this.layerInfo!.id!, id)
-        .subscribe({
-          next: (result) &#x3D;&gt; {
-            if (result) {
-              this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-              Swal.close();
-            }
-            else {
-              this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + failMsg);
-            }
-            this.loadDetails(this.layerId);
-          },
-          error: () &#x3D;&gt; {
-            this.showOperationFailed(&#x27;Cancellazione Fallita: &#x27; + errorMsg);
-          }
-        })
+  private deleteFeature &#x3D; (feature: TFeature): void &#x3D;&gt; {
+    this.layerState.removeFeature.next(feature);
   }
 
   /**Getter che definisce se una feature è in modifica */
   public get isEditing(): boolean {
-    if (this.featureModel &amp;&amp; this.featureModel.id) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /**Getter del titolo di una feature per il modale */
-  public get featureModalTitle(): string {
-    if (((!this.featureForm) || (!this.featureForm.value)) || (!this.featureForm.value.name)) {
-      return &quot;Nuova feature&quot;;
-    }
-
-    return this.featureForm.value.name;
-  }
-
-  /**Getter che definisce se una feature è di tipo tagset */
-  public get featureType(): boolean {
-    return this.featureModel.type &#x3D;&#x3D; FeatureType.TAGSET;
-  }
-
-  /**Getter che restituisce la lista dei nomi delle feature associate */
-  public get filteredFeatureNames(): string[] {
-    let filteredFeatures &#x3D; this.features;
-
-    if (this.featureModel.id) {
-      filteredFeatures &#x3D; this.features.filter(f &#x3D;&gt; f.id !&#x3D; this.featureModel.id);
-    }
-
-    return filteredFeatures.map(f &#x3D;&gt; f.name!);
-  }
-
-  /**Getter del titolo del layer */
-  public get title(): string {
-    if (((!this.layerInfo) || (!this.layerInfo.name))) {
-      return &quot;Layer&quot;;
-    }
-
-    return this.layerInfo.name;
+    return this.featureOnEdit !&#x3D;&#x3D; undefined;
   }
 
   /**Identificativo numerico del layer in lavorazione */
@@ -1953,51 +1597,63 @@ export class LayersViewComponent implements OnInit {
   /**Lista di elementi selezionabili che rappresentano i possibili tagset */
   tagsetOptions &#x3D; new Array&lt;SelectItem&gt;();
 
-  /**Riferimento al form della feature */
-  @ViewChild(NgForm) public featureForm!: NgForm;
   /**Riferimento al popup di cancellazione di un elemento */
   @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**
    * Costruttore per LayersViewComponent
-   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param layerService {LayerService} servizi relativi ai layer
-   * @param featureService {FeatureService} servizi relativi alle feature
-   * @param tagsetService {TagsetService} servizi relativi ai tagset
-   * @param messageService {MessageService} servizi per la gestione dei messaggi
-   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
    * @param route {ActivatedRoute} fornisce l&#x27;accesso alle informazioni di una route associata con un componente caricato in un outlet
    * @param router {Router} servizi per la navigazione fra le viste
    */
   constructor(
-    private loaderService: LoaderService,
-    private layerService: LayerService,
-    private featureService: FeatureService,
-    private tagsetService: TagsetService,
-    private messageService: MessageService,
-    private msgConfService: MessageConfigurationService,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router,
+    private layerState: LayerStateService,
+    private tagsetState: TagsetStateService,
+  ) {
+    this.layerState.layer$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(l &#x3D;&gt; {
+      this.tlayer &#x3D; l;
+    });
+    this.features$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(f &#x3D;&gt; {
+      const temp &#x3D; f.map(e &#x3D;&gt; e.name!);
+      this.featureNames &#x3D; temp;
+    });
+  }
 
   /**Metodo dell&#x27;interfaccia OnInit utilizzato per inizializzare i valori di partenza del componente */
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params &#x3D;&gt; {
-      var id &#x3D; params.get(&#x27;id&#x27;);
-
-      if (id !&#x3D; null) {
-        this.layerId &#x3D; Number.parseInt(id);
-        this.loadDetails(this.layerId);
-      }
-      else {
+    this.route.paramMap.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(params &#x3D;&gt; {
+      const id &#x3D; params.get(&#x27;id&#x27;);
+      if (id &#x3D;&#x3D;&#x3D; null) {
         this.back();
+        return;
       }
+      this.layerState.retrieveLayerById.next(+id);
+      this.layerState.retrieveLayerFeatures.next(+id);
     });
+
+    this.type.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(type &#x3D;&gt; {
+      if (type &#x3D;&#x3D;&#x3D; TFeatureType.TAGSET) {
+        this.tagset.addValidators(Validators.required);
+        return;
+      }
+      this.tagset.removeValidators(Validators.required);
+      this.tagset.setValue(null);
+    })
   }
 
   /**Metodo dell&#x27;interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal aperti */
   ngOnDestroy(): void {
-    Swal.close();
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   /**Metodo che naviga &quot;indietro&quot; sulla pagina dei layer */
@@ -2006,190 +1662,58 @@ export class LayersViewComponent implements OnInit {
   }
 
   /**
-   * Metodo che al variare della selezione del tipo di feature azzera l&#x27;identificativo del tagset associato alla feature
-   * @param event {any} evento emesso alla variazione della selezione sulla dropdown dei tipi di feature
-   */
-  featureTypeChange(event: any) {
-    if (!this.featureType) {
-      this.featureModel.tagsetId &#x3D; undefined;
-    }
-  }
-
-  /**
    * Metodo che sottomette il form della feature per salvarne i dati
-   * @param form {NgForm} form della feature
    * @returns {void}
    */
-  onSubmitFeatureModal(form: NgForm): void {
-    if (this.featureForm.invalid) { //caso di form non valido
-      return this.saveWithFormErrors();
+  onSubmitFeatureModal(): void {
+    if (this.featuresForm.invalid) return;
+    const eventualTagset &#x3D; this.type.value &#x3D;&#x3D;&#x3D; TFeatureType.TAGSET ? this.tagset.value : undefined;
+    if (this.featureOnEdit !&#x3D;&#x3D; undefined) {
+      const updatedFeature &#x3D; &lt;TFeature&gt;{ ...this.featureOnEdit, name: this.name.value, type: this.type.value, tagset: eventualTagset, description: this.description.value, layer: this.tlayer };
+      this.layerState.updateFeature.next(updatedFeature);
+    } else {
+      const newFeature &#x3D; &lt;TFeature&gt;{ name: this.name.value, type: this.type.value, tagset: eventualTagset, description: this.description.value, layer: this.tlayer };
+      this.layerState.addFeature.next(newFeature);
     }
-
-    this.save();
+    this.visibleEditNewFeature &#x3D; false;
+    this.featureOnEdit &#x3D; undefined;
   }
 
   /**Metodo che visualizza il modale per lavorazione della nuova feature */
   showFeatureModal() {
-    this.resetForm();
-    this.featureModel.layerId &#x3D; this.layerInfo?.id;
-
-    $(&#x27;#featureModal&#x27;).modal(&#x27;show&#x27;);
+    this.featureOnEdit &#x3D; undefined;
+    this.newEditTitle &#x3D; &#x27;New feature&#x27;;
+    this.featuresForm.reset();
+    this.name.setValidators(nameDuplicateValidator(this.featureNames));
+    this.visibleEditNewFeature &#x3D; true;
   }
 
   /**
    * Metodo che gestisce la visualizzazione dei popup di cancellazione di una feature e invoca la sua effettiva eliminazione
    * @param feature {Feature} feature da rimuovere
    */
-  showDeleteFeatureModal(feature: Feature) {
-    let confirmMsg &#x3D; &#x27;Stai per cancellare la feature \&#x27;&#x27; + feature.name + &#x27;\&#x27;&#x27;;
-
+  showDeleteFeatureModal(feature: TFeature) {
+    const confirmMsg &#x3D; &#x27;Stai per cancellare la feature \&#x27;&#x27; + feature.name + &#x27;\&#x27;&#x27;;
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
-    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteFeature(feature.id!, (feature.name || &quot;&quot;)), feature.id, (feature.name || &quot;&quot;));
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteFeature(feature), feature.id, (feature.name || &quot;&quot;));
   }
 
   /**
    * Metodo che visualizza il modale di edit di una feature
    * @param feature {Feature} feature da modificare
    */
-  showEditFeatureModal(feature: Feature) {
-    this.resetForm();
-    this.featureModel &#x3D; JSON.parse(JSON.stringify(feature));
-
-    if (feature.tagset) {
-      this.featureModel.tagsetId &#x3D; feature.tagset.id;
+  showEditFeatureModal(feature: TFeature) {
+    this.newEditTitle &#x3D; feature.name!;
+    this.featureOnEdit &#x3D; feature;
+    this.featuresForm.reset();
+    this.name.setValue(feature.name || &#x27;&#x27;);
+    this.type.setValue(feature.type || &#x27;&#x27;);
+    this.description.setValue(feature.description || &#x27;&#x27;);
+    if (feature.type &#x3D;&#x3D;&#x3D; TFeatureType.TAGSET) {
+      this.tagset.setValue(feature.tagset || null);
     }
-
-    $(&#x27;#featureModal&#x27;).modal(&#x27;show&#x27;);
-  }
-
-  /**
-   * Metodo che recupera i dettagli di un layer
-   * @param layerId {number} identificativo del layer
-   */
-  private loadDetails(layerId: number) {
-    this.loaderService.show();
-    //TODO probabile integrazione da fare anche sul backend, verificare
-    // ATTENZIONE: QUI CI VUOLE LA RETRIEVE SINGOLA BY ID
-    this.layerService
-      .retrieveLayers()
-      .subscribe({
-        next: (layers: Layer[]) &#x3D;&gt; {
-          this.layerInfo &#x3D; layers.find(l &#x3D;&gt; l.id &#x3D;&#x3D; layerId); //avendo recuperato la lista completa dei layer devono filtrare per id
-          this.loaderService.hide();
-        }
-      });
-
-    this.loaderService.show();
-    this.featureService
-      .retrieveFeaturesByLayerId(layerId)
-      .subscribe({
-        next: (features: Feature[]) &#x3D;&gt; {
-          this.features &#x3D; features; //recupera la lista di feature associate al layer
-          this.loaderService.hide();
-        }
-      });
-
-    this.featureTypeOptions &#x3D; Object.values(FeatureType).map((item: any) &#x3D;&gt; ({ label: item, value: item }));
-
-    this.loaderService.show();
-    this.tagsetService
-      .retrieve()
-      .subscribe({
-        next: (data: Tagset[]) &#x3D;&gt; {
-          this.tagsetList &#x3D; data;
-          this.tagsetOptions &#x3D; data.map(item &#x3D;&gt; ({ label: item.name, value: item.id }));
-          this.loaderService.hide();
-        },
-        error: (err) &#x3D;&gt; {
-          this.loaderService.hide();
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(err))
-        }
-      });
-  }
-
-  /**Metodo privato che inizializza un modello di Feature e imposta il form della feature a nuovo */
-  private resetForm() {
-    this.featureModel &#x3D; new CreateFeature();
-    this.featureForm.form.markAsUntouched();
-    this.featureForm.form.markAsPristine();
-  }
-
-  /**
-   * Metodo privato per salvare una feature
-   * @returns {void}
-   */
-  private save(): void {
-    if (!this.layerInfo || (!this.layerInfo.id) || !this.featureModel) {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig(&quot;Errore durante il salvataggio!&quot;));
-      return;
-    }
-
-    let msgSuccess &#x3D; &quot;Operazione effettuata con successo&quot;;
-    let item: any;
-    let apiCall;
-
-    if (this.isEditing) { //caso di feature in modifica
-      item &#x3D; JSON.parse(JSON.stringify(this.featureModel));
-      if (item.tagsetId) {
-        item.tagset &#x3D; this.tagsetList.find(t &#x3D;&gt; t.id &#x3D;&#x3D; item.tagsetId);
-      }
-
-      msgSuccess &#x3D; &quot;Feature modificata con successo&quot;;
-      apiCall &#x3D; this.featureService.updateFeature(item);
-    }
-    else {
-      msgSuccess &#x3D; &quot;Feature creata con successo&quot;;
-      apiCall &#x3D; this.featureService.createFeature(this.featureModel);
-    }
-
-    this.loaderService.show();
-    apiCall.subscribe({
-      next: () &#x3D;&gt; {
-        $(&#x27;#featureModal&#x27;).modal(&#x27;hide&#x27;);
-        this.loaderService.hide();
-        this.loadDetails(this.layerId);
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(msgSuccess));
-      },
-      error: (err: string) &#x3D;&gt; {
-        $(&#x27;#featureModal&#x27;).modal(&#x27;hide&#x27;);
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
-      }
-    });
-  }
-
-  /**Metodo privato che segnala tutti i campi del form come touched per evidenziare gli errori */
-  private saveWithFormErrors(): void {
-    this.featureForm.form.markAllAsTouched();
-  }
-
-  /**
-   * Metodo privato per visualizzare il popup di operazione fallita
-   * @param errorMessage {string} messaggio di errore
-   */
-  private showOperationFailed(errorMessage: string): void {
-    Swal.fire({
-      icon: &#x27;error&#x27;,
-      title: errorMessage,
-      showConfirmButton: true
-    });
-  }
-
-  /**
-   * Metodo privato per la visualizzazione di un popup di operazione in corso
-   * @param message {string} messaggio da visualizzare
-   */
-  private showOperationInProgress(message: string): void {
-    Swal.fire({
-      icon: &#x27;warning&#x27;,
-      titleText: message,
-      text: &#x27;per favore attendere&#x27;,
-      customClass: {
-        container: &#x27;swal2-container&#x27;
-      },
-      showCancelButton: false,
-      showConfirmButton: false
-    });
+    this.name.setValidators(nameDuplicateValidator(this.featureNames));
+    this.visibleEditNewFeature &#x3D; true;
   }
 }
 </code></pre>
@@ -2200,28 +1724,29 @@ export class LayersViewComponent implements OnInit {
   &lt;div class&#x3D;&quot;col-12&quot;&gt;
     &lt;div class&#x3D;&quot;card&quot;&gt;
       &lt;div class&#x3D;&quot;page-header&quot;&gt;
-        &lt;h5 [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: layerInfo?.color+&#x27;4D&#x27;}&quot; style&#x3D;&quot;border-radius: 3px&quot;&gt;
-          {{ title }}
+        &lt;h5 [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: (tlayer$|async)?.color+&#x27;4D&#x27;}&quot; style&#x3D;&quot;border-radius: 3px&quot;&gt;
+          {{ (tlayer$|async)?.name }}
         &lt;/h5&gt;
         &lt;div class&#x3D;&quot;button-group-actions&quot;&gt;
-          &lt;button pButton pRipple label&#x3D;&quot;Torna alla lista&quot; icon&#x3D;&quot;pi pi-arrow-left&quot; class&#x3D;&quot;p-button-secondary&quot; (click)&#x3D;&quot;back()&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple label&#x3D;&quot;Back to list&quot; icon&#x3D;&quot;pi pi-arrow-left&quot; class&#x3D;&quot;p-button-secondary&quot;
+            (click)&#x3D;&quot;back()&quot;&gt;&lt;/button&gt;
         &lt;/div&gt;
       &lt;/div&gt;
       &lt;div class&#x3D;&quot;card-body p-fluid&quot;&gt;
         &lt;div class&#x3D;&quot;row row-cols-1 row-cols-md-3&quot;&gt;
           &lt;div class&#x3D;&quot;col&quot;&gt;
-            &lt;label class&#x3D;&quot;header-label&quot;&gt;Nome&lt;/label&gt;
-            &lt;p&gt;{{ layerInfo?.name }}&lt;/p&gt;
+            &lt;label class&#x3D;&quot;header-label&quot;&gt;Name&lt;/label&gt;
+            &lt;p&gt;{{ (tlayer$|async)?.name }}&lt;/p&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;col&quot;&gt;
-            &lt;label class&#x3D;&quot;header-label&quot;&gt;Colore&lt;/label&gt;
+            &lt;label class&#x3D;&quot;header-label&quot;&gt;Color&lt;/label&gt;
             &lt;p&gt;
-              &lt;p-colorPicker [ngModel]&#x3D;&quot;layerInfo?.color&quot; [disabled]&#x3D;&quot;true&quot;&gt;&lt;/p-colorPicker&gt;
+              &lt;p-colorPicker [ngModel]&#x3D;&quot;(tlayer$|async)?.color&quot; [disabled]&#x3D;&quot;true&quot;&gt;&lt;/p-colorPicker&gt;
             &lt;/p&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;col&quot;&gt;
-            &lt;label class&#x3D;&quot;header-label&quot;&gt;Descrizione&lt;/label&gt;
-            &lt;p&gt;{{ layerInfo?.description }}&lt;/p&gt;
+            &lt;label class&#x3D;&quot;header-label&quot;&gt;Description&lt;/label&gt;
+            &lt;p&gt;{{ (tlayer$|async)?.description }}&lt;/p&gt;
           &lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
@@ -2230,17 +1755,18 @@ export class LayersViewComponent implements OnInit {
       &lt;div class&#x3D;&quot;card-body p-fluid&quot;&gt;
         &lt;div class&#x3D;&quot;d-flex align-items-center justify-content-between mb-2&quot;&gt;
           &lt;label class&#x3D;&quot;header-label&quot;&gt;Features&lt;/label&gt;
-          &lt;button pButton pRipple type&#x3D;&quot;button&quot; label&#x3D;&quot;Nuova feature&quot; icon&#x3D;&quot;pi pi-plus&quot; class&#x3D;&quot;w-auto&quot; (click)&#x3D;&quot;showFeatureModal()&quot;&gt;&lt;/button&gt;
+          &lt;button pButton pRipple type&#x3D;&quot;button&quot; label&#x3D;&quot;New feature&quot; icon&#x3D;&quot;pi pi-plus&quot; class&#x3D;&quot;w-auto&quot;
+            (click)&#x3D;&quot;showFeatureModal()&quot;&gt;&lt;/button&gt;
         &lt;/div&gt;
-        &lt;p-table #dt [value]&#x3D;&quot;features&quot; [rowHover]&#x3D;&quot;true&quot; dataKey&#x3D;&quot;id&quot;
-          [responsive]&#x3D;&quot;true&quot; responsiveLayout&#x3D;&quot;scroll&quot;&gt;
+        &lt;p-table #dt [value]&#x3D;&quot;(features$|async)||[]&quot; [rowHover]&#x3D;&quot;true&quot; dataKey&#x3D;&quot;id&quot; [responsive]&#x3D;&quot;true&quot;
+          responsiveLayout&#x3D;&quot;scroll&quot;&gt;
           &lt;ng-template pTemplate&#x3D;&quot;header&quot;&gt;
             &lt;tr&gt;
-              &lt;th pSortableColumn&#x3D;&quot;name&quot;&gt;Nome&lt;p-sortIcon field&#x3D;&quot;name&quot;&gt;&lt;/p-sortIcon&gt;
+              &lt;th pSortableColumn&#x3D;&quot;name&quot;&gt;Name&lt;p-sortIcon field&#x3D;&quot;name&quot;&gt;&lt;/p-sortIcon&gt;
               &lt;/th&gt;
-              &lt;th pSortableColumn&#x3D;&quot;type&quot;&gt;Tipo&lt;p-sortIcon field&#x3D;&quot;type&quot;&gt;&lt;/p-sortIcon&gt;
+              &lt;th pSortableColumn&#x3D;&quot;type&quot;&gt;Type&lt;p-sortIcon field&#x3D;&quot;type&quot;&gt;&lt;/p-sortIcon&gt;
               &lt;/th&gt;
-              &lt;th pSortableColumn&#x3D;&quot;description&quot;&gt;Descrizione&lt;p-sortIcon field&#x3D;&quot;description&quot;&gt;&lt;/p-sortIcon&gt;
+              &lt;th pSortableColumn&#x3D;&quot;description&quot;&gt;Description&lt;p-sortIcon field&#x3D;&quot;description&quot;&gt;&lt;/p-sortIcon&gt;
               &lt;/th&gt;
               &lt;th&gt;&lt;/th&gt;
             &lt;/tr&gt;
@@ -2251,8 +1777,10 @@ export class LayersViewComponent implements OnInit {
               &lt;td&gt;{{ feature.type }}&lt;/td&gt;
               &lt;td&gt;{{ feature.description }}&lt;/td&gt;
               &lt;td&gt;
-                &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-pencil&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot; (click)&#x3D;&quot;showEditFeatureModal(feature)&quot;&gt;&lt;/button&gt;
-                &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-rounded p-button-danger mx-2&quot; (click)&#x3D;&quot;showDeleteFeatureModal(feature)&quot;&gt;&lt;/button&gt;
+                &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-pencil&quot; class&#x3D;&quot;p-button-rounded p-button-success mx-2&quot;
+                  (click)&#x3D;&quot;showEditFeatureModal(feature)&quot;&gt;&lt;/button&gt;
+                &lt;button pButton pRipple type&#x3D;&quot;button&quot; icon&#x3D;&quot;pi pi-trash&quot; class&#x3D;&quot;p-button-rounded p-button-danger mx-2&quot;
+                  (click)&#x3D;&quot;showDeleteFeatureModal(feature)&quot;&gt;&lt;/button&gt;
               &lt;/td&gt;
             &lt;/tr&gt;
           &lt;/ng-template&gt;
@@ -2262,103 +1790,85 @@ export class LayersViewComponent implements OnInit {
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div
-  class&#x3D;&quot;modal fade&quot;
-  id&#x3D;&quot;featureModal&quot;
-  tabindex&#x3D;&quot;-1&quot;
-  aria-labelledby&#x3D;&quot;featureModalLabel&quot;
-  aria-hidden&#x3D;&quot;true&quot;
-&gt;
+&lt;p-dialog [header]&#x3D;&quot;newEditTitle&quot; class&#x3D;&quot;modal&quot; [(visible)]&#x3D;&quot;visibleEditNewFeature&quot; [modal]&#x3D;&quot;true&quot;
+  [style]&#x3D;&quot;{ minWidth: &#x27;30vw&#x27;, maxWidth: &#x27;50vw&#x27; }&quot; appendTo&#x3D;&quot;body&quot;&gt;
   &lt;div class&#x3D;&quot;modal-dialog modal-dialog-centered&quot;&gt;
     &lt;div class&#x3D;&quot;modal-content&quot;&gt;
-      &lt;form
-        (ngSubmit)&#x3D;&quot;onSubmitFeatureModal(featureForm)&quot;
-        #featureForm&#x3D;&quot;ngForm&quot;
-        id&#x3D;&quot;featureForm&quot;
-        class&#x3D;&quot;validated&quot;
-      &gt;
-        &lt;input type&#x3D;&quot;hidden&quot; #layerId&#x3D;&quot;ngModel&quot; name&#x3D;&quot;layerId&quot; [(ngModel)]&#x3D;&quot;featureModel.layerId&quot;&gt;
-        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
-          &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;featureModalLabel&quot;&gt;{{ featureModalTitle }}&lt;/h5&gt;
-          &lt;button
-            type&#x3D;&quot;button&quot;
-            class&#x3D;&quot;btn-close&quot;
-            data-bs-dismiss&#x3D;&quot;modal&quot;
-            aria-label&#x3D;&quot;Close&quot;
-          &gt;&lt;/button&gt;
-        &lt;/div&gt;
+      &lt;form (ngSubmit)&#x3D;&quot;onSubmitFeatureModal()&quot; [formGroup]&#x3D;&quot;featuresForm&quot; id&#x3D;&quot;featureForm&quot;
+        class&#x3D;&quot;validated&quot;&gt;
         &lt;div class&#x3D;&quot;modal-body&quot;&gt;
           &lt;div class&#x3D;&quot;form-group&quot;&gt;
-            &lt;label class&#x3D;&quot;form-label&quot;&gt;Nome *&lt;/label&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Name *&lt;/label&gt;
             &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
-              &lt;input #name&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;name&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;featureModel.name&quot;
-                required maxlength&#x3D;&quot;300&quot; placeholder&#x3D;&quot;Nome feature&quot; appWhitespacesValidator [appNotDuplicateName]&#x3D;&quot;filteredFeatureNames&quot;&gt;
+              &lt;input formControlName&#x3D;&quot;name&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;name&quot; class&#x3D;&quot;form-control&quot; maxlength&#x3D;&quot;300&quot;
+                placeholder&#x3D;&quot;Feature name&quot;&gt;
               &lt;div *ngIf&#x3D;&quot;name.invalid &amp;&amp; (name.touched || name.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
                 &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;required&#x27;]&quot;&gt;
-                  Necessario inserire il nome della feature
+                  Need to enter the name of the feature
                 &lt;/div&gt;
                 &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;isNotOnlyWhitespaces&#x27;]&quot;&gt;
-                  Il nome della feature non può contenere solo spazi vuoti
+                  Feature name cannot contain only blanks
                 &lt;/div&gt;
                 &lt;div *ngIf&#x3D;&quot;name.errors?.[&#x27;notDuplicateName&#x27;]&quot;&gt;
-                  Esiste già una feature con questo nome
+                  There already exists a feature with this name
                 &lt;/div&gt;
               &lt;/div&gt;
             &lt;/div&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;form-group&quot;&gt;
-            &lt;label class&#x3D;&quot;form-label&quot;&gt;Tipo *&lt;/label&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Type *&lt;/label&gt;
             &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
-              &lt;p-dropdown #type&#x3D;&quot;ngModel&quot; name&#x3D;&quot;type&quot; [(ngModel)]&#x3D;&quot;featureModel.type&quot;
-                placeholder&#x3D;&quot;Tipo feature&quot; [options]&#x3D;&quot;featureTypeOptions&quot; [filter]&#x3D;&quot;true&quot; [showClear]&#x3D;&quot;true&quot; [required]&#x3D;&quot;true&quot; (onChange)&#x3D;&quot;featureTypeChange($event)&quot;&gt;
+              &lt;p-dropdown formControlName&#x3D;&quot;type&quot; name&#x3D;&quot;type&quot; placeholder&#x3D;&quot;Feature type&quot; appendTo&#x3D;&quot;body&quot;
+                [options]&#x3D;&quot;featureTypes|keyvalue&quot; optionLabel&#x3D;&quot;key&quot; optionValue&#x3D;&quot;value&quot; [filter]&#x3D;&quot;true&quot;
+                [showClear]&#x3D;&quot;true&quot;&gt;
               &lt;/p-dropdown&gt;
               &lt;div *ngIf&#x3D;&quot;type.invalid &amp;&amp; (type.touched || type.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
                 &lt;div *ngIf&#x3D;&quot;type.errors?.[&#x27;required&#x27;]&quot;&gt;
-                  Necessario inserire il tipo della feature
+                  Need to enter the type of the feature
                 &lt;/div&gt;
               &lt;/div&gt;
             &lt;/div&gt;
           &lt;/div&gt;
-          &lt;div class&#x3D;&quot;form-group&quot; *ngIf&#x3D;&quot;featureType&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot; *ngIf&#x3D;&quot;type.value &#x3D;&#x3D;&#x3D; featureTypes.TAGSET&quot;&gt;
             &lt;label class&#x3D;&quot;form-label&quot;&gt;Tagset *&lt;/label&gt;
             &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
-              &lt;p-dropdown #tagsetId&#x3D;&quot;ngModel&quot; name&#x3D;&quot;tagsetId&quot; [(ngModel)]&#x3D;&quot;featureModel.tagsetId&quot;
-                placeholder&#x3D;&quot;Tipo feature&quot; [options]&#x3D;&quot;tagsetOptions&quot; [filter]&#x3D;&quot;true&quot; [showClear]&#x3D;&quot;true&quot; [required]&#x3D;&quot;true&quot;&gt;
+              &lt;p-dropdown formControlName&#x3D;&quot;tagset&quot; name&#x3D;&quot;tagset&quot; placeholder&#x3D;&quot;Tagset value&quot; optionLabel&#x3D;&quot;name&quot;
+                [options]&#x3D;&quot;(tagsets$|async)||[]&quot; [filter]&#x3D;&quot;true&quot; [showClear]&#x3D;&quot;true&quot; appendTo&#x3D;&quot;body&quot;&gt;
               &lt;/p-dropdown&gt;
-              &lt;div *ngIf&#x3D;&quot;tagsetId.invalid &amp;&amp; (tagsetId.touched || tagsetId.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
-                &lt;div *ngIf&#x3D;&quot;tagsetId.errors?.[&#x27;required&#x27;]&quot;&gt;
-                  Necessario inserire il tagset della feature
+              &lt;div *ngIf&#x3D;&quot;tagset.invalid &amp;&amp; (tagset.touched || tagset.dirty)&quot; class&#x3D;&quot;invalid-feedback&quot;&gt;
+                &lt;div *ngIf&#x3D;&quot;tagset.errors?.[&#x27;required&#x27;]&quot;&gt;
+                  Need to enter the tagset of the feature
                 &lt;/div&gt;
               &lt;/div&gt;
             &lt;/div&gt;
           &lt;/div&gt;
           &lt;div class&#x3D;&quot;form-group&quot;&gt;
-            &lt;label class&#x3D;&quot;form-label&quot;&gt;Descrizione&lt;/label&gt;
+            &lt;label class&#x3D;&quot;form-label&quot;&gt;Description&lt;/label&gt;
             &lt;div class&#x3D;&quot;p-fluid&quot;&gt;
-              &lt;textarea rows&#x3D;&quot;3&quot; #description&#x3D;&quot;ngModel&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;description&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;featureModel.description&quot;&gt;&lt;/textarea&gt;
+              &lt;textarea rows&#x3D;&quot;3&quot; formControlName&#x3D;&quot;description&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;description&quot;
+                class&#x3D;&quot;form-control&quot;&gt;&lt;/textarea&gt;
             &lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
         &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
-          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-secondary&quot; data-bs-dismiss&#x3D;&quot;modal&quot;&gt;
-            Annulla
+          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-secondary&quot; (click)&#x3D;&quot;visibleEditNewFeature&#x3D;false;&quot;&gt;
+            Cancel
           &lt;/button&gt;
-          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot; (click)&#x3D;&quot;onSubmitFeatureModal(featureForm)&quot;&gt;
+          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;
             &lt;span *ngIf&#x3D;&quot;isEditing; else elseBlock&quot;&gt;
-              Aggiorna
+              Update
             &lt;/span&gt;
             &lt;ng-template #elseBlock&gt;
-              &lt;span&gt;Aggiungi&lt;/span&gt;
+              &lt;span&gt;Add&lt;/span&gt;
             &lt;/ng-template&gt;
           &lt;/button&gt;
         &lt;/div&gt;
       &lt;/form&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;
+&lt;/p-dialog&gt;
 
-&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;
-</code></pre>
+&lt;app-popup-delete-item #popupDeleteItem&gt;&lt;/app-popup-delete-item&gt;</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-styleData">
@@ -2393,8 +1903,8 @@ export class LayersViewComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="grid">  <div class="col-12">    <div class="card">      <div class="page-header">        <h5 [ngStyle]="{\'background-color\': layerInfo?.color+\'4D\'}" style="border-radius: 3px">          {{ title }}        </h5>        <div class="button-group-actions">          <button pButton pRipple label="Torna alla lista" icon="pi pi-arrow-left" class="p-button-secondary" (click)="back()"></button>        </div>      </div>      <div class="card-body p-fluid">        <div class="row row-cols-1 row-cols-md-3">          <div class="col">            <label class="header-label">Nome</label>            <p>{{ layerInfo?.name }}</p>          </div>          <div class="col">            <label class="header-label">Colore</label>            <p>              <p-colorPicker [ngModel]="layerInfo?.color" [disabled]="true"></p-colorPicker>            </p>          </div>          <div class="col">            <label class="header-label">Descrizione</label>            <p>{{ layerInfo?.description }}</p>          </div>        </div>      </div>    </div>    <div class="card">      <div class="card-body p-fluid">        <div class="d-flex align-items-center justify-content-between mb-2">          <label class="header-label">Features</label>          <button pButton pRipple type="button" label="Nuova feature" icon="pi pi-plus" class="w-auto" (click)="showFeatureModal()"></button>        </div>        <p-table #dt [value]="features" [rowHover]="true" dataKey="id"          [responsive]="true" responsiveLayout="scroll">          <ng-template pTemplate="header">            <tr>              <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>              </th>              <th pSortableColumn="type">Tipo<p-sortIcon field="type"></p-sortIcon>              </th>              <th pSortableColumn="description">Descrizione<p-sortIcon field="description"></p-sortIcon>              </th>              <th></th>            </tr>          </ng-template>          <ng-template pTemplate="body" let-feature let-i="rowIndex">            <tr>              <td>{{ feature.name }}</td>              <td>{{ feature.type }}</td>              <td>{{ feature.description }}</td>              <td>                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="showEditFeatureModal(feature)"></button>                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="showDeleteFeatureModal(feature)"></button>              </td>            </tr>          </ng-template>        </p-table>      </div>    </div>  </div></div><div  class="modal fade"  id="featureModal"  tabindex="-1"  aria-labelledby="featureModalLabel"  aria-hidden="true">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form        (ngSubmit)="onSubmitFeatureModal(featureForm)"        #featureForm="ngForm"        id="featureForm"        class="validated"      >        <input type="hidden" #layerId="ngModel" name="layerId" [(ngModel)]="featureModel.layerId">        <div class="modal-header">          <h5 class="modal-title" id="featureModalLabel">{{ featureModalTitle }}</h5>          <button            type="button"            class="btn-close"            data-bs-dismiss="modal"            aria-label="Close"          ></button>        </div>        <div class="modal-body">          <div class="form-group">            <label class="form-label">Nome *</label>            <div class="p-fluid">              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="featureModel.name"                required maxlength="300" placeholder="Nome feature" appWhitespacesValidator [appNotDuplicateName]="filteredFeatureNames">              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">                <div *ngIf="name.errors?.[\'required\']">                  Necessario inserire il nome della feature                </div>                <div *ngIf="name.errors?.[\'isNotOnlyWhitespaces\']">                  Il nome della feature non può contenere solo spazi vuoti                </div>                <div *ngIf="name.errors?.[\'notDuplicateName\']">                  Esiste già una feature con questo nome                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Tipo *</label>            <div class="p-fluid">              <p-dropdown #type="ngModel" name="type" [(ngModel)]="featureModel.type"                placeholder="Tipo feature" [options]="featureTypeOptions" [filter]="true" [showClear]="true" [required]="true" (onChange)="featureTypeChange($event)">              </p-dropdown>              <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">                <div *ngIf="type.errors?.[\'required\']">                  Necessario inserire il tipo della feature                </div>              </div>            </div>          </div>          <div class="form-group" *ngIf="featureType">            <label class="form-label">Tagset *</label>            <div class="p-fluid">              <p-dropdown #tagsetId="ngModel" name="tagsetId" [(ngModel)]="featureModel.tagsetId"                placeholder="Tipo feature" [options]="tagsetOptions" [filter]="true" [showClear]="true" [required]="true">              </p-dropdown>              <div *ngIf="tagsetId.invalid && (tagsetId.touched || tagsetId.dirty)" class="invalid-feedback">                <div *ngIf="tagsetId.errors?.[\'required\']">                  Necessario inserire il tagset della feature                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Descrizione</label>            <div class="p-fluid">              <textarea rows="3" #description="ngModel" type="text" name="description" class="form-control" [(ngModel)]="featureModel.description"></textarea>            </div>          </div>        </div>        <div class="modal-footer">          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">            Annulla          </button>          <button type="button" class="btn btn-primary" (click)="onSubmitFeatureModal(featureForm)">            <span *ngIf="isEditing; else elseBlock">              Aggiorna            </span>            <ng-template #elseBlock>              <span>Aggiungi</span>            </ng-template>          </button>        </div>      </form>    </div>  </div></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
-    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+        var COMPONENT_TEMPLATE = '<div><div class="grid">  <div class="col-12">    <div class="card">      <div class="page-header">        <h5 [ngStyle]="{\'background-color\': (tlayer$|async)?.color+\'4D\'}" style="border-radius: 3px">          {{ (tlayer$|async)?.name }}        </h5>        <div class="button-group-actions">          <button pButton pRipple label="Back to list" icon="pi pi-arrow-left" class="p-button-secondary"            (click)="back()"></button>        </div>      </div>      <div class="card-body p-fluid">        <div class="row row-cols-1 row-cols-md-3">          <div class="col">            <label class="header-label">Name</label>            <p>{{ (tlayer$|async)?.name }}</p>          </div>          <div class="col">            <label class="header-label">Color</label>            <p>              <p-colorPicker [ngModel]="(tlayer$|async)?.color" [disabled]="true"></p-colorPicker>            </p>          </div>          <div class="col">            <label class="header-label">Description</label>            <p>{{ (tlayer$|async)?.description }}</p>          </div>        </div>      </div>    </div>    <div class="card">      <div class="card-body p-fluid">        <div class="d-flex align-items-center justify-content-between mb-2">          <label class="header-label">Features</label>          <button pButton pRipple type="button" label="New feature" icon="pi pi-plus" class="w-auto"            (click)="showFeatureModal()"></button>        </div>        <p-table #dt [value]="(features$|async)||[]" [rowHover]="true" dataKey="id" [responsive]="true"          responsiveLayout="scroll">          <ng-template pTemplate="header">            <tr>              <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon>              </th>              <th pSortableColumn="type">Type<p-sortIcon field="type"></p-sortIcon>              </th>              <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon>              </th>              <th></th>            </tr>          </ng-template>          <ng-template pTemplate="body" let-feature let-i="rowIndex">            <tr>              <td>{{ feature.name }}</td>              <td>{{ feature.type }}</td>              <td>{{ feature.description }}</td>              <td>                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2"                  (click)="showEditFeatureModal(feature)"></button>                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"                  (click)="showDeleteFeatureModal(feature)"></button>              </td>            </tr>          </ng-template>        </p-table>      </div>    </div>  </div></div><p-dialog [header]="newEditTitle" class="modal" [(visible)]="visibleEditNewFeature" [modal]="true"  [style]="{ minWidth: \'30vw\', maxWidth: \'50vw\' }" appendTo="body">  <div class="modal-dialog modal-dialog-centered">    <div class="modal-content">      <form (ngSubmit)="onSubmitFeatureModal()" [formGroup]="featuresForm" id="featureForm"        class="validated">        <div class="modal-body">          <div class="form-group">            <label class="form-label">Name *</label>            <div class="p-fluid">              <input formControlName="name" type="text" name="name" class="form-control" maxlength="300"                placeholder="Feature name">              <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">                <div *ngIf="name.errors?.[\'required\']">                  Need to enter the name of the feature                </div>                <div *ngIf="name.errors?.[\'isNotOnlyWhitespaces\']">                  Feature name cannot contain only blanks                </div>                <div *ngIf="name.errors?.[\'notDuplicateName\']">                  There already exists a feature with this name                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Type *</label>            <div class="p-fluid">              <p-dropdown formControlName="type" name="type" placeholder="Feature type" appendTo="body"                [options]="featureTypes|keyvalue" optionLabel="key" optionValue="value" [filter]="true"                [showClear]="true">              </p-dropdown>              <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">                <div *ngIf="type.errors?.[\'required\']">                  Need to enter the type of the feature                </div>              </div>            </div>          </div>          <div class="form-group" *ngIf="type.value === featureTypes.TAGSET">            <label class="form-label">Tagset *</label>            <div class="p-fluid">              <p-dropdown formControlName="tagset" name="tagset" placeholder="Tagset value" optionLabel="name"                [options]="(tagsets$|async)||[]" [filter]="true" [showClear]="true" appendTo="body">              </p-dropdown>              <div *ngIf="tagset.invalid && (tagset.touched || tagset.dirty)" class="invalid-feedback">                <div *ngIf="tagset.errors?.[\'required\']">                  Need to enter the tagset of the feature                </div>              </div>            </div>          </div>          <div class="form-group">            <label class="form-label">Description</label>            <div class="p-fluid">              <textarea rows="3" formControlName="description" type="text" name="description"                class="form-control"></textarea>            </div>          </div>        </div>        <div class="modal-footer">          <button type="button" class="btn btn-secondary" (click)="visibleEditNewFeature=false;">            Cancel          </button>          <button type="submit" class="btn btn-primary">            <span *ngIf="isEditing; else elseBlock">              Update            </span>            <ng-template #elseBlock>              <span>Add</span>            </ng-template>          </button>        </div>      </form>    </div>  </div></p-dialog><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
     var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'LayersViewComponent'};
 </script>

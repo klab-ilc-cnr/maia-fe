@@ -1,0 +1,50 @@
+<!--PLACEHOLDER quando siamo in fase di loading dati-->
+<p-skeleton *ngIf="!entry" width="30rem" height="40rem"></p-skeleton>
+
+<div *ngIf="entry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
+  <form [formGroup]="form" class="formgrid grid">
+    <div class="field col-6">
+      <label for="creator">Creator</label>
+      <input name="creator" formControlName="creator" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="creationDate">Creation date</label>
+      <input name="creationDate" formControlName="creationDate" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="author">Author</label>
+      <input name="author" formControlName="author" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="completionDate">Completion date</label>
+      <input name="completionDate" formControlName="completionDate" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="revisor">Reviewer</label>
+      <input name="revisor" formControlName="revisor" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="revisionDate">Review date</label>
+      <input name="revisionDate" formControlName="revisionDate" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="provenance">Provenance</label>
+      <input name="provenance" formControlName="provenance" pInputText type="text"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    </div>
+    <div class="field col-6">
+      <label for="confidence">Lexical entry confidence</label>
+      <p-inputNumber name="confidence" formControlName="confidence" suffix="%" [min]="0" [max]="100" class="w-full" styleClass="w-full"></p-inputNumber>
+    </div>
+    <div class="field col-12">
+      <label for="note">Note</label>
+      <p-editor name="note" formControlName="note"></p-editor>
+    </div>
+  </form>
+</div>

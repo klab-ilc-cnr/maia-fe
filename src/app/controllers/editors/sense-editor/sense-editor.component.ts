@@ -1,17 +1,17 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { forkJoin, Subscription, take } from 'rxjs';
+import { Subscription, forkJoin, take } from 'rxjs';
 import { LexicalEntryTypeOld, LinkElement, LinkProperty, PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
-import { LexicalSenseUpdater, LEXICAL_SENSE_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
+import { LEXICAL_SENSE_RELATIONS, LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
-import { HttpErrorResponse } from '@angular/common/http';
 
-/**Componente dell'editor per i sensi */
+/** OLD Componente dell'editor per i sensi */
 @Component({
   selector: 'app-sense-editor',
   templateUrl: './sense-editor.component.html',
