@@ -140,7 +140,7 @@ export class LexiconService {
    */
   getForm(formID: string): Observable<FormCore> {
     const encodedFormID = this.commonService.encodeUrl(formID);
-    return this.http.get<FormCore>(`${this.lexoUrl}lexicon/data/form?id=${encodedFormID}&aspect=core`);
+    return this.http.get<FormCore>(`${this.lexoUrl}lexicon/data/form?id=${encodedFormID}&module=core`);
   }
 
   getFormList(parameters: any): Observable<any> {
@@ -173,7 +173,7 @@ export class LexiconService {
    */
   getLexicalEntry(lexicalEntryId: string): Observable<LexicalEntryCore> {
     const encodedId = this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get<LexicalEntryCore>(`${this.lexoUrl}lexicon/data/lexicalEntry?aspect=core&id=${encodedId}`);
+    return this.http.get<LexicalEntryCore>(`${this.lexoUrl}lexicon/data/lexicalEntry?module=core&id=${encodedId}`);
   }
 
   /**
@@ -277,7 +277,7 @@ export class LexiconService {
    */
   getSense(senseID: string): Observable<SenseCore> {
     const encodedSenseID = this.commonService.encodeUrl(senseID);
-    return this.http.get<SenseCore>(`${this.lexoUrl}lexicon/data/lexicalSense?aspect=core&id=${encodedSenseID}`);
+    return this.http.get<SenseCore>(`${this.lexoUrl}lexicon/data/lexicalSense?module=core&id=${encodedSenseID}`);
   }
 
   /**
