@@ -13,9 +13,8 @@
     </a>
 
     <div class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active':layout.topMenuActive}">
-      <a class="p-link layout-topbar-button" (click)="goToMyProfile()">
+      <a class="p-link layout-topbar-button" (click)="goToMyProfile()" [pTooltip]="loggedUserName" tooltipPosition="bottom">
         <i class="pi pi-user"></i>
-        <span>Profile</span>
       </a>
       <a href="#" class="p-link layout-topbar-icon-button" (click)="logout()">
         <i class="pi pi-sign-out"></i>

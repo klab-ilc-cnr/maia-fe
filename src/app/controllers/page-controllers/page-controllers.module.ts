@@ -1,14 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header/header.component';
-import { SideMenuComponent } from './side-menu/side-menu.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ButtonModule } from "primeng/button";
 import { SidebarModule } from "primeng/sidebar";
-import { FooterComponent } from './footer/footer.component';
+import { TooltipModule } from 'primeng/tooltip';
 import { IconsModule } from '../icons/icons.module';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
 import { LoaderComponent } from './loader/loader.component';
+import { SideMenuComponent } from './side-menu/side-menu.component';
 
 @NgModule({
   declarations: [FooterComponent, HeaderComponent, SideMenuComponent, LoaderComponent],
@@ -19,7 +20,8 @@ import { LoaderComponent } from './loader/loader.component';
     FontAwesomeModule,
     RouterModule,
     SidebarModule,
-    IconsModule
+    IconsModule,
+    TooltipModule,
   ]
 })
 export class PageControllersModule { }
