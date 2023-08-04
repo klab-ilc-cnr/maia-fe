@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { faChevronDown, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { filter } from 'rxjs/operators';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 
 /**Componente del menu laterale di navigazione */
@@ -11,13 +10,11 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.scss']
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent {
   /**Icona freccia espandi */
   faChevronDown = faChevronDown;
   /**Icona freccia comprimi */
   faChevronLeft = faChevronLeft;
-  /**? */ //TODO verificarne l'uso, non risultano riferimenti nemmeno nel template
-  display: any;
 
   /**Path corrente in forma di lista di stringhe */
   public currentPath: string[] = [''];
@@ -31,13 +28,9 @@ export class SideMenuComponent implements OnInit {
     private router: Router,
     private loggedUserService : LoggedUserService
   ) {
-    router.events.pipe(
+    this.router.events.pipe(
       filter(e => e instanceof NavigationEnd)
     ).subscribe(evt => this.onNavigate((<NavigationEnd>evt).urlAfterRedirects));
-  }
-
-  /**Metodo dell'interfaccia OnInit */ //TODO valutare rimozione per mancato uso
-  ngOnInit(): void {
   }
 
   /**Getter restituisce se l'utente è autorizzato alla gestione utenti */
@@ -63,7 +56,7 @@ export class SideMenuComponent implements OnInit {
    * @returns {boolean} definisce se un path è attivo
    */
   public isActive(urls: string[]): boolean {
-    var isActive = false;
+    let isActive = false;
     urls.forEach(url => {
       if (this.isActiveInternal(url)) {
         isActive = true;
