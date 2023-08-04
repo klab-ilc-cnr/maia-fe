@@ -22,7 +22,7 @@
               <span>Tagset</span>
             </a>
           </li>
-          <li *ngIf="canManageLexicon"
+          <li *ngIf="canManageLexicon && !demoHide"
             [ngClass]="{'active': isActive(['lexicon'])}">
             <a routerLink="lexicon">
               <i class="layout-menuitem-icon pi pi-language"></i>

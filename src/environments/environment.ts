@@ -48,7 +48,9 @@ export const environment = {
   textoUrl: "https://146.48.93.234:9443",
   textoDebugUrl: "https://macalbanesi:9443",
   rutPrefix: "ferrandi",
-  rutBaseIRI: "http://rut/somali/ferrandi#"
+  rutBaseIRI: "http://rut/somali/ferrandi#",
+  applicationSubTitle: " - develop",
+  demoHide: false,
 };
 
 /*

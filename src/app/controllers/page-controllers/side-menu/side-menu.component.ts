@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { faChevronDown, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { filter } from 'rxjs/operators';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { environment } from 'src/environments/environment';
 
 /**Componente del menu laterale di navigazione */
 @Component({
@@ -11,6 +12,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
   styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent {
+  demoHide = environment.demoHide; //TODO rimuovere non appena pienamente implementato
   /**Icona freccia espandi */
   faChevronDown = faChevronDown;
   /**Icona freccia comprimi */

@@ -52,7 +52,9 @@ export const environment = {
   rutPrefix: "ferrandi",
   rutBaseIRI: "http://rut/somali/ferrandi#",
   textoUrl: "https://146.48.93.234:9443",
-  textoDebugUrl: "https://146.48.93.234:9443"
+  textoDebugUrl: "https://146.48.93.234:9443",
+  applicationSubTitle: " - ItaLex",
+  demoHide: true,
 };
 
 /*

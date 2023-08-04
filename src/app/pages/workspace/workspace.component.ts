@@ -21,6 +21,7 @@ import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
@@ -205,14 +206,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         // ]
         command: (event) => { this.openLexiconPanel(event) }
       },
-      {
-        label: 'Ontology',
-        // items: [
-        //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
-        //   { label: 'Ontologia 2' },
-        //   { label: 'Ontologia 3' }
-        // ]
-      },
+      // {
+      //   label: 'Ontology',
+      //   // items: [
+      //   //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
+      //   //   { label: 'Ontologia 2' },
+      //   //   { label: 'Ontologia 3' }
+      //   // ]
+      // },
       // {
       //   label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
       // }
@@ -221,6 +222,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
       } */
     ];
+    if(!environment.demoHide) {
+      this.items.push({label: 'Ontology'});
+    }
 
     this.activeRoute.paramMap.subscribe({
       next: (params) => {

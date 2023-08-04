@@ -3,6 +3,7 @@ import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { FormCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { environment } from 'src/environments/environment';
 /**Componente dei tab per la lavorazione di una forma */
 @Component({
   selector: 'app-tabs-form',
@@ -10,6 +11,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
   styleUrls: ['./tabs-form.component.scss']
 })
 export class TabsFormComponent implements OnInit, OnDestroy {
+  demoHide = environment.demoHide;
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
   /**Identificativo della forma */

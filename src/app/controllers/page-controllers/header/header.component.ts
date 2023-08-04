@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthConfigService } from 'src/app/config/authconfig.service';
 import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { environment } from 'src/environments/environment';
 
 /**Componente dell'intestazione di pagina */
 @Component({
@@ -11,6 +12,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  applicationSubTitle = environment.applicationSubTitle;
   loggedUserName = this.loggedUserService.currentUser?.name + ' ' + this.loggedUserService.currentUser?.surname;
 
   /**
