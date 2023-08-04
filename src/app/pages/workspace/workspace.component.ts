@@ -198,7 +198,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         command: (event) => { this.openExploreCorpusPanel(event) }
       },
       {
-        label: 'Lessico',
+        label: 'Lexicon',
         // items: [
         //   { label: 'Apri', id: 'LEXICON', command: (event) => { this.openLexiconPanel(event) } },
         //   { label: 'Lessico 2' }
@@ -206,7 +206,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         command: (event) => { this.openLexiconPanel(event) }
       },
       {
-        label: 'Ontologia',
+        label: 'Ontology',
         // items: [
         //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
         //   { label: 'Ontologia 2' },
