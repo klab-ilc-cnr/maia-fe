@@ -393,7 +393,7 @@ export class WorkspaceCorpusExplorerComponent {
    */
   private generateContextMenu(node: TreeNode<CorpusElement>): void {
     const menuAddFolder = {
-      label: 'Aggiungi cartella',
+      label: 'Add folder',
       icon: 'fa-solid fa-folder-plus',
       command: (event: any) => {
         console.info('add folder event', event)
@@ -407,14 +407,14 @@ export class WorkspaceCorpusExplorerComponent {
 
     cmItems.push(...[
       {
-        label: 'Sposta',
+        label: 'Move',
         icon: 'fa-solid fa-sync',
         command: (event: any) => {
           this.showMoveModal()
         }
       },
       {
-        label: 'Elimina',
+        label: 'Delete',
         icon: 'pi pi-trash',
         command: (event: any) => {
           this.showDeleteModal()
@@ -423,7 +423,7 @@ export class WorkspaceCorpusExplorerComponent {
     ]);
 
     const menuRename = {
-      label: 'Rinomina',
+      label: 'Rename',
       icon: 'fa-solid fa-pen',
       command: (event: any) => {
         this.showRenameModal()

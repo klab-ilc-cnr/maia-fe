@@ -2,41 +2,14 @@
   <div class="layout-menu-container">
     <ul class="layout-menu" role="menu" id="side-menu">
       <li class="layout-menuitem-category" role="none">
-        <div class="layout-menuitem-root-text">
-          <div class="logo-element">
-            IN+
-          </div>
-        </div>
         <ul role="menu">
-          <li *ngIf="canManageUsers"
-            [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/userDetails'])}">
-            <a routerLink="/usersManagement/users">
-              <i class="layout-menuitem-icon pi pi-users"></i>
-              <span>Gestione utenti</span>
-              <i class="pi pi-chevron-down pi-fw ms-auto"
-                *ngIf="isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
-              <i class="pi pi-chevron-right pi-fw ms-auto"
-                *ngIf="!isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
-            </a>
-            <ul [ngClass]="{'collapse':!(isActive(['usersManagement/users','usersManagement/userDetails']))}">
-              <li [ngClass]="{'active': isActive(['usersManagement/users'])}">
-                <a routerLink="/usersManagement/users">
-                  <span>Anagrafiche</span>
-                </a>
-              </li>
-              <li [ngClass]="{'active': isActive(['usersManagement/userDetails'])}" class="d-none">
-                <a routerLink="/usersManagement/userDetails">
-                  <span>Ruoli e permessi</span>
-                </a>
-              </li>
-            </ul>
-          </li>
           <li [ngClass]="{'active': isActive(['workspaces'])}">
             <a routerLink="/workspaces">
               <i class="layout-menuitem-icon pi pi-desktop"></i>
               <span>Workspace</span>
             </a>
           </li>
+          <hr class="side-menu-hr">
           <li *ngIf="canManageLayers" [ngClass]="{'active': isActive(['layers'])}">
             <a routerLink="/layers">
               <app-icon-layer-group class="layout-menuitem-icon"></app-icon-layer-group>
@@ -49,7 +22,7 @@
               <span>Tagset</span>
             </a>
           </li>
-          <li *ngIf="canManageLexicon"
+          <li *ngIf="canManageLexicon && !demoHide"
             [ngClass]="{'active': isActive(['lexicon'])}">
             <a routerLink="lexicon">
               <i class="layout-menuitem-icon pi pi-language"></i>
@@ -72,7 +45,30 @@
               </li>
             </ul>
           </li>
-
+          <hr class="side-menu-hr">
+          <li *ngIf="canManageUsers"
+            [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/userDetails'])}">
+            <a routerLink="/usersManagement/users">
+              <i class="layout-menuitem-icon pi pi-users"></i>
+              <span>User management</span>
+              <i class="pi pi-chevron-down pi-fw ms-auto"
+                *ngIf="isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
+              <i class="pi pi-chevron-right pi-fw ms-auto"
+                *ngIf="!isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
+            </a>
+            <ul [ngClass]="{'collapse':!(isActive(['usersManagement/users','usersManagement/userDetails']))}">
+              <li [ngClass]="{'active': isActive(['usersManagement/users'])}">
+                <a routerLink="/usersManagement/users">
+                  <span>Master data</span>
+                </a>
+              </li>
+              <li [ngClass]="{'active': isActive(['usersManagement/userDetails'])}" class="d-none">
+                <a routerLink="/usersManagement/userDetails">
+                  <span>Roles and permits</span>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </li>
     </ul>

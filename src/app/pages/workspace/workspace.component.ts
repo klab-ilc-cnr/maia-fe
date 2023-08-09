@@ -21,6 +21,7 @@ import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
@@ -198,21 +199,21 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         command: (event) => { this.openExploreCorpusPanel(event) }
       },
       {
-        label: 'Lessico',
+        label: 'Lexicon',
         // items: [
         //   { label: 'Apri', id: 'LEXICON', command: (event) => { this.openLexiconPanel(event) } },
         //   { label: 'Lessico 2' }
         // ]
         command: (event) => { this.openLexiconPanel(event) }
       },
-      {
-        label: 'Ontologia',
-        // items: [
-        //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
-        //   { label: 'Ontologia 2' },
-        //   { label: 'Ontologia 3' }
-        // ]
-      },
+      // {
+      //   label: 'Ontology',
+      //   // items: [
+      //   //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
+      //   //   { label: 'Ontologia 2' },
+      //   //   { label: 'Ontologia 3' }
+      //   // ]
+      // },
       // {
       //   label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
       // }
@@ -221,6 +222,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
       } */
     ];
+    if(!environment.demoHide) {
+      this.items.push({label: 'Ontology'});
+    }
 
     this.activeRoute.paramMap.subscribe({
       next: (params) => {
@@ -774,7 +778,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: ecPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Esplora Corpus',
+      headerTitle: 'Explore Corpus',
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
@@ -858,7 +862,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       id: panelId,
       container: this.workspaceContainer,
-      headerTitle: 'testo - ' + title.toLowerCase(),
+      headerTitle: 'text - ' + title.toLowerCase(),
       content: textWindowComponent,
       maximizedMargin: 5,
       dragit: { snap: true },
@@ -923,7 +927,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Lessico',
+      headerTitle: 'Lexicon',
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
@@ -994,7 +998,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconEditTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Gestione lessico - ' + lexicalEntryTree?.data?.label,
+      headerTitle: 'Lexicon management - ' + lexicalEntryTree?.data?.label,
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,

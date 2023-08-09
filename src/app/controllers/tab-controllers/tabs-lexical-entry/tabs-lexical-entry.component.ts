@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { environment } from 'src/environments/environment';
 /**Componente dei tab per la lavorazione di un'entrata lessicale */
 @Component({
   selector: 'app-tabs-lexical-entry',
@@ -9,6 +10,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
   styleUrls: ['./tabs-lexical-entry.component.scss']
 })
 export class TabsLexicalEntryComponent implements OnInit {
+  demoHide = environment.demoHide;
   /**Observable dell'entrata lessicale */
   lexicalEntry$!: Observable<LexicalEntryCore>;
   /**Identificativo dell'entrata lessicale */

@@ -5,21 +5,21 @@
         <div class="card">
             <div class="page-header">
                 <h5>Workspace</h5>
-                <p-button label="Nuovo workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"
+                <p-button label="New workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"
                     class="ms-start"></p-button>
             </div>
             <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-                currentPageReportTemplate="Elementi da {first} a {last} per un totale di {totalRecords} elementi"
+                currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
                 [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
                 selectionMode="single"
                 (onRowSelect)="openWorkspace($event)">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
+                        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon>
                         </th>
                         <th pSortableColumn="note">Note<p-sortIcon field="note"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="updated">Ultimo accesso<p-sortIcon field="updated"></p-sortIcon>
+                        <th pSortableColumn="updated">Last access<p-sortIcon field="updated"></p-sortIcon>
                         </th>
                         <th></th>
                     </tr>
@@ -43,7 +43,7 @@
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="p-d-flex p-ai-center p-jc-between">
-                        In totale ci sono {{workspaces ? workspaces.length : 0 }} workspace.
+                      In total there are {{workspaces ? workspaces.length : 0 }} workspace.
                     </div>
                 </ng-template>
             </p-table>
@@ -78,16 +78,16 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Nome *</label>
+            <label class="form-label">Name *</label>
             <div class="p-fluid">
               <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="workspace.name"
                 required autofocus maxlength="300" placeholder="Nome workspace" appWhitespacesValidator>
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
-                  Il nome è obbligatorio
+                  Name is mandatory
                 </div>
                 <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
-                  Il nome del workspace non può contenere solo spazi vuoti
+                  The workspace name cannot contain only blanks
                 </div>
               </div>
             </div>
@@ -101,14 +101,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Annulla
+            Cancel
           </button>
           <button type="button" class="btn btn-primary" (click)="onSubmitWorkspaceModal(workspaceForm)">
             <span *ngIf="isEditing; else elseBlock">
-              Aggiorna
+              Update
             </span>
             <ng-template #elseBlock>
-              <span>Aggiungi</span>
+              <span>Add</span>
             </ng-template>
           </button>
         </div>

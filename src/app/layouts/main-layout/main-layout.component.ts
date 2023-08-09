@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
 
 /**Classe che rappresenta il layout principale */
 @Component({
@@ -55,10 +56,14 @@ export class MainLayoutComponent implements OnInit {
    * Costruttore per MainLayoutComponent
    * @param renderer {Renderer2} classe di base per implementare rendering personalizzati
    */
-  constructor(public renderer: Renderer2) { }
+  constructor(
+    public renderer: Renderer2,
+    private router: Router,
+  ) { }
 
-  /**Metodo dell'interfaccia OnInit */ //TODO valutare rimozione per mancato uso
+  /**Metodo dell'interfaccia OnInit */
   ngOnInit(): void {
+    this.router.navigate(['workspaces'])
   }
 
   /**Metodo dell'interfaccia AfterViewInit, utilizzato per la gestione dei click sul documento */
