@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 
-const clientid = "/projectx-fe"; //deve essere lo stesso cliendId in keycloak!
+const clientid = "projectx-fe"; //deve essere lo stesso cliendId in keycloak!
 //const appName = "/projectx-fe"
 const appName = "/maia-italex-fe" //path del deploy
 //const issuer = "http://146.48.93.223:8081/realms/princnr"; //TODO sostituire con keycloak
