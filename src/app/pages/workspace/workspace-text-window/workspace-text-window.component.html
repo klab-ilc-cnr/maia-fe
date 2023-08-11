@@ -11,15 +11,15 @@
       </p-dropdown>
       <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">
         <div *ngIf="layer.errors?.['required']">
-          Seleziona un layer
+          Select a layer
         </div>
       </div>
     </div>
   </div>
   <div class="col-sm-6">
-    <label class="col-sm-2 col-form-label">Visibilità</label>
+    <label class="col-sm-2 col-form-label">Visibility</label>
     <div class="p-fluid">
-      <p-multiSelect [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Selezione i layer da visualizzare" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
+      <p-multiSelect [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Select the layers to be displayed" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
         <ng-template let-value pTemplate="selectedItems">
           <div class="layer-item-value" *ngFor="let option of selectedLayers" [ngStyle]="{'border-color': option.color}">
             <span class="pe-2">
@@ -30,7 +30,7 @@
             </span>
           </div>
           <div *ngIf="!selectedLayers || selectedLayers.length === 0">
-            Selezione i layer da visualizzare
+            Select the layers to be displayed
           </div>
         </ng-template>
         <ng-template let-layer pTemplate="item">
