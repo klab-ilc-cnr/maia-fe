@@ -359,7 +359,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       });
 
       tAnnotationsResponse.forEach(async (a: TAnnotation) => {
-        if (a.start && a.end && layersIndex.includes(a.layer!.id!)) {
+        if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer!.id!)) {
           const annFeat = a.features ?? [];
           let dictFeat = {};
           annFeat.forEach(f => {
