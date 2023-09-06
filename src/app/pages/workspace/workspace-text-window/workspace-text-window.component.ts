@@ -24,7 +24,6 @@ import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { RelationService } from 'src/app/services/relation.service';
 import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
@@ -148,14 +147,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
    * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
-   * @param relationService {RelationService} servizi relativi alle relazioni
    */
   constructor(
     private annotationService: AnnotationService,
     private loaderService: LoaderService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private relationService: RelationService,
     private layerState: LayerStateService,
     private userService: UserService,
     private workspaceService: WorkspaceService,
@@ -295,11 +292,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     forkJoin([
-      // this.layerService.retrieveLayers(),
-      // this.annotationService._retrieveText(this.textId),
       this.annotationService.retrieveTextSplitted(this.textId, { start: this.first, end: lastIndex }),
-      this.annotationService.retrieveByNodeId(this.textId),
-      this.relationService.retrieveByTextId(this.textId),
       this.annotationService.retrieveResourceAnnotations(this.textId, { start: this.first, end: lastIndex }),
     ]).pipe(
       takeUntil(this.unsubscribe$),
@@ -308,7 +301,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
-    ).subscribe(([textResponse, annotationsResponse, relationsResponse, tAnnotationsResponse]) => {
+    ).subscribe(([textResponse, tAnnotationsResponse]) => {
       // this.layersList = layersResponse;
       this.totalRecords = textResponse.count!;
 
@@ -344,11 +337,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       this.textRes = textResponse.data || [];
       this.offset = textResponse.offset;
-      this.annotationsRes = annotationsResponse;
+      this.annotationsRes = null;
       this.textoAnnotationsRes = tAnnotationsResponse;
 
       this.simplifiedAnns = [];
-      this.simplifiedArcs = relationsResponse;
+      this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
 
       const layersIndex = new Array<number>();
 
@@ -1937,15 +1930,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   private renderData() {
     this.rows = [];
-
-    // let rawText = JSON.parse(JSON.stringify(this.textRes.text)); //TODO ARRIVA GIà COME RAW TEXT
-    // const rawText = this.textRes;
-    const rawAnns = JSON.parse(JSON.stringify(this.annotationsRes.annotations));
-    // const sentences = rawText.split(/(?<=[\.!\?])/g);
     const sentences = this.textRes;
     const row_id = 0;
     let start = 0;
-    // const end = rawText.length;
 
     const width = this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
 
