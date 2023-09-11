@@ -222,8 +222,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
       } */
     ];
-    if(!environment.demoHide) {
-      this.items.push({label: 'Ontology'});
+    if (!environment.demoHide) {
+      this.items.push({ label: 'Ontology' });
     }
 
     this.activeRoute.paramMap.subscribe({
@@ -577,9 +577,27 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('restore');
     this.loaderService.show();
 
-    const storedData: any = workspaceStatus.layout;
+    let storedData: any = workspaceStatus.layout;
     const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
     console.log('restored layout', storedData, storedTiles, workspaceStatus);
+
+    const iterableStoredData = JSON.parse(storedData); //TODO verificare il workaround utilizzato per il ricalcolo delle dimensioni dei panel in caso di cambio schermo (da grande a piccolo)
+    let tempStoredData = [];
+    for (const tile of iterableStoredData) {
+      const tempTile = { ...tile };
+      const width = +tile.width.toString().replace('px', '');
+      const height = +tile.height.toString().replace('px', '');
+      if (width > window.innerWidth) {
+        tempTile.width = window.innerWidth + 'px'
+        tempTile.left = '0px'
+      }
+      if (height > window.innerHeight) {
+        tempTile.height = (window.innerHeight * 0.8) + 'px'
+        tempTile.left = '0px'
+      }
+      tempStoredData.push(tempTile)
+    }
+    storedData = JSON.stringify(tempStoredData)
 
     if (storedTiles.length == 0) {
       return;
