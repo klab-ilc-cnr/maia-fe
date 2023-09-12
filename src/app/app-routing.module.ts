@@ -1,12 +1,17 @@
-import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PROJECTX_ROUTES } from './routes/projectx.routes'
-import { WORKSPACES_ROUTES } from './routes/workspaces.routes';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
+import { LoginComponent } from './pages/login/login.component';
+import { PROJECTX_ROUTES } from './routes/projectx.routes';
+import { WORKSPACES_ROUTES } from './routes/workspaces.routes';
 
 /**Route iniziali */
 const routes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent
+  },
   {
     path: '',
     component: MainLayoutComponent,

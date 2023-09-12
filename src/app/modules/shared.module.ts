@@ -21,6 +21,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
+import { PasswordModule } from 'primeng/password';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -82,6 +83,7 @@ const PRIMENG_MODULES = [
   CardModule,
   InputNumberModule,
   PaginatorModule,
+  PasswordModule,
 ];
 
 const DIRECTIVES = [

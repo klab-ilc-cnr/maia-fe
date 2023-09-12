@@ -40,6 +40,7 @@ import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-w
 import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { CommonService } from './services/common.service';
     SenseCoreEditorComponent,
     SemanticRelEditorComponent,
     TextAnnotationEditorComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
