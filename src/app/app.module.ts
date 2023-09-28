@@ -30,7 +30,6 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
 import { SharedModule } from './modules/shared.module';
 import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
-import { WorkspaceLayersVisibilityManagerComponent } from './pages/workspace/workspace-layers-visibility-manager/workspace-layers-visibility-manager.component';
 import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceListComponent } from './pages/workspace/workspace-list/workspace-list.component';
@@ -53,7 +52,6 @@ import { LoginComponent } from './pages/login/login.component';
     WorkspaceCorpusExplorerComponent,
     MainLayoutComponent,
     WorkspaceTextWindowComponent,
-    WorkspaceLayersVisibilityManagerComponent,
     RelationEditorComponent,
     WorkspaceLexiconTileComponent,
     WorkspaceLexiconEditTileComponent,
