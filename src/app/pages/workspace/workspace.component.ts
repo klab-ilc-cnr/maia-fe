@@ -235,11 +235,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
         }
 
-        this.loaderService.show();
-        this.layerService.retrieveLayers().subscribe({
-          next: (layers: Layer[]) => {
-            this.visibleLayers = layers; //TODO da gestire
-            this.loaderService.hide();
+        // this.loaderService.show();
+        // this.layerService.retrieveLayers().subscribe({
+        //   next: (layers: Layer[]) => {
+        //     this.visibleLayers = layers; //TODO da gestire
+        //     this.loaderService.hide();
 
             if (this.workspaceId === this.newId) {
               this.newWorkspace = true;
@@ -260,8 +260,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
               return;
             }
           }
-        })
-      }
+        // })
+      // }
     });
 
     if (this.workspaceId && this.workspaceId !== this.newId) {
