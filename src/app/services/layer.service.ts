@@ -29,9 +29,9 @@ export class LayerService {
    * GET che recupera l'elenco dei layer esistenti
    * @returns {Observable<Array<Layer>>} observable della lista di layer
    */
-  public retrieveLayers(): Observable<Array<Layer>> {
-    return this.http.get<Array<Layer>>(`${this.layerUrl}`);
-  }
+  // public retrieveLayers(): Observable<Array<Layer>> {
+  //   return this.http.get<Array<Layer>>(`${this.layerUrl}`);
+  // }
 
   /**
    * PUT che richiede la modifica dei dati di un layer
