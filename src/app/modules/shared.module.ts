@@ -16,6 +16,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -76,6 +77,7 @@ const PRIMENG_MODULES = [
   FieldsetModule,
   ToolbarModule,
   MenuModule,
+  TieredMenuModule,
   EditorModule,
   TabViewModule,
   AutoCompleteModule,

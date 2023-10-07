@@ -19,6 +19,7 @@ import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry
 import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
 import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
+import { SemanticRelInputComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-input/semantic-rel-input.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -66,6 +67,7 @@ import { CommonService } from './services/common.service';
     FormCoreEditorComponent,
     SenseCoreEditorComponent,
     SemanticRelEditorComponent,
+    SemanticRelInputComponent,
     TextAnnotationEditorComponent,
   ],
   imports: [
