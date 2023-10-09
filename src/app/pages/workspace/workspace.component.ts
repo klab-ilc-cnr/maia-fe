@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subscription, take } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -38,7 +38,7 @@ let currentWorkspaceInstance: any; //TODO verificare effettivo utilizzo
   styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  private readonly unsubscribe$ = new Subject();
   /**
    * @private
    * Identificativo per un nuovo workspace
@@ -90,7 +90,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   private storageName = "storedTiles";
 
   /**Sottoscrizione per tracciare emissioni da Common Service */
-  private subscription!: Subscription;
+  // private subscription!: Subscription;
 
   /**Lista degli elementi di menu di primeng */
   public items: MenuItem[] = [];
@@ -169,7 +169,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private loaderService: LoaderService,
     private layerService: LayerService,
     private userService: UserService,
-    private cd: ChangeDetectorRef,
     private vcr: ViewContainerRef,
     private messageService: MessageService,
     private workspaceService: WorkspaceService,
@@ -179,7 +178,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
 
-    this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
+    this.commonService.notifyObservable$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((res) => {
       if ('option' in res && res.option === 'onLexiconTreeElementDoubleClickEvent') {
         const selectedSubTree = structuredClone(res.value[0]);
         const showLabelName = structuredClone(res.value[1]);
@@ -226,43 +227,45 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       this.items.push({ label: 'Ontology' });
     }
 
-    this.activeRoute.paramMap.subscribe({
-      next: (params) => {
-        this.workspaceId = params.get('id') ?? undefined;
+    this.activeRoute.paramMap.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((params) => {
+      this.workspaceId = params.get('id') ?? undefined;
 
-        if (!this.workspaceId) {
-          this.router.navigate(['workspaces']);
-          return;
-        }
-
-        this.loaderService.show();
-        this.layerService.retrieveLayers().subscribe({
-          next: (layers: Layer[]) => {
-            this.visibleLayers = layers; //TODO da gestire
-            this.loaderService.hide();
-
-            if (this.workspaceId === this.newId) {
-              this.newWorkspace = true;
-              return;
-            }
-
-            if (this.workspaceId != null && this.workspaceId != undefined) {
-              this.newWorkspace = false;
-              this.loaderService.show();
-              this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).subscribe({
-                next: (data) => {
-                  console.log(data)
-                  data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
-                  this.restoreTiles(data);
-                  this.loaderService.hide();
-                }
-              });
-              return;
-            }
-          }
-        })
+      if (!this.workspaceId) {
+        this.router.navigate(['workspaces']);
+        return;
       }
-    });
+
+      // this.loaderService.show();
+      // this.layerService.retrieveLayers().subscribe({
+      //   next: (layers: Layer[]) => {
+      //     this.visibleLayers = layers; //TODO da gestire
+      //     this.loaderService.hide();
+
+      if (this.workspaceId === this.newId) {
+        this.newWorkspace = true;
+        return;
+      }
+
+      if (this.workspaceId != null && this.workspaceId != undefined) {
+        this.newWorkspace = false;
+        this.loaderService.show();
+        this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).pipe(
+          take(1),
+        ).subscribe((data) => {
+            console.info('load workspace status data', data)
+            data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
+            this.restoreTiles(data);
+            this.loaderService.hide();
+          }
+        );
+        return;
+      }
+    }
+      // })
+      // }
+    );
 
     if (this.workspaceId && this.workspaceId !== this.newId) {
       this.workspaceService.getWorkspaceName(+this.workspaceId).pipe(take(1)).subscribe(res => {
@@ -365,7 +368,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per eliminare eventuali sottoscrizioni */
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -581,6 +586,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
     console.log('restored layout', storedData, storedTiles, workspaceStatus);
 
+    if (storedTiles.length == 0) {
+      return;
+    }
+
     const iterableStoredData = JSON.parse(storedData); //TODO verificare il workaround utilizzato per il ricalcolo delle dimensioni dei panel in caso di cambio schermo (da grande a piccolo)
     let tempStoredData = [];
     for (const tile of iterableStoredData) {
@@ -598,10 +607,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       tempStoredData.push(tempTile)
     }
     storedData = JSON.stringify(tempStoredData)
-
-    if (storedTiles.length == 0) {
-      return;
-    }
 
     //IMPORTANTE Ripristino i dati nel localstorage PRIMA di fare restore,
     //il localstorage verrà letto dalla funzione jsPanel.layout.restore()

@@ -19,6 +19,7 @@ import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry
 import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
 import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
+import { SemanticRelInputComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-input/semantic-rel-input.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -30,7 +31,6 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
 import { SharedModule } from './modules/shared.module';
 import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
-import { WorkspaceLayersVisibilityManagerComponent } from './pages/workspace/workspace-layers-visibility-manager/workspace-layers-visibility-manager.component';
 import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceListComponent } from './pages/workspace/workspace-list/workspace-list.component';
@@ -53,7 +53,6 @@ import { LoginComponent } from './pages/login/login.component';
     WorkspaceCorpusExplorerComponent,
     MainLayoutComponent,
     WorkspaceTextWindowComponent,
-    WorkspaceLayersVisibilityManagerComponent,
     RelationEditorComponent,
     WorkspaceLexiconTileComponent,
     WorkspaceLexiconEditTileComponent,
@@ -69,6 +68,7 @@ import { LoginComponent } from './pages/login/login.component';
     FormCoreEditorComponent,
     SenseCoreEditorComponent,
     SemanticRelEditorComponent,
+    SemanticRelInputComponent,
     TextAnnotationEditorComponent,
     LoginComponent,
   ],
