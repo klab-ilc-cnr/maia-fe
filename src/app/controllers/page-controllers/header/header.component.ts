@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthConfigService } from 'src/app/config/authconfig.service';
 import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 
 /**Componente dell'intestazione di pagina */
@@ -20,18 +20,19 @@ export class HeaderComponent {
    * @param layout {MainLayoutComponent} componente del layout di base
    * @param router {Router} servizi per la navigazione fra le viste
    * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato 
-   * @param authConfigService {AuthConfigService} servizi relativi alle configurazioni di autenticazione
    */
   constructor(
     public layout: MainLayoutComponent,
     private router: Router,
     private loggedUserService: LoggedUserService,
-    private authConfigService: AuthConfigService) {
+    private storageService: StorageService,
+  ) {
   }
 
-  /**Metodo che richiama il logout dell'utente */
+  /**Metodo che richiama il logout dell'utente */ // TODO DA TESTARE
   logout() {
-    this.authConfigService.logout()
+    this.storageService.cleanStorage();
+    this.router.parseUrl('/login');
   }
 
   /**Metodo che esegue la navigazione sui dettagli dell'utente loggato */

@@ -29,5 +29,11 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
-  }
+  }, 
+  "/authentication/*": {
+    "target": "https://146.48.93.234:9000/projectx/api",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
 }

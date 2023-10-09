@@ -16,17 +16,16 @@ export class LoggedUserService {
 
   /**Getter dei dati dell'utente loggato */
   public get currentUser(): User | undefined {
-    return this.retrieveUserFromStorage();
+    return this.retrieveUserFromStorage(); //TODO sostituire con il nuovo servizio StorageService
   }
 
   /**
    * Metodo che valuta se l'utente è autorizzato alla gestione utenze
    * @returns {boolean} definisce se l'utente può gestire le utenze
    */
-  public canManageUsers(): boolean{
+  public canManageUsers(): boolean {
     let user = this.currentUser;
-    if(user === null && user === undefined)
-    {
+    if (user === null && user === undefined) {
       return false;
     }
     return (user?.role === (Roles.AMMINISTRATORE));
@@ -36,10 +35,9 @@ export class LoggedUserService {
    * Metodo che valuta se l'utente è autorizzato alla gestione dei layer
    * @returns {boolean} definisce se l'utente può gestire i layer
    */
-  public canManageLayers(): boolean{
+  public canManageLayers(): boolean {
     let user = this.currentUser;
-    if(user === null && user === undefined)
-    {
+    if (user === null && user === undefined) {
       return false;
     }
     return (user?.role === (Roles.AMMINISTRATORE));
@@ -49,10 +47,9 @@ export class LoggedUserService {
    * Metodo che valuta se l'utente è autorizzato alla gestione dei tagset
    * @returns {boolean} definisce se l'utente può gestire i tagset
    */
-  public canManageTagsets(): boolean{
+  public canManageTagsets(): boolean {
     let user = this.currentUser;
-    if(user === null && user === undefined)
-    {
+    if (user === null && user === undefined) {
       return false;
     }
     return (user?.role === (Roles.AMMINISTRATORE));
@@ -60,7 +57,7 @@ export class LoggedUserService {
 
   public canManageLexicon(): boolean {
     const user = this.currentUser;
-    if(!user || user === undefined) return false;
+    if (!user || user === undefined) return false;
     return user.role === Roles.AMMINISTRATORE;
   }
 
@@ -79,8 +76,7 @@ export class LoggedUserService {
    */
   private retrieveUserFromStorage(): User | undefined {
     var userObject = localStorage.getItem(CURRENT_USER_LOCAL_STORAGE);
-    if(userObject == null || userObject == undefined)
-    {
+    if (userObject == null || userObject == undefined) {
       return undefined;
     }
 

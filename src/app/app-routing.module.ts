@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -15,14 +16,14 @@ const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    children: PROJECTX_ROUTES
-    // canActivate: [AuthGuard],
-    // canActivateChild: [RoleGuard],
+    children: PROJECTX_ROUTES,
+    canActivateChild: [authGuard],
   },
   {
     path: '',
     component: WorkspaceLayoutComponent,
-    children: WORKSPACES_ROUTES
+    children: WORKSPACES_ROUTES,
+    canActivateChild: [authGuard],
   }
   // { path: 'users', component: UserListComponent },
   // { path: 'adduser', component: UserFormComponent }
