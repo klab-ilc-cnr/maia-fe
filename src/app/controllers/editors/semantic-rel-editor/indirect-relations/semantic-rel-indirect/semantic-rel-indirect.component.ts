@@ -8,7 +8,7 @@ import { SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.m
 import { LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { FormItem } from '../semantic-rel-editor.component';
+import { FormItem } from '../../semantic-rel-editor.component';
 import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
 
 type SuggestionItem = {
@@ -22,14 +22,14 @@ interface AutoCompleteCompleteEvent {
 }
 
 @Component({
-  selector: 'app-semantic-rel-input',
-  templateUrl: './semantic-rel-input.component.html',
-  styleUrls: ['./semantic-rel-input.component.scss']
+  selector: 'app-semantic-rel-indirect',
+  templateUrl: './semantic-rel-indirect.component.html',
+  styleUrls: ['./semantic-rel-indirect.component.scss']
 })
-export class SemanticRelInputComponent implements OnInit {
+export class SemanticRelIndirectComponent implements OnInit {
 
   @Input() control!: FormItem;
-  @Input() form!: FormGroup<{directSenseRelations: FormGroup}>;
+  @Input() form!: FormGroup<{indirectSenseRelations: FormGroup}>;
   @Input() formItems!: FormItem[];
   @Input() senseEntry!: SenseCore;
 
@@ -118,7 +118,7 @@ export class SemanticRelInputComponent implements OnInit {
         take(1)
       ).subscribe(
         () => {
-          this.form.controls.directSenseRelations.removeControl(`${itemID}`);
+          this.form.controls.indirectSenseRelations.removeControl(`${itemID}`);
           const index = this.formItems.findIndex(e => e.itemID === itemID);
           this.formItems.splice(index, 1);
           const message = this.msgConfService.generateSuccessMessageConfig(`${relationshipLabel} removed`);
