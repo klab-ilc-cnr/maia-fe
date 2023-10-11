@@ -7,7 +7,6 @@ const clientid = "projectx-fe";
 // const appName = "/projectx-fe"
 const appName = "/maia-fe"
 // const issuer = "http://localhost:8080/realms/princnr";
-const issuer = "https://klab.ilc.cnr.it/keycloak/realms/princnr"; //TODO sostituire con keycloak
 // const allowedUrls = 'http://localhost:9000/projectx/api';
 // const allowedUrls = 'https://klab.ilc.cnr.it/projectx/api'; //TODO sostituire con il backend xeel
 const allowedUrls = 'https://146.48.93.234:9000/projectx/api'; //TODO sostituire con il backend xeel
@@ -15,25 +14,6 @@ const allowedUrls = 'https://146.48.93.234:9000/projectx/api'; //TODO sostituire
 export const environment = {
   production: false,
   envName: 'local',
-  keycloak: {
-    issuer: issuer,
-    redirectUri: window.location.origin + appName,
-    clientId: clientid,
-    scope: 'openid profile email offline_access',
-    responseType: 'code',
-    // logoutUrl: logoutUrl + clientid,
-    skipIssuerCheck: true,
-    // Remove the requirement of using Https to simplify the demo
-    // THIS SHOULD NOT BE USED IN PRODUCTION
-    // USE A CERTIFICATE FOR YOUR IDP
-    // IN PRODUCTION
-    requireHttps: false,
-    // at_hash is not present in JWT token
-    showDebugInformation: true,
-    //   // at_hash is not present in JWT token
-    disableAtHashCheck: true,
-    strictDiscoveryDocumentValidation: false //https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/using-an-id-provider-that-fails-discovery-document-validation.html
-  },
   allowedUrls: allowedUrls,
   usersUrl: allowedUrls + '/users',
   languagesUrl: allowedUrls + '/languages',
@@ -44,7 +24,6 @@ export const environment = {
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
   lexoUrl: "/LexO-backend-maia/service/",
-  cashUrl: "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
   textoUrl: "https://146.48.93.234:9443",
   textoDebugUrl: "https://macalbanesi:9443",
   rutPrefix: "ferrandi",
