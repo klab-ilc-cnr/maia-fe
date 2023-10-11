@@ -1,7 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { catchError, take } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { CommonService } from 'src/app/services/common.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -20,6 +23,8 @@ export class LoginComponent {
     private authenticationService: AuthenticationService,
     private storageService: StorageService,
     private userService: UserService,
+    private router: Router,
+    private commonService: CommonService,
   ) { }
 
   onSubmit() {
@@ -28,12 +33,23 @@ export class LoginComponent {
     if (!username || !password) {
       return;
     }
-    this.authenticationService.login({ username: username, password: password }).pipe(//TODO aggiungere gestione errore con msg
+    this.authenticationService.login({ username: username, password: password }).pipe(
       take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Authentication failed')),
     ).subscribe(jwt => {
       this.storageService.setToken(jwt);
-      this.userService.retrieveCurrentUser().pipe(take(1)).subscribe(user => console.info(user))
+      this.retrieveCurrentUser();
     });
+  }
+
+  private retrieveCurrentUser(): void {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Retrieve current user failed'))
+    ).subscribe(user => {
+      this.storageService.setCurrentUser(user);
+      this.router.navigate(['']);
+    })
   }
 
 }

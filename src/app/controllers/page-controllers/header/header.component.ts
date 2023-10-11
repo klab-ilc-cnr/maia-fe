@@ -29,10 +29,10 @@ export class HeaderComponent {
   ) {
   }
 
-  /**Metodo che richiama il logout dell'utente */ // TODO DA TESTARE
+  /**Metodo che richiama il logout dell'utente */
   logout() {
     this.storageService.cleanStorage();
-    this.router.parseUrl('/login');
+    this.router.navigate(['/login']);
   }
 
   /**Metodo che esegue la navigazione sui dettagli dell'utente loggato */
