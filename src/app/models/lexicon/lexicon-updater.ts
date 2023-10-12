@@ -61,6 +61,7 @@ export enum LINGUISTIC_RELATION_TYPE {
   DECOMP = 'decomp',
   CONCEPT_REF = 'conceptRef',
   LEXICAL_REL = 'lexicalRel',
+  LEXICOSEMANTIC_REL = 'LexicosemanticRel',
   SENSE_REL = 'senseRel',
   CONCEPT_REL = 'conceptRel',
   ETY_LINK = 'etyLink',

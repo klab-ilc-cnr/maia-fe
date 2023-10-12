@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map, mergeMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
-import { FormUpdater, GenericRelationUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
+import { FormUpdater, GenericRelationUpdater, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 import { Morphology } from '../models/lexicon/morphology.model';
 import { Namespace } from '../models/lexicon/namespace.model';
@@ -90,6 +90,18 @@ export class LexiconService {
     return this.http.post(
       `${this.lexoUrl}lexicon/delete/relation?id=${encodedLexEntry}`,
       updater,
+      { responseType: "text" }
+    );
+  }
+  /**
+   * Cancellazione di una relazione lexicosemantica
+   * @param lexicalEntityId {string} uri identificativo dell'entità
+   * @returns {Observable<string>}
+   */
+  deleteLexicoSemanticRelation(lexicalEntityId: string): Observable<string> {
+    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntityId);
+    return this.http.get(
+      `${this.lexoUrl}lexicon/delete/lexicoSemanticRelation?id=${encodedLexEntry}`,
       { responseType: "text" }
     );
   }
@@ -431,5 +443,44 @@ export class LexiconService {
       updater,
       { responseType: "text" }
     );
+  }
+
+  createIndirectSenseRelation(sourceSenseURI: string, categoryURI: string): Observable<string> {
+
+    const createRelationship = () => {
+      const createRelationshipUrl = new URL(`${this.lexoUrl}lexicon/creation/lexicoSemanticRelation`);
+
+      createRelationshipUrl.search = new URLSearchParams({
+        id: sourceSenseURI,
+        type: "http://www.w3.org/ns/lemon/vartrans#SenseRelation",
+        prefix: 'ferrandi',
+        baseIRI: "http://rut/somali/ferrandi#",
+        author: "ziopino", // FIXME: replace builtin name with real author
+      }).toString();
+
+      return this.http.get(createRelationshipUrl.href, { responseType: 'json' });
+    }
+
+    const addCategory = (relationURI: string) => {
+      const addCategoryUrl = new URL(`${this.lexoUrl}lexicon/update/linguisticRelation`);
+      addCategoryUrl.searchParams.append('id', relationURI);
+      return this.http.post(addCategoryUrl.href, {
+        type: LINGUISTIC_RELATION_TYPE.LEXICOSEMANTIC_REL,
+        value: categoryURI,
+        relation: 'http://www.w3.org/ns/lemon/vartrans#category',
+      }, {
+        headers: {'Content-Type': 'application/json'},
+        responseType: 'text',
+      })
+    }
+
+    const response$ = createRelationship();
+    response$.pipe(
+        mergeMap((response: any) => addCategory(response.relation))
+    );
+
+    return response$.pipe(
+      map((response: any) => response.relation)
+    )
   }
 }

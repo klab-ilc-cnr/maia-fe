@@ -28,6 +28,7 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
   menuItems: MenuItem[] = [];
 
   directRelations: LinguisticRelationModel[] = [];
+  indirectRelations: LinguisticRelationModel[] = [];
 
   constructor(
     private lexiconService: LexiconService,
@@ -89,6 +90,7 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
       take(1),
     ).subscribe((results: LexicalSenseResponseModel) => {
       this.directRelations = results.directRelations;
+      this.indirectRelations = results.indirectRelations;
     });
   }
 

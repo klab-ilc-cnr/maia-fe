@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs';
 import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
 import { MenuItem } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
@@ -19,7 +18,6 @@ export interface FormItem {
   styleUrls: ['./direct-relations.component.scss']
 })
 export class DirectRelationsComponent implements OnChanges {
-  private readonly unsubscribe$ = new Subject();
 
   @Input() senseEntry!: SenseCore;
   @Input() menuItems: MenuItem[] = [];
@@ -73,10 +71,8 @@ export class DirectRelationsComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['directRelations']) {
-      console.log('changing relationships')
-      console.log(changes)
-      this.populateRelationships(changes['directRelations'].currentValue);
+    if (changes['relations']) {
+      this.populateRelationships(changes['relations'].currentValue);
     }
 
     if (changes['menuItems']) {

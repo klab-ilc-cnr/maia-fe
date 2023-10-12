@@ -1,12 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, take } from 'rxjs';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
-import { MenuItem } from 'primeng/api';
-import { LexiconService } from 'src/app/services/lexicon.service';
+import { MenuItem, MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
-import { SenseRelationTypeModel } from 'src/app/models/lexicon/sense-relation-type.model';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { take } from 'rxjs';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 export interface FormItem {
   relationshipLabel: string,
@@ -22,17 +21,15 @@ export interface FormItem {
   styleUrls: ['./indirect-relations.component.scss']
 })
 
-export class IndirectRelationsComponent implements OnInit, OnDestroy {
-  private readonly unsubscribe$ = new Subject();
-  @Input() senseEntry!: SenseCore;
+export class IndirectRelationsComponent implements OnChanges {
 
-  /**Identificativo dell'entrata lessicale di appartenenza */
-  @Input() lexEntryId!: string;
+  @Input() senseEntry!: SenseCore;
+  @Input() menuItems: MenuItem[] = [];
+  @Input() relations: LinguisticRelationModel[] = [];
 
   formItems: FormItem[] = [];
+  relationshipLabelByURI: { [id: string] : string } = {};
 
-  /**Elementi del menu relativi alle definizioni */
-  menuItems: MenuItem[] = [];
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
     indirectSenseRelations: new FormGroup({}),
@@ -42,60 +39,16 @@ export class IndirectRelationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private lexiconService: LexiconService,
-  ) {  }
-
-
-  private sortMenuItems(a: MenuItem, b: MenuItem): number {
-    return (a.label || '') > (b.label || '')? 1 : -1;
-  }
-
-  private menuItemByRelationshipId :{ [id: string] : MenuItem } = {};
-
-  private buildMenuItems(relationTypes: SenseRelationTypeModel[]): MenuItem[] {
-
-    const rootNode : MenuItem = {label: '', command: (e) => { console.error(e) }, items: []};
-
-    // Prepare nodes
-    const nodeById = this.menuItemByRelationshipId;
-
-    for (const relationType of relationTypes) {
-      const { propertyLabel, propertyId, propertyDescription } = relationType;
-      nodeById[propertyId] = {
-        label: propertyLabel,
-        command: () => { this.onAddRelationship(propertyLabel, propertyId) },
-        tooltip: propertyDescription,
-      };
-    }
-
-    // Prepare sub-items per each node
-
-    for (const relationType of relationTypes) {
-      let parentNode = nodeById[relationType.parentID] || rootNode;
-      const childNode = nodeById[relationType.propertyId];
-      if (parentNode == childNode) parentNode = rootNode;
-      parentNode.items = (parentNode.items || []);
-      parentNode.items.push(childNode);
-    }
-
-    // Sort alphabetically
-
-    for (const relationType of relationTypes) {
-      const node = nodeById[relationType.propertyId];
-      if (!node.items) continue;
-      node.items.sort(this.sortMenuItems);
-    }
-
-    rootNode.items?.sort(this.sortMenuItems);
-
-    return rootNode.items || [];
-  }
+    private msgConfService: MessageConfigurationService,
+    private messageService: MessageService,
+  ) {}
 
   private populateRelationships(items: LinguisticRelationModel[]): void {
     for (const [itemID, item] of items.entries()) {
       const {link, entity, label} = item;
       if (!link) continue;
       const newItem : FormItem = {
-        relationshipLabel: this.menuItemByRelationshipId[link].label || '',
+        relationshipLabel: this.relationshipLabelByURI[link] || '',
         relationshipURI: link,
         destinationURI: entity || '',
         destinationLabel: label || '',
@@ -107,26 +60,40 @@ export class IndirectRelationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {
-    this.lexiconService.getSenseRelationTypes().pipe(
-      take(1),
-    ).subscribe(relationTypes => {
-      this.menuItems = this.buildMenuItems(relationTypes);
-    });
+  private assignMenuTree(root: MenuItem): MenuItem {
+    const label = root.label || '';
+    const uri = root.id || '';
 
-    this.lexiconService.getLexicalSenseRelations(this.senseEntry.sense).pipe(
-      take(1),
-    ).subscribe((results: LexicalSenseResponseModel) => {
-      this.populateRelationships(results.directRelations);
-    });
+    const dupItem : MenuItem = {
+      ...root,
+      items: root.items !== undefined? [] : undefined,
+      command: () => this.onMenuClickInsertFormItem(label, uri),
+    };
+
+    for (const menuItem of Object.values(root.items || [])) {
+      const subItem : MenuItem = this.assignMenuTree(menuItem);
+      dupItem.items?.push(subItem);
+    }
+
+    this.relationshipLabelByURI[uri] = label;
+
+    return dupItem;
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next(null);
-    this.unsubscribe$.complete();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['relations']) {
+      console.log('changing relationships')
+      console.log(changes)
+      this.populateRelationships(changes['relations'].currentValue);
+    }
+
+    if (changes['menuItems']) {
+      const items = changes['menuItems'].currentValue;
+      this.menuItems = this.assignMenuTree({items}).items || [];
+    }
   }
 
-  onAddRelationship(relationshipLabel: string, relationshipURI: string) {
+  onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string) {
     const newItem : FormItem = {
       itemID: this.uniqueID++,
       relationshipLabel,
@@ -135,6 +102,24 @@ export class IndirectRelationsComponent implements OnInit, OnDestroy {
       destinationLabel: '',
     };
     this.formItems.unshift(newItem);
+
+    this.lexiconService.createIndirectSenseRelation(
+      this.senseEntry.sense, relationshipURI
+    ).pipe(
+      take(1),
+    ).subscribe(
+      (indirectRelationshipURI: string) => {
+        console.log('DONE!!')
+        console.log(indirectRelationshipURI)
+        newItem.relationshipURI = indirectRelationshipURI;
+      },
+      (err) => {
+        console.error(err);
+        const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+        this.messageService.add(message);
+      }
+    );
+
   }
 
 }

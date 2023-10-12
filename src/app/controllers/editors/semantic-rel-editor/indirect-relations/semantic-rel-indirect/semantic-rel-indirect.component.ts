@@ -49,7 +49,7 @@ export class SemanticRelIndirectComponent implements OnInit {
     this.selectedSuggestion = {
       relationshipLabel: this.control.destinationLabel,
     }
-  }
+}
 
   private buildRelationshipLabel(item: SenseListItem): string {
     return `${item.lemma} - ${item.label || 'no def'}`;
@@ -80,13 +80,13 @@ export class SemanticRelIndirectComponent implements OnInit {
 
   onSelectSenseUpdateRelationship(senseDisplayItem: SuggestionItem, control: FormItem) {
     const updater : LinguisticRelationUpdater = {
-      type: LINGUISTIC_RELATION_TYPE.SENSE_REL,
-      relation: control.relationshipURI,
+      type: LINGUISTIC_RELATION_TYPE.LEXICOSEMANTIC_REL,
+      relation: 'http://www.w3.org/ns/lemon/vartrans#target',
       currentValue: control.destinationURI,
       value: senseDisplayItem.senseListItem?.sense || '',
     };
 
-    this.lexiconService.updateLinguisticRelation(this.senseEntry.sense, updater).pipe(
+    this.lexiconService.updateLinguisticRelation(control.relationshipURI, updater).pipe(
       take(1)
     ).subscribe(
       () => {
@@ -108,13 +108,12 @@ export class SemanticRelIndirectComponent implements OnInit {
    * @param control {FormItem} item del form da rimuovere
    */
   onRemoveRelationship(control: FormItem) {
-    const {relationshipLabel, destinationURI, relationshipURI, itemID} = control;
+    const {relationshipLabel, itemID} = control;
     const confirmMsg = `Are you sure to remove "${relationshipLabel}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
       if (!this.selectedSuggestion) return;
-      const updater = {relation: relationshipURI, value: destinationURI};
-      this.lexiconService.deleteRelation(this.senseEntry.sense, updater).pipe(
+      this.lexiconService.deleteLexicoSemanticRelation(this.indirectRelationshipURI).pipe(
         take(1)
       ).subscribe(
         () => {
