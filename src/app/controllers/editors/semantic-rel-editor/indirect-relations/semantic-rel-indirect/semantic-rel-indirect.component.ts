@@ -8,8 +8,8 @@ import { SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.m
 import { LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { FormItem } from '../../semantic-rel-editor.component';
 import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
+import { FormItem } from '../../base-relations/base-relations.component';
 
 type SuggestionItem = {
   relationshipLabel: string,

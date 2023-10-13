@@ -4,16 +4,7 @@ import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
 import { MenuItem } from 'primeng/api';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SenseRelationTypeModel } from 'src/app/models/lexicon/sense-relation-type.model';
-import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
-import { IndirectRelationModel, LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
-
-export interface FormItem {
-  relationshipLabel: string,
-  relationshipURI: string,
-  destinationLabel: string,
-  destinationURI: string,
-  itemID: number,
-}
+import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 
 @Component({
   selector: 'app-semantic-rel-editor',
@@ -26,9 +17,7 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
 
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] = [];
-
-  directRelations: LinguisticRelationModel[] = [];
-  indirectRelations: IndirectRelationModel[] = [];
+  model: LexicalSenseResponseModel = {indirectRelations: [], directRelations: []};
 
   constructor(
     private lexiconService: LexiconService,
@@ -88,9 +77,8 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getLexicalSenseRelations(this.senseEntry.sense).pipe(
       take(1),
-    ).subscribe((results: LexicalSenseResponseModel) => {
-      this.directRelations = results.directRelations;
-      this.indirectRelations = results.indirectRelations;
+    ).subscribe((model: LexicalSenseResponseModel) => {
+      this.model = model;
     });
   }
 

@@ -10,7 +10,7 @@
     </ng-template>
     <ng-template pTemplate="content">
         <div class="field col-12" *ngFor="let control of formItems">
-          <app-semantic-rel-direct [control]="control" [form]="form.controls.directSenseRelations" [formItems]="formItems" [senseEntry]="senseEntry">
+          <app-semantic-rel-direct [control]="control" [form]="form" [formItems]="formItems" [senseEntry]="senseEntry">
           </app-semantic-rel-direct>
         </div>
     </ng-template>

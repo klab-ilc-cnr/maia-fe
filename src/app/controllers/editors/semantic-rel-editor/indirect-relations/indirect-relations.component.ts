@@ -1,19 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
-import { MenuItem, MessageService } from 'primeng/api';
-import { FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { take } from 'rxjs';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { IndirectRelationModel } from 'src/app/models/lexicon/lexical-sense-response.model';
-
-export interface FormItem {
-  relationshipLabel: string,
-  relationshipURI: string,
-  destinationLabel: string,
-  destinationURI: string,
-  itemID: number,
-}
+import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { BaseRelationsComponent, FormItem } from '../base-relations/base-relations.component';
 
 @Component({
   selector: 'app-indirect-relations',
@@ -21,30 +12,19 @@ export interface FormItem {
   styleUrls: ['./indirect-relations.component.scss']
 })
 
-export class IndirectRelationsComponent implements OnChanges {
-
-  @Input() senseEntry!: SenseCore;
-  @Input() menuItems: MenuItem[] = [];
-  @Input() relations: IndirectRelationModel[] = [];
-
-  formItems: FormItem[] = [];
-  relationshipLabelByURI: { [id: string] : string } = {};
-
-  /**Form per la modifica dei valori del senso */
-  form = new FormGroup({
-    indirectSenseRelations: new FormGroup({}),
-  });
-
-  uniqueID = 0;
+export class IndirectRelationsComponent extends BaseRelationsComponent {
 
   constructor(
     private lexiconService: LexiconService,
     private msgConfService: MessageConfigurationService,
     private messageService: MessageService,
-  ) {}
+  ) {
+    super();
+  }
 
-  private populateRelationships(items: IndirectRelationModel[]): void {
-    for (const [itemID, item] of items.entries()) {
+  override populateRelationships(model: LexicalSenseResponseModel): FormItem[] {
+    const formItems : FormItem[] = [];
+    for (const [itemID, item] of model.indirectRelations.entries()) {
       const {category, target, targetLabel, relation} = item;
       const newItem : FormItem = {
         relationshipLabel: this.relationshipLabelByURI[category] || '',
@@ -53,52 +33,13 @@ export class IndirectRelationsComponent implements OnChanges {
         destinationLabel: targetLabel,
         itemID
       };
-
-      this.formItems.unshift(newItem);
-      this.uniqueID = this.formItems.length;
+      formItems.unshift(newItem);
     }
+    return formItems;
   }
 
-  private assignMenuTree(root: MenuItem): MenuItem {
-    const label = root.label || '';
-    const uri = root.id || '';
-
-    const dupItem : MenuItem = {
-      ...root,
-      items: root.items !== undefined? [] : undefined,
-      command: () => this.onMenuClickInsertFormItem(label, uri),
-    };
-
-    for (const menuItem of Object.values(root.items || [])) {
-      const subItem : MenuItem = this.assignMenuTree(menuItem);
-      dupItem.items?.push(subItem);
-    }
-
-    this.relationshipLabelByURI[uri] = label;
-
-    return dupItem;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['relations']) {
-      this.populateRelationships(changes['relations'].currentValue);
-    }
-
-    if (changes['menuItems']) {
-      const items = changes['menuItems'].currentValue;
-      this.menuItems = this.assignMenuTree({items}).items || [];
-    }
-  }
-
-  onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string) {
-    const newItem : FormItem = {
-      itemID: this.uniqueID++,
-      relationshipLabel,
-      relationshipURI,
-      destinationURI: '',
-      destinationLabel: '',
-    };
-    this.formItems.unshift(newItem);
+  override onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {
+    const newItem = super.onMenuClickInsertFormItem(relationshipLabel, relationshipURI);
 
     this.lexiconService.createIndirectSenseRelation(
       this.senseEntry.sense, relationshipURI
@@ -106,8 +47,6 @@ export class IndirectRelationsComponent implements OnChanges {
       take(1),
     ).subscribe(
       (indirectRelationshipURI: string) => {
-        console.log('Indirect relationship:')
-        console.log(indirectRelationshipURI)
         newItem.relationshipURI = indirectRelationshipURI;
       },
       (err) => {
@@ -116,7 +55,7 @@ export class IndirectRelationsComponent implements OnChanges {
         this.messageService.add(message);
       }
     );
-
+    return newItem;
   }
 
 }
