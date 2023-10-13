@@ -2,10 +2,10 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
 import { MenuItem, MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
-import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { take } from 'rxjs';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { IndirectRelationModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 
 export interface FormItem {
   relationshipLabel: string,
@@ -25,7 +25,7 @@ export class IndirectRelationsComponent implements OnChanges {
 
   @Input() senseEntry!: SenseCore;
   @Input() menuItems: MenuItem[] = [];
-  @Input() relations: LinguisticRelationModel[] = [];
+  @Input() relations: IndirectRelationModel[] = [];
 
   formItems: FormItem[] = [];
   relationshipLabelByURI: { [id: string] : string } = {};
@@ -43,15 +43,14 @@ export class IndirectRelationsComponent implements OnChanges {
     private messageService: MessageService,
   ) {}
 
-  private populateRelationships(items: LinguisticRelationModel[]): void {
+  private populateRelationships(items: IndirectRelationModel[]): void {
     for (const [itemID, item] of items.entries()) {
-      const {link, entity, label} = item;
-      if (!link) continue;
+      const {category, target, targetLabel, relation} = item;
       const newItem : FormItem = {
-        relationshipLabel: this.relationshipLabelByURI[link] || '',
-        relationshipURI: link,
-        destinationURI: entity || '',
-        destinationLabel: label || '',
+        relationshipLabel: this.relationshipLabelByURI[category] || '',
+        relationshipURI: relation,
+        destinationURI: target,
+        destinationLabel: targetLabel,
         itemID
       };
 
@@ -82,8 +81,6 @@ export class IndirectRelationsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['relations']) {
-      console.log('changing relationships')
-      console.log(changes)
       this.populateRelationships(changes['relations'].currentValue);
     }
 
@@ -109,7 +106,7 @@ export class IndirectRelationsComponent implements OnChanges {
       take(1),
     ).subscribe(
       (indirectRelationshipURI: string) => {
-        console.log('DONE!!')
+        console.log('Indirect relationship:')
         console.log(indirectRelationshipURI)
         newItem.relationshipURI = indirectRelationshipURI;
       },

@@ -5,7 +5,7 @@ import { MenuItem } from 'primeng/api';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SenseRelationTypeModel } from 'src/app/models/lexicon/sense-relation-type.model';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { IndirectRelationModel, LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 
 export interface FormItem {
   relationshipLabel: string,
@@ -28,7 +28,7 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
   menuItems: MenuItem[] = [];
 
   directRelations: LinguisticRelationModel[] = [];
-  indirectRelations: LinguisticRelationModel[] = [];
+  indirectRelations: IndirectRelationModel[] = [];
 
   constructor(
     private lexiconService: LexiconService,

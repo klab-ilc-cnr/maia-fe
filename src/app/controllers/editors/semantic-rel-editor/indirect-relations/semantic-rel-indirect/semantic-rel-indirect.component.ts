@@ -113,7 +113,7 @@ export class SemanticRelIndirectComponent implements OnInit {
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
       if (!this.selectedSuggestion) return;
-      this.lexiconService.deleteLexicoSemanticRelation(this.indirectRelationshipURI).pipe(
+      this.lexiconService.deleteLexicoSemanticRelation(control.relationshipURI).pipe(
         take(1)
       ).subscribe(
         () => {
