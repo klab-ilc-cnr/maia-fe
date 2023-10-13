@@ -29,7 +29,7 @@ interface AutoCompleteCompleteEvent {
 export class SemanticRelIndirectComponent implements OnInit {
 
   @Input() control!: FormItem;
-  @Input() form!: FormGroup<{indirectSenseRelations: FormGroup}>;
+  @Input() form!: FormGroup;
   @Input() formItems!: FormItem[];
   @Input() senseEntry!: SenseCore;
 
@@ -117,7 +117,7 @@ export class SemanticRelIndirectComponent implements OnInit {
         take(1)
       ).subscribe(
         () => {
-          this.form.controls.indirectSenseRelations.removeControl(`${itemID}`);
+          this.form.removeControl(`${itemID}`);
           const index = this.formItems.findIndex(e => e.itemID === itemID);
           this.formItems.splice(index, 1);
           const message = this.msgConfService.generateSuccessMessageConfig(`${relationshipLabel} removed`);
