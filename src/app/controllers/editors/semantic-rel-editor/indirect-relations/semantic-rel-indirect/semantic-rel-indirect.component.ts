@@ -1,135 +1,27 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { map, take } from 'rxjs';
-import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
-import { formTypeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
-import { LexiconService } from 'src/app/services/lexicon.service';
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
+import { Component } from '@angular/core';
+import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
 import { FormItem } from '../../base-relations/base-relations.component';
-
-type SuggestionItem = {
-  relationshipLabel: string,
-  senseListItem?: SenseListItem,
-};
-
-interface AutoCompleteCompleteEvent {
-  originalEvent: Event;
-  query: string;
-}
+import { BaseSemanticInputComponent } from '../../base-relations/base-semantic-input.component';
 
 @Component({
   selector: 'app-semantic-rel-indirect',
   templateUrl: './semantic-rel-indirect.component.html',
   styleUrls: ['./semantic-rel-indirect.component.scss']
 })
-export class SemanticRelIndirectComponent implements OnInit {
+export class SemanticRelIndirectComponent extends BaseSemanticInputComponent {
 
-  @Input() control!: FormItem;
-  @Input() form!: FormGroup;
-  @Input() formItems!: FormItem[];
-  @Input() senseEntry!: SenseCore;
-
-  /**Riferimento al popup di conferma cancellazione */
-  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
-
-  selectedSuggestion?: SuggestionItem;
-  suggestions: SuggestionItem[] = [];
-
-  constructor(
-    private lexiconService: LexiconService,
-    private messageService: MessageService,
-    private msgConfService: MessageConfigurationService,
-  ) {}
-
-  ngOnInit(): void {
-    this.selectedSuggestion = {
-      relationshipLabel: this.control.destinationLabel,
-    }
-}
-
-  private buildRelationshipLabel(item: SenseListItem): string {
-    return `${item.lemma} - ${item.label || 'no def'}`;
-  }
-
-  onSearchSense($event: AutoCompleteCompleteEvent) {
-    this.lexiconService.getFilteredSenses({
-      text: $event.query,
-      searchMode: "startsWith",
-      formType: formTypeEnum.flexed,
-      status: "",
-      type: "",
-      field: "",
-      pos: "",
-      author: "",
-      lang: "",
-      offset: 0,
-      limit: 500,
-    }).pipe(
-      map((resp: FilteredSenseModel): SenseListItem[] => resp.list),
-      take(1),
-    ).subscribe((result: SenseListItem[]) => {
-      this.suggestions = result.map((item: SenseListItem): SuggestionItem => {
-        return {relationshipLabel: this.buildRelationshipLabel(item), senseListItem: item};
-      });
-    });
-  }
-
-  onSelectSenseUpdateRelationship(senseDisplayItem: SuggestionItem, control: FormItem) {
-    const updater : LinguisticRelationUpdater = {
+  override updateRelationship(senseListItem: SenseListItem | undefined, control: FormItem) {
+    return this.lexiconService.updateLinguisticRelation(control.relationshipURI, {
       type: LINGUISTIC_RELATION_TYPE.LEXICOSEMANTIC_REL,
       relation: 'http://www.w3.org/ns/lemon/vartrans#target',
       currentValue: control.destinationURI,
-      value: senseDisplayItem.senseListItem?.sense || '',
-    };
-
-    this.lexiconService.updateLinguisticRelation(control.relationshipURI, updater).pipe(
-      take(1)
-    ).subscribe(
-      () => {
-        this.selectedSuggestion = senseDisplayItem;
-        control.destinationURI = senseDisplayItem.senseListItem?.sense || '';
-        const message = this.msgConfService.generateSuccessMessageConfig(`${control.relationshipLabel} updated`);
-        this.messageService.add(message);
-      },
-      (err) => {
-        console.error(err);
-        const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
-        this.messageService.add(message);
-      }
-    );
+      value: senseListItem?.sense || '',
+    });
   }
 
-  /**
-   * Metodo che gestisce la rimozione di una relazione
-   * @param control {FormItem} item del form da rimuovere
-   */
-  onRemoveRelationship(control: FormItem) {
-    const {relationshipLabel, itemID} = control;
-    const confirmMsg = `Are you sure to remove "${relationshipLabel}"?`;
-    this.popupDeleteItem.confirmMessage = confirmMsg;
-    this.popupDeleteItem.showDeleteConfirmSimple(() => {
-      if (!this.selectedSuggestion) return;
-      this.lexiconService.deleteLexicoSemanticRelation(control.relationshipURI).pipe(
-        take(1)
-      ).subscribe(
-        () => {
-          this.form.removeControl(`${itemID}`);
-          const index = this.formItems.findIndex(e => e.itemID === itemID);
-          this.formItems.splice(index, 1);
-          const message = this.msgConfService.generateSuccessMessageConfig(`${relationshipLabel} removed`);
-          this.messageService.add(message);
-        },
-        (err) => {
-          console.error(err);
-          const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
-          this.messageService.add(message);
-        }
-      );
-    });
+  removeRelationship(control: FormItem) {
+    return this.lexiconService.deleteLexicoSemanticRelation(control.relationshipURI);
   }
 
 }

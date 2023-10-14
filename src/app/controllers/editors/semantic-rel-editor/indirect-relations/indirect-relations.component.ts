@@ -27,7 +27,7 @@ export class IndirectRelationsComponent extends BaseRelationsComponent {
     for (const [itemID, item] of model.indirectRelations.entries()) {
       const {category, target, targetLabel, relation} = item;
       const newItem : FormItem = {
-        relationshipLabel: this.relationshipLabelByURI[category] || '',
+        relationshipLabel: this.relationshipLabelByURI[category] || 'unknown relationship',
         relationshipURI: relation,
         destinationURI: target,
         destinationLabel: targetLabel,
