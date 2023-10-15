@@ -21,6 +21,7 @@ import { RelationEditorComponent } from './controllers/editors/relation-editor/r
 import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
 import { SemanticRelDirectComponent } from './controllers/editors/semantic-rel-editor/direct-relations/semantic-rel-direct/semantic-rel-direct.component';
 import { SemanticRelIndirectComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/semantic-rel-indirect.component';
+import { IndirectRelPropertyComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/indirect-rel-property/indirect-rel-property.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -75,6 +76,7 @@ import { IndirectRelationsComponent } from './controllers/editors/semantic-rel-e
     TextAnnotationEditorComponent,
     DirectRelationsComponent,
     IndirectRelationsComponent,
+    IndirectRelPropertyComponent,
   ],
   imports: [
     BrowserModule,

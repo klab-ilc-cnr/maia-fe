@@ -25,13 +25,14 @@ export class IndirectRelationsComponent extends BaseRelationsComponent {
   override populateRelationships(model: LexicalSenseResponseModel): FormItem[] {
     const formItems : FormItem[] = [];
     for (const [itemID, item] of model.indirectRelations.entries()) {
-      const {category, target, targetLabel, relation} = item;
+      const {category, target, targetLabel, relation, properties} = item;
       const newItem : FormItem = {
         relationshipLabel: this.relationshipLabelByURI[category] || 'unknown relationship',
         relationshipURI: relation,
         destinationURI: target,
         destinationLabel: targetLabel,
-        itemID
+        itemID,
+        properties,
       };
       formItems.unshift(newItem);
     }

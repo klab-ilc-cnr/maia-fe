@@ -3,6 +3,7 @@ import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
 import { MenuItem } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 
 export interface FormItem {
   relationshipLabel: string,
@@ -10,6 +11,7 @@ export interface FormItem {
   destinationLabel: string,
   destinationURI: string,
   itemID: number,
+  properties?: LinguisticRelationModel[],
 }
 
 @Component({template: ''})
