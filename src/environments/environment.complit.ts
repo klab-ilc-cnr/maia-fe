@@ -5,15 +5,15 @@
 
 const clientid = "projectx-fe"; //deve essere lo stesso cliendId in keycloak!
 //const appName = "/projectx-fe"
-const appName = "/maia-italex-fe" //path del deploy
+const appName = "/maia-compl-it" //path del deploy
 //const issuer = "http://146.48.93.223:8081/realms/princnr"; //TODO sostituire con keycloak
 //const issuer = "http://localhost:8081/realms/princnr"; //TODO sostituire con keycloak
-const issuer = "https://klab.ilc.cnr.it/maia-italex/keycloak/realms/princnr"; //TODO sostituire con keycloak
+const issuer = "https://klab.ilc.cnr.it/maia-compl-it-be/keycloak/realms/princnr"; //TODO sostituire con keycloak
 
 //const allowedUrls = 'http://146.48.93.223:9000/projectx/api'; //TODO sostituire con il backend xeel
 //const allowedUrls   = 'http://146.48.93.223:8080/projectx/api'; //TODO sostituire con il backend xeel
 //const allowedUrls   = 'http://localhost:8080/projectx/api'; //TODO sostituire con il backend xeel
-const allowedUrls   = 'https://klab.ilc.cnr.it/maia-italex/projectx/api'; //TODO sostituire con il backend xeel
+const allowedUrls   = 'https://klab.ilc.cnr.it/maia-compl-it-be/projectx/api'; //TODO sostituire con il backend xeel
 
 export const environment = {
   production: true,
@@ -46,14 +46,14 @@ export const environment = {
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
   //lexoUrl: "http://licodemo.ilc.cnr.it:8080/LexO-backend-maia/service/",
-  lexoUrl: "https://klab.ilc.cnr.it/maia-italex/LexO-backend-maia/service/",
+  lexoUrl: "https://klab.ilc.cnr.it/maia-compl-it-be/LexO-backend-maia/service/",
   //cashUrl: "http://146.48.93.223:8080/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
-  cashUrl: "https://klab.ilc.cnr.it/maia-italex/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
-  rutPrefix: "ferrandi",
-  rutBaseIRI: "http://rut/somali/ferrandi#",
+  cashUrl: "https://klab.ilc.cnr.it/maia-compl-it-be/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
+  rutPrefix: "lex",
+  rutBaseIRI: "http://lexica/mylexicon#",
   textoUrl: "https://146.48.93.234:9443",
   textoDebugUrl: "https://146.48.93.234:9443",
-  applicationSubTitle: " - ItaLex",
+  applicationSubTitle: " - CompL-it",
   demoHide: true,
 };
 
