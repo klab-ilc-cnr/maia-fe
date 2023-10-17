@@ -2,18 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
 import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
+import { LexicalSenseResponseModel } from '../models/lexicon/lexical-sense-response.model';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { FormUpdater, GenericRelationUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 import { Morphology } from '../models/lexicon/morphology.model';
 import { Namespace } from '../models/lexicon/namespace.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
-import { CommonService } from './common.service';
 import { SenseRelationTypeModel } from '../models/lexicon/sense-relation-type.model';
-import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
-import { LexicalSenseResponseModel } from '../models/lexicon/lexical-sense-response.model';
+import { CommonService } from './common.service';
 
 /**Classe dei servizi relativi al lessico */
 @Injectable({
@@ -36,7 +36,7 @@ export class LexiconService {
     private commonService: CommonService
   ) {
     this.lexoUrl = environment.lexoUrl;
-    this.encodedBaseIRI = this.commonService.encodeUrl(environment.rutBaseIRI);
+    this.encodedBaseIRI = this.commonService.encodeUrl(environment.lexoBaseIRI);
   }
 
   /**
@@ -131,7 +131,7 @@ export class LexiconService {
    * @returns {Observable<{totalHits: number, list: any[]}>} observable della lista di concetti lessicali recuperato
    */
   getFilteredSenses(parameters: any): Observable<FilteredSenseModel> {
-    return <Observable<FilteredSenseModel>> this.http.post(
+    return <Observable<FilteredSenseModel>>this.http.post(
       `${this.lexoUrl}lexicon/data/filteredSenses`,
       parameters,
     );
@@ -266,7 +266,7 @@ export class LexiconService {
    */
   getNewForm(lexicalEntryId: string, creator: string): Observable<FormCore> {
     const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get<FormCore>(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${encodedLexEntry}&author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
+    return this.http.get<FormCore>(`${this.lexoUrl}lexicon/creation/form?lexicalEntryID=${encodedLexEntry}&author=${creator}&prefix=${environment.lexoPrefix}&baseIRI=${this.encodedBaseIRI}`);
   }
 
   /**
@@ -275,7 +275,7 @@ export class LexiconService {
    * @returns {Observable<LexicalEntryCore>}
    */
   getNewLexicalEntry(creator: string): Observable<LexicalEntryCore> {
-    return this.http.get<LexicalEntryCore>(`${this.lexoUrl}lexicon/creation/lexicalEntry?author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`);
+    return this.http.get<LexicalEntryCore>(`${this.lexoUrl}lexicon/creation/lexicalEntry?author=${creator}&prefix=${environment.lexoPrefix}&baseIRI=${this.encodedBaseIRI}`);
   }
 
   /**
@@ -286,7 +286,7 @@ export class LexiconService {
    */
   getNewSense(lexicalEntryId: string, creator: string): Observable<SenseCore> {
     const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get<SenseCore>(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${encodedLexEntry}&author=${creator}&prefix=${environment.rutPrefix}&baseIRI=${this.encodedBaseIRI}`)
+    return this.http.get<SenseCore>(`${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID=${encodedLexEntry}&author=${creator}&prefix=${environment.lexoPrefix}&baseIRI=${this.encodedBaseIRI}`)
   }
 
   /**

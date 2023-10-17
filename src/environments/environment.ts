@@ -46,8 +46,8 @@ export const environment = {
   cashUrl: "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
   textoUrl: "https://146.48.93.234:9443",
   textoDebugUrl: "https://macalbanesi:9443",
-  rutPrefix: "ferrandi",
-  rutBaseIRI: "http://rut/somali/ferrandi#",
+  lexoPrefix: "ferrandi",
+  lexoBaseIRI: "http://rut/somali/ferrandi#",
   applicationSubTitle: " - develop",
   demoHide: false,
 };
