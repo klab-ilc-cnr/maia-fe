@@ -1,17 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { map, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { formTypeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { FormItem } from '../semantic-rel-editor.component';
 import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
+import { FormItem } from '../base-relations/base-relations.component';
 
-type SuggestionItem = {
+export type SuggestionItem = {
   relationshipLabel: string,
   senseListItem?: SenseListItem,
 };
@@ -21,15 +20,11 @@ interface AutoCompleteCompleteEvent {
   query: string;
 }
 
-@Component({
-  selector: 'app-semantic-rel-input',
-  templateUrl: './semantic-rel-input.component.html',
-  styleUrls: ['./semantic-rel-input.component.scss']
-})
-export class SemanticRelInputComponent implements OnInit {
+@Component({template: '<div></div>'})
+export abstract class BaseSemanticInputComponent implements OnInit {
 
   @Input() control!: FormItem;
-  @Input() form!: FormGroup<{directSenseRelations: FormGroup}>;
+  @Input() form!: FormGroup;
   @Input() formItems!: FormItem[];
   @Input() senseEntry!: SenseCore;
 
@@ -40,9 +35,9 @@ export class SemanticRelInputComponent implements OnInit {
   suggestions: SuggestionItem[] = [];
 
   constructor(
-    private lexiconService: LexiconService,
-    private messageService: MessageService,
-    private msgConfService: MessageConfigurationService,
+    protected lexiconService: LexiconService,
+    protected messageService: MessageService,
+    protected msgConfService: MessageConfigurationService,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +49,9 @@ export class SemanticRelInputComponent implements OnInit {
   private buildRelationshipLabel(item: SenseListItem): string {
     return `${item.lemma} - ${item.label || 'no def'}`;
   }
+
+  abstract updateRelationship(senseListItem: SenseListItem | undefined, control: FormItem): Observable<string>;
+  abstract removeRelationship(control: FormItem): Observable<string>;
 
   onSearchSense($event: AutoCompleteCompleteEvent) {
     this.lexiconService.getFilteredSenses({
@@ -79,14 +77,8 @@ export class SemanticRelInputComponent implements OnInit {
   }
 
   onSelectSenseUpdateRelationship(senseDisplayItem: SuggestionItem, control: FormItem) {
-    const updater : LinguisticRelationUpdater = {
-      type: LINGUISTIC_RELATION_TYPE.SENSE_REL,
-      relation: control.relationshipURI,
-      currentValue: control.destinationURI,
-      value: senseDisplayItem.senseListItem?.sense || '',
-    };
 
-    this.lexiconService.updateLinguisticRelation(this.senseEntry.sense, updater).pipe(
+    this.updateRelationship(senseDisplayItem.senseListItem, control).pipe(
       take(1)
     ).subscribe(
       () => {
@@ -108,17 +100,16 @@ export class SemanticRelInputComponent implements OnInit {
    * @param control {FormItem} item del form da rimuovere
    */
   onRemoveRelationship(control: FormItem) {
-    const {relationshipLabel, destinationURI, relationshipURI, itemID} = control;
+    const {relationshipLabel, itemID} = control;
     const confirmMsg = `Are you sure to remove "${relationshipLabel}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
       if (!this.selectedSuggestion) return;
-      const updater = {relation: relationshipURI, value: destinationURI};
-      this.lexiconService.deleteRelation(this.senseEntry.sense, updater).pipe(
+      this.removeRelationship(control).pipe(
         take(1)
       ).subscribe(
         () => {
-          this.form.controls.directSenseRelations.removeControl(`${itemID}`);
+          this.form.removeControl(`${itemID}`);
           const index = this.formItems.findIndex(e => e.itemID === itemID);
           this.formItems.splice(index, 1);
           const message = this.msgConfService.generateSuccessMessageConfig(`${relationshipLabel} removed`);

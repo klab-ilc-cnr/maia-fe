@@ -42,7 +42,7 @@ export const environment = {
   tagsetUrl: allowedUrls + '/tagsets',
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
-  lexoUrl: "/LexO-backend-maia/service/",
+  lexoUrl: "https://klab.ilc.cnr.it/LexO-backend-maia/service/",
   cashUrl: "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
   textoUrl: "https://146.48.93.234:9443",
   textoDebugUrl: "https://macalbanesi:9443",
