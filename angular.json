@@ -74,7 +74,7 @@
               ],
               "outputHashing": "all"
             },
-			"italex": {
+			"complit": {
               "budgets": [
                 {
                   "type": "initial",
@@ -90,11 +90,32 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.italex.ts"
+                  "with": "src/environments/environment.complit.ts"
                 }
               ],
               "outputHashing": "all"
             },
+			"demo": {
+				"budgets": [
+				  {
+					"type": "initial",
+					"maximumWarning": "5mb",
+					"maximumError": "7mb"
+				  },
+				  {
+					"type": "anyComponentStyle",
+					"maximumWarning": "5kb",
+					"maximumError": "8kb"
+				  }
+				],
+				"fileReplacements": [
+				  {
+					"replace": "src/environments/environment.ts",
+					"with": "src/environments/environment.demo-articolo.ts"
+				  }
+				],
+				"outputHashing": "all"
+			  },
 						"collaudo": {
 							"budgets": [
 								{

@@ -62,7 +62,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     return false;
   }
 
-  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel || !this.annotationModel?.layer || !this.annotationModel?.layer.id || !this.annotationModel.start || !this.annotationModel.end) }
+  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel || !this.annotationModel?.layer || !this.annotationModel?.layer.id || (!this.annotationModel.start && this.annotationModel.start !== 0) || !this.annotationModel.end) }
 
   public get shouldBeDisabled(): boolean { //FIXME sostituire con una pipe
     if (!this.isEditing) {

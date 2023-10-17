@@ -9,7 +9,7 @@ const appName = "/maia-fe"
 // const issuer = "http://localhost:8080/realms/princnr";
 const issuer = "https://klab.ilc.cnr.it/keycloak/realms/princnr"; //TODO sostituire con keycloak
 // const allowedUrls = 'http://localhost:9000/projectx/api';
-const allowedUrls   = 'https://klab.ilc.cnr.it/projectx/api'; //TODO sostituire con il backend xeel
+const allowedUrls = 'https://klab.ilc.cnr.it/projectx/api'; //TODO sostituire con il backend xeel
 
 export const environment = {
   production: false,
@@ -43,7 +43,6 @@ export const environment = {
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
   lexoUrl: "/LexO-backend-maia/service/",
-  // cashUrl: "http://localhost:8085",
   cashUrl: "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
   textoUrl: "https://146.48.93.234:9443",
   textoDebugUrl: "https://macalbanesi:9443",

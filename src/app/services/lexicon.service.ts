@@ -11,6 +11,9 @@ import { Morphology } from '../models/lexicon/morphology.model';
 import { Namespace } from '../models/lexicon/namespace.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
 import { CommonService } from './common.service';
+import { SenseRelationTypeModel } from '../models/lexicon/sense-relation-type.model';
+import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
+import { LexicalSenseResponseModel } from '../models/lexicon/lexical-sense-response.model';
 
 /**Classe dei servizi relativi al lessico */
 @Injectable({
@@ -97,10 +100,6 @@ export class LexiconService {
    * @returns {Observable<any>} observable della lista delle entrate lessicali
    */
   getLexicalEntriesList(parameters: any): Observable<LexicalEntriesResponse> {
-    // MOCK
-    //return this.http.get<any>(`assets/mock/lexicon/lexicalentries.json`);
-    // FINE MOCK
-
     return this.http.post<LexicalEntriesResponse>(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
@@ -126,8 +125,13 @@ export class LexiconService {
     return this.http.post<{ totalHits: number, list: any[] }>(`${this.lexoUrl}lexicon/data/filteredLexicalConcepts`, parameters)
   }
 
-  getFilteredSenses(parameters: any) {
-    return this.http.post(
+  /**
+   * POST di recupero della lista filtrata dei sensi
+   * @param parameters {{ text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number }} parametri per il fltro
+   * @returns {Observable<{totalHits: number, list: any[]}>} observable della lista di concetti lessicali recuperato
+   */
+  getFilteredSenses(parameters: any): Observable<FilteredSenseModel> {
+    return <Observable<FilteredSenseModel>> this.http.post(
       `${this.lexoUrl}lexicon/data/filteredSenses`,
       parameters,
     );
@@ -168,6 +172,14 @@ export class LexiconService {
 
   getLanguages(): Observable<LexoLanguage[]> {
     return this.http.get<LexoLanguage[]>(`${this.lexoUrl}lexicon/data/languages`);
+  }
+
+  /**
+   * GET che recupera la lista dei tipi di relazione dei sensi
+   * @returns {Observable<SenseRelationTypeModel[]>} observable della lista dei tipi relazioni dei sensi
+   */
+  getSenseRelationTypes(): Observable<SenseRelationTypeModel[]> {
+    return this.http.get<SenseRelationTypeModel[]>(`${this.lexoUrl}lexinfo/data/senseRelations`);
   }
 
   /**
@@ -217,6 +229,17 @@ export class LexiconService {
   getLinguisticRelations(property: string, lexicalEntryId: string): Observable<LinguisticRelationModel[]> {
     const encodedId = this.commonService.encodeUrl(lexicalEntryId);
     return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/lexicon/data/linguisticRelation?property=${property}&id=${encodedId}`);
+  }
+
+
+  /**
+   * GET che recupera la lista di tutte relazioni linguistiche di un senso lessicale
+   * @param lexicalSenseId {string} identificativo del senso lessicale
+   * @returns {Observable<LinguisticRelationModel[]>} observable della lista delle relazioni linguistiche
+   */
+  getLexicalSenseRelations(lexicalSenseId: string): Observable<LexicalSenseResponseModel> {
+    const encodedId = this.commonService.encodeUrl(lexicalSenseId);
+    return this.http.get<LexicalSenseResponseModel>(`${this.lexoUrl}/lexicon/data/lexicalSense?module=variation%20and%20translation&id=${encodedId}`);
   }
 
   /**
@@ -401,14 +424,14 @@ export class LexiconService {
 
   /**
    * POST di aggiornamento di una relazione linguistica
-   * @param lexicalEntryInstanceName {string} identificativo dell'entrata lessicale
+   * @param lexicalEntityId {string} identificativo dell'entità (ad es. entrata lessicale o senso)
    * @param updater {LinguisticRelationUpdater} dati di aggiornamento
    * @returns {Observable<string>} observable del timestamp di ultima modifica
    */
-  updateLinguisticRelation(lexicalEntryID: string, updater: LinguisticRelationUpdater): Observable<string> {
-    const encodedLexEntry = this.commonService.encodeUrl(lexicalEntryID);
+  updateLinguisticRelation(lexicalEntityId: string, updater: LinguisticRelationUpdater): Observable<string> {
+    const encodedLexEntity = this.commonService.encodeUrl(lexicalEntityId);
     return this.http.post(
-      `${this.lexoUrl}lexicon/update/linguisticRelation?id=${encodedLexEntry}`,
+      `${this.lexoUrl}lexicon/update/linguisticRelation?id=${encodedLexEntity}`,
       updater,
       { responseType: "text" }
     );

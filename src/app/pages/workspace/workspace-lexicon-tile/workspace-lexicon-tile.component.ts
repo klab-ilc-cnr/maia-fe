@@ -563,7 +563,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const fileData = new FormData();
     fileData.append('file', this._selectedFile);
 
-    this.lexiconService.uploadConll(lexUpForm['prefix'], lexUpForm['baseIRI'], lexUpForm['author'], lexUpForm['language'], lexUpForm['drop'], fileData).pipe(
+    this.lexiconService.uploadConll(lexUpForm['prefix'], lexUpForm['baseIRI'], lexUpForm['author'], lexUpForm['language'].value, lexUpForm['drop'], fileData).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
