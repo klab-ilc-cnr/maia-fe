@@ -19,12 +19,10 @@ import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
 import { TFeature } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
-import { User } from 'src/app/models/user';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
@@ -138,7 +136,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   totalRecords = 0;
   //#endregion
 
-  currentUser!: User;
+  // currentUser!: User;
+  currentTextoUserId!: number;
   currentResource!: ResourceElement;
 
   /**
@@ -154,13 +153,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private layerState: LayerStateService,
-    private userService: UserService,
     private workspaceService: WorkspaceService,
   ) {
-    this.userService.retrieveCurrentUser().pipe(
+    this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
-    ).subscribe(cu => {
-      this.currentUser = cu;
+    ).subscribe(textoUser => {
+      this.currentTextoUserId = textoUser.id;
     });
   }
 
@@ -224,7 +222,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
     let workingAnnotation = this.textoAnnotation;
     if (!this.textoAnnotation.id) {
-      this.textoAnnotation.user = { id: +this.currentUser.id! };
+      this.textoAnnotation.user = { id: this.currentTextoUserId };
       this.textoAnnotation.resource = this.currentResource;
       workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
     }
