@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
-import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
+import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { FormUpdater, GenericRelationUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
@@ -162,8 +162,12 @@ export class LexiconService {
    * GET che recupera la lista di lingue disponibili per la selezione
    * @returns {Observable<any>} observable della lista di lingue disponibili
    */
-  getLanguages(): Observable<LexiconStatistics[]> {
+  getLanguagesStatistics(): Observable<LexiconStatistics[]> {
     return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}lexicon/statistics/languages`);
+  }
+
+  getLanguages(): Observable<LexoLanguage[]> {
+    return this.http.get<LexoLanguage[]>(`${this.lexoUrl}lexicon/data/languages`);
   }
 
   /**
