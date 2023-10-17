@@ -8,8 +8,8 @@ import { MenuItem } from 'primeng/api';
 export type PropertyItem = {
   menuItem: MenuItem;
   value: string;
-  relationshipURI: GENERIC_RELATIONS;
-  senseURI: string;
+  propertyURI: GENERIC_RELATIONS;
+  indirectRelationshipURI: string;
 }
 
 @Component({
@@ -23,6 +23,7 @@ export class SemanticRelIndirectComponent extends BaseSemanticInputComponent {
     Comment: GENERIC_RELATIONS.COMMENT,
     Description: GENERIC_RELATIONS.DESCRIPTION,
     Example: GENERIC_RELATIONS.EXAMPLE,
+    Confidence: GENERIC_RELATIONS.CONFIDENCE,
   }
 
   menuItems: MenuItem[] = [];
@@ -39,7 +40,7 @@ export class SemanticRelIndirectComponent extends BaseSemanticInputComponent {
     for (const property of this.control.properties) {
       const index = this.menuItems.findIndex(p => p.id === property.link);
       if (index == -1) continue;
-      this.onAddProperty({item: this.menuItems[index]}, property.label);
+      this.onAddProperty({item: this.menuItems[index]}, property.entity);
     }
   }
 
@@ -54,8 +55,8 @@ export class SemanticRelIndirectComponent extends BaseSemanticInputComponent {
     this.menuItems.splice(index, 1);
     this.propertyItems.push({
       menuItem: event.item,
-      senseURI: this.senseEntry.sense,
-      relationshipURI: <GENERIC_RELATIONS> event.item.id,
+      indirectRelationshipURI: this.control.relationshipURI,
+      propertyURI: <GENERIC_RELATIONS> event.item.id,
       value,
     })
   }

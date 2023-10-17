@@ -31,6 +31,7 @@ export enum GENERIC_RELATIONS {
   COMMENT = 'http://www.w3.org/2000/01/rdf-schema#comment',
   DESCRIPTION = 'http://purl.org/dc/terms/description',
   EXAMPLE = 'http://www.lexinfo.net/ontology/3.0/lexinfo#example',
+  CONFIDENCE = 'http://www.lexinfo.net/ontology/3.0/lexinfo#confidence',
 }
 
 /**Enumerazione delle relazioni per entrata lessicale */

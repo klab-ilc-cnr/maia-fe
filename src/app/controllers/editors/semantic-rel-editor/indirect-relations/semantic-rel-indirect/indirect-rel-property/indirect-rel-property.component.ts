@@ -36,16 +36,17 @@ export class IndirectRelPropertyComponent implements OnInit {
   }
 
   onUpdateProperty = ($event: any) => {
-    const currentValue = $event.target.value;
-    const {senseURI, relationshipURI, value} = this.propertyItem;
-    this.lexiconService.updateGenericRelation(senseURI, {
+    const newValue = $event.target.value;
+    const {indirectRelationshipURI, propertyURI, value} = this.propertyItem;
+    this.lexiconService.updateGenericRelation(indirectRelationshipURI, {
       type: GENERIC_RELATION_TYPE.METADATA,
-      relation: relationshipURI,
-      value,
-      currentValue,
+      relation: propertyURI,
+      value: newValue,
+      currentValue: value,
     }).pipe(take(1)).subscribe(
       () => {
-        const message = this.msgConfService.generateErrorMessageConfig(`${this.propertyItem.menuItem.label} updated`);
+        this.propertyItem.value = value;
+        const message = this.msgConfService.generateSuccessMessageConfig(`${this.propertyItem.menuItem.label} updated`);
         this.messageService.add(message);
     },
       (err) => {
@@ -62,8 +63,8 @@ export class IndirectRelPropertyComponent implements OnInit {
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
 
-      const { senseURI, value, menuItem } = this.propertyItem;
-      this.lexiconService.deleteRelation(senseURI, {
+      const { indirectRelationshipURI, value, menuItem } = this.propertyItem;
+      this.lexiconService.deleteRelation(indirectRelationshipURI, {
         relation: menuItem.id || '',
         value,
       }).pipe(take(1))
