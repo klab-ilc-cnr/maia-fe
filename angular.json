@@ -164,8 +164,8 @@
 						"development": {
 							"browserTarget": "projectxFE:build:development"
 						},
-						"italex": {
-							"browserTarget": "projectxFE:build:italex"
+						"complit": {
+							"browserTarget": "projectxFE:build:complit"
 						}
 					},
 					"defaultConfiguration": "development"
