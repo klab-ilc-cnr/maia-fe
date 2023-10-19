@@ -41,6 +41,7 @@ import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-w
 import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
+import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { CommonService } from './services/common.service';
     SemanticRelInputComponent,
     TextAnnotationEditorComponent,
     LoginComponent,
+    MatchNewPasswordDirective,
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ import { LanguageService } from 'src/app/services/language.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { UserService } from 'src/app/services/user.service';
+import { matchNewPassword } from 'src/app/validators/match-new-password.directive';
 
 /**Componente del form dei dati di un utente (anche nuovo) */
 @Component({
@@ -34,6 +35,44 @@ export class UserFormComponent implements OnInit, OnDestroy {
   get role() { return this.userForm.controls.role }
   get languages() { return this.userForm.controls.languages }
 
+  passwordForm = this.canManageUsers ?
+    new FormGroup({
+      password: new FormControl<string>('', Validators.required),
+    }) :
+    new FormGroup({
+      oldPassword: new FormControl<string>('', Validators.required),
+      newPassword: new FormControl<string>('', Validators.required),
+      confirmPassword: new FormControl<string>('', Validators.required),
+    }, {
+      validators: matchNewPassword
+    });
+
+  get password() {
+    if ('password' in this.passwordForm.controls) {
+      return this.passwordForm.controls.password;
+    }
+    return null;
+  }
+
+  get oldPassword() {
+    if ('oldPassword' in this.passwordForm.controls) {
+      return this.passwordForm.controls.oldPassword;
+    }
+    return null;
+  }
+  get newPassword() {
+    if ('newPassword' in this.passwordForm.controls) {
+      return this.passwordForm.controls.newPassword;
+    }
+    return null;
+  }
+  get confirmPassword() {
+    if ('confirmPassword' in this.passwordForm.controls) {
+      return this.passwordForm.controls.confirmPassword;
+    }
+    return null;
+  }
+
   /**Utente in lavorazione */
   user: User;
 
@@ -41,6 +80,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private editUser = false;
   /**Definisce se è un utente in creazione */
   private newUser = false;
+  private currentUser = false;
   /**Identificativo per l'inserimento di un nuovo utente */
   private newId = 'new';
   /**Lista dei ruoli utente */
@@ -89,7 +129,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
       this.editUser = false;
       this.loadCurrentUserProfile();
-
     });
   }
 
@@ -101,6 +140,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   /**Definisce se l'utente loggato può modificare i dati utente */
   public get canManageUsers(): boolean {
     return this.loggedUserService.canManageUsers();
+    // return false; //TODO A SOLO USO DEI TEST
   }
 
   /**
@@ -117,6 +157,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
    */
   public get isNewUser() {
     return this.newUser;
+  }
+
+  public get isCurrentUser() {
+    return this.currentUser;
   }
 
   /**Metodo che procede alla creazione del nuovo utente o al salvataggio delle modifiche dell'utente selezionato */
