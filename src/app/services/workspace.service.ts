@@ -22,7 +22,6 @@ export class WorkspaceService {
   /**Url per chiamate relative ai workspace */
   private workspacesUrl: string;
   private textoUrl: string;
-  private textoDebugUrl: string;
 
   /**
    * Costruttore per WorkspaceService
@@ -31,7 +30,6 @@ export class WorkspaceService {
   constructor(private http: HttpClient) {
     this.workspacesUrl = environment.workspacesUrl; //inizializzo i due url dall'environment
     this.textoUrl = environment.textoUrl;
-    this.textoDebugUrl = environment.textoDebugUrl;
   }
 
   //WORKSPACE
