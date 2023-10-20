@@ -77,6 +77,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   /**Utente in lavorazione */
   user: User;
   currentMaiaUserId = this.storageService.getCurrentUser()?.id;
+  isSameUser = false;
 
   /**Definisce se è un utente in modifica */
   private editUser = false;
@@ -117,6 +118,17 @@ export class UserFormComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
     ).subscribe(params => {
       const id = params.get('id'); //recupero l'id utente dall'url di navigazione 
+      this.isSameUser = id == this.currentMaiaUserId?.toString();
+
+      if (this.canManageUsers && this.isSameUser) {
+        this.passwordForm = new FormGroup({
+          oldPassword: new FormControl<string>('', Validators.required),
+          newPassword: new FormControl<string>('', Validators.required),
+          confirmPassword: new FormControl<string>('', Validators.required),
+        }, {
+          validators: matchNewPassword
+        });
+      }
 
       if (id === this.newId) //caso di un nuovo inserimento utente
       {
@@ -125,7 +137,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if ((id != null && id != undefined) && id != this.currentMaiaUserId?.toString()) { //caso di indicazione di un id utente (diverso da quello loggato) da modificare
+      if ((id != null && id != undefined) && !this.isSameUser) { //caso di indicazione di un id utente (diverso da quello loggato) da modificare
         this.editUser = true;
         this.loadUser(id);
         return;
@@ -191,17 +203,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   onSubmitPwd() {
     const pwdBody: { id?: number, newPassword: string, currentPassword?: string } = { newPassword: this.password ? this.password.value : this.newPassword?.value };
-    if (this.user.id !== this.currentMaiaUserId) {
+    if (!this.isSameUser) {
       pwdBody.id = +this.user.id!;
     }
-    if (!this.canManageUsers) {
+    if (!this.canManageUsers || this.isSameUser) {
       pwdBody.currentPassword = this.oldPassword?.value;
     }
-    console.info('body salvataggio pwd', pwdBody);
     this.userService.updatePassword(pwdBody).pipe(
       takeUntil(this.unsubscribe$), //TODO aggiungere gestione errori
-    ).subscribe(updatedUser => {
-      console.info('risposta al salvataggio pwd', updatedUser); //TODO inserire messaggio di modifica effettuata
+    ).subscribe(() => {
+      //TODO inserire messaggio di modifica effettuata
     })
   }
 

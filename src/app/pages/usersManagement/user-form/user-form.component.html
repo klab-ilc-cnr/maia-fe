@@ -86,7 +86,7 @@
         <h5>Manage password</h5>
       </div>
       <div class="card-body p-fluid">
-        <form *ngIf="canManageUsers; else changePwd" [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
+        <form *ngIf="canManageUsers && !isSameUser; else changePwd" [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
           <div class="form-group">
             <label for="password">Password *</label>
             <p-password formControlName="password" id="password" [toggleMask]="true"></p-password>
