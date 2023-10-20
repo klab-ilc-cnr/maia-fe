@@ -8,7 +8,7 @@
         </h5>
       </div>
       <div class="card-body p-fluid">
-        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
           <div class="form-group">
             <label for="username">Username *</label>
             <input type="text" formControlName="username" class="form-control" id="username" name="username"
@@ -73,7 +73,7 @@
             <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
               Cancel
             </button>
-            <button type="submit" [disabled]="!canManageUsers || userForm.invalid" [hidden]="!canManageUsers"
+            <button type="submit" [disabled]="(!canManageUsers && user.id != currentMaiaUserId) || userForm.invalid" [hidden]="!canManageUsers && user.id != currentMaiaUserId"
               class="btn btn-danger ms-2">
               Save
             </button>
@@ -86,7 +86,7 @@
         <h5>Manage password</h5>
       </div>
       <div class="card-body p-fluid">
-        <form *ngIf="canManageUsers; else changePwd" [formGroup]="passwordForm">
+        <form *ngIf="canManageUsers; else changePwd" [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
           <div class="form-group">
             <label for="password">Password *</label>
             <p-password formControlName="password" id="password" [toggleMask]="true"></p-password>
@@ -105,7 +105,7 @@
           </div>
         </form>
         <ng-template #changePwd>
-          <form [formGroup]="passwordForm">
+          <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
             <div class="form-group">
               <label for="oldPassword">Old password *</label>
               <p-password formControlName="oldPassword" id="oldPassword" [feedback]="false" [toggleMask]="true"></p-password>
@@ -139,7 +139,7 @@
               <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
                 Cancel
               </button>
-              <button type="submit" [disabled]="!canManageUsers || passwordForm.invalid" [hidden]="!canManageUsers"
+              <button type="submit" [disabled]="passwordForm.invalid"
                 class="btn btn-danger ms-2">
                 Save
               </button>

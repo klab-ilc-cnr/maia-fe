@@ -8,6 +8,7 @@ import { User } from 'src/app/models/user';
 import { LanguageService } from 'src/app/services/language.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { matchNewPassword } from 'src/app/validators/match-new-password.directive';
 
@@ -49,32 +50,33 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   get password() {
     if ('password' in this.passwordForm.controls) {
-      return this.passwordForm.controls.password;
+      return this.passwordForm.controls.password as FormControl;
     }
     return null;
   }
 
   get oldPassword() {
     if ('oldPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.oldPassword;
+      return this.passwordForm.controls.oldPassword as FormControl;
     }
     return null;
   }
   get newPassword() {
     if ('newPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.newPassword;
+      return this.passwordForm.controls.newPassword as FormControl;
     }
     return null;
   }
   get confirmPassword() {
     if ('confirmPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.confirmPassword;
+      return this.passwordForm.controls.confirmPassword as FormControl;
     }
     return null;
   }
 
   /**Utente in lavorazione */
   user: User;
+  currentMaiaUserId = this.storageService.getCurrentUser()?.id;
 
   /**Definisce se è un utente in modifica */
   private editUser = false;
@@ -103,7 +105,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
     private loaderService: LoaderService,
     private userService: UserService,
     private loggedUserService: LoggedUserService,
-    private languageService: LanguageService) {
+    private languageService: LanguageService,
+    private storageService: StorageService,
+  ) {
     this.user = new User(); //crea un nuovo utente
   }
 
@@ -121,7 +125,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (id != null && id != undefined) { //caso di indicazione di un id utente da modificare
+      if ((id != null && id != undefined) && id != this.currentMaiaUserId?.toString()) { //caso di indicazione di un id utente (diverso da quello loggato) da modificare
         this.editUser = true;
         this.loadUser(id);
         return;
@@ -164,7 +168,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   /**Metodo che procede alla creazione del nuovo utente o al salvataggio delle modifiche dell'utente selezionato */
-  onSubmit() {
+  onSubmitUser() {
     const updatedUser = <User>{
       ...this.user,
       ...this.userForm.value
@@ -182,6 +186,22 @@ export class UserFormComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.goToUserList();
       this.loaderService.hide();
+    })
+  }
+
+  onSubmitPwd() {
+    const pwdBody: { id?: number, newPassword: string, currentPassword?: string } = { newPassword: this.password ? this.password.value : this.newPassword?.value };
+    if (this.user.id !== this.currentMaiaUserId) {
+      pwdBody.id = +this.user.id!;
+    }
+    if (!this.canManageUsers) {
+      pwdBody.currentPassword = this.oldPassword?.value;
+    }
+    console.info('body salvataggio pwd', pwdBody);
+    this.userService.updatePassword(pwdBody).pipe(
+      takeUntil(this.unsubscribe$), //TODO aggiungere gestione errori
+    ).subscribe(updatedUser => {
+      console.info('risposta al salvataggio pwd', updatedUser); //TODO inserire messaggio di modifica effettuata
     })
   }
 
@@ -235,7 +255,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     if (!this.isNewUser) {
       this.userForm.controls.email.disable();
     }
-    if (!this.canManageUsers) {
+    if (!this.canManageUsers && this.user.id != this.currentMaiaUserId) {
       this.userForm.disable();
     }
   }
