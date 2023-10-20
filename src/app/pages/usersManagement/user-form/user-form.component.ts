@@ -1,13 +1,16 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { Observable, Subject, catchError, takeUntil, throwError } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { Roles } from 'src/app/models/roles';
 import { User } from 'src/app/models/user';
 import { LanguageService } from 'src/app/services/language.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { matchNewPassword } from 'src/app/validators/match-new-password.directive';
@@ -108,6 +111,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     private loggedUserService: LoggedUserService,
     private languageService: LanguageService,
     private storageService: StorageService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
   ) {
     this.user = new User(); //crea un nuovo utente
   }
@@ -195,10 +200,15 @@ export class UserFormComponent implements OnInit, OnDestroy {
     }
     submitObs.pipe(
       takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        return throwError(() => new Error(error.error));
+      }),
     ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
       this.goToUserList();
       this.loaderService.hide();
-    })
+    });
   }
 
   onSubmitPwd() {
@@ -210,10 +220,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
       pwdBody.currentPassword = this.oldPassword?.value;
     }
     this.userService.updatePassword(pwdBody).pipe(
-      takeUntil(this.unsubscribe$), //TODO aggiungere gestione errori
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        return throwError(() => new Error(error.error));
+      }),
     ).subscribe(() => {
-      //TODO inserire messaggio di modifica effettuata
-    })
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Password successfully updated'));
+    });
   }
 
   /**Metodo che naviga sul componente della lista utenti */
@@ -234,6 +248,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.loaderService.show();
     this.userService.retrieveById(id).pipe(
       takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        return throwError(() => new Error(error.error));
+      }),
     ).subscribe((data) => {
       this.user = data;
       this.setFormInitialValue();
@@ -246,6 +264,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.loaderService.show();
     this.userService.retrieveCurrentUser().pipe(
       takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        return throwError(() => new Error(error.error));
+      }),
     ).subscribe((data) => {
       this.user = data;
       this.setFormInitialValue();
