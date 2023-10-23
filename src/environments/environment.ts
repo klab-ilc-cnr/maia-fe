@@ -23,7 +23,7 @@ export const environment = {
   tagsetUrl: allowedUrls + '/tagsets',
   annotationUrl: allowedUrls + '/annotations',
   relationUrl: allowedUrls + '/relations',
-  lexoUrl: "/LexO-backend-maia/service/",
+  lexoUrl: allowedUrls + "/lexo/",
   textoUrl: allowedUrls,
   textoDebugUrl: "https://macalbanesi:9443",
   rutPrefix: "ferrandi",
