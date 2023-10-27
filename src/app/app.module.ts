@@ -7,7 +7,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthConfigModule } from './config/auth.config.module';
 import { PageControllersModule } from './controllers/page-controllers/page-controllers.module';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -18,10 +17,12 @@ import { LexEntryEditorComponent } from './controllers/editors/lex-entry-editor/
 import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component';
 import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
-import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
+import { DirectRelationsComponent } from './controllers/editors/semantic-rel-editor/direct-relations/direct-relations.component';
 import { SemanticRelDirectComponent } from './controllers/editors/semantic-rel-editor/direct-relations/semantic-rel-direct/semantic-rel-direct.component';
-import { SemanticRelIndirectComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/semantic-rel-indirect.component';
+import { IndirectRelationsComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/indirect-relations.component';
 import { IndirectRelPropertyComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/indirect-rel-property/indirect-rel-property.component';
+import { SemanticRelIndirectComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/semantic-rel-indirect.component';
+import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -29,9 +30,11 @@ import { IconsModule } from './controllers/icons/icons.module';
 import { TabsFormComponent } from './controllers/tab-controllers/tabs-form/tabs-form.component';
 import { TabsLexicalEntryComponent } from './controllers/tab-controllers/tabs-lexical-entry/tabs-lexical-entry.component';
 import { TabsSenseComponent } from './controllers/tab-controllers/tabs-sense/tabs-sense.component';
+import { httpInterceptorProviders } from './interceptors/authentication.interceptor';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
 import { SharedModule } from './modules/shared.module';
+import { LoginComponent } from './pages/login/login.component';
 import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
@@ -42,8 +45,7 @@ import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-w
 import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
-import { DirectRelationsComponent } from './controllers/editors/semantic-rel-editor/direct-relations/direct-relations.component';
-import { IndirectRelationsComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/indirect-relations.component';
+import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
 
 @NgModule({
   declarations: [
@@ -77,20 +79,21 @@ import { IndirectRelationsComponent } from './controllers/editors/semantic-rel-e
     DirectRelationsComponent,
     IndirectRelationsComponent,
     IndirectRelPropertyComponent,
+    LoginComponent,
+    MatchNewPasswordDirective,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AuthConfigModule,
     NgbModule,
     PageControllersModule,
     FontAwesomeModule,
     IconsModule,
     SharedModule
   ],
-  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService],
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {

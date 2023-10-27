@@ -1,7 +1,15 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { Observable, Subject, throwError } from 'rxjs';
+import { MessageConfigurationService } from './message-configuration.service';
 @Injectable()
 export class CommonService {
+  constructor(
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+  ) { }
+
   private notify = new Subject<any>();
   /**
    * Observable string streams
@@ -50,5 +58,10 @@ export class CommonService {
 
   public getSenseUpdateRelation(relation: string): string {
     return this.senseRelations.find(r => r.endsWith('#' + relation)) ?? '';
+  }
+
+  public throwHttpErrorAndMessage(error: HttpErrorResponse, message: string): Observable<never> {
+    this.messageService.add(this.msgConfService.generateWarningMessageConfig(message));
+    return throwError(() => new Error(error.error));
   }
 }
