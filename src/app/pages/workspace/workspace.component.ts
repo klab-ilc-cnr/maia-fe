@@ -254,11 +254,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).pipe(
           take(1),
         ).subscribe((data) => {
-            console.info('load workspace status data', data)
-            data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
-            this.restoreTiles(data);
-            this.loaderService.hide();
-          }
+          console.info('load workspace status data', data)
+          data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
+          this.restoreTiles(data);
+          this.loaderService.hide();
+        }
         );
         return;
       }
@@ -395,6 +395,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const corpusExplorerTileConfig = res.panelConfig;
 
     const corpusTileElement = jsPanel.create(corpusExplorerTileConfig);
+    corpusTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    corpusTileElement.titlebar.style.fontSize = '14px'
 
     corpusTileElement
       .resize({
@@ -451,6 +453,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const textTileConfig = res.panelConfig;
 
     const textTileElement = jsPanel.create(textTileConfig); //crea il pannello di annotazione del testo
+    textTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    textTileElement.titlebar.style.fontSize = '14px'
+
 
     textTileElement
       .resize({
@@ -503,6 +508,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const lexiconTileConfig = result.panelConfig;
 
     const lexiconTileElement = jsPanel.create(lexiconTileConfig);
+    lexiconTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    lexiconTileElement.titlebar.style.fontSize = '14px'
+
 
     lexiconTileElement
       .resize({
@@ -552,6 +560,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const lexiconEditTileConfig = result.panelConfig;
 
     const lexiconEditTileElement = jsPanel.create(lexiconEditTileConfig);
+    lexiconEditTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    lexiconEditTileElement.titlebar.style.fontSize = '14px'
 
     lexiconEditTileElement
       .resize({
@@ -801,17 +811,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: ecPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Explore Corpus',
+      headerTitle: 'Explorer Corpus',
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
-      theme: {  //TODO ESEMPIO MODIFICA STILE PANEL
-        bgPanel: 'var(--primary-color)',
+      theme: {
+        bgPanel: '#a8c0ce',
         bgContent: '#fff',
-        colorHeader: 'white',
+        colorHeader: 'black',
         colorContent: `#${jsPanel.colorNames.gray700}`,
-        border: 'thin solid #b24406',
-        borderRadius: '.33rem'
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
@@ -890,6 +900,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         //this.deleteTileContent(panel.id, TileType.TEXT);
@@ -950,10 +966,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Lexicon',
+      headerTitle: 'Explorer Lexicon',
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
       panelSize: {
         width: () => window.innerWidth * 0.2,
         height: '60vh'
@@ -1025,6 +1047,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
       panelSize: {
         width: () => window.innerWidth * 0.5,
         height: '60vh'
