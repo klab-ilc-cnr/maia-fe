@@ -641,8 +641,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           });
           //currPanelElement = jsPanel.create(mergedConfig);
 
-          currPanelElement.addToTileMap(tile);
-          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
 
         case TileType.CORPUS:
@@ -658,8 +656,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           //currPanelElement = jsPanel.create(mergedConfigCorpus);
 
-          currPanelElement.addToTileMap(tile);
-          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
 
         case TileType.LEXICON:
@@ -682,14 +678,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
                       currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
                     }); */
 
-          currPanelElement.addToTileMap(tile);
-          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
-
           break;
 
         default:
           console.error("type " + tile.type + " not implemented");
       }
+      currPanelElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+      currPanelElement.titlebar.style.fontSize = '14px'
+      currPanelElement.addToTileMap(tile);
+      currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+
     }
 
     /* for (const [tileId, tile] of storedTiles.entries()) {
