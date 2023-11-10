@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { User } from '../models/user';
 
 const TOKEN_KEY = 'jwt-token';
@@ -9,6 +10,7 @@ const USER_KEY = 'current-user';
   providedIn: 'root'
 })
 export class StorageService {
+  tokenTimeout = new Subject<any>();
 
   public setToken(jwt: string): void {
     localStorage.removeItem(TOKEN_KEY);
@@ -21,6 +23,9 @@ export class StorageService {
 
   public setExpiration(): void {
     const expDate = new Date().getTime() + 5400000; //attualmente scade dopo 90 minuti
+    setTimeout(() => {
+      this.tokenTimeout.next(null);
+    }, 1000); //TODO replace with actual value
     localStorage.removeItem(EXPIRATION_KEY);
     localStorage.setItem(EXPIRATION_KEY, expDate.toString())
   }

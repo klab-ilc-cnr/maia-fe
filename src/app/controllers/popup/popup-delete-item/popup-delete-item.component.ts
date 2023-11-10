@@ -64,6 +64,26 @@ export class PopupDeleteItemComponent {
     });
   }
 
+  public showLogoutWarming(renewFn: () => void, logoutFn: () => void) {
+    Swal.fire({
+      icon: 'warning',
+      titleText: "You are about to be disconnected, select OK to continue working.",
+      showCancelButton: true,
+      showConfirmButton: true,
+      customClass: {
+        confirmButton: "swalDangerButton"
+      },
+      confirmButtonText: "Ok",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        renewFn();
+      } else {
+        logoutFn();
+      }
+    })
+  }
+
   /**
    * @private
    * Metodo che visualizza il popup di annullamento della cancellazione dell'elemento
