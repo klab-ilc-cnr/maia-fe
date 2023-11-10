@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-// import {NullValidationHandler, OAuthService, AuthConfig} from 'angular-oauth2-oidc';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +7,4 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   title = 'projectxFE';
-
-  constructor() {
-  }
 }

@@ -38,6 +38,7 @@ export class LoginComponent {
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Authentication failed')),
     ).subscribe(jwt => {
       this.storageService.setToken(jwt);
+      this.storageService.setExpiration();
       this.retrieveCurrentUser();
     });
   }

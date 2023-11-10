@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 
 const TOKEN_KEY = 'jwt-token';
+const EXPIRATION_KEY = 'token_expiration';
 const USER_KEY = 'current-user';
 
 @Injectable({
@@ -16,6 +17,17 @@ export class StorageService {
 
   public getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
+  }
+
+  public setExpiration(): void {
+    const expDate = new Date().getTime() + 5400000; //attualmente scade dopo 90 minuti
+    localStorage.removeItem(EXPIRATION_KEY);
+    localStorage.setItem(EXPIRATION_KEY, expDate.toString())
+  }
+
+  public getExpiration(): number|null {
+    const exp = localStorage.getItem(EXPIRATION_KEY)
+    return exp ? +exp : null;
   }
 
   public setCurrentUser(currentUser: User): void {
@@ -37,6 +49,15 @@ export class StorageService {
       return true;
     }
     return false;
+  }
+
+  public isExpired(): boolean {
+    const exp = this.getExpiration();
+    if(!exp) {
+      return this.isLoggedIn();
+    }
+    const current = new Date().getTime();
+    return current >= exp;
   }
 
   public cleanStorage(): void {
