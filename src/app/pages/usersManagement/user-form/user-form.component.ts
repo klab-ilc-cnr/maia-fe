@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, takeUntil, throwError } from 'rxjs';
+import { Subject, catchError, takeUntil, throwError } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { Roles } from 'src/app/models/roles';
 import { User } from 'src/app/models/user';
@@ -25,6 +25,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   userForm = new FormGroup({
     username: new FormControl<string>('', Validators.required),
+    password: new FormControl<string>(''),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
     email: new FormControl<string>('', Validators.required),
@@ -33,30 +34,27 @@ export class UserFormComponent implements OnInit, OnDestroy {
     languages: new FormControl<Language[]>([], Validators.required),
   });
   get username() { return this.userForm.controls.username }
+  get userPwd() { return this.userForm.controls.password }
   get name() { return this.userForm.controls.name }
   get surname() { return this.userForm.controls.surname }
   get email() { return this.userForm.controls.email }
   get role() { return this.userForm.controls.role }
   get languages() { return this.userForm.controls.languages }
 
-  passwordForm = this.canManageUsers ?
-    new FormGroup({
-      password: new FormControl<string>('', Validators.required),
-    }) :
-    new FormGroup({
-      oldPassword: new FormControl<string>('', Validators.required),
-      newPassword: new FormControl<string>('', Validators.required),
-      confirmPassword: new FormControl<string>('', Validators.required),
-    }, {
-      validators: matchNewPassword
-    });
+  passwordForm = new FormGroup({
+    oldPassword: new FormControl<string>('', Validators.required),
+    newPassword: new FormControl<string>('', Validators.required),
+    confirmPassword: new FormControl<string>('', Validators.required),
+  }, {
+    validators: matchNewPassword
+  });
 
-  get password() {
-    if ('password' in this.passwordForm.controls) {
-      return this.passwordForm.controls.password as FormControl;
-    }
-    return null;
-  }
+  // get password() {
+  //   if ('password' in this.passwordForm.controls) {
+  //     return this.passwordForm.controls.password as FormControl;
+  //   }
+  //   return null;
+  // }
 
   get oldPassword() {
     if ('oldPassword' in this.passwordForm.controls) {
@@ -125,18 +123,19 @@ export class UserFormComponent implements OnInit, OnDestroy {
       const id = params.get('id'); //recupero l'id utente dall'url di navigazione 
       this.isSameUser = id == this.currentMaiaUserId?.toString();
 
-      if (this.canManageUsers && this.isSameUser) {
-        this.passwordForm = new FormGroup({
-          oldPassword: new FormControl<string>('', Validators.required),
-          newPassword: new FormControl<string>('', Validators.required),
-          confirmPassword: new FormControl<string>('', Validators.required),
-        }, {
-          validators: matchNewPassword
-        });
-      }
+      // if (this.canManageUsers && this.isSameUser) {
+      //   this.passwordForm = new FormGroup({
+      //     oldPassword: new FormControl<string>('', Validators.required),
+      //     newPassword: new FormControl<string>('', Validators.required),
+      //     confirmPassword: new FormControl<string>('', Validators.required),
+      //   }, {
+      //     validators: matchNewPassword
+      //   });
+      // }
 
       if (id === this.newId) //caso di un nuovo inserimento utente
       {
+        this.userForm.get('password')?.setValidators(Validators.required);
         this.userForm.reset();
         this.newUser = true;
         return;
@@ -185,34 +184,76 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   /**Metodo che procede alla creazione del nuovo utente o al salvataggio delle modifiche dell'utente selezionato */
-  onSubmitUser() {
+  onSubmitUser() {  //BUG la gestione del salvataggio va in errore, su new per mancanza id e su edit per password null
     const updatedUser = <User>{
       ...this.user,
-      ...this.userForm.value
+      ...{
+        username: this.username.value!,
+        name: this.name.value!,
+        surname: this.surname.value!,
+        email: this.email.value!,
+        role: this.role.value!,
+        active: this.userForm.get('active')?.value,
+        languages: this.languages.value,
+      }
     };
     this.loaderService.show();
-    let submitObs: Observable<User>;
-    if (this.editUser) { //caso dell'utente modificato
-      submitObs = this.userService.update(updatedUser);
+    if (this.isNewUser) {
+      this.userService.save(updatedUser).pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(newUser => {
+        const userId = +newUser.id!;
+        this.userService.updatePassword({ id: userId, newPassword: this.userPwd.value! }).pipe(
+          takeUntil(this.unsubscribe$),
+          catchError((error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            return throwError(() => new Error(error.error));
+          }),
+        ).subscribe(() => {
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
+          this.goToUserList();
+          this.loaderService.hide();
+        });
+      });
+    } else {
+      this.userService.update(updatedUser).pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(() => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
+        this.goToUserList();
+        this.loaderService.hide();
+      });
     }
-    else { //casp inserimento di un nuovo utente
-      submitObs = this.userService.save(updatedUser);
-    }
-    submitObs.pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(() => {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
-      this.goToUserList();
-      this.loaderService.hide();
-    });
+    // let submitObs: Observable<User>;
+    // if (this.editUser) { //caso dell'utente modificato
+    //   submitObs = this.userService.update(updatedUser);
+    // }
+    // else { //caso inserimento di un nuovo utente
+    //   submitObs = this.userService.save(updatedUser);
+    // }
+    // submitObs.pipe(
+    //   takeUntil(this.unsubscribe$),
+    //   catchError((error: HttpErrorResponse) => {
+    //     this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+    //     return throwError(() => new Error(error.error));
+    //   }),
+    // ).subscribe(() => {
+    //   this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
+    //   this.goToUserList();
+    //   this.loaderService.hide();
+    // });
   }
 
   onSubmitPwd() {
-    const pwdBody: { id?: number, newPassword: string, currentPassword?: string } = { newPassword: this.password ? this.password.value : this.newPassword?.value };
+    const pwdBody: { id?: number, newPassword: string, currentPassword?: string } = { newPassword: this.newPassword?.value };
     if (!this.isSameUser) {
       pwdBody.id = +this.user.id!;
     }
@@ -278,6 +319,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private setFormInitialValue() {
     this.userForm.setValue({
       username: this.user.username ?? '',
+      password: '',
       name: this.user.name ?? '',
       surname: this.user.surname ?? '',
       email: this.user.email ?? '',
