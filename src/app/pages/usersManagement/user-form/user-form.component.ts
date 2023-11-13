@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, take, takeUntil, throwError } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { Roles } from 'src/app/models/roles';
 import { User } from 'src/app/models/user';
@@ -14,6 +14,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { matchNewPassword } from 'src/app/validators/match-new-password.directive';
+import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 
 /**Componente del form dei dati di un utente (anche nuovo) */
 @Component({
@@ -138,6 +139,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       if (id === this.newId) //caso di un nuovo inserimento utente
       {
         this.userForm.reset();
+        this.addDuplicateValidator();
         this.newUser = true;
         return;
       }
@@ -151,6 +153,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.editUser = false;
       this.loadCurrentUserProfile();
     });
+  }
+
+  ngAfterViewInit() {//TODO remove after fix
+    console.info(this.userForm)
   }
 
   ngOnDestroy(): void {
@@ -233,6 +239,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
   /**Metodo che naviga sul componente della lista utenti */
   goToUserList() {
     this.router.navigate(['usersManagement/users']);
+  }
+
+  private addDuplicateValidator() {
+    this.userService.findAll().pipe(
+      take(1),
+    ).subscribe(users => {
+      const usersName = users.map(u => u.username!);
+      console.info('set validator') //TODO remove after fix
+      this.username.setValidators(nameDuplicateValidator(usersName));
+    });
   }
 
   /**
