@@ -14,10 +14,10 @@
             <input type="text" formControlName="username" class="form-control" id="username" name="username"
               placeholder="Enter username" />
             <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
-              <div *ngIf="name.errors?.['notDuplicateName']"> <!--TODO fix error message-->
-                Username already used
+              <div *ngIf="username.errors?.['notDuplicateName']">
+                Existing username
               </div>
-              <div *ngIf="name.errors?.['required']">
+              <div *ngIf="username.errors?.['required']">
                 Username is mandatory
               </div>
             </div>

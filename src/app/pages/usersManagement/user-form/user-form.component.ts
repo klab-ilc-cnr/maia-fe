@@ -155,10 +155,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit() {//TODO remove after fix
-    console.info(this.userForm)
-  }
-
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
@@ -246,8 +242,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       take(1),
     ).subscribe(users => {
       const usersName = users.map(u => u.username!);
-      console.info('set validator') //TODO remove after fix
-      this.username.setValidators(nameDuplicateValidator(usersName));
+      this.username.addValidators(nameDuplicateValidator(usersName));
     });
   }
 
