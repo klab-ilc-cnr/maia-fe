@@ -22,15 +22,15 @@ export class StorageService {
   }
 
   public setExpiration(): void {
-    const expDate = new Date().getTime() + 5400000; //attualmente scade dopo 90 minuti
+    const expDate = new Date().getTime() + 5400000; //token expire after 90 minutes
     setTimeout(() => {
       this.tokenTimeout.next(null);
-    }, 1000); //TODO replace with actual value
+    }, 5370000); //warning displayed 30s before token expiration
     localStorage.removeItem(EXPIRATION_KEY);
     localStorage.setItem(EXPIRATION_KEY, expDate.toString())
   }
 
-  public getExpiration(): number|null {
+  public getExpiration(): number | null {
     const exp = localStorage.getItem(EXPIRATION_KEY)
     return exp ? +exp : null;
   }
@@ -58,7 +58,7 @@ export class StorageService {
 
   public isExpired(): boolean {
     const exp = this.getExpiration();
-    if(!exp) {
+    if (!exp) {
       return this.isLoggedIn();
     }
     const current = new Date().getTime();
