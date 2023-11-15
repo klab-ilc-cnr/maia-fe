@@ -41,6 +41,9 @@ export class WorkspaceCorpusExplorerComponent {
    */
   private deleteElement = (id: number, type: ElementType): void => {
     this.corpusStateService.removeElement.next({ elementType: type, elementId: id });
+    if(id === this.selectedNode?.data?.id) {
+      this.selectedNode = undefined;
+    }
   }
 
   /**Evento di selezione di un testo */
@@ -263,8 +266,11 @@ export class WorkspaceCorpusExplorerComponent {
     }
     const elementType = this.selectedNode!.data!.type;
     const elementId = this.selectedNode!.data!.id;
-    this.corpusStateService.renameElement.next({ elementType: elementType, elementId: elementId, newName: newName }); //BUG ottengo un internal server error
-
+    this.corpusStateService.renameElement.next({ elementType: elementType, elementId: elementId, newName: newName });
+    if(this.selectedNode && this.selectedNode.data) {
+      this.selectedNode.label = newName;
+      this.selectedNode.data.name = newName;
+    }
     this.visibleRename = false;
 
   }
