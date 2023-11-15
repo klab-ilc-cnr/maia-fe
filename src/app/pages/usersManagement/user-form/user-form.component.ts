@@ -25,7 +25,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   userForm = new FormGroup({
     username: new FormControl<string>('', Validators.required),
-    password: new FormControl<string>(''),
+    newPassword: new FormControl<string>(''),
+    confirmPassword: new FormControl<string>(''),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
     email: new FormControl<string>('', Validators.required),
@@ -34,7 +35,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     languages: new FormControl<Language[]>([], Validators.required),
   });
   get username() { return this.userForm.controls.username }
-  get userPwd() { return this.userForm.controls.password }
+  get userPwd() { return this.userForm.controls.newPassword }
+  get confirmPwd() { return this.userForm.controls.confirmPassword }
   get name() { return this.userForm.controls.name }
   get surname() { return this.userForm.controls.surname }
   get email() { return this.userForm.controls.email }
@@ -57,22 +59,22 @@ export class UserFormComponent implements OnInit, OnDestroy {
   // }
 
   get oldPassword() {
-    if ('oldPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.oldPassword as FormControl;
-    }
-    return null;
+    // if ('oldPassword' in this.passwordForm.controls) {
+    return this.passwordForm.controls.oldPassword as FormControl;
+    // }
+    // return null;
   }
   get newPassword() {
-    if ('newPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.newPassword as FormControl;
-    }
-    return null;
+    // if ('newPassword' in this.passwordForm.controls) {
+    return this.passwordForm.controls.newPassword as FormControl;
+    // }
+    // return null;
   }
   get confirmPassword() {
-    if ('confirmPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.confirmPassword as FormControl;
-    }
-    return null;
+    // if ('confirmPassword' in this.passwordForm.controls) {
+    return this.passwordForm.controls.confirmPassword as FormControl;
+    // }
+    // return null;
   }
 
   /**Utente in lavorazione */
@@ -135,7 +137,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
       if (id === this.newId) //caso di un nuovo inserimento utente
       {
-        this.userForm.get('password')?.setValidators(Validators.required);
+        this.userForm.get('newPassword')?.setValidators(Validators.required);
+        this.userForm.get('confirmPassword')?.setValidators(Validators.required);
+        this.userForm.setValidators(matchNewPassword);
         this.userForm.reset();
         this.newUser = true;
         return;
@@ -203,6 +207,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$),
         catchError((error: HttpErrorResponse) => {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+          this.loaderService.hide();
           return throwError(() => new Error(error.error));
         }),
       ).subscribe(newUser => {
@@ -224,6 +229,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$),
         catchError((error: HttpErrorResponse) => {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+          this.loaderService.hide();
           return throwError(() => new Error(error.error));
         }),
       ).subscribe(() => {
@@ -291,6 +297,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
     ).subscribe((data) => {
@@ -307,6 +314,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
     ).subscribe((data) => {
@@ -319,7 +327,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private setFormInitialValue() {
     this.userForm.setValue({
       username: this.user.username ?? '',
-      password: '',
+      newPassword: '',
+      confirmPassword: '',
       name: this.user.name ?? '',
       surname: this.user.surname ?? '',
       email: this.user.email ?? '',

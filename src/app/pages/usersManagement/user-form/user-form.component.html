@@ -19,11 +19,21 @@
           </div>
           <div class="form-group" *ngIf="isNewUser">
             <label for="password">Password *</label>
-            <p-password formControlName="password" id="password" [toggleMask]="true"></p-password>
-            <div *ngIf="userPwd && (userPwd.invalid && (userPwd.dirty || userPwd.touched))"
-              class="alert alert-danger">
+            <p-password formControlName="newPassword" id="password" [toggleMask]="true"></p-password>
+            <div *ngIf="userPwd && (userPwd.invalid && (userPwd.dirty || userPwd.touched))" class="alert alert-danger">
               Password is mandatory
             </div>
+          </div>
+          <div class="form-group" *ngIf="isNewUser">
+            <label for="confirmPassword">Confirm password *</label>
+            <p-password formControlName="confirmPassword" id="confirmPassword" [toggleMask]="true"></p-password>
+            <div *ngIf="confirmPwd && (confirmPwd.invalid && (confirmPwd.dirty || confirmPwd.touched))"
+              class="alert alert-danger">
+              Confirmation password is mandatory
+            </div>
+          </div>
+          <div *ngIf="userForm.invalid && userForm.errors?.['isMatchPasswordError']" class="alert alert-danger">
+            The new password must be the same as the confirmation password
           </div>
           <div class="form-group">
             <label for="name">Name *</label>
@@ -81,8 +91,8 @@
             <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
               Cancel
             </button>
-            <button type="submit" [disabled]="(!canManageUsers && user.id != currentMaiaUserId) || userForm.invalid" [hidden]="!canManageUsers && user.id != currentMaiaUserId"
-              class="btn btn-danger ms-2">
+            <button type="submit" [disabled]="(!canManageUsers && user.id != currentMaiaUserId) || userForm.invalid"
+              [hidden]="!canManageUsers && user.id != currentMaiaUserId" class="btn btn-danger ms-2">
               Save
             </button>
           </div>
@@ -113,46 +123,46 @@
           </div>
         </form>
         <ng-template #changePwd> -->
-          <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
-            <div class="form-group">
-              <label for="oldPassword">Old password *</label>
-              <p-password formControlName="oldPassword" id="oldPassword" [feedback]="false" [toggleMask]="true"></p-password>
-              <div *ngIf="oldPassword && (oldPassword.invalid && (oldPassword.dirty || oldPassword.touched))"
-                class="alert alert-danger">
-                Old password is mandatory
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="newPassword">New password *</label>
-              <p-password formControlName="newPassword" id="newPassword" [toggleMask]="true"></p-password>
-              <div *ngIf="newPassword && (newPassword.invalid && (newPassword.dirty || newPassword.touched))"
-                class="alert alert-danger">
-                New password is mandatory
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="confirmPassword">Confirmation password *</label>
-              <p-password formControlName="confirmPassword" id="confirmPassword" [feedback]="false" [toggleMask]="true"></p-password>
-              <div
-                *ngIf="confirmPassword && (confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched))"
-                class="alert alert-danger">
-                Confirmation password is mandatory
-              </div>
-            </div>
-            <div *ngIf="passwordForm.invalid && passwordForm.errors?.['isMatchPasswordError']"
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
+          <div class="form-group">
+            <label for="oldPassword">Old password *</label>
+            <p-password formControlName="oldPassword" id="oldPassword" [feedback]="false"
+              [toggleMask]="true"></p-password>
+            <div *ngIf="oldPassword && (oldPassword.invalid && (oldPassword.dirty || oldPassword.touched))"
               class="alert alert-danger">
-              The new password must be the same as the confirmation password
+              Old password is mandatory
             </div>
-            <div class="text-end">
-              <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
-                Cancel
-              </button>
-              <button type="submit" [disabled]="passwordForm.invalid"
-                class="btn btn-danger ms-2">
-                Save
-              </button>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">New password *</label>
+            <p-password formControlName="newPassword" id="newPassword" [toggleMask]="true"></p-password>
+            <div *ngIf="newPassword && (newPassword.invalid && (newPassword.dirty || newPassword.touched))"
+              class="alert alert-danger">
+              New password is mandatory
             </div>
-          </form>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirmation password *</label>
+            <p-password formControlName="confirmPassword" id="confirmPassword" [feedback]="false"
+              [toggleMask]="true"></p-password>
+            <div
+              *ngIf="confirmPassword && (confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched))"
+              class="alert alert-danger">
+              Confirmation password is mandatory
+            </div>
+          </div>
+          <div *ngIf="passwordForm.invalid && passwordForm.errors?.['isMatchPasswordError']" class="alert alert-danger">
+            The new password must be the same as the confirmation password
+          </div>
+          <div class="text-end">
+            <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="passwordForm.invalid" class="btn btn-danger ms-2">
+              Save
+            </button>
+          </div>
+        </form>
         <!-- </ng-template> -->
       </div>
     </div>
