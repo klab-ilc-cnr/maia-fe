@@ -51,31 +51,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
     validators: matchNewPassword
   });
 
-  // get password() {
-  //   if ('password' in this.passwordForm.controls) {
-  //     return this.passwordForm.controls.password as FormControl;
-  //   }
-  //   return null;
-  // }
-
-  get oldPassword() {
-    // if ('oldPassword' in this.passwordForm.controls) {
-    return this.passwordForm.controls.oldPassword as FormControl;
-    // }
-    // return null;
-  }
-  get newPassword() {
-    // if ('newPassword' in this.passwordForm.controls) {
-    return this.passwordForm.controls.newPassword as FormControl;
-    // }
-    // return null;
-  }
-  get confirmPassword() {
-    // if ('confirmPassword' in this.passwordForm.controls) {
-    return this.passwordForm.controls.confirmPassword as FormControl;
-    // }
-    // return null;
-  }
+  get oldPassword() { return this.passwordForm.controls.oldPassword as FormControl; }
+  get newPassword() { return this.passwordForm.controls.newPassword as FormControl; }
+  get confirmPassword() { return this.passwordForm.controls.confirmPassword as FormControl; }
 
   /**Utente in lavorazione */
   user: User;
@@ -125,16 +103,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
       const id = params.get('id'); //recupero l'id utente dall'url di navigazione 
       this.isSameUser = id == this.currentMaiaUserId?.toString();
 
-      // if (this.canManageUsers && this.isSameUser) {
-      //   this.passwordForm = new FormGroup({
-      //     oldPassword: new FormControl<string>('', Validators.required),
-      //     newPassword: new FormControl<string>('', Validators.required),
-      //     confirmPassword: new FormControl<string>('', Validators.required),
-      //   }, {
-      //     validators: matchNewPassword
-      //   });
-      // }
-
       if (id === this.newId) //caso di un nuovo inserimento utente
       {
         this.userForm.get('newPassword')?.setValidators(Validators.required);
@@ -171,24 +139,18 @@ export class UserFormComponent implements OnInit, OnDestroy {
    * Getter dell'essere utente in modifica
    * @returns {boolean} definisce se è un utente in modifica
    */
-  public get isEditUser() {
-    return this.editUser;
-  }
+  public get isEditUser() { return this.editUser; }
 
   /**
    * Getter dell'essere un inserimento di nuovo utente
    * @returns {boolean} definisce se è un nuovo utente
    */
-  public get isNewUser() {
-    return this.newUser;
-  }
+  public get isNewUser() { return this.newUser; }
 
-  public get isCurrentUser() {
-    return this.currentUser;
-  }
+  public get isCurrentUser() { return this.currentUser; }
 
   /**Metodo che procede alla creazione del nuovo utente o al salvataggio delle modifiche dell'utente selezionato */
-  onSubmitUser() {  //BUG la gestione del salvataggio va in errore, su new per mancanza id e su edit per password null
+  onSubmitUser() {  //BUG new user service return an error, opened an issue on BE repo, edit user is working
     const updatedUser = <User>{
       ...this.user,
       ...{
@@ -238,24 +200,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this.loaderService.hide();
       });
     }
-    // let submitObs: Observable<User>;
-    // if (this.editUser) { //caso dell'utente modificato
-    //   submitObs = this.userService.update(updatedUser);
-    // }
-    // else { //caso inserimento di un nuovo utente
-    //   submitObs = this.userService.save(updatedUser);
-    // }
-    // submitObs.pipe(
-    //   takeUntil(this.unsubscribe$),
-    //   catchError((error: HttpErrorResponse) => {
-    //     this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
-    //     return throwError(() => new Error(error.error));
-    //   }),
-    // ).subscribe(() => {
-    //   this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
-    //   this.goToUserList();
-    //   this.loaderService.hide();
-    // });
   }
 
   onSubmitPwd() {
