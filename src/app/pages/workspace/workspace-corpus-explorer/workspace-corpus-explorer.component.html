@@ -63,7 +63,7 @@
           <div class="form-group">
             <label class="form-label">Select folder *</label>
             <div class="p-fluid">
-              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]"
+              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]" [showClear]="true"
                 placeholder="Select folder" appendTo="body"></p-treeSelect>
             </div>
           </div>
@@ -107,7 +107,7 @@
           <div class="form-group">
             <label class="form-label">Select folder</label>
             <div class="p-fluid">
-              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async) || []"
+              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async) || []" [showClear]="true"
                 placeholder="Select folder" appendTo="body"></p-treeSelect>
             </div>
           </div>
@@ -165,7 +165,7 @@
           <div class="form-group">
             <label class="form-label">Select a target folder</label>
             <div class="p-fluid">
-              <p-treeSelect name="targetFolder" formControlName="targetFolder" [options]="(folders$ | async) || []"
+              <p-treeSelect name="targetFolder" formControlName="targetFolder" [options]="(folders$ | async) || []" [showClear]="true"
                 placeholder="Select folder" appendTo="body"></p-treeSelect>
             </div>
           </div>

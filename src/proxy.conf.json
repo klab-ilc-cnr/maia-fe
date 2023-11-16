@@ -1,33 +1,3 @@
 {
-  "/LexO-backend-maia/service/*": {
-    "target": "https://klab.ilc.cnr.it/",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/belexo/*": {
-    "target": "http://licodemo.ilc.cnr.it",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/sso/*": {
-    "target": "http://localhost:8085",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/api/*": {
-    "target": "https://klab.ilc.cnr.it/cash-0.0.1-SNAPSHOT",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/texto/*": {
-    "target": "https://146.48.93.234:9443",
-    "target": "https://macalbanesi:9443",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  }
+
 }
