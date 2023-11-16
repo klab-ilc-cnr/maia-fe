@@ -95,25 +95,36 @@ export abstract class BaseSemanticInputComponent implements OnInit {
     );
   }
 
+  private removeFormItem(relationshipLabel: string, itemID: number): void {
+    this.form.removeControl(`${itemID}`);
+    const index = this.formItems.findIndex(e => e.itemID === itemID);
+    this.formItems.splice(index, 1);
+    const message = this.msgConfService.generateSuccessMessageConfig(`${relationshipLabel} removed`);
+    this.messageService.add(message);
+  }
+
   /**
    * Metodo che gestisce la rimozione di una relazione
    * @param control {FormItem} item del form da rimuovere
    */
-  onRemoveRelationship(control: FormItem) {
+  onRemoveRelationship(control: FormItem): void {
+
     const {relationshipLabel, itemID} = control;
     const confirmMsg = `Are you sure to remove "${relationshipLabel}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
+
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
       if (!this.selectedSuggestion) return;
+      if (!this.selectedSuggestion?.senseListItem) {
+        this.removeFormItem(relationshipLabel, itemID);
+        return;
+      }
+
       this.removeRelationship(control).pipe(
         take(1)
       ).subscribe(
         () => {
-          this.form.removeControl(`${itemID}`);
-          const index = this.formItems.findIndex(e => e.itemID === itemID);
-          this.formItems.splice(index, 1);
-          const message = this.msgConfService.generateSuccessMessageConfig(`${relationshipLabel} removed`);
-          this.messageService.add(message);
+          this.removeFormItem(relationshipLabel, itemID);
         },
         (err) => {
           console.error(err);
