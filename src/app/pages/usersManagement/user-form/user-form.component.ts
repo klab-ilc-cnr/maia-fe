@@ -28,7 +28,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     username: new FormControl<string>('', [Validators.required, Validators.minLength(4)]),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
-    email: new FormControl<string>('', Validators.required),
+    email: new FormControl<string>(''),
     role: new FormControl<string>('', Validators.required),
     active: new FormControl<boolean>(false),
     languages: new FormControl<Language[]>([], Validators.required),
@@ -297,7 +297,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       languages: this.user.languages ?? [],
     });
     if (!this.isNewUser) {
-      this.userForm.controls.email.disable();
+      this.userForm.controls.username.disable(); //username must be unique 
     }
     if (!this.canManageUsers && this.user.id != this.currentMaiaUserId) {
       this.userForm.disable();
