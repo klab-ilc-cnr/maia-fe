@@ -1,20 +1,19 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Maia
+Maia is an open and collaborative web tool based on semantic web and linked open data technologies for text annotation, e-lexicography, and lexical linking.
 
-# Getting Started
+It's developed by the [KLAB group](https://www.ilc.cnr.it/klab/) of the ILC CNR.
+
+## Maia interface 
+The platform interface was developed using Angular version 14.
+
+## Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
 1.	Installation process
 2.	Software dependencies
 3.	Latest releases
 4.	API references
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Reporting issues and bugs
+To report any bugs or propose new features, you can open a new issue in this repository.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+In case of a bug please indicate the version of the platform used and describe the steps to replicate the error.
