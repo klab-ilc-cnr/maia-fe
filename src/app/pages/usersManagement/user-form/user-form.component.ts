@@ -25,7 +25,7 @@ import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.di
 export class UserFormComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   userForm = new FormGroup({
-    username: new FormControl<string>('', Validators.required),
+    username: new FormControl<string>('', [Validators.required, Validators.minLength(4)]),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
     email: new FormControl<string>('', Validators.required),
