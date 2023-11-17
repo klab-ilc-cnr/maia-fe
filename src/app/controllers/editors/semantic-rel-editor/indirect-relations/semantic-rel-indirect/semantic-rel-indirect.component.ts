@@ -76,7 +76,7 @@ export class SemanticRelIndirectComponent extends BaseSemanticInputComponent {
     });
   }
 
-  removeRelationship(control: FormItem) {
+  override removeRelationship(control: FormItem) {
     return this.lexiconService.deleteLexicoSemanticRelation(control.relationshipURI);
   }
 

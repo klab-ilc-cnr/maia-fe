@@ -5,6 +5,7 @@ import { take } from 'rxjs';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { BaseRelationsComponent, FormItem } from '../base-relations/base-relations.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-indirect-relations',
@@ -45,17 +46,17 @@ export class IndirectRelationsComponent extends BaseRelationsComponent {
     this.lexiconService.createIndirectSenseRelation(
       this.senseEntry.sense, relationshipURI
     ).pipe(
-      take(1),
-    ).subscribe(
-      (indirectRelationshipURI: string) => {
+      take(1)
+    ).subscribe({
+      next: (indirectRelationshipURI: string) => {
         newItem.relationshipURI = indirectRelationshipURI;
       },
-      (err) => {
-        console.error(err);
-        const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+      error: (error: HttpErrorResponse) => {
+        console.error(error);
+        const message = this.msgConfService.generateErrorMessageConfig(`${error.name}: ${error.error}`);
         this.messageService.add(message);
       }
-    );
+    });
     return newItem;
   }
 
