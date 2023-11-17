@@ -80,19 +80,19 @@ export abstract class BaseSemanticInputComponent implements OnInit {
 
     this.updateRelationship(senseDisplayItem.senseListItem, control).pipe(
       take(1)
-    ).subscribe(
-      () => {
+    ).subscribe({
+      next: () => {
         this.selectedSuggestion = senseDisplayItem;
         control.destinationURI = senseDisplayItem.senseListItem?.sense || '';
         const message = this.msgConfService.generateSuccessMessageConfig(`${control.relationshipLabel} updated`);
         this.messageService.add(message);
       },
-      (err) => {
+      error: (err) => {
         console.error(err);
         const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
         this.messageService.add(message);
       }
-    );
+    });
   }
 
   private removeFormItem(relationshipLabel: string, itemID: number): void {
@@ -115,23 +115,19 @@ export abstract class BaseSemanticInputComponent implements OnInit {
 
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
       if (!this.selectedSuggestion) return;
-      if (!this.selectedSuggestion?.senseListItem) {
-        this.removeFormItem(relationshipLabel, itemID);
-        return;
-      }
 
       this.removeRelationship(control).pipe(
         take(1)
-      ).subscribe(
-        () => {
+      ).subscribe({
+        next: () => {
           this.removeFormItem(relationshipLabel, itemID);
         },
-        (err) => {
+        error: (err) => {
           console.error(err);
           const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
           this.messageService.add(message);
         }
-      );
+      });
     });
   }
 

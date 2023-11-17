@@ -87,6 +87,8 @@ export class LexiconService {
    */
   deleteRelation(lexicalEntityId: string, updater: { relation: string, value: string }): Observable<string> {
     const encodedLexEntry = this.commonService.encodeUrl(lexicalEntityId);
+    console.error("HEY!")
+    console.log(encodedLexEntry)
     return this.http.post(
       `${this.lexoUrl}lexicon/delete/relation?id=${encodedLexEntry}`,
       updater,
@@ -474,12 +476,12 @@ export class LexiconService {
       }, {
         headers: {'Content-Type': 'application/json'},
         responseType: 'text',
-      });
+      }).pipe(mergeMap(() => of(relationURI)));
     }
 
     return createRelationship().pipe(
-      mergeMap((response: any) => addCategory(response.relation)
-        .pipe(() => of(response.relation))
+      mergeMap(
+        (response: any) => addCategory(response.relation),
       )
     );
   }
