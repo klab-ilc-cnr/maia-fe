@@ -8,7 +8,7 @@ export class MessageConfigurationService {
   generateErrorMessageConfig(msg: string): any {
     return {
       severity: 'error',
-      summary: 'Errore',
+      summary: 'Error',
       detail: msg,
       life: 3000
     }
@@ -17,7 +17,7 @@ export class MessageConfigurationService {
   generateSuccessMessageConfig(msg: string): any {
     return {
       severity: 'success',
-      summary: 'Successo',
+      summary: 'Success',
       detail: msg,
       life: 3000
     }
@@ -26,7 +26,7 @@ export class MessageConfigurationService {
   generateWarningMessageConfig(msg: string): any {
     return {
       severity: 'warn',
-      summary: 'Attenzione',
+      summary: 'Warning',
       detail: msg,
       life: 3000
     }

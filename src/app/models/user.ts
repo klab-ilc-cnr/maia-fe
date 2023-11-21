@@ -5,12 +5,16 @@ import { Roles } from "./roles";
 export class User {
   /**Identificativo */
   id: string | undefined;
+  /**Nome utente */
+  username: string | undefined;
   /**Nome dell'utente */
   name: string | undefined;
   /**Cognome dell'utente */
   surname: string | undefined;
   /**Email dell'utente (utilizzata anche per il login) */
   email: string | undefined;
+  created: string | undefined;
+  updated: string | undefined;
   /**Ruolo */
   role: Roles | undefined;
   /**Definisce se l'utente è abilitato */
@@ -24,6 +28,6 @@ export class TextoUser {
   enabled: boolean | undefined;
   id!: number;
   name: string | undefined;
-  role: {id: number} | undefined;
+  role: { id: number } | undefined;
   username: string | undefined;
 }

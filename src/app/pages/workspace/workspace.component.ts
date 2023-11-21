@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subscription, take } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -38,7 +38,7 @@ let currentWorkspaceInstance: any; //TODO verificare effettivo utilizzo
   styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  private readonly unsubscribe$ = new Subject();
   /**
    * @private
    * Identificativo per un nuovo workspace
@@ -90,7 +90,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   private storageName = "storedTiles";
 
   /**Sottoscrizione per tracciare emissioni da Common Service */
-  private subscription!: Subscription;
+  // private subscription!: Subscription;
 
   /**Lista degli elementi di menu di primeng */
   public items: MenuItem[] = [];
@@ -169,7 +169,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private loaderService: LoaderService,
     private layerService: LayerService,
     private userService: UserService,
-    private cd: ChangeDetectorRef,
     private vcr: ViewContainerRef,
     private messageService: MessageService,
     private workspaceService: WorkspaceService,
@@ -179,7 +178,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
 
-    this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
+    this.commonService.notifyObservable$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((res) => {
       if ('option' in res && res.option === 'onLexiconTreeElementDoubleClickEvent') {
         const selectedSubTree = structuredClone(res.value[0]);
         const showLabelName = structuredClone(res.value[1]);
@@ -222,47 +223,49 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
       } */
     ];
-    if(!environment.demoHide) {
-      this.items.push({label: 'Ontology'});
+    if (!environment.demoHide) {
+      this.items.push({ label: 'Ontology' });
     }
 
-    this.activeRoute.paramMap.subscribe({
-      next: (params) => {
-        this.workspaceId = params.get('id') ?? undefined;
+    this.activeRoute.paramMap.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((params) => {
+      this.workspaceId = params.get('id') ?? undefined;
 
-        if (!this.workspaceId) {
-          this.router.navigate(['workspaces']);
-          return;
-        }
-
-        this.loaderService.show();
-        this.layerService.retrieveLayers().subscribe({
-          next: (layers: Layer[]) => {
-            this.visibleLayers = layers; //TODO da gestire
-            this.loaderService.hide();
-
-            if (this.workspaceId === this.newId) {
-              this.newWorkspace = true;
-              return;
-            }
-
-            if (this.workspaceId != null && this.workspaceId != undefined) {
-              this.newWorkspace = false;
-              this.loaderService.show();
-              this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).subscribe({
-                next: (data) => {
-                  console.log(data)
-                  data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
-                  this.restoreTiles(data);
-                  this.loaderService.hide();
-                }
-              });
-              return;
-            }
-          }
-        })
+      if (!this.workspaceId) {
+        this.router.navigate(['workspaces']);
+        return;
       }
-    });
+
+      // this.loaderService.show();
+      // this.layerService.retrieveLayers().subscribe({
+      //   next: (layers: Layer[]) => {
+      //     this.visibleLayers = layers; //TODO da gestire
+      //     this.loaderService.hide();
+
+      if (this.workspaceId === this.newId) {
+        this.newWorkspace = true;
+        return;
+      }
+
+      if (this.workspaceId != null && this.workspaceId != undefined) {
+        this.newWorkspace = false;
+        this.loaderService.show();
+        this.workspaceService.loadWorkspaceStatus(Number(this.workspaceId)).pipe(
+          take(1),
+        ).subscribe((data) => {
+          console.info('load workspace status data', data)
+          data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
+          this.restoreTiles(data);
+          this.loaderService.hide();
+        }
+        );
+        return;
+      }
+    }
+      // })
+      // }
+    );
 
     if (this.workspaceId && this.workspaceId !== this.newId) {
       this.workspaceService.getWorkspaceName(+this.workspaceId).pipe(take(1)).subscribe(res => {
@@ -365,7 +368,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per eliminare eventuali sottoscrizioni */
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -390,6 +395,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const corpusExplorerTileConfig = res.panelConfig;
 
     const corpusTileElement = jsPanel.create(corpusExplorerTileConfig);
+    corpusTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    corpusTileElement.titlebar.style.fontSize = '14px'
 
     corpusTileElement
       .resize({
@@ -446,6 +453,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const textTileConfig = res.panelConfig;
 
     const textTileElement = jsPanel.create(textTileConfig); //crea il pannello di annotazione del testo
+    textTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    textTileElement.titlebar.style.fontSize = '14px'
+
 
     textTileElement
       .resize({
@@ -498,6 +508,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const lexiconTileConfig = result.panelConfig;
 
     const lexiconTileElement = jsPanel.create(lexiconTileConfig);
+    lexiconTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    lexiconTileElement.titlebar.style.fontSize = '14px'
+
 
     lexiconTileElement
       .resize({
@@ -547,6 +560,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const lexiconEditTileConfig = result.panelConfig;
 
     const lexiconEditTileElement = jsPanel.create(lexiconEditTileConfig);
+    lexiconEditTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    lexiconEditTileElement.titlebar.style.fontSize = '14px'
 
     lexiconEditTileElement
       .resize({
@@ -577,13 +592,31 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('restore');
     this.loaderService.show();
 
-    const storedData: any = workspaceStatus.layout;
+    let storedData: any = workspaceStatus.layout;
     const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
     console.log('restored layout', storedData, storedTiles, workspaceStatus);
 
     if (storedTiles.length == 0) {
       return;
     }
+
+    const iterableStoredData = JSON.parse(storedData); //TODO verificare il workaround utilizzato per il ricalcolo delle dimensioni dei panel in caso di cambio schermo (da grande a piccolo)
+    let tempStoredData = [];
+    for (const tile of iterableStoredData) {
+      const tempTile = { ...tile };
+      const width = +tile.width.toString().replace('px', '');
+      const height = +tile.height.toString().replace('px', '');
+      if (width > window.innerWidth) {
+        tempTile.width = window.innerWidth + 'px'
+        tempTile.left = '0px'
+      }
+      if (height > window.innerHeight) {
+        tempTile.height = (window.innerHeight * 0.8) + 'px'
+        tempTile.left = '0px'
+      }
+      tempStoredData.push(tempTile)
+    }
+    storedData = JSON.stringify(tempStoredData)
 
     //IMPORTANTE Ripristino i dati nel localstorage PRIMA di fare restore,
     //il localstorage verrà letto dalla funzione jsPanel.layout.restore()
@@ -608,8 +641,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           });
           //currPanelElement = jsPanel.create(mergedConfig);
 
-          currPanelElement.addToTileMap(tile);
-          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
 
         case TileType.CORPUS:
@@ -625,8 +656,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           //currPanelElement = jsPanel.create(mergedConfigCorpus);
 
-          currPanelElement.addToTileMap(tile);
-          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
           break;
 
         case TileType.LEXICON:
@@ -649,14 +678,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
                       currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
                     }); */
 
-          currPanelElement.addToTileMap(tile);
-          currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
-
           break;
 
         default:
           console.error("type " + tile.type + " not implemented");
       }
+      currPanelElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+      currPanelElement.titlebar.style.fontSize = '14px'
+      currPanelElement.addToTileMap(tile);
+      currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+
     }
 
     /* for (const [tileId, tile] of storedTiles.entries()) {
@@ -778,17 +809,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: ecPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Explore Corpus',
+      headerTitle: 'Corpus Explorer',
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
-      theme: {  //TODO ESEMPIO MODIFICA STILE PANEL
-        bgPanel: 'var(--primary-color)',
+      theme: {
+        bgPanel: '#a8c0ce',
         bgContent: '#fff',
-        colorHeader: 'white',
+        colorHeader: 'black',
         colorContent: `#${jsPanel.colorNames.gray700}`,
-        border: 'thin solid #b24406',
-        borderRadius: '.33rem'
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
@@ -867,6 +898,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         //this.deleteTileContent(panel.id, TileType.TEXT);
@@ -927,10 +964,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Lexicon',
+      headerTitle: 'Lexicon Explorer',
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
       panelSize: {
         width: () => window.innerWidth * 0.2,
         height: '60vh'
@@ -1002,6 +1045,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
       panelSize: {
         width: () => window.innerWidth * 0.5,
         height: '60vh'

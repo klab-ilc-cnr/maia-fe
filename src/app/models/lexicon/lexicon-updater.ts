@@ -22,11 +22,16 @@ export enum GENERIC_RELATION_TYPE {
   BIBLIOGRAPHY = 'bibliography',
   ATTESTATION = 'attestation',
   MULTIMEDIA = 'multimedia',
+  METADATA = 'metadata',
 }
 
 export enum GENERIC_RELATIONS {
   SEEALSO = 'http://www.w3.org/2000/01/rdf-schema#seeAlso',
   SAMEAS = 'http://www.w3.org/2002/07/owl#sameAs',
+  COMMENT = 'http://www.w3.org/2000/01/rdf-schema#comment',
+  DESCRIPTION = 'http://purl.org/dc/terms/description',
+  EXAMPLE = 'http://www.lexinfo.net/ontology/3.0/lexinfo#example',
+  CONFIDENCE = 'http://www.lexinfo.net/ontology/3.0/lexinfo#confidence',
 }
 
 /**Enumerazione delle relazioni per entrata lessicale */
@@ -61,6 +66,7 @@ export enum LINGUISTIC_RELATION_TYPE {
   DECOMP = 'decomp',
   CONCEPT_REF = 'conceptRef',
   LEXICAL_REL = 'lexicalRel',
+  LEXICOSEMANTIC_REL = 'LexicosemanticRel',
   SENSE_REL = 'senseRel',
   CONCEPT_REL = 'conceptRel',
   ETY_LINK = 'etyLink',

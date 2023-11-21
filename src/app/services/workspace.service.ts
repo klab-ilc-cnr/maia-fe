@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
-import { DocumentSystem } from '../models/corpus/document-system';
-import { ElementType, _ElementType } from '../models/corpus/element-type';
+import { ElementType } from '../models/corpus/element-type';
 import { CorpusElement, FolderElement, ResourceElement } from '../models/texto/corpus-element';
 import { TextChoice } from '../models/tile/text-choice-element.model';
 import { TextTileContent } from '../models/tile/text-tile-content.model';
@@ -12,8 +11,6 @@ import { Tile } from '../models/tile/tile.model';
 import { TextoUser } from '../models/user';
 import { WorkspaceChoice } from '../models/workspace-choice.model';
 import { Workspace } from '../models/workspace.model';
-
-const headers = new HttpHeaders().set('Content-Type', 'application/json'); //TODO verificare rimozione per mancato uso
 
 /**Classe dei servizi per i workspace */
 @Injectable({
@@ -24,10 +21,7 @@ export class WorkspaceService {
 
   /**Url per chiamate relative ai workspace */
   private workspacesUrl: string;
-  /**Url per le chiamate a cash */
-  private cashUrl: string;
   private textoUrl: string;
-  private textoDebugUrl: string;
 
   /**
    * Costruttore per WorkspaceService
@@ -35,9 +29,7 @@ export class WorkspaceService {
    */
   constructor(private http: HttpClient) {
     this.workspacesUrl = environment.workspacesUrl; //inizializzo i due url dall'environment
-    this.cashUrl = environment.cashUrl;
     this.textoUrl = environment.textoUrl;
-    this.textoDebugUrl = environment.textoDebugUrl;
   }
 
   //WORKSPACE
@@ -165,12 +157,12 @@ export class WorkspaceService {
    * GET che recupera il sistema documentale
    * @returns {Observable<DocumentSystem>} observable del sistema documentale
    */
-  public _retrieveCorpus(): Observable<DocumentSystem> {
-    const uuid = uuidv4();
-    //SIM: aggiunto public/ nel path
-    return this.http.get<DocumentSystem>(`${this.cashUrl}/api/public/getDocumentSystem?requestUUID=${uuid}`);
-    //return this.http.get<DocumentSystem>('assets/mock/files.json')
-  }
+  // public _retrieveCorpus(): Observable<DocumentSystem> {
+  //   const uuid = uuidv4();
+  //   //SIM: aggiunto public/ nel path
+  //   return this.http.get<DocumentSystem>(`${this.cashUrl}/api/public/getDocumentSystem?requestUUID=${uuid}`);
+  //   //return this.http.get<DocumentSystem>('assets/mock/files.json')
+  // }
 
   public retrieveCorpus(userId?: number): Observable<CorpusElement[]> {
     const uuid = uuidv4();
@@ -190,13 +182,13 @@ export class WorkspaceService {
    * @param file {File} il file da caricare
    * @returns {Observable<any>} observable del file caricato nel sistema documentale
    */
-  public _uploadFile(element_id: number, file: File): Observable<any> {
-    const uuid = uuidv4();
+  // public _uploadFile(element_id: number, file: File): Observable<any> {
+  //   const uuid = uuidv4();
 
-    const formData: FormData = new FormData();
-    formData.append('file', file);
-    return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
-  }
+  //   const formData: FormData = new FormData();
+  //   formData.append('file', file);
+  //   return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
+  // }
 
   public uploadFile(resourceId: number, file: File) {
     const uuid = uuidv4();
@@ -218,24 +210,24 @@ export class WorkspaceService {
    * @param type {_ElementType} tipo di elemento documentale (file o folder)
    * @returns {Observable<any>} observable dell'elemento documentale aggiornato
    */
-  public _renameElement(element_id: number, rename_string: string, type: _ElementType): Observable<any> {
-    const uuid = uuidv4();
+  // public _renameElement(element_id: number, rename_string: string, type: _ElementType): Observable<any> {
+  //   const uuid = uuidv4();
 
-    const payload = {
-      "uuid": uuid,
-      "user-id": 0,
-      "element-id": element_id,
-      "rename-string": rename_string
-    }
+  //   const payload = {
+  //     "uuid": uuid,
+  //     "user-id": 0,
+  //     "element-id": element_id,
+  //     "rename-string": rename_string
+  //   }
 
-    let operationUrl = "renameFolder";
+  //   let operationUrl = "renameFolder";
 
-    if (type == _ElementType.File) {
-      operationUrl = "renameFile";
-    }
+  //   if (type == _ElementType.File) {
+  //     operationUrl = "renameFile";
+  //   }
 
-    return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
-  }
+  //   return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
+  // }
 
   public renameElement(elementType: string, elementId: number, newName: string) {
     const uuid = uuidv4();
@@ -258,23 +250,23 @@ export class WorkspaceService {
    * @param type {_ElementType} tipo di elemento da eliminare
    * @returns {Observable<any>} observable dell'esito della cancellazione
    */
-  public _removeElement(element_id: number, type: _ElementType): Observable<any> {
-    const uuid = uuidv4();
+  // public _removeElement(element_id: number, type: _ElementType): Observable<any> {
+  //   const uuid = uuidv4();
 
-    const payload = {
-      "uuid": uuid,
-      "user-id": 0,
-      "element-id": element_id
-    }
+  //   const payload = {
+  //     "uuid": uuid,
+  //     "user-id": 0,
+  //     "element-id": element_id
+  //   }
 
-    let operationUrl = "removeFolder";
+  //   let operationUrl = "removeFolder";
 
-    if (type == _ElementType.File) {
-      operationUrl = "removeFile";
-    }
+  //   if (type == _ElementType.File) {
+  //     operationUrl = "removeFile";
+  //   }
 
-    return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
-  }
+  //   return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
+  // }
 
   public removeElement(elementType: string, elementId: number) {
     const uuid = uuidv4();
@@ -294,30 +286,30 @@ export class WorkspaceService {
    * @param type {_ElementType} tipo di elemento documentale
    * @returns {Observable<any>} observable dell'elemento documentale modificato
    */
-  public _moveElement(element_id: number, target_id: number, type: _ElementType): Observable<any> {
-    const uuid = uuidv4();
+  // public _moveElement(element_id: number, target_id: number, type: _ElementType): Observable<any> {
+  //   const uuid = uuidv4();
 
-    let realTargetId = target_id;
-    // To be able to move to the root it is necessary to change the target id from 0 to 1 (which in the db appears to be the root)
-    if (realTargetId == 0) {
-      realTargetId = 1;
-    }
+  //   let realTargetId = target_id;
+  //   // To be able to move to the root it is necessary to change the target id from 0 to 1 (which in the db appears to be the root)
+  //   if (realTargetId == 0) {
+  //     realTargetId = 1;
+  //   }
 
-    const payload = {
-      "uuid": uuid,
-      "user-id": 0,
-      "element-id": element_id,
-      "target-id": realTargetId
-    }
+  //   const payload = {
+  //     "uuid": uuid,
+  //     "user-id": 0,
+  //     "element-id": element_id,
+  //     "target-id": realTargetId
+  //   }
 
-    let operationUrl = "moveFolder";
+  //   let operationUrl = "moveFolder";
 
-    if (type == _ElementType.File) {
-      operationUrl = "moveFileTo";
-    }
+  //   if (type == _ElementType.File) {
+  //     operationUrl = "moveFileTo";
+  //   }
 
-    return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
-  }
+  //   return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
+  // }
 
   public moveElement(elementType: string, elementId: number, targetId: number) { //TODO sostituire elementType con una enum?
     const uuid = uuidv4();
@@ -341,17 +333,17 @@ export class WorkspaceService {
    * @param element_id {number} identificativo numerico dell'elemento
    * @returns {Observable<any>} observable della nuova cartella inserita
    */
-  public _addFolder(element_id: number): Observable<any> {
-    const uuid = uuidv4();
+  // public _addFolder(element_id: number): Observable<any> {
+  //   const uuid = uuidv4();
 
-    const payload = {
-      "uuid": uuid,
-      "user-id": 0,
-      "element-id": element_id
-    }
+  //   const payload = {
+  //     "uuid": uuid,
+  //     "user-id": 0,
+  //     "element-id": element_id
+  //   }
 
-    return this.http.post<any>(`${this.cashUrl}/api/crud/addFolder`, payload);
-  }
+  //   return this.http.post<any>(`${this.cashUrl}/api/crud/addFolder`, payload);
+  // }
 
   public addElement(elementType: ElementType, parentFolderId: number, elementName: string, userId: number): Observable<CorpusElement> {
     const uuid = uuidv4();
