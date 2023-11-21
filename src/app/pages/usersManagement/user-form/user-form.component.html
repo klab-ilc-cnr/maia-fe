@@ -3,7 +3,7 @@
     <div class="card">
       <div class="page-header">
         <h5>
-          <div *ngIf="isEditUser; else elseBlock">User detail</div>
+          <div *ngIf="isEditUser || isSameUser; else elseBlock">User detail</div>
           <ng-template #elseBlock>New user</ng-template>
         </h5>
       </div>
