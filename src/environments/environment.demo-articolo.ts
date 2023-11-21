@@ -13,7 +13,7 @@ const issuer = "https://klab.ilc.cnr.it/maia-demo/keycloak/realms/princnr"; //TO
 //const allowedUrls = 'http://146.48.93.223:9000/projectx/api'; //TODO sostituire con il backend xeel
 //const allowedUrls   = 'http://146.48.93.223:8080/projectx/api'; //TODO sostituire con il backend xeel
 //const allowedUrls   = 'http://localhost:8080/projectx/api'; //TODO sostituire con il backend xeel
-const allowedUrls   = 'https://klab.ilc.cnr.it/maia-demo/projectx/api'; //TODO sostituire con il backend xeel
+const allowedUrls = 'https://klab.ilc.cnr.it/maia-demo/projectx/api'; //TODO sostituire con il backend xeel
 
 export const environment = {
   production: true,
@@ -49,8 +49,8 @@ export const environment = {
   lexoUrl: "https://klab.ilc.cnr.it/maia-demo/LexO-backend-maia/service/",
   //cashUrl: "http://146.48.93.223:8080/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
   cashUrl: "https://klab.ilc.cnr.it/maia-demo/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
-  rutPrefix: "ferrandi",
-  rutBaseIRI: "http://rut/somali/ferrandi#",
+  lexoPrefix: "ferrandi",
+  lexoBaseIRI: "http://rut/somali/ferrandi#",
   textoUrl: "https://146.48.93.234:9443",
   textoDebugUrl: "https://146.48.93.234:9443",
   applicationSubTitle: " - Demo",

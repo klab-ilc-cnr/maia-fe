@@ -1,0 +1,13 @@
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.grid {
+    margin: 0;
+}
+
+::ng-deep.p-card-title {
+    color: var(--primary-color);
+    text-align: center;
+}

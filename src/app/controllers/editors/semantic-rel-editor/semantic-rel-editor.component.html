@@ -1,32 +1,20 @@
 <div *ngIf="senseEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
   <form class="formgrid grid">
+
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Translations <button pButton pRipple icon="pi pi-plus" type="button"
+          Translations<button pButton pRipple icon="pi pi-plus" type="button"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content"></ng-template>
       </p-fieldset>
     </div>
-    <div class="field col-12">
-      <p-fieldset>
-        <ng-template pTemplate="header">
-          Direct Sense Relations<button pButton pRipple icon="pi pi-plus" type="button"
-            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
-        </ng-template>
-        <ng-template pTemplate="content"></ng-template>
-      </p-fieldset>
-    </div>
-    <div class="field col-12">
-      <p-fieldset>
-        <ng-template pTemplate="header">
-          Indirect Sense Relations<button pButton pRipple icon="pi pi-plus" type="button"
-            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
-        </ng-template>
-        <ng-template pTemplate="content"></ng-template>
-      </p-fieldset>
-    </div>
+
+    <app-direct-relations [senseEntry]="senseEntry" [menuItems]="menuItems" [model]="model"></app-direct-relations>
+
+    <app-indirect-relations [senseEntry]="senseEntry" [menuItems]="menuItems" [model]="model"></app-indirect-relations>
+
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
@@ -36,14 +24,6 @@
         <ng-template pTemplate="content"></ng-template>
       </p-fieldset>
     </div>
-    <div class="field col-12">
-      <p-fieldset>
-        <ng-template pTemplate="header">
-          Translation set <button pButton pRipple icon="pi pi-plus" type="button"
-            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
-        </ng-template>
-        <ng-template pTemplate="content"></ng-template>
-      </p-fieldset>
-    </div>
+
   </form>
 </div>

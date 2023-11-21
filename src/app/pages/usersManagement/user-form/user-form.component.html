@@ -3,85 +3,53 @@
     <div class="card">
       <div class="page-header">
         <h5>
-          <div *ngIf="isEditUser(); else elseBlock">User detail</div>
+          <div *ngIf="isEditUser || isSameUser; else elseBlock">User detail</div>
           <ng-template #elseBlock>New user</ng-template>
         </h5>
       </div>
       <div class="card-body p-fluid">
-        <form #userDetailsForm="ngForm" (ngSubmit)="onSubmit()" #userForm="ngForm">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
+          <div class="form-group">
+            <label for="username">Username *</label>
+            <input type="text" formControlName="username" class="form-control" id="username" name="username"
+              placeholder="Enter username" />
+            <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
+              <div *ngIf="username.errors?.['notDuplicateName']">
+                Existing username
+              </div>
+              <div *ngIf="username.errors?.['required']">
+                Username is mandatory
+              </div>
+              <div *ngIf="username.errors?.['minlength']">
+                Username must be at least 4 characters long
+              </div>
+            </div>
+          </div>
           <div class="form-group">
             <label for="name">Name *</label>
-            <input
-              type="text"
-              [(ngModel)]="user.name"
-              class="form-control"
-              id="name"
-              name="name"
-              placeholder="Enter your name"
-              required
-              #name="ngModel"
-              [disabled]="!canManageUsers"
-            />
-            <div
-              *ngIf="name.invalid && (name.dirty || name.touched)"
-              class="alert alert-danger"
-            >
-            Name is mandatory
+            <input type="text" formControlName="name" class="form-control" id="name" name="name"
+              placeholder="Enter name" />
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                Name is mandatory
             </div>
           </div>
           <div class="form-group">
             <label for="surname">Surname *</label>
-            <input
-              type="text"
-              [(ngModel)]="user.surname"
-              class="form-control"
-              id="surname"
-              name="surname"
-              placeholder="Enter your surname"
-              required
-              #surname="ngModel"
-              [disabled]="!canManageUsers"
-            />
-            <div
-              *ngIf="surname.invalid && (surname.dirty || surname.touched)"
-              class="alert alert-danger"
-            >
+            <input type="text" formControlName="surname" class="form-control" id="surname" name="surname"
+              placeholder="Enter surname" />
+            <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger">
               Surname is mandatory
             </div>
           </div>
           <div class="form-group">
-            <label for="email">Email *</label>
-            <input
-              type="email"
-              [(ngModel)]="user.email"
-              class="form-control disabled"
-              id="email"
-              name="email"
-              placeholder="Enter your email address"
-              required
-              #email="ngModel"
-              [disabled]="!isNewUser()"
-            />
-            <div
-              *ngIf="email.invalid && (email.dirty || email.touched)"
-              class="alert alert-danger"
-            >
-              Email is mandatory
-            </div>
+            <label for="email">Email</label>
+            <input type="email" formControlName="email" class="form-control disabled" id="email" name="email"
+              placeholder="Enter email address" />
           </div>
           <div class="form-group">
             <label for="role">Role *</label>
-            <p-dropdown
-              #role="ngModel"
-              name="role"
-              [(ngModel)]="user.role"
-              [options]="roles"
-              [filter]="true"
-              [showClear]="true"
-              placeholder="Select a role"
-              [required]="true"
-              [disabled]="!roles || !canManageUsers"
-            >
+            <p-dropdown formControlName="role" name="role" [options]="roles" [filter]="true" [showClear]="true"
+              placeholder="Select a role">
             </p-dropdown>
             <div *ngIf="role.invalid && (role.dirty || role.touched)" class="alert alert-danger">
               Role is mandatory
@@ -89,67 +57,100 @@
           </div>
           <div class="form-group d-flex align-items-center">
             <label for="active">Active user</label>
-            <p-inputSwitch
-              #active="ngModel"
-              name="active"
-              [(ngModel)]="user.active"
-              [disabled]="!canManageUsers"
-            ></p-inputSwitch>
+            <p-inputSwitch formControlName="active" name="active"></p-inputSwitch>
           </div>
           <div class="form-group">
             <label for="role">Languages *</label>
-            <!-- <p-dropdown
-              #role="ngModel"
-              name="languages"
-              [(ngModel)]="user.languages"
-              [options]="languages"
-              [filter]="true"
-              [showClear]="true"
-              placeholder="Seleziona le lingue"
-              [required]="true"
-              [disabled]="!languages || !canManageUsers"
-            >
-            </p-dropdown> -->
-            <p-listbox 
-            [options]="languages"
-            [(ngModel)]="user.languages"
-            name="language"
-            [metaKeySelection]="false"
-            [checkbox]="true"
-            [filter]="true"
-            [multiple]="true"
-            [disabled]="!languages || !canManageUsers"
-            optionLabel="name"
-            [listStyle]="{'max-height':'250px'}"
-            [style]="{'width':'15rem'}">
+            <p-listbox [options]="(languages$|async)??[]" formControlName="languages" name="language"
+              [metaKeySelection]="false" [checkbox]="true" [filter]="true" [multiple]="true" optionLabel="name"
+              [listStyle]="{'max-height':'250px'}" [style]="{'width':'15rem'}">
               <ng-template let-language pTemplate="item">
-                  <div class="language-item">
-                      <div>{{language.name}}</div>
-                  </div>
+                <div class="language-item">
+                  <div>{{language.name}}</div>
+                </div>
               </ng-template>
-          </p-listbox>
-            <!-- <div *ngIf="languages.invalid && (languages.dirty || languages.touched)" class="alert alert-danger">
-              Devi selezionare almeno una lingua
-            </div> -->
+            </p-listbox>
+            <div *ngIf="languages.invalid && (languages.dirty || languages.touched)" class="alert alert-danger">
+              You must select at least one language
+            </div>
           </div>
           <div class="text-end">
-            <button
-              type="button"
-              (click)="goToUserList()"
-              class="btn btn-secondary ms-auto"
-              [hidden]="!canManageUsers"
-            >
+            <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
               Cancel
             </button>
-            <button
-              type="submit"
-              [disabled]="!userForm.form.valid"
-              [hidden]="!canManageUsers"
+            <button type="submit" [disabled]="(!canManageUsers && user.id != currentMaiaUserId) || userForm.invalid" [hidden]="!canManageUsers && user.id != currentMaiaUserId"
               class="btn btn-danger ms-2">
               Save
             </button>
           </div>
         </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="page-header">
+        <h5>Manage password</h5>
+      </div>
+      <div class="card-body p-fluid">
+        <form *ngIf="canManageUsers && !isSameUser; else changePwd" [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <p-password formControlName="password" id="password" [toggleMask]="true"></p-password>
+            <div *ngIf="password && (password.invalid && (password.dirty || password.touched))" class="alert alert-danger">
+              Password is mandatory
+            </div>
+          </div>
+          <div class="text-end">
+            <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="!canManageUsers || passwordForm.invalid" [hidden]="!canManageUsers"
+              class="btn btn-danger ms-2">
+              Save
+            </button>
+          </div>
+        </form>
+        <ng-template #changePwd>
+          <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
+            <div class="form-group">
+              <label for="oldPassword">Old password *</label>
+              <p-password formControlName="oldPassword" id="oldPassword" [feedback]="false" [toggleMask]="true"></p-password>
+              <div *ngIf="oldPassword && (oldPassword.invalid && (oldPassword.dirty || oldPassword.touched))"
+                class="alert alert-danger">
+                Old password is mandatory
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="newPassword">New password *</label>
+              <p-password formControlName="newPassword" id="newPassword" [toggleMask]="true"></p-password>
+              <div *ngIf="newPassword && (newPassword.invalid && (newPassword.dirty || newPassword.touched))"
+                class="alert alert-danger">
+                New password is mandatory
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirmation password *</label>
+              <p-password formControlName="confirmPassword" id="confirmPassword" [feedback]="false" [toggleMask]="true"></p-password>
+              <div
+                *ngIf="confirmPassword && (confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched))"
+                class="alert alert-danger">
+                Confirmation password is mandatory
+              </div>
+            </div>
+            <div *ngIf="passwordForm.invalid && passwordForm.errors?.['isMatchPasswordError']"
+              class="alert alert-danger">
+              The new password must be the same as the confirmation password
+            </div>
+            <div class="text-end">
+              <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
+                Cancel
+              </button>
+              <button type="submit" [disabled]="passwordForm.invalid"
+                class="btn btn-danger ms-2">
+                Save
+              </button>
+            </div>
+          </form>
+        </ng-template>
       </div>
     </div>
   </div>

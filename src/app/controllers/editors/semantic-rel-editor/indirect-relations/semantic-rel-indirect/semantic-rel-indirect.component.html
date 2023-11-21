@@ -1,0 +1,31 @@
+<label [for]="control.relationshipLabel">{{control.relationshipLabel}}</label>
+<div class="d-flex justify-content-between" style="align-items: center;">
+  <p-autoComplete
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="selectedSuggestion"
+    [suggestions]="suggestions"
+    field="relationshipLabel"
+    (completeMethod)="onSearchSense($event)"
+    (onSelect)="onSelectSenseUpdateRelationship($event, control)">
+  </p-autoComplete>
+
+  <p-tieredMenu #propertiesMenu [model]="menuItems" [popup]="true" appendTo="body"></p-tieredMenu>
+
+  <button pButton pRipple icon="pi pi-plus" type="button"
+  (click)="propertiesMenu.toggle($event)"
+  class="p-button-rounded p-button-success mx-2 fieldset-small">
+  </button>
+
+  <button pButton pRipple type="button" icon="pi pi-times"
+    class=" col-1 p-button-rounded p-button-danger p-button-text"
+    (click)="onRemoveRelationship(control)">
+  </button>
+
+</div>
+
+<div class="field col-12" *ngFor="let propertyItem of propertyItems">
+  <app-indirect-rel-property [propertyItem]="propertyItem" [onRemovePropertyDelegate]="onRemoveProperty"></app-indirect-rel-property>
+</div>
+
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
+

@@ -5,8 +5,7 @@ import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Observable, Subscription, catchError, forkJoin, of, switchMap, take, throwError } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { LexiconStatistics } from 'src/app/models/lexicon/lexicon-statistics';
+import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LEXICAL_ENTRY_RELATIONS, LexicalEntryUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { Namespace } from 'src/app/models/lexicon/namespace.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
@@ -51,7 +50,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   );
   public selectLanguages$ = this.globalState.languages$.pipe(
     switchMap(languages => {
-      languages.sort((a: LexiconStatistics, b: LexiconStatistics) => a.label!.localeCompare(b.label!));
+      languages.sort((a: LexoLanguage, b: LexoLanguage) => a.label!.localeCompare(b.label!));
       this.languageItems[0].items = languages.map(l => {
         return {
           label: l.label,
@@ -197,7 +196,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   }
 
   private onLexiconEdiTreeLabel(res: any): void {
-    this.findAndModifyEntry({children: this.results}, res.uri, res.newValue);
+    this.findAndModifyEntry({ children: this.results }, res.uri, res.newValue);
     this.results = [...this.results];
   }
 
@@ -222,8 +221,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           this.loadNodes();
           break;
         case 'lexicon_edit_label':
-            this.onLexiconEdiTreeLabel(res);
-            break;
+          this.onLexiconEdiTreeLabel(res);
+          break;
         default:
           break;
       }
@@ -564,7 +563,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const fileData = new FormData();
     fileData.append('file', this._selectedFile);
 
-    this.lexiconService.uploadConll(lexUpForm['prefix'], lexUpForm['baseIRI'], lexUpForm['author'], lexUpForm['language'], lexUpForm['drop'], fileData).pipe(
+    this.lexiconService.uploadConll(lexUpForm['prefix'], lexUpForm['baseIRI'], lexUpForm['author'], lexUpForm['language'].value, lexUpForm['drop'], fileData).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
