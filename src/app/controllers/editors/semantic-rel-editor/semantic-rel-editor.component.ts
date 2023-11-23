@@ -1,10 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, take } from 'rxjs';
-import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
 import { MenuItem } from 'primeng/api';
-import { LexiconService } from 'src/app/services/lexicon.service';
-import { SenseRelationTypeModel } from 'src/app/models/lexicon/sense-relation-type.model';
+import { Subject, take } from 'rxjs';
+import { SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { SenseRelationTypeModel } from 'src/app/models/lexicon/sense-relation-type.model';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-semantic-rel-editor',
@@ -18,6 +19,8 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] = [];
   model: LexicalSenseResponseModel = {indirectRelations: [], directRelations: []};
+  /**Defines whether an element should be hidden/disabled in the demo version */
+  demoHide = environment.demoHide;
 
   constructor(
     private lexiconService: LexiconService,
