@@ -15,7 +15,7 @@
       pTooltip="Upload CoNLL" tooltipPosition="bottom"
       (click)="isUploadLexiconVisible = !isUploadLexiconVisible"></button>
     <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2" pTooltip="Export"
-      tooltipPosition="bottom"></button>
+      tooltipPosition="bottom" [disabled]="demoHide"></button><!--TODO: DISABLED IN THE DEMO, remove demoHide as soon as development is complete-->
   </div>
 </p-toolbar>
 <div class="grid p-fluid input-search">
