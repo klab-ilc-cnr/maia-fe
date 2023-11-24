@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Subject, catchError, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, take, takeUntil, throwError } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { Roles } from 'src/app/models/roles';
 import { User } from 'src/app/models/user';
@@ -14,6 +14,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { matchNewPassword } from 'src/app/validators/match-new-password.directive';
+import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 
 /**Componente del form dei dati di un utente (anche nuovo) */
 @Component({
@@ -24,12 +25,12 @@ import { matchNewPassword } from 'src/app/validators/match-new-password.directiv
 export class UserFormComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   userForm = new FormGroup({
-    username: new FormControl<string>('', Validators.required),
+    username: new FormControl<string>('', [Validators.required, Validators.minLength(4)]),
     newPassword: new FormControl<string>(''),
     confirmPassword: new FormControl<string>(''),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
-    email: new FormControl<string>('', Validators.required),
+    email: new FormControl<string>(''),
     role: new FormControl<string>('', Validators.required),
     active: new FormControl<boolean>(false),
     languages: new FormControl<Language[]>([], Validators.required),
@@ -109,6 +110,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this.userForm.get('confirmPassword')?.setValidators(Validators.required);
         this.userForm.setValidators(matchNewPassword);
         this.userForm.reset();
+        this.addDuplicateValidator();
         this.newUser = true;
         return;
       }
@@ -226,6 +228,15 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.router.navigate(['usersManagement/users']);
   }
 
+  private addDuplicateValidator() {
+    this.userService.findAll().pipe(
+      take(1),
+    ).subscribe(users => {
+      const usersName = users.map(u => u.username!);
+      this.username.addValidators(nameDuplicateValidator(usersName));
+    });
+  }
+
   /**
    * Metodo privato che recupera i dati di un utente utilizzando il suo id
    * @param id {string} identificativo dell'utente
@@ -281,7 +292,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       languages: this.user.languages ?? [],
     });
     if (!this.isNewUser) {
-      this.userForm.controls.email.disable();
+      this.userForm.controls.username.disable(); //username must be unique 
     }
     if (!this.canManageUsers && this.user.id != this.currentMaiaUserId) {
       this.userForm.disable();

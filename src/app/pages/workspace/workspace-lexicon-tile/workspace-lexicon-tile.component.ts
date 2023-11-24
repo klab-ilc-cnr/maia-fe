@@ -14,6 +14,7 @@ import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-workspace-lexicon-tile',
@@ -21,7 +22,8 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   styleUrls: ['./workspace-lexicon-tile.component.scss']
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
-
+  /**Defines whether an element should be hidden/disabled in the demo version */
+  demoHide = environment.demoHide;
   isUploadLexiconVisible = false;
 
   /**Sottoscrizione usata per la gestione del click sull'icona tag */

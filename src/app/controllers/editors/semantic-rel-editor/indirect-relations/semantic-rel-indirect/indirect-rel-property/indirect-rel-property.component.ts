@@ -77,18 +77,19 @@ export class IndirectRelPropertyComponent implements OnInit, OnDestroy {
         relation: menuItem.id || '',
         value,
       }).pipe(take(1))
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           this.isRemoved = true;
-          if (this.onRemovePropertyDelegate)
+          if (this.onRemovePropertyDelegate) {
             this.onRemovePropertyDelegate(this.propertyItem);
+          }
           },
-        (err) => {
+        error: (err) => {
           console.error(err);
           const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
           this.messageService.add(message);
         }
-      );
+      });
     });
   }
 

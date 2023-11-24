@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, mergeMap } from 'rxjs';
+import { Observable, mergeMap, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
 import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
@@ -87,6 +87,8 @@ export class LexiconService {
    */
   deleteRelation(lexicalEntityId: string, updater: { relation: string, value: string }): Observable<string> {
     const encodedLexEntry = this.commonService.encodeUrl(lexicalEntityId);
+    console.error("HEY!")
+    console.log(encodedLexEntry)
     return this.http.post(
       `${this.lexoUrl}lexicon/delete/relation?id=${encodedLexEntry}`,
       updater,
@@ -453,7 +455,6 @@ export class LexiconService {
 
     const createRelationship = () => {
       const createRelationshipUrl = new URL(`${this.lexoUrl}lexicon/creation/lexicoSemanticRelation`);
-
       createRelationshipUrl.search = new URLSearchParams({
         id: sourceSenseURI,
         type: "http://www.w3.org/ns/lemon/vartrans#SenseRelation",
@@ -475,16 +476,13 @@ export class LexiconService {
       }, {
         headers: {'Content-Type': 'application/json'},
         responseType: 'text',
-      })
+      }).pipe(mergeMap(() => of(relationURI)));
     }
 
-    const response$ = createRelationship();
-    response$.pipe(
-        mergeMap((response: any) => addCategory(response.relation))
+    return createRelationship().pipe(
+      mergeMap(
+        (response: any) => addCategory(response.relation),
+      )
     );
-
-    return response$.pipe(
-      map((response: any) => response.relation)
-    )
   }
 }

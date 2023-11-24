@@ -3,6 +3,7 @@ import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater
 import { FormItem } from '../../base-relations/base-relations.component';
 import { BaseSemanticInputComponent } from '../../base-relations/base-semantic-input.component';
 import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-semantic-rel-direct',
@@ -21,6 +22,7 @@ export class SemanticRelDirectComponent extends BaseSemanticInputComponent {
   }
 
   override removeRelationship(control: FormItem) {
+    if (!this.selectedSuggestion?.senseListItem) return of('');
     return this.lexiconService.deleteRelation(this.senseEntry.sense, {
       relation: control.relationshipURI,
       value: control.destinationURI,

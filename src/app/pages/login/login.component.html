@@ -2,7 +2,7 @@
     <p-toast></p-toast>
     <div>
         <p-card header="MAIA">
-            <form class="formgrid grid" [formGroup]="loginForm">
+            <form class="formgrid grid" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="field col-12">
                     <label for="username">Username or E-mail *</label>
                     <input name="username" pInputText type="text" formControlName="username"
@@ -14,14 +14,12 @@
                         formControlName="password" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
                         [toggleMask]="true" [feedback]="false"></p-password>
                 </div>
-            </form>
-            <ng-template pTemplate="footer">
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary col-10" (click)="onSubmit()">
+                <div class="d-flex justify-content-center col-12">
+                    <button type="submit" class="btn btn-primary col-10" style="height: 34px;">
                         Login
                     </button>
                 </div>
-            </ng-template>
+            </form>
         </p-card>
     </div>
 </div>

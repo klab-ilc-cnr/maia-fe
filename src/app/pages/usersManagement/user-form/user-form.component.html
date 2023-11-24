@@ -3,7 +3,7 @@
     <div class="card">
       <div class="page-header">
         <h5>
-          <div *ngIf="isEditUser; else elseBlock">User detail</div>
+          <div *ngIf="isEditUser || isSameUser; else elseBlock">User detail</div>
           <ng-template #elseBlock>New user</ng-template>
         </h5>
       </div>
@@ -14,7 +14,15 @@
             <input type="text" formControlName="username" class="form-control" id="username" name="username"
               placeholder="Enter username" />
             <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
-              Username is mandatory
+              <div *ngIf="username.errors?.['notDuplicateName']">
+                Existing username
+              </div>
+              <div *ngIf="username.errors?.['required']">
+                Username is mandatory
+              </div>
+              <div *ngIf="username.errors?.['minlength']">
+                Username must be at least 4 characters long
+              </div>
             </div>
           </div>
           <div class="form-group" *ngIf="isNewUser">
@@ -40,7 +48,7 @@
             <input type="text" formControlName="name" class="form-control" id="name" name="name"
               placeholder="Enter name" />
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-              Name is mandatory
+                Name is mandatory
             </div>
           </div>
           <div class="form-group">
@@ -52,12 +60,9 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="email">Email *</label>
+            <label for="email">Email</label>
             <input type="email" formControlName="email" class="form-control disabled" id="email" name="email"
               placeholder="Enter email address" />
-            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-              Email is mandatory
-            </div>
           </div>
           <div class="form-group">
             <label for="role">Role *</label>

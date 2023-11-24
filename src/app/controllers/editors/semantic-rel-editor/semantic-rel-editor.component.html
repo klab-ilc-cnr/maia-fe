@@ -1,7 +1,7 @@
 <div *ngIf="senseEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
   <form class="formgrid grid">
 
-    <div class="field col-12">
+    <div class="field col-12" *ngIf="!demoHide"><!--TODO: HIDDEN IN THE DEMO, remove demoHide as soon as development is complete-->
       <p-fieldset>
         <ng-template pTemplate="header">
           Translations<button pButton pRipple icon="pi pi-plus" type="button"
@@ -15,7 +15,7 @@
 
     <app-indirect-relations [senseEntry]="senseEntry" [menuItems]="menuItems" [model]="model"></app-indirect-relations>
 
-    <div class="field col-12">
+    <div class="field col-12" *ngIf="!demoHide"><!--TODO HIDDEN IN THE DEMO, remove demoHide as soon as development is complete-->
       <p-fieldset>
         <ng-template pTemplate="header">
           Terminological Relations<button pButton pRipple icon="pi pi-plus" type="button"
