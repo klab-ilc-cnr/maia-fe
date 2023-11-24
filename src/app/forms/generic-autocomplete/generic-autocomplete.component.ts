@@ -9,10 +9,12 @@ import { BehaviorSubject, Observable, debounceTime, switchMap, take } from 'rxjs
 export class GenericAutocompleteComponent implements OnInit {
   /**Nome della proprietà sulla quale eseguire la ricerca dell'autocomplete */
   @Input() field!: string;
+  @Input() prefixField: string = '';
   @Input() valueField!: string;
   @Input() currentValue!: any;
   @Input() filterFn!: (filter: string) => Observable<unknown[]>;
   @Input() initialValueFn!: (id: string) => Observable<unknown>;
+  @Input() showOptionPrefix = false;
   valueToShow: any;
   /**Filtro corrente da applicare */
   currentFilter$ = new BehaviorSubject<string>('');
