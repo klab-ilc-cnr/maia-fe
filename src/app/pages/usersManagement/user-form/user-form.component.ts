@@ -26,6 +26,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   userForm = new FormGroup({
     username: new FormControl<string>('', [Validators.required, Validators.minLength(4)]),
+    newPassword: new FormControl<string>(''),
+    confirmPassword: new FormControl<string>(''),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
     email: new FormControl<string>(''),
@@ -34,49 +36,25 @@ export class UserFormComponent implements OnInit, OnDestroy {
     languages: new FormControl<Language[]>([], Validators.required),
   });
   get username() { return this.userForm.controls.username }
+  get userPwd() { return this.userForm.controls.newPassword }
+  get confirmPwd() { return this.userForm.controls.confirmPassword }
   get name() { return this.userForm.controls.name }
   get surname() { return this.userForm.controls.surname }
   get email() { return this.userForm.controls.email }
   get role() { return this.userForm.controls.role }
   get languages() { return this.userForm.controls.languages }
 
-  passwordForm = this.canManageUsers ?
-    new FormGroup({
-      password: new FormControl<string>('', Validators.required),
-    }) :
-    new FormGroup({
-      oldPassword: new FormControl<string>('', Validators.required),
-      newPassword: new FormControl<string>('', Validators.required),
-      confirmPassword: new FormControl<string>('', Validators.required),
-    }, {
-      validators: matchNewPassword
-    });
+  passwordForm = new FormGroup({
+    oldPassword: new FormControl<string>('', Validators.required),
+    newPassword: new FormControl<string>('', Validators.required),
+    confirmPassword: new FormControl<string>('', Validators.required),
+  }, {
+    validators: matchNewPassword
+  });
 
-  get password() {
-    if ('password' in this.passwordForm.controls) {
-      return this.passwordForm.controls.password as FormControl;
-    }
-    return null;
-  }
-
-  get oldPassword() {
-    if ('oldPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.oldPassword as FormControl;
-    }
-    return null;
-  }
-  get newPassword() {
-    if ('newPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.newPassword as FormControl;
-    }
-    return null;
-  }
-  get confirmPassword() {
-    if ('confirmPassword' in this.passwordForm.controls) {
-      return this.passwordForm.controls.confirmPassword as FormControl;
-    }
-    return null;
-  }
+  get oldPassword() { return this.passwordForm.controls.oldPassword as FormControl; }
+  get newPassword() { return this.passwordForm.controls.newPassword as FormControl; }
+  get confirmPassword() { return this.passwordForm.controls.confirmPassword as FormControl; }
 
   /**Utente in lavorazione */
   user: User;
@@ -126,18 +104,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
       const id = params.get('id'); //recupero l'id utente dall'url di navigazione 
       this.isSameUser = id == this.currentMaiaUserId?.toString();
 
-      if (this.canManageUsers && this.isSameUser) {
-        this.passwordForm = new FormGroup({
-          oldPassword: new FormControl<string>('', Validators.required),
-          newPassword: new FormControl<string>('', Validators.required),
-          confirmPassword: new FormControl<string>('', Validators.required),
-        }, {
-          validators: matchNewPassword
-        });
-      }
-
       if (id === this.newId) //caso di un nuovo inserimento utente
       {
+        this.userForm.get('newPassword')?.setValidators(Validators.required);
+        this.userForm.get('confirmPassword')?.setValidators(Validators.required);
+        this.userForm.setValidators(matchNewPassword);
         this.userForm.reset();
         this.addDuplicateValidator();
         this.newUser = true;
@@ -170,51 +141,71 @@ export class UserFormComponent implements OnInit, OnDestroy {
    * Getter dell'essere utente in modifica
    * @returns {boolean} definisce se è un utente in modifica
    */
-  public get isEditUser() {
-    return this.editUser;
-  }
+  public get isEditUser() { return this.editUser; }
 
   /**
    * Getter dell'essere un inserimento di nuovo utente
    * @returns {boolean} definisce se è un nuovo utente
    */
-  public get isNewUser() {
-    return this.newUser;
-  }
+  public get isNewUser() { return this.newUser; }
 
-  public get isCurrentUser() {
-    return this.currentUser;
-  }
+  public get isCurrentUser() { return this.currentUser; }
 
   /**Metodo che procede alla creazione del nuovo utente o al salvataggio delle modifiche dell'utente selezionato */
-  onSubmitUser() {
+  onSubmitUser() {  //BUG new user service return an error, opened an issue on BE repo, edit user is working
     const updatedUser = <User>{
       ...this.user,
-      ...this.userForm.value
+      ...{
+        username: this.username.value!,
+        name: this.name.value!,
+        surname: this.surname.value!,
+        email: this.email.value!,
+        role: this.role.value!,
+        active: this.userForm.get('active')?.value,
+        languages: this.languages.value,
+      }
     };
     this.loaderService.show();
-    let submitObs: Observable<User>;
-    if (this.editUser) { //caso dell'utente modificato
-      submitObs = this.userService.update(updatedUser);
+    if (this.isNewUser) {
+      this.userService.save(updatedUser).pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+          this.loaderService.hide();
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(newUser => {
+        const userId = +newUser.id!;
+        this.userService.updatePassword({ id: userId, newPassword: this.userPwd.value! }).pipe(
+          takeUntil(this.unsubscribe$),
+          catchError((error: HttpErrorResponse) => {
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            return throwError(() => new Error(error.error));
+          }),
+        ).subscribe(() => {
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
+          this.goToUserList();
+          this.loaderService.hide();
+        });
+      });
+    } else {
+      this.userService.update(updatedUser).pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+          this.loaderService.hide();
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(() => {
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
+        this.goToUserList();
+        this.loaderService.hide();
+      });
     }
-    else { //casp inserimento di un nuovo utente
-      submitObs = this.userService.save(updatedUser);
-    }
-    submitObs.pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(() => {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
-      this.goToUserList();
-      this.loaderService.hide();
-    });
   }
 
   onSubmitPwd() {
-    const pwdBody: { id?: number, newPassword: string, currentPassword?: string } = { newPassword: this.password ? this.password.value : this.newPassword?.value };
+    const pwdBody: { id?: number, newPassword: string, currentPassword?: string } = { newPassword: this.newPassword?.value };
     if (!this.isSameUser) {
       pwdBody.id = +this.user.id!;
     }
@@ -261,6 +252,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
     ).subscribe((data) => {
@@ -277,6 +269,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
     ).subscribe((data) => {
@@ -289,6 +282,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private setFormInitialValue() {
     this.userForm.setValue({
       username: this.user.username ?? '',
+      newPassword: '',
+      confirmPassword: '',
       name: this.user.name ?? '',
       surname: this.user.surname ?? '',
       email: this.user.email ?? '',
