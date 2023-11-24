@@ -138,7 +138,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/models/user.ts:23</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/models/user.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -164,7 +164,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/models/user.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/models/user.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -190,7 +190,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/models/user.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/models/user.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -216,7 +216,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/models/user.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/models/user.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -242,7 +242,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/models/user.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/models/user.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -268,7 +268,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/models/user.ts:28</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/models/user.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -294,12 +294,16 @@ import { Roles } from &quot;./roles&quot;;
 export class User {
   /**Identificativo */
   id: string | undefined;
+  /**Nome utente */
+  username: string | undefined;
   /**Nome dell&#x27;utente */
   name: string | undefined;
   /**Cognome dell&#x27;utente */
   surname: string | undefined;
   /**Email dell&#x27;utente (utilizzata anche per il login) */
   email: string | undefined;
+  created: string | undefined;
+  updated: string | undefined;
   /**Ruolo */
   role: Roles | undefined;
   /**Definisce se l&#x27;utente è abilitato */
@@ -313,7 +317,7 @@ export class TextoUser {
   enabled: boolean | undefined;
   id!: number;
   name: string | undefined;
-  role: {id: number} | undefined;
+  role: { id: number } | undefined;
   username: string | undefined;
 }
 </code></pre>

@@ -202,13 +202,18 @@
                                 <a href="#manageUpdateObservable" >manageUpdateObservable</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#movePropertyToForm" >movePropertyToForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#movePropertyToMenu" >movePropertyToMenu</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
                             </li>
                             <li>
                                 <a href="#ngOnInit" >ngOnInit</a>
-                            </li>
-                            <li>
-                                <a href="#onAddLabelField" >onAddLabelField</a>
                             </li>
                             <li>
                                 <a href="#onAddMorphology" >onAddMorphology</a>
@@ -485,15 +490,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="276"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:276</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="286"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:286</a></div>
                 </td>
             </tr>
 
@@ -548,6 +553,20 @@
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>newValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -555,6 +574,178 @@
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movePropertyToForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>movePropertyToForm</b></span>
+                        <a href="#movePropertyToForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>movePropertyToForm(propertyID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, propertyValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:185</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo responsabile dell&#39;aggiunta di una label nel form dinamico</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>propertyID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>nome della label da aggiungere nel form</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>propertyValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>valore della label da aggiungere nel form</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movePropertyToMenu"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>movePropertyToMenu</b></span>
+                        <a href="#movePropertyToMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>movePropertyToMenu(propertyID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="197"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:197</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo responsabile della rimozione di una label dal form dinamico</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>propertyID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>nome della label da rimuovere dal form</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                     </div>
                     <div class="io-description">
@@ -584,8 +775,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="190"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:190</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="174"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:174</a></div>
                 </td>
             </tr>
 
@@ -623,8 +814,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="158"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:158</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="152"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:152</a></div>
                 </td>
             </tr>
 
@@ -637,82 +828,6 @@
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onAddLabelField"></a>
-                    <span class="name">
-                        <span ><b>onAddLabelField</b></span>
-                        <a href="#onAddLabelField"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>onAddLabelField(property: <a href="../interfaces/PropertyElement.html" target="_self">PropertyElement</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="199"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:199</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo per l&#39;aggiunta di un campo del gruppo label</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>property</td>
-                                    <td>
-                                                <code><a href="../interfaces/PropertyElement.html" target="_self" >PropertyElement</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>proprietà selezionata</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -738,8 +853,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="206"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:206</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="208"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:208</a></div>
                 </td>
             </tr>
 
@@ -777,8 +892,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="213"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:213</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="215"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:215</a></div>
                 </td>
             </tr>
 
@@ -816,8 +931,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="224"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:224</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:226</a></div>
                 </td>
             </tr>
 
@@ -908,8 +1023,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="237"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:237</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="239"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:239</a></div>
                 </td>
             </tr>
 
@@ -984,8 +1099,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="248"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:248</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="258"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:258</a></div>
                 </td>
             </tr>
 
@@ -1063,8 +1178,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="294"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:294</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="313"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:313</a></div>
                 </td>
             </tr>
 
@@ -1141,8 +1256,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="356"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:356</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="371"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:371</a></div>
                 </td>
             </tr>
 
@@ -1219,8 +1334,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="369"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:369</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="384"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:384</a></div>
                 </td>
             </tr>
 
@@ -1291,15 +1406,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateForm(relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>updateForm(relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="315"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:315</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="334"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:334</a></div>
                 </td>
             </tr>
 
@@ -1339,7 +1454,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>value</td>
+                                    <td>newValue</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
@@ -1350,8 +1465,6 @@
 
 
                                     <td>
-                                        <p>nuovo valore dellazione</p>
-
                                     </td>
                                 </tr>
                             </tbody>
@@ -1393,8 +1506,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="337"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:337</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="356"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:356</a></div>
                 </td>
             </tr>
 
@@ -1519,8 +1632,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="389"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:389</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="404"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:404</a></div>
                 </td>
             </tr>
 
@@ -2209,7 +2322,7 @@ import { FormArray, FormControl, FormGroup, Validators } from &#x27;@angular/for
 import { MessageService } from &#x27;primeng/api&#x27;;
 import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
 import { FormCore, PropertyElement } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
-import { FormUpdater, LINGUISTIC_RELATION_TYPE, LinguisticRelationUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { FormUpdater, LINGUISTIC_RELATION_TYPE } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
 import { User } from &#x27;src/app/models/user&#x27;;
 import { CommonService } from &#x27;src/app/services/common.service&#x27;;
 import { GlobalStateService } from &#x27;src/app/services/global-state.service&#x27;;
@@ -2325,7 +2438,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.form.controls.type.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       distinctUntilChanged(),
-    ).subscribe(newValue &#x3D;&gt; {
+    ).subscribe((newValue) &#x3D;&gt; {
       if (!newValue?.endsWith(&#x27;#&#x27; + this.formEntry.type)) {
         this.updateForm(&#x27;type&#x27;, newValue ?? &#x27;&#x27;).then(() &#x3D;&gt; {
           this.formEntry &#x3D; &lt;FormCore&gt;{ ...this.formEntry, type: newValue?.split(&#x27;#&#x27;)[1] };
@@ -2337,19 +2450,13 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       debounceTime(500),
       distinctUntilChanged(),
-    ).subscribe((resp: { [key: string]: any }) &#x3D;&gt; {
+    ).subscribe((resp: {[key: string]: any}) &#x3D;&gt; {
       for (const key in resp) {
         const currentPropertyId &#x3D; this.labelFormItems.findIndex(e &#x3D;&gt; e.propertyID &#x3D;&#x3D;&#x3D; key);
         if (currentPropertyId !&#x3D;&#x3D; -1 &amp;&amp; this.labelFormItems[currentPropertyId].propertyValue !&#x3D;&#x3D; resp[key]) {
           this.updateForm(key, resp[key]).then(() &#x3D;&gt; {
             if (resp[key] &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
-              this.labelFormItems &#x3D; this.labelFormItems.filter(item &#x3D;&gt; item.propertyID !&#x3D;&#x3D; key);
-              this.representationItems.push({
-                label: key,
-                command: () &#x3D;&gt; {
-                  this.onAddLabelField(&lt;PropertyElement&gt;{ propertyID: key, propertyValue: &#x27;&#x27; });
-                },
-              });
+              this.movePropertyToMenu(key);
               return;
             }
             this.labelFormItems[currentPropertyId] &#x3D; &lt;PropertyElement&gt;{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
@@ -2369,21 +2476,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     if (this.formEntry.type) this.form.get(&#x27;type&#x27;)?.setValue(&#x27;http://www.w3.org/ns/lemon/ontolex#&#x27; + this.formEntry.type);
 
     for (const label of this.formEntry.label) {
-      if (label.propertyValue &#x3D;&#x3D;&#x3D; &#x27;&#x27; &amp;&amp; label.propertyID !&#x3D;&#x3D; &#x27;variant&#x27;) { //TODO capire come gestire il caso variant
-        if (label.propertyID &#x3D;&#x3D;&#x3D; &#x27;writtenRep&#x27;) {
-          this.label.addControl(label.propertyID, new FormControl&lt;string&gt;(label.propertyValue, Validators.required));
-        }
-        this.representationItems.push({
-          label: label.propertyID,
-          command: () &#x3D;&gt; {
-            this.onAddLabelField(label)
-          },
-        });
-        continue;
-      }
-      this.onAddLabelField(label);
+      if (label.propertyID &#x3D;&#x3D;&#x3D; &#x27;variant&#x27;) continue; //TODO capire come gestire il caso variant
+      this.movePropertyToForm(label.propertyID, label.propertyValue);
+      if (label.propertyValue &#x3D;&#x3D; &#x27;&#x27;)
+        this.movePropertyToMenu(label.propertyID);
     }
-
     this.formEntry.morphology.forEach(m &#x3D;&gt; {
       const morphElement &#x3D; { relation: m.trait, value: m.value, external: false };
       this.morphology.push(new FormControl(morphElement));
@@ -2397,14 +2494,32 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+
   /**
-   * Metodo per l&#x27;aggiunta di un campo del gruppo label
-   * @param property {PropertyElement} proprietà selezionata
+   * Metodo responsabile dell&#x27;aggiunta di una label nel form dinamico
+   * @param propertyID {string} nome della label da aggiungere nel form
+   * @param propertyValue {string} valore della label da aggiungere nel form
    */
-  onAddLabelField(property: PropertyElement) {
+  private movePropertyToForm(propertyID: string, propertyValue: string) {
+    const formControl &#x3D; new FormControl&lt;string&gt;(propertyValue, Validators.required);
+    const property &#x3D; &lt;PropertyElement&gt; { propertyID, propertyValue };
+    this.label.addControl(propertyID, formControl);
     this.labelFormItems.push(property);
-    this.label.addControl(property.propertyID, new FormControl&lt;string&gt;(property.propertyValue));
-    this.representationItems &#x3D; this.representationItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; property.propertyID);
+    this.representationItems &#x3D; this.representationItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; propertyID);
+  }
+
+  /**
+   * Metodo responsabile della rimozione di una label dal form dinamico
+   * @param propertyID {string} nome della label da rimuovere dal form
+   */
+  private movePropertyToMenu(propertyID: string) {
+    const index &#x3D; this.labelFormItems.findIndex(e &#x3D;&gt; e.propertyID &#x3D;&#x3D;&#x3D; propertyID);
+    this.labelFormItems.splice(index, 1);
+    this.label.removeControl(propertyID);
+    this.representationItems.push({
+        label: propertyID,
+        command: () &#x3D;&gt; this.movePropertyToForm(propertyID, &#x27;&#x27;),
+    });
   }
 
   /**Metodo di aggiunta di una riga di tratti morfologici */
@@ -2442,7 +2557,15 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   onRemoveLabelElement(labelFieldName: string) {
     const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${labelFieldName}&quot;?&#x60;;
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
-    this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; { this.label.get(labelFieldName)?.setValue(&#x27;&#x27;); });
+    this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; {
+      const control &#x3D; this.label.get(labelFieldName);
+      if (control?.value &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        this.movePropertyToMenu(labelFieldName);
+      }
+      else {
+        control?.setValue(&#x27;&#x27;);
+      }
+    });
   }
 
   /**
@@ -2478,17 +2601,26 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable&lt;string&gt;} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string) {
+  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string, newValue: string) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) &#x3D;&gt; {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;&quot;${relation}&quot; update failed &#x60;));
+        const msg &#x3D; this.msgConfService.generateSuccessMessageConfig(&#x60;&quot;${relation}&quot; update failed&#x60;);
+        this.messageService.add(msg);
         return throwError(() &#x3D;&gt; new Error(error.error));
       }),
     ).subscribe(resp &#x3D;&gt; {
-      this.formEntry &#x3D; &lt;FormCore&gt;{ ...this.formEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;&quot;${relation}&quot; update success &#x60;));
-      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.formEntry.lexicalEntry });
+      this.formEntry &#x3D; { ...this.formEntry, lastUpdate: resp };
+      const msg &#x3D; this.msgConfService.generateSuccessMessageConfig(&#x60;&quot;${relation}&quot; update success&#x60;);
+      this.messageService.add(msg);
+
+      if (relation &#x3D;&#x3D;&#x3D; &#x27;writtenRep&#x27;) {
+        this.commonService.notifyOther({
+          option: &#x27;lexicon_edit_label&#x27;,
+          uri: this.formEntry.form,
+          newValue,
+        });
+      }
     });
   }
   /**
@@ -2517,17 +2649,17 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param value {string} nuovo valore dellazione
    * @returns {Promise&lt;void&gt;}
    */
-  private async updateForm(relation: string, value: string) {
+  private async updateForm(relation: string, newValue: string) {
     if (!this.currentUser.name) {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
       return;
     }
     const updater &#x3D; &lt;FormUpdater&gt;{
       relation: this.commonService.getFormUpdateRelation(relation),
-      value: value,
+      value: newValue,
     };
     const updateObs &#x3D; this.lexiconService.updateLexicalForm(this.currentUser.name, this.formEntry.form, updater);
-    this.manageUpdateObservable(updateObs, relation);
+    this.manageUpdateObservable(updateObs, relation, newValue);
   }
 
   /**
@@ -2544,13 +2676,9 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
       return;
     }
-    const updater &#x3D; &lt;LinguisticRelationUpdater&gt;{
-      type: type,
-      relation: relation,
-      value: value,
-      currentValue: currentValue ?? &#x27;&#x27;
-    };
-    this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.formEntry.form, updater), relation);
+    const updater &#x3D; { type, relation, value, currentValue: currentValue ?? &#x27;&#x27; };
+    const obs &#x3D; this.lexiconService.updateLinguisticRelation(this.formEntry.form, updater);
+    this.manageUpdateObservable(obs, relation, value);
   }
 
   /**
@@ -2717,8 +2845,8 @@ p-selectButton {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div *ngIf="formEntry" class="card" [style]="{\'height\': \'100%\', \'overflow-y\': \'scroll\'}">  <form [formGroup]="form" class="formgrid grid">    <div class="field col-6" style="align-self: center;">      <em>Last update: {{formEntry.lastUpdate | date: \'medium\'}}</em>    </div>    <div class="field col-6">      <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"        pTooltip="Delete lexical form" (click)="onDeleteLexicalForm()"></button>    </div>    <div class="field col-6">      <label for="pos">Part-of-Speech</label>      <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId"        [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>    </div>    <div class="field col-6">      <label for="type">Type</label>      <p-dropdown [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" [filter]="true"        filterBy="valueLabel" [placeholder]="emptyField" formControlName="type" name="type"        styleClass="w-full"></p-dropdown>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          <p-menu #menuRepresentation [model]="representationItems" [popup]="true" appendTo="body"></p-menu>          Representation <button pButton pRipple icon="pi pi-plus" type="button"            (click)="menuRepresentation.toggle($event)"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <form [formGroup]="form.controls.label">            <div class="field col-12" *ngFor="let control of labelFormItems">              <label [for]="control.propertyID">{{control.propertyID}}</label>              <span class="justify-content-between">                <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"                  class="col-10 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">                <button pButton pRipple type="button" icon="pi pi-times" *ngIf="control.propertyID!==\'writtenRep\'"                  class=" col-1 p-button-rounded p-button-danger p-button-text"                  (click)="onRemoveLabelElement(control.propertyID)"></button>              </span>            </div>          </form>        </ng-template>      </p-fieldset>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          Morphological traits<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"            [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"            [isCheckboxVisible]="false" [relationField]="morph.value.relation"            [valueField]="morph.value.value"></app-double-autocomplete>        </ng-template>      </p-fieldset>    </div>  </form></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
-    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
-    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'BaseMetadataEditorComponent', 'selector': 'app-base-metadata-editor'},{'name': 'BaseRelationsComponent', 'selector': ''},{'name': 'BaseSemanticInputComponent', 'selector': ''},{'name': 'DirectRelationsComponent', 'selector': 'app-direct-relations'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'FormMetadataEditorComponent', 'selector': 'app-form-metadata-editor'},{'name': 'GenericAutocompleteComponent', 'selector': 'app-generic-autocomplete'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'IndirectRelationsComponent', 'selector': 'app-indirect-relations'},{'name': 'IndirectRelPropertyComponent', 'selector': 'app-indirect-rel-property'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelDirectComponent', 'selector': 'app-semantic-rel-direct'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SemanticRelIndirectComponent', 'selector': 'app-semantic-rel-indirect'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SenseMetadataEditorComponent', 'selector': 'app-sense-metadata-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'TextAnnotationEditorComponent', 'selector': 'app-text-annotation-editor'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'MatchNewPasswordDirective', 'selector': '[appMatchNewPassword]'},{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'FormCoreEditorComponent'};
 </script>
 <script src="../js/tree.js"></script>
