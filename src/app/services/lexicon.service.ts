@@ -265,6 +265,16 @@ export class LexiconService {
   }
 
   /**
+   * GET che recupera la lista delle relazioni linguistiche di una entrata lessicale
+   * @param lexicalEntryId {string} identificativo della entrata lessicale
+   * @returns {Observable<LinguisticRelationModel[]>} observable della lista delle relazioni linguistiche
+   */
+  getLexicalEntryRelations(lexicalEntryId: string): Observable<LexicalSenseResponseModel> {
+    const encodedId = this.commonService.encodeUrl(lexicalEntryId);
+    return this.http.get<LexicalSenseResponseModel>(`${this.lexoUrl}/lexicon/data/lexicalEntry?module=variation%20and%20translation&id=${encodedId}`);
+  }
+
+  /**
    * GET che recupera la lista dei tratti morfologici
    * @returns {Observable<Morphology[]>} observable della lista dei tratti morfologici
    */

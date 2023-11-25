@@ -26,7 +26,7 @@ export class LexEntryRelationsEditorComponent extends BaseLexEntityEditorCompone
       this.menuItems = this.buildMenuItems(relationTypes);
     });
 
-    this.lexiconService.getLexicalSenseRelations(lexEntry.lexicalEntry).pipe(
+    this.lexiconService.getLexicalEntryRelations(lexEntry.lexicalEntry).pipe(
       take(1),
     ).subscribe((model: LexicalSenseResponseModel) => {
       this.model = model;
