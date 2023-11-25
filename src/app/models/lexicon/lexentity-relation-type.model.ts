@@ -1,4 +1,4 @@
-export type SenseRelationTypeModel = {
+export type LexEntityRelationTypeModel = {
   propertyId: string;
   propertyLabel: string;
   propertyDescription: string;

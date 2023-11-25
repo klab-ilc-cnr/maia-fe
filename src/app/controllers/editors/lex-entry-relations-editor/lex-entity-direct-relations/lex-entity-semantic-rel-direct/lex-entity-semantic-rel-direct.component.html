@@ -1,0 +1,19 @@
+<label [for]="control.relationshipLabel">{{control.relationshipLabel}}</label>
+<div class="d-flex justify-content-between" style="align-items: center;">
+  <p-autoComplete
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="selectedSuggestion"
+    [suggestions]="suggestions"
+    field="relationshipLabel"
+    (completeMethod)="onSearchForSuggestions($event)"
+    (onSelect)="onSelectSuggestionUpdateRelationship($event, control)">
+  </p-autoComplete>
+
+  <button pButton pRipple type="button" icon="pi pi-times"
+    class=" col-1 p-button-rounded p-button-danger p-button-text"
+    (click)="onRemoveRelationship(control)">
+  </button>
+</div>
+
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
+

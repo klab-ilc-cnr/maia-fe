@@ -12,7 +12,7 @@ import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.m
 import { Morphology } from '../models/lexicon/morphology.model';
 import { Namespace } from '../models/lexicon/namespace.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
-import { SenseRelationTypeModel } from '../models/lexicon/sense-relation-type.model';
+import { LexEntityRelationTypeModel } from '../models/lexicon/lexentity-relation-type.model';
 import { CommonService } from './common.service';
 
 /**Classe dei servizi relativi al lessico */
@@ -190,10 +190,18 @@ export class LexiconService {
 
   /**
    * GET che recupera la lista dei tipi di relazione dei sensi
-   * @returns {Observable<SenseRelationTypeModel[]>} observable della lista dei tipi relazioni dei sensi
+   * @returns {Observable<LexEntityRelationTypeModel[]>} observable della lista dei tipi relazioni dei sensi
    */
-  getSenseRelationTypes(): Observable<SenseRelationTypeModel[]> {
-    return this.http.get<SenseRelationTypeModel[]>(`${this.lexoUrl}lexinfo/data/senseRelations`);
+  getSenseRelationTypes(): Observable<LexEntityRelationTypeModel[]> {
+    return this.http.get<LexEntityRelationTypeModel[]>(`${this.lexoUrl}lexinfo/data/senseRelations`);
+  }
+
+  /**
+   * GET che recupera la lista dei tipi di relazione tra entrate lessicali
+   * @returns {Observable<LexEntityRelationTypeModel[]>} observable della lista dei tipi relazioni
+   */
+  getLexicalRelationTypes(): Observable<LexEntityRelationTypeModel[]> {
+    return this.http.get<LexEntityRelationTypeModel[]>(`${this.lexoUrl}lexinfo/data/lexicalRelations`);
   }
 
   /**
