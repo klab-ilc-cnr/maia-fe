@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
+import { BaseLexEntityRelationsStrategy } from './base-lex-entity-relations-strategy';
 
 export interface FormItem {
   relationshipLabel: string,
@@ -19,6 +20,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
   @Input() model!: LexicalSenseResponseModel;
   @Input() menuItems: MenuItem[] = [];
 
+  strategy!: BaseLexEntityRelationsStrategy;
   formItems: FormItem[] = [];
   relationshipLabelByURI: { [id: string] : string } = {};
 
@@ -26,8 +28,6 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
   form = new FormGroup({});
 
   uniqueID = 0;
-
-  abstract populateRelationships(model: LexicalSenseResponseModel): FormItem[];
 
   private assignMenuTree(root: MenuItem): MenuItem {
     const label = root.label || '';
@@ -56,7 +56,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
     }
 
     if (changes['model']) {
-      this.formItems = this.populateRelationships(changes['model'].currentValue);
+      this.formItems = this.strategy.populateRelationships(changes['model'].currentValue, this.relationshipLabelByURI);
       this.uniqueID = this.formItems.length;
     }
   }

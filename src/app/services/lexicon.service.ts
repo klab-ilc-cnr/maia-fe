@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, mergeMap, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
-import { LexicalEntriesResponse, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
+import { LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
-import { LexicalSenseResponseModel } from '../models/lexicon/lexical-sense-response.model';
+import { IndirectRelationModel, LexicalSenseResponseModel } from '../models/lexicon/lexical-sense-response.model';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { FormUpdater, GenericRelationUpdater, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
@@ -87,8 +87,6 @@ export class LexiconService {
    */
   deleteRelation(lexicalEntityId: string, updater: { relation: string, value: string }): Observable<string> {
     const encodedLexEntry = this.commonService.encodeUrl(lexicalEntityId);
-    console.error("HEY!")
-    console.log(encodedLexEntry)
     return this.http.post(
       `${this.lexoUrl}lexicon/delete/relation?id=${encodedLexEntry}`,
       updater,
@@ -110,10 +108,10 @@ export class LexiconService {
 
   /**
    * POST che recupera la lista delle entrate lessicali eventualmente filtrate
-   * @param parameters {any} parametri di filtro della ricerca
+   * @param parameters {LexicalEntryRequest|undefined} parametri di filtro della ricerca
    * @returns {Observable<any>} observable della lista delle entrate lessicali
    */
-  getLexicalEntriesList(parameters: any): Observable<LexicalEntriesResponse> {
+  getLexicalEntriesList(parameters: LexicalEntryRequest|undefined): Observable<LexicalEntriesResponse> {
     return this.http.post<LexicalEntriesResponse>(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
@@ -141,11 +139,12 @@ export class LexiconService {
 
   /**
    * POST di recupero della lista filtrata dei sensi
-   * @param parameters {{ text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number }} parametri per il fltro
-   * @returns {Observable<{totalHits: number, list: any[]}>} observable della lista di concetti lessicali recuperato
+   * @param parameters: LexicalEntryRequest - parametri per il fltro
+   * @returns {Observable<FilteredSenseModel>} observable della lista di sensi lessicali recuperato
    */
-  getFilteredSenses(parameters: any): Observable<FilteredSenseModel> {
-    return <Observable<FilteredSenseModel>>this.http.post(
+
+  getFilteredSenses(parameters: LexicalEntryRequest): Observable<FilteredSenseModel> {
+    return <Observable<FilteredSenseModel>> this.http.post(
       `${this.lexoUrl}lexicon/data/filteredSenses`,
       parameters,
     );
@@ -471,7 +470,7 @@ export class LexiconService {
 
   createIndirectSenseRelation(sourceSenseURI: string, categoryURI: string): Observable<string> {
 
-    const createRelationship = () => {
+    const createRelationship = (): Observable<IndirectRelationModel> => {
       const createRelationshipUrl = new URL(`${this.lexoUrl}lexicon/creation/lexicoSemanticRelation`);
       createRelationshipUrl.search = new URLSearchParams({
         id: sourceSenseURI,
@@ -481,7 +480,7 @@ export class LexiconService {
         author: "ziopino", // FIXME: replace builtin name with real author
       }).toString();
 
-      return this.http.get(createRelationshipUrl.href, { responseType: 'json' });
+      return <Observable<IndirectRelationModel>> this.http.get(createRelationshipUrl.href, { responseType: 'json' });
     }
 
     const addCategory = (relationURI: string) => {
@@ -499,7 +498,7 @@ export class LexiconService {
 
     return createRelationship().pipe(
       mergeMap(
-        (response: any) => addCategory(response.relation),
+        (response: IndirectRelationModel) => addCategory(response.relation),
       )
     );
   }

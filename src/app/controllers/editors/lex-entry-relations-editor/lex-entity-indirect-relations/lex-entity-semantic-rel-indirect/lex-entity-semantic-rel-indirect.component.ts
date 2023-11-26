@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { GENERIC_RELATIONS, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
-import { FormItem } from '../../base-lex-entity-relations/base-lex-entity-relations.component';
-import { BaseLexEntitySemanticInputComponent, SuggestionEntry } from '../../base-lex-entity-relations/base-lex-entity-semantic-input.component';
+import { GENERIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
+import { BaseLexEntitySemanticInputComponent } from '../../base-lex-entity-relations/base-lex-entity-semantic-input.component';
 import { MenuItem } from 'primeng/api';
-import { Observable, map } from 'rxjs';
-import { LexicalEntriesResponse, formTypeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 
 export type PropertyItem = {
   menuItem: MenuItem;
@@ -67,45 +63,6 @@ export class LexEntitySemanticRelIndirectComponent extends BaseLexEntitySemantic
     const index = this.propertyItems.findIndex(p => p === propertyItem);
     this.propertyItems.splice(index, 1);
     this.menuItems.push(propertyItem.menuItem);
-  }
-
-  override getSuggestions(text: string): Observable<SuggestionEntry[]> {
-    return this.lexiconService.getLexicalEntriesList({
-      text,
-      searchMode: "startsWith",
-      formType: formTypeEnum.entry,
-      status: "",
-      type: "",
-      field: "",
-      pos: "",
-      author: "",
-      lang: "",
-      offset: 0,
-      limit: 500,
-    }).pipe(
-      map((response: LexicalEntriesResponse) => response.list),
-      map((entries: LexicalEntryListItem[]) =>
-        entries.map((entry: LexicalEntryListItem) => {
-          return {
-            relationshipLabel: entry.label || 'no def',
-            relationshipURI: entry.lexicalEntry,
-          };
-        })
-      ),
-    );
-  }
-
-  override updateRelationship(suggestion: SuggestionEntry, control: FormItem) {
-    return this.lexiconService.updateLinguisticRelation(control.relationshipURI, {
-      type: LINGUISTIC_RELATION_TYPE.LEXICOSEMANTIC_REL,
-      relation: 'http://www.w3.org/ns/lemon/vartrans#target',
-      currentValue: control.destinationURI,
-      value: suggestion.relationshipURI,
-    });
-  }
-
-  override removeRelationship(control: FormItem) {
-    return this.lexiconService.deleteLexicoSemanticRelation(control.relationshipURI);
   }
 
 }

@@ -3,7 +3,6 @@ import { MessageService } from 'primeng/api';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { take } from 'rxjs';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { BaseLexEntityRelationsComponent, FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -23,23 +22,6 @@ export class LexEntityIndirectRelationsComponent extends BaseLexEntityRelationsC
     private messageService: MessageService,
   ) {
     super();
-  }
-
-  override populateRelationships(model: LexicalSenseResponseModel): FormItem[] {
-    const formItems : FormItem[] = [];
-    for (const [itemID, item] of model.indirectRelations.entries()) {
-      const {category, target, targetLabel, relation, properties} = item;
-      const newItem : FormItem = {
-        relationshipLabel: this.relationshipLabelByURI[category] || 'unknown relationship',
-        relationshipURI: relation,
-        destinationURI: target,
-        destinationLabel: targetLabel,
-        itemID,
-        properties,
-      };
-      formItems.unshift(newItem);
-    }
-    return formItems;
   }
 
   override onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {

@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, map, take } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
-import { formTypeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -56,7 +56,7 @@ export abstract class BaseSemanticInputComponent implements OnInit {
   onSearchSense($event: AutoCompleteCompleteEvent) {
     this.lexiconService.getFilteredSenses({
       text: $event.query,
-      searchMode: "startsWith",
+      searchMode: searchModeEnum.startsWith,
       formType: formTypeEnum.flexed,
       status: "",
       type: "",

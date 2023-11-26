@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, take } from 'rxjs';
+import { take } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { FormItem } from './base-lex-entity-relations.component';
+import { BaseLexEntityRelationsStrategy } from './base-lex-entity-relations-strategy';
 
 export type SuggestionEntry = {
   relationshipLabel: string,
@@ -20,9 +21,11 @@ interface AutoCompleteCompleteEvent {
 @Component({template: '<div></div>'})
 export abstract class BaseLexEntitySemanticInputComponent implements OnInit {
 
+  @Input() lexEntryId!: string;
   @Input() control!: FormItem;
   @Input() form!: FormGroup;
   @Input() formItems!: FormItem[];
+  @Input() strategy!: BaseLexEntityRelationsStrategy;
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -44,12 +47,8 @@ export abstract class BaseLexEntitySemanticInputComponent implements OnInit {
     };
   }
 
-  abstract updateRelationship(senseListItem: SuggestionEntry, control: FormItem): Observable<string>;
-  abstract removeRelationship(control: FormItem): Observable<string>;
-  abstract getSuggestions(text: string): Observable<SuggestionEntry[]>;
-
   onSearchForSuggestions($event: AutoCompleteCompleteEvent) {
-    this.getSuggestions($event.query).pipe(
+    this.strategy.getSuggestions($event.query).pipe(
       take(1)
     ).subscribe((suggestions: SuggestionEntry[]) => {
       this.suggestions = suggestions;
@@ -58,7 +57,7 @@ export abstract class BaseLexEntitySemanticInputComponent implements OnInit {
 
   onSelectSuggestionUpdateRelationship(suggestion: SuggestionEntry, control: FormItem) {
 
-    this.updateRelationship(suggestion, control).pipe(
+    this.strategy.updateRelationship(control, suggestion).pipe(
       take(1)
     ).subscribe({
       next: () => {
@@ -94,9 +93,14 @@ export abstract class BaseLexEntitySemanticInputComponent implements OnInit {
     this.popupDeleteItem.confirmMessage = confirmMsg;
 
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
-      if (!this.selectedSuggestion) return;
 
-      this.removeRelationship(control).pipe(
+      if (!this.selectedSuggestion) return;
+      if (!this.selectedSuggestion.relationshipURI) {
+        this.removeFormItem(relationshipLabel, itemID);
+        return;
+      }
+
+      this.strategy.removeRelationship(control).pipe(
         take(1)
       ).subscribe({
         next: () => {
