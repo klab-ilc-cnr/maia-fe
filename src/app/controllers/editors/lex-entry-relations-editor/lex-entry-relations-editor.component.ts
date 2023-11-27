@@ -20,6 +20,8 @@ export class LexEntryRelationsEditorComponent extends BaseLexEntityEditorCompone
 
   private loadEntry(lexEntry: LexicalEntryCore) {
     this.lexEntry = lexEntry;
+    console.error("ECCOMI")
+    console.error(this.lexEntry);
     this.lexiconService.getLexicalRelationTypes().pipe(
       take(1),
     ).subscribe(relationTypes => {

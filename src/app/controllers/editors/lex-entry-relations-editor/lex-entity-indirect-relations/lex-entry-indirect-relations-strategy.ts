@@ -1,14 +1,13 @@
 import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
-import { BaseLexEntityRelationsStrategy } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { Observable, map } from 'rxjs';
-import { SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-semantic-input.component';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LexicalEntriesResponse, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
 
-export class LexEntityIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
+export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
 
   constructor(
     private lexiconService: LexiconService,

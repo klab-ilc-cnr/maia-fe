@@ -1,7 +1,11 @@
 import { Observable } from "rxjs";
 import { FormItem } from "./base-lex-entity-relations.component";
-import { SuggestionEntry } from "./base-lex-entity-semantic-input.component";
 import { LexicalSenseResponseModel } from "src/app/models/lexicon/lexical-sense-response.model";
+
+export type SuggestionEntry = {
+  relationshipLabel: string,
+  relationshipURI: string,
+};
 
 export interface BaseLexEntityRelationsStrategy {
   populateRelationships(model: LexicalSenseResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[];

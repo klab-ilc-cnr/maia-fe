@@ -5,6 +5,7 @@ import { take } from 'rxjs';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { BaseLexEntityRelationsComponent, FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LexEntryIndirectRelationsStrategy } from './lex-entry-indirect-relations-strategy';
 
 @Component({
   selector: 'app-lex-entity-indirect-relations',
@@ -22,6 +23,7 @@ export class LexEntityIndirectRelationsComponent extends BaseLexEntityRelationsC
     private messageService: MessageService,
   ) {
     super();
+    super.strategy = new LexEntryIndirectRelationsStrategy(lexiconService);
   }
 
   override onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {

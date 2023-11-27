@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GENERIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
-import { BaseLexEntitySemanticInputComponent } from '../../base-lex-entity-relations/base-lex-entity-semantic-input.component';
 import { MenuItem } from 'primeng/api';
+import { LexEntitySemanticRelComponent } from '../../lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 
 export type PropertyItem = {
   menuItem: MenuItem;
@@ -15,7 +15,7 @@ export type PropertyItem = {
   templateUrl: './lex-entity-semantic-rel-indirect.component.html',
   styleUrls: ['./lex-entity-semantic-rel-indirect.component.scss']
 })
-export class LexEntitySemanticRelIndirectComponent extends BaseLexEntitySemanticInputComponent {
+export class LexEntitySemanticRelIndirectComponent extends LexEntitySemanticRelComponent {
 
   properties = {
     Comment: GENERIC_RELATIONS.COMMENT,

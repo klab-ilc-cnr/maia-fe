@@ -26,7 +26,7 @@ import { IndirectRelPropertyComponent } from './controllers/editors/semantic-rel
 
 import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component';
 import { LexEntitySemanticRelIndirectComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component';
-import { LexEntitySemanticRelDirectComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-direct-relations/lex-entity-semantic-rel-direct/lex-entity-semantic-rel-direct.component';
+import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 import { LexEntityDirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-direct-relations/lex-entity-direct-relations.component';
 import { LexEntityIndirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-indirect-relations/lex-entity-indirect-relations.component';
 import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
@@ -87,7 +87,7 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     IndirectRelationsComponent,
     IndirectRelPropertyComponent,
     LexEntryRelationsEditorComponent,
-    LexEntitySemanticRelDirectComponent,
+    LexEntitySemanticRelComponent,
     LexEntitySemanticRelIndirectComponent,
     LexEntityDirectRelationsComponent,
     LexEntityIndirectRelationsComponent,

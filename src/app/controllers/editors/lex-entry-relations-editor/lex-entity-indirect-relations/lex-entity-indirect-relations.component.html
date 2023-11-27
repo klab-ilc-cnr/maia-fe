@@ -10,7 +10,7 @@
     </ng-template>
     <ng-template pTemplate="content">
         <div class="field col-12" *ngFor="let control of formItems">
-          <app-lex-entity-semantic-rel-indirect [control]="control" [form]="form" [formItems]="formItems">
+          <app-lex-entity-semantic-rel-indirect [lexEntryId]="lexEntityId" [control]="control" [form]="form" [formItems]="formItems">
           </app-lex-entity-semantic-rel-indirect>
         </div>
     </ng-template>

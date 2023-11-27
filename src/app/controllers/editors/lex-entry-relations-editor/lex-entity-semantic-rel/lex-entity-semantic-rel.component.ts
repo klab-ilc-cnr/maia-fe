@@ -5,21 +5,20 @@ import { take } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { FormItem } from './base-lex-entity-relations.component';
-import { BaseLexEntityRelationsStrategy } from './base-lex-entity-relations-strategy';
-
-export type SuggestionEntry = {
-  relationshipLabel: string,
-  relationshipURI: string,
-};
+import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
 }
 
-@Component({template: '<div></div>'})
-export abstract class BaseLexEntitySemanticInputComponent implements OnInit {
+@Component({
+  selector: 'app-lex-entity-semantic-rel',
+  templateUrl: './lex-entity-semantic-rel.component.html',
+  styleUrls: ['./lex-entity-semantic-rel.component.scss']
+})
+export class LexEntitySemanticRelComponent implements OnInit {
 
   @Input() lexEntryId!: string;
   @Input() control!: FormItem;
