@@ -55,7 +55,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
       this.menuItems = this.assignMenuTree({items}).items || [];
     }
 
-    if (changes['model']) {
+    if (this.strategy && changes['model']) {
       this.formItems = this.strategy.populateRelationships(changes['model'].currentValue, this.relationshipLabelByURI);
       this.uniqueID = this.formItems.length;
     }
