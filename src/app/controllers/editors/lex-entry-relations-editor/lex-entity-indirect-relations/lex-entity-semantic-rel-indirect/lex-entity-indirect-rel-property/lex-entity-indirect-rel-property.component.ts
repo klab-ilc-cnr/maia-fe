@@ -6,6 +6,7 @@ import { Subject, debounceTime, distinctUntilChanged, filter, take, takeUntil } 
 import { MessageService } from "primeng/api";
 import { MessageConfigurationService } from "src/app/services/message-configuration.service";
 import { GENERIC_RELATION_TYPE } from "src/app/models/lexicon/lexicon-updater";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-lex-entity-indirect-rel-property',
@@ -28,6 +29,12 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
   ) {}
+
+  private showHttpError(err: HttpErrorResponse): void {
+    console.error(err);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    this.messageService.add(message);
+  }
 
   ngOnInit() {
     this.textFieldUpdate.pipe(
@@ -58,11 +65,7 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
         const message = this.msgConfService.generateSuccessMessageConfig(`${this.propertyItem.menuItem.label} updated`);
         this.messageService.add(message);
       },
-      error: (err) => {
-        console.error(err);
-        const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
-        this.messageService.add(message);
-      }
+      error: this.showHttpError
     });
   }
 
@@ -83,11 +86,7 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
             this.onRemovePropertyDelegate(this.propertyItem);
           }
           },
-        error: (err) => {
-          console.error(err);
-          const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
-          this.messageService.add(message);
-        }
+        error: this.showHttpError
       });
     });
   }

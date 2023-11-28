@@ -10,6 +10,7 @@ export type SuggestionEntry = {
 export interface BaseLexEntityRelationsStrategy {
   populateRelationships(model: LexicalSenseResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[];
   getSuggestions(text: string): Observable<SuggestionEntry[]>;
+  createRelationship(relationshipURI: string): Observable<string>;
   updateRelationship(control: FormItem, suggestion: SuggestionEntry): Observable<unknown>;
   removeRelationship(control: FormItem): Observable<unknown>;
 }

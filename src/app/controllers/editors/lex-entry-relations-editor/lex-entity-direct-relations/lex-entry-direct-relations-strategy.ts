@@ -1,7 +1,7 @@
 import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LexicalEntriesResponse, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -16,6 +16,8 @@ export class LexEntryDirectRelationsStrategy implements BaseLexEntityRelationsSt
 
   public populateRelationships(model: LexicalSenseResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[] {
     const formItems: FormItem[] = [];
+    console.error("POPULATE!!!")
+    console.error(model.directRelations)
     for (const [itemID, item] of model.directRelations.entries()) {
       const {link, entity, label} = item;
       if (!link) continue;
@@ -55,6 +57,10 @@ export class LexEntryDirectRelationsStrategy implements BaseLexEntityRelationsSt
         })
       ),
     );
+  }
+
+  public createRelationship(relationShipURI: string): Observable<string> {
+    return of(relationShipURI);
   }
 
   public updateRelationship(control: FormItem, suggestion: SuggestionEntry) {

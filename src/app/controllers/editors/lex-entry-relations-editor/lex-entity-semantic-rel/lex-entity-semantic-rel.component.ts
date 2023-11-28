@@ -7,6 +7,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -38,6 +39,12 @@ export class LexEntitySemanticRelComponent implements OnInit {
     protected msgConfService: MessageConfigurationService,
   ) {}
 
+  private showHttpError(err: HttpErrorResponse): void {
+    console.error(err);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    this.messageService.add(message);
+  }
+
   ngOnInit(): void {
     const { destinationLabel, destinationURI } = this.control;
     this.selectedSuggestion = {
@@ -65,11 +72,7 @@ export class LexEntitySemanticRelComponent implements OnInit {
         const message = this.msgConfService.generateSuccessMessageConfig(`${control.relationshipLabel} updated`);
         this.messageService.add(message);
       },
-      error: (err) => {
-        console.error(err);
-        const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
-        this.messageService.add(message);
-      }
+      error: this.showHttpError
     });
   }
 
@@ -105,11 +108,7 @@ export class LexEntitySemanticRelComponent implements OnInit {
         next: () => {
           this.removeFormItem(relationshipLabel, itemID);
         },
-        error: (err) => {
-          console.error(err);
-          const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
-          this.messageService.add(message);
-        }
+        error: this.showHttpError
       });
     });
   }

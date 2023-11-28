@@ -42,9 +42,10 @@ export class IndirectRelationsComponent extends BaseRelationsComponent {
 
   override onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {
     const newItem = super.onMenuClickInsertFormItem(relationshipLabel, relationshipURI);
+    const typeURI = "http://www.w3.org/ns/lemon/vartrans#LexicalRelation";
 
     this.lexiconService.createIndirectSenseRelation(
-      this.senseEntry.sense, relationshipURI
+      this.senseEntry.sense, relationshipURI, typeURI,
     ).pipe(
       take(1)
     ).subscribe({

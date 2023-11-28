@@ -11,6 +11,7 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
 
   constructor(
     private lexiconService: LexiconService,
+    private lexEntityId: string,
   ) {}
 
   public populateRelationships(model: LexicalSenseResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[] {
@@ -52,6 +53,14 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
           };
         })
       ),
+    );
+  }
+
+  public createRelationship(relationshipURI: string): Observable<string> {
+    return this.lexiconService.createIndirectSenseRelation(
+      this.lexEntityId,
+      relationshipURI,
+      "http://www.w3.org/ns/lemon/vartrans#LexicalRelation",
     );
   }
 

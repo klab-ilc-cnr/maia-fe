@@ -269,6 +269,8 @@ export class LexiconService {
    * @returns {Observable<LinguisticRelationModel[]>} observable della lista delle relazioni linguistiche
    */
   getLexicalEntryRelations(lexicalEntryId: string): Observable<LexicalSenseResponseModel> {
+    console.error("ASDASDASDDSA")
+    console.error(lexicalEntryId)
     const encodedId = this.commonService.encodeUrl(lexicalEntryId);
     return this.http.get<LexicalSenseResponseModel>(`${this.lexoUrl}/lexicon/data/lexicalEntry?module=variation%20and%20translation&id=${encodedId}`);
   }
@@ -468,13 +470,13 @@ export class LexiconService {
     );
   }
 
-  createIndirectSenseRelation(sourceSenseURI: string, categoryURI: string): Observable<string> {
+  createIndirectSenseRelation(sourceURI: string, categoryURI: string, typeURI: string): Observable<string> {
 
     const createRelationship = (): Observable<IndirectRelationModel> => {
       const createRelationshipUrl = new URL(`${this.lexoUrl}lexicon/creation/lexicoSemanticRelation`);
       createRelationshipUrl.search = new URLSearchParams({
-        id: sourceSenseURI,
-        type: "http://www.w3.org/ns/lemon/vartrans#SenseRelation",
+        id: sourceURI,
+        type: typeURI,
         prefix: 'ferrandi',
         baseIRI: "http://rut/somali/ferrandi#",
         author: "ziopino", // FIXME: replace builtin name with real author

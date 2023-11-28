@@ -1,10 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { LexiconService } from 'src/app/services/lexicon.service';
-import { take } from 'rxjs';
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { BaseLexEntityRelationsComponent, FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { BaseLexEntityRelationsComponent } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { LexEntryIndirectRelationsStrategy } from './lex-entry-indirect-relations-strategy';
 
 @Component({
@@ -13,37 +8,9 @@ import { LexEntryIndirectRelationsStrategy } from './lex-entry-indirect-relation
   styleUrls: ['./lex-entity-indirect-relations.component.scss']
 })
 
-export class LexEntityIndirectRelationsComponent extends BaseLexEntityRelationsComponent {
+export class LexEntityIndirectRelationsComponent extends BaseLexEntityRelationsComponent implements OnInit {
 
-  @Input() lexEntityId!: string;
-
-  constructor(
-    private lexiconService: LexiconService,
-    private msgConfService: MessageConfigurationService,
-    private messageService: MessageService,
-  ) {
-    super();
-    super.strategy = new LexEntryIndirectRelationsStrategy(lexiconService);
+  ngOnInit() {
+    this.strategy = new LexEntryIndirectRelationsStrategy(this.lexiconService, this.lexEntityId);
   }
-
-  override onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {
-    const newItem = super.onMenuClickInsertFormItem(relationshipLabel, relationshipURI);
-
-    this.lexiconService.createIndirectSenseRelation(
-      this.lexEntityId, relationshipURI
-    ).pipe(
-      take(1)
-    ).subscribe({
-      next: (indirectRelationshipURI: string) => {
-        newItem.relationshipURI = indirectRelationshipURI;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error(error);
-        const message = this.msgConfService.generateErrorMessageConfig(`${error.name}: ${error.error}`);
-        this.messageService.add(message);
-      }
-    });
-    return newItem;
-  }
-
 }

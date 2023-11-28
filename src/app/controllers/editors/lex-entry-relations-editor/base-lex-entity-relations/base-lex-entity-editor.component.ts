@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LexEntityRelationTypeModel } from 'src/app/models/lexicon/lexentity-relation-type.model';
 import { environment } from 'src/environments/environment';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({template: ''})
 export class BaseLexEntityEditorComponent {
@@ -11,6 +14,18 @@ export class BaseLexEntityEditorComponent {
   model: LexicalSenseResponseModel = {indirectRelations: [], directRelations: []};
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
+
+  public constructor(
+    protected lexiconService: LexiconService,
+    protected msgConfService: MessageConfigurationService,
+    protected messageService: MessageService,
+  ) {}
+
+  protected showHttpError(err: HttpErrorResponse): void {
+    console.error(err);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    this.messageService.add(message);
+  }
 
   private sortMenuItems(a: MenuItem, b: MenuItem): number {
     return (a.label || '') > (b.label || '')? 1 : -1;

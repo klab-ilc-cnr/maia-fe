@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseLexEntityRelationsComponent } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { LexEntryDirectRelationsStrategy } from './lex-entry-direct-relations-strategy';
-import { LexiconService } from 'src/app/services/lexicon.service';
 
 @Component({
   selector: 'app-lex-entity-direct-relations',
@@ -10,11 +9,8 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 })
 export class LexEntityDirectRelationsComponent extends BaseLexEntityRelationsComponent implements OnInit {
 
-  @Input() lexEntityId!: string;
-
-  constructor(private lexiconService: LexiconService) {super()}
-
   ngOnInit(): void {
+    console.error("ON INIT")
     super.strategy = new LexEntryDirectRelationsStrategy(this.lexiconService, this.lexEntityId);
   }
 
