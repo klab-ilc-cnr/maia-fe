@@ -25,11 +25,8 @@ import { IndirectRelationsComponent } from './controllers/editors/semantic-rel-e
 import { IndirectRelPropertyComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/indirect-rel-property/indirect-rel-property.component';
 
 import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component';
-import { LexEntitySemanticRelIndirectComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component';
 import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 import { LexEntityDirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-direct-relations/lex-entity-direct-relations.component';
-import { LexEntityIndirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-indirect-relations/lex-entity-indirect-relations.component';
-import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
 
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
@@ -88,10 +85,7 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     IndirectRelPropertyComponent,
     LexEntryRelationsEditorComponent,
     LexEntitySemanticRelComponent,
-    LexEntitySemanticRelIndirectComponent,
     LexEntityDirectRelationsComponent,
-    LexEntityIndirectRelationsComponent,
-    LexEntityIndirectRelPropertyComponent,
     TextAnnotationEditorComponent,
     LoginComponent,
     MatchNewPasswordDirective,
