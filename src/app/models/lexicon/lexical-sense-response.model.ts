@@ -8,7 +8,7 @@ export type IndirectRelationModel = {
   properties: LinguisticRelationModel[];
 }
 
-export type LexicalSenseResponseModel = {
+export type LexicalEntityRelationsResponseModel = {
   directRelations: LinguisticRelationModel[];
   indirectRelations: IndirectRelationModel[];
 }

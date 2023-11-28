@@ -1,30 +1,31 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Subject, take } from 'rxjs';
-import { SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { Component } from '@angular/core';
+import { MenuItem, MessageService } from 'primeng/api';
 import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LexEntityRelationTypeModel } from 'src/app/models/lexicon/lexentity-relation-type.model';
-import { LexiconService } from 'src/app/services/lexicon.service';
 import { environment } from 'src/environments/environment';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
-@Component({
-  selector: 'app-semantic-rel-editor',
-  templateUrl: './semantic-rel-editor.component.html',
-  styleUrls: ['./semantic-rel-editor.component.scss']
-})
-export class SemanticRelEditorComponent implements OnInit, OnDestroy {
-  private readonly unsubscribe$ = new Subject();
-  @Input() senseEntry!: SenseCore;
-
+@Component({template: ''})
+export class BaseLexEntityEditorComponent {
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] = [];
   model: LexicalEntityRelationsResponseModel = {indirectRelations: [], directRelations: []};
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
 
-  constructor(
-    private lexiconService: LexiconService,
+  public constructor(
+    protected lexiconService: LexiconService,
+    protected msgConfService: MessageConfigurationService,
+    protected messageService: MessageService,
   ) {}
+
+  protected showHttpError(err: HttpErrorResponse): void {
+    console.error(err);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    this.messageService.add(message);
+  }
 
   private sortMenuItems(a: MenuItem, b: MenuItem): number {
     return (a.label || '') > (b.label || '')? 1 : -1;
@@ -32,7 +33,7 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
 
   private menuItemByRelationshipURI :{ [id: string] : MenuItem } = {};
 
-  private buildMenuItems(relationTypes: LexEntityRelationTypeModel[]): MenuItem[] {
+  protected buildMenuItems(relationTypes: LexEntityRelationTypeModel[]): MenuItem[] {
 
     const rootNode : MenuItem = {label: '', command: (e) => { console.error(e) }, items: []};
 
@@ -69,25 +70,6 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
     rootNode.items?.sort(this.sortMenuItems);
 
     return rootNode.items || [];
-  }
-
-  ngOnInit(): void {
-    this.lexiconService.getSenseRelationTypes().pipe(
-      take(1),
-    ).subscribe(relationTypes => {
-      this.menuItems = this.buildMenuItems(relationTypes);
-    });
-
-    this.lexiconService.getLexicalSenseRelations(this.senseEntry.sense).pipe(
-      take(1),
-    ).subscribe((model: LexicalEntityRelationsResponseModel) => {
-      this.model = model;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next(null);
-    this.unsubscribe$.complete();
   }
 
 }

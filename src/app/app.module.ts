@@ -17,12 +17,17 @@ import { LexEntryEditorComponent } from './controllers/editors/lex-entry-editor/
 import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component';
 import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
-import { DirectRelationsComponent } from './controllers/editors/semantic-rel-editor/direct-relations/direct-relations.component';
+import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
+import { SemanticRelIndirectComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/semantic-rel-indirect.component';
 import { SemanticRelDirectComponent } from './controllers/editors/semantic-rel-editor/direct-relations/semantic-rel-direct/semantic-rel-direct.component';
+import { DirectRelationsComponent } from './controllers/editors/semantic-rel-editor/direct-relations/direct-relations.component';
 import { IndirectRelationsComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/indirect-relations.component';
 import { IndirectRelPropertyComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/indirect-rel-property/indirect-rel-property.component';
-import { SemanticRelIndirectComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/semantic-rel-indirect.component';
-import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
+
+import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component';
+import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
+import { LexEntityDirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-direct-relations/lex-entity-direct-relations.component';
+
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -75,10 +80,13 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     SemanticRelEditorComponent,
     SemanticRelDirectComponent,
     SemanticRelIndirectComponent,
-    TextAnnotationEditorComponent,
     DirectRelationsComponent,
     IndirectRelationsComponent,
     IndirectRelPropertyComponent,
+    LexEntryRelationsEditorComponent,
+    LexEntitySemanticRelComponent,
+    LexEntityDirectRelationsComponent,
+    TextAnnotationEditorComponent,
     LoginComponent,
     MatchNewPasswordDirective,
   ],

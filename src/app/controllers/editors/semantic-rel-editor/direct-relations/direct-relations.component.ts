@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { BaseRelationsComponent, FormItem } from '../base-relations/base-relations.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { BaseRelationsComponent, FormItem } from '../base-relations/base-relatio
 })
 export class DirectRelationsComponent extends BaseRelationsComponent {
 
-  override populateRelationships(model: LexicalSenseResponseModel): FormItem[] {
+  override populateRelationships(model: LexicalEntityRelationsResponseModel): FormItem[] {
     const formItems: FormItem[] = [];
     for (const [itemID, item] of model.directRelations.entries()) {
       const {link, entity, label} = item;
