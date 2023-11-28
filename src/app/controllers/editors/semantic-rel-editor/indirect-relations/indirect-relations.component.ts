@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { take } from 'rxjs';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { BaseRelationsComponent, FormItem } from '../base-relations/base-relations.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -23,7 +23,7 @@ export class IndirectRelationsComponent extends BaseRelationsComponent {
     super();
   }
 
-  override populateRelationships(model: LexicalSenseResponseModel): FormItem[] {
+  override populateRelationships(model: LexicalEntityRelationsResponseModel): FormItem[] {
     const formItems : FormItem[] = [];
     for (const [itemID, item] of model.indirectRelations.entries()) {
       const {category, target, targetLabel, relation, properties} = item;

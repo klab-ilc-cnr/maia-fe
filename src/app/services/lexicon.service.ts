@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
 import { LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
-import { IndirectRelationModel, LexicalSenseResponseModel } from '../models/lexicon/lexical-sense-response.model';
+import { IndirectRelationModel, LexicalEntityRelationsResponseModel } from '../models/lexicon/lexical-sense-response.model';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { FormUpdater, GenericRelationUpdater, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
@@ -258,9 +258,9 @@ export class LexiconService {
    * @param lexicalSenseId {string} identificativo del senso lessicale
    * @returns {Observable<LinguisticRelationModel[]>} observable della lista delle relazioni linguistiche
    */
-  getLexicalSenseRelations(lexicalSenseId: string): Observable<LexicalSenseResponseModel> {
+  getLexicalSenseRelations(lexicalSenseId: string): Observable<LexicalEntityRelationsResponseModel> {
     const encodedId = this.commonService.encodeUrl(lexicalSenseId);
-    return this.http.get<LexicalSenseResponseModel>(`${this.lexoUrl}/lexicon/data/lexicalSense?module=variation%20and%20translation&id=${encodedId}`);
+    return this.http.get<LexicalEntityRelationsResponseModel>(`${this.lexoUrl}/lexicon/data/lexicalSense?module=variation%20and%20translation&id=${encodedId}`);
   }
 
   /**
@@ -268,11 +268,9 @@ export class LexiconService {
    * @param lexicalEntryId {string} identificativo della entrata lessicale
    * @returns {Observable<LinguisticRelationModel[]>} observable della lista delle relazioni linguistiche
    */
-  getLexicalEntryRelations(lexicalEntryId: string): Observable<LexicalSenseResponseModel> {
-    console.error("ASDASDASDDSA")
-    console.error(lexicalEntryId)
+  getLexicalEntryRelations(lexicalEntryId: string): Observable<LexicalEntityRelationsResponseModel> {
     const encodedId = this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get<LexicalSenseResponseModel>(`${this.lexoUrl}/lexicon/data/lexicalEntry?module=variation%20and%20translation&id=${encodedId}`);
+    return this.http.get<LexicalEntityRelationsResponseModel>(`${this.lexoUrl}/lexicon/data/lexicalEntry?module=variation%20and%20translation&id=${encodedId}`);
   }
 
   /**

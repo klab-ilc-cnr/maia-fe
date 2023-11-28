@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LexEntityRelationTypeModel } from 'src/app/models/lexicon/lexentity-relation-type.model';
 import { environment } from 'src/environments/environment';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class BaseLexEntityEditorComponent {
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] = [];
-  model: LexicalSenseResponseModel = {indirectRelations: [], directRelations: []};
+  model: LexicalEntityRelationsResponseModel = {indirectRelations: [], directRelations: []};
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
 

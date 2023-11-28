@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { BaseLexEntityRelationsComponent } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { LexEntryIndirectRelationsStrategy } from './lex-entry-indirect-relations-strategy';
 
@@ -8,9 +8,13 @@ import { LexEntryIndirectRelationsStrategy } from './lex-entry-indirect-relation
   styleUrls: ['./lex-entity-indirect-relations.component.scss']
 })
 
-export class LexEntityIndirectRelationsComponent extends BaseLexEntityRelationsComponent implements OnInit {
+export class LexEntityIndirectRelationsComponent extends BaseLexEntityRelationsComponent  {
 
-  ngOnInit() {
-    this.strategy = new LexEntryIndirectRelationsStrategy(this.lexiconService, this.lexEntityId);
+  override ngOnChanges(changes: SimpleChanges): void {
+    if (changes['lexEntityId']) {
+      this.strategy = new LexEntryIndirectRelationsStrategy(this.lexiconService, this.lexEntityId);
+    }
+    super.ngOnChanges(changes);
   }
+
 }

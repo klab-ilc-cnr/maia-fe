@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 import { BaseLexEntityRelationsStrategy } from './base-lex-entity-relations-strategy';
 import { take } from 'rxjs';
@@ -22,7 +22,7 @@ export interface FormItem {
 export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
   @Input() lexEntityId!: string;
-  @Input() model!: LexicalSenseResponseModel;
+  @Input() model!: LexicalEntityRelationsResponseModel;
   @Input() menuItems: MenuItem[] = [];
 
   protected strategy!: BaseLexEntityRelationsStrategy;
@@ -67,14 +67,12 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.error("ON CHANGES")
-    console.error(changes['model'])
     if (changes['menuItems']) {
       const items = changes['menuItems'].currentValue;
       this.menuItems = this.assignMenuTree({items}).items || [];
     }
 
-    if (this.strategy && changes['model']) {
+    if (changes['model']) {
       this.formItems = this.strategy.populateRelationships(changes['model'].currentValue, this.relationshipLabelByURI);
       this.uniqueID = this.formItems.length;
     }

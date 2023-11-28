@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Subject, take } from 'rxjs';
 import { SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LexEntityRelationTypeModel } from 'src/app/models/lexicon/lexentity-relation-type.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { environment } from 'src/environments/environment';
@@ -18,7 +18,7 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
 
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] = [];
-  model: LexicalSenseResponseModel = {indirectRelations: [], directRelations: []};
+  model: LexicalEntityRelationsResponseModel = {indirectRelations: [], directRelations: []};
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
 
@@ -80,7 +80,7 @@ export class SemanticRelEditorComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getLexicalSenseRelations(this.senseEntry.sense).pipe(
       take(1),
-    ).subscribe((model: LexicalSenseResponseModel) => {
+    ).subscribe((model: LexicalEntityRelationsResponseModel) => {
       this.model = model;
     });
   }

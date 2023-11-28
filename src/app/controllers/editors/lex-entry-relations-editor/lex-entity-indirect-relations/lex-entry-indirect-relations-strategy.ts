@@ -1,4 +1,4 @@
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { Observable, map } from 'rxjs';
@@ -14,7 +14,7 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
     private lexEntityId: string,
   ) {}
 
-  public populateRelationships(model: LexicalSenseResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[] {
+  public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[] {
     const formItems : FormItem[] = [];
     for (const [itemID, item] of model.indirectRelations.entries()) {
       const {category, target, targetLabel, relation, properties} = item;

@@ -25,7 +25,6 @@ export class LexEntryRelationsEditorComponent extends BaseLexEntityEditorCompone
       )
     ).subscribe({
       next: results => {
-          console.error("ON INIT ZZZ!!!");
           this.menuItems = this.buildMenuItems(results.relationTypes);
           this.model = results.model;
           this.lexEntry = results.lexEntry;

@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SenseCore  } from 'src/app/models/lexicon/lexical-entry.model';
 import { MenuItem } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
-import { LexicalSenseResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 
 export interface FormItem {
@@ -18,7 +18,7 @@ export interface FormItem {
 export abstract class BaseRelationsComponent implements OnChanges {
 
   @Input() senseEntry!: SenseCore;
-  @Input() model!: LexicalSenseResponseModel;
+  @Input() model!: LexicalEntityRelationsResponseModel;
   @Input() menuItems: MenuItem[] = [];
 
   formItems: FormItem[] = [];
@@ -29,7 +29,7 @@ export abstract class BaseRelationsComponent implements OnChanges {
 
   uniqueID = 0;
 
-  abstract populateRelationships(model: LexicalSenseResponseModel): FormItem[];
+  abstract populateRelationships(model: LexicalEntityRelationsResponseModel): FormItem[];
 
   private assignMenuTree(root: MenuItem): MenuItem {
     const label = root.label || '';
