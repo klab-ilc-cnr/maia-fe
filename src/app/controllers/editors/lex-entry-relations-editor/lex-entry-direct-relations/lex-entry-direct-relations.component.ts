@@ -3,11 +3,11 @@ import { BaseLexEntityRelationsComponent } from '../base-lex-entity-relations/ba
 import { LexEntryDirectRelationsStrategy } from './lex-entry-direct-relations-strategy';
 
 @Component({
-  selector: 'app-lex-entity-direct-relations',
-  templateUrl: './lex-entity-direct-relations.component.html',
-  styleUrls: ['./lex-entity-direct-relations.component.scss']
+  selector: 'app-lex-entry-direct-relations',
+  templateUrl: './lex-entry-direct-relations.component.html',
+  styleUrls: ['./lex-entry-direct-relations.component.scss']
 })
-export class LexEntityDirectRelationsComponent extends BaseLexEntityRelationsComponent {
+export class LexEntryDirectRelationsComponent extends BaseLexEntityRelationsComponent {
 
   override ngOnChanges(changes: SimpleChanges): void {
     if (changes['lexEntityId']) {
