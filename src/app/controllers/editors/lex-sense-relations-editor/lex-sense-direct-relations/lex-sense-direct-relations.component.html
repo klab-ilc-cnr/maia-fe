@@ -1,17 +1,16 @@
 <div class="field col-12">
   <p-fieldset>
     <ng-template pTemplate="header">
-      <p-tieredMenu #indirectSenseRelations [model]="menuItems" [popup]="true" appendTo="body"></p-tieredMenu>
-      Indirect Sense Relations
+      <p-tieredMenu #directSenseRelations [model]="menuItems" [popup]="true" appendTo="body"></p-tieredMenu>
+      Direct Sense Relations
       <button pButton pRipple icon="pi pi-plus" type="button"
-        (click)="indirectSenseRelations.toggle($event)"
+        (click)="directSenseRelations.toggle($event)"
         class="p-button-rounded p-button-success mx-2 fieldset-small">
       </button>
     </ng-template>
     <ng-template pTemplate="content">
         <div class="field col-12" *ngFor="let control of formItems">
-          <app-semantic-rel-indirect [control]="control" [form]="form" [formItems]="formItems" [senseEntry]="senseEntry">
-          </app-semantic-rel-indirect>
+          <app-lex-entity-semantic-rel [strategy]="strategy" [control]="control" [form]="form" [formItems]="formItems" [lexEntryId]="lexEntityId"></app-lex-entity-semantic-rel>
         </div>
     </ng-template>
   </p-fieldset>
