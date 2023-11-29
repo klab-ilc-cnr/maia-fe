@@ -21,7 +21,6 @@ interface AutoCompleteCompleteEvent {
 })
 export class LexEntitySemanticRelComponent implements OnInit {
 
-  @Input() lexEntryId!: string;
   @Input() control!: FormItem;
   @Input() form!: FormGroup;
   @Input() formItems!: FormItem[];
