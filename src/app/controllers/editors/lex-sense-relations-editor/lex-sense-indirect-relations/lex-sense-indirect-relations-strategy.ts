@@ -1,13 +1,14 @@
 import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
-import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
-import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { Observable, map } from 'rxjs';
 import { LexiconService } from 'src/app/services/lexicon.service';
-import { LexicalEntriesResponse, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entry-relations-editor/base-lex-entity-relations/base-lex-entity-relations-strategy';
+import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
+import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { FormItem } from '../../lex-entry-relations-editor/base-lex-entity-relations/base-lex-entity-relations.component';
 
-export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
+export class LexSenseIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
 
   constructor(
     private lexiconService: LexiconService,
@@ -32,10 +33,10 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
   }
 
   public getSuggestions(text: string): Observable<SuggestionEntry[]> {
-    return this.lexiconService.getLexicalEntriesList({
+    return this.lexiconService.getFilteredSenses({
       text,
       searchMode: searchModeEnum.startsWith,
-      formType: formTypeEnum.entry,
+      formType: formTypeEnum.flexed,
       status: "",
       type: "",
       field: "",
@@ -45,11 +46,11 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
       offset: 0,
       limit: 500,
     }).pipe(
-      map((response: LexicalEntriesResponse) =>
-        response.list.map((entry: LexicalEntryListItem) => {
+      map((response: FilteredSenseModel) =>
+        response.list.map((entry: SenseListItem) => {
           return {
-            relationshipLabel: `${entry.label}@${entry.language} (${entry.pos})`,
-            relationshipURI: entry.lexicalEntry,
+            relationshipLabel: `${entry.lemma} - ${entry.label || 'no def'}`,
+            relationshipURI: entry.sense,
           };
         })
       ),
@@ -60,7 +61,7 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
     return this.lexiconService.createIndirectSenseRelation(
       this.lexEntityId,
       relationshipURI,
-      "http://www.w3.org/ns/lemon/vartrans#LexicalRelation",
+      "http://www.w3.org/ns/lemon/vartrans#SenseRelation",
     );
   }
 
