@@ -1,6 +1,6 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { LexSenseDirectRelationsStrategy } from './lex-sense-direct-relations-strategy';
-import { BaseLexEntityRelationsComponent } from '../../lex-entry-relations-editor/base-lex-entity-relations/base-lex-entity-relations.component';
+import { BaseLexEntityRelationsComponent } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
 
 @Component({
   selector: 'app-lex-sense-direct-relations',

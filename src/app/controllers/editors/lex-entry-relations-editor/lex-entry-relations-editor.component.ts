@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, forkJoin, mergeMap, of, take } from 'rxjs';
-import { BaseLexEntityEditorComponent } from './base-lex-entity-relations/base-lex-entity-editor.component';
+import { BaseLexEntityEditorComponent } from '../lex-entity-relations/base-lex-entity-relations/base-lex-entity-editor.component';
 import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
 
 @Component({
