@@ -1,5 +1,5 @@
 import { Component, SimpleChanges } from '@angular/core';
-import { BaseLexEntityRelationsComponent } from '../base-lex-entity-relations/base-lex-entity-relations.component';
+import { BaseLexEntityRelationsComponent } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
 import { LexEntryDirectRelationsStrategy } from './lex-entry-direct-relations-strategy';
 
 @Component({

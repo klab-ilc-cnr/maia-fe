@@ -22,11 +22,11 @@ import { LexSenseDirectRelationsComponent } from './controllers/editors/lex-sens
 import { LexSenseIndirectRelationsComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations.component';
 
 import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component';
-import { LexEntitySemanticRelIndirectComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component';
-import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
+import { LexEntitySemanticRelIndirectComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component';
+import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 import { LexEntryDirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-direct-relations/lex-entry-direct-relations.component';
 import { LexEntryIndirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations.component';
-import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
+import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
 
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';

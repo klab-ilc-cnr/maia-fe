@@ -2,11 +2,11 @@ import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexi
 import { Observable, map, of } from 'rxjs';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
-import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entry-relations-editor/base-lex-entity-relations/base-lex-entity-relations-strategy';
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { FormItem } from '../../lex-entry-relations-editor/base-lex-entity-relations/base-lex-entity-relations.component';
+import { FormItem } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
 
 export class LexSenseDirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
 

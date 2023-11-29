@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GENERIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { MenuItem } from 'primeng/api';
-import { LexEntitySemanticRelComponent } from '../../lex-entity-semantic-rel/lex-entity-semantic-rel.component';
+import { LexEntitySemanticRelComponent } from '../lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 
 export type PropertyItem = {
   menuItem: MenuItem;
