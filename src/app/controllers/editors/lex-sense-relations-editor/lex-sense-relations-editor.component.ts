@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { forkJoin } from 'rxjs';
-import { BaseLexEntityEditorComponent } from '../lex-entry-relations-editor/base-lex-entity-relations/base-lex-entity-editor.component';
+import { BaseLexEntityEditorComponent } from '../lex-entity-relations/base-lex-entity-relations/base-lex-entity-editor.component';
 
 @Component({
   selector: 'app-lex-sense-relations-editor',
