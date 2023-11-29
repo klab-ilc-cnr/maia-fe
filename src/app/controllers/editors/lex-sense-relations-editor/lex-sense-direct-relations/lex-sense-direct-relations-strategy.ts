@@ -7,6 +7,7 @@ import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model'
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { FormItem } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
+
 export class LexSenseDirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
 
   constructor(
