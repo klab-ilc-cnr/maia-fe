@@ -46,6 +46,10 @@ export class UserService {
     return this.http.get<User>(`${this.usersUrl}/current`);
   }
 
+  public retrieveAllRoles(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.usersUrl}/roles`);
+  }
+
   /**
    * POST per la creazione di un nuovo utente
    * @param user {User} nuovo utente

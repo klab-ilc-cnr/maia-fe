@@ -7,7 +7,6 @@ import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.mod
 import { LexicalEntryCore, MorphologyProperty } from 'src/app/models/lexicon/lexical-entry.model';
 import { GENERIC_RELATIONS, GENERIC_RELATION_TYPE, GenericRelationUpdater, LEXICAL_ENTRY_RELATIONS, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
-import { Roles } from 'src/app/models/roles';
 import { User } from 'src/app/models/user';
 import { CommonService } from 'src/app/services/common.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
@@ -213,7 +212,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       if (le.language) this.form.get('language')?.setValue(le.language);
       if (lexEntryPosCode) this.form.get('pos')?.setValue(lexEntryPosCode);
       if (lexEntryTypeCode && lexEntryTypeCode.length > 0) this.form.get('type')?.setValue(lexEntryTypeCode);
-      if (this.currentUser.role === Roles.AMMINISTRATORE) { //TODO vedere se altri ruoli devono essere autorizzati
+      if (this.currentUser.role === "ADMINISTRATOR") { //TODO vedere se altri ruoli devono essere autorizzati
         this.form.get('status')?.enable();
       }
       const seeAlsoCount = this.lexicalEntry.links.find(l => l.type === 'Reference')?.elements.find(r => r.label === 'seeAlso')?.count;
