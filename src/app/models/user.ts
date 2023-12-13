@@ -1,5 +1,4 @@
 import { Language } from "./language";
-import { Roles } from "./roles";
 
 /**Classe che definisce un utente */
 export class User {
@@ -16,7 +15,7 @@ export class User {
   created: string | undefined;
   updated: string | undefined;
   /**Ruolo */
-  role: Roles | undefined;
+  role: string | undefined;
   /**Definisce se l'utente è abilitato */
   active: boolean | undefined;
   /**Lista delle lingue associate all'utente */

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Roles } from '../models/roles';
 import { User } from '../models/user';
 import { StorageService } from './storage.service';
 
@@ -32,7 +31,7 @@ export class LoggedUserService {
     if (user === null && user === undefined) {
       return false;
     }
-    return (user?.role === (Roles.AMMINISTRATORE));
+    return (user?.role === "ADMINISTRATOR");
   }
 
   /**
@@ -44,7 +43,7 @@ export class LoggedUserService {
     if (user === null && user === undefined) {
       return false;
     }
-    return (user?.role === (Roles.AMMINISTRATORE));
+    return (user?.role === "ADMINISTRATOR");
   }
 
   /**
@@ -56,13 +55,13 @@ export class LoggedUserService {
     if (user === null && user === undefined) {
       return false;
     }
-    return (user?.role === (Roles.AMMINISTRATORE));
+    return (user?.role === "ADMINISTRATOR");
   }
 
   public canManageLexicon(): boolean {
     const user = this.currentUser;
     if (!user || user === undefined) return false;
-    return user.role === Roles.AMMINISTRATORE;
+    return user.role === "ADMINISTRATOR";
   }
 
 }

@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Roles } from '../models/roles';
 import { User } from '../models/user';
 /**
  * Definisce se l'elemento è modificabile se l'utente è un amministratore o l'elemento è di sua proprietà
@@ -13,7 +12,7 @@ export class ShouldBeEditablePipe implements PipeTransform {
     if(!currentUser.id) {
       return false;
     }
-    return currentUser.role === Roles.AMMINISTRATORE || elementOwnerId === +currentUser.id;
+    return currentUser.role === "ADMINISTRATOR" || elementOwnerId === +currentUser.id;
   }
 
 }

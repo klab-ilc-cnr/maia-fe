@@ -3,9 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, take, takeUntil, throwError } from 'rxjs';
+import { Subject, catchError, take, takeUntil, throwError } from 'rxjs';
 import { Language } from 'src/app/models/language';
-import { Roles } from 'src/app/models/roles';
 import { User } from 'src/app/models/user';
 import { LanguageService } from 'src/app/services/language.service';
 import { LoaderService } from 'src/app/services/loader.service';
@@ -69,7 +68,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   /**Identificativo per l'inserimento di un nuovo utente */
   private newId = 'new';
   /**Lista dei ruoli utente */
-  public roles = Object.keys(Roles);
+  public roles = this.userService.retrieveAllRoles();
   /**Lista delle lingue che possono essere associate a un utente */
   public languages$ = this.languageService.retrieveAll();
 
