@@ -21,7 +21,6 @@ interface AutoCompleteCompleteEvent {
 })
 export class LexEntitySemanticRelComponent implements OnInit {
 
-  @Input() lexEntryId!: string;
   @Input() control!: FormItem;
   @Input() form!: FormGroup;
   @Input() formItems!: FormItem[];
@@ -95,13 +94,6 @@ export class LexEntitySemanticRelComponent implements OnInit {
     this.popupDeleteItem.confirmMessage = confirmMsg;
 
     this.popupDeleteItem.showDeleteConfirmSimple(() => {
-
-      if (!this.selectedSuggestion) return;
-      if (!this.selectedSuggestion.relationshipURI) {
-        this.removeFormItem(relationshipLabel, itemID);
-        return;
-      }
-
       this.strategy.removeRelationship(control).pipe(
         take(1)
       ).subscribe({
