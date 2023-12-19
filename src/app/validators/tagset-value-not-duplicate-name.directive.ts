@@ -1,14 +1,14 @@
 import { Directive, Input } from '@angular/core';
-import { TagsetValue } from '../models/tagset/tagset-value';
 import { AbstractControl, NG_VALIDATORS, ValidatorFn } from '@angular/forms';
+import { TagsetValue } from '../models/tagset/tagset-value';
 
-/**Errore di duplicazione del nome di un valore di un tagset */
+/**Duplication error of a tagset value name */
 const VALIDATOR_ERROR = { 'tagsetValueNotDuplicateName': true };
 
 /**
- * Funzione che valuta se il nome del valore di un tagset è un duplicato
- * @param options {TagsetValue[]} lista di valori di un tagset
- * @returns {ValidatorFn} restituisce eventuali errori di duplicazione
+ * Function that evaluates whether the value name of a tagset is a duplicate
+ * @param options {TagsetValue[]} list of tagset values
+ * @returns {ValidatorFn} returns any duplication errors
  */
 export function TagsetValueNameDuplicateValidator(options: TagsetValue[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
@@ -26,7 +26,7 @@ export function TagsetValueNameDuplicateValidator(options: TagsetValue[]): Valid
   };
 }
 
-/**Direttiva di validazione del nome di un valore di un tagset affinché non costituisca un duplicato */
+/**Directive to validate the name of a tagset value so that it is not a duplicate */
 @Directive({
   selector: '[appTagsetValueNotDuplicateName]',
   providers: [
@@ -34,14 +34,14 @@ export function TagsetValueNameDuplicateValidator(options: TagsetValue[]): Valid
   ]
 })
 export class TagsetValueNotDuplicateNameDirective {
-  /**Lista di valori di un tagset sui quali effettuare il controllo */
+  /**List of values of a tagset on which to perform control */
   @Input('appTagsetValueNotDuplicateName')
   options: TagsetValue[] = [];
 
   /**
-   * Metodo dell'interfaccia Validator che verifica se il nome di un valore di un tagset costituisce un duplicato
-   * @param control {AbstractControl} campo di input da validare
-   * @returns {{ [key: string]: any } | null} eventuale errore di duplicazione
+   * Validator interface method that checks whether the name of a tagset value constitutes a duplicate
+   * @param control {AbstractControl} control to validate
+   * @returns {{ [key: string]: any } | null} any duplication error
    */
   validate(control: AbstractControl): { [key: string]: any } | null {
     return this.options ? TagsetValueNameDuplicateValidator(this.options)(control)

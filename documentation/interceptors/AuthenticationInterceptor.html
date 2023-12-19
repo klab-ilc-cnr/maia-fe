@@ -63,6 +63,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class that intercepts all outgoing http calls to add the jwt token</p>
+
+            </p>
 
 
             <section>
@@ -104,12 +111,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/interceptors/authentication.interceptor.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/interceptors/authentication.interceptor.ts:14</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Constructor for AuthenticationInterceptor</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -118,6 +127,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -132,6 +142,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>services to manage the local storage</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -167,14 +181,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/app/interceptors/authentication.interceptor.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/app/interceptors/authentication.interceptor.ts:29</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>HttpInterceptor interface method, identifies and handles a given http request</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -185,6 +201,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -199,6 +216,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>http request intercepted</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>next</td>
@@ -211,6 +232,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>transform an HttpRequest into a stream of HttpEvents</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -245,13 +270,23 @@ import { Injectable } from &#x27;@angular/core&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
 import { StorageService } from &#x27;../services/storage.service&#x27;;
 
+/**Class that intercepts all outgoing http calls to add the jwt token  */
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-
+  /**
+   * Constructor for AuthenticationInterceptor
+   * @param storageService {StorageService} services to manage the local storage
+   */
   constructor(
     private storageService: StorageService,
   ) { }
 
+  /**
+   * HttpInterceptor interface method, identifies and handles a given http request
+   * @param request {HttpRequest&lt;unknown&gt;} http request intercepted
+   * @param next {HttpHandler} transform an HttpRequest into a stream of HttpEvents 
+   * @returns {Observable&lt;HttpEvent&lt;unknown&gt;&gt;}
+   */
   intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
     const token &#x3D; this.storageService.getToken();
     const modReq &#x3D; request.clone({
@@ -261,6 +296,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 }
 
+/**List of HttpInterceptor providers */
 export const httpInterceptorProviders &#x3D; [
   {
     provide: HTTP_INTERCEPTORS,

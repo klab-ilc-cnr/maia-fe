@@ -1,10 +1,10 @@
 import { Directive } from '@angular/core';
-import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn } from '@angular/forms';
 
 /**
- * Funzione di validazione che controlla che l'uri sia correttamente formato
- * @param control {AbstractControl} campo di input da validare
- * @returns {ValidatorFn} restituisce eventuali errori di validazione
+ * Validation function that checks that the uri is correctly formed
+ * @param control {AbstractControl} control to validate
+ * @returns {ValidatorFn} returns any validation errors
  */
 export const uriValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (!control || !control.value) { return null; }
@@ -16,7 +16,7 @@ export const uriValidator: ValidatorFn = (control: AbstractControl): ValidationE
     return error;
 }
 
-/**Direttiva per la validazione di un uri */
+/**Directive for the validation of a uri */
 @Directive({
     selector: '[appUriValidator]',
     providers: [
@@ -25,9 +25,9 @@ export const uriValidator: ValidatorFn = (control: AbstractControl): ValidationE
 })
 export class UriValidator implements Validator {
     /**
-     * Metodo dell'interfaccia Validator che verifica che un uri sia correttamente formato
-     * @param control {AbstractControl} campo di input da validare
-     * @returns {ValidationErrors|null} eventuale errore di validazione
+     * Validator interface method that verifies that a uri is correctly formed
+     * @param control {AbstractControl} control to validate
+     * @returns {ValidationErrors|null} any validation errors
      */
     public validate(control: AbstractControl): ValidationErrors | null {
         return uriValidator(control)

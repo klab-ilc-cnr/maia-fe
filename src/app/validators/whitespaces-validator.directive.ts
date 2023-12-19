@@ -1,10 +1,10 @@
 import { Directive } from '@angular/core';
-import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn } from '@angular/forms';
 
 /**
- * Funzione di validazione che verifica se il valore di un input è costituito unicamente da spazi
- * @param control {AbstractControl} controllo da validare
- * @returns {ValidationErrors|null} eventuali errori
+ * Validation function that checks whether the value of an input consists only of spaces
+ * @param control {AbstractControl} control to validate
+ * @returns {ValidationErrors|null} any errors
  */
 export const whitespacesValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   if (!control || !control.value) { return null; }
@@ -16,7 +16,7 @@ export const whitespacesValidator: ValidatorFn = (control: AbstractControl): Val
   return null;
 }
 
-/**Direttiva di validazione che controlla se un input è costituito unicamente da spazi */
+/**Validation directive that checks whether an input consists only of spaces */
 @Directive({
   selector: '[appWhitespacesValidator]',
   providers: [
@@ -25,9 +25,9 @@ export const whitespacesValidator: ValidatorFn = (control: AbstractControl): Val
 })
 export class WhitespacesValidatorDirective implements Validator {
   /**
-   * Metodo dell'interfaccia Validator che controlla se un input è costituito unicamente da spazi
-   * @param control {AbstactControl} campo da validare
-   * @returns {ValidationErrors|null} eventuali errori
+   * Validator interface method that checks whether an input consists solely of spaces
+   * @param control {AbstactControl} control to validate
+   * @returns {ValidationErrors|null} any errors
    */
   public validate(control: AbstractControl): ValidationErrors | null {
     return whitespacesValidator(control)

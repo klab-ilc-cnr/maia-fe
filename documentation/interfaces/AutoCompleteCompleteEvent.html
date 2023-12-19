@@ -65,7 +65,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/controllers/editors/semantic-rel-editor/base-relations/base-semantic-input.component.ts</code>
+            <code>src/app/controllers/editors/lex-entry-relations-editor/lex-entity-semantic-rel/lex-entity-semantic-rel.component.ts</code>
         </p>
 
 
@@ -180,38 +180,37 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
 import { FormGroup } from &#x27;@angular/forms&#x27;;
 import { MessageService } from &#x27;primeng/api&#x27;;
-import { Observable, map, take } from &#x27;rxjs&#x27;;
+import { take } from &#x27;rxjs&#x27;;
 import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
-import { formTypeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
-import { SenseCore, SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
-import { FilteredSenseModel } from &#x27;src/app/models/lexicon/filtered-sense.model&#x27;;
-import { FormItem } from &#x27;../base-relations/base-relations.component&#x27;;
-
-export type SuggestionItem &#x3D; {
-  relationshipLabel: string,
-  senseListItem?: SenseListItem,
-};
+import { FormItem } from &#x27;../base-lex-entity-relations/base-lex-entity-relations.component&#x27;;
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from &#x27;../base-lex-entity-relations/base-lex-entity-relations-strategy&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
 }
 
-@Component({template: &#x27;&lt;div&gt;&lt;/div&gt;&#x27;})
-export abstract class BaseSemanticInputComponent implements OnInit {
+@Component({
+  selector: &#x27;app-lex-entity-semantic-rel&#x27;,
+  templateUrl: &#x27;./lex-entity-semantic-rel.component.html&#x27;,
+  styleUrls: [&#x27;./lex-entity-semantic-rel.component.scss&#x27;]
+})
+export class LexEntitySemanticRelComponent implements OnInit {
 
+  @Input() lexEntryId!: string;
   @Input() control!: FormItem;
   @Input() form!: FormGroup;
   @Input() formItems!: FormItem[];
-  @Input() senseEntry!: SenseCore;
+  @Input() strategy!: BaseLexEntityRelationsStrategy;
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
 
-  selectedSuggestion?: SuggestionItem;
-  suggestions: SuggestionItem[] &#x3D; [];
+  selectedSuggestion?: SuggestionEntry;
+  suggestions: SuggestionEntry[] &#x3D; [];
 
   constructor(
     protected lexiconService: LexiconService,
@@ -219,58 +218,40 @@ export abstract class BaseSemanticInputComponent implements OnInit {
     protected msgConfService: MessageConfigurationService,
   ) {}
 
+  private showHttpError(err: HttpErrorResponse): void {
+    console.error(err);
+    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error}&#x60;);
+    this.messageService.add(message);
+  }
+
   ngOnInit(): void {
+    const { destinationLabel, destinationURI } &#x3D; this.control;
     this.selectedSuggestion &#x3D; {
-      relationshipLabel: this.control.destinationLabel,
-    }
+      relationshipLabel: destinationLabel,
+      relationshipURI: destinationURI,
+    };
   }
 
-  private buildRelationshipLabel(item: SenseListItem): string {
-    return &#x60;${item.lemma} - ${item.label || &#x27;no def&#x27;}&#x60;;
-  }
-
-  abstract updateRelationship(senseListItem: SenseListItem | undefined, control: FormItem): Observable&lt;string&gt;;
-  abstract removeRelationship(control: FormItem): Observable&lt;string&gt;;
-
-  onSearchSense($event: AutoCompleteCompleteEvent) {
-    this.lexiconService.getFilteredSenses({
-      text: $event.query,
-      searchMode: &quot;startsWith&quot;,
-      formType: formTypeEnum.flexed,
-      status: &quot;&quot;,
-      type: &quot;&quot;,
-      field: &quot;&quot;,
-      pos: &quot;&quot;,
-      author: &quot;&quot;,
-      lang: &quot;&quot;,
-      offset: 0,
-      limit: 500,
-    }).pipe(
-      map((resp: FilteredSenseModel): SenseListItem[] &#x3D;&gt; resp.list),
-      take(1),
-    ).subscribe((result: SenseListItem[]) &#x3D;&gt; {
-      this.suggestions &#x3D; result.map((item: SenseListItem): SuggestionItem &#x3D;&gt; {
-        return {relationshipLabel: this.buildRelationshipLabel(item), senseListItem: item};
-      });
+  onSearchForSuggestions($event: AutoCompleteCompleteEvent) {
+    this.strategy.getSuggestions($event.query).pipe(
+      take(1)
+    ).subscribe((suggestions: SuggestionEntry[]) &#x3D;&gt; {
+      this.suggestions &#x3D; suggestions;
     });
   }
 
-  onSelectSenseUpdateRelationship(senseDisplayItem: SuggestionItem, control: FormItem) {
+  onSelectSuggestionUpdateRelationship(suggestion: SuggestionEntry, control: FormItem) {
 
-    this.updateRelationship(senseDisplayItem.senseListItem, control).pipe(
+    this.strategy.updateRelationship(control, suggestion).pipe(
       take(1)
     ).subscribe({
       next: () &#x3D;&gt; {
-        this.selectedSuggestion &#x3D; senseDisplayItem;
-        control.destinationURI &#x3D; senseDisplayItem.senseListItem?.sense || &#x27;&#x27;;
+        this.selectedSuggestion &#x3D; suggestion;
+        control.destinationURI &#x3D; suggestion.relationshipURI;
         const message &#x3D; this.msgConfService.generateSuccessMessageConfig(&#x60;${control.relationshipLabel} updated&#x60;);
         this.messageService.add(message);
       },
-      error: (err) &#x3D;&gt; {
-        console.error(err);
-        const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error}&#x60;);
-        this.messageService.add(message);
-      }
+      error: this.showHttpError
     });
   }
 
@@ -293,19 +274,20 @@ export abstract class BaseSemanticInputComponent implements OnInit {
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
 
     this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; {
-      if (!this.selectedSuggestion) return;
 
-      this.removeRelationship(control).pipe(
+      if (!this.selectedSuggestion) return;
+      if (!this.selectedSuggestion.relationshipURI) {
+        this.removeFormItem(relationshipLabel, itemID);
+        return;
+      }
+
+      this.strategy.removeRelationship(control).pipe(
         take(1)
       ).subscribe({
         next: () &#x3D;&gt; {
           this.removeFormItem(relationshipLabel, itemID);
         },
-        error: (err) &#x3D;&gt; {
-          console.error(err);
-          const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error}&#x60;);
-          this.messageService.add(message);
-        }
+        error: this.showHttpError
       });
     });
   }

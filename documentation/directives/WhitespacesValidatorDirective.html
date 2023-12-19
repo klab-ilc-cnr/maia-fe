@@ -65,7 +65,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Direttiva di validazione che controlla se un input è costituito unicamente da spazi</p>
+                <p>Validation directive that checks whether an input consists only of spaces</p>
 
             </p>
 
@@ -169,7 +169,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo dell&#39;interfaccia Validator che controlla se un input è costituito unicamente da spazi</p>
+                    <div class="io-description"><p>Validator interface method that checks whether an input consists solely of spaces</p>
 </div>
 
                     <div class="io-description">
@@ -197,7 +197,7 @@
 
 
                                     <td>
-                                        <p>campo da validare</p>
+                                        <p>control to validate</p>
 
                                     </td>
                                 </tr>
@@ -211,7 +211,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>eventuali errori</p>
+                        <p>any errors</p>
 
                     </div>
                 </td>
@@ -226,12 +226,12 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive } from &#x27;@angular/core&#x27;;
-import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors } from &#x27;@angular/forms&#x27;;
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn } from &#x27;@angular/forms&#x27;;
 
 /**
- * Funzione di validazione che verifica se il valore di un input è costituito unicamente da spazi
- * @param control {AbstractControl} controllo da validare
- * @returns {ValidationErrors|null} eventuali errori
+ * Validation function that checks whether the value of an input consists only of spaces
+ * @param control {AbstractControl} control to validate
+ * @returns {ValidationErrors|null} any errors
  */
 export const whitespacesValidator: ValidatorFn &#x3D; (control: AbstractControl): ValidationErrors | null &#x3D;&gt; {
   if (!control || !control.value) { return null; }
@@ -243,7 +243,7 @@ export const whitespacesValidator: ValidatorFn &#x3D; (control: AbstractControl)
   return null;
 }
 
-/**Direttiva di validazione che controlla se un input è costituito unicamente da spazi */
+/**Validation directive that checks whether an input consists only of spaces */
 @Directive({
   selector: &#x27;[appWhitespacesValidator]&#x27;,
   providers: [
@@ -252,9 +252,9 @@ export const whitespacesValidator: ValidatorFn &#x3D; (control: AbstractControl)
 })
 export class WhitespacesValidatorDirective implements Validator {
   /**
-   * Metodo dell&#x27;interfaccia Validator che controlla se un input è costituito unicamente da spazi
-   * @param control {AbstactControl} campo da validare
-   * @returns {ValidationErrors|null} eventuali errori
+   * Validator interface method that checks whether an input consists solely of spaces
+   * @param control {AbstactControl} control to validate
+   * @returns {ValidationErrors|null} any errors
    */
   public validate(control: AbstractControl): ValidationErrors | null {
     return whitespacesValidator(control)
