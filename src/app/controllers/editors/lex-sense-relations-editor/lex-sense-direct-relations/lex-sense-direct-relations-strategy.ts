@@ -72,6 +72,10 @@ export class LexSenseDirectRelationsStrategy implements BaseLexEntityRelationsSt
   }
 
   public removeRelationship(control: FormItem) {
+    if (!control.destinationURI) {
+      return of('');
+    }
+
     return this.lexiconService.deleteRelation(this.lexEntityId, {
       relation: control.relationshipURI,
       value: control.destinationURI,
