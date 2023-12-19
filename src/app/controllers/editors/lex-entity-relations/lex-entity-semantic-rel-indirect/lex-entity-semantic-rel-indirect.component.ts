@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { GENERIC_RELATIONS, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
-import { FormItem } from '../../base-relations/base-relations.component';
-import { BaseSemanticInputComponent } from '../../base-relations/base-semantic-input.component';
+import { GENERIC_RELATIONS } from 'src/app/models/lexicon/lexicon-updater';
 import { MenuItem } from 'primeng/api';
+import { LexEntitySemanticRelComponent } from '../lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 
 export type PropertyItem = {
   menuItem: MenuItem;
@@ -13,11 +11,11 @@ export type PropertyItem = {
 }
 
 @Component({
-  selector: 'app-semantic-rel-indirect',
-  templateUrl: './semantic-rel-indirect.component.html',
-  styleUrls: ['./semantic-rel-indirect.component.scss']
+  selector: 'app-lex-entity-semantic-rel-indirect',
+  templateUrl: './lex-entity-semantic-rel-indirect.component.html',
+  styleUrls: ['./lex-entity-semantic-rel-indirect.component.scss']
 })
-export class SemanticRelIndirectComponent extends BaseSemanticInputComponent {
+export class LexEntitySemanticRelIndirectComponent extends LexEntitySemanticRelComponent {
 
   properties = {
     Comment: GENERIC_RELATIONS.COMMENT,
@@ -65,19 +63,6 @@ export class SemanticRelIndirectComponent extends BaseSemanticInputComponent {
     const index = this.propertyItems.findIndex(p => p === propertyItem);
     this.propertyItems.splice(index, 1);
     this.menuItems.push(propertyItem.menuItem);
-  }
-
-  override updateRelationship(senseListItem: SenseListItem | undefined, control: FormItem) {
-    return this.lexiconService.updateLinguisticRelation(control.relationshipURI, {
-      type: LINGUISTIC_RELATION_TYPE.LEXICOSEMANTIC_REL,
-      relation: 'http://www.w3.org/ns/lemon/vartrans#target',
-      currentValue: control.destinationURI,
-      value: senseListItem?.sense || '',
-    });
-  }
-
-  override removeRelationship(control: FormItem) {
-    return this.lexiconService.deleteLexicoSemanticRelation(control.relationshipURI);
   }
 
 }

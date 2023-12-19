@@ -17,19 +17,16 @@ import { LexEntryEditorComponent } from './controllers/editors/lex-entry-editor/
 import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component';
 import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
-import { SemanticRelEditorComponent } from './controllers/editors/semantic-rel-editor/semantic-rel-editor.component';
-import { SemanticRelIndirectComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/semantic-rel-indirect.component';
-import { SemanticRelDirectComponent } from './controllers/editors/semantic-rel-editor/direct-relations/semantic-rel-direct/semantic-rel-direct.component';
-import { DirectRelationsComponent } from './controllers/editors/semantic-rel-editor/direct-relations/direct-relations.component';
-import { IndirectRelationsComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/indirect-relations.component';
-import { IndirectRelPropertyComponent } from './controllers/editors/semantic-rel-editor/indirect-relations/semantic-rel-indirect/indirect-rel-property/indirect-rel-property.component';
+import { LexSenseRelationsEditorComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-relations-editor.component';
+import { LexSenseDirectRelationsComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-direct-relations/lex-sense-direct-relations.component';
+import { LexSenseIndirectRelationsComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations.component';
 
 import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component';
-import { LexEntitySemanticRelIndirectComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component';
-import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entry-relations-editor/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
+import { LexEntitySemanticRelIndirectComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component';
+import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 import { LexEntryDirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-direct-relations/lex-entry-direct-relations.component';
 import { LexEntryIndirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations.component';
-import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
+import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
 
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
@@ -80,12 +77,9 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     LexEntryEditorComponent,
     FormCoreEditorComponent,
     SenseCoreEditorComponent,
-    SemanticRelEditorComponent,
-    SemanticRelDirectComponent,
-    SemanticRelIndirectComponent,
-    DirectRelationsComponent,
-    IndirectRelationsComponent,
-    IndirectRelPropertyComponent,
+    LexSenseRelationsEditorComponent,
+    LexSenseDirectRelationsComponent,
+    LexSenseIndirectRelationsComponent,
     LexEntryRelationsEditorComponent,
     LexEntitySemanticRelComponent,
     LexEntitySemanticRelIndirectComponent,
