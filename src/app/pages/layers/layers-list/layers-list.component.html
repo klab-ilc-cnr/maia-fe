@@ -90,6 +90,9 @@
                 <div *ngIf="color.errors?.['required']">
                   Color is mandatory
                 </div>
+                <div *ngIf="color.errors?.['notDuplicateName']">
+                  The color is already used
+                </div>
               </div>
             </div>
           </div>

@@ -6,7 +6,6 @@ import { Annotation } from 'src/app/models/annotation/annotation';
 import { AnnotationFeature } from 'src/app/models/annotation/annotation-feature';
 import { FeatureForAnnotation } from 'src/app/models/feature/feature-for-annotation';
 import { FeatureType } from 'src/app/models/feature/feature-type';
-import { Roles } from 'src/app/models/roles';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature } from 'src/app/models/texto/t-feature';
 import { AnnotationService } from 'src/app/services/annotation.service';
@@ -189,7 +188,7 @@ export class AnnotationEditorComponent implements OnInit, OnDestroy {
     }
 
     if ((this.currentUserId && this.annotationModel.attributes["metadata"] && this.annotationModel.attributes["metadata"].createdBy && this.annotationModel.attributes["metadata"].createdBy == this.currentUserId) ||
-      this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE) { //valuta se l'utente loggato è il creatore dell'annotazione o se è un utente amministratore
+      this.loggedUserService.currentUser?.role == "ADMINISTRATOR") { //valuta se l'utente loggato è il creatore dell'annotazione o se è un utente amministratore
       return true;
     }
 

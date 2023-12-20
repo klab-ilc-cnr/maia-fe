@@ -3,7 +3,9 @@
     <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$" *ngIf="selectedTab === 0"></app-lex-entry-editor>
   </p-tabPanel>
   <p-tabPanel header="Decomposition" [disabled]="demoHide"></p-tabPanel>
-  <p-tabPanel header="Relations" [disabled]="demoHide"></p-tabPanel>
+  <p-tabPanel header="Relations">
+    <app-lex-entry-relations-editor *ngIf="selectedTab === 2" [entry$]="lexicalEntry$"></app-lex-entry-relations-editor>
+  </p-tabPanel>
   <p-tabPanel header="Contexts" [disabled]="demoHide"></p-tabPanel>
   <p-tabPanel header="Multimedia" [disabled]="demoHide"></p-tabPanel>
   <p-tabPanel header="Dictionary view" [disabled]="demoHide"></p-tabPanel>

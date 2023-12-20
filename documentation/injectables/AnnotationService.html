@@ -86,14 +86,6 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#annotationUrl" >annotationUrl</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#cashUrl" >cashUrl</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
                                 <a href="#textoUrl" >textoUrl</a>
                             </li>
                         </ul>
@@ -110,11 +102,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#_retrieveText" >_retrieveText</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#create" >create</a>
+                                <a href="#createAnnotation" >createAnnotation</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -122,19 +110,15 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#delete" >delete</a>
+                                <a href="#deleteAnnotationById" >deleteAnnotationById</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#deleteAnnotationFeature" >deleteAnnotationFeature</a>
+                                <a href="#retrieveAnnotationFeaturesById" >retrieveAnnotationFeaturesById</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#retreiveContent" >retreiveContent</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#retrieveByNodeId" >retrieveByNodeId</a>
+                                <a href="#retrieveResourceAnnotations" >retrieveResourceAnnotations</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -142,11 +126,11 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#retrieveTokens" >retrieveTokens</a>
+                                <a href="#retrieveTextSplitted" >retrieveTextSplitted</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#update" >update</a>
+                                <a href="#updateAnnotationFeature" >updateAnnotationFeature</a>
                             </li>
                         </ul>
                     </td>
@@ -171,7 +155,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/services/annotation.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/annotation.service.ts:16</a></div>
                             </td>
                         </tr>
 
@@ -225,33 +209,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="_retrieveText"></a>
+                    <a name="createAnnotation"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>_retrieveText</b></span>
-                        <a href="#_retrieveText"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>createAnnotation</b></span>
+                        <a href="#createAnnotation"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>_retrieveText(nodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>createAnnotation(annotation: <a href="../classes/TAnnotation.html" target="_self">TAnnotation</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="83"
-                            class="link-to-prism">src/app/services/annotation.service.ts:83</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="172"
+                            class="link-to-prism">src/app/services/annotation.service.ts:172</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera un testo sulla base dell&#39;id</p>
+                    <div class="io-description"><p>DELETE che rimuove le feature di una annotazione dato il suo ID</p>
 </div>
 
                     <div class="io-description">
@@ -263,14 +247,13 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>nodeId</td>
+                                    <td>annotation</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                <code><a href="../classes/TAnnotation.html" target="_self" >TAnnotation</a></code>
                                     </td>
 
                                     <td>
@@ -278,10 +261,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>numerico del nodo testo}</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -289,106 +268,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>    <code>Observable&lt;TAnnotation&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable del testo</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="create"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>create</b></span>
-                        <a href="#create"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(nodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, item: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="50"
-                            class="link-to-prism">src/app/services/annotation.service.ts:50</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>POST che effettua la creazione di una nuova annotazione</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>nodeId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>identificativo numerico del file</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>item</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>la nuova annotazione</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable della nuova annotazione</p>
+                        <p>observable dell&#39;esito</p>
 
                     </div>
                 </td>
@@ -410,23 +294,21 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createAnnotationFeature(annFeature: <a href="../classes/AnnotationFeature.html" target="_self">AnnotationFeature</a>)</code>
+                    <code>createAnnotationFeature(annotationFeature: <a href="../classes/TAnnotationFeature.html" target="_self">TAnnotationFeature</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="133"
-                            class="link-to-prism">src/app/services/annotation.service.ts:133</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/app/services/annotation.service.ts:183</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>POST che effettua la creazione di una nuova feature per un&#39;annotazione</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -437,14 +319,13 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>annFeature</td>
+                                    <td>annotationFeature</td>
                                     <td>
-                                                <code><a href="../classes/AnnotationFeature.html" target="_self" >AnnotationFeature</a></code>
+                                                <code><a href="../classes/TAnnotationFeature.html" target="_self" >TAnnotationFeature</a></code>
                                     </td>
 
                                     <td>
@@ -452,10 +333,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>feature dell&#39;annotazione</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -463,12 +340,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>    <code>Observable&lt;TAnnotationFeature&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable della nuova feature dell&#39;annotazione</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -478,34 +354,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="delete"></a>
+                    <a name="deleteAnnotationById"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>delete</b></span>
-                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>deleteAnnotationById</b></span>
+                        <a href="#deleteAnnotationById"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(annotationId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>deleteAnnotationById(annotationId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="117"
-                            class="link-to-prism">src/app/services/annotation.service.ts:117</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="179"
+                            class="link-to-prism">src/app/services/annotation.service.ts:179</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>DELETE che esegue la cancellazione di una annotazione sulla base del suo ID</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -516,7 +390,6 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -531,168 +404,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>identificativo numerico dell&#39;annotazione</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable dell&#39;esito</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="deleteAnnotationFeature"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>deleteAnnotationFeature</b></span>
-                        <a href="#deleteAnnotationFeature"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteAnnotationFeature(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="147"
-                            class="link-to-prism">src/app/services/annotation.service.ts:147</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>DELETE che rimuove le feature di una annotazione dato il suo ID</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>identificativo numerico dell&#39;annotazione</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;boolean&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable dell&#39;esito della cancellazione</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="retreiveContent"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>retreiveContent</b></span>
-                        <a href="#retreiveContent"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retreiveContent(nodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="106"
-                            class="link-to-prism">src/app/services/annotation.service.ts:106</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera il contenuto dato l&#39;id di un nodo (testuale?) //TODO verificare sullo swagger di cash</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>nodeId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>identificativo numerico</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -704,8 +415,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>observable dell&#39;esito</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -715,34 +425,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="retrieveByNodeId"></a>
+                    <a name="retrieveAnnotationFeaturesById"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>retrieveByNodeId</b></span>
-                        <a href="#retrieveByNodeId"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>retrieveAnnotationFeaturesById</b></span>
+                        <a href="#retrieveAnnotationFeaturesById"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieveByNodeId(nodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>retrieveAnnotationFeaturesById(annotationId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="38"
-                            class="link-to-prism">src/app/services/annotation.service.ts:38</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="190"
+                            class="link-to-prism">src/app/services/annotation.service.ts:190</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera le annotazioni dato l&#39;id del nodo</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -753,12 +461,11 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>nodeId</td>
+                                    <td>annotationId</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
@@ -768,10 +475,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>identificativo numerico del nodo</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -779,12 +482,94 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                        <b>Returns : </b>    <code>Observable&lt;TAnnotationFeature[]&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable delle annotazioni</p>
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveResourceAnnotations"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>retrieveResourceAnnotations</b></span>
+                        <a href="#retrieveResourceAnnotations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>retrieveResourceAnnotations(resourceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, slice: literal type)</code>
+                </td>
+            </tr>
 
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/app/services/annotation.service.ts:108</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>resourceId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>slice</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;TAnnotation[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -812,8 +597,94 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="89"
-                            class="link-to-prism">src/app/services/annotation.service.ts:89</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">src/app/services/annotation.service.ts:85</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>GET che recupera un testo sulla base dell&#39;id</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>textId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>slice</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable delle annotazioni</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveTextSplitted"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>retrieveTextSplitted</b></span>
+                        <a href="#retrieveTextSplitted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>retrieveTextSplitted(textId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, slice: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="97"
+                            class="link-to-prism">src/app/services/annotation.service.ts:97</a></div>
                 </td>
             </tr>
 
@@ -863,7 +734,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+                        <b>Returns : </b>        <code><a href="../classes/PaginatedResponse.html" target="_self" >Observable&lt;PaginatedResponse&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -877,34 +748,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="retrieveTokens"></a>
+                    <a name="updateAnnotationFeature"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>retrieveTokens</b></span>
-                        <a href="#retrieveTokens"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateAnnotationFeature</b></span>
+                        <a href="#updateAnnotationFeature"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieveTokens(nodeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>updateAnnotationFeature(annFeatId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, annotationFeature: <a href="../classes/TAnnotationFeature.html" target="_self">TAnnotationFeature</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="72"
-                            class="link-to-prism">src/app/services/annotation.service.ts:72</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="194"
+                            class="link-to-prism">src/app/services/annotation.service.ts:194</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera i token dato l&#39;id di un nodo (testuale?) //TODO verificare sullo swagger di cash</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -915,12 +784,11 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>nodeId</td>
+                                    <td>annFeatId</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
@@ -930,78 +798,11 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>identificativo numerico</p>
-
-                                    </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable dell&#39;esito</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="update"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>update</b></span>
-                        <a href="#update"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(item: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="61"
-                            class="link-to-prism">src/app/services/annotation.service.ts:61</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>PUT che aggiorna i dati di un&#39;annotazione</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
                                 <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>item</td>
+                                    <td>annotationFeature</td>
                                     <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                <code><a href="../classes/TAnnotationFeature.html" target="_self" >TAnnotationFeature</a></code>
                                     </td>
 
                                     <td>
@@ -1009,10 +810,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>un&#39;annotazione modificata</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1020,12 +817,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>Observable&lt;TAnnotationFeature&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable dell&#39;annotazione modificata</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -1037,72 +833,6 @@
     <h3 id="inputs">
         Properties
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="annotationUrl"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>annotationUrl</b></span>
-                        <a href="#annotationUrl"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/annotation.service.ts:15</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Url per le chiamate relative alle annotazioni</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="cashUrl"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>cashUrl</b></span>
-                        <a href="#cashUrl"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/annotation.service.ts:17</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Url per le chiamate a cash</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1123,7 +853,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/services/annotation.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/annotation.service.ts:16</a></div>
                         </td>
                     </tr>
 
@@ -1136,12 +866,14 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AnnotationFeature } from &#x27;src/app/models/annotation/annotation-feature&#x27;;
-import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
 import { Injectable } from &#x27;@angular/core&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
 import { environment } from &#x27;src/environments/environment&#x27;;
 import { v4 as uuidv4 } from &#x27;uuid&#x27;;
+import { PaginatedResponse } from &#x27;../models/texto/paginated-response&#x27;;
+import { TAnnotation } from &#x27;../models/texto/t-annotation&#x27;;
+import { TAnnotationFeature } from &#x27;../models/texto/t-annotation-feature&#x27;;
 
 /**Classe dei servizi per le annotazioni */
 @Injectable({
@@ -1149,18 +881,12 @@ import { v4 as uuidv4 } from &#x27;uuid&#x27;;
 })
 export class AnnotationService {
 
-  /**Url per le chiamate relative alle annotazioni */
-  private annotationUrl: string;
-  /**Url per le chiamate a cash */
-  private cashUrl: string;
   private textoUrl: string;
   /**
    * Costruttore per AnnotationService
    * @param http {HttpClient} effettua le chiamate HTTP
    */
   constructor(private http: HttpClient) {
-    this.annotationUrl &#x3D; environment.annotationUrl;
-    this.cashUrl &#x3D; environment.cashUrl;
     this.textoUrl &#x3D; environment.textoUrl;
   }
 
@@ -1173,11 +899,11 @@ export class AnnotationService {
    * @param nodeId {number} identificativo numerico del nodo
    * @returns {Observable&lt;any&gt;} observable delle annotazioni
    */
-  public retrieveByNodeId(nodeId: number): Observable&lt;any&gt; {
-    const uuid &#x3D; uuidv4();
-    //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
-    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  }
+  // public retrieveByNodeId(nodeId: number): Observable&lt;any&gt; {
+  //   const uuid &#x3D; uuidv4();
+  //   //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
+  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
+  // }
 
   /**
    * POST che effettua la creazione di una nuova annotazione
@@ -1185,44 +911,44 @@ export class AnnotationService {
    * @param item {any} la nuova annotazione
    * @returns {Observable&lt;any&gt;} observable della nuova annotazione
    */
-  public create(nodeId: number, item: any): Observable&lt;any&gt; {
-    const uuid &#x3D; uuidv4();
-    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-    return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;, item);
-  }
+  // public create(nodeId: number, item: any): Observable&lt;any&gt; {
+  //   const uuid &#x3D; uuidv4();
+  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+  //   return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;, item);
+  // }
 
   /**
    * PUT che aggiorna i dati di un&#x27;annotazione
    * @param item {any} un&#x27;annotazione modificata
    * @returns {Observable&lt;any&gt;} observable dell&#x27;annotazione modificata
    */
-  public update(item: any) {
-    const uuid &#x3D; uuidv4();
-    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-    return this.http.put&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&#x60;, item);
-  }
+  // public update(item: any) {
+  //   const uuid &#x3D; uuidv4();
+  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+  //   return this.http.put&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&#x60;, item);
+  // }
 
   /**
    * GET che recupera i token dato l&#x27;id di un nodo (testuale?) //TODO verificare sullo swagger di cash
    * @param nodeId {number} identificativo numerico
    * @returns {Observable&lt;any&gt;} observable dell&#x27;esito
    */
-  public retrieveTokens(nodeId: number): Observable&lt;any&gt; {
-    const uuid &#x3D; uuidv4();
+  // public retrieveTokens(nodeId: number): Observable&lt;any&gt; {
+  //   const uuid &#x3D; uuidv4();
 
-    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/token?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  }
+  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/token?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
+  // }
 
   /**
    * GET che recupera un testo sulla base dell&#x27;id
    * @param nodeId {identificativo numerico del nodo testo}
    * @returns {Observable&lt;any&gt;} observable del testo
    */
-  public _retrieveText(nodeId: number): Observable&lt;any&gt; {
-    const uuid &#x3D; uuidv4();
-    //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
-    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/gettext?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  }
+  // public _retrieveText(nodeId: number): Observable&lt;any&gt; {
+  //   const uuid &#x3D; uuidv4();
+  //   //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
+  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/gettext?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
+  // }
 
   public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable&lt;string&gt; {
     const uuid &#x3D; uuidv4();
@@ -1236,28 +962,51 @@ export class AnnotationService {
     );
   }
 
+  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable&lt;PaginatedResponse&gt; { //TODO cambierà la firma, non sarà lista di stringhe ma json
+    const uuid &#x3D; uuidv4();
+    return this.http.post&lt;PaginatedResponse&gt;(
+      &#x60;${this.textoUrl}/texto/resource/${textId}/rows&#x60;,
+      slice,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }),
+      }
+    );
+  }
+
+  public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable&lt;TAnnotation[]&gt; {
+    const uuid &#x3D; uuidv4();
+    return this.http.post&lt;TAnnotation[]&gt;(
+      &#x60;${this.textoUrl}/texto/resource/${resourceId}/annotations&#x60;,
+      slice,
+      {
+        headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }),
+      }
+    );
+  }
+
+
   /**
    * GET che recupera il contenuto dato l&#x27;id di un nodo (testuale?) //TODO verificare sullo swagger di cash
    * @param nodeId {number} identificativo numerico
    * @returns {Observable&lt;any&gt;} observable dell&#x27;esito
    */
-  public retreiveContent(nodeId: number) {
-    const uuid &#x3D; uuidv4();
+  // public retreiveContent(nodeId: number) {
+  //   const uuid &#x3D; uuidv4();
 
-    return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/getcontent?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  }
+  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/getcontent?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
+  // }
 
   /**
    * DELETE che esegue la cancellazione di una annotazione sulla base del suo ID
    * @param annotationId {number} identificativo numerico dell&#x27;annotazione
    * @returns {Observable&lt;any&gt;} observable dell&#x27;esito
    */
-  public delete(annotationId: number): Observable&lt;any&gt; {
-    const uuid &#x3D; uuidv4();
+  // public delete(annotationId: number): Observable&lt;any&gt; {
+  //   const uuid &#x3D; uuidv4();
 
-    //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-    return this.http.delete&lt;any&gt;(&#x60;${this.cashUrl}/api/annotate?requestUUID&#x3D;${uuid}&amp;annotationID&#x3D;${annotationId}&#x60;);
-  }
+  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
+  //   return this.http.delete&lt;any&gt;(&#x60;${this.cashUrl}/api/annotate?requestUUID&#x3D;${uuid}&amp;annotationID&#x3D;${annotationId}&#x60;);
+  // }
 
   // FINE CHIAMATE CASH SERVER
 
@@ -1268,9 +1017,9 @@ export class AnnotationService {
    * @param annFeature {AnnotationFeature} feature dell&#x27;annotazione
    * @returns {Observable&lt;any&gt;} observable della nuova feature dell&#x27;annotazione
    */
-  public createAnnotationFeature(annFeature: AnnotationFeature): Observable&lt;any&gt; {
-    return this.http.post&lt;any&gt;(&#x60;${this.annotationUrl}&#x60;, annFeature);
-  }
+  // public _createAnnotationFeature(annFeature: AnnotationFeature): Observable&lt;any&gt; {
+  //   return this.http.post&lt;any&gt;(&#x60;${this.annotationUrl}&#x60;, annFeature);
+  // }
 
   //non necessario al momento
   /*   public updateAnnotationFeature(annFeatures: AnnotationFeature): Observable&lt;AnnotationFeature&gt; {
@@ -1282,9 +1031,42 @@ export class AnnotationService {
    * @param id {number} identificativo numerico dell&#x27;annotazione
    * @returns {Observable&lt;boolean&gt;} observable dell&#x27;esito della cancellazione
    */
-  public deleteAnnotationFeature(id: number): Observable&lt;boolean&gt; {
-    return this.http.delete&lt;boolean&gt;(&#x60;${this.annotationUrl}/${id}&#x60;);
+  // public deleteAnnotationFeature(id: number): Observable&lt;boolean&gt; {
+  //   return this.http.delete&lt;boolean&gt;(&#x60;${this.annotationUrl}/${id}&#x60;);
+  // }
+
+  //#region TEXTO BACK END
+
+  public createAnnotation(annotation: TAnnotation): Observable&lt;TAnnotation&gt; {
+    return this.http.post&lt;TAnnotation&gt;(
+      &#x60;${this.textoUrl}/texto/annotation/create&#x60;,
+      annotation,
+    );
   }
+
+  public deleteAnnotationById(annotationId: number) {
+    return this.http.get(&#x60;${this.textoUrl}/texto/annotation/${annotationId}/remove&#x60;);
+  }
+
+  public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {
+    return this.http.post&lt;TAnnotationFeature&gt;(
+      &#x60;${this.textoUrl}/texto/annotationFeature/create&#x60;,
+      annotationFeature,
+    );
+  }
+
+  public retrieveAnnotationFeaturesById(annotationId: number): Observable&lt;TAnnotationFeature[]&gt; {
+    return this.http.get&lt;TAnnotationFeature[]&gt;(&#x60;${this.textoUrl}/texto/annotation/${annotationId}/features&#x60;);
+  }
+
+  public updateAnnotationFeature(annFeatId: number, annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {
+    return this.http.post&lt;TAnnotationFeature&gt;(
+      &#x60;${this.textoUrl}/texto/annotationFeature/update&#x60;,
+      annotationFeature
+    );
+  }
+
+  //#endregion
 }
 </code></pre>
     </div>

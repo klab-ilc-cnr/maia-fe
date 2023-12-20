@@ -30,6 +30,7 @@ export interface LexicalEntryRequest {
   lang: string,
   /**Stato di lavorazione */
   status: string,
+  field?: string,
   /**offset */
   offset: number,
   /**Limite dei risultati */

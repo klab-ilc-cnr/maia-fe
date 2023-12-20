@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { User } from '../models/user';
 
 /**Classe dei servizi relativi agli utenti */
 @Injectable({
@@ -46,6 +46,10 @@ export class UserService {
     return this.http.get<User>(`${this.usersUrl}/current`);
   }
 
+  public retrieveAllRoles(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.usersUrl}/roles`);
+  }
+
   /**
    * POST per la creazione di un nuovo utente
    * @param user {User} nuovo utente
@@ -62,5 +66,12 @@ export class UserService {
    */
   public update(user: User) {
     return this.http.put<User>(this.usersUrl, user);
+  }
+
+  public updatePassword(pwdBody: { id?: number, newPassword: string, currentPassword?: string }): Observable<User> {
+    return this.http.post<User>(
+      `${this.usersUrl}/password`,
+      pwdBody,
+    );
   }
 }

@@ -4,9 +4,9 @@
     <app-sense-core-editor *ngIf="senseEntry" [senseEntry]="senseEntry"
       [lexEntryId]="lexEntryId"></app-sense-core-editor>
   </p-tabPanel>
-  <p-tabPanel header="Semantic Relations" [disabled]="demoHide">
+  <p-tabPanel header="Semantic Relations">
     <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton>
-    <app-semantic-rel-editor *ngIf="senseEntry" [senseEntry]="senseEntry"></app-semantic-rel-editor>
+    <app-lex-sense-relations-editor *ngIf="senseEntry" [senseEntry]="senseEntry"></app-lex-sense-relations-editor>
   </p-tabPanel>
   <p-tabPanel header="Metadata">
     <app-sense-metadata-editor *ngIf="senseEntry" [entry$]="entry$" confidenceLabel="Sense confidence"></app-sense-metadata-editor>

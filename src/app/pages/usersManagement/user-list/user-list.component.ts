@@ -1,10 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Roles } from 'src/app/models/roles';
-import { Table } from 'primeng/table';
-import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoaderService } from 'src/app/services/loader.service';
+import { Table } from 'primeng/table';
+import { UserService } from 'src/app/services/user.service';
 
 /**Componente della tabella delle anagrafiche utenti */
 @Component({
@@ -12,41 +9,24 @@ import { LoaderService } from 'src/app/services/loader.service';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent {
 
   /**Riferimento alla tabella di visualizzazione */
   @ViewChild('dt') public dt: Table | undefined
 
-  /**Lista dei possibili ruoli utente */
-  public roleOptions = Array<string>();
   /**Lista degli utenti */
-  public users = new Array<User>();
+  public users = this.userService.findAll();
 
   /**
    * Costruttore per UserListComponent
    * @param router {Router} servizi per la navigazione fra le viste
-   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
    * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
    * @param userService {UserService} servizi relativi agli utenti
    */
   constructor(
     private router: Router,
-    private loaderService: LoaderService,
     private activeRoute: ActivatedRoute,
     private userService: UserService) { }
-
-  /**Metodo dell'interfaccia OnInit che recupera le informazioni iniziali di visualizzazione */
-  ngOnInit() {
-    this.loaderService.show(); //mostra il loading
-    this.userService.findAll().subscribe({
-      next: (data) => {
-        this.users = data;
-        this.loaderService.hide(); //nasconde il loading
-      }
-    });
-
-    this.roleOptions = Object.keys(Roles); //recupera la lista di ruoli dalla relativa enum
-  }
 
   /**
    * Metodo associato a onRowSelect che permette di modificare i dati di un utente selezionando una qualsiasi riga della tabella

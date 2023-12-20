@@ -21,6 +21,7 @@ export class LayersListComponent {
   layers$ = this.layerState.layers$;
   layerOnEdit: TLayer | undefined = undefined;
   layersNames: string[] = [];
+  layersColor: string[] = [];
   tlayerForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     color: new FormControl<string>('', [Validators.required]),
@@ -72,8 +73,10 @@ export class LayersListComponent {
     this.layers$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(ll => {
-      const temp = ll.map(l => l.name!);
-      this.layersNames = temp;
+      const tempNames = ll.map(l => l.name!);
+      const tempColors = ll.map(l => l.color!);
+      this.layersNames = tempNames;
+      this.layersColor = tempColors;
     });
   }
 
@@ -101,8 +104,8 @@ export class LayersListComponent {
   }
 
   /**
-   * Metodo che visualizza il modale di conferma cancellazione di un layer
-   * @param layer {Layer} layer da eliminare
+   * Method that displays the delete confirmation modal of a layer
+   * @param layer {Layer} layer to remove
    */
   showDeleteLayerModal(layer: TLayer) {
     const confirmMsg = `You are about to delete the layer "${layer.name}"`;
@@ -111,26 +114,30 @@ export class LayersListComponent {
   }
 
   /**
-   * Metodo che visualizza il modale di modifica di un layer
-   * @param layer {Layer} layer da modificare
+   * Method that displays the editing modal of a layer
+   * @param layer {TLayer} layer to edit
    */
   showEditLayerModal(layer: TLayer) {
     this.tlayerForm.reset();
     this.layerOnEdit = layer;
     this.name.setValue(layer.name || '');
-    this.name.setValidators(nameDuplicateValidator(this.layersNames));
+    const tempNames = this.layersNames.filter(n => n !== layer.name); //If the name is not changed, it should not be invalid
+    this.name.setValidators(nameDuplicateValidator(tempNames));
     this.color.setValue(layer.color || '');
+    const tempColors = this.layersColor.filter(l => l !== layer.color); //If the color is not changed, it should not be invalid
+    this.color.setValidators(nameDuplicateValidator(tempColors));
     this.description.setValue(layer.description || '');
     this.modalTitle = layer.name || 'Edit layer';
     this.visibleEditNewLayer = true;
   }
 
-  /**Metodo che visualizza il modale di modifica di un layer per un nuovo inserimento */
+  /**Method that displays the modal with the form to create a new layer */
   showLayerModal() {
     this.layerOnEdit = undefined;
     this.tlayerForm.reset();
     this.modalTitle = "New layer";
     this.name.setValidators(nameDuplicateValidator(this.layersNames));
+    this.color.setValidators(nameDuplicateValidator(this.layersColor));
     this.visibleEditNewLayer = true;
   }
 

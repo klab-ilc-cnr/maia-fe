@@ -1,0 +1,600 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>maia-fe documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">maia-fe documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Interfaces</li>
+  <li
+  >
+  FeatForAnn</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/controllers/editors/text-annotation-editor/text-annotation-editor.component.ts</code>
+        </p>
+
+
+
+
+        <section>
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#feature" 
+>
+                                            feature
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#tagsetItems" 
+>
+                                            tagsetItems
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#value" 
+>
+                                            value
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section>
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="feature"></a>
+                                        <span class="name "><b>feature</b>
+                                            <a href="#feature">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>feature:     <code>TFeature | undefined</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>TFeature | undefined</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="tagsetItems"></a>
+                                        <span class="name "><b>tagsetItems</b>
+                                            <a href="#tagsetItems">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>tagsetItems:     <code>Observable&lt;TTagsetItem[]&gt; | undefined</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Observable&lt;TTagsetItem[]&gt; | undefined</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="value"></a>
+                                        <span class="name "><b>value</b>
+                                            <a href="#value">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>value:     <code>string | undefined</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string | undefined</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from &#x27;@angular/core&#x27;;
+import { FormControl, FormGroup } from &#x27;@angular/forms&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
+import { Observable, Subject, catchError, map, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
+import { searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
+import { FormListItem, SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { TAnnotation } from &#x27;src/app/models/texto/t-annotation&#x27;;
+import { TFeature, TFeatureType } from &#x27;src/app/models/texto/t-feature&#x27;;
+import { TTagsetItem } from &#x27;src/app/models/texto/t-tagset-item&#x27;;
+import { User } from &#x27;src/app/models/user&#x27;;
+import { AnnotationService } from &#x27;src/app/services/annotation.service&#x27;;
+import { LayerService } from &#x27;src/app/services/layer.service&#x27;;
+import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { TagsetService } from &#x27;src/app/services/tagset.service&#x27;;
+import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import { uriValidator } from &#x27;src/app/validators/uri-validator.directive&#x27;;
+import { whitespacesValidator } from &#x27;src/app/validators/whitespaces-validator.directive&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+import { PopupDeleteItemComponent } from &#x27;../../popup/popup-delete-item/popup-delete-item.component&#x27;;
+
+export interface FeatForAnn {
+  feature: TFeature | undefined;
+  tagsetItems: Observable&lt;TTagsetItem[]&gt; | undefined;
+  value: string | undefined;
+}
+
+@Component({
+  selector: &#x27;app-text-annotation-editor&#x27;,
+  templateUrl: &#x27;./text-annotation-editor.component.html&#x27;,
+  styleUrls: [&#x27;./text-annotation-editor.component.scss&#x27;]
+})
+export class TextAnnotationEditorComponent implements OnDestroy {
+  private readonly unsubscribe$ &#x3D; new Subject();
+  /**Tipi di feature */
+  featureTypes &#x3D; TFeatureType;
+  @Input() annotationFragment!: string;
+  annotationForm &#x3D; new FormGroup({
+    layer: new FormControl&lt;string&gt;({ value: &#x27;&#x27;, disabled: true }),
+    text: new FormControl&lt;string&gt;({ value: &#x27;&#x27;, disabled: true }),
+    feature: new FormGroup({})
+  });
+  get featureForm(): FormGroup { return this.annotationForm.get(&#x27;feature&#x27;) as FormGroup }
+  currentUser!: User;
+  @Input()
+  get annotationModel(): TAnnotation { return this._annotation; }
+  set annotationModel(annotation: TAnnotation) {
+    this._annotation &#x3D; annotation;
+    const layerId &#x3D; annotation.layer?.id;
+    if (!layerId) {
+      throw Error(&#x27;layer id undefined&#x27;);
+    }
+    this.fetchAndMapFeatures(layerId);
+  }
+  features: FeatForAnn[] &#x3D; [];
+
+  public get isEditing(): boolean {
+    if (this.annotationModel &amp;&amp; this.annotationModel.id) {
+      return true;
+    }
+    return false;
+  }
+
+  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel || !this.annotationModel?.layer || !this.annotationModel?.layer.id || (!this.annotationModel.start &amp;&amp; this.annotationModel.start !&#x3D;&#x3D; 0) || !this.annotationModel.end) }
+
+  public get shouldBeDisabled(): boolean { //FIXME sostituire con una pipe
+    if (!this.isEditing) {
+      return true; //sempre vero se è un nuovo inserimento
+    }
+    //valuta la presenza di relazioni in entrata o in uscita
+    // return this.annotationModel.attributes[&quot;relations&quot;] &amp;&amp;
+    //   (this.annotationModel.attributes[&quot;relations&quot;].in.length !&#x3D; 0 ||
+    //     this.annotationModel.attributes[&quot;relations&quot;].out.length !&#x3D; 0);
+    return false; //FIXME inserire una verifica sulla presenza di relazioni in entrata o in uscita per bloccare l&#x27;eliminazione dell&#x27;annotazione
+  }
+
+  private _annotation: TAnnotation &#x3D; new TAnnotation();
+
+  lexEntryList &#x3D; (text: string) &#x3D;&gt; this.lexiconService.getLexicalEntriesList({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    type: &#x27;&#x27;,
+    pos: &#x27;&#x27;,
+    formType: &#x27;&#x27;,
+    author: &#x27;&#x27;,
+    lang: &#x27;&#x27;,
+    status: &#x27;&#x27;,
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map(resp &#x3D;&gt; resp.list)
+  );
+  lexEntryById &#x3D; (id: string) &#x3D;&gt; this.lexiconService.getLexicalEntry(id);
+
+  formList &#x3D; (text: string) &#x3D;&gt; this.lexiconService.getFormList({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    representationType: &quot;writtenRep&quot;,
+    author: &#x27;&#x27;,
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map((resp: any) &#x3D;&gt; resp.list),
+  );
+  formById &#x3D; (id: string) &#x3D;&gt; this.lexiconService.getForm(id).pipe(
+    map(form &#x3D;&gt; {
+      const label &#x3D; form.label.find(e &#x3D;&gt; e.propertyID &#x3D;&#x3D;&#x3D; &#x27;writtenRep&#x27;)?.propertyValue;
+      return &lt;FormListItem&gt;{
+        creator: form.creator,
+        lastUpdate: form.lastUpdate,
+        creationDate: form.creationDate,
+        confidence: form.confidence,
+        type: form.type,
+        label: label,
+        note: form.note,
+        phoneticRep: form.phoneticRep,
+        lexicalEntry: form.lexicalEntry,
+        form: form.form,
+      };
+    }),
+  );
+
+  senseList &#x3D; (text: string) &#x3D;&gt; this.lexiconService.getFilteredSenses({
+    text: text,
+    searchMode: searchModeEnum.startsWith,
+    type: &quot;&quot;,
+    field: &quot;&quot;,
+    pos: &#x27;&#x27;,
+    formType: &quot;entry&quot;,
+    author: &quot;&quot;,
+    lang: &quot;&quot;,
+    status: &quot;&quot;,
+    offset: 0,
+    limit: 500
+  }).pipe(
+    map((resp: any) &#x3D;&gt; resp.list),
+  );
+  senseById &#x3D; (id: string) &#x3D;&gt; this.lexiconService.getSense(id).pipe(
+    map(sense &#x3D;&gt; {
+      const definition &#x3D; sense.definition.find(s &#x3D;&gt; s.propertyID &#x3D;&#x3D;&#x3D; &#x27;definition&#x27;)?.propertyValue;
+      return &lt;SenseListItem&gt;{
+        creator: sense.creator,
+        lastUpdate: sense.lastUpdate,
+        creationDate: sense.creationDate,
+        confidence: sense.confidence,
+        sense: sense.sense,
+        hasChildren: false,
+        definition: definition,
+        note: sense.note,
+        usage: sense.usage,
+        concept: sense.concept,
+        description: sense.description,
+        gloss: sense.gloss,
+        senseExample: sense.senseExample,
+        senseTranslation: sense.senseTranslation
+      };
+    }),
+  );
+
+  @Output() onCancel &#x3D; new EventEmitter&lt;void&gt;();
+  @Output() onSave &#x3D; new EventEmitter&lt;{ feature: TFeature, value: string }[]&gt;();
+  @Output() onDelete &#x3D; new EventEmitter&lt;void&gt;();
+
+  private deleteAnnotation &#x3D; (id: number): void &#x3D;&gt; {
+    this.showOperationInProgress(&#x27;Deletion in progress&#x27;);
+    const successMsg &#x3D; &#x27;Annotation successfully removed&#x27;;
+    this.annotationService.deleteAnnotationById(id).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) &#x3D;&gt; {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x60;Deleting annotation failed: ${error.error}&#x60;));
+        Swal.close();
+        return throwError(() &#x3D;&gt; new Error(error.error));
+      }),
+    ).subscribe(() &#x3D;&gt; {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
+      Swal.close();
+      this.onDelete.emit();
+    })
+  }
+  /**Riferimento al popup di conferma cancellazione */
+  @ViewChild(&quot;popupDeleteItem&quot;) public popupDeleteItem!: PopupDeleteItemComponent;
+
+
+  constructor(
+    private layerService: LayerService,
+    private tagsetService: TagsetService,
+    private userService: UserService,
+    private annotationService: AnnotationService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+    private lexiconService: LexiconService,
+  ) {
+    this.userService.retrieveCurrentUser().pipe(
+      take(1),
+    ).subscribe(cu &#x3D;&gt; {
+      this.currentUser &#x3D; cu;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
+  }
+
+  onCancelBtn() {
+    this.onCancel.emit();
+  }
+
+  onClearBtn() {
+    this.featureForm.reset(); //Svuoto solamente la parte relativa alle feature, perché layer e testo selezionato sono indipendenti
+  }
+
+  setIndirectValue(value: any, featureFieldName: string) {
+    this.featureForm.get(featureFieldName)?.setValue(value);
+  }
+
+  onSubmitAnnotation() {
+    this.onSave.emit(this.createFeatureValueList());
+  }
+
+  showDeleteModal() {
+    if(!this.annotationModel.id || this.annotationModel.id &#x3D;&#x3D;&#x3D; undefined) {
+      return;
+    }
+    const confirmMessage &#x3D; &#x27;You are about to delete an annotation&#x27;;
+    this.popupDeleteItem.confirmMessage &#x3D; confirmMessage;
+    this.popupDeleteItem.showDeleteConfirm(() &#x3D;&gt; this.deleteAnnotation(this.annotationModel.id!), this.annotationModel.id);
+  }
+
+  private createFeatureValueList(): { feature: TFeature, value: string }[] {
+    const result: { feature: TFeature, value: string }[] &#x3D; [];
+    this.features.forEach(feature &#x3D;&gt; {
+      if (!feature.feature?.name) {
+        throw Error(&#x27;Feature missing name&#x27;);
+      }
+      const featValue: string | TTagsetItem &#x3D; this.featureForm.get(feature.feature.name)?.value;
+      result.push(&lt;{ feature: TFeature, value: string }&gt;{
+        feature: feature.feature,
+        value: typeof (featValue) &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? featValue : featValue.name
+      });
+    });
+    return result;
+  }
+
+  private createForm() {
+    this.annotationForm.controls.layer.setValue(this.annotationModel.layer?.name ?? &#x27;&#x27;);
+    this.annotationForm.controls.text.setValue(this.annotationFragment);
+    this.features.forEach(f &#x3D;&gt; {
+      const controlName &#x3D; f.feature?.name;
+      const existingValue: string &#x3D; this.annotationModel.features?.find(af &#x3D;&gt; af.feature?.name &#x3D;&#x3D;&#x3D; controlName)?.value ?? &#x27;&#x27;;
+      const featureType &#x3D; f.feature?.type;
+      let newControl: FormControl;
+      if (!controlName) {
+        throw Error(&#x27;Missing feature name&#x27;);
+      }
+      if (!featureType) {
+        throw Error(&#x27;Missing feature type&#x27;);
+      }
+      switch (featureType) {
+        case this.featureTypes.STRING:
+          newControl &#x3D; new FormControl&lt;string&gt;(&#x27;&#x27;, whitespacesValidator);
+          break;
+        case this.featureTypes.URI:
+        case this.featureTypes.LEXICAL_ENTRY:
+        case this.featureTypes.FORM:
+        case this.featureTypes.SENSE:
+          newControl &#x3D; new FormControl&lt;string&gt;(&#x27;&#x27;, uriValidator);
+          break;
+        default:
+          newControl &#x3D; new FormControl&lt;string&gt;(&#x27;&#x27;);
+          break;
+      }
+      this.featureForm.addControl(controlName, newControl);
+      this.featureForm.get(controlName)?.setValue(existingValue)
+    });
+  }
+
+  private fetchAndMapFeatures(layerId: number) {
+    this.layerService.retrieveLayerFeatureList(layerId).pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(features &#x3D;&gt; {
+      this.features &#x3D; features.map(feature &#x3D;&gt; {
+        const tagsetId &#x3D; feature.tagset?.id;
+        return &lt;FeatForAnn&gt;{
+          feature: feature,
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId) : undefined
+        };
+      });
+      this.createForm();
+    });
+  }
+
+  /**
+ * @private
+ * Metodo che visualizza il popup di operazione in corso
+ * @param message {string} messaggio da visualizzare
+ */
+  private showOperationInProgress(message: string): void {
+    Swal.fire({
+      icon: &#x27;warning&#x27;,
+      titleText: message,
+      text: &#x27;please wait&#x27;,
+      customClass: {
+        container: &#x27;swal2-container&#x27;
+      },
+      showCancelButton: false,
+      showConfirmButton: false
+    });
+  }
+
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'FeatForAnn.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -193,13 +193,18 @@
                                 <a href="#manageUpdateObservable" >manageUpdateObservable</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#movePropertyToForm" >movePropertyToForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#movePropertyToMenu" >movePropertyToMenu</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
                             </li>
                             <li>
                                 <a href="#ngOnInit" >ngOnInit</a>
-                            </li>
-                            <li>
-                                <a href="#onAddDefinitionField" >onAddDefinitionField</a>
                             </li>
                             <li>
                                 <a href="#onAddMorphology" >onAddMorphology</a>
@@ -496,15 +501,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="235"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:235</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="246"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:246</a></div>
                 </td>
             </tr>
 
@@ -559,6 +564,20 @@
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>newValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -566,6 +585,178 @@
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movePropertyToForm"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>movePropertyToForm</b></span>
+                        <a href="#movePropertyToForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>movePropertyToForm(propertyID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, propertyValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="150"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:150</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che sposta una proprietà dal menu al form dinamico</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>propertyID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>proprietà da spostare</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>propertyValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>valore iniziale della proprietà</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movePropertyToMenu"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>movePropertyToMenu</b></span>
+                        <a href="#movePropertyToMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>movePropertyToMenu(propertyID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:162</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Metodo che sposta una proprietà dal form dinamico al menu</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>propertyID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>proprietà da spostare</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                     </div>
                     <div class="io-description">
@@ -595,8 +786,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="154"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:154</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:140</a></div>
                 </td>
             </tr>
 
@@ -634,8 +825,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="134"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:134</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="129"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:129</a></div>
                 </td>
             </tr>
 
@@ -648,82 +839,6 @@
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onAddDefinitionField"></a>
-                    <span class="name">
-                        <span ><b>onAddDefinitionField</b></span>
-                        <a href="#onAddDefinitionField"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>onAddDefinitionField(fieldProperty: <a href="../interfaces/PropertyElement.html" target="_self">PropertyElement</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="163"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:163</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo per l&#39;aggiunta di un nuovo elemento alle definizioni</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>fieldProperty</td>
-                                    <td>
-                                                <code><a href="../interfaces/PropertyElement.html" target="_self" >PropertyElement</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>proprietà da aggiungere alle definizioni</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -749,8 +864,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="170"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:170</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:173</a></div>
                 </td>
             </tr>
 
@@ -788,8 +903,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="177"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:177</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="180"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:180</a></div>
                 </td>
             </tr>
 
@@ -827,8 +942,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="188"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:188</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="191"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:191</a></div>
                 </td>
             </tr>
 
@@ -919,8 +1034,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="200"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:200</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="203"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:203</a></div>
                 </td>
             </tr>
 
@@ -995,8 +1110,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="211"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:211</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="222"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:222</a></div>
                 </td>
             </tr>
 
@@ -1073,8 +1188,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="274"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:274</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="293"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:293</a></div>
                 </td>
             </tr>
 
@@ -1151,8 +1266,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="287"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:287</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="306"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:306</a></div>
                 </td>
             </tr>
 
@@ -1229,8 +1344,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="307"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:307</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="326"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:326</a></div>
                 </td>
             </tr>
 
@@ -1349,15 +1464,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateSense(relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>updateSense(relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="256"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:256</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="273"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:273</a></div>
                 </td>
             </tr>
 
@@ -1397,7 +1512,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>value</td>
+                                    <td>newValue</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
@@ -1408,7 +1523,7 @@
 
 
                                     <td>
-                                        <p>nuovo valore dellazione</p>
+                                        <p>nuovo valore della relazione</p>
 
                                     </td>
                                 </tr>
@@ -2020,13 +2135,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         if (currentPropertyId &#x3D;&#x3D;&#x3D; -1 || this.definitionFormItems[currentPropertyId].propertyValue &#x3D;&#x3D;&#x3D; resp[key]) continue;
         this.updateSense(key, resp[key]).then(() &#x3D;&gt; {
           if (resp[key] &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
-            this.definitionFormItems &#x3D; this.definitionFormItems.filter(i &#x3D;&gt; i.propertyID !&#x3D;&#x3D; key);
-            this.definitionsMenuItems.push({
-              label: key,
-              command: () &#x3D;&gt; {
-                this.onAddDefinitionField(&lt;PropertyElement&gt;{ propertyID: key, propertyValue: &#x27;&#x27; });
-              }
-            }); return;
+            this.movePropertyToMenu(key);
+            return;
           }
           this.definitionFormItems[currentPropertyId] &#x3D; &lt;PropertyElement&gt;{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
         });
@@ -2037,20 +2147,11 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   /**Metodo dell&#x27;interfaccia OnInit, utilizzato per prevalorizzare il form */
   ngOnInit(): void {
     //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
-    for (const def of this.senseEntry.definition) {
-      if (def.propertyID &#x3D;&#x3D;&#x3D; &#x27;definition&#x27;) {
-        this.definition.addControl(&#x27;definition&#x27;, new FormControl&lt;string&gt;(def.propertyValue, Validators.required));
+    for (const { propertyID, propertyValue } of this.senseEntry.definition) {
+      this.movePropertyToForm(propertyID, propertyValue);
+      if (propertyValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        this.movePropertyToMenu(propertyID);
       }
-      if (def.propertyID !&#x3D;&#x3D; &#x27;definition&#x27; &amp;&amp; def.propertyValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
-        this.definitionsMenuItems.push({
-          label: def.propertyID,
-          command: () &#x3D;&gt; {
-            this.onAddDefinitionField(def);
-          }
-        });
-        continue;
-      }
-      this.onAddDefinitionField(def);
     }
   }
 
@@ -2061,13 +2162,30 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Metodo per l&#x27;aggiunta di un nuovo elemento alle definizioni
-   * @param fieldProperty {PropertyElement} proprietà da aggiungere alle definizioni
+   * Metodo che sposta una proprietà dal menu al form dinamico
+   * @param propertyID {string} proprietà da spostare
+   * @param propertyValue {string} valore iniziale della proprietà
    */
-  onAddDefinitionField(fieldProperty: PropertyElement) {
+  private movePropertyToForm(propertyID: string, propertyValue: string): void {
+    const fieldProperty : PropertyElement &#x3D; { propertyID, propertyValue };
+    const control &#x3D; new FormControl&lt;string&gt;(propertyValue, Validators.required);
     this.definitionFormItems.push(fieldProperty);
-    this.definition.addControl(fieldProperty.propertyID, new FormControl&lt;string&gt;(fieldProperty.propertyValue));
-    this.definitionsMenuItems &#x3D; this.definitionsMenuItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; fieldProperty.propertyID);
+    this.definition.addControl(propertyID, control);
+    this.definitionsMenuItems &#x3D; this.definitionsMenuItems.filter(i &#x3D;&gt; i.label !&#x3D;&#x3D; propertyID);
+  }
+
+  /**
+   * Metodo che sposta una proprietà dal form dinamico al menu
+   * @param propertyID {string} proprietà da spostare
+   */
+  private movePropertyToMenu(propertyID: string): void {
+    this.definition.removeControl(propertyID);
+    const index &#x3D; this.definitionFormItems.findIndex(e &#x3D;&gt; e.propertyID &#x3D;&#x3D;&#x3D; propertyID);
+    this.definitionFormItems.splice(index, 1);
+    this.definitionsMenuItems.push({
+      label: propertyID,
+      command: () &#x3D;&gt; this.movePropertyToForm(propertyID, &#x27;&#x27;)
+    });
   }
 
   /**Metodo che gestisce l&#x27;inserimento di un nuovo elemento nei tratti morfologici */
@@ -2104,7 +2222,15 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   onRemoveDefinitionElement(fieldName: string) {
     const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${fieldName}&quot;?&#x60;;
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
-    this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; { this.definition.get(fieldName)?.setValue(&#x27;&#x27;); });
+    this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; {
+      const definition &#x3D; this.definition.get(fieldName);
+      if (definition?.value &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        this.movePropertyToMenu(fieldName);
+      }
+      else {
+        definition?.setValue(&#x27;&#x27;);
+      }
+     });
   }
 
   /**
@@ -2136,7 +2262,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable&lt;string&gt;} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string) {
+  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string, newValue: string) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) &#x3D;&gt; {
@@ -2146,7 +2272,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe(resp &#x3D;&gt; {
       this.senseEntry &#x3D; &lt;SenseCore&gt;{ ...this.senseEntry, lastUpdate: resp };
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;&quot;${relation}&quot; update success &#x60;));
-      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.senseEntry.sense });
+
+      if (relation &#x3D;&#x3D;&#x3D; &#x27;definition&#x27;) {
+        this.commonService.notifyOther({
+          option: &#x27;lexicon_edit_label&#x27;,
+          uri: this.senseEntry.sense,
+          newValue,
+        });
+      }
     });
   }
 
@@ -2154,20 +2287,21 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @private
    * Metodo che aggiorna un senso
    * @param relation {string} relazione da aggiornare
-   * @param value {string} nuovo valore dellazione
-   * @returns {Promise&lt;void&gt;}
+   * @param newValue {string} nuovo valore della relazione
    */
-  private async updateSense(relation: string, value: string) {
+  private async updateSense(relation: string, newValue: string) {
     if (!this.currentUser.name) {
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;));
+      const msg &#x3D; this.msgConfService.generateWarningMessageConfig(&#x60;Current user not found&#x60;);
+      this.messageService.add(msg);
       return;
     }
-    const updater &#x3D; &lt;LexicalSenseUpdater&gt;{
+
+    const updater &#x3D; &lt;LexicalSenseUpdater&gt; {
       relation: this.commonService.getSenseUpdateRelation(relation),
-      value: value,
+      value: newValue,
     };
     const updateObs &#x3D; this.lexiconService.updateLexicalSense(this.currentUser.name, this.senseEntry.sense, updater);
-    this.manageUpdateObservable(updateObs, relation);
+    this.manageUpdateObservable(updateObs, relation, newValue);
   }
 
   /**
@@ -2323,8 +2457,8 @@ p-selectButton {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><!-- <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton> --><div *ngIf="senseEntry" class="card" [style]="{\'height\': \'100%\', \'overflow-y\': \'scroll\'}">  <form class="formgrid grid" [formGroup]="form">    <div class="field col-6" style="align-self: center;">      <em>Last update: {{senseEntry.lastUpdate | date: \'medium\'}}</em>    </div>    <div class="field col-6">      <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"        pTooltip="Delete lexical form" (click)="onDeleteLexicalSense()"></button>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          <p-menu #menuDefinitions [model]="definitionsMenuItems" [popup]="true" appendTo="body"></p-menu>          Definitions <button pButton pRipple icon="pi pi-plus" type="button" (click)="menuDefinitions.toggle($event)"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <form [formGroup]="form.controls.definition">            <div class="field col-12" *ngFor="let control of definitionFormItems">              <label [for]="control.propertyID">{{control.propertyID}}</label>              <div class="d-flex justify-content-between" style="align-items: center;">                <textarea pInputTextarea [formControlName]="control.propertyID" [name]="control.propertyID"                  class="col-11"></textarea>                <button *ngIf="control.propertyID !== \'definition\'" pButton pRipple type="button" icon="pi pi-times"                  class=" col-1 p-button-rounded p-button-danger p-button-text"                  (click)="onRemoveDefinitionElement(control.propertyID)"></button>              </div>            </div>          </form>        </ng-template>      </p-fieldset>    </div>    <div class="field col-12">      <p-fieldset>        <ng-template pTemplate="header">          Morphological Restriction <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>        </ng-template>        <ng-template pTemplate="content">          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"            [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"            [isCheckboxVisible]="false" [relationField]="morph.value.relation"            [valueField]="morph.value.value"></app-double-autocomplete>        </ng-template>      </p-fieldset>    </div>  </form></div><app-popup-delete-item #popupDeleteItem></app-popup-delete-item></div>'
-    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
-    var DIRECTIVES = [{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
+    var COMPONENTS = [{'name': 'AnnotationEditorComponent', 'selector': 'app-annotation-editor'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutocompleteCheckboxComponent', 'selector': 'app-autocomplete-checkbox'},{'name': 'BaseMetadataEditorComponent', 'selector': 'app-base-metadata-editor'},{'name': 'BaseRelationsComponent', 'selector': ''},{'name': 'BaseSemanticInputComponent', 'selector': ''},{'name': 'DirectRelationsComponent', 'selector': 'app-direct-relations'},{'name': 'DoubleAutocompleteComponent', 'selector': 'app-double-autocomplete'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'FormCoreEditorComponent', 'selector': 'app-form-core-editor'},{'name': 'FormEditorComponent', 'selector': 'app-form-editor'},{'name': 'FormMetadataEditorComponent', 'selector': 'app-form-metadata-editor'},{'name': 'GenericAutocompleteComponent', 'selector': 'app-generic-autocomplete'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'IconAddFolderComponent', 'selector': 'app-icon-add-folder'},{'name': 'IconAuthorComponent', 'selector': 'app-icon-author'},{'name': 'IconBaseComponent', 'selector': 'app-icon-base'},{'name': 'IconLayerGroupComponent', 'selector': 'app-icon-layer-group'},{'name': 'IconLockComponent', 'selector': 'app-icon-lock'},{'name': 'IconMoveComponent', 'selector': 'app-icon-move'},{'name': 'IconNoteComponent', 'selector': 'app-icon-note'},{'name': 'IconRenameComponent', 'selector': 'app-icon-rename'},{'name': 'IconUploadFileComponent', 'selector': 'app-icon-upload-file'},{'name': 'IndirectRelationsComponent', 'selector': 'app-indirect-relations'},{'name': 'IndirectRelPropertyComponent', 'selector': 'app-indirect-rel-property'},{'name': 'LanguagesListComponent', 'selector': 'app-languages-list'},{'name': 'LanguagesViewComponent', 'selector': 'app-languages-view'},{'name': 'LayersListComponent', 'selector': 'app-layers-list'},{'name': 'LayersViewComponent', 'selector': 'app-layers-view'},{'name': 'LexEntryEditorComponent', 'selector': 'app-lex-entry-editor'},{'name': 'LexEntryMetadataEditorComponent', 'selector': 'app-lex-entry-metadata-editor'},{'name': 'LexicalEntryEditorComponent', 'selector': 'app-lexical-entry-editor'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'NamespacesListComponent', 'selector': 'app-namespaces-list'},{'name': 'PopupDeleteItemComponent', 'selector': 'app-popup-delete-item'},{'name': 'RelationEditorComponent', 'selector': 'app-relation-editor'},{'name': 'SemanticRelDirectComponent', 'selector': 'app-semantic-rel-direct'},{'name': 'SemanticRelEditorComponent', 'selector': 'app-semantic-rel-editor'},{'name': 'SemanticRelIndirectComponent', 'selector': 'app-semantic-rel-indirect'},{'name': 'SenseCoreEditorComponent', 'selector': 'app-sense-core-editor'},{'name': 'SenseEditorComponent', 'selector': 'app-sense-editor'},{'name': 'SenseMetadataEditorComponent', 'selector': 'app-sense-metadata-editor'},{'name': 'SideMenuComponent', 'selector': 'app-side-menu'},{'name': 'TabsFormComponent', 'selector': 'app-tabs-form'},{'name': 'TabsLexicalEntryComponent', 'selector': 'app-tabs-lexical-entry'},{'name': 'TabsSenseComponent', 'selector': 'app-tabs-sense'},{'name': 'TagsetCreateEditComponent', 'selector': 'app-tagset-create-edit'},{'name': 'TagsetsListComponent', 'selector': 'app-tagsets-list'},{'name': 'TextAnnotationEditorComponent', 'selector': 'app-text-annotation-editor'},{'name': 'UserFormComponent', 'selector': 'app-user-form'},{'name': 'UserListComponent', 'selector': 'app-user-list'},{'name': 'WorkspaceComponent', 'selector': 'app-workspace'},{'name': 'WorkspaceCorpusExplorerComponent', 'selector': 'app-workspace-corpus-explorer'},{'name': 'WorkspaceLayersVisibilityManagerComponent', 'selector': 'app-workspace-layers-visibility-manager'},{'name': 'WorkspaceLayoutComponent', 'selector': 'app-workspace-layout'},{'name': 'WorkspaceLexiconEditTileComponent', 'selector': 'app-workspace-lexicon-edit-tile'},{'name': 'WorkspaceLexiconTileComponent', 'selector': 'app-workspace-lexicon-tile'},{'name': 'WorkspaceListComponent', 'selector': 'app-workspace-list'},{'name': 'WorkspaceMenuComponent', 'selector': 'app-workspace-menu'},{'name': 'WorkspaceTextSelectorComponent', 'selector': 'app-workspace-text-selector'},{'name': 'WorkspaceTextWindowComponent', 'selector': 'app-workspace-text-window'}];
+    var DIRECTIVES = [{'name': 'MatchNewPasswordDirective', 'selector': '[appMatchNewPassword]'},{'name': 'NotDuplicateNameDirective', 'selector': '[appNotDuplicateName]'},{'name': 'TagsetValueNotDuplicateNameDirective', 'selector': '[appTagsetValueNotDuplicateName]'},{'name': 'UriValidator', 'selector': '[appUriValidator]'},{'name': 'WhitespacesValidatorDirective', 'selector': '[appWhitespacesValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'SenseCoreEditorComponent'};
 </script>
 <script src="../js/tree.js"></script>

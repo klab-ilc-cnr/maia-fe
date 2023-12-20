@@ -108,6 +108,9 @@
                                 <a href="#concatenateMorphology" >concatenateMorphology</a>
                             </li>
                             <li>
+                                <a href="#createIndirectSenseRelation" >createIndirectSenseRelation</a>
+                            </li>
+                            <li>
                                 <a href="#deleteForm" >deleteForm</a>
                             </li>
                             <li>
@@ -115,6 +118,9 @@
                             </li>
                             <li>
                                 <a href="#deleteLexicalSense" >deleteLexicalSense</a>
+                            </li>
+                            <li>
+                                <a href="#deleteLexicoSemanticRelation" >deleteLexicoSemanticRelation</a>
                             </li>
                             <li>
                                 <a href="#deleteRelation" >deleteRelation</a>
@@ -129,13 +135,22 @@
                                 <a href="#getFilteredLexicalConcepts" >getFilteredLexicalConcepts</a>
                             </li>
                             <li>
+                                <a href="#getFilteredSenses" >getFilteredSenses</a>
+                            </li>
+                            <li>
                                 <a href="#getForm" >getForm</a>
+                            </li>
+                            <li>
+                                <a href="#getFormList" >getFormList</a>
                             </li>
                             <li>
                                 <a href="#getFormTypes" >getFormTypes</a>
                             </li>
                             <li>
                                 <a href="#getLanguages" >getLanguages</a>
+                            </li>
+                            <li>
+                                <a href="#getLanguagesStatistics" >getLanguagesStatistics</a>
                             </li>
                             <li>
                                 <a href="#getLexicalEntriesList" >getLexicalEntriesList</a>
@@ -151,6 +166,9 @@
                             </li>
                             <li>
                                 <a href="#getLexicalEntryTypes" >getLexicalEntryTypes</a>
+                            </li>
+                            <li>
+                                <a href="#getLexicalSenseRelations" >getLexicalSenseRelations</a>
                             </li>
                             <li>
                                 <a href="#getLinguisticRelations" >getLinguisticRelations</a>
@@ -175,6 +193,9 @@
                             </li>
                             <li>
                                 <a href="#getSense" >getSense</a>
+                            </li>
+                            <li>
+                                <a href="#getSenseRelationTypes" >getSenseRelationTypes</a>
                             </li>
                             <li>
                                 <a href="#getStatus" >getStatus</a>
@@ -223,7 +244,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/services/lexicon.service.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/services/lexicon.service.ts:27</a></div>
                             </td>
                         </tr>
 
@@ -309,8 +330,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="298"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:298</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="353"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:353</a></div>
                 </td>
             </tr>
 
@@ -370,6 +391,87 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="createIndirectSenseRelation"></a>
+                    <span class="name">
+                        <span ><b>createIndirectSenseRelation</b></span>
+                        <a href="#createIndirectSenseRelation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createIndirectSenseRelation(sourceSenseURI: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, categoryURI: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="454"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:454</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sourceSenseURI</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>categoryURI</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="deleteForm"></a>
                     <span class="name">
                         <span ><b>deleteForm</b></span>
@@ -386,8 +488,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="47"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:47</a></div>
                 </td>
             </tr>
 
@@ -462,8 +564,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="60"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:60</a></div>
                 </td>
             </tr>
 
@@ -538,8 +640,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="70"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:70</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:73</a></div>
                 </td>
             </tr>
 
@@ -598,6 +700,82 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="deleteLexicoSemanticRelation"></a>
+                    <span class="name">
+                        <span ><b>deleteLexicoSemanticRelation</b></span>
+                        <a href="#deleteLexicoSemanticRelation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteLexicoSemanticRelation(lexicalEntityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="103"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:103</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Cancellazione di una relazione lexicosemantica</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalEntityId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>uri identificativo dell&#39;entità</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="deleteRelation"></a>
                     <span class="name">
                         <span ><b>deleteRelation</b></span>
@@ -614,8 +792,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="85"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:85</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:88</a></div>
                 </td>
             </tr>
 
@@ -710,8 +888,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="273"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:273</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="328"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:328</a></div>
                 </td>
             </tr>
 
@@ -755,8 +933,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="112"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:112</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:125</a></div>
                 </td>
             </tr>
 
@@ -832,8 +1010,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="125"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:125</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:138</a></div>
                 </td>
             </tr>
 
@@ -893,6 +1071,83 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getFilteredSenses"></a>
+                    <span class="name">
+                        <span ><b>getFilteredSenses</b></span>
+                        <a href="#getFilteredSenses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFilteredSenses(parameters: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="147"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:147</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>POST di recupero della lista filtrata dei sensi</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>parameters</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>parametri per il fltro</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#FilteredSenseModel" target="_self" >Observable&lt;FilteredSenseModel&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable della lista di concetti lessicali recuperato</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getForm"></a>
                     <span class="name">
                         <span ><b>getForm</b></span>
@@ -909,8 +1164,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="134"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:134</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:159</a></div>
                 </td>
             </tr>
 
@@ -969,6 +1224,75 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getFormList"></a>
+                    <span class="name">
+                        <span ><b>getFormList</b></span>
+                        <a href="#getFormList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFormList(parameters: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:164</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>parameters</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getFormTypes"></a>
                     <span class="name">
                         <span ><b>getFormTypes</b></span>
@@ -985,8 +1309,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="143"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:143</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="175"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:175</a></div>
                 </td>
             </tr>
 
@@ -1030,8 +1354,45 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="151"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:151</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="187"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:187</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/LexoLanguage.html" target="_self" >Observable&lt;LexoLanguage[]&gt;</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getLanguagesStatistics"></a>
+                    <span class="name">
+                        <span ><b>getLanguagesStatistics</b></span>
+                        <a href="#getLanguagesStatistics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getLanguagesStatistics()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:183</a></div>
                 </td>
             </tr>
 
@@ -1075,8 +1436,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="99"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:99</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:116</a></div>
                 </td>
             </tr>
 
@@ -1152,8 +1513,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="160"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:160</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="204"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:204</a></div>
                 </td>
             </tr>
 
@@ -1228,8 +1589,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="170"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:170</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="214"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:214</a></div>
                 </td>
             </tr>
 
@@ -1305,8 +1666,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="180"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:180</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="224"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:224</a></div>
                 </td>
             </tr>
 
@@ -1382,8 +1743,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="189"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:189</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="233"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:233</a></div>
                 </td>
             </tr>
 
@@ -1411,6 +1772,83 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getLexicalSenseRelations"></a>
+                    <span class="name">
+                        <span ><b>getLexicalSenseRelations</b></span>
+                        <a href="#getLexicalSenseRelations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getLexicalSenseRelations(lexicalSenseId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="254"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:254</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>GET che recupera la lista di tutte relazioni linguistiche di un senso lessicale</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexicalSenseId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>identificativo del senso lessicale</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#LexicalSenseResponseModel" target="_self" >Observable&lt;LexicalSenseResponseModel&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable della lista delle relazioni linguistiche</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getLinguisticRelations"></a>
                     <span class="name">
                         <span ><b>getLinguisticRelations</b></span>
@@ -1427,8 +1865,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="199"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:199</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="243"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:243</a></div>
                 </td>
             </tr>
 
@@ -1520,8 +1958,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="208"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:208</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="263"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:263</a></div>
                 </td>
             </tr>
 
@@ -1565,8 +2003,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="216"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:216</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="271"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:271</a></div>
                 </td>
             </tr>
 
@@ -1610,8 +2048,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="226"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:226</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="281"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:281</a></div>
                 </td>
             </tr>
 
@@ -1702,8 +2140,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="236"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:236</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="291"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:291</a></div>
                 </td>
             </tr>
 
@@ -1778,8 +2216,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="246"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:246</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="301"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:301</a></div>
                 </td>
             </tr>
 
@@ -1870,8 +2308,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="281"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:281</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="336"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:336</a></div>
                 </td>
             </tr>
 
@@ -1915,8 +2353,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="264"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:264</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="319"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:319</a></div>
                 </td>
             </tr>
 
@@ -1975,6 +2413,51 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getSenseRelationTypes"></a>
+                    <span class="name">
+                        <span ><b>getSenseRelationTypes</b></span>
+                        <a href="#getSenseRelationTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSenseRelationTypes()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="195"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:195</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>GET che recupera la lista dei tipi di relazione dei sensi</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Relation.html" target="_self" >Observable&lt;SenseRelationTypeModel[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable della lista dei tipi relazioni dei sensi</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getStatus"></a>
                     <span class="name">
                         <span ><b>getStatus</b></span>
@@ -1991,8 +2474,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="289"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:289</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="344"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:344</a></div>
                 </td>
             </tr>
 
@@ -2036,8 +2519,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="255"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:255</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="310"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:310</a></div>
                 </td>
             </tr>
 
@@ -2081,8 +2564,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="327"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:327</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="382"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:382</a></div>
                 </td>
             </tr>
 
@@ -2174,8 +2657,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="343"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:343</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="398"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:398</a></div>
                 </td>
             </tr>
 
@@ -2283,8 +2766,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="359"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:359</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="414"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:414</a></div>
                 </td>
             </tr>
 
@@ -2392,8 +2875,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="375"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:375</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="430"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:430</a></div>
                 </td>
             </tr>
 
@@ -2494,15 +2977,15 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>updateLinguisticRelation(lexicalEntryID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updater: <a href="../interfaces/LinguisticRelationUpdater.html" target="_self">LinguisticRelationUpdater</a>)</code>
+<code>updateLinguisticRelation(lexicalEntityId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updater: <a href="../interfaces/LinguisticRelationUpdater.html" target="_self">LinguisticRelationUpdater</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="390"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:390</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="445"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:445</a></div>
                 </td>
             </tr>
 
@@ -2526,7 +3009,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>lexicalEntryID</td>
+                                    <td>lexicalEntityId</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
@@ -2537,6 +3020,8 @@
 
 
                                     <td>
+                                        <p>identificativo dell&#39;entità (ad es. entrata lessicale o senso)</p>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -2592,8 +3077,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="313"
-                            class="link-to-prism">src/app/services/lexicon.service.ts:313</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="368"
+                            class="link-to-prism">src/app/services/lexicon.service.ts:368</a></div>
                 </td>
             </tr>
 
@@ -2755,7 +3240,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/services/lexicon.service.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/services/lexicon.service.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -2788,7 +3273,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/services/lexicon.service.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/services/lexicon.service.ts:25</a></div>
                         </td>
                     </tr>
 
@@ -2809,16 +3294,19 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
 import { Injectable } from &#x27;@angular/core&#x27;;
-import { Observable } from &#x27;rxjs&#x27;;
+import { Observable, mergeMap, of } from &#x27;rxjs&#x27;;
 import { environment } from &#x27;src/environments/environment&#x27;;
+import { FilteredSenseModel } from &#x27;../models/lexicon/filtered-sense.model&#x27;;
 import { LexicalEntriesResponse, searchModeEnum } from &#x27;../models/lexicon/lexical-entry-request.model&#x27;;
-import { FormCore, FormListItem, LexicalEntryCore, MorphologyProperty, SenseCore, SenseListItem } from &#x27;../models/lexicon/lexical-entry.model&#x27;;
+import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from &#x27;../models/lexicon/lexical-entry.model&#x27;;
+import { LexicalSenseResponseModel } from &#x27;../models/lexicon/lexical-sense-response.model&#x27;;
 import { LexiconStatistics } from &#x27;../models/lexicon/lexicon-statistics&#x27;;
-import { FormUpdater, GenericRelationUpdater, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from &#x27;../models/lexicon/lexicon-updater&#x27;;
+import { FormUpdater, GenericRelationUpdater, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from &#x27;../models/lexicon/lexicon-updater&#x27;;
 import { LinguisticRelationModel } from &#x27;../models/lexicon/linguistic-relation.model&#x27;;
 import { Morphology } from &#x27;../models/lexicon/morphology.model&#x27;;
 import { Namespace } from &#x27;../models/lexicon/namespace.model&#x27;;
 import { OntolexType } from &#x27;../models/lexicon/ontolex-type.model&#x27;;
+import { SenseRelationTypeModel } from &#x27;../models/lexicon/sense-relation-type.model&#x27;;
 import { CommonService } from &#x27;./common.service&#x27;;
 
 /**Classe dei servizi relativi al lessico */
@@ -2842,7 +3330,7 @@ export class LexiconService {
     private commonService: CommonService
   ) {
     this.lexoUrl &#x3D; environment.lexoUrl;
-    this.encodedBaseIRI &#x3D; this.commonService.encodeUrl(environment.rutBaseIRI);
+    this.encodedBaseIRI &#x3D; this.commonService.encodeUrl(environment.lexoBaseIRI);
   }
 
   /**
@@ -2893,9 +3381,23 @@ export class LexiconService {
    */
   deleteRelation(lexicalEntityId: string, updater: { relation: string, value: string }): Observable&lt;string&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntityId);
+    console.error(&quot;HEY!&quot;)
+    console.log(encodedLexEntry)
     return this.http.post(
       &#x60;${this.lexoUrl}lexicon/delete/relation?id&#x3D;${encodedLexEntry}&#x60;,
       updater,
+      { responseType: &quot;text&quot; }
+    );
+  }
+  /**
+   * Cancellazione di una relazione lexicosemantica
+   * @param lexicalEntityId {string} uri identificativo dell&#x27;entità
+   * @returns {Observable&lt;string&gt;}
+   */
+  deleteLexicoSemanticRelation(lexicalEntityId: string): Observable&lt;string&gt; {
+    const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntityId);
+    return this.http.get(
+      &#x60;${this.lexoUrl}lexicon/delete/lexicoSemanticRelation?id&#x3D;${encodedLexEntry}&#x60;,
       { responseType: &quot;text&quot; }
     );
   }
@@ -2906,10 +3408,6 @@ export class LexiconService {
    * @returns {Observable&lt;any&gt;} observable della lista delle entrate lessicali
    */
   getLexicalEntriesList(parameters: any): Observable&lt;LexicalEntriesResponse&gt; {
-    // MOCK
-    //return this.http.get&lt;any&gt;(&#x60;assets/mock/lexicon/lexicalentries.json&#x60;);
-    // FINE MOCK
-
     return this.http.post&lt;LexicalEntriesResponse&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalEntries&#x60;, parameters);
   }
 
@@ -2936,13 +3434,32 @@ export class LexiconService {
   }
 
   /**
+   * POST di recupero della lista filtrata dei sensi
+   * @param parameters {{ text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number }} parametri per il fltro
+   * @returns {Observable&lt;{totalHits: number, list: any[]}&gt;} observable della lista di concetti lessicali recuperato
+   */
+  getFilteredSenses(parameters: any): Observable&lt;FilteredSenseModel&gt; {
+    return &lt;Observable&lt;FilteredSenseModel&gt;&gt;this.http.post(
+      &#x60;${this.lexoUrl}lexicon/data/filteredSenses&#x60;,
+      parameters,
+    );
+  }
+
+  /**
    * GET che recupera i dati di una forma
    * @param formID {string} identificativo della forma
    * @returns {Observable&lt;any&gt;}
    */
   getForm(formID: string): Observable&lt;FormCore&gt; {
     const encodedFormID &#x3D; this.commonService.encodeUrl(formID);
-    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}lexicon/data/form?id&#x3D;${encodedFormID}&amp;aspect&#x3D;core&#x60;);
+    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}lexicon/data/form?id&#x3D;${encodedFormID}&amp;module&#x3D;core&#x60;);
+  }
+
+  getFormList(parameters: any): Observable&lt;any&gt; {
+    return this.http.post(
+      &#x60;${this.lexoUrl}lexicon/data/filteredForms&#x60;,
+      parameters
+    );
   }
 
   /**
@@ -2957,8 +3474,20 @@ export class LexiconService {
    * GET che recupera la lista di lingue disponibili per la selezione
    * @returns {Observable&lt;any&gt;} observable della lista di lingue disponibili
    */
-  getLanguages(): Observable&lt;LexiconStatistics[]&gt; {
+  getLanguagesStatistics(): Observable&lt;LexiconStatistics[]&gt; {
     return this.http.get&lt;LexiconStatistics[]&gt;(&#x60;${this.lexoUrl}lexicon/statistics/languages&#x60;);
+  }
+
+  getLanguages(): Observable&lt;LexoLanguage[]&gt; {
+    return this.http.get&lt;LexoLanguage[]&gt;(&#x60;${this.lexoUrl}lexicon/data/languages&#x60;);
+  }
+
+  /**
+   * GET che recupera la lista dei tipi di relazione dei sensi
+   * @returns {Observable&lt;SenseRelationTypeModel[]&gt;} observable della lista dei tipi relazioni dei sensi
+   */
+  getSenseRelationTypes(): Observable&lt;SenseRelationTypeModel[]&gt; {
+    return this.http.get&lt;SenseRelationTypeModel[]&gt;(&#x60;${this.lexoUrl}lexinfo/data/senseRelations&#x60;);
   }
 
   /**
@@ -2968,7 +3497,7 @@ export class LexiconService {
    */
   getLexicalEntry(lexicalEntryId: string): Observable&lt;LexicalEntryCore&gt; {
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalEntry?aspect&#x3D;core&amp;id&#x3D;${encodedId}&#x60;);
+    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalEntry?module&#x3D;core&amp;id&#x3D;${encodedId}&#x60;);
   }
 
   /**
@@ -3010,6 +3539,17 @@ export class LexiconService {
     return this.http.get&lt;LinguisticRelationModel[]&gt;(&#x60;${this.lexoUrl}/lexicon/data/linguisticRelation?property&#x3D;${property}&amp;id&#x3D;${encodedId}&#x60;);
   }
 
+
+  /**
+   * GET che recupera la lista di tutte relazioni linguistiche di un senso lessicale
+   * @param lexicalSenseId {string} identificativo del senso lessicale
+   * @returns {Observable&lt;LinguisticRelationModel[]&gt;} observable della lista delle relazioni linguistiche
+   */
+  getLexicalSenseRelations(lexicalSenseId: string): Observable&lt;LexicalSenseResponseModel&gt; {
+    const encodedId &#x3D; this.commonService.encodeUrl(lexicalSenseId);
+    return this.http.get&lt;LexicalSenseResponseModel&gt;(&#x60;${this.lexoUrl}/lexicon/data/lexicalSense?module&#x3D;variation%20and%20translation&amp;id&#x3D;${encodedId}&#x60;);
+  }
+
   /**
    * GET che recupera la lista dei tratti morfologici
    * @returns {Observable&lt;Morphology[]&gt;} observable della lista dei tratti morfologici
@@ -3034,7 +3574,7 @@ export class LexiconService {
    */
   getNewForm(lexicalEntryId: string, creator: string): Observable&lt;FormCore&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/form?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.rutPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
+    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/form?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
   }
 
   /**
@@ -3043,7 +3583,7 @@ export class LexiconService {
    * @returns {Observable&lt;LexicalEntryCore&gt;}
    */
   getNewLexicalEntry(creator: string): Observable&lt;LexicalEntryCore&gt; {
-    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/lexicalEntry?author&#x3D;${creator}&amp;prefix&#x3D;${environment.rutPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
+    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/lexicalEntry?author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
   }
 
   /**
@@ -3054,7 +3594,7 @@ export class LexiconService {
    */
   getNewSense(lexicalEntryId: string, creator: string): Observable&lt;SenseCore&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.rutPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;)
+    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;)
   }
 
   /**
@@ -3072,7 +3612,7 @@ export class LexiconService {
    */
   getSense(senseID: string): Observable&lt;SenseCore&gt; {
     const encodedSenseID &#x3D; this.commonService.encodeUrl(senseID);
-    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalSense?aspect&#x3D;core&amp;id&#x3D;${encodedSenseID}&#x60;);
+    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalSense?module&#x3D;core&amp;id&#x3D;${encodedSenseID}&#x60;);
   }
 
   /**
@@ -3192,16 +3732,51 @@ export class LexiconService {
 
   /**
    * POST di aggiornamento di una relazione linguistica
-   * @param lexicalEntryInstanceName {string} identificativo dell&#x27;entrata lessicale
+   * @param lexicalEntityId {string} identificativo dell&#x27;entità (ad es. entrata lessicale o senso)
    * @param updater {LinguisticRelationUpdater} dati di aggiornamento
    * @returns {Observable&lt;string&gt;} observable del timestamp di ultima modifica
    */
-  updateLinguisticRelation(lexicalEntryID: string, updater: LinguisticRelationUpdater): Observable&lt;string&gt; {
-    const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryID);
+  updateLinguisticRelation(lexicalEntityId: string, updater: LinguisticRelationUpdater): Observable&lt;string&gt; {
+    const encodedLexEntity &#x3D; this.commonService.encodeUrl(lexicalEntityId);
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/update/linguisticRelation?id&#x3D;${encodedLexEntry}&#x60;,
+      &#x60;${this.lexoUrl}lexicon/update/linguisticRelation?id&#x3D;${encodedLexEntity}&#x60;,
       updater,
       { responseType: &quot;text&quot; }
+    );
+  }
+
+  createIndirectSenseRelation(sourceSenseURI: string, categoryURI: string): Observable&lt;string&gt; {
+
+    const createRelationship &#x3D; () &#x3D;&gt; {
+      const createRelationshipUrl &#x3D; new URL(&#x60;${this.lexoUrl}lexicon/creation/lexicoSemanticRelation&#x60;);
+      createRelationshipUrl.search &#x3D; new URLSearchParams({
+        id: sourceSenseURI,
+        type: &quot;http://www.w3.org/ns/lemon/vartrans#SenseRelation&quot;,
+        prefix: &#x27;ferrandi&#x27;,
+        baseIRI: &quot;http://rut/somali/ferrandi#&quot;,
+        author: &quot;ziopino&quot;, // FIXME: replace builtin name with real author
+      }).toString();
+
+      return this.http.get(createRelationshipUrl.href, { responseType: &#x27;json&#x27; });
+    }
+
+    const addCategory &#x3D; (relationURI: string) &#x3D;&gt; {
+      const addCategoryUrl &#x3D; new URL(&#x60;${this.lexoUrl}lexicon/update/linguisticRelation&#x60;);
+      addCategoryUrl.searchParams.append(&#x27;id&#x27;, relationURI);
+      return this.http.post(addCategoryUrl.href, {
+        type: LINGUISTIC_RELATION_TYPE.LEXICOSEMANTIC_REL,
+        value: categoryURI,
+        relation: &#x27;http://www.w3.org/ns/lemon/vartrans#category&#x27;,
+      }, {
+        headers: {&#x27;Content-Type&#x27;: &#x27;application/json&#x27;},
+        responseType: &#x27;text&#x27;,
+      }).pipe(mergeMap(() &#x3D;&gt; of(relationURI)));
+    }
+
+    return createRelationship().pipe(
+      mergeMap(
+        (response: any) &#x3D;&gt; addCategory(response.relation),
+      )
     );
   }
 }

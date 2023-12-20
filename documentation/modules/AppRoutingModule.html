@@ -72,26 +72,32 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { MainLayoutComponent } from &#x27;./layouts/main-layout/main-layout.component&#x27;;
-import { NgModule } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule } from &#x27;@angular/core&#x27;;
 import { RouterModule, Routes } from &#x27;@angular/router&#x27;;
-import { PROJECTX_ROUTES } from &#x27;./routes/projectx.routes&#x27;
-import { WORKSPACES_ROUTES } from &#x27;./routes/workspaces.routes&#x27;;
+import { authGuard } from &#x27;./guards/auth.guard&#x27;;
+import { MainLayoutComponent } from &#x27;./layouts/main-layout/main-layout.component&#x27;;
 import { WorkspaceLayoutComponent } from &#x27;./layouts/workspace-layout/workspace-layout.component&#x27;;
+import { LoginComponent } from &#x27;./pages/login/login.component&#x27;;
+import { PROJECTX_ROUTES } from &#x27;./routes/projectx.routes&#x27;;
+import { WORKSPACES_ROUTES } from &#x27;./routes/workspaces.routes&#x27;;
 
 /**Route iniziali */
 const routes: Routes &#x3D; [
   {
+    path: &#x27;login&#x27;,
+    component: LoginComponent
+  },
+  {
     path: &#x27;&#x27;,
     component: MainLayoutComponent,
-    children: PROJECTX_ROUTES
-    // canActivate: [AuthGuard],
-    // canActivateChild: [RoleGuard],
+    children: PROJECTX_ROUTES,
+    canActivateChild: [authGuard],
   },
   {
     path: &#x27;&#x27;,
     component: WorkspaceLayoutComponent,
-    children: WORKSPACES_ROUTES
+    children: WORKSPACES_ROUTES,
+    canActivateChild: [authGuard],
   }
   // { path: &#x27;users&#x27;, component: UserListComponent },
   // { path: &#x27;adduser&#x27;, component: UserFormComponent }

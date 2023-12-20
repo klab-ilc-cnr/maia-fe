@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@a
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, map, take, takeUntil, throwError } from 'rxjs';
-import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
@@ -62,7 +62,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     return false;
   }
 
-  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel || !this.annotationModel?.layer || !this.annotationModel?.layer.id || !this.annotationModel.start || !this.annotationModel.end) }
+  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel || !this.annotationModel?.layer || !this.annotationModel?.layer.id || (!this.annotationModel.start && this.annotationModel.start !== 0) || !this.annotationModel.end) }
 
   public get shouldBeDisabled(): boolean { //FIXME sostituire con una pipe
     if (!this.isEditing) {
@@ -127,7 +127,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     type: "",
     field: "",
     pos: '',
-    formType: "entry",
+    formType: formTypeEnum.entry,
     author: "",
     lang: "",
     status: "",

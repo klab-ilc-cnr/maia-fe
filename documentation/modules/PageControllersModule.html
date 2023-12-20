@@ -56,13 +56,13 @@
 <title>cluster_PageControllersModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-32.8 8,-230.8 707,-230.8 707,-32.8 8,-32.8"/>
 </g>
-<g id="clust8" class="cluster">
-<title>cluster_PageControllersModule_exports</title>
-<polygon fill="none" stroke="black" points="66,-170.8 66,-222.8 649,-222.8 649,-170.8 66,-170.8"/>
-</g>
 <g id="clust2" class="cluster">
 <title>cluster_PageControllersModule_declarations</title>
 <polygon fill="none" stroke="black" points="130,-40.8 130,-92.8 699,-92.8 699,-40.8 130,-40.8"/>
+</g>
+<g id="clust8" class="cluster">
+<title>cluster_PageControllersModule_exports</title>
+<polygon fill="none" stroke="black" points="66,-170.8 66,-222.8 649,-222.8 649,-170.8 66,-170.8"/>
 </g>
 <g id="clust7" class="cluster">
 <title>cluster_PageControllersModule_imports</title>
@@ -274,17 +274,18 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule } from &#x27;@angular/core&#x27;;
-import { CommonModule } from &#x27;@angular/common&#x27;;
-import { HeaderComponent } from &#x27;./header/header.component&#x27;;
-import { SideMenuComponent } from &#x27;./side-menu/side-menu.component&#x27;;
-import { FontAwesomeModule } from &#x27;@fortawesome/angular-fontawesome&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
+import { NgModule } from &#x27;@angular/core&#x27;;
 import { RouterModule } from &#x27;@angular/router&#x27;;
+import { FontAwesomeModule } from &#x27;@fortawesome/angular-fontawesome&#x27;;
 import { ButtonModule } from &quot;primeng/button&quot;;
 import { SidebarModule } from &quot;primeng/sidebar&quot;;
-import { FooterComponent } from &#x27;./footer/footer.component&#x27;;
+import { TooltipModule } from &#x27;primeng/tooltip&#x27;;
 import { IconsModule } from &#x27;../icons/icons.module&#x27;;
+import { FooterComponent } from &#x27;./footer/footer.component&#x27;;
+import { HeaderComponent } from &#x27;./header/header.component&#x27;;
 import { LoaderComponent } from &#x27;./loader/loader.component&#x27;;
+import { SideMenuComponent } from &#x27;./side-menu/side-menu.component&#x27;;
 
 @NgModule({
   declarations: [FooterComponent, HeaderComponent, SideMenuComponent, LoaderComponent],
@@ -295,7 +296,8 @@ import { LoaderComponent } from &#x27;./loader/loader.component&#x27;;
     FontAwesomeModule,
     RouterModule,
     SidebarModule,
-    IconsModule
+    IconsModule,
+    TooltipModule,
   ]
 })
 export class PageControllersModule { }

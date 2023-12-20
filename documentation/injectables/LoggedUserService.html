@@ -101,18 +101,6 @@
                                     <span class="modifier">Public</span>
                                 <a href="#canManageUsers" >canManageUsers</a>
                             </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#registerUser" >registerUser</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#retrieveUserFromStorage" >retrieveUserFromStorage</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#setUserInStorage" >setUserInStorage</a>
-                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -145,12 +133,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor()</code>
+<code>constructor(storageService: <a href="../injectables/StorageService.html" target="_self">StorageService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/logged-user.service.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/services/logged-user.service.ts:10</a></div>
                             </td>
                         </tr>
 
@@ -158,6 +146,32 @@
                     <td class="col-md-4">
                             <div class="io-description"><p>Costruttore per LoggedUserService</p>
 </div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>storageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/StorageService.html" target="_self" >StorageService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
                     </td>
                 </tr>
             </tbody>
@@ -191,8 +205,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="39"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:39</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:42</a></div>
                 </td>
             </tr>
 
@@ -238,8 +252,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="61"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:61</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:62</a></div>
                 </td>
             </tr>
 
@@ -277,8 +291,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="54"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:54</a></div>
                 </td>
             </tr>
 
@@ -324,8 +338,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/app/services/logged-user.service.ts:30</a></div>
                 </td>
             </tr>
 
@@ -344,209 +358,6 @@
                     <div class="io-description">
                         <p>definisce se l&#39;utente può gestire le utenze</p>
 
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="registerUser"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>registerUser</b></span>
-                        <a href="#registerUser"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>registerUser(user: <a href="../classes/User.html" target="_self">User</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="71"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:71</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che registra le informazioni dell&#39;utente loggato</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>user</td>
-                                    <td>
-                                                <code><a href="../classes/User.html" target="_self" >User</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>utente loggato</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="retrieveUserFromStorage"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>retrieveUserFromStorage</b></span>
-                        <a href="#retrieveUserFromStorage"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieveUserFromStorage()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="80"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:80</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che recupera i dati dell&#39;utente loggato dal localstorage</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >User | undefined</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>l&#39;utente loggato</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="setUserInStorage"></a>
-                    <span class="name">
-                        <span class="modifier">Private</span>
-                        <span ><b>setUserInStorage</b></span>
-                        <a href="#setUserInStorage"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>setUserInStorage(user: <a href="../classes/User.html" target="_self">User</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="95"
-                            class="link-to-prism">src/app/services/logged-user.service.ts:95</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che salva nel localstorage le informazioni dell&#39;utente loggato</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>user</td>
-                                    <td>
-                                                <code><a href="../classes/User.html" target="_self" >User</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>utente loggato</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -599,9 +410,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
 import { Roles } from &#x27;../models/roles&#x27;;
 import { User } from &#x27;../models/user&#x27;;
-
-/**Key per utente loggato nel localstorage */
-const CURRENT_USER_LOCAL_STORAGE &#x3D; &#x27;currentUser&#x27;;
+import { StorageService } from &#x27;./storage.service&#x27;;
 
 /**Classe dei servizi per l&#x27;utente loggato */
 @Injectable({
@@ -610,21 +419,26 @@ const CURRENT_USER_LOCAL_STORAGE &#x3D; &#x27;currentUser&#x27;;
 export class LoggedUserService {
 
   /**Costruttore per LoggedUserService */
-  constructor() { }
+  constructor(
+    private storageService: StorageService,
+  ) { }
 
   /**Getter dei dati dell&#x27;utente loggato */
   public get currentUser(): User | undefined {
-    return this.retrieveUserFromStorage();
+    const storageUser &#x3D; this.storageService.getCurrentUser();
+    if (!storageUser) {
+      return undefined;
+    }
+    return storageUser;
   }
 
   /**
    * Metodo che valuta se l&#x27;utente è autorizzato alla gestione utenze
    * @returns {boolean} definisce se l&#x27;utente può gestire le utenze
    */
-  public canManageUsers(): boolean{
-    let user &#x3D; this.currentUser;
-    if(user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined)
-    {
+  public canManageUsers(): boolean {
+    const user &#x3D; this.currentUser;
+    if (user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined) {
       return false;
     }
     return (user?.role &#x3D;&#x3D;&#x3D; (Roles.AMMINISTRATORE));
@@ -634,10 +448,9 @@ export class LoggedUserService {
    * Metodo che valuta se l&#x27;utente è autorizzato alla gestione dei layer
    * @returns {boolean} definisce se l&#x27;utente può gestire i layer
    */
-  public canManageLayers(): boolean{
-    let user &#x3D; this.currentUser;
-    if(user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined)
-    {
+  public canManageLayers(): boolean {
+    const user &#x3D; this.currentUser;
+    if (user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined) {
       return false;
     }
     return (user?.role &#x3D;&#x3D;&#x3D; (Roles.AMMINISTRATORE));
@@ -647,10 +460,9 @@ export class LoggedUserService {
    * Metodo che valuta se l&#x27;utente è autorizzato alla gestione dei tagset
    * @returns {boolean} definisce se l&#x27;utente può gestire i tagset
    */
-  public canManageTagsets(): boolean{
-    let user &#x3D; this.currentUser;
-    if(user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined)
-    {
+  public canManageTagsets(): boolean {
+    const user &#x3D; this.currentUser;
+    if (user &#x3D;&#x3D;&#x3D; null &amp;&amp; user &#x3D;&#x3D;&#x3D; undefined) {
       return false;
     }
     return (user?.role &#x3D;&#x3D;&#x3D; (Roles.AMMINISTRATORE));
@@ -658,54 +470,9 @@ export class LoggedUserService {
 
   public canManageLexicon(): boolean {
     const user &#x3D; this.currentUser;
-    if(!user || user &#x3D;&#x3D;&#x3D; undefined) return false;
+    if (!user || user &#x3D;&#x3D;&#x3D; undefined) return false;
     return user.role &#x3D;&#x3D;&#x3D; Roles.AMMINISTRATORE;
   }
-
-  /**
-   * Metodo che registra le informazioni dell&#x27;utente loggato
-   * @param user {User} utente loggato
-   */
-  public registerUser(user: User) {
-    this.setUserInStorage(user);
-  }
-
-  /**
-   * @private
-   * Metodo che recupera i dati dell&#x27;utente loggato dal localstorage
-   * @returns {User|undefined} l&#x27;utente loggato
-   */
-  private retrieveUserFromStorage(): User | undefined {
-    var userObject &#x3D; localStorage.getItem(CURRENT_USER_LOCAL_STORAGE);
-    if(userObject &#x3D;&#x3D; null || userObject &#x3D;&#x3D; undefined)
-    {
-      return undefined;
-    }
-
-    return JSON.parse(userObject);
-  }
-
-  /**
-   * @private
-   * Metodo che salva nel localstorage le informazioni dell&#x27;utente loggato
-   * @param user {User} utente loggato
-   */
-  private setUserInStorage(user: User): void {
-    localStorage.setItem(CURRENT_USER_LOCAL_STORAGE, JSON.stringify(user));
-  }
-
-  // public name() {
-  //   let claims &#x3D; this.oauthService.getIdentityClaims();
-  //   if (!claims) return null;
-  //   return claims;
-  // }
-
-  // public getUser(): User | undefined{
-  //   //TODO popolare user
-  //   //this.loggedUser.id &#x3D; &quot;1&quot;;
-  //   //return this.loggedUser;
-  //   return this.retrieveUserFromStorage();
-  // }
 
 }
 </code></pre>

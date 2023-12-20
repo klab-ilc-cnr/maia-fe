@@ -1,0 +1,19 @@
+:host, label {
+  width: 100%;
+}
+
+p-selectButton {
+  float: right;
+}
+
+::ng-deep legend {
+  width: auto;
+  float: inherit;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.fieldset-small {
+  height: 1.5rem !important;
+  width: 1.5rem;
+}

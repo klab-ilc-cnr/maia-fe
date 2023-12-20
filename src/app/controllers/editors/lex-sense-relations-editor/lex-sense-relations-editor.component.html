@@ -1,0 +1,28 @@
+<div *ngIf="senseEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
+  <form class="formgrid grid">
+
+    <div class="field col-12" *ngIf="!demoHide"><!--TODO: HIDDEN IN THE DEMO, remove demoHide as soon as development is complete-->
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          Translations<button pButton pRipple icon="pi pi-plus" type="button"
+            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+        <ng-template pTemplate="content"></ng-template>
+      </p-fieldset>
+    </div>
+
+    <app-lex-sense-direct-relations [lexEntityId]="senseEntry.sense" [menuItems]="menuItems" [model]="model"></app-lex-sense-direct-relations>
+    <app-lex-sense-indirect-relations [lexEntityId]="senseEntry.sense" [menuItems]="menuItems" [model]="model"></app-lex-sense-indirect-relations>
+
+    <div class="field col-12" *ngIf="!demoHide"><!--TODO HIDDEN IN THE DEMO, remove demoHide as soon as development is complete-->
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          Terminological Relations<button pButton pRipple icon="pi pi-plus" type="button"
+            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+        <ng-template pTemplate="content"></ng-template>
+      </p-fieldset>
+    </div>
+
+  </form>
+</div>

@@ -642,6 +642,15 @@ export interface LexicalElementBase {
   images?: string[]
 }
 
+export interface LexoLanguage extends LexicalElementBase {
+  language: string,
+  label: string,
+  lexvo: string,
+  catalog: string[],
+  description: string,
+  entries: number
+}
+
 export interface MorphologyProperty {
   trait: string,
   value: string

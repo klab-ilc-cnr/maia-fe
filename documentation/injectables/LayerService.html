@@ -138,10 +138,6 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#retrieveLayers" >retrieveLayers</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
                                 <a href="#updateLayerById" >updateLayerById</a>
                             </li>
                         </ul>
@@ -338,7 +334,6 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -353,10 +348,6 @@
                                     </td>
 
 
-                                    <td>
-                                        <p>layer modificato</p>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -368,7 +359,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>observable del layer modificato</p>
+                        <p>observable della lista di layer</p>
 
                     </div>
                 </td>
@@ -781,53 +772,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="retrieveLayers"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>retrieveLayers</b></span>
-                        <a href="#retrieveLayers"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieveLayers()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="32"
-                            class="link-to-prism">src/app/services/layer.service.ts:32</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera l&#39;elenco dei layer esistenti</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Layer.html" target="_self" >Observable&lt;Array&lt;Layer&gt;&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable della lista di layer</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="updateLayerById"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -998,9 +942,9 @@ export class LayerService {
    * GET che recupera l&#x27;elenco dei layer esistenti
    * @returns {Observable&lt;Array&lt;Layer&gt;&gt;} observable della lista di layer
    */
-  public retrieveLayers(): Observable&lt;Array&lt;Layer&gt;&gt; {
-    return this.http.get&lt;Array&lt;Layer&gt;&gt;(&#x60;${this.layerUrl}&#x60;);
-  }
+  // public retrieveLayers(): Observable&lt;Array&lt;Layer&gt;&gt; {
+  //   return this.http.get&lt;Array&lt;Layer&gt;&gt;(&#x60;${this.layerUrl}&#x60;);
+  // }
 
   /**
    * PUT che richiede la modifica dei dati di un layer

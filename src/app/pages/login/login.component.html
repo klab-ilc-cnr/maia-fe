@@ -1,0 +1,26 @@
+<div class="grid justify-content-center align-items-center" style="height: 95vh;">
+    <p-toast></p-toast>
+    <div>
+        <p-card header="MAIA">
+            <form class="formgrid grid" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="field col-12">
+                    <label for="username">Username or E-mail *</label>
+                    <input name="username" pInputText type="text" formControlName="username"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+                </div>
+                <div class="field col-12">
+                    <label for="password">Password</label>
+                    <p-password name="password" styleClass="p-password p-component p-inputwrapper p-input-icon-right"
+                        formControlName="password" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                        [toggleMask]="true" [feedback]="false"></p-password>
+                </div>
+                <div class="d-flex justify-content-center col-12">
+                    <button type="submit" class="btn btn-primary col-10" style="height: 34px;">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </p-card>
+    </div>
+</div>
+<app-footer></app-footer>

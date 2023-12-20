@@ -4,7 +4,6 @@ import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Observable, of, switchMap } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
-import { Roles } from 'src/app/models/roles';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -41,6 +40,9 @@ export class WorkspaceCorpusExplorerComponent {
    */
   private deleteElement = (id: number, type: ElementType): void => {
     this.corpusStateService.removeElement.next({ elementType: type, elementId: id });
+    if(id === this.selectedNode?.data?.id) {
+      this.selectedNode = undefined;
+    }
   }
 
   /**Evento di selezione di un testo */
@@ -54,7 +56,7 @@ export class WorkspaceCorpusExplorerComponent {
 
   /**Getter che definisce se debba essere visualizzata l'opzione di cancellazione */
   public get shouldDeleteBeDisplayed(): boolean {
-    return this.loggedUserService.currentUser?.role == Roles.AMMINISTRATORE; //hanno diritto di cancellazione solo i ruoli amministratore
+    return this.loggedUserService.currentUser?.role == "ADMINISTRATOR"; //hanno diritto di cancellazione solo i ruoli amministratore
   }
 
   /**File caricato */
@@ -263,8 +265,11 @@ export class WorkspaceCorpusExplorerComponent {
     }
     const elementType = this.selectedNode!.data!.type;
     const elementId = this.selectedNode!.data!.id;
-    this.corpusStateService.renameElement.next({ elementType: elementType, elementId: elementId, newName: newName }); //BUG ottengo un internal server error
-
+    this.corpusStateService.renameElement.next({ elementType: elementType, elementId: elementId, newName: newName });
+    if(this.selectedNode && this.selectedNode.data) {
+      this.selectedNode.label = newName;
+      this.selectedNode.data.name = newName;
+    }
     this.visibleRename = false;
 
   }
