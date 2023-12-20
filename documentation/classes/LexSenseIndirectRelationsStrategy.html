@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >LexEntryIndirectRelationsStrategy</li>
+  <li >LexSenseIndirectRelationsStrategy</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -62,7 +62,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations-strategy.ts</code>
+            <code>src/app/controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations-strategy.ts</code>
         </p>
 
 
@@ -132,7 +132,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations-strategy.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations-strategy.ts:11</a></div>
                             </td>
                         </tr>
 
@@ -210,8 +210,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations-strategy.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="60"
+                            class="link-to-prism">src/app/controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations-strategy.ts:60</a></div>
                 </td>
             </tr>
 
@@ -281,8 +281,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="34"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations-strategy.ts:34</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/app/controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations-strategy.ts:35</a></div>
                 </td>
             </tr>
 
@@ -352,8 +352,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations-strategy.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="18"
+                            class="link-to-prism">src/app/controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations-strategy.ts:18</a></div>
                 </td>
             </tr>
 
@@ -435,8 +435,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="76"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations-strategy.ts:76</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">src/app/controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations-strategy.ts:77</a></div>
                 </td>
             </tr>
 
@@ -506,8 +506,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="67"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations-strategy.ts:67</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/app/controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations-strategy.ts:68</a></div>
                 </td>
             </tr>
 
@@ -578,15 +578,16 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { LexicalEntityRelationsResponseModel } from &#x27;src/app/models/lexicon/lexical-sense-response.model&#x27;;
-import { FormItem } from &#x27;../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component&#x27;;
-import { BaseLexEntityRelationsStrategy, SuggestionEntry } from &#x27;../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy&#x27;;
 import { Observable, map } from &#x27;rxjs&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
-import { LexicalEntriesResponse, formTypeEnum, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
-import { LexicalEntryListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
 import { LINGUISTIC_RELATION_TYPE } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from &#x27;../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy&#x27;;
+import { FilteredSenseModel } from &#x27;src/app/models/lexicon/filtered-sense.model&#x27;;
+import { formTypeEnum, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
+import { SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { FormItem } from &#x27;../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component&#x27;;
 
-export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
+export class LexSenseIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
 
   constructor(
     private lexiconService: LexiconService,
@@ -611,10 +612,10 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
   }
 
   public getSuggestions(text: string): Observable&lt;SuggestionEntry[]&gt; {
-    return this.lexiconService.getLexicalEntriesList({
+    return this.lexiconService.getFilteredSenses({
       text,
       searchMode: searchModeEnum.startsWith,
-      formType: formTypeEnum.entry,
+      formType: formTypeEnum.flexed,
       status: &quot;&quot;,
       type: &quot;&quot;,
       field: &quot;&quot;,
@@ -624,11 +625,11 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
       offset: 0,
       limit: 500,
     }).pipe(
-      map((response: LexicalEntriesResponse) &#x3D;&gt;
-        response.list.map((entry: LexicalEntryListItem) &#x3D;&gt; {
+      map((response: FilteredSenseModel) &#x3D;&gt;
+        response.list.map((entry: SenseListItem) &#x3D;&gt; {
           return {
-            relationshipLabel: &#x60;${entry.label}@${entry.language} (${entry.pos})&#x60;,
-            relationshipURI: entry.lexicalEntry,
+            relationshipLabel: &#x60;${entry.lemma} - ${entry.label || &#x27;no def&#x27;}&#x60;,
+            relationshipURI: entry.sense,
           };
         })
       ),
@@ -639,7 +640,7 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
     return this.lexiconService.createIndirectSenseRelation(
       this.lexEntityId,
       relationshipURI,
-      &quot;http://www.w3.org/ns/lemon/vartrans#LexicalRelation&quot;,
+      &quot;http://www.w3.org/ns/lemon/vartrans#SenseRelation&quot;,
     );
   }
 
@@ -694,7 +695,7 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'LexEntryIndirectRelationsStrategy.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'LexSenseIndirectRelationsStrategy.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

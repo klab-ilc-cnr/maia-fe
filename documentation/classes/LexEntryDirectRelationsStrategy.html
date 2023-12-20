@@ -403,7 +403,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>FormItem[]</code>
+                        <b>Returns : </b>        <code><a href="../interfaces/FormItem.html" target="_self" >FormItem[]</a></code>
 
                     </div>
                     <div class="io-description">
@@ -578,8 +578,8 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { LexicalEntityRelationsResponseModel } from &#x27;src/app/models/lexicon/lexical-sense-response.model&#x27;;
-import { FormItem } from &#x27;../base-lex-entity-relations/base-lex-entity-relations.component&#x27;;
-import { BaseLexEntityRelationsStrategy, SuggestionEntry } from &#x27;../base-lex-entity-relations/base-lex-entity-relations-strategy&#x27;;
+import { FormItem } from &#x27;../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component&#x27;;
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from &#x27;../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy&#x27;;
 import { Observable, map, of } from &#x27;rxjs&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { LexicalEntriesResponse, formTypeEnum, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
@@ -650,6 +650,10 @@ export class LexEntryDirectRelationsStrategy implements BaseLexEntityRelationsSt
   }
 
   public removeRelationship(control: FormItem) {
+    if (!control.destinationURI) {
+      return of(&#x27;&#x27;);
+    }
+
     return this.lexiconService.deleteRelation(this.lexEntityId, {
       relation: control.relationshipURI,
       value: control.destinationURI,

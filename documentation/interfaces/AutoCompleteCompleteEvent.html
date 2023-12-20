@@ -65,7 +65,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/controllers/editors/lex-entry-relations-editor/lex-entity-semantic-rel/lex-entity-semantic-rel.component.ts</code>
+            <code>src/app/controllers/editors/lex-entity-relations/lex-entity-semantic-rel/lex-entity-semantic-rel.component.ts</code>
         </p>
 
 
@@ -200,7 +200,6 @@ interface AutoCompleteCompleteEvent {
 })
 export class LexEntitySemanticRelComponent implements OnInit {
 
-  @Input() lexEntryId!: string;
   @Input() control!: FormItem;
   @Input() form!: FormGroup;
   @Input() formItems!: FormItem[];
@@ -274,13 +273,6 @@ export class LexEntitySemanticRelComponent implements OnInit {
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
 
     this.popupDeleteItem.showDeleteConfirmSimple(() &#x3D;&gt; {
-
-      if (!this.selectedSuggestion) return;
-      if (!this.selectedSuggestion.relationshipURI) {
-        this.removeFormItem(relationshipLabel, itemID);
-        return;
-      }
-
       this.strategy.removeRelationship(control).pipe(
         take(1)
       ).subscribe({
