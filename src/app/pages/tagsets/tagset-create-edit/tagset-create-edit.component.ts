@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, of, switchMap, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
@@ -10,7 +10,7 @@ import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.di
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import Swal from 'sweetalert2';
 
-/**Componente per la creazione/modifica di un tagset */
+/**Component for creating/editing a tagset */
 @Component({
   selector: 'app-tagset-create-edit',
   templateUrl: './tagset-create-edit.component.html',
@@ -18,49 +18,63 @@ import Swal from 'sweetalert2';
   providers: [TagsetStateService],
 })
 export class TagsetCreateEditComponent implements OnInit, OnDestroy {
+  /**Subject for subscribe management */
   private readonly unsubscribe$ = new Subject();
+  /**Current tagset to be edited */
   ttagset!: TTagset;
+  /**Observable of the current tagset */
   ttagset$ = this.tagsetState.tagset$;
+  /**Observable of the current tagset name */
   ttagsetName = this.ttagset$.pipe(
     switchMap(t => of(t.name)),
   );
+  /**Observabkle of the current tagset description */
   ttagsetDescription = this.ttagset$.pipe(
     switchMap(t => of(t.description)),
   );
+  /**Observable of the current tagset items (its values) */
   ttagsetItems$ = this.tagsetState.tagsetItems$;
+  /**Title for the new edit modal */
   newEditTitle = '';
+  /**Defines whether the creation/insertion modal of a tagset value (or item) is visible */
   visibleEditNewTagsetItem = false;
+  /**Tagset item form */
   tagsetItemForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     description: new FormControl<string>(''),
   });
+  /**Getter for the form name field */
   get name() { return this.tagsetItemForm.controls.name }
+  /**Getter for the form description field */
   get description() { return this.tagsetItemForm.controls.description }
+  /**Tagset item to be edited */
   ttagsetItemOnEdit: TTagsetItem | undefined;
+  /**List of tagset items names */
   ttagsetItemsName: string[] = [];
 
   /**
    * @private
-   * Effettua la rimozione di un valore del tagset
-   * @param tagsetItem {string} nome del valore
+   * Performs removal of a tagset value
+   * @param tagsetItem {TTagsetItem} tagset item to be removed
    * @returns {void}
    */
   private deleteValue = (tagsetItem: TTagsetItem): void => {
     this.tagsetState.removeTagsetItem.next(tagsetItem);
   }
 
-  /**Getter che restituisce se il valore del tagset è in modalità di modifica */
+  /**Getter that returns whether the tagset value is in edit mode */
   public get isTagsetValueEditing(): boolean {
     return this.ttagsetItemOnEdit !== undefined;
   }
 
-  /**Riferimento al popup di conferma cancellazione */
+  /**Reference to cancellation confirmation popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**
-   * Costruttore per TagsetCreateEditComponent
-   * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
-   * @param router {Router} servizi per la navigazione fra le viste
+   * Costructor for TagsetCreateEditComponent
+   * @param activeRoute {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
+   * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
+   * @param tagsetState {TagsetStateService} service that manages the general state of the tagsets
    */
   constructor(
     private activeRoute: ActivatedRoute,
@@ -80,7 +94,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**Metodo dell'interfaccia OnInit, utilizzato per decidere se tornare alla pagina della lista, caricare i dati del tagset o iniziare un nuovo inserimento */
+  /**OnInit interface method, used to decide whether to return to the list page, load tagset data, or start a new entry */
   ngOnInit(): void {
     this.activeRoute.paramMap.pipe(
       takeUntil(this.unsubscribe$),
@@ -96,21 +110,21 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
 
   }
 
-  /**Metodo dell'interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal */
+  /**Method of the OnDestroy interface, used to emit the unsubscribe subject */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
     Swal.close();
   }
 
-  /**Metodo che esegue la navigazione sulla lista dei tagset */
+  /**Method that performs navigation back to tagsets list */
   backToList() {
     this.router.navigate(["../"], { relativeTo: this.activeRoute });
   }
 
   /**
-   * Metodo che visualizza il modale di conferma della cancellazione di un valore di un tagset ed eventualmente richiama la proprietà di cancellazione
-   * @param value {TTagsetItem} valore di un tagset
+   * Method that displays the modal confirming the deletion of a tagset value and eventually invokes the deletion property
+   * @param value {TTagsetItem} tagset value item
    */
   showDeleteValueModal(value: TTagsetItem): void {
     const confirmMsg = `You are about to delete the tagset "${value.name}"`;
@@ -119,8 +133,8 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Metodo che visualizza il modale di modifica di un valore di un tagset
-   * @param value {TTagsetItem} valore di un tagset
+   * Method that displays the modal of editing a tagset value
+   * @param value {TTagsetItem} tagset value item
    */
   showEditValueModal(value: TTagsetItem): void {
     this.newEditTitle = value.name!;
@@ -132,7 +146,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     this.visibleEditNewTagsetItem = true;
   }
 
-  /**Metodo che visualizza il modale di inserimento di un nuovo valore del tagset */
+  /**Method that displays the modal for entering a new tagset value */
   showTagsetValueModal() {
     this.ttagsetItemOnEdit = undefined;
     this.newEditTitle = 'New tagset value'
@@ -142,8 +156,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Metodo che sottomette il salvataggio del form del valore del tagset
-   * @param form {NgForm} form del valore del tagset
+   * Method that submits the form save tagset value
    * @returns {void}
    */
   onSubmitTagsetValueModal(): void {

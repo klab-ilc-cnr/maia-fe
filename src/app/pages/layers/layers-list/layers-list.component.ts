@@ -137,8 +137,8 @@ export class LayersListComponent {
   }
 
   /**
-   * Metodo che naviga sulla vista di dettaglio del layer per gestirne le feature
-   * @param layer {Layer} layer aggiunto
+   * Method that navigates to the detail view of the layer to manage its features
+   * @param layer {TLayer} added layer
    */
   viewLayerFeatures(layer: TLayer) {
     this.router.navigate([layer.id], { relativeTo: this.activeRoute });
