@@ -15,14 +15,16 @@ import { UserService } from 'src/app/services/user.service';
 import { matchNewPassword } from 'src/app/validators/match-new-password.directive';
 import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 
-/**Componente del form dei dati di un utente (anche nuovo) */
+/**Edit and create user form component */
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit, OnDestroy {
+  /**Subject for subscribe management */
   private readonly unsubscribe$ = new Subject();
+  /**User description form */
   userForm = new FormGroup({
     username: new FormControl<string>('', [Validators.required, Validators.minLength(4)]),
     newPassword: new FormControl<string>(''),
@@ -34,15 +36,24 @@ export class UserFormComponent implements OnInit, OnDestroy {
     active: new FormControl<boolean>(false),
     languages: new FormControl<Language[]>([], Validators.required),
   });
+  /**Getter for the form username field */
   get username() { return this.userForm.controls.username }
+  /**Getter for the form newPassword field */
   get userPwd() { return this.userForm.controls.newPassword }
+  /**Getter for the form confirmPassword field */
   get confirmPwd() { return this.userForm.controls.confirmPassword }
+  /**Getter for the form name field */
   get name() { return this.userForm.controls.name }
+  /**Getter for the form surname field */
   get surname() { return this.userForm.controls.surname }
+  /**Getter for the form email field */
   get email() { return this.userForm.controls.email }
+  /**Getter for the form role field */
   get role() { return this.userForm.controls.role }
+  /**Getter for the form languages field */
   get languages() { return this.userForm.controls.languages }
 
+  /**Change password description form */
   passwordForm = new FormGroup({
     oldPassword: new FormControl<string>('', Validators.required),
     newPassword: new FormControl<string>('', Validators.required),
@@ -50,21 +61,25 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }, {
     validators: matchNewPassword
   });
-
+  /**Getter for the form oldPassword field */
   get oldPassword() { return this.passwordForm.controls.oldPassword as FormControl; }
+  /**Getter for the form newPassword field */
   get newPassword() { return this.passwordForm.controls.newPassword as FormControl; }
+  /**Getter for the form confirmPassword field */
   get confirmPassword() { return this.passwordForm.controls.confirmPassword as FormControl; }
 
-  /**Utente in lavorazione */
+  /**User in process */
   user: User;
+  /**Id of the logged in Maia user */
   currentMaiaUserId = this.storageService.getCurrentUser()?.id;
+  /**Defines whether the user being edited is the same as the logged-in user */
   isSameUser = false;
 
-  /**Definisce se è un utente in modifica */
+  /**Defines whether it is an editing user */
   private editUser = false;
-  /**Definisce se è un utente in creazione */
+  /**Defines whether it is a user in creation */
   private newUser = false;
-  private currentUser = false;
+  private currentUser = false; //TODO PROBABLY TO BE REMOVED @MPapini91
   /**Identificativo per l'inserimento di un nuovo utente */
   private newId = 'new';
   /**Lista dei ruoli utente */
@@ -140,18 +155,18 @@ export class UserFormComponent implements OnInit, OnDestroy {
    * Getter dell'essere utente in modifica
    * @returns {boolean} definisce se è un utente in modifica
    */
-  public get isEditUser() { return this.editUser; }
+  public get isEditUser(): boolean { return this.editUser; }
 
   /**
-   * Getter dell'essere un inserimento di nuovo utente
-   * @returns {boolean} definisce se è un nuovo utente
+   * Getter for newUser
+   * @returns {boolean} defines if it is a new user
    */
-  public get isNewUser() { return this.newUser; }
+  public get isNewUser(): boolean { return this.newUser; }
 
-  public get isCurrentUser() { return this.currentUser; }
+  public get isCurrentUser() { return this.currentUser; }//TODO PROBABLY TO BE REMOVED @MPapini91
 
-  /**Metodo che procede alla creazione del nuovo utente o al salvataggio delle modifiche dell'utente selezionato */
-  onSubmitUser() {  //BUG new user service return an error, opened an issue on BE repo, edit user is working
+  /**Method that proceeds to create the new user or save the changes of the selected user */
+  onSubmitUser() { 
     const updatedUser = <User>{
       ...this.user,
       ...{
@@ -203,6 +218,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**Method that saves the password change */
   onSubmitPwd() {
     const pwdBody: { id?: number, newPassword: string, currentPassword?: string } = { newPassword: this.newPassword?.value };
     if (!this.isSameUser) {
@@ -222,11 +238,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**Metodo che naviga sul componente della lista utenti */
+  /**Method that navigates the user list component */
   goToUserList() {
     this.router.navigate(['usersManagement/users']);
   }
 
+  /**Method that applies the nameDuplicateValidator validator after retrieving the list of existing usernames */
   private addDuplicateValidator() {
     this.userService.findAll().pipe(
       take(1),
@@ -237,12 +254,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Metodo privato che recupera i dati di un utente utilizzando il suo id
-   * @param id {string} identificativo dell'utente
+   * Private method that retrieves a user's data using the user's id
+   * @param id {string} user ID
    * @returns {void}
    */
   private loadUser(id: string): void {
-    if (!id) { //caso di id assente //TODO valutare rimozione, rischia di essere ridondante
+    if (!id) { //case of absent id //TODO Evaluate removal, risks redundancy
       return;
     }
 
@@ -261,7 +278,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**Metodo che richiama le informazioni dell'utente loggato */
+  /**Method that retrieves the information of the logged-in user */
   private loadCurrentUserProfile(): void {
     this.loaderService.show();
     this.userService.retrieveCurrentUser().pipe(
@@ -278,6 +295,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**Private method that sets the initial value of the user form and evaluates whether it should be disabled in part or in full */
   private setFormInitialValue() {
     this.userForm.setValue({
       username: this.user.username ?? '',
