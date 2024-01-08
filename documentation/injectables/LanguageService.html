@@ -66,7 +66,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Classe dei servizi relativi alle lingue</p>
+                <p>Language-related services class</p>
 
             </p>
 
@@ -133,7 +133,7 @@
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Costruttore per LanguageService</p>
+                            <div class="io-description"><p>Constructor for LanguageService</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -159,7 +159,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>effettua le chiamate HTTP</p>
+                                                                <p>Performs HTTP requests</p>
 
                                                         </td>
                                                 </tr>
@@ -207,7 +207,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET per il recupero della lista di lingue disponibili</p>
+                    <div class="io-description"><p>GET to retrieve the list of available languages</p>
 </div>
 
                     <div>
@@ -217,7 +217,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>observable della lista delle lingue disponibili</p>
+                        <p>observable of the list of available languages</p>
 
                     </div>
                 </td>
@@ -256,7 +256,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Url per le chiamate relative alle lingue</p>
+                    <div class="io-description"><p>Url for language-related calls</p>
 </div>
                 </td>
             </tr>
@@ -269,32 +269,32 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { HttpClient } from &#x27;@angular/common/http&#x27;;
-import { environment } from &#x27;../../environments/environment&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { Injectable } from &#x27;@angular/core&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
+import { environment } from &#x27;../../environments/environment&#x27;;
 import { Language } from &#x27;../models/language&#x27;;
 
-/**Classe dei servizi relativi alle lingue */
+/**Language-related services class */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class LanguageService {
 
-  /**Url per le chiamate relative alle lingue */
+  /**Url for language-related calls */
   private languagesUrl: string;
 
   /**
-   * Costruttore per LanguageService
-   * @param http {HttpClient} effettua le chiamate HTTP
+   * Constructor for LanguageService
+   * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
     this.languagesUrl &#x3D; environment.languagesUrl; // recupera l&#x27;url dall&#x27;environment
   }
 
   /**
-   * GET per il recupero della lista di lingue disponibili
-   * @returns {Observable&lt;Language[]&gt;} observable della lista delle lingue disponibili
+   * GET to retrieve the list of available languages
+   * @returns {Observable&lt;Language[]&gt;} observable of the list of available languages
    */
   public retrieveAll(): Observable&lt;Language[]&gt; {
     return this.http.get&lt;Language[]&gt;(this.languagesUrl);

@@ -66,7 +66,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Classe dei servizi relativi ai layer</p>
+                <p>Class of services related to layers</p>
 
             </p>
 
@@ -163,13 +163,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/layer.service.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/services/layer.service.ts:18</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Costruttore per LayerService</p>
+                            <div class="io-description"><p>Constructor for LayerService</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -195,7 +195,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>effettua le chiamate HTTP</p>
+                                                                <p>Performs HTTP requests</p>
 
                                                         </td>
                                                 </tr>
@@ -235,8 +235,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/app/services/layer.service.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="60"
+                            class="link-to-prism">src/app/services/layer.service.ts:60</a></div>
                 </td>
             </tr>
 
@@ -314,8 +314,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="41"
-                            class="link-to-prism">src/app/services/layer.service.ts:41</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/app/services/layer.service.ts:42</a></div>
                 </td>
             </tr>
 
@@ -388,14 +388,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="68"
-                            class="link-to-prism">src/app/services/layer.service.ts:68</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="74"
+                            class="link-to-prism">src/app/services/layer.service.ts:74</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>POST to add a new layer</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -406,6 +408,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -420,6 +423,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>layer to be added</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -431,7 +438,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the new layer</p>
+
                     </div>
                 </td>
             </tr>
@@ -459,8 +467,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="50"
-                            class="link-to-prism">src/app/services/layer.service.ts:50</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/app/services/layer.service.ts:51</a></div>
                 </td>
             </tr>
 
@@ -538,14 +546,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="77"
-                            class="link-to-prism">src/app/services/layer.service.ts:77</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/services/layer.service.ts:88</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET to remove a layer by ID</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -556,6 +566,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -570,6 +581,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>layer identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -577,11 +592,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>Observable&lt;TLayer&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>removed layer</p>
+
                     </div>
                 </td>
             </tr>
@@ -609,14 +625,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="87"
-                            class="link-to-prism">src/app/services/layer.service.ts:87</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="103"
+                            class="link-to-prism">src/app/services/layer.service.ts:103</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET to retrieve layer data by ID</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -627,6 +645,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -641,6 +660,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>layer identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -652,7 +675,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the retrieved layer</p>
+
                     </div>
                 </td>
             </tr>
@@ -680,14 +704,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="97"
-                            class="link-to-prism">src/app/services/layer.service.ts:97</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="118"
+                            class="link-to-prism">src/app/services/layer.service.ts:118</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET to retrieve the list of features associated with a layer</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -698,6 +724,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -712,6 +739,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>layer identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -723,7 +754,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the list of features</p>
+
                     </div>
                 </td>
             </tr>
@@ -751,17 +783,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="101"
-                            class="link-to-prism">src/app/services/layer.service.ts:101</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="126"
+                            class="link-to-prism">src/app/services/layer.service.ts:126</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET to retrieve layers list</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>Observable&lt;TLayer[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable of the layers list</p>
 
                     </div>
                 </td>
@@ -790,14 +830,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="111"
-                            class="link-to-prism">src/app/services/layer.service.ts:111</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="141"
+                            class="link-to-prism">src/app/services/layer.service.ts:141</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>POST to update a layer</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -808,6 +850,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -822,6 +865,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>layer to be updated</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -833,7 +880,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the updated layer</p>
+
                     </div>
                 </td>
             </tr>
@@ -865,13 +913,13 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/services/layer.service.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/services/layer.service.ts:18</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Url per le chiamate relative ai layer</p>
+                    <div class="io-description"><p>Url for layer-related requests</p>
 </div>
                 </td>
             </tr>
@@ -898,10 +946,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/layer.service.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/layer.service.ts:16</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Url for texto-related requests</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -920,18 +974,19 @@ import { Layer } from &#x27;../models/layer/layer.model&#x27;;
 import { TFeature } from &#x27;../models/texto/t-feature&#x27;;
 import { TLayer } from &#x27;../models/texto/t-layer&#x27;;
 
-/**Classe dei servizi relativi ai layer */
+/**Class of services related to layers */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class LayerService {
+  /**Url for texto-related requests */
   private textoUrl: string;
-  /**Url per le chiamate relative ai layer */
+  /**Url for layer-related requests */
   private layerUrl: string;
 
   /**
-   * Costruttore per LayerService
-   * @param http {HttpClient} effettua le chiamate HTTP
+   * Constructor for LayerService
+   * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
     this.layerUrl &#x3D; environment.layersUrl; //inizializza gli url sulla base degli environment
@@ -942,7 +997,7 @@ export class LayerService {
    * GET che recupera l&#x27;elenco dei layer esistenti
    * @returns {Observable&lt;Array&lt;Layer&gt;&gt;} observable della lista di layer
    */
-  // public retrieveLayers(): Observable&lt;Array&lt;Layer&gt;&gt; {
+  // public retrieveLayers(): Observable&lt;Array&lt;Layer&gt;&gt; {  //TODO CHECK TO REMOVE @MPapini91
   //   return this.http.get&lt;Array&lt;Layer&gt;&gt;(&#x60;${this.layerUrl}&#x60;);
   // }
 
@@ -951,7 +1006,7 @@ export class LayerService {
    * @param layer {Layer} layer modificato
    * @returns {Observable&lt;Layer&gt;} observable del layer modificato
    */
-  public _updateLayer(layer: Layer): Observable&lt;Layer&gt; {
+  public _updateLayer(layer: Layer): Observable&lt;Layer&gt; { //TODO CHECK TO REMOVE @MPapini91
     return this.http.put&lt;Layer&gt;(&#x60;${this.layerUrl}&#x60;, layer);
   }
 
@@ -960,7 +1015,7 @@ export class LayerService {
    * @param layerId {number|undefined} identificativo numerico del layer
    * @returns {Observable&lt;number&gt;} ?
    */
-  public deleteLayer(layerId: number | undefined): Observable&lt;number&gt; {
+  public deleteLayer(layerId: number | undefined): Observable&lt;number&gt; { //TODO CHECK TO REMOVE @MPapini91
     return this.http.delete&lt;number&gt;(&#x60;${this.layerUrl}/${layerId}&#x60;);
   }
 
@@ -969,7 +1024,7 @@ export class LayerService {
    * @param layer {Layer} nuovo layer
    * @returns {Observable&lt;Layer&gt;} observable del nuovo layer
    */
-  public _createLayer(layer: Layer): Observable&lt;Layer&gt; {
+  public _createLayer(layer: Layer): Observable&lt;Layer&gt; { //TODO CHECK TO REMOVE @MPapini91
     return this.http.post&lt;Layer&gt;(&#x60;${this.layerUrl}&#x60;, layer);
   }
 
@@ -978,6 +1033,11 @@ export class LayerService {
 
   //#region TEXTO services
 
+  /**
+   * POST to add a new layer
+   * @param newLayer {TLayer} layer to be added
+   * @returns {Observable&lt;TLayer&gt;} observable of the new layer
+   */
   public createLayer(newLayer: TLayer): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TLayer&gt;(
@@ -987,9 +1047,14 @@ export class LayerService {
     );
   }
 
-  public removeLayerById(layerId: number) {
+  /**
+   * GET to remove a layer by ID
+   * @param layerId {number} layer identifier
+   * @returns {Observable&lt;TLayer&gt;} removed layer
+   */
+  public removeLayerById(layerId: number): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
-    return this.http.get(
+    return this.http.get&lt;TLayer&gt;(
       &#x60;${this.textoUrl}/texto/layer/${layerId}/remove&#x60;,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
@@ -997,6 +1062,11 @@ export class LayerService {
     )
   }
 
+  /**
+   * GET to retrieve layer data by ID
+   * @param layerId {number} layer identifier
+   * @returns {Observable&lt;TLayer&gt;} observable of the retrieved layer
+   */
   public retrieveLayerById(layerId: number): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.get&lt;TLayer&gt;(
@@ -1007,10 +1077,19 @@ export class LayerService {
     )
   }
 
+  /**
+   * GET to retrieve the list of features associated with a layer
+   * @param layerId {number} layer identifier
+   * @returns {Observable&lt;TFeature[]} observable of the list of features
+   */
   public retrieveLayerFeatureList(layerId: number): Observable&lt;TFeature[]&gt; {
     return this.http.get&lt;TFeature[]&gt;(&#x60;${this.textoUrl}/texto/layer/${layerId}/features&#x60;);
   }
 
+  /**
+   * GET to retrieve layers list 
+   * @returns {Observable&lt;TLayer[]&gt;} observable of the layers list
+   */
   public retrieveLayerList(): Observable&lt;TLayer[]&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.get&lt;TLayer[]&gt;(
@@ -1021,6 +1100,11 @@ export class LayerService {
     )
   }
 
+  /**
+   * POST to update a layer
+   * @param updatedLayer {TLayer} layer to be updated
+   * @returns {Observable&lt;TLayer&gt;} observable of the updated layer
+   */
   public updateLayerById(updatedLayer: TLayer): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TLayer&gt;(

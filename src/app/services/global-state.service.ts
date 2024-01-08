@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { Subject, merge, of, shareReplay, switchMap } from 'rxjs';
 import { LexiconService } from './lexicon.service';
 
-/**Servizi per il recupero dello stato globale per il lessico */
+/**Service class for global lexicon status management */
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalStateService {
-  /**Aggiunta di una lingua */
+  /**Subject for adding a language */
   addLanguage = new Subject<string>(); //sarebbe usato per gestire l'aggiunta di una lingua
-  /**Observable dei tipi di forma */
+  /**Observable of the form type list */
   formEntryTypes$ = this.lexiconService.getFormTypes().pipe(
     shareReplay(1),
   );
-  /**Observable delle lingue disponibili */
+  /**Observable of available languages */
   languages$ = merge(
     this.addLanguage.pipe(
       switchMap(() => this.lexiconService.getLanguages()
@@ -23,32 +23,32 @@ export class GlobalStateService {
   ).pipe(
     shareReplay(1),
   );
-  /**Observable dei tipi di entrate lessicali */
+  /**Observable of the list of lexical entry types */
   lexicalEntryTypes$ = this.lexiconService.getLexicalEntryTypes().pipe(
     shareReplay(1),
   );
-  /**Observable degli elementi di morfologia */
+  /**Observable of the list of morphology elements. */
   morphologies$ = this.lexiconService.getMorphology();
-  /**Observable delle pos disponibili */
+  /**Observable of the list of available POS */
   pos$ = this.morphologies$.pipe(
     switchMap(m => of(m.find(e => e.propertyId?.endsWith('#partOfSpeech'))?.propertyValues)),
     shareReplay(1),
   );
-  /**Observable degli autori disponibili */
+  /**Observable of the list of available authors */
   authors$ = this.lexiconService.getAuthors().pipe(
     shareReplay(1),
   );
-  /**Observable delle pos disponibili in statistica */
+  /**Observable of pos available in statistics */
   statisticsPos$ = this.lexiconService.getPos().pipe(
     shareReplay(1),
   );
-  /**Observable degli status disponibili secondo le statistiche */
+  /**Observable of available statuses according to statistics */
   statisticStatuses$ = this.lexiconService.getStatus().pipe(
     shareReplay(1),
   );
   /**
-   * Costruttore di GlobalStateService
-   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * Costructor for GlobalStateService
+   * @param lexiconService {LexiconService} lexicon-related services
    */
   constructor(
     private lexiconService: LexiconService,

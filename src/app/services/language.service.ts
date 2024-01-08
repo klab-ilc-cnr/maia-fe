@@ -1,29 +1,29 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Language } from '../models/language';
 
-/**Classe dei servizi relativi alle lingue */
+/**Language-related services class */
 @Injectable({
   providedIn: 'root'
 })
 export class LanguageService {
 
-  /**Url per le chiamate relative alle lingue */
+  /**Url for language-related calls */
   private languagesUrl: string;
 
   /**
-   * Costruttore per LanguageService
-   * @param http {HttpClient} effettua le chiamate HTTP
+   * Constructor for LanguageService
+   * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
     this.languagesUrl = environment.languagesUrl; // recupera l'url dall'environment
   }
 
   /**
-   * GET per il recupero della lista di lingue disponibili
-   * @returns {Observable<Language[]>} observable della lista delle lingue disponibili
+   * GET to retrieve the list of available languages
+   * @returns {Observable<Language[]>} observable of the list of available languages
    */
   public retrieveAll(): Observable<Language[]> {
     return this.http.get<Language[]>(this.languagesUrl);
