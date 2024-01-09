@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
-/**Classe dei servizi per l'elemento di loading */
+/**Class of services for the loading element */
 @Injectable({
   providedIn: 'root'
 })
 export class LoaderService {
 
-  /**Subject che definisce se sta caricando */
+  /**Subject that defines whether it is loading */
   private isLoading = new Subject<boolean>()
 
   /**
-   * Costruttore per LoaderService
-   * @param router {Router} servizi per la navigazione fra le viste
+   * Constructor for LoaderService
+   * @param router {Router}  A service that provides navigation among views and URL manipulation capabilities
    */
   constructor(private router: Router) {
     router.events.subscribe(
@@ -25,19 +25,19 @@ export class LoaderService {
   }
 
   /**
-   * Metodo che restituisce lo status di caricamento
-   * @returns {Observable<boolean>} observable che definisce se è in corso il loading o meno
+   * Method that returns the loading status
+   * @returns {Observable<boolean>} observable that defines whether loading is in progress or not
    */
   getStatus() : Observable<boolean> {
     return this.isLoading.asObservable()
   }
 
-  /**Metodo che causa un'emissione del subject di fine loading (nascondi elemento) */
+  /**Method that makes the subject emit an end loading boolean (hide element) */
   hide() {
     this.isLoading.next(false)
   }
 
-  /**Metodo che causa un'emissione del subject di inizio caricamento (mostra elemento) */
+  /**Method that makes the subject output a boolean start loading (hide element) */
   show() {
     this.isLoading.next(true)
   }

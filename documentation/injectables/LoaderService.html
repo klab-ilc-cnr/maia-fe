@@ -66,7 +66,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Classe dei servizi per l&#39;elemento di loading</p>
+                <p>Class of services for the loading element</p>
 
             </p>
 
@@ -138,7 +138,7 @@
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Costruttore per LoaderService</p>
+                            <div class="io-description"><p>Constructor for LoaderService</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -164,7 +164,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>servizi per la navigazione fra le viste</p>
+                                                                <p>A service that provides navigation among views and URL manipulation capabilities</p>
 
                                                         </td>
                                                 </tr>
@@ -210,7 +210,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che restituisce lo status di caricamento</p>
+                    <div class="io-description"><p>Method that returns the loading status</p>
 </div>
 
                     <div>
@@ -220,7 +220,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>observable che definisce se è in corso il loading o meno</p>
+                        <p>observable that defines whether loading is in progress or not</p>
 
                     </div>
                 </td>
@@ -255,7 +255,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che causa un&#39;emissione del subject di fine loading (nascondi elemento)</p>
+                    <div class="io-description"><p>Method that makes the subject emit an end loading boolean (hide element)</p>
 </div>
 
                     <div class="io-description">
@@ -294,7 +294,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che causa un&#39;emissione del subject di inizio caricamento (mostra elemento)</p>
+                    <div class="io-description"><p>Method that makes the subject output a boolean start loading (hide element)</p>
 </div>
 
                     <div class="io-description">
@@ -336,7 +336,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Subject che definisce se sta caricando</p>
+                    <div class="io-description"><p>Subject that defines whether it is loading</p>
 </div>
                 </td>
             </tr>
@@ -353,18 +353,18 @@
 import { NavigationEnd, Router } from &#x27;@angular/router&#x27;;
 import { Observable, Subject } from &#x27;rxjs&#x27;;
 
-/**Classe dei servizi per l&#x27;elemento di loading */
+/**Class of services for the loading element */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class LoaderService {
 
-  /**Subject che definisce se sta caricando */
+  /**Subject that defines whether it is loading */
   private isLoading &#x3D; new Subject&lt;boolean&gt;()
 
   /**
-   * Costruttore per LoaderService
-   * @param router {Router} servizi per la navigazione fra le viste
+   * Constructor for LoaderService
+   * @param router {Router}  A service that provides navigation among views and URL manipulation capabilities
    */
   constructor(private router: Router) {
     router.events.subscribe(
@@ -376,19 +376,19 @@ export class LoaderService {
   }
 
   /**
-   * Metodo che restituisce lo status di caricamento
-   * @returns {Observable&lt;boolean&gt;} observable che definisce se è in corso il loading o meno
+   * Method that returns the loading status
+   * @returns {Observable&lt;boolean&gt;} observable that defines whether loading is in progress or not
    */
   getStatus() : Observable&lt;boolean&gt; {
     return this.isLoading.asObservable()
   }
 
-  /**Metodo che causa un&#x27;emissione del subject di fine loading (nascondi elemento) */
+  /**Method that makes the subject emit an end loading boolean (hide element) */
   hide() {
     this.isLoading.next(false)
   }
 
-  /**Metodo che causa un&#x27;emissione del subject di inizio caricamento (mostra elemento) */
+  /**Method that makes the subject output a boolean start loading (hide element) */
   show() {
     this.isLoading.next(true)
   }
