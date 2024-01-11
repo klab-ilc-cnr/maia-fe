@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, debounceTime, skip, take, takeUntil, throwError } from 'rxjs';
+import { User } from 'src/app/models/user';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
-import { MessageService } from 'primeng/api';
-import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-base-metadata-editor',
@@ -17,7 +17,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
   @Input() entry$!: Observable<any>;
   @Input() confidenceLabel = 'Confidence';
 
-  formControls : {[name: string] : FormControl} = {
+  formControls: { [name: string]: FormControl } = {
     creator: new FormControl<string>({ value: '', disabled: true }),
     creationDate: new FormControl<string>({ value: '', disabled: true }),
     provenance: new FormControl<string>(''),
@@ -25,7 +25,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
     note: new FormControl<string>(''),
   };
 
-  form! : FormGroup;
+  form!: FormGroup;
   entry!: any;
   currentUser!: User;
   relations!: any;
@@ -89,7 +89,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
     if (+entry.confidence !== -1) {
       formControlList['confidence'].setValue(+entry.confidence * 100);
     }
-    formControlList['note'].setValue(entry.note?? '');
+    formControlList['note'].setValue(entry.note ?? '');
   }
 
   ngOnDestroy(): void {
@@ -106,9 +106,9 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(resp => {
-      this.entry = { ...this.entry, [fieldName]: value, lastUpdate: resp};
-      const msg = this.msgConfService.generateSuccessMessageConfig(`Update "${relation}" success `);
-      this.messageService.add(msg);
+      this.entry = { ...this.entry, [fieldName]: value, lastUpdate: resp };
+      // const msg = this.msgConfService.generateSuccessMessageConfig(`Update "${relation}" success `);
+      // this.messageService.add(msg);
     });
   }
 
@@ -118,7 +118,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
     if (fieldType === this.relations.CONFIDENCE) {
       value /= 100;
     } else if (fieldType === this.relations.NOTE) {
-      value = value?? '';
+      value = value ?? '';
     }
 
     return value;

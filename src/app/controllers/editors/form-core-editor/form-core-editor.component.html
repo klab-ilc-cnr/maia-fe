@@ -28,7 +28,7 @@
         </ng-template>
         <ng-template pTemplate="content">
           <form [formGroup]="form.controls.label">
-            <div class="field col-12" *ngFor="let control of labelFormItems">
+            <div class="field col-12" *ngFor="let control of labelFormItems; let i = index; trackBy:trackByIndexFn">
               <label [for]="control.propertyID">{{control.propertyID}}</label>
               <span class="justify-content-between">
                 <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"
