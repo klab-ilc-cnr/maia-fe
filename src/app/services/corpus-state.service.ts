@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { WorkspaceService } from './workspace.service';
-import { Subject, catchError, merge, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
-import { MessageService } from 'primeng/api';
-import { MessageConfigurationService } from './message-configuration.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Subject, catchError, merge, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 import { ElementType } from '../models/corpus/element-type';
 import { FolderElement } from '../models/texto/corpus-element';
+import { MessageConfigurationService } from './message-configuration.service';
+import { WorkspaceService } from './workspace.service';
 
 @Injectable()
 export class CorpusStateService {
@@ -23,7 +23,7 @@ export class CorpusStateService {
       switchMap(() => this.workspaceService.retrieveCorpus())
     ),
     this.addElement.pipe(
-      switchMap(req => this.workspaceService.addElement(req.elementType, (req.parentFolderId<0 ? this.textoUserRootFolder.id : req.parentFolderId), req.elementName, this.textoCurrentUserId).pipe(
+      switchMap(req => this.workspaceService.addElement(req.elementType, (req.parentFolderId < 0 ? this.textoUserRootFolder.id : req.parentFolderId), req.elementName, this.textoCurrentUserId).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.elementType} ${req.elementName} added`))),
         catchError((error: HttpErrorResponse) => {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Add ${req.elementType.toLowerCase()} failed: ${error.error}`));
@@ -53,7 +53,7 @@ export class CorpusStateService {
       switchMap(() => this.workspaceService.retrieveCorpus()),
     ),
     this.uploadFile.pipe(
-      switchMap(req => this.workspaceService.addElement(ElementType.RESOURCE, req.parentId<0 ? this.textoUserRootFolder.id : req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
+      switchMap(req => this.workspaceService.addElement(ElementType.RESOURCE, req.parentId < 0 ? this.textoUserRootFolder.id : req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
         switchMap(resp => this.workspaceService.uploadFile(resp.id, req.file).pipe(
           tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.resourceName} uploaded`))),
           catchError((error: HttpErrorResponse) => {

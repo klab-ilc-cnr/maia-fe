@@ -30,7 +30,7 @@
 
 <p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
   (onNodeSelect)="nodeSelect($event)" [contextMenu]="cm" (onNodeContextMenuSelect)="onOpenContextMenu($event)"
-  [filter]="true"></p-tree>
+  [filter]="true" [draggableNodes]="true" [droppableNodes]="true" draggableScope="self" droppableScope="self" [validateDrop]="true" (onNodeDrop)="onDropMove($event)"></p-tree>
 
 <!-- <div class="d-flex justify-content-center m-3">
   <button class="btn btn-secondary" id="btnReload" (click)="reload()">

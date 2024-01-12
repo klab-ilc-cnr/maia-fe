@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { Observable, of, switchMap } from 'rxjs';
+import { MenuItem, MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
+import { Observable, of, switchMap, take } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { WorkspaceService } from 'src/app/services/workspace.service';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 /**Componente del pannello di esplorazione corpus */
@@ -15,7 +16,7 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-workspace-corpus-explorer',
   templateUrl: './workspace-corpus-explorer.component.html',
   styleUrls: ['./workspace-corpus-explorer.component.scss'],
-  providers: [CorpusStateService]
+  providers: [CorpusStateService, TreeDragDropService]
 })
 export class WorkspaceCorpusExplorerComponent {
   files$ = this.corpusStateService.filesystem$.pipe(
@@ -40,7 +41,7 @@ export class WorkspaceCorpusExplorerComponent {
    */
   private deleteElement = (id: number, type: ElementType): void => {
     this.corpusStateService.removeElement.next({ elementType: type, elementId: id });
-    if(id === this.selectedNode?.data?.id) {
+    if (id === this.selectedNode?.data?.id) {
       this.selectedNode = undefined;
     }
   }
@@ -115,6 +116,7 @@ export class WorkspaceCorpusExplorerComponent {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private corpusStateService: CorpusStateService,
+    private workspaceService: WorkspaceService
   ) { }
 
   /**
@@ -135,6 +137,29 @@ export class WorkspaceCorpusExplorerComponent {
       }
       this.clickCount = 0;
     }, 250)
+  }
+
+  onDropMove(event: any) {  //FIXME  Le problematiche maggiori riguardano il passaggio di un nodo a livello di root
+    console.group('node to move data');
+    console.info('original event', event.originalEvent)
+    console.info(event.dragNode);
+    console.info(event.dropNode);
+    console.groupEnd();
+    const dragNodeType = event.dragNode.data.type;
+    const dragNodeId = event.dragNode.data.id;
+    const dropNodeId = event.dropNode.data.id;
+    if (dropNodeId !== event.dragNode.data.parent.id) {
+      this.workspaceService.moveElement(dragNodeType, dragNodeId, dropNodeId).pipe(take(1)).subscribe(resp => {
+        console.info(resp);
+        this.corpusStateService.refreshFileSystem.next(null);
+      })
+      event.accept();
+      // this.corpusStateService.moveElement.next({ //UNEXPECTED BEHAVIOR
+      //   elementType: event.dragNode!.data!.type,
+      //   elementId: event.dragNode!.data!.id,
+      //   targetId: event.dropNode?.value?.data?.id ?? -1
+      // });
+    }
   }
 
   /**
@@ -266,7 +291,7 @@ export class WorkspaceCorpusExplorerComponent {
     const elementType = this.selectedNode!.data!.type;
     const elementId = this.selectedNode!.data!.id;
     this.corpusStateService.renameElement.next({ elementType: elementType, elementId: elementId, newName: newName });
-    if(this.selectedNode && this.selectedNode.data) {
+    if (this.selectedNode && this.selectedNode.data) {
       this.selectedNode.label = newName;
       this.selectedNode.data.name = newName;
     }
