@@ -139,27 +139,24 @@ export class WorkspaceCorpusExplorerComponent {
     }, 250)
   }
 
-  onDropMove(event: any) {  //FIXME  Le problematiche maggiori riguardano il passaggio di un nodo a livello di root
-    console.group('node to move data');
-    console.info('original event', event.originalEvent)
-    console.info(event.dragNode);
-    console.info(event.dropNode);
-    console.groupEnd();
+  onDropMove(event: any) {  //FIXME  Unexpected behavior when moving a node into the root node
+    const dropNode = event.dropNode;
     const dragNodeType = event.dragNode.data.type;
     const dragNodeId = event.dragNode.data.id;
-    const dropNodeId = event.dropNode.data.id;
-    if (dropNodeId !== event.dragNode.data.parent.id) {
-      this.workspaceService.moveElement(dragNodeType, dragNodeId, dropNodeId).pipe(take(1)).subscribe(resp => {
-        console.info(resp);
-        this.corpusStateService.refreshFileSystem.next(null);
-      })
-      event.accept();
-      // this.corpusStateService.moveElement.next({ //UNEXPECTED BEHAVIOR
-      //   elementType: event.dragNode!.data!.type,
-      //   elementId: event.dragNode!.data!.id,
-      //   targetId: event.dropNode?.value?.data?.id ?? -1
-      // });
+    const dropNodeId = dropNode.data.id;
+    if (dropNode.data.type === ElementType.RESOURCE) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig('It is not possible to move the element within a file.'));
+      return;
     }
+    if (dropNodeId === event.dragNode.data.parent.id) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig('New parent folder is equal to old parent folder'));
+      return;
+    }
+    this.workspaceService.moveElement(dragNodeType, dragNodeId, dropNodeId).pipe(take(1)).subscribe(resp => {
+      console.info(resp);
+      this.corpusStateService.refreshFileSystem.next(null);
+    })
+    event.accept();
   }
 
   /**
