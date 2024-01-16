@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class describing the core features of any element of the Corpus</p>
+
+            </p>
 
 
 
@@ -138,10 +145,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/texto/corpus-element.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/models/texto/corpus-element.ts:14</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Description</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -164,10 +177,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/texto/corpus-element.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/texto/corpus-element.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -190,10 +209,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/texto/corpus-element.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/models/texto/corpus-element.ts:12</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Name of the element</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -216,10 +241,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/texto/corpus-element.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/texto/corpus-element.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Parent element identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -242,10 +273,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/texto/corpus-element.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/texto/corpus-element.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Corpus element type</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -268,10 +305,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/models/texto/corpus-element.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/models/texto/corpus-element.ts:16</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Creator numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -289,21 +332,31 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ElementType } from &quot;../corpus/element-type&quot;;
 
+/**Class describing the core features of any element of the Corpus */
 export class CorpusElement {
+  /**Numeric identifier */
   id!: number;
+  /**Corpus element type */
   type!: ElementType;
+  /**Parent element identifier */
   parent: { id: number; } | undefined;
+  /**Name of the element */
   name: string | undefined;
+  /**Description */
   description: string | undefined;
+  /**Creator numeric identifier */
   user: { id: number; } | undefined;
 }
 
+/**Class describing a corpus element of resource type, i.e., a file or document */
 export class ResourceElement extends CorpusElement {
   override type: ElementType &#x3D; ElementType.RESOURCE;
 }
 
+/**Class describing a corpus element of folder type */
 export class FolderElement extends CorpusElement {
   override type: ElementType &#x3D; ElementType.FOLDER;
+  /**List of corpus elements contained in the folder */
   children!: CorpusElement[];
 }
 </code></pre>

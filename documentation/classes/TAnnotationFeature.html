@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class describing a feature associated with an annotation with its assigned value, if any</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
@@ -144,10 +151,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/texto/t-annotation-feature.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/texto/t-annotation-feature.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A given annotation</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -170,10 +183,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/texto/t-annotation-feature.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/texto/t-annotation-feature.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A feature of the current annotation layer</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -196,10 +215,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/texto/t-annotation-feature.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/models/texto/t-annotation-feature.ts:12</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Value assigned to the feature in the annotation</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -228,11 +253,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:4</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -261,11 +292,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:5</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:8</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Annotation status (e.g. REMOVED)</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -294,11 +331,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:10</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Timestamp of the last edit</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -318,9 +361,13 @@
 import { TAnnotation } from &quot;./t-annotation&quot;;
 import { TFeature } from &quot;./t-feature&quot;;
 
+/**Class describing a feature associated with an annotation with its assigned value, if any */
 export class TAnnotationFeature extends AnnotationCore {
+  /**A given annotation */
   annotation: TAnnotation | undefined;
+  /**A feature of the current annotation layer */
   feature: TFeature | undefined;
+  /**Value assigned to the feature in the annotation */
   value: string | undefined;
 }
 </code></pre>

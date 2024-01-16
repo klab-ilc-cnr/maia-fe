@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class describing an annotation layer feature</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
@@ -150,10 +157,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/models/texto/t-feature.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/models/texto/t-feature.ts:17</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The annotation layer to which the feature belongs</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -176,10 +189,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/models/texto/t-feature.ts:16</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/models/texto/t-feature.ts:21</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Tagset of possible values if the feature is of type tagset</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -202,10 +221,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/models/texto/t-feature.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/models/texto/t-feature.ts:19</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Feature type (e.g. STRING)</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -234,11 +259,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:5</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:8</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Description of the tagset</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -267,11 +298,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:4</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:6</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Name of the tagset</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -300,11 +337,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:4</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -333,11 +376,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:5</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:8</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Annotation status (e.g. REMOVED)</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -366,11 +415,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:10</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Timestamp of the last edit</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -389,6 +444,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { TLayer } from &quot;./t-layer&quot;;
 import { TTagset } from &quot;./t-tagset&quot;;
 
+/**Enum of supported feature types */
 export enum TFeatureType {
   STRING &#x3D; &#x27;STRING&#x27;,
   URI &#x3D; &#x27;URI&#x27;,
@@ -398,9 +454,13 @@ export enum TFeatureType {
   SENSE &#x3D; &quot;SENSE&quot;,
 }
 
+/**Class describing an annotation layer feature */
 export class TFeature extends TTagset {
+  /**The annotation layer to which the feature belongs */
   layer: TLayer | undefined;
+  /**Feature type (e.g. STRING) */
   type: TFeatureType | undefined;
+  /**Tagset of possible values if the feature is of type tagset */
   tagset: TTagset | undefined;
 }
 </code></pre>
