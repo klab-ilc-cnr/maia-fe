@@ -1041,7 +1041,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconEditTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Lexicon management - ' + lexicalEntryTree?.data?.label,
+      headerTitle: 'Lexicon editor - ' + lexicalEntryTree?.data?.label,
       maximizedMargin: 5,
       dragit: { snap: true },
       syncMargins: true,
