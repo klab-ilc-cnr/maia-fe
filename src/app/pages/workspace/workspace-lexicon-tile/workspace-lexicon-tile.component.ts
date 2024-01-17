@@ -327,7 +327,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.filteredPrefix = filtered;
   }
 
-  /**Metodo che gestisce l'inserimento di una nuova entrata lessicale */
+  /**
+   * Method that handles the creation of a new lexical entry
+   * @param language {string} selected language code
+   */
   onAddNewLexicalEntry(language: string) {
     const currentUser = this.loggedUserService.currentUser;
     const creator = currentUser?.name + '.' + currentUser?.surname;
@@ -349,10 +352,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           return throwError(() => new Error(error.error));
         }),
       ).subscribe(() => {
-        const successMsg = "Creata una nuova entrata lessicale";
+        const successMsg = "New lexical entry created";
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        this.searchTextInput = lexEntry.label;
-        this.filter();
+        this.loadNodes();
       },
       );
     })
