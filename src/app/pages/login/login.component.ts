@@ -8,17 +8,27 @@ import { CommonService } from 'src/app/services/common.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 
+/**Component for logging into the application */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  /**Authentication data form */
   loginForm = new FormGroup({
     username: new FormControl<string>('', Validators.required),
     password: new FormControl<string>('', Validators.required),
   });
 
+  /**
+   * Constructor for LoginComponent
+   * @param authenticationService {AuthenticationService} A service that provides authentication token
+   * @param storageService {StorageService} Service to manage the local storage
+   * @param userService {UserService} Provides users management
+   * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
+   * @param commonService {CommonService} Provides messages management
+   */
   constructor(
     private authenticationService: AuthenticationService,
     private storageService: StorageService,
@@ -27,6 +37,10 @@ export class LoginComponent {
     private commonService: CommonService,
   ) { }
 
+  /**
+   * Method that uses the login form to log in and save the authentication token in local storage
+   * @returns {void}
+   */
   onSubmit() {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
@@ -43,6 +57,7 @@ export class LoginComponent {
     });
   }
 
+  /**Method that retrieves the logged-in user and saves it in local storage */
   private retrieveCurrentUser(): void {
     this.userService.retrieveCurrentUser().pipe(
       take(1),

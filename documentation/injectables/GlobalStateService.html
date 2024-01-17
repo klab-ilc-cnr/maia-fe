@@ -66,7 +66,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Servizi per il recupero dello stato globale per il lessico</p>
+                <p>Service class for global lexicon status management</p>
 
             </p>
 
@@ -141,7 +141,7 @@
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Costruttore di GlobalStateService</p>
+                            <div class="io-description"><p>Costructor for GlobalStateService</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -167,7 +167,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>servizi relativi al lessico</p>
+                                                                <p>lexicon-related services</p>
 
                                                         </td>
                                                 </tr>
@@ -210,7 +210,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Aggiunta di una lingua</p>
+                    <div class="io-description"><p>Subject for adding a language</p>
 </div>
                 </td>
             </tr>
@@ -243,7 +243,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable degli autori disponibili</p>
+                    <div class="io-description"><p>Observable of the list of available authors</p>
 </div>
                 </td>
             </tr>
@@ -276,7 +276,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable dei tipi di forma</p>
+                    <div class="io-description"><p>Observable of the form type list</p>
 </div>
                 </td>
             </tr>
@@ -315,7 +315,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable delle lingue disponibili</p>
+                    <div class="io-description"><p>Observable of available languages</p>
 </div>
                 </td>
             </tr>
@@ -348,7 +348,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable dei tipi di entrate lessicali</p>
+                    <div class="io-description"><p>Observable of the list of lexical entry types</p>
 </div>
                 </td>
             </tr>
@@ -379,7 +379,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable degli elementi di morfologia</p>
+                    <div class="io-description"><p>Observable of the list of morphology elements.</p>
 </div>
                 </td>
             </tr>
@@ -413,7 +413,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable delle pos disponibili</p>
+                    <div class="io-description"><p>Observable of the list of available POS</p>
 </div>
                 </td>
             </tr>
@@ -446,7 +446,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable delle pos disponibili in statistica</p>
+                    <div class="io-description"><p>Observable of pos available in statistics</p>
 </div>
                 </td>
             </tr>
@@ -479,7 +479,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable degli status disponibili secondo le statistiche</p>
+                    <div class="io-description"><p>Observable of available statuses according to statistics</p>
 </div>
                 </td>
             </tr>
@@ -496,18 +496,18 @@
 import { Subject, merge, of, shareReplay, switchMap } from &#x27;rxjs&#x27;;
 import { LexiconService } from &#x27;./lexicon.service&#x27;;
 
-/**Servizi per il recupero dello stato globale per il lessico */
+/**Service class for global lexicon status management */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class GlobalStateService {
-  /**Aggiunta di una lingua */
+  /**Subject for adding a language */
   addLanguage &#x3D; new Subject&lt;string&gt;(); //sarebbe usato per gestire l&#x27;aggiunta di una lingua
-  /**Observable dei tipi di forma */
+  /**Observable of the form type list */
   formEntryTypes$ &#x3D; this.lexiconService.getFormTypes().pipe(
     shareReplay(1),
   );
-  /**Observable delle lingue disponibili */
+  /**Observable of available languages */
   languages$ &#x3D; merge(
     this.addLanguage.pipe(
       switchMap(() &#x3D;&gt; this.lexiconService.getLanguages()
@@ -517,32 +517,32 @@ export class GlobalStateService {
   ).pipe(
     shareReplay(1),
   );
-  /**Observable dei tipi di entrate lessicali */
+  /**Observable of the list of lexical entry types */
   lexicalEntryTypes$ &#x3D; this.lexiconService.getLexicalEntryTypes().pipe(
     shareReplay(1),
   );
-  /**Observable degli elementi di morfologia */
+  /**Observable of the list of morphology elements. */
   morphologies$ &#x3D; this.lexiconService.getMorphology();
-  /**Observable delle pos disponibili */
+  /**Observable of the list of available POS */
   pos$ &#x3D; this.morphologies$.pipe(
     switchMap(m &#x3D;&gt; of(m.find(e &#x3D;&gt; e.propertyId?.endsWith(&#x27;#partOfSpeech&#x27;))?.propertyValues)),
     shareReplay(1),
   );
-  /**Observable degli autori disponibili */
+  /**Observable of the list of available authors */
   authors$ &#x3D; this.lexiconService.getAuthors().pipe(
     shareReplay(1),
   );
-  /**Observable delle pos disponibili in statistica */
+  /**Observable of pos available in statistics */
   statisticsPos$ &#x3D; this.lexiconService.getPos().pipe(
     shareReplay(1),
   );
-  /**Observable degli status disponibili secondo le statistiche */
+  /**Observable of available statuses according to statistics */
   statisticStatuses$ &#x3D; this.lexiconService.getStatus().pipe(
     shareReplay(1),
   );
   /**
-   * Costruttore di GlobalStateService
-   * @param lexiconService {LexiconService} servizi relativi al lessico
+   * Costructor for GlobalStateService
+   * @param lexiconService {LexiconService} lexicon-related services
    */
   constructor(
     private lexiconService: LexiconService,

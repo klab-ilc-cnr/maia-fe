@@ -2,22 +2,32 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Subject, catchError, merge, shareReplay, switchMap, tap, throwError } from 'rxjs';
+import { TFeature } from '../models/texto/t-feature';
 import { TLayer } from '../models/texto/t-layer';
+import { FeatureService } from './feature.service';
 import { LayerService } from './layer.service';
 import { MessageConfigurationService } from './message-configuration.service';
-import { TFeature } from '../models/texto/t-feature';
-import { FeatureService } from './feature.service';
 
+/**Service class for layer state management */
 @Injectable()
 export class LayerStateService {
+  /**Subject to add a feature */
   addFeature = new Subject<TFeature>();
+  /**Subject to add a layer */
   addLayer = new Subject<TLayer>();
+  /**Subject to remove a feature */
   removeFeature = new Subject<TFeature>();
+  /**Subject to remove a layer */
   removeLayer = new Subject<number>();
+  /**Subject to retrieve a layer by ID */
   retrieveLayerById = new Subject<number>();
+  /**Subject to retrieve the feature list of a layer */
   retrieveLayerFeatures = new Subject<number>();
+  /**Subject to update a feature */
   updateFeature = new Subject<TFeature>();
+  /**Subject to update a layer */
   updateLayer = new Subject<TLayer>();
+  /**Observable of a layer */
   layer$ = this.retrieveLayerById.pipe(
     switchMap(layerId => this.layerService.retrieveLayerById(layerId).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -28,6 +38,7 @@ export class LayerStateService {
   ).pipe(
     shareReplay(1)
   );
+  /**Observable of the layer list */
   layers$ = merge(
     this.layerService.retrieveLayerList(),
     this.addLayer.pipe(
@@ -64,6 +75,7 @@ export class LayerStateService {
     shareReplay(1)
   );
 
+  /**Observable of the feature list */
   features$ = merge(
     this.retrieveLayerFeatures.pipe(
       switchMap(layerId => this.layerService.retrieveLayerFeatureList(layerId).pipe(
@@ -107,6 +119,13 @@ export class LayerStateService {
     shareReplay(1),
   );
 
+  /**
+   * Constructor for LayerStateService
+   * @param featureService {FeatureService} feature-related services
+   * @param layerService {LayerService} layer-related services
+   * @param messageService {MessageService} message-related services
+   * @param msgConfService {MessageConfigurationService} services for message configuration
+   */
   constructor(
     private featureService: FeatureService,
     private layerService: LayerService,

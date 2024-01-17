@@ -1,22 +1,32 @@
-import { Injectable } from '@angular/core';
-import { WorkspaceService } from './workspace.service';
-import { Subject, catchError, merge, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
-import { MessageService } from 'primeng/api';
-import { MessageConfigurationService } from './message-configuration.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Subject, catchError, merge, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 import { ElementType } from '../models/corpus/element-type';
 import { FolderElement } from '../models/texto/corpus-element';
+import { MessageConfigurationService } from './message-configuration.service';
+import { WorkspaceService } from './workspace.service';
 
+/**Corpus state management services class */
 @Injectable()
 export class CorpusStateService {
+  /**TextO logged-in user identifier */
   textoCurrentUserId!: number;
+  /**TextO user's root folder */
   private textoUserRootFolder!: FolderElement;
+  /**Subject to refresh the file system */
   refreshFileSystem = new Subject();
+  /**Subject to add an element to the file system */
   addElement = new Subject<{ elementType: ElementType, parentFolderId: number, elementName: string }>();
+  /**Subject to rename an element of the file system */
   renameElement = new Subject<{ elementType: ElementType, elementId: number, newName: string }>();
+  /**Subject to move an element in the file system */
   moveElement = new Subject<{ elementType: ElementType, elementId: number, targetId: number }>();
+  /**Subject to upload a file to the file system */
   uploadFile = new Subject<{ parentId: number, resourceName: string, file: File }>();
+  /**Subject to remove an element from the file system */
   removeElement = new Subject<{ elementType: ElementType, elementId: number }>();
+  /**Observable of the file system as corpus element list */
   filesystem$ = merge(
     this.workspaceService.retrieveCorpus(),
     this.refreshFileSystem.pipe(
@@ -82,6 +92,12 @@ export class CorpusStateService {
     shareReplay(1),
   )
 
+  /**
+   * Constructor for CorpusStateService
+   * @param workspaceService {WorkspaceService} workspace-related services
+   * @param messageService {MessageService} message-related services
+   * @param msgConfService {MessageConfigurationService} services for message configuration
+   */
   constructor(
     private workspaceService: WorkspaceService,
     private messageService: MessageService,

@@ -7,16 +7,26 @@ import { TTagsetItem } from '../models/texto/t-tagset-item';
 import { MessageConfigurationService } from './message-configuration.service';
 import { TagsetService } from './tagset.service';
 
+/**Services for tagset state management */
 @Injectable()
 export class TagsetStateService {
+  /**Subject to add a tagset */
   addTagset = new Subject<TTagset>();
+  /**Subject to add a tagset item (or value) */
   addTagsetItem = new Subject<TTagsetItem>();
+  /**Subject to remove a tagset */
   removeTagset = new Subject<number>();
+  /**Subject to remove a tagset value */
   removeTagsetItem = new Subject<TTagsetItem>();
+  /**Subject to retrieve a tagset by id */
   retrieveTagset = new Subject<number>();
+  /**Subject to retrieve tagset items by tagset id */
   retrieveTagsetItems = new Subject<number>();
+  /**Subject to update a tagset */
   updateTagset = new Subject<TTagset>();
+  /**Subject to update a tagset item */
   updateTagsetItem = new Subject<TTagsetItem>();
+  /**Observable of a tagset */
   tagset$ = merge(
     this.retrieveTagset.pipe(
       switchMap(tagsetId => this.tagsetService.getTagsetById(tagsetId).pipe(
@@ -29,6 +39,7 @@ export class TagsetStateService {
   ).pipe(
     shareReplay(1),
   );
+  /**Observable of the items of a tagset */
   tagsetItems$ = merge(
     this.retrieveTagsetItems.pipe(
       switchMap(tagsetId => this.tagsetService.getTagsetItemsById(tagsetId).pipe(
@@ -71,6 +82,7 @@ export class TagsetStateService {
   ).pipe(
     shareReplay(1),
   );
+  /**Observable of the tagset list */
   tagsets$ = merge(
     this.tagsetService.getTagsetsList(),
     this.removeTagset.pipe(
@@ -107,13 +119,19 @@ export class TagsetStateService {
   ).pipe(
     shareReplay(1),
   );
-
+  /**Observable of the total number of tagsets */
   tagsetsTotal$ = this.tagsets$.pipe(
     switchMap(list => of(list.length)),
   ).pipe(
     shareReplay(1),
   );
 
+  /**
+   * Constructor for TagsetStateService
+   * @param tagsetService {TagsetServive} tagset-related services
+   * @param messageService {MessageService} message-related services
+   * @param msgConfService {MessageConfigurationService} services for message configuration
+   */
   constructor(
     private tagsetService: TagsetService,
     private messageService: MessageService,

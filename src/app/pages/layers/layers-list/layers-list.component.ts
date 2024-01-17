@@ -3,13 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
-import { Layer } from 'src/app/models/layer/layer.model';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
-/**Componente della tabella dei layer */
+/**Component representing the layer table */
 @Component({
   selector: 'app-layers-list',
   templateUrl: './layers-list.component.html',
@@ -17,53 +16,49 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   providers: [LayerStateService]
 })
 export class LayersListComponent {
+  /**Subject for subscribe management */
   private readonly unsubscribe$ = new Subject();
+  /**Observable of the layer list */
   layers$ = this.layerState.layers$;
+  /**Layer currently being edited */
   layerOnEdit: TLayer | undefined = undefined;
+  /**List of existing layer names */
   layersNames: string[] = [];
+  /**List of existing layer colors */
   layersColor: string[] = [];
+  /**Layer description form */
   tlayerForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     color: new FormControl<string>('', [Validators.required]),
     description: new FormControl<string>(''),
   });
+  /**Getter for the form name field */
   get name() { return this.tlayerForm.controls.name }
+  /**Getter for the form color field */
   get color() { return this.tlayerForm.controls.color }
+  /**Getter for the form description field */
   get description() { return this.tlayerForm.controls.description }
+  /**Defines whether the creation/insertion modal of a layer is visible */
   visibleEditNewLayer = false;
+  /**Modal title */
   modalTitle = '';
   /**
-   * Esegue la rimozione di un layer
-   * @param id {number} identificativo numerico del layer
-   * @param name {string} nome del layer
+   * Performs removal of a layer
+   * @param id {number} numeric layer identifier
+   * @param name {string} layer name
    */
   private delete = (id: number, name: string): void => {
     this.layerState.removeLayer.next(id);
   }
 
-  /**Getter della lista dei nomi dei layer esistenti */
-  public get filteredLayerNames(): string[] {
-    let filteredLayers = this.layers;
-
-    if (this.layer.id) {
-      filteredLayers = this.layers.filter(l => l.id != this.layer.id);
-    }
-
-    return filteredLayers.map(l => l.name!);
-  }
-
-  /**Nuovo oggetto Layer */
-  layer: Layer = new Layer();
-  /**Lista di layer */
-  layers: Layer[] = [];
-
-  /**Riferimento al popup di cancellazione elemento */
+  /**Reference to item deletion popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**
-   * Costruttore per LayersListComponent
-   * @param router {Router} servizi per la navigazione fra le viste
-   * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
+   * Constructor for LayersListComponent
+   * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
+   * @param activeRoute {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
+   * @param layerState {LayerStateService} service that manages the general state of the layers
    */
   constructor(
     private router: Router,
@@ -80,14 +75,14 @@ export class LayersListComponent {
     });
   }
 
-  /**Metodo dell'interfaccia OnDestroy nel quale vengono chiusi eventuali swal (che gestiscono i popup) */
+  /**Method of the OnDestroy interface, used to emit the unsubscribe subject */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
   }
 
   /**
-   * Metodo che sottomette i dati del form nel popup per la creazione o modifica di un layer
+   * Method that submits form data in the popup for creating or editing a layer
    * @returns {void}
    */
   onSubmitLayerModal(): void {
@@ -142,8 +137,8 @@ export class LayersListComponent {
   }
 
   /**
-   * Metodo che naviga sulla vista di dettaglio del layer per gestirne le feature
-   * @param layer {Layer} layer aggiunto
+   * Method that navigates to the detail view of the layer to manage its features
+   * @param layer {TLayer} added layer
    */
   viewLayerFeatures(layer: TLayer) {
     this.router.navigate([layer.id], { relativeTo: this.activeRoute });

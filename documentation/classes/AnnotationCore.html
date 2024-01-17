@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class describing the core features of any annotation element</p>
+
+            </p>
 
 
 
@@ -129,10 +136,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/texto/annotation-core.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/texto/annotation-core.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -155,10 +168,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/texto/annotation-core.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/texto/annotation-core.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Annotation status (e.g. REMOVED)</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -181,10 +200,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/texto/annotation-core.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/models/texto/annotation-core.ts:10</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Timestamp of the last edit</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -202,9 +227,13 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { TStatus } from &quot;./t-status&quot;;
 
+/**Class describing the core features of any annotation element */
 export class AnnotationCore {
+  /**Numeric identifier */
   id: number | undefined;
+  /**Annotation status (e.g. REMOVED) */
   status: TStatus | undefined;
+  /**Timestamp of the last edit */
   time: string | undefined;
 }
 </code></pre>

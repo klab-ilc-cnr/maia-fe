@@ -106,6 +106,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#retrieveAllRoles" >retrieveAllRoles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#retrieveById" >retrieveById</a>
                             </li>
                             <li>
@@ -238,6 +242,45 @@
                     </div>
                     <div class="io-description">
                         <p>observable della lista completa degli utenti</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retrieveAllRoles"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>retrieveAllRoles</b></span>
+                        <a href="#retrieveAllRoles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>retrieveAllRoles()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">src/app/services/user.service.ts:49</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;string[]&gt;</code>
 
                     </div>
                 </td>
@@ -392,8 +435,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="54"
-                            class="link-to-prism">src/app/services/user.service.ts:54</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">src/app/services/user.service.ts:58</a></div>
                 </td>
             </tr>
 
@@ -471,8 +514,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/app/services/user.service.ts:63</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/app/services/user.service.ts:67</a></div>
                 </td>
             </tr>
 
@@ -550,8 +593,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="67"
-                            class="link-to-prism">src/app/services/user.service.ts:67</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">src/app/services/user.service.ts:71</a></div>
                 </td>
             </tr>
 
@@ -690,6 +733,10 @@ export class UserService {
    */
   public retrieveCurrentUser(): Observable&lt;User&gt; {
     return this.http.get&lt;User&gt;(&#x60;${this.usersUrl}/current&#x60;);
+  }
+
+  public retrieveAllRoles(): Observable&lt;string[]&gt; {
+    return this.http.get&lt;string[]&gt;(&#x60;${this.usersUrl}/roles&#x60;);
   }
 
   /**

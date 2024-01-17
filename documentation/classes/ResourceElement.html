@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class describing a corpus element of resource type, i.e., a file or document</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
@@ -157,7 +164,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:13</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:21</a></code>
 </div>
                         </td>
                     </tr>
@@ -190,11 +197,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:8</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:14</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Description</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -223,11 +236,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:4</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:6</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -256,11 +275,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:7</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:12</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Name of the element</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -289,11 +314,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:6</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:10</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Parent element identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -322,11 +353,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:9</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CorpusElement.html#source" target="_self" >CorpusElement:16</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Creator numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -344,21 +381,31 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ElementType } from &quot;../corpus/element-type&quot;;
 
+/**Class describing the core features of any element of the Corpus */
 export class CorpusElement {
+  /**Numeric identifier */
   id!: number;
+  /**Corpus element type */
   type!: ElementType;
+  /**Parent element identifier */
   parent: { id: number; } | undefined;
+  /**Name of the element */
   name: string | undefined;
+  /**Description */
   description: string | undefined;
+  /**Creator numeric identifier */
   user: { id: number; } | undefined;
 }
 
+/**Class describing a corpus element of resource type, i.e., a file or document */
 export class ResourceElement extends CorpusElement {
   override type: ElementType &#x3D; ElementType.RESOURCE;
 }
 
+/**Class describing a corpus element of folder type */
 export class FolderElement extends CorpusElement {
   override type: ElementType &#x3D; ElementType.FOLDER;
+  /**List of corpus elements contained in the folder */
   children!: CorpusElement[];
 }
 </code></pre>

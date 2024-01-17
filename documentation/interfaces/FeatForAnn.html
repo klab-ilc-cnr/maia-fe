@@ -221,7 +221,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from &#x
 import { FormControl, FormGroup } from &#x27;@angular/forms&#x27;;
 import { MessageService } from &#x27;primeng/api&#x27;;
 import { Observable, Subject, catchError, map, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
-import { searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
+import { formTypeEnum, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
 import { FormListItem, SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
 import { TAnnotation } from &#x27;src/app/models/texto/t-annotation&#x27;;
 import { TFeature, TFeatureType } from &#x27;src/app/models/texto/t-feature&#x27;;
@@ -345,7 +345,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     type: &quot;&quot;,
     field: &quot;&quot;,
     pos: &#x27;&#x27;,
-    formType: &quot;entry&quot;,
+    formType: formTypeEnum.entry,
     author: &quot;&quot;,
     lang: &quot;&quot;,
     status: &quot;&quot;,

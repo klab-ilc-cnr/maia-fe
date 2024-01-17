@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class describing an annotation layer</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
@@ -147,10 +154,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/texto/t-layer.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/texto/t-layer.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Color used for highlighting the annotation</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -173,7 +186,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/texto/t-layer.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/models/texto/t-layer.ts:7</a></div>
                         </td>
                     </tr>
 
@@ -205,11 +218,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:5</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:8</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Description of the tagset</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -238,11 +257,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:4</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/TTagset.html#source" target="_self" >TTagset:6</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Name of the tagset</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -271,11 +296,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:4</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -304,11 +335,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:5</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:8</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Annotation status (e.g. REMOVED)</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -337,11 +374,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:10</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Timestamp of the last edit</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -359,7 +402,9 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { TTagset } from &quot;./t-tagset&quot;;
 
+/**Class describing an annotation layer */
 export class TLayer extends TTagset {
+  /**Color used for highlighting the annotation */
   color: string | undefined;
   overlapping: boolean | undefined;
 }

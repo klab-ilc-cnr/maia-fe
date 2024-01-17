@@ -70,7 +70,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Definisce se l&#39;elemento è modificabile se l&#39;utente è un amministratore o l&#39;elemento è di sua proprietà</p>
+                <p>Defines whether the element is editable if the user is an administrator or the element is owned by the user</p>
 
             </p>
 
@@ -112,14 +112,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/app/pipes/should-be-editable.pipe.ts:12</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="17"
+                            class="link-to-prism">src/app/pipes/should-be-editable.pipe.ts:17</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>PipeTransform interface method that checks whether the element should be editable for a given user</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -130,6 +132,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -144,6 +147,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>owner user identifier</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>currentUser</td>
@@ -156,6 +163,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>current logged user</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -167,7 +178,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>whether the element should be editable</p>
+
                     </div>
                 </td>
             </tr>
@@ -180,21 +192,26 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Pipe, PipeTransform } from &#x27;@angular/core&#x27;;
-import { Roles } from &#x27;../models/roles&#x27;;
 import { User } from &#x27;../models/user&#x27;;
 /**
- * Definisce se l&#x27;elemento è modificabile se l&#x27;utente è un amministratore o l&#x27;elemento è di sua proprietà
+ * Defines whether the element is editable if the user is an administrator or the element is owned by the user
  */
 @Pipe({
   name: &#x27;shouldBeEditable&#x27;
 })
 export class ShouldBeEditablePipe implements PipeTransform {
 
+  /**
+   * PipeTransform interface method that checks whether the element should be editable for a given user
+   * @param elementOwnerId {number} owner user identifier
+   * @param currentUser {User} current logged user
+   * @returns {boolean} whether the element should be editable
+   */
   transform(elementOwnerId: number, currentUser: User): boolean {
     if(!currentUser.id) {
       return false;
     }
-    return currentUser.role &#x3D;&#x3D;&#x3D; Roles.AMMINISTRATORE || elementOwnerId &#x3D;&#x3D;&#x3D; +currentUser.id;
+    return currentUser.role &#x3D;&#x3D;&#x3D; &quot;ADMINISTRATOR&quot; || elementOwnerId &#x3D;&#x3D;&#x3D; +currentUser.id;
   }
 
 }

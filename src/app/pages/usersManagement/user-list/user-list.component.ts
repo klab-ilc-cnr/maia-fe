@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { UserService } from 'src/app/services/user.service';
 
-/**Componente della tabella delle anagrafiche utenti */
+/**Component of the user data table */
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -11,17 +11,17 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserListComponent {
 
-  /**Riferimento alla tabella di visualizzazione */
+  /**Reference to the display table */
   @ViewChild('dt') public dt: Table | undefined
 
-  /**Lista degli utenti */
+  /**Observable of the user list */
   public users = this.userService.findAll();
 
   /**
-   * Costruttore per UserListComponent
-   * @param router {Router} servizi per la navigazione fra le viste
-   * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
-   * @param userService {UserService} servizi relativi agli utenti
+   * Costructor for UserListComponent
+   * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
+   * @param activeRoute {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
+   * @param userService {UserService} user-related services
    */
   constructor(
     private router: Router,
@@ -29,22 +29,24 @@ export class UserListComponent {
     private userService: UserService) { }
 
   /**
-   * Metodo associato a onRowSelect che permette di modificare i dati di un utente selezionando una qualsiasi riga della tabella
-   * @param event {any} evento di selezione di una riga qualsiasi della tabella
+   * Method associated with onRowSelect that allows changing a user's data by selecting any row in the table
+   * @param event {any} event of selecting any row in the table
    */
   public goToEditUser(event: any) {
     this.router.navigate(["../", "userDetails", event.data.id], { relativeTo: this.activeRoute });
   }
 
+  //TODO Merge the methods goToEditUser and goToEditUserById
+
   /**
-   * Metodo associato all'icona di riga che permette di modificare i dati di un utente
-   * @param id {string} identificativo dell'utente
+   * Method associated with the row icon that allows editing of a user's data
+   * @param id {string} user ID
    */
   public goToEditUserById(id: string) {
     this.router.navigate(["../", "userDetails", id], { relativeTo: this.activeRoute });
   }
 
-  /**Metodo che permette di richiamare il form di creazione di un nuovo utente */
+  /**Method that allows you to invoke the form for creating a new user */
   public goToNewUser() {
     this.router.navigate(["../", "userDetails", "new"], { relativeTo: this.activeRoute });
   }
