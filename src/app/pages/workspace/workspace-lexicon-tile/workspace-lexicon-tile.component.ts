@@ -5,7 +5,7 @@ import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Observable, Subscription, catchError, forkJoin, of, switchMap, take, throwError } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
-import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { LEXICAL_ENTRY_RELATIONS, LexicalEntryUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { Namespace } from 'src/app/models/lexicon/namespace.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
@@ -252,35 +252,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       }),
     ).subscribe((data: LexicalEntriesResponse) => {
       this.results = [];
-      this.results = data.list.map((val: LexicalEntryListItem) => ({
-        data: {
-          name: this.showLabelName ? val.label : val.lexicalEntry,
-          instanceName: val.lexicalEntry,
-          label: val.label,
-          note: val['note'],
-          creator: val['creator'],
-          creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-          lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
-          status: val['status'],
-          uri: val['lexicalEntry'],
-          type: LexicalEntryTypeOld.LEXICAL_ENTRY,
-          sub: val.pos
-        },
-        children: [{
-          data: {
-            name: 'form (0)',
-            instanceName: '_form_' + val.lexicalEntry,
-            type: LexicalEntryTypeOld.FORMS_ROOT
-          }
-        },
-        {
-          data: {
-            name: 'sense (0)',
-            instanceName: '_sense_' + val.lexicalEntry,
-            type: LexicalEntryTypeOld.SENSES_ROOT
-          }
-        }]
-      }))
+      this.results = data.list.map((val: LexicalEntryListItem) => this.mapLexicalEntryListItemToTreeNode(val));
       this.counter = data.totalHits;
 
       this.loading = false;
@@ -354,7 +326,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       ).subscribe(() => {
         const successMsg = "New lexical entry created";
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        this.loadNodes();
+        // this.loadNodes();
+        this.addLexEntryToTreeStructure(lexEntry);
       },
       );
     })
@@ -636,6 +609,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
    */
 
+  /**
+   * Method that inserts the new lexical entry into the tree without refresh
+   * @param lexEntry {LexicalEntryCore} the new lexical entry
+   */
+  private addLexEntryToTreeStructure(lexEntry: LexicalEntryCore) {
+    const mappedEntry = this.mapLexicalEntryListItemToTreeNode(lexEntry);
+    this.results.push(mappedEntry);
+    this.results = [...this.results.sort((a, b) => {
+      if (a.data!.label! < b.data!.label!) {
+        return -1
+      } else if (a.data!.label! > b.data!.label!) {
+        return 1
+      }
+      return 0
+    })];
+  }
 
   /**
    * @private
@@ -669,6 +658,43 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       this.loadNodes();
     });
+  }
+
+  /**
+ * Method to map a lexical entry from the model received from backend to the one supported by the tree
+ * @param item {LexicalEntryListItem} lexical entry item
+ * @returns {} a lexical entry tree node
+ */
+  private mapLexicalEntryListItemToTreeNode(item: LexicalEntryListItem) {
+    return {
+      data: {
+        name: this.showLabelName ? item.label : item.lexicalEntry,
+        instanceName: item.lexicalEntry,
+        label: item.label,
+        note: item['note'],
+        creator: item['creator'],
+        creationDate: item['creationDate'] ? new Date(item['creationDate']).toLocaleString() : '',
+        lastUpdate: item['lastUpdate'] ? new Date(item['lastUpdate']).toLocaleString() : '',
+        status: item['status'],
+        uri: item['lexicalEntry'],
+        type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+        sub: item.pos
+      },
+      children: [{
+        data: {
+          name: 'form (0)',
+          instanceName: '_form_' + item.lexicalEntry,
+          type: LexicalEntryTypeOld.FORMS_ROOT
+        }
+      },
+      {
+        data: {
+          name: 'sense (0)',
+          instanceName: '_sense_' + item.lexicalEntry,
+          type: LexicalEntryTypeOld.SENSES_ROOT
+        }
+      }]
+    }
   }
 
   /**
