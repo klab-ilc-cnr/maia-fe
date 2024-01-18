@@ -332,6 +332,10 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#addLexEntryToTreeStructure" >addLexEntryToTreeStructure</a>
+                            </li>
+                            <li>
                                 <a href="#alternateLabelInstanceName" >alternateLabelInstanceName</a>
                             </li>
                             <li>
@@ -359,6 +363,10 @@
                             </li>
                             <li>
                                 <a href="#loadNodes" >loadNodes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#mapLexicalEntryListItemToTreeNode" >mapLexicalEntryListItemToTreeNode</a>
                             </li>
                             <li>
                                 <a href="#ngOnDestroy" >ngOnDestroy</a>
@@ -601,6 +609,79 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="addLexEntryToTreeStructure"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>addLexEntryToTreeStructure</b></span>
+                        <a href="#addLexEntryToTreeStructure"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addLexEntryToTreeStructure(lexEntry: <a href="../interfaces/LexicalEntryCore.html" target="_self">LexicalEntryCore</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="616"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:616</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Method that inserts the new lexical entry into the tree without refresh</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lexEntry</td>
+                                    <td>
+                                                <code><a href="../interfaces/LexicalEntryCore.html" target="_self" >LexicalEntryCore</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="alternateLabelInstanceName"></a>
                     <span class="name">
                         <span ><b>alternateLabelInstanceName</b></span>
@@ -617,8 +698,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="292"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:292</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="264"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:264</a></div>
                 </td>
             </tr>
 
@@ -658,8 +739,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="643"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:643</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="634"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:634</a></div>
                 </td>
             </tr>
 
@@ -678,6 +759,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -692,6 +774,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>nodi selezionati per la rimozione</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -729,8 +815,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="583"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:583</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="558"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:558</a></div>
                 </td>
             </tr>
 
@@ -768,8 +854,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="296"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:296</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="268"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:268</a></div>
                 </td>
             </tr>
 
@@ -837,8 +923,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="308"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:308</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="280"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:280</a></div>
                 </td>
             </tr>
 
@@ -906,8 +992,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="318"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:318</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="290"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:290</a></div>
                 </td>
             </tr>
 
@@ -1070,8 +1156,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="505"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:505</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="480"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:480</a></div>
                 </td>
             </tr>
 
@@ -1183,6 +1269,85 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="mapLexicalEntryListItemToTreeNode"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>mapLexicalEntryListItemToTreeNode</b></span>
+                        <a href="#mapLexicalEntryListItemToTreeNode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>mapLexicalEntryListItemToTreeNode(item: <a href="../interfaces/LexicalEntryListItem.html" target="_self">LexicalEntryListItem</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="668"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:668</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Method to map a lexical entry from the model received from backend to the one supported by the tree</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>item</td>
+                                    <td>
+                                                <code><a href="../interfaces/LexicalEntryListItem.html" target="_self" >LexicalEntryListItem</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>lexical entry item</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/LexicalEntryListItem.html" target="_self" >{ data: { name: any; instanceName: any; label: any; note: LexicalEntryListItem; creator: LexicalEntryListItem; creationDate: any; lastUpdate: any; status: LexicalEntryListItem; uri: LexicalEntryListItem; type: any; sub: any; }; children: {}; }</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>a lexical entry tree node</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="ngOnDestroy"></a>
                     <span class="name">
                         <span ><b>ngOnDestroy</b></span>
@@ -1277,15 +1442,15 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="331"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:331</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="306"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:306</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo che gestisce l&#39;inserimento di una nuova entrata lessicale</p>
+                    <div class="io-description"><p>Method that handles the creation of a new lexical entry</p>
 </div>
 
                     <div class="io-description">
@@ -1297,6 +1462,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1311,6 +1477,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>selected language code</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1348,8 +1518,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="598"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:598</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="573"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:573</a></div>
                 </td>
             </tr>
 
@@ -1387,8 +1557,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="362"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:362</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="337"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:337</a></div>
                 </td>
             </tr>
 
@@ -1426,8 +1596,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="371"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:371</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="346"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:346</a></div>
                 </td>
             </tr>
 
@@ -1573,8 +1743,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="383"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:383</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="358"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:358</a></div>
                 </td>
             </tr>
 
@@ -1649,8 +1819,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="496"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:496</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="471"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:471</a></div>
                 </td>
             </tr>
 
@@ -1725,8 +1895,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="523"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:523</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="498"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:498</a></div>
                 </td>
             </tr>
 
@@ -1801,8 +1971,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="528"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:528</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="503"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:503</a></div>
                 </td>
             </tr>
 
@@ -1840,8 +2010,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="544"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:544</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="519"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:519</a></div>
                 </td>
             </tr>
 
@@ -1909,8 +2079,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="551"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:551</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="526"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:526</a></div>
                 </td>
             </tr>
 
@@ -1990,8 +2160,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="563"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:563</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="538"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:538</a></div>
                 </td>
             </tr>
 
@@ -2027,8 +2197,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="590"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:590</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="565"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:565</a></div>
                 </td>
             </tr>
 
@@ -2068,8 +2238,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="676"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:676</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="704"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:704</a></div>
                 </td>
             </tr>
 
@@ -2114,8 +2284,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="735"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:735</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="763"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:763</a></div>
                 </td>
             </tr>
 
@@ -2192,8 +2362,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="603"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:603</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="578"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:578</a></div>
                 </td>
             </tr>
 
@@ -2263,8 +2433,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="715"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:715</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="743"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:743</a></div>
                 </td>
             </tr>
 
@@ -2341,8 +2511,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="695"
-                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:695</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="723"
+                            class="link-to-prism">src/app/pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component.ts:723</a></div>
                 </td>
             </tr>
 
@@ -3974,7 +4144,7 @@ import { MessageService, SelectItem, TreeNode } from &#x27;primeng/api&#x27;;
 import { Observable, Subscription, catchError, forkJoin, of, switchMap, take, throwError } from &#x27;rxjs&#x27;;
 import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
-import { FormListItem, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
+import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
 import { LEXICAL_ENTRY_RELATIONS, LexicalEntryUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
 import { Namespace } from &#x27;src/app/models/lexicon/namespace.model&#x27;;
 import { OntolexType } from &#x27;src/app/models/lexicon/ontolex-type.model&#x27;;
@@ -4221,35 +4391,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       }),
     ).subscribe((data: LexicalEntriesResponse) &#x3D;&gt; {
       this.results &#x3D; [];
-      this.results &#x3D; data.list.map((val: LexicalEntryListItem) &#x3D;&gt; ({
-        data: {
-          name: this.showLabelName ? val.label : val.lexicalEntry,
-          instanceName: val.lexicalEntry,
-          label: val.label,
-          note: val[&#x27;note&#x27;],
-          creator: val[&#x27;creator&#x27;],
-          creationDate: val[&#x27;creationDate&#x27;] ? new Date(val[&#x27;creationDate&#x27;]).toLocaleString() : &#x27;&#x27;,
-          lastUpdate: val[&#x27;lastUpdate&#x27;] ? new Date(val[&#x27;lastUpdate&#x27;]).toLocaleString() : &#x27;&#x27;,
-          status: val[&#x27;status&#x27;],
-          uri: val[&#x27;lexicalEntry&#x27;],
-          type: LexicalEntryTypeOld.LEXICAL_ENTRY,
-          sub: val.pos
-        },
-        children: [{
-          data: {
-            name: &#x27;form (0)&#x27;,
-            instanceName: &#x27;_form_&#x27; + val.lexicalEntry,
-            type: LexicalEntryTypeOld.FORMS_ROOT
-          }
-        },
-        {
-          data: {
-            name: &#x27;sense (0)&#x27;,
-            instanceName: &#x27;_sense_&#x27; + val.lexicalEntry,
-            type: LexicalEntryTypeOld.SENSES_ROOT
-          }
-        }]
-      }))
+      this.results &#x3D; data.list.map((val: LexicalEntryListItem) &#x3D;&gt; this.mapLexicalEntryListItemToTreeNode(val));
       this.counter &#x3D; data.totalHits;
 
       this.loading &#x3D; false;
@@ -4296,7 +4438,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.filteredPrefix &#x3D; filtered;
   }
 
-  /**Metodo che gestisce l&#x27;inserimento di una nuova entrata lessicale */
+  /**
+   * Method that handles the creation of a new lexical entry
+   * @param language {string} selected language code
+   */
   onAddNewLexicalEntry(language: string) {
     const currentUser &#x3D; this.loggedUserService.currentUser;
     const creator &#x3D; currentUser?.name + &#x27;.&#x27; + currentUser?.surname;
@@ -4318,10 +4463,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       ).subscribe(() &#x3D;&gt; {
-        const successMsg &#x3D; &quot;Creata una nuova entrata lessicale&quot;;
+        const successMsg &#x3D; &quot;New lexical entry created&quot;;
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        this.searchTextInput &#x3D; lexEntry.label;
-        this.filter();
+        // this.loadNodes();
+        this.addLexEntryToTreeStructure(lexEntry);
       },
       );
     })
@@ -4603,6 +4748,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     }
    */
 
+  /**
+   * Method that inserts the new lexical entry into the tree without refresh
+   * @param lexEntry {LexicalEntryCore} the new lexical entry
+   */
+  private addLexEntryToTreeStructure(lexEntry: LexicalEntryCore) {
+    const mappedEntry &#x3D; this.mapLexicalEntryListItemToTreeNode(lexEntry);
+    this.results.push(mappedEntry);
+    this.results &#x3D; [...this.results.sort((a, b) &#x3D;&gt; {
+      if (a.data!.label! &lt; b.data!.label!) {
+        return -1
+      } else if (a.data!.label! &gt; b.data!.label!) {
+        return 1
+      }
+      return 0
+    })];
+  }
 
   /**
    * @private
@@ -4636,6 +4797,43 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       this.loadNodes();
     });
+  }
+
+  /**
+ * Method to map a lexical entry from the model received from backend to the one supported by the tree
+ * @param item {LexicalEntryListItem} lexical entry item
+ * @returns {} a lexical entry tree node
+ */
+  private mapLexicalEntryListItemToTreeNode(item: LexicalEntryListItem) {
+    return {
+      data: {
+        name: this.showLabelName ? item.label : item.lexicalEntry,
+        instanceName: item.lexicalEntry,
+        label: item.label,
+        note: item[&#x27;note&#x27;],
+        creator: item[&#x27;creator&#x27;],
+        creationDate: item[&#x27;creationDate&#x27;] ? new Date(item[&#x27;creationDate&#x27;]).toLocaleString() : &#x27;&#x27;,
+        lastUpdate: item[&#x27;lastUpdate&#x27;] ? new Date(item[&#x27;lastUpdate&#x27;]).toLocaleString() : &#x27;&#x27;,
+        status: item[&#x27;status&#x27;],
+        uri: item[&#x27;lexicalEntry&#x27;],
+        type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+        sub: item.pos
+      },
+      children: [{
+        data: {
+          name: &#x27;form (0)&#x27;,
+          instanceName: &#x27;_form_&#x27; + item.lexicalEntry,
+          type: LexicalEntryTypeOld.FORMS_ROOT
+        }
+      },
+      {
+        data: {
+          name: &#x27;sense (0)&#x27;,
+          instanceName: &#x27;_sense_&#x27; + item.lexicalEntry,
+          type: LexicalEntryTypeOld.SENSES_ROOT
+        }
+      }]
+    }
   }
 
   /**
