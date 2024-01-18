@@ -3183,7 +3183,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(resp &#x3D;&gt; {
       this.lexicalEntry &#x3D; &lt;LexicalEntryCore&gt;{ ...this.lexicalEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${this.lexicalEntry.label} update &quot;${relation}&quot; success &#x60;));
+      // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${this.lexicalEntry.label} update &quot;${relation}&quot; success &#x60;));
       this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.lexicalEntry.lexicalEntry });
     });
   }

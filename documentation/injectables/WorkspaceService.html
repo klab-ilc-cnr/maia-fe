@@ -271,8 +271,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="348"
-                            class="link-to-prism">src/app/services/workspace.service.ts:348</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="354"
+                            class="link-to-prism">src/app/services/workspace.service.ts:354</a></div>
                 </td>
             </tr>
 
@@ -539,8 +539,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="371"
-                            class="link-to-prism">src/app/services/workspace.service.ts:371</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="377"
+                            class="link-to-prism">src/app/services/workspace.service.ts:377</a></div>
                 </td>
             </tr>
 
@@ -578,8 +578,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="375"
-                            class="link-to-prism">src/app/services/workspace.service.ts:375</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="381"
+                            class="link-to-prism">src/app/services/workspace.service.ts:381</a></div>
                 </td>
             </tr>
 
@@ -799,8 +799,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="314"
-                            class="link-to-prism">src/app/services/workspace.service.ts:314</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="320"
+                            class="link-to-prism">src/app/services/workspace.service.ts:320</a></div>
                 </td>
             </tr>
 
@@ -897,15 +897,15 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="271"
-                            class="link-to-prism">src/app/services/workspace.service.ts:271</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="277"
+                            class="link-to-prism">src/app/services/workspace.service.ts:277</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>POST che esegue la cancellazione di file o di una cartella del corpus</p>
+                    <div class="io-description"><p>Delete an element from the corpus</p>
 </div>
 
                     <div class="io-description">
@@ -1155,8 +1155,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="380"
-                            class="link-to-prism">src/app/services/workspace.service.ts:380</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="386"
+                            class="link-to-prism">src/app/services/workspace.service.ts:386</a></div>
                 </td>
             </tr>
 
@@ -2002,10 +2002,16 @@ export class WorkspaceService {
   //   return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/crud/${operationUrl}&#x60;, payload);
   // }
 
+  /**
+   * Delete an element from the corpus
+   * @param elementType {string} type of the element to be removed (folder or resource)
+   * @param elementId {number} element identifier
+   * @returns {Observable&lt;Object&gt;}
+   */
   public removeElement(elementType: string, elementId: number) {
     const uuid &#x3D; uuidv4();
     const operationUrl &#x3D; elementType &#x3D;&#x3D;&#x3D; ElementType.FOLDER ? &#x27;folder&#x27; : &#x27;resource&#x27;;
-    return this.http.get(
+    return this.http.delete(
       &#x60;${this.textoUrl}/texto/${operationUrl}/${elementId}/remove&#x60;,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })

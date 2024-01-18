@@ -788,7 +788,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET to remove a tagset by ID</p>
+                    <div class="io-description"><p>Delete tagset by ID</p>
 </div>
 
                     <div class="io-description">
@@ -867,7 +867,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET to remove an item from tagset using tagset ID</p>
+                    <div class="io-description"><p>Delete an item from tagset using tagset ID</p>
 </div>
 
                     <div class="io-description">
@@ -1578,20 +1578,20 @@ export class TagsetService {
     return this.http.get&lt;TTagset[]&gt;(&#x60;${this.textoUrl}/texto/tagset/list&#x60;);
   }
   /**
-   * GET to remove a tagset by ID
+   * Delete tagset by ID
    * @param tagsetId {number} tagset identifier
    * @returns {Observable&lt;TTagset&gt;} observable of the removed tagset
    */
-  public removeTagsetById(tagsetId: number): Observable&lt;TTagset&gt; {
-    return this.http.get&lt;TTagset&gt;(&#x60;${this.textoUrl}/texto/tagset/${tagsetId}/remove&#x60;);
+  public removeTagsetById(tagsetId: number): Observable&lt;TTagset&gt; { //TODO CHECK RETURN TYPE
+    return this.http.delete&lt;TTagset&gt;(&#x60;${this.textoUrl}/texto/tagset/${tagsetId}/remove&#x60;);
   }
   /**
-   * GET to remove an item from tagset using tagset ID
+   * Delete an item from tagset using tagset ID
    * @param tagsetItemId {number} tagset item identifier
    * @returns {Observable&lt;TTagsetItem&gt;} observable of the item removed from tagset
    */
-  public removeTagsetItemById(tagsetItemId: number): Observable&lt;TTagsetItem&gt; {
-    return this.http.get&lt;TTagsetItem&gt;(&#x60;${this.textoUrl}/texto/tagsetItem/${tagsetItemId}/remove&#x60;);
+  public removeTagsetItemById(tagsetItemId: number): Observable&lt;TTagsetItem&gt; { //TODO CHECK RETURN TYPE
+    return this.http.delete&lt;TTagsetItem&gt;(&#x60;${this.textoUrl}/texto/tagsetItem/${tagsetItemId}/remove&#x60;);
   }
   /**
    * POST to update tagset data

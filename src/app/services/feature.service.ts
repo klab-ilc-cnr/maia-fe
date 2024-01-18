@@ -90,13 +90,13 @@ export class FeatureService {
   }
 
   /**
-   * GET to remove a feature
+   * Delete a feature by ID
    * @param featureId {number} feature identifier
    * @returns {Observable<TFeature>} observable of the removed feature
    */
   public removeFeatureById(featureId: number): Observable<TFeature> {
     const uuid = uuidv4();
-    return this.http.get<TFeature>(
+    return this.http.delete<TFeature>(
       `${this.textoUrl}/texto/feature/${featureId}/remove`,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );
@@ -115,6 +115,6 @@ export class FeatureService {
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );
   }
-  
+
   //#endregion
 }

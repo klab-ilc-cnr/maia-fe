@@ -554,7 +554,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET to remove a layer by ID</p>
+                    <div class="io-description"><p>Delete annotation layer by ID</p>
 </div>
 
                     <div class="io-description">
@@ -1048,13 +1048,13 @@ export class LayerService {
   }
 
   /**
-   * GET to remove a layer by ID
+   * Delete annotation layer by ID
    * @param layerId {number} layer identifier
    * @returns {Observable&lt;TLayer&gt;} removed layer
    */
   public removeLayerById(layerId: number): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
-    return this.http.get&lt;TLayer&gt;(
+    return this.http.delete&lt;TLayer&gt;(
       &#x60;${this.textoUrl}/texto/layer/${layerId}/remove&#x60;,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })

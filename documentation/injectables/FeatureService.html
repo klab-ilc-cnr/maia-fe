@@ -492,7 +492,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET to remove a feature</p>
+                    <div class="io-description"><p>Delete a feature by ID</p>
 </div>
 
                     <div class="io-description">
@@ -1043,13 +1043,13 @@ export class FeatureService {
   }
 
   /**
-   * GET to remove a feature
+   * Delete a feature by ID
    * @param featureId {number} feature identifier
    * @returns {Observable&lt;TFeature&gt;} observable of the removed feature
    */
   public removeFeatureById(featureId: number): Observable&lt;TFeature&gt; {
     const uuid &#x3D; uuidv4();
-    return this.http.get&lt;TFeature&gt;(
+    return this.http.delete&lt;TFeature&gt;(
       &#x60;${this.textoUrl}/texto/feature/${featureId}/remove&#x60;,
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );
@@ -1068,7 +1068,7 @@ export class FeatureService {
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );
   }
-  
+
   //#endregion
 }
 </code></pre>

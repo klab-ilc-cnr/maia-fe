@@ -268,10 +268,16 @@ export class WorkspaceService {
   //   return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   // }
 
+  /**
+   * Delete an element from the corpus
+   * @param elementType {string} type of the element to be removed (folder or resource)
+   * @param elementId {number} element identifier
+   * @returns {Observable<Object>}
+   */
   public removeElement(elementType: string, elementId: number) {
     const uuid = uuidv4();
     const operationUrl = elementType === ElementType.FOLDER ? 'folder' : 'resource';
-    return this.http.get(
+    return this.http.delete(
       `${this.textoUrl}/texto/${operationUrl}/${elementId}/remove`,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
