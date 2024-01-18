@@ -301,8 +301,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="183"
-                            class="link-to-prism">src/app/services/annotation.service.ts:183</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="188"
+                            class="link-to-prism">src/app/services/annotation.service.ts:188</a></div>
                 </td>
             </tr>
 
@@ -372,14 +372,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="179"
-                            class="link-to-prism">src/app/services/annotation.service.ts:179</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="184"
+                            class="link-to-prism">src/app/services/annotation.service.ts:184</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Delete an annotation by ID</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -390,6 +392,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -404,6 +407,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>annotation identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -443,8 +450,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="190"
-                            class="link-to-prism">src/app/services/annotation.service.ts:190</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="195"
+                            class="link-to-prism">src/app/services/annotation.service.ts:195</a></div>
                 </td>
             </tr>
 
@@ -766,8 +773,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="194"
-                            class="link-to-prism">src/app/services/annotation.service.ts:194</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="199"
+                            class="link-to-prism">src/app/services/annotation.service.ts:199</a></div>
                 </td>
             </tr>
 
@@ -1044,8 +1051,13 @@ export class AnnotationService {
     );
   }
 
+  /**
+   * Delete an annotation by ID
+   * @param annotationId {number} annotation identifier
+   * @returns {Observable&lt;Object&gt;}
+   */
   public deleteAnnotationById(annotationId: number) {
-    return this.http.get(&#x60;${this.textoUrl}/texto/annotation/${annotationId}/remove&#x60;);
+    return this.http.delete(&#x60;${this.textoUrl}/texto/annotation/${annotationId}/remove&#x60;);
   }
 
   public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {

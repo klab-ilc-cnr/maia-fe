@@ -81,13 +81,13 @@ export class LayerService {
   }
 
   /**
-   * GET to remove a layer by ID
+   * Delete annotation layer by ID
    * @param layerId {number} layer identifier
    * @returns {Observable<TLayer>} removed layer
    */
   public removeLayerById(layerId: number): Observable<TLayer> {
     const uuid = uuidv4();
-    return this.http.get<TLayer>(
+    return this.http.delete<TLayer>(
       `${this.textoUrl}/texto/layer/${layerId}/remove`,
       {
         headers: new HttpHeaders({ 'UUID': uuid })

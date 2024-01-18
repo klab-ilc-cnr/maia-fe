@@ -1768,7 +1768,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   private deleteAnnotation &#x3D; (id: number): void &#x3D;&gt; {
     this.showOperationInProgress(&#x27;Deletion in progress&#x27;);
     const successMsg &#x3D; &#x27;Annotation successfully removed&#x27;;
-    this.annotationService.deleteAnnotationById(id).pipe(
+    this.annotationService.deleteAnnotationById(id).pipe( //FIXME referenced records cannot be deleted, including annotations with enhanced features. Under discussion is the deletion policy
       take(1),
       catchError((error: HttpErrorResponse) &#x3D;&gt; {
         this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x60;Deleting annotation failed: ${error.error}&#x60;));
@@ -1823,7 +1823,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   showDeleteModal() {
-    if(!this.annotationModel.id || this.annotationModel.id &#x3D;&#x3D;&#x3D; undefined) {
+    if (!this.annotationModel.id || this.annotationModel.id &#x3D;&#x3D;&#x3D; undefined) {
       return;
     }
     const confirmMessage &#x3D; &#x27;You are about to delete an annotation&#x27;;

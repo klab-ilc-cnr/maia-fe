@@ -1046,11 +1046,11 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
 import { Component, Input, OnDestroy, OnInit } from &#x27;@angular/core&#x27;;
 import { FormControl, FormGroup } from &#x27;@angular/forms&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;;
 import { Observable, Subject, catchError, debounceTime, skip, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
+import { User } from &#x27;src/app/models/user&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import { UserService } from &#x27;src/app/services/user.service&#x27;;
-import { MessageService } from &#x27;primeng/api&#x27;;
-import { User } from &#x27;src/app/models/user&#x27;;
 
 @Component({
   selector: &#x27;app-base-metadata-editor&#x27;,
@@ -1062,7 +1062,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
   @Input() entry$!: Observable&lt;any&gt;;
   @Input() confidenceLabel &#x3D; &#x27;Confidence&#x27;;
 
-  formControls : {[name: string] : FormControl} &#x3D; {
+  formControls: { [name: string]: FormControl } &#x3D; {
     creator: new FormControl&lt;string&gt;({ value: &#x27;&#x27;, disabled: true }),
     creationDate: new FormControl&lt;string&gt;({ value: &#x27;&#x27;, disabled: true }),
     provenance: new FormControl&lt;string&gt;(&#x27;&#x27;),
@@ -1070,7 +1070,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
     note: new FormControl&lt;string&gt;(&#x27;&#x27;),
   };
 
-  form! : FormGroup;
+  form!: FormGroup;
   entry!: any;
   currentUser!: User;
   relations!: any;
@@ -1134,7 +1134,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
     if (+entry.confidence !&#x3D;&#x3D; -1) {
       formControlList[&#x27;confidence&#x27;].setValue(+entry.confidence * 100);
     }
-    formControlList[&#x27;note&#x27;].setValue(entry.note?? &#x27;&#x27;);
+    formControlList[&#x27;note&#x27;].setValue(entry.note ?? &#x27;&#x27;);
   }
 
   ngOnDestroy(): void {
@@ -1151,9 +1151,9 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
         return throwError(() &#x3D;&gt; new Error(error.error));
       }),
     ).subscribe(resp &#x3D;&gt; {
-      this.entry &#x3D; { ...this.entry, [fieldName]: value, lastUpdate: resp};
-      const msg &#x3D; this.msgConfService.generateSuccessMessageConfig(&#x60;Update &quot;${relation}&quot; success &#x60;);
-      this.messageService.add(msg);
+      this.entry &#x3D; { ...this.entry, [fieldName]: value, lastUpdate: resp };
+      // const msg &#x3D; this.msgConfService.generateSuccessMessageConfig(&#x60;Update &quot;${relation}&quot; success &#x60;);
+      // this.messageService.add(msg);
     });
   }
 
@@ -1163,7 +1163,7 @@ export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
     if (fieldType &#x3D;&#x3D;&#x3D; this.relations.CONFIDENCE) {
       value /&#x3D; 100;
     } else if (fieldType &#x3D;&#x3D;&#x3D; this.relations.NOTE) {
-      value &#x3D; value?? &#x27;&#x27;;
+      value &#x3D; value ?? &#x27;&#x27;;
     }
 
     return value;
