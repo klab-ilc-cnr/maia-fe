@@ -176,8 +176,13 @@ export class AnnotationService {
     );
   }
 
+  /**
+   * Delete an annotation by ID
+   * @param annotationId {number} annotation identifier
+   * @returns {Observable<Object>}
+   */
   public deleteAnnotationById(annotationId: number) {
-    return this.http.get(`${this.textoUrl}/texto/annotation/${annotationId}/remove`);
+    return this.http.delete(`${this.textoUrl}/texto/annotation/${annotationId}/remove`);
   }
 
   public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {

@@ -140,20 +140,20 @@ export class TagsetService {
     return this.http.get<TTagset[]>(`${this.textoUrl}/texto/tagset/list`);
   }
   /**
-   * GET to remove a tagset by ID
+   * Delete tagset by ID
    * @param tagsetId {number} tagset identifier
    * @returns {Observable<TTagset>} observable of the removed tagset
    */
-  public removeTagsetById(tagsetId: number): Observable<TTagset> {
-    return this.http.get<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}/remove`);
+  public removeTagsetById(tagsetId: number): Observable<TTagset> { //TODO CHECK RETURN TYPE
+    return this.http.delete<TTagset>(`${this.textoUrl}/texto/tagset/${tagsetId}/remove`);
   }
   /**
-   * GET to remove an item from tagset using tagset ID
+   * Delete an item from tagset using tagset ID
    * @param tagsetItemId {number} tagset item identifier
    * @returns {Observable<TTagsetItem>} observable of the item removed from tagset
    */
-  public removeTagsetItemById(tagsetItemId: number): Observable<TTagsetItem> {
-    return this.http.get<TTagsetItem>(`${this.textoUrl}/texto/tagsetItem/${tagsetItemId}/remove`);
+  public removeTagsetItemById(tagsetItemId: number): Observable<TTagsetItem> { //TODO CHECK RETURN TYPE
+    return this.http.delete<TTagsetItem>(`${this.textoUrl}/texto/tagsetItem/${tagsetItemId}/remove`);
   }
   /**
    * POST to update tagset data
