@@ -21,6 +21,7 @@ import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
@@ -87,7 +88,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @private
    * Nome della proprietà del localstorage che memorizza i tile
    */
-  private storageName = "storedTiles";
+  private storageName = `${this.storageService.tokenPrefix}_storedTiles`;
 
   /**Sottoscrizione per tracciare emissioni da Common Service */
   // private subscription!: Subscription;
@@ -173,7 +174,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private messageService: MessageService,
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private storageService: StorageService
+  ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
