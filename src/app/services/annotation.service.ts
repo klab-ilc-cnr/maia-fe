@@ -85,7 +85,7 @@ export class AnnotationService {
   public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable<string> {
     const uuid = uuidv4();
     return this.http.post(
-      `${this.textoUrl}resource/${textId}/text`,
+      `${this.textoUrl}/resource/${textId}/text`,
       slice,
       {
         headers: new HttpHeaders({ 'UUID': uuid }),
@@ -97,7 +97,7 @@ export class AnnotationService {
   public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable<PaginatedResponse> { //TODO cambierà la firma, non sarà lista di stringhe ma json
     const uuid = uuidv4();
     return this.http.post<PaginatedResponse>(
-      `${this.textoUrl}resource/${textId}/rows`,
+      `${this.textoUrl}/resource/${textId}/rows`,
       slice,
       {
         headers: new HttpHeaders({ 'UUID': uuid }),
@@ -108,7 +108,7 @@ export class AnnotationService {
   public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable<TAnnotation[]> {
     const uuid = uuidv4();
     return this.http.post<TAnnotation[]>(
-      `${this.textoUrl}resource/${resourceId}/annotations`,
+      `${this.textoUrl}/resource/${resourceId}/annotations`,
       slice,
       {
         headers: new HttpHeaders({ 'UUID': uuid }),
@@ -171,7 +171,7 @@ export class AnnotationService {
 
   public createAnnotation(annotation: TAnnotation): Observable<TAnnotation> {
     return this.http.post<TAnnotation>(
-      `${this.textoUrl}annotation/create`,
+      `${this.textoUrl}/annotation/create`,
       annotation,
     );
   }
@@ -182,23 +182,23 @@ export class AnnotationService {
    * @returns {Observable<Object>}
    */
   public deleteAnnotationById(annotationId: number) {
-    return this.http.delete(`${this.textoUrl}annotation/${annotationId}/remove`);
+    return this.http.delete(`${this.textoUrl}/annotation/${annotationId}/remove`);
   }
 
   public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
     return this.http.post<TAnnotationFeature>(
-      `${this.textoUrl}annotationFeature/create`,
+      `${this.textoUrl}/annotationFeature/create`,
       annotationFeature,
     );
   }
 
   public retrieveAnnotationFeaturesById(annotationId: number): Observable<TAnnotationFeature[]> {
-    return this.http.get<TAnnotationFeature[]>(`${this.textoUrl}annotation/${annotationId}/features`);
+    return this.http.get<TAnnotationFeature[]>(`${this.textoUrl}/annotation/${annotationId}/features`);
   }
 
   public updateAnnotationFeature(annFeatId: number, annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
     return this.http.post<TAnnotationFeature>(
-      `${this.textoUrl}annotationFeature/update`,
+      `${this.textoUrl}/annotationFeature/update`,
       annotationFeature
     );
   }

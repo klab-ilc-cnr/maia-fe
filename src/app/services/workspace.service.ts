@@ -168,7 +168,7 @@ export class WorkspaceService {
     const uuid = uuidv4();
     const user = userId ? `/${userId}` : '';
     return this.http.get<CorpusElement[]>(
-      `${this.textoUrl}user${user}/tree`,
+      `${this.textoUrl}/user${user}/tree`,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
       }
@@ -194,7 +194,7 @@ export class WorkspaceService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(
-      `${this.textoUrl}resource/${resourceId}/upload`,
+      `${this.textoUrl}/resource/${resourceId}/upload`,
       formData,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -235,7 +235,7 @@ export class WorkspaceService {
       name: newName
     };
     return this.http.post(
-      `${this.textoUrl}${operationUrl}/${elementId}/update`,
+      `${this.textoUrl}/${operationUrl}/${elementId}/update`,
       payload,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -277,7 +277,7 @@ export class WorkspaceService {
     const uuid = uuidv4();
     const operationUrl = elementType === ElementType.FOLDER ? 'folder' : 'resource';
     return this.http.delete(
-      `${this.textoUrl}${operationUrl}/${elementId}/remove`,
+      `${this.textoUrl}/${operationUrl}/${elementId}/remove`,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
       }
@@ -325,7 +325,7 @@ export class WorkspaceService {
       }
     };
     return this.http.post(
-      `${this.textoUrl}${operationUrl}/${elementId}/update`,
+      `${this.textoUrl}/${operationUrl}/${elementId}/update`,
       payload,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -364,7 +364,7 @@ export class WorkspaceService {
     };
 
     return this.http.post<CorpusElement>(
-      `${this.textoUrl}${operationUrl}/create`,
+      `${this.textoUrl}/${operationUrl}/create`,
       payload,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -374,15 +374,15 @@ export class WorkspaceService {
   // FINE CHIAMATE CASH SERVER
 
   public getTextoCurrentUserId(): Observable<TextoUser> {
-    return this.http.get<TextoUser>(`${this.textoUrl}user/me`)
+    return this.http.get<TextoUser>(`${this.textoUrl}/user/me`)
   }
 
   public getTextoUserRootFolder(userId?: number): Observable<FolderElement> {
     const operationUrl = userId ? `/${userId}` : '';
-    return this.http.get<FolderElement>(`${this.textoUrl}user${operationUrl}/home`);
+    return this.http.get<FolderElement>(`${this.textoUrl}/user${operationUrl}/home`);
   }
 
   public retrieveResourceElementById(resourceId: number): Observable<ResourceElement> {
-    return this.http.get<ResourceElement>(`${this.textoUrl}resource/${resourceId}`);
+    return this.http.get<ResourceElement>(`${this.textoUrl}/resource/${resourceId}`);
   }
 }

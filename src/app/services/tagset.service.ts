@@ -101,7 +101,7 @@ export class TagsetService {
    */
   public createTagset(newTagset: TTagset): Observable<TTagset> {
     return this.http.post<TTagset>(
-      `${this.textoUrl}tagset/create`,
+      `${this.textoUrl}/tagset/create`,
       newTagset
     );
   }
@@ -112,7 +112,7 @@ export class TagsetService {
    */
   public createTagsetItem(newTagsetItem: TTagsetItem): Observable<TTagsetItem> {
     return this.http.post<TTagsetItem>(
-      `${this.textoUrl}tagsetItem/create`,
+      `${this.textoUrl}/tagsetItem/create`,
       newTagsetItem
     );
   }
@@ -122,7 +122,7 @@ export class TagsetService {
    * @returns {Observable<TTagset>} observable of the tagset
    */
   public getTagsetById(tagsetId: number): Observable<TTagset> {
-    return this.http.get<TTagset>(`${this.textoUrl}tagset/${tagsetId}`);
+    return this.http.get<TTagset>(`${this.textoUrl}/tagset/${tagsetId}`);
   }
   /**
    * GET to retrieve the item of the tagset by tagset ID
@@ -130,14 +130,14 @@ export class TagsetService {
    * @returns {Observable<TTagsetItem[]>} observable of the item list for tagset
    */
   public getTagsetItemsById(tagsetId: number): Observable<TTagsetItem[]> {
-    return this.http.get<TTagsetItem[]>(`${this.textoUrl}tagset/${tagsetId}/items`);
+    return this.http.get<TTagsetItem[]>(`${this.textoUrl}/tagset/${tagsetId}/items`);
   }
   /**
    * GET to retrieve all the tagsets
    * @returns {Observable<TTagset>} observable of the tagset list
    */
   public getTagsetsList(): Observable<TTagset[]> {
-    return this.http.get<TTagset[]>(`${this.textoUrl}tagset/list`);
+    return this.http.get<TTagset[]>(`${this.textoUrl}/tagset/list`);
   }
   /**
    * Delete tagset by ID
@@ -145,7 +145,7 @@ export class TagsetService {
    * @returns {Observable<TTagset>} observable of the removed tagset
    */
   public removeTagsetById(tagsetId: number): Observable<TTagset> { //TODO CHECK RETURN TYPE
-    return this.http.delete<TTagset>(`${this.textoUrl}tagset/${tagsetId}/remove`);
+    return this.http.delete<TTagset>(`${this.textoUrl}/tagset/${tagsetId}/remove`);
   }
   /**
    * Delete an item from tagset using tagset ID
@@ -153,7 +153,7 @@ export class TagsetService {
    * @returns {Observable<TTagsetItem>} observable of the item removed from tagset
    */
   public removeTagsetItemById(tagsetItemId: number): Observable<TTagsetItem> { //TODO CHECK RETURN TYPE
-    return this.http.delete<TTagsetItem>(`${this.textoUrl}tagsetItem/${tagsetItemId}/remove`);
+    return this.http.delete<TTagsetItem>(`${this.textoUrl}/tagsetItem/${tagsetItemId}/remove`);
   }
   /**
    * POST to update tagset data
@@ -162,7 +162,7 @@ export class TagsetService {
    */
   public updateTagset(updatedTagset: TTagset): Observable<TTagset> {
     return this.http.post<TTagset>(
-      `${this.textoUrl}tagset/${updatedTagset.id}/update`,
+      `${this.textoUrl}/tagset/${updatedTagset.id}/update`,
       updatedTagset,
     );
   }
@@ -173,7 +173,7 @@ export class TagsetService {
    */
   public updateTagsetItem(updatedTagsetItem: TTagsetItem): Observable<TTagsetItem> {
     return this.http.post<TTagsetItem>(
-      `${this.textoUrl}tagsetItem/${updatedTagsetItem.id}/update`,
+      `${this.textoUrl}/tagsetItem/${updatedTagsetItem.id}/update`,
       updatedTagsetItem,
     );
   }
