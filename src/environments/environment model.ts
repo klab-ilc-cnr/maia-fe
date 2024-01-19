@@ -3,8 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 
-const serverUrl = 'https://146.48.93.234:9000/maia';
+/**Url to maia-be server */
+const serverUrl = '';
 
+/**Environment variables */
 export const environment = {
   production: false,
   envName: 'local',
@@ -21,6 +23,6 @@ export const environment = {
   maiaBeTextoUrl: `${serverUrl}/texto/`,
   lexoPrefix: "ferrandi",
   lexoBaseIRI: "http://rut/somali/ferrandi#",
-  applicationSubTitle: " - develop",
+  applicationSubTitle: " - NAME",
   demoHide: false,
 };

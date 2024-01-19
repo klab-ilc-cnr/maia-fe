@@ -21,7 +21,7 @@ export class FeatureService {
    */
   constructor(private http: HttpClient) {
     this.featureUrl = environment.featureUrl;
-    this.textoUrl = environment.textoUrl;
+    this.textoUrl = environment.maiaBeTextoUrl;
   }
 
   /**
@@ -83,7 +83,7 @@ export class FeatureService {
   public createFeature(newFeature: TFeature): Observable<TFeature> {
     const uuid = uuidv4();
     return this.http.post<TFeature>(
-      `${this.textoUrl}/texto/feature/create`,
+      `${this.textoUrl}feature/create`,
       newFeature,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );
@@ -97,7 +97,7 @@ export class FeatureService {
   public removeFeatureById(featureId: number): Observable<TFeature> {
     const uuid = uuidv4();
     return this.http.delete<TFeature>(
-      `${this.textoUrl}/texto/feature/${featureId}/remove`,
+      `${this.textoUrl}feature/${featureId}/remove`,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );
   }
@@ -110,7 +110,7 @@ export class FeatureService {
   public updateFeatureById(updatedFeature: TFeature): Observable<TFeature> {
     const uuid = uuidv4();
     return this.http.post<TFeature>(
-      `${this.textoUrl}/texto/feature/${updatedFeature.id}/update`,
+      `${this.textoUrl}feature/${updatedFeature.id}/update`,
       updatedFeature,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );

@@ -35,7 +35,7 @@ export class LexiconService {
     private http: HttpClient,
     private commonService: CommonService
   ) {
-    this.lexoUrl = environment.lexoUrl;
+    this.lexoUrl = environment.maiaBeLexoUrl;
     this.encodedBaseIRI = this.commonService.encodeUrl(environment.lexoBaseIRI);
   }
 
@@ -111,7 +111,7 @@ export class LexiconService {
    * @param parameters {LexicalEntryRequest|undefined} search filter parameters
    * @returns {Observable<LexicalEntriesResponse>} observable of the response containing the lexical entry list
    */
-  getLexicalEntriesList(parameters: LexicalEntryRequest|undefined): Observable<LexicalEntriesResponse> {
+  getLexicalEntriesList(parameters: LexicalEntryRequest | undefined): Observable<LexicalEntriesResponse> {
     return this.http.post<LexicalEntriesResponse>(`${this.lexoUrl}lexicon/data/lexicalEntries`, parameters);
   }
 
@@ -144,7 +144,7 @@ export class LexiconService {
    */
 
   getFilteredSenses(parameters: LexicalEntryRequest): Observable<FilteredSenseModel> {
-    return <Observable<FilteredSenseModel>> this.http.post(
+    return <Observable<FilteredSenseModel>>this.http.post(
       `${this.lexoUrl}lexicon/data/filteredSenses`,
       parameters,
     );
@@ -496,7 +496,7 @@ export class LexiconService {
         author: "ziopino", // FIXME: replace builtin name with real author
       }).toString();
 
-      return <Observable<IndirectRelationModel>> this.http.get(createRelationshipUrl.href, { responseType: 'json' });
+      return <Observable<IndirectRelationModel>>this.http.get(createRelationshipUrl.href, { responseType: 'json' });
     }
 
     const addCategory = (relationURI: string) => {
@@ -507,7 +507,7 @@ export class LexiconService {
         value: categoryURI,
         relation: 'http://www.w3.org/ns/lemon/vartrans#category',
       }, {
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         responseType: 'text',
       }).pipe(mergeMap(() => of(relationURI)));
     }
