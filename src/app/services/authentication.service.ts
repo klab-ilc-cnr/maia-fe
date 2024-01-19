@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthenticationService {
   /**Url of maia-be */
-  private maiaBeUrl = environment.allowedUrls;
+  private maiaBeUrl = environment.maiaBeUrl;
 
   /**
    * Constructor for AuthenticationService
