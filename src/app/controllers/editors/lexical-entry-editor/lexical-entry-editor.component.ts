@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { forkJoin, Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { DropdownField, SelectButtonField } from 'src/app/models/dropdown-field';
 import { LexicalEntryCore, LexicalEntryTypeOld, LinkProperty } from 'src/app/models/lexicon/lexical-entry.model';
-import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
+import { LEXICAL_ENTRY_RELATIONS, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -160,7 +160,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
           this.initialValues = { ...tempInitialValues };
         },
         error: (error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']))
         }
       });
     }

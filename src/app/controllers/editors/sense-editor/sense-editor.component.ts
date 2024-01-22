@@ -143,7 +143,7 @@ export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         },
         error: (error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']))
         }
       });
     }
