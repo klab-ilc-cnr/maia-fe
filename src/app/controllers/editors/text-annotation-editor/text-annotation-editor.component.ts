@@ -168,7 +168,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     this.annotationService.deleteAnnotationById(id).pipe( //FIXME referenced records cannot be deleted, including annotations with enhanced features. Under discussion is the deletion policy
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Deleting annotation failed: ${error.error}`));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Deleting annotation failed: ${JSON.parse(error.error)['message']}`));
         Swal.close();
         return throwError(() => new Error(error.error));
       }),

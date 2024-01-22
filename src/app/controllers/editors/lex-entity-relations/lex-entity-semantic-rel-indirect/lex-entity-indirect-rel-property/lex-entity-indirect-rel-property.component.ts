@@ -1,12 +1,12 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { PropertyItem } from "../lex-entity-semantic-rel-indirect.component";
-import { PopupDeleteItemComponent } from "src/app/controllers/popup/popup-delete-item/popup-delete-item.component";
-import { LexiconService } from "src/app/services/lexicon.service";
-import { Subject, debounceTime, distinctUntilChanged, filter, take, takeUntil } from "rxjs";
-import { MessageService } from "primeng/api";
-import { MessageConfigurationService } from "src/app/services/message-configuration.service";
-import { GENERIC_RELATION_TYPE } from "src/app/models/lexicon/lexicon-updater";
 import { HttpErrorResponse } from "@angular/common/http";
+import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { MessageService } from "primeng/api";
+import { Subject, debounceTime, distinctUntilChanged, filter, take, takeUntil } from "rxjs";
+import { PopupDeleteItemComponent } from "src/app/controllers/popup/popup-delete-item/popup-delete-item.component";
+import { GENERIC_RELATION_TYPE } from "src/app/models/lexicon/lexicon-updater";
+import { LexiconService } from "src/app/services/lexicon.service";
+import { MessageConfigurationService } from "src/app/services/message-configuration.service";
+import { PropertyItem } from "../lex-entity-semantic-rel-indirect.component";
 
 @Component({
   selector: 'app-lex-entity-indirect-rel-property',
@@ -28,11 +28,11 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
     private lexiconService: LexiconService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-  ) {}
+  ) { }
 
   private showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${JSON.parse(err.error)['message']}`);
     this.messageService.add(message);
   }
 
@@ -53,7 +53,7 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
   }
 
   onUpdateProperty = (newValue: string) => {
-    const {indirectRelationshipURI, propertyURI, value} = this.propertyItem;
+    const { indirectRelationshipURI, propertyURI, value } = this.propertyItem;
     this.lexiconService.updateGenericRelation(indirectRelationshipURI, {
       type: GENERIC_RELATION_TYPE.METADATA,
       relation: propertyURI,
@@ -79,15 +79,15 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
         relation: menuItem.id || '',
         value,
       }).pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.isRemoved = true;
-          if (this.onRemovePropertyDelegate) {
-            this.onRemovePropertyDelegate(this.propertyItem);
-          }
+        .subscribe({
+          next: () => {
+            this.isRemoved = true;
+            if (this.onRemovePropertyDelegate) {
+              this.onRemovePropertyDelegate(this.propertyItem);
+            }
           },
-        error: this.showHttpError
-      });
+          error: this.showHttpError
+        });
     });
   }
 

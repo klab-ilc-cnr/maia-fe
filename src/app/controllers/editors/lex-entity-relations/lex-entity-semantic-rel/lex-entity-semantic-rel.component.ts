@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -5,9 +6,8 @@ import { take } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../base-lex-entity-relations/base-lex-entity-relations-strategy';
-import { HttpErrorResponse } from '@angular/common/http';
+import { FormItem } from '../base-lex-entity-relations/base-lex-entity-relations.component';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -36,11 +36,11 @@ export class LexEntitySemanticRelComponent implements OnInit {
     protected lexiconService: LexiconService,
     protected messageService: MessageService,
     protected msgConfService: MessageConfigurationService,
-  ) {}
+  ) { }
 
   private showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${JSON.parse(err.error)['message']}`);
     this.messageService.add(message);
   }
 
@@ -89,7 +89,7 @@ export class LexEntitySemanticRelComponent implements OnInit {
    */
   onRemoveRelationship(control: FormItem): void {
 
-    const {relationshipLabel, itemID} = control;
+    const { relationshipLabel, itemID } = control;
     const confirmMsg = `Are you sure to remove "${relationshipLabel}"?`;
     this.popupDeleteItem.confirmMessage = confirmMsg;
 

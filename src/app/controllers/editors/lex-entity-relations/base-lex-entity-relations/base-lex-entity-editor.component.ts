@@ -1,17 +1,17 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
-import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LexEntityRelationTypeModel } from 'src/app/models/lexicon/lexentity-relation-type.model';
-import { environment } from 'src/environments/environment';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-@Component({template: ''})
+@Component({ template: '' })
 export class BaseLexEntityEditorComponent {
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] = [];
-  model: LexicalEntityRelationsResponseModel = {indirectRelations: [], directRelations: []};
+  model: LexicalEntityRelationsResponseModel = { indirectRelations: [], directRelations: [] };
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
 
@@ -19,23 +19,23 @@ export class BaseLexEntityEditorComponent {
     protected lexiconService: LexiconService,
     protected msgConfService: MessageConfigurationService,
     protected messageService: MessageService,
-  ) {}
+  ) { }
 
   protected showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${JSON.parse(err.error)['message']}`);
     this.messageService.add(message);
   }
 
   private sortMenuItems(a: MenuItem, b: MenuItem): number {
-    return (a.label || '') > (b.label || '')? 1 : -1;
+    return (a.label || '') > (b.label || '') ? 1 : -1;
   }
 
-  private menuItemByRelationshipURI :{ [id: string] : MenuItem } = {};
+  private menuItemByRelationshipURI: { [id: string]: MenuItem } = {};
 
   protected buildMenuItems(relationTypes: LexEntityRelationTypeModel[]): MenuItem[] {
 
-    const rootNode : MenuItem = {label: '', command: (e) => { console.error(e) }, items: []};
+    const rootNode: MenuItem = { label: '', command: (e) => { console.error(e) }, items: [] };
 
     // Prepare nodes
     const nodeById = this.menuItemByRelationshipURI;

@@ -223,7 +223,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
         this.loading = false;
       },
       error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(JSON.parse(error.error)['message']))
       }
     });
   }
