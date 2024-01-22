@@ -93,16 +93,16 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
   private onLexiconDeleteUpdateTree(res: any): void {
     if (res.value !== this.lexicalEntryInstanceName) return;
-      this.onNodeSelect({
-        index: undefined,
-        node: this.lexicalEntryTree[0],
-        originalEvent: null,
-        type: 'row'
-      });
-      this.selectedInstanceName = this.lexicalEntryInstanceName;
-      this.selectedType = LexicalEntryTypeOld.LEXICAL_ENTRY;
-      this.selectedNode = this.lexicalEntryTree[0];
-      this.refreshTreeNode();
+    this.onNodeSelect({
+      index: undefined,
+      node: this.lexicalEntryTree[0],
+      originalEvent: null,
+      type: 'row'
+    });
+    this.selectedInstanceName = this.lexicalEntryInstanceName;
+    this.selectedType = LexicalEntryTypeOld.LEXICAL_ENTRY;
+    this.selectedNode = this.lexicalEntryTree[0];
+    this.refreshTreeNode();
   }
 
   private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
@@ -134,7 +134,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
     this.selectedInstanceName = this.selectedNode.data.instanceName;
-    if(this.selectedNode.data.type === LexicalEntryTypeOld.FORM || this.selectedNode.data.type === LexicalEntryTypeOld.SENSE) {
+    if (this.selectedNode.data.type === LexicalEntryTypeOld.FORM || this.selectedNode.data.type === LexicalEntryTypeOld.SENSE) {
       this.lexicalEntryInstanceName = this.selectedNode.parent?.parent?.data.instanceName;
     }
     this.refreshEditorView(this.selectedType, this.selectedInstanceName);
@@ -243,7 +243,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error)) //TODO VALUTARE LA GESTIONE OPPORTUNA
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message)) //TODO VALUTARE LA GESTIONE OPPORTUNA
           }
         });
         break;
@@ -281,7 +281,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
           }
         });
         break;
@@ -317,7 +317,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
           }
         });
         break;
@@ -447,7 +447,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
       error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message))
       }
     });
   }
@@ -476,7 +476,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
       error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
       }
     });
   }

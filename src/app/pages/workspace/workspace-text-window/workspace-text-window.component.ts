@@ -208,7 +208,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.annotationService.createAnnotation(annotation).pipe(
         take(1),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
           reject(error);
           return throwError(() => new Error(error.error));
         }),
@@ -246,7 +246,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error}`));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {
@@ -295,7 +295,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     ]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error}`));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
         this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),

@@ -247,7 +247,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
     this.lexiconService.getLexicalEntriesList(this.parameters).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         return throwError(() => new Error(error.error));
       }),
     ).subscribe((data: LexicalEntriesResponse) => {
@@ -309,7 +309,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.lexiconService.getNewLexicalEntry(creator).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(lexEntry => {
@@ -320,7 +320,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.lexiconService.updateLexicalEntry(creator, lexEntry.lexicalEntry, updater).pipe(
         take(1),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
           return throwError(() => new Error(error.error));
         }),
       ).subscribe(() => {
@@ -363,7 +363,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryTypeOld.LEXICAL_ENTRY:
         this.lexiconService.getElements(event.node.data.instanceName).pipe(
           catchError((error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
             return throwError(() => new Error(error.error));
           }),
         ).subscribe((data: any) => {
@@ -394,7 +394,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryTypeOld.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).pipe(
           catchError((error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
             return throwError(() => new Error(error.error));
           }),
         ).subscribe((data: FormListItem[]) => {
@@ -431,7 +431,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       case LexicalEntryTypeOld.SENSES_ROOT:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).pipe(
           catchError((error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.message));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
             return throwError(() => new Error(error.error));
           }),
         ).subscribe((data: SenseListItem[]) => {
@@ -543,7 +543,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.lexiconService.uploadConll(lexUpForm['prefix'], lexUpForm['baseIRI'], lexUpForm['author'], lexUpForm['language'].value, lexUpForm['drop'], fileData).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(
@@ -649,7 +649,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     forkJoin(httpDelete).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {

@@ -1,13 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { MenuItem, MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
+import { MenuItem, MessageService } from 'primeng/api';
+import { take } from 'rxjs';
 import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
-import { BaseLexEntityRelationsStrategy } from './base-lex-entity-relations-strategy';
-import { take } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { BaseLexEntityRelationsStrategy } from './base-lex-entity-relations-strategy';
 
 export interface FormItem {
   relationshipLabel: string,
@@ -18,7 +18,7 @@ export interface FormItem {
   properties?: LinguisticRelationModel[],
 }
 
-@Component({template: ''})
+@Component({ template: '' })
 export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
   @Input() lexEntityId!: string;
@@ -27,7 +27,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
   protected strategy!: BaseLexEntityRelationsStrategy;
   formItems: FormItem[] = [];
-  relationshipLabelByURI: { [id: string] : string } = {};
+  relationshipLabelByURI: { [id: string]: string } = {};
 
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({});
@@ -38,11 +38,11 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
     protected messageService: MessageService,
     protected msgConfService: MessageConfigurationService,
     protected lexiconService: LexiconService,
-  ) {}
+  ) { }
 
   protected showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error}`);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error.message}`);
     this.messageService.add(message);
   }
 
@@ -50,14 +50,14 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
     const label = root.label || '';
     const uri = root.id || '';
 
-    const dupItem : MenuItem = {
+    const dupItem: MenuItem = {
       ...root,
-      items: root.items !== undefined? [] : undefined,
+      items: root.items !== undefined ? [] : undefined,
       command: () => this.onMenuClickInsertFormItem(label, uri),
     };
 
     for (const menuItem of Object.values(root.items || [])) {
-      const subItem : MenuItem = this.assignMenuTree(menuItem);
+      const subItem: MenuItem = this.assignMenuTree(menuItem);
       dupItem.items?.push(subItem);
     }
 
@@ -69,7 +69,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['menuItems']) {
       const items = changes['menuItems'].currentValue;
-      this.menuItems = this.assignMenuTree({items}).items || [];
+      this.menuItems = this.assignMenuTree({ items }).items || [];
     }
 
     if (changes['model']) {
@@ -79,7 +79,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
   }
 
   private onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {
-    const newItem : FormItem = {
+    const newItem: FormItem = {
       itemID: this.uniqueID++,
       relationshipLabel,
       relationshipURI: '',

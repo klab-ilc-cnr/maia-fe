@@ -31,7 +31,7 @@ export class TagsetStateService {
     this.retrieveTagset.pipe(
       switchMap(tagsetId => this.tagsetService.getTagsetById(tagsetId).pipe(
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Fetching tagset failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Fetching tagset failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -44,7 +44,7 @@ export class TagsetStateService {
     this.retrieveTagsetItems.pipe(
       switchMap(tagsetId => this.tagsetService.getTagsetItemsById(tagsetId).pipe(
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Fetching tagset items failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Fetching tagset items failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -53,7 +53,7 @@ export class TagsetStateService {
       switchMap(newTagsetItem => this.tagsetService.createTagsetItem(newTagsetItem).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset item added`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Adding tagset item failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Adding tagset item failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -63,7 +63,7 @@ export class TagsetStateService {
       switchMap(tagsetItem => this.tagsetService.removeTagsetItemById(tagsetItem.id!).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset item removed`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Removing tagset item failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Removing tagset item failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -73,7 +73,7 @@ export class TagsetStateService {
       switchMap(updatedIagsetItem => this.tagsetService.updateTagsetItem(updatedIagsetItem).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset item updated`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Updating tagset item failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Updating tagset item failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -89,7 +89,7 @@ export class TagsetStateService {
       switchMap(tagsetId => this.tagsetService.removeTagsetById(tagsetId).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset removed`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Removing tagset failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Removing tagset failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -100,7 +100,7 @@ export class TagsetStateService {
         debounceTime(500),
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset "${newTagset.name}" added`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Adding tagset "${newTagset.name}" failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Adding tagset "${newTagset.name}" failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -110,7 +110,7 @@ export class TagsetStateService {
       switchMap(updatedTagset => this.tagsetService.updateTagset(updatedTagset).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Tagset "${updatedTagset.name}" updated`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Updating tagset "${updatedTagset.name}" failed: ${error.error}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Updating tagset "${updatedTagset.name}" failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
