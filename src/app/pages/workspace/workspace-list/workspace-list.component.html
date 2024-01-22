@@ -8,7 +8,7 @@
                 <p-button label="New workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"
                     class="ms-start"></p-button>
             </div>
-            <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+            <p-table #dt [value]="(workspaces$|async) || []" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
                 currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
                 [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
                 selectionMode="single"
@@ -43,7 +43,7 @@
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="p-d-flex p-ai-center p-jc-between">
-                      In total there are {{workspaces ? workspaces.length : 0 }} workspaces.
+                      In total there are {{ (workspaces$|async)?.length }} workspaces.
                     </div>
                 </ng-template>
             </p-table>
@@ -51,13 +51,7 @@
     </div>
 </div>
 
-<div
-  class="modal fade"
-  id="workspaceModal"
-  tabindex="-1"
-  aria-labelledby="workspaceModalLabel"
-  aria-hidden="true"
->
+<p-dialog [header]="workspaceModalTitle" class="modal" [(visible)]="visibleWorkspaceDialog" [modal]="true" [style]="{ minWidth: '30vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form
@@ -67,15 +61,6 @@
         class="validated"
       >
         <input type="hidden" #id="ngModel" name="id" [(ngModel)]="workspace.id">
-        <div class="modal-header">
-          <h5 class="modal-title" id="workspaceModalLabel">{{workspaceModalTitle}}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
         <div class="modal-body">
           <div class="form-group">
             <label class="form-label">Name *</label>
@@ -115,6 +100,6 @@
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
