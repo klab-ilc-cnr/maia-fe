@@ -46,7 +46,7 @@ export class CorpusStateService {
       switchMap(req => this.workspaceService.renameElement(req.elementType, req.elementId, req.newName).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.elementType} renamed as ${req.newName}`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} renaming failed: ${JSON.parse(error.error)['message']}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} renaming failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -56,7 +56,7 @@ export class CorpusStateService {
       switchMap(req => this.workspaceService.moveElement(req.elementType, req.elementId, req.targetId < 0 ? this.textoUserRootFolder.id : req.targetId).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.elementType} moved`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} renaming failed: ${JSON.parse(error.error)['message']}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} renaming failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -67,12 +67,12 @@ export class CorpusStateService {
         switchMap(resp => this.workspaceService.uploadFile(resp.id, req.file).pipe(
           tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.resourceName} uploaded`))),
           catchError((error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.resourceName} uploading failed: ${JSON.parse(error.error)['message']}`));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.resourceName} uploading failed: ${error.error.message}`));
             return throwError(() => new Error(error.error));
           }),
         )),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Resource ${req.resourceName} creation failed: ${JSON.parse(error.error)['message']}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Resource ${req.resourceName} creation failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),
@@ -82,7 +82,7 @@ export class CorpusStateService {
       switchMap(req => this.workspaceService.removeElement(req.elementType, req.elementId).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.elementType} removed`))),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} removing failed: ${JSON.parse(error.error)['message']}`));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} removing failed: ${error.error.message}`));
           return throwError(() => new Error(error.error));
         }),
       )),

@@ -243,7 +243,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(JSON.parse(error.error)['message'])) //TODO VALUTARE LA GESTIONE OPPORTUNA
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message)) //TODO VALUTARE LA GESTIONE OPPORTUNA
           }
         });
         break;
@@ -281,7 +281,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(JSON.parse(error.error)['message']));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
           }
         });
         break;
@@ -317,7 +317,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(JSON.parse(error.error)['message']));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
           }
         });
         break;
@@ -447,7 +447,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
       error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(JSON.parse(error.error)['message']))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message))
       }
     });
   }
@@ -476,7 +476,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       },
       error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(JSON.parse(error.error)['message']));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
       }
     });
   }

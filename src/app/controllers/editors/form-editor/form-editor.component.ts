@@ -183,7 +183,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         },
         error: (error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         }
       });
     }
@@ -263,7 +263,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.lastUpdate = new Date(res).toLocaleString();
         },
         error: (error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']))
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
         }
       });
     }

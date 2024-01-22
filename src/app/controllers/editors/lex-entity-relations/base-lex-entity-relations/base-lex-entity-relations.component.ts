@@ -42,7 +42,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
   protected showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${JSON.parse(err.error)['message']}`);
+    const message = this.msgConfService.generateErrorMessageConfig(`${err.name}: ${err.error.message}`);
     this.messageService.add(message);
   }
 

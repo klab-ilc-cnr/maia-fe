@@ -184,7 +184,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.userService.save(updatedUser).pipe(
         takeUntil(this.unsubscribe$),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
           this.loaderService.hide();
           return throwError(() => new Error(error.error));
         }),
@@ -193,7 +193,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this.userService.updatePassword({ id: userId, newPassword: this.userPwd.value! }).pipe(
           takeUntil(this.unsubscribe$),
           catchError((error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
             return throwError(() => new Error(error.error));
           }),
         ).subscribe(() => {
@@ -206,7 +206,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.userService.update(updatedUser).pipe(
         takeUntil(this.unsubscribe$),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
           this.loaderService.hide();
           return throwError(() => new Error(error.error));
         }),
@@ -230,7 +230,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.userService.updatePassword(pwdBody).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']));
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {
@@ -267,7 +267,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.userService.retrieveById(id).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']));
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
@@ -284,7 +284,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.userService.retrieveCurrentUser().pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']));
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),

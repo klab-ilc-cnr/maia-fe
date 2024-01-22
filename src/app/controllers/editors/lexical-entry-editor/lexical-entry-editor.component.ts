@@ -160,7 +160,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
           this.initialValues = { ...tempInitialValues };
         },
         error: (error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(JSON.parse(error.error)['message']))
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
         }
       });
     }
@@ -223,7 +223,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
         this.loading = false;
       },
       error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(JSON.parse(error.error)['message']))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message))
       }
     });
   }
