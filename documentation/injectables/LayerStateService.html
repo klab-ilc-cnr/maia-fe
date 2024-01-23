@@ -319,7 +319,7 @@
     this.retrieveLayerFeatures.pipe(
       switchMap(layerId &#x3D;&gt; this.layerService.retrieveLayerFeatureList(layerId).pipe(
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Retrieving layer features failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Retrieving layer features failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -328,7 +328,7 @@
       switchMap(newFeature &#x3D;&gt; this.featureService.createFeature(newFeature).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${newFeature.name}&quot; added&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding feature &quot;${newFeature.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding feature &quot;${newFeature.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -338,7 +338,7 @@
       switchMap(updatedFeature &#x3D;&gt; this.featureService.updateFeatureById(updatedFeature).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${updatedFeature.name}&quot; updated&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating feature &quot;${updatedFeature.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating feature &quot;${updatedFeature.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -348,7 +348,7 @@
       switchMap(removedFeature &#x3D;&gt; this.featureService.removeFeatureById(removedFeature.id!).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${removedFeature.name}&quot; removed&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing feature &quot;${removedFeature.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing feature &quot;${removedFeature.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -390,10 +390,10 @@
                         <i>Default value : </i><code>this.retrieveLayerById.pipe(
     switchMap(layerId &#x3D;&gt; this.layerService.retrieveLayerById(layerId).pipe(
       catchError((error: HttpErrorResponse) &#x3D;&gt; {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x60;Error retrieving layer: ${error.error}&#x60;));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x60;Error retrieving layer: ${error.error.message}&#x60;));
         return throwError(() &#x3D;&gt; new Error(error.error));
       }),
-  )),
+    )),
   ).pipe(
     shareReplay(1)
   )</code>
@@ -433,7 +433,7 @@
       switchMap(newLayer &#x3D;&gt; this.layerService.createLayer(newLayer).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Layer &quot;${newLayer.name}&quot; added&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding layer &quot;${newLayer.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding layer &quot;${newLayer.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -443,7 +443,7 @@
       switchMap(layerId &#x3D;&gt; this.layerService.removeLayerById(layerId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Layer removed&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing layer failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing layer failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -453,7 +453,7 @@
       switchMap(updatedLayer &#x3D;&gt; this.layerService.updateLayerById(updatedLayer).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Layer ${updatedLayer.name} updated&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating layer &quot;${updatedLayer.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating layer &quot;${updatedLayer.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -704,10 +704,10 @@ export class LayerStateService {
   layer$ &#x3D; this.retrieveLayerById.pipe(
     switchMap(layerId &#x3D;&gt; this.layerService.retrieveLayerById(layerId).pipe(
       catchError((error: HttpErrorResponse) &#x3D;&gt; {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x60;Error retrieving layer: ${error.error}&#x60;));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(&#x60;Error retrieving layer: ${error.error.message}&#x60;));
         return throwError(() &#x3D;&gt; new Error(error.error));
       }),
-  )),
+    )),
   ).pipe(
     shareReplay(1)
   );
@@ -718,7 +718,7 @@ export class LayerStateService {
       switchMap(newLayer &#x3D;&gt; this.layerService.createLayer(newLayer).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Layer &quot;${newLayer.name}&quot; added&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding layer &quot;${newLayer.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding layer &quot;${newLayer.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -728,7 +728,7 @@ export class LayerStateService {
       switchMap(layerId &#x3D;&gt; this.layerService.removeLayerById(layerId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Layer removed&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing layer failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing layer failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -738,7 +738,7 @@ export class LayerStateService {
       switchMap(updatedLayer &#x3D;&gt; this.layerService.updateLayerById(updatedLayer).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Layer ${updatedLayer.name} updated&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating layer &quot;${updatedLayer.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating layer &quot;${updatedLayer.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -753,7 +753,7 @@ export class LayerStateService {
     this.retrieveLayerFeatures.pipe(
       switchMap(layerId &#x3D;&gt; this.layerService.retrieveLayerFeatureList(layerId).pipe(
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Retrieving layer features failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Retrieving layer features failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -762,7 +762,7 @@ export class LayerStateService {
       switchMap(newFeature &#x3D;&gt; this.featureService.createFeature(newFeature).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${newFeature.name}&quot; added&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding feature &quot;${newFeature.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Adding feature &quot;${newFeature.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -772,7 +772,7 @@ export class LayerStateService {
       switchMap(updatedFeature &#x3D;&gt; this.featureService.updateFeatureById(updatedFeature).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${updatedFeature.name}&quot; updated&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating feature &quot;${updatedFeature.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating feature &quot;${updatedFeature.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -782,7 +782,7 @@ export class LayerStateService {
       switchMap(removedFeature &#x3D;&gt; this.featureService.removeFeatureById(removedFeature.id!).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${removedFeature.name}&quot; removed&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing feature &quot;${removedFeature.name}&quot; failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Removing feature &quot;${removedFeature.name}&quot; failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),

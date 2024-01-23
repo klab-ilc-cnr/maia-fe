@@ -3506,7 +3506,7 @@ export class LexiconService {
     private http: HttpClient,
     private commonService: CommonService
   ) {
-    this.lexoUrl &#x3D; environment.lexoUrl;
+    this.lexoUrl &#x3D; environment.maiaBeLexoUrl;
     this.encodedBaseIRI &#x3D; this.commonService.encodeUrl(environment.lexoBaseIRI);
   }
 
@@ -3518,7 +3518,7 @@ export class LexiconService {
   deleteForm(formID: string): Observable&lt;string&gt; {
     const encodedFormID &#x3D; this.commonService.encodeUrl(formID);
     return this.http.get(
-      &#x60;${this.lexoUrl}lexicon/delete/form?id&#x3D;${encodedFormID}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/delete/form?id&#x3D;${encodedFormID}&#x60;,
       { responseType: &quot;text&quot; }
     );
   }
@@ -3531,7 +3531,7 @@ export class LexiconService {
   deleteLexicalEntry(lexicalEntryID: string): Observable&lt;string&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryID);
     return this.http.get(
-      &#x60;${this.lexoUrl}lexicon/delete/lexicalEntry?id&#x3D;${encodedLexEntry}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/delete/lexicalEntry?id&#x3D;${encodedLexEntry}&#x60;,
       { responseType: &quot;text&quot; }
     );
   }
@@ -3544,7 +3544,7 @@ export class LexiconService {
   deleteLexicalSense(senseID: string) {
     const encodedSenseID &#x3D; this.commonService.encodeUrl(senseID);
     return this.http.get(
-      &#x60;${this.lexoUrl}lexicon/delete/lexicalSense?id&#x3D;${encodedSenseID}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/delete/lexicalSense?id&#x3D;${encodedSenseID}&#x60;,
       { responseType: &quot;text&quot; }
     );
   }
@@ -3559,7 +3559,7 @@ export class LexiconService {
   deleteRelation(lexicalEntityId: string, updater: { relation: string, value: string }): Observable&lt;string&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntityId);
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/delete/relation?id&#x3D;${encodedLexEntry}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/delete/relation?id&#x3D;${encodedLexEntry}&#x60;,
       updater,
       { responseType: &quot;text&quot; }
     );
@@ -3572,7 +3572,7 @@ export class LexiconService {
   deleteLexicoSemanticRelation(lexicalEntityId: string): Observable&lt;string&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntityId);
     return this.http.get(
-      &#x60;${this.lexoUrl}lexicon/delete/lexicoSemanticRelation?id&#x3D;${encodedLexEntry}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/delete/lexicoSemanticRelation?id&#x3D;${encodedLexEntry}&#x60;,
       { responseType: &quot;text&quot; }
     );
   }
@@ -3582,8 +3582,8 @@ export class LexiconService {
    * @param parameters {LexicalEntryRequest|undefined} search filter parameters
    * @returns {Observable&lt;LexicalEntriesResponse&gt;} observable of the response containing the lexical entry list
    */
-  getLexicalEntriesList(parameters: LexicalEntryRequest|undefined): Observable&lt;LexicalEntriesResponse&gt; {
-    return this.http.post&lt;LexicalEntriesResponse&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalEntries&#x60;, parameters);
+  getLexicalEntriesList(parameters: LexicalEntryRequest | undefined): Observable&lt;LexicalEntriesResponse&gt; {
+    return this.http.post&lt;LexicalEntriesResponse&gt;(&#x60;${this.lexoUrl}/lexicon/data/lexicalEntries&#x60;, parameters);
   }
 
   /**
@@ -3596,7 +3596,7 @@ export class LexiconService {
     //return this.http.get&lt;any&gt;(&#x60;assets/mock/lexicon/elements.json&#x60;);
     // FINE MOCK
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/data/elements?id&#x3D;${encodedId}&#x60;);
+    return this.http.get(&#x60;${this.lexoUrl}/lexicon/data/elements?id&#x3D;${encodedId}&#x60;);
   }
 
   /**
@@ -3605,7 +3605,7 @@ export class LexiconService {
    * @returns {Observable&lt;{totalHits: number, list: any[]}&gt;} observable of the list of lexical concepts retrieved
    */
   getFilteredLexicalConcepts(parameters: { text: string, searchMode: searchModeEnum, labelType: string, author: string, offset: number, limit: number }): Observable&lt;{ totalHits: number, list: any[] }&gt; { //TODO replace con response list corretto
-    return this.http.post&lt;{ totalHits: number, list: any[] }&gt;(&#x60;${this.lexoUrl}lexicon/data/filteredLexicalConcepts&#x60;, parameters)
+    return this.http.post&lt;{ totalHits: number, list: any[] }&gt;(&#x60;${this.lexoUrl}/lexicon/data/filteredLexicalConcepts&#x60;, parameters)
   }
 
   /**
@@ -3615,8 +3615,8 @@ export class LexiconService {
    */
 
   getFilteredSenses(parameters: LexicalEntryRequest): Observable&lt;FilteredSenseModel&gt; {
-    return &lt;Observable&lt;FilteredSenseModel&gt;&gt; this.http.post(
-      &#x60;${this.lexoUrl}lexicon/data/filteredSenses&#x60;,
+    return &lt;Observable&lt;FilteredSenseModel&gt;&gt;this.http.post(
+      &#x60;${this.lexoUrl}/lexicon/data/filteredSenses&#x60;,
       parameters,
     );
   }
@@ -3628,7 +3628,7 @@ export class LexiconService {
    */
   getForm(formID: string): Observable&lt;FormCore&gt; {
     const encodedFormID &#x3D; this.commonService.encodeUrl(formID);
-    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}lexicon/data/form?id&#x3D;${encodedFormID}&amp;module&#x3D;core&#x60;);
+    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}/lexicon/data/form?id&#x3D;${encodedFormID}&amp;module&#x3D;core&#x60;);
   }
 
   /**
@@ -3638,7 +3638,7 @@ export class LexiconService {
    */
   getFormList(parameters: any): Observable&lt;any&gt; {
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/data/filteredForms&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/data/filteredForms&#x60;,
       parameters
     );
   }
@@ -3648,7 +3648,7 @@ export class LexiconService {
    * @returns {Observable&lt;OntolexType[]&gt;} observable of the list of form types
    */
   getFormTypes(): Observable&lt;OntolexType[]&gt; {
-    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}ontolex/data/formType&#x60;)
+    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}/ontolex/data/formType&#x60;)
   }
 
   /**
@@ -3656,7 +3656,7 @@ export class LexiconService {
    * @returns {Observable&lt;LexiconStatistics&gt;} observable of the list of languages available from the statistics
    */
   getLanguagesStatistics(): Observable&lt;LexiconStatistics[]&gt; {
-    return this.http.get&lt;LexiconStatistics[]&gt;(&#x60;${this.lexoUrl}lexicon/statistics/languages&#x60;);
+    return this.http.get&lt;LexiconStatistics[]&gt;(&#x60;${this.lexoUrl}/lexicon/statistics/languages&#x60;);
   }
 
   /**
@@ -3664,7 +3664,7 @@ export class LexiconService {
    * @returns {Observable&lt;LexoLanguage[]&gt;} observable of the list of languages available on LexO
    */
   getLanguages(): Observable&lt;LexoLanguage[]&gt; {
-    return this.http.get&lt;LexoLanguage[]&gt;(&#x60;${this.lexoUrl}lexicon/data/languages&#x60;);
+    return this.http.get&lt;LexoLanguage[]&gt;(&#x60;${this.lexoUrl}/lexicon/data/languages&#x60;);
   }
 
   /**
@@ -3672,7 +3672,7 @@ export class LexiconService {
    * @returns {Observable&lt;LexEntityRelationTypeModel[]&gt;} observable of the list of types relations of the senses
    */
   getSenseRelationTypes(): Observable&lt;LexEntityRelationTypeModel[]&gt; {
-    return this.http.get&lt;LexEntityRelationTypeModel[]&gt;(&#x60;${this.lexoUrl}lexinfo/data/senseRelations&#x60;);
+    return this.http.get&lt;LexEntityRelationTypeModel[]&gt;(&#x60;${this.lexoUrl}/lexinfo/data/senseRelations&#x60;);
   }
 
   /**
@@ -3680,7 +3680,7 @@ export class LexiconService {
    * @returns {Observable&lt;LexEntityRelationTypeModel[]&gt;} observable of the relationship type list
    */
   getLexicalRelationTypes(): Observable&lt;LexEntityRelationTypeModel[]&gt; {
-    return this.http.get&lt;LexEntityRelationTypeModel[]&gt;(&#x60;${this.lexoUrl}lexinfo/data/lexicalRelations&#x60;);
+    return this.http.get&lt;LexEntityRelationTypeModel[]&gt;(&#x60;${this.lexoUrl}/lexinfo/data/lexicalRelations&#x60;);
   }
 
   /**
@@ -3690,7 +3690,7 @@ export class LexiconService {
    */
   getLexicalEntry(lexicalEntryId: string): Observable&lt;LexicalEntryCore&gt; {
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalEntry?module&#x3D;core&amp;id&#x3D;${encodedId}&#x60;);
+    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}/lexicon/data/lexicalEntry?module&#x3D;core&amp;id&#x3D;${encodedId}&#x60;);
   }
 
   /**
@@ -3700,7 +3700,7 @@ export class LexiconService {
    */
   getLexicalEntryForms(lexicalEntryId: string): Observable&lt;FormListItem[]&gt; {
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;FormListItem[]&gt;(&#x60;${this.lexoUrl}lexicon/data/forms?id&#x3D;${encodedId}&#x60;);
+    return this.http.get&lt;FormListItem[]&gt;(&#x60;${this.lexoUrl}/lexicon/data/forms?id&#x3D;${encodedId}&#x60;);
   }
 
   /**
@@ -3710,7 +3710,7 @@ export class LexiconService {
    */
   getLexicalEntrySenses(lexicalEntryId: string): Observable&lt;SenseListItem[]&gt; {
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;SenseListItem[]&gt;(&#x60;${this.lexoUrl}lexicon/data/senses?id&#x3D;${encodedId}&#x60;);
+    return this.http.get&lt;SenseListItem[]&gt;(&#x60;${this.lexoUrl}/lexicon/data/senses?id&#x3D;${encodedId}&#x60;);
   }
 
   /**
@@ -3718,7 +3718,7 @@ export class LexiconService {
    * @returns {Observable&lt;OntolexType[]&gt;} observable of the list of leical entry types
    */
   getLexicalEntryTypes(): Observable&lt;OntolexType[]&gt; {
-    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}ontolex/data/lexicalEntryType&#x60;);
+    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}/ontolex/data/lexicalEntryType&#x60;);
   }
 
   /**
@@ -3729,7 +3729,7 @@ export class LexiconService {
    */
   getLinguisticRelations(property: string, lexicalEntryId: string): Observable&lt;LinguisticRelationModel[]&gt; {
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;LinguisticRelationModel[]&gt;(&#x60;${this.lexoUrl}/lexicon/data/linguisticRelation?property&#x3D;${property}&amp;id&#x3D;${encodedId}&#x60;);
+    return this.http.get&lt;LinguisticRelationModel[]&gt;(&#x60;${this.lexoUrl}//lexicon/data/linguisticRelation?property&#x3D;${property}&amp;id&#x3D;${encodedId}&#x60;);
   }
 
 
@@ -3740,7 +3740,7 @@ export class LexiconService {
    */
   getLexicalSenseRelations(lexicalSenseId: string): Observable&lt;LexicalEntityRelationsResponseModel&gt; {
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalSenseId);
-    return this.http.get&lt;LexicalEntityRelationsResponseModel&gt;(&#x60;${this.lexoUrl}/lexicon/data/lexicalSense?module&#x3D;variation%20and%20translation&amp;id&#x3D;${encodedId}&#x60;);
+    return this.http.get&lt;LexicalEntityRelationsResponseModel&gt;(&#x60;${this.lexoUrl}//lexicon/data/lexicalSense?module&#x3D;variation%20and%20translation&amp;id&#x3D;${encodedId}&#x60;);
   }
 
   /**
@@ -3750,7 +3750,7 @@ export class LexiconService {
    */
   getLexicalEntryRelations(lexicalEntryId: string): Observable&lt;LexicalEntityRelationsResponseModel&gt; {
     const encodedId &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;LexicalEntityRelationsResponseModel&gt;(&#x60;${this.lexoUrl}/lexicon/data/lexicalEntry?module&#x3D;variation%20and%20translation&amp;id&#x3D;${encodedId}&#x60;);
+    return this.http.get&lt;LexicalEntityRelationsResponseModel&gt;(&#x60;${this.lexoUrl}//lexicon/data/lexicalEntry?module&#x3D;variation%20and%20translation&amp;id&#x3D;${encodedId}&#x60;);
   }
 
   /**
@@ -3758,7 +3758,7 @@ export class LexiconService {
    * @returns {Observable&lt;Morphology[]&gt;} observable of the list of morphological traits
    */
   getMorphology(): Observable&lt;Morphology[]&gt; {
-    return this.http.get&lt;Morphology[]&gt;(&#x60;${this.lexoUrl}lexinfo/data/morphology&#x60;);
+    return this.http.get&lt;Morphology[]&gt;(&#x60;${this.lexoUrl}/lexinfo/data/morphology&#x60;);
   }
 
   /**
@@ -3766,7 +3766,7 @@ export class LexiconService {
    * @returns {Observable&lt;Namespace[]&gt;} observable of the namespace list
    */
   getNamespaces(): Observable&lt;Namespace[]&gt; {
-    return this.http.get&lt;Namespace[]&gt;(&#x60;${this.lexoUrl}lexicon/statistics/namespaces&#x60;);
+    return this.http.get&lt;Namespace[]&gt;(&#x60;${this.lexoUrl}/lexicon/statistics/namespaces&#x60;);
   }
 
   /**
@@ -3777,7 +3777,7 @@ export class LexiconService {
    */
   getNewForm(lexicalEntryId: string, creator: string): Observable&lt;FormCore&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/form?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
+    return this.http.get&lt;FormCore&gt;(&#x60;${this.lexoUrl}/lexicon/creation/form?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
   }
 
   /**
@@ -3786,7 +3786,7 @@ export class LexiconService {
    * @returns {Observable&lt;LexicalEntryCore&gt;} observable of the new lexical entry
    */
   getNewLexicalEntry(creator: string): Observable&lt;LexicalEntryCore&gt; {
-    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/lexicalEntry?author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
+    return this.http.get&lt;LexicalEntryCore&gt;(&#x60;${this.lexoUrl}/lexicon/creation/lexicalEntry?author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;);
   }
 
   /**
@@ -3797,7 +3797,7 @@ export class LexiconService {
    */
   getNewSense(lexicalEntryId: string, creator: string): Observable&lt;SenseCore&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryId);
-    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}lexicon/creation/lexicalSense?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;)
+    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}/lexicon/creation/lexicalSense?lexicalEntryID&#x3D;${encodedLexEntry}&amp;author&#x3D;${creator}&amp;prefix&#x3D;${environment.lexoPrefix}&amp;baseIRI&#x3D;${this.encodedBaseIRI}&#x60;)
   }
 
   /**
@@ -3805,7 +3805,7 @@ export class LexiconService {
    * @returns {Observable&lt;OntolexType[]&gt;} observable of the list of types
    */
   getTypes(): Observable&lt;OntolexType[]&gt; {
-    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}ontolex/data/lexicalEntryType&#x60;);
+    return this.http.get&lt;OntolexType[]&gt;(&#x60;${this.lexoUrl}/ontolex/data/lexicalEntryType&#x60;);
   }
 
   /**
@@ -3815,7 +3815,7 @@ export class LexiconService {
    */
   getSense(senseID: string): Observable&lt;SenseCore&gt; {
     const encodedSenseID &#x3D; this.commonService.encodeUrl(senseID);
-    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}lexicon/data/lexicalSense?module&#x3D;core&amp;id&#x3D;${encodedSenseID}&#x60;);
+    return this.http.get&lt;SenseCore&gt;(&#x60;${this.lexoUrl}/lexicon/data/lexicalSense?module&#x3D;core&amp;id&#x3D;${encodedSenseID}&#x60;);
   }
 
   /**
@@ -3823,7 +3823,7 @@ export class LexiconService {
    * @returns {Observable&lt;any&gt;} observable of the author list
    */
   getAuthors(): Observable&lt;any&gt; {
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/authors&#x60;);
+    return this.http.get(&#x60;${this.lexoUrl}/lexicon/statistics/authors&#x60;);
   }
 
   /**
@@ -3831,7 +3831,7 @@ export class LexiconService {
    * @returns {Observable&lt;any&gt;} observable of the POS list
    */
   getPos(): Observable&lt;any&gt; {
-    return this.http.get(&#x60;${this.lexoUrl}lexicon/statistics/pos&#x60;);
+    return this.http.get(&#x60;${this.lexoUrl}/lexicon/statistics/pos&#x60;);
   }
 
   /**
@@ -3839,7 +3839,7 @@ export class LexiconService {
    * @returns {Observable&lt;LexiconStatistics[]&gt;} observable of the status list from statistics
    */
   getStatus(): Observable&lt;LexiconStatistics[]&gt; {
-    return this.http.get&lt;LexiconStatistics[]&gt;(&#x60;${this.lexoUrl}lexicon/statistics/status&#x60;);
+    return this.http.get&lt;LexiconStatistics[]&gt;(&#x60;${this.lexoUrl}/lexicon/statistics/status&#x60;);
   }
 
   /**
@@ -3865,7 +3865,7 @@ export class LexiconService {
   uploadConll(prefix: string, baseIRI: string, author: string, language: string, drop: boolean, file: FormData): Observable&lt;any&gt; {
     const encodedBaseIRI &#x3D; this.commonService.encodeUrl(baseIRI);
     return this.http.post(
-      &#x60;${this.lexoUrl}import/conll?prefix&#x3D;${prefix}&amp;baseIRI&#x3D;${encodedBaseIRI}&amp;author&#x3D;${author}&amp;language&#x3D;${language}&amp;drop&#x3D;${drop}&#x60;,
+      &#x60;${this.lexoUrl}/import/conll?prefix&#x3D;${prefix}&amp;baseIRI&#x3D;${encodedBaseIRI}&amp;author&#x3D;${author}&amp;language&#x3D;${language}&amp;drop&#x3D;${drop}&#x60;,
       file
     )
   }
@@ -3879,7 +3879,7 @@ export class LexiconService {
   updateGenericRelation(lexicalEntryID: string, updater: GenericRelationUpdater): Observable&lt;string&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryID);
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/update/genericRelation?id&#x3D;${encodedLexEntry}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/update/genericRelation?id&#x3D;${encodedLexEntry}&#x60;,
       updater,
       { responseType: &quot;text&quot; }
     )
@@ -3895,7 +3895,7 @@ export class LexiconService {
   updateLexicalEntry(user: string, lexicalEntryID: string, updater: LexicalEntryUpdater): Observable&lt;string&gt; {
     const encodedLexEntry &#x3D; this.commonService.encodeUrl(lexicalEntryID);
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/update/lexicalEntry?user&#x3D;${user}&amp;id&#x3D;${encodedLexEntry}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/update/lexicalEntry?user&#x3D;${user}&amp;id&#x3D;${encodedLexEntry}&#x60;,
       updater,
       { responseType: &quot;text&quot; }
     );
@@ -3911,7 +3911,7 @@ export class LexiconService {
   updateLexicalForm(user: string, lexicalFormID: string, updater: FormUpdater): Observable&lt;string&gt; {
     const encodedLexFormID &#x3D; this.commonService.encodeUrl(lexicalFormID);
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/update/form?id&#x3D;${encodedLexFormID}&amp;user&#x3D;${user}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/update/form?id&#x3D;${encodedLexFormID}&amp;user&#x3D;${user}&#x60;,
       updater,
       { responseType: &quot;text&quot; }
     );
@@ -3927,7 +3927,7 @@ export class LexiconService {
   updateLexicalSense(user: string, lexicalSenseID: string, updater: LexicalSenseUpdater) {
     const encodedSenseID &#x3D; this.commonService.encodeUrl(lexicalSenseID);
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/update/lexicalSense?id&#x3D;${encodedSenseID}&amp;user&#x3D;${user}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/update/lexicalSense?id&#x3D;${encodedSenseID}&amp;user&#x3D;${user}&#x60;,
       updater,
       { responseType: &quot;text&quot; }
     );
@@ -3942,7 +3942,7 @@ export class LexiconService {
   updateLinguisticRelation(lexicalEntityId: string, updater: LinguisticRelationUpdater): Observable&lt;string&gt; {
     const encodedLexEntity &#x3D; this.commonService.encodeUrl(lexicalEntityId);
     return this.http.post(
-      &#x60;${this.lexoUrl}lexicon/update/linguisticRelation?id&#x3D;${encodedLexEntity}&#x60;,
+      &#x60;${this.lexoUrl}/lexicon/update/linguisticRelation?id&#x3D;${encodedLexEntity}&#x60;,
       updater,
       { responseType: &quot;text&quot; }
     );
@@ -3958,7 +3958,7 @@ export class LexiconService {
   createIndirectSenseRelation(sourceURI: string, categoryURI: string, typeURI: string): Observable&lt;string&gt; {
 
     const createRelationship &#x3D; (): Observable&lt;IndirectRelationModel&gt; &#x3D;&gt; {
-      const createRelationshipUrl &#x3D; new URL(&#x60;${this.lexoUrl}lexicon/creation/lexicoSemanticRelation&#x60;);
+      const createRelationshipUrl &#x3D; new URL(&#x60;${this.lexoUrl}/lexicon/creation/lexicoSemanticRelation&#x60;);
       createRelationshipUrl.search &#x3D; new URLSearchParams({
         id: sourceURI,
         type: typeURI,
@@ -3967,18 +3967,18 @@ export class LexiconService {
         author: &quot;ziopino&quot;, // FIXME: replace builtin name with real author
       }).toString();
 
-      return &lt;Observable&lt;IndirectRelationModel&gt;&gt; this.http.get(createRelationshipUrl.href, { responseType: &#x27;json&#x27; });
+      return &lt;Observable&lt;IndirectRelationModel&gt;&gt;this.http.get(createRelationshipUrl.href, { responseType: &#x27;json&#x27; });
     }
 
     const addCategory &#x3D; (relationURI: string) &#x3D;&gt; {
-      const addCategoryUrl &#x3D; new URL(&#x60;${this.lexoUrl}lexicon/update/linguisticRelation&#x60;);
+      const addCategoryUrl &#x3D; new URL(&#x60;${this.lexoUrl}/lexicon/update/linguisticRelation&#x60;);
       addCategoryUrl.searchParams.append(&#x27;id&#x27;, relationURI);
       return this.http.post(addCategoryUrl.href, {
         type: LINGUISTIC_RELATION_TYPE.LEXICOSEMANTIC_REL,
         value: categoryURI,
         relation: &#x27;http://www.w3.org/ns/lemon/vartrans#category&#x27;,
       }, {
-        headers: {&#x27;Content-Type&#x27;: &#x27;application/json&#x27;},
+        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
         responseType: &#x27;text&#x27;,
       }).pipe(mergeMap(() &#x3D;&gt; of(relationURI)));
     }

@@ -652,15 +652,15 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnDestroy, OnInit, ViewChild } from &quot;@angular/core&quot;;
-import { PropertyItem } from &quot;../lex-entity-semantic-rel-indirect.component&quot;;
-import { PopupDeleteItemComponent } from &quot;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&quot;;
-import { LexiconService } from &quot;src/app/services/lexicon.service&quot;;
-import { Subject, debounceTime, distinctUntilChanged, filter, take, takeUntil } from &quot;rxjs&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &quot;@angular/common/http&quot;;
+import { Component, Input, OnDestroy, OnInit, ViewChild } from &quot;@angular/core&quot;;
 import { MessageService } from &quot;primeng/api&quot;;
-import { MessageConfigurationService } from &quot;src/app/services/message-configuration.service&quot;;
+import { Subject, debounceTime, distinctUntilChanged, filter, take, takeUntil } from &quot;rxjs&quot;;
+import { PopupDeleteItemComponent } from &quot;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&quot;;
 import { GENERIC_RELATION_TYPE } from &quot;src/app/models/lexicon/lexicon-updater&quot;;
-import { HttpErrorResponse } from &quot;@angular/common/http&quot;;
+import { LexiconService } from &quot;src/app/services/lexicon.service&quot;;
+import { MessageConfigurationService } from &quot;src/app/services/message-configuration.service&quot;;
+import { PropertyItem } from &quot;../lex-entity-semantic-rel-indirect.component&quot;;
 
 @Component({
   selector: &#x27;app-lex-entity-indirect-rel-property&#x27;,
@@ -682,11 +682,11 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
     private lexiconService: LexiconService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-  ) {}
+  ) { }
 
   private showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error}&#x60;);
+    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error.message}&#x60;);
     this.messageService.add(message);
   }
 
@@ -707,7 +707,7 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
   }
 
   onUpdateProperty &#x3D; (newValue: string) &#x3D;&gt; {
-    const {indirectRelationshipURI, propertyURI, value} &#x3D; this.propertyItem;
+    const { indirectRelationshipURI, propertyURI, value } &#x3D; this.propertyItem;
     this.lexiconService.updateGenericRelation(indirectRelationshipURI, {
       type: GENERIC_RELATION_TYPE.METADATA,
       relation: propertyURI,
@@ -733,15 +733,15 @@ export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy 
         relation: menuItem.id || &#x27;&#x27;,
         value,
       }).pipe(take(1))
-      .subscribe({
-        next: () &#x3D;&gt; {
-          this.isRemoved &#x3D; true;
-          if (this.onRemovePropertyDelegate) {
-            this.onRemovePropertyDelegate(this.propertyItem);
-          }
+        .subscribe({
+          next: () &#x3D;&gt; {
+            this.isRemoved &#x3D; true;
+            if (this.onRemovePropertyDelegate) {
+              this.onRemovePropertyDelegate(this.propertyItem);
+            }
           },
-        error: this.showHttpError
-      });
+          error: this.showHttpError
+        });
     });
   }
 

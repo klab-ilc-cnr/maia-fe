@@ -561,7 +561,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>{indirectRelations: [], directRelations: []}</code>
+                        <i>Default value : </i><code>{ indirectRelations: [], directRelations: [] }</code>
                     </td>
                 </tr>
                     <tr>
@@ -579,20 +579,20 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component } from &#x27;@angular/core&#x27;;
 import { MenuItem, MessageService } from &#x27;primeng/api&#x27;;
-import { LexicalEntityRelationsResponseModel } from &#x27;src/app/models/lexicon/lexical-sense-response.model&#x27;;
 import { LexEntityRelationTypeModel } from &#x27;src/app/models/lexicon/lexentity-relation-type.model&#x27;;
-import { environment } from &#x27;src/environments/environment&#x27;;
+import { LexicalEntityRelationsResponseModel } from &#x27;src/app/models/lexicon/lexical-sense-response.model&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
-import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { environment } from &#x27;src/environments/environment&#x27;;
 
-@Component({template: &#x27;&#x27;})
+@Component({ template: &#x27;&#x27; })
 export class BaseLexEntityEditorComponent {
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] &#x3D; [];
-  model: LexicalEntityRelationsResponseModel &#x3D; {indirectRelations: [], directRelations: []};
+  model: LexicalEntityRelationsResponseModel &#x3D; { indirectRelations: [], directRelations: [] };
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide &#x3D; environment.demoHide;
 
@@ -600,23 +600,23 @@ export class BaseLexEntityEditorComponent {
     protected lexiconService: LexiconService,
     protected msgConfService: MessageConfigurationService,
     protected messageService: MessageService,
-  ) {}
+  ) { }
 
   protected showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error}&#x60;);
+    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error.message}&#x60;);
     this.messageService.add(message);
   }
 
   private sortMenuItems(a: MenuItem, b: MenuItem): number {
-    return (a.label || &#x27;&#x27;) &gt; (b.label || &#x27;&#x27;)? 1 : -1;
+    return (a.label || &#x27;&#x27;) &gt; (b.label || &#x27;&#x27;) ? 1 : -1;
   }
 
-  private menuItemByRelationshipURI :{ [id: string] : MenuItem } &#x3D; {};
+  private menuItemByRelationshipURI: { [id: string]: MenuItem } &#x3D; {};
 
   protected buildMenuItems(relationTypes: LexEntityRelationTypeModel[]): MenuItem[] {
 
-    const rootNode : MenuItem &#x3D; {label: &#x27;&#x27;, command: (e) &#x3D;&gt; { console.error(e) }, items: []};
+    const rootNode: MenuItem &#x3D; { label: &#x27;&#x27;, command: (e) &#x3D;&gt; { console.error(e) }, items: [] };
 
     // Prepare nodes
     const nodeById &#x3D; this.menuItemByRelationshipURI;

@@ -177,16 +177,16 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, Input, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
 import { FormGroup } from &#x27;@angular/forms&#x27;;
 import { MessageService } from &#x27;primeng/api&#x27;;
 import { take } from &#x27;rxjs&#x27;;
 import { PopupDeleteItemComponent } from &#x27;src/app/controllers/popup/popup-delete-item/popup-delete-item.component&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
-import { FormItem } from &#x27;../base-lex-entity-relations/base-lex-entity-relations.component&#x27;;
 import { BaseLexEntityRelationsStrategy, SuggestionEntry } from &#x27;../base-lex-entity-relations/base-lex-entity-relations-strategy&#x27;;
-import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { FormItem } from &#x27;../base-lex-entity-relations/base-lex-entity-relations.component&#x27;;
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -215,11 +215,11 @@ export class LexEntitySemanticRelComponent implements OnInit {
     protected lexiconService: LexiconService,
     protected messageService: MessageService,
     protected msgConfService: MessageConfigurationService,
-  ) {}
+  ) { }
 
   private showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error}&#x60;);
+    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error.message}&#x60;);
     this.messageService.add(message);
   }
 
@@ -268,7 +268,7 @@ export class LexEntitySemanticRelComponent implements OnInit {
    */
   onRemoveRelationship(control: FormItem): void {
 
-    const {relationshipLabel, itemID} &#x3D; control;
+    const { relationshipLabel, itemID } &#x3D; control;
     const confirmMsg &#x3D; &#x60;Are you sure to remove &quot;${relationshipLabel}&quot;?&#x60;;
     this.popupDeleteItem.confirmMessage &#x3D; confirmMsg;
 

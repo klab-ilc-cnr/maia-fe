@@ -1918,7 +1918,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, &lt;FormUpdater&gt;{ relation: FORM_RELATIONS.NOTE, value: this.noteInput }));
       this.initialValues.note &#x3D; this.noteInput!;
     }
-    if(this.morphologicalForms.length !&#x3D;&#x3D; 1 || this.morphologicalForms[0].selectedProperty?.code !&#x3D;&#x3D; &quot;&quot;) {
+    if (this.morphologicalForms.length !&#x3D;&#x3D; 1 || this.morphologicalForms[0].selectedProperty?.code !&#x3D;&#x3D; &quot;&quot;) {
       this.morphologicalForms.forEach(mf &#x3D;&gt; {
         const currentValueIndex &#x3D; this.initialValues.morphs.findIndex(e &#x3D;&gt; mf.selectedTrait !&#x3D;&#x3D; undefined &amp;&amp; e.trait &#x3D;&#x3D;&#x3D; mf.selectedTrait.code);
         const currentValue &#x3D; this.initialValues.morphs.find(e &#x3D;&gt; mf.selectedTrait !&#x3D;&#x3D; undefined &amp;&amp; e.trait &#x3D;&#x3D;&#x3D; mf.selectedTrait.code)?.value;
@@ -1949,7 +1949,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         },
         error: (error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         }
       });
     }
@@ -2029,7 +2029,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.lastUpdate &#x3D; new Date(res).toLocaleString();
         },
         error: (error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
         }
       });
     }
