@@ -990,7 +990,7 @@ export class LayerService {
    */
   constructor(private http: HttpClient) {
     this.layerUrl &#x3D; environment.layersUrl; //inizializza gli url sulla base degli environment
-    this.textoUrl &#x3D; environment.textoUrl;
+    this.textoUrl &#x3D; environment.maiaBeTextoUrl;
   }
 
   /**
@@ -1041,7 +1041,7 @@ export class LayerService {
   public createLayer(newLayer: TLayer): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TLayer&gt;(
-      &#x60;${this.textoUrl}/texto/layer/create&#x60;,
+      &#x60;${this.textoUrl}/layer/create&#x60;,
       newLayer,
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );
@@ -1055,7 +1055,7 @@ export class LayerService {
   public removeLayerById(layerId: number): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.delete&lt;TLayer&gt;(
-      &#x60;${this.textoUrl}/texto/layer/${layerId}/remove&#x60;,
+      &#x60;${this.textoUrl}/layer/${layerId}/remove&#x60;,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
       },
@@ -1070,7 +1070,7 @@ export class LayerService {
   public retrieveLayerById(layerId: number): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.get&lt;TLayer&gt;(
-      &#x60;${this.textoUrl}/texto/layer/${layerId}&#x60;,
+      &#x60;${this.textoUrl}/layer/${layerId}&#x60;,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
       },
@@ -1083,7 +1083,7 @@ export class LayerService {
    * @returns {Observable&lt;TFeature[]} observable of the list of features
    */
   public retrieveLayerFeatureList(layerId: number): Observable&lt;TFeature[]&gt; {
-    return this.http.get&lt;TFeature[]&gt;(&#x60;${this.textoUrl}/texto/layer/${layerId}/features&#x60;);
+    return this.http.get&lt;TFeature[]&gt;(&#x60;${this.textoUrl}/layer/${layerId}/features&#x60;);
   }
 
   /**
@@ -1093,7 +1093,7 @@ export class LayerService {
   public retrieveLayerList(): Observable&lt;TLayer[]&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.get&lt;TLayer[]&gt;(
-      &#x60;${this.textoUrl}/texto/layer/list&#x60;,
+      &#x60;${this.textoUrl}/layer/list&#x60;,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid })
       },
@@ -1108,7 +1108,7 @@ export class LayerService {
   public updateLayerById(updatedLayer: TLayer): Observable&lt;TLayer&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TLayer&gt;(
-      &#x60;${this.textoUrl}/texto/layer/${updatedLayer.id}/update&#x60;,
+      &#x60;${this.textoUrl}/layer/${updatedLayer.id}/update&#x60;,
       updatedLayer,
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );

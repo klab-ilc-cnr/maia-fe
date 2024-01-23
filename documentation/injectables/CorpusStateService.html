@@ -269,7 +269,7 @@
       switchMap(() &#x3D;&gt; this.workspaceService.retrieveCorpus())
     ),
     this.addElement.pipe(
-      switchMap(req &#x3D;&gt; this.workspaceService.addElement(req.elementType, (req.parentFolderId&lt;0 ? this.textoUserRootFolder.id : req.parentFolderId), req.elementName, this.textoCurrentUserId).pipe(
+      switchMap(req &#x3D;&gt; this.workspaceService.addElement(req.elementType, (req.parentFolderId &lt; 0 ? this.textoUserRootFolder.id : req.parentFolderId), req.elementName, this.textoCurrentUserId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} ${req.elementName} added&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Add ${req.elementType.toLowerCase()} failed: ${error.error}&#x60;));
@@ -282,7 +282,7 @@
       switchMap(req &#x3D;&gt; this.workspaceService.renameElement(req.elementType, req.elementId, req.newName).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} renamed as ${req.newName}&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -292,23 +292,23 @@
       switchMap(req &#x3D;&gt; this.workspaceService.moveElement(req.elementType, req.elementId, req.targetId &lt; 0 ? this.textoUserRootFolder.id : req.targetId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} moved&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
       switchMap(() &#x3D;&gt; this.workspaceService.retrieveCorpus()),
     ),
     this.uploadFile.pipe(
-      switchMap(req &#x3D;&gt; this.workspaceService.addElement(ElementType.RESOURCE, req.parentId&lt;0 ? this.textoUserRootFolder.id : req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
+      switchMap(req &#x3D;&gt; this.workspaceService.addElement(ElementType.RESOURCE, req.parentId &lt; 0 ? this.textoUserRootFolder.id : req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
         switchMap(resp &#x3D;&gt; this.workspaceService.uploadFile(resp.id, req.file).pipe(
           tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.resourceName} uploaded&#x60;))),
           catchError((error: HttpErrorResponse) &#x3D;&gt; {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.resourceName} uploading failed: ${error.error}&#x60;));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.resourceName} uploading failed: ${error.error.message}&#x60;));
             return throwError(() &#x3D;&gt; new Error(error.error));
           }),
         )),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Resource ${req.resourceName} creation failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Resource ${req.resourceName} creation failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -318,7 +318,7 @@
       switchMap(req &#x3D;&gt; this.workspaceService.removeElement(req.elementType, req.elementId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} removed&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} removing failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} removing failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -605,7 +605,7 @@ export class CorpusStateService {
       switchMap(() &#x3D;&gt; this.workspaceService.retrieveCorpus())
     ),
     this.addElement.pipe(
-      switchMap(req &#x3D;&gt; this.workspaceService.addElement(req.elementType, (req.parentFolderId&lt;0 ? this.textoUserRootFolder.id : req.parentFolderId), req.elementName, this.textoCurrentUserId).pipe(
+      switchMap(req &#x3D;&gt; this.workspaceService.addElement(req.elementType, (req.parentFolderId &lt; 0 ? this.textoUserRootFolder.id : req.parentFolderId), req.elementName, this.textoCurrentUserId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} ${req.elementName} added&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Add ${req.elementType.toLowerCase()} failed: ${error.error}&#x60;));
@@ -618,7 +618,7 @@ export class CorpusStateService {
       switchMap(req &#x3D;&gt; this.workspaceService.renameElement(req.elementType, req.elementId, req.newName).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} renamed as ${req.newName}&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -628,23 +628,23 @@ export class CorpusStateService {
       switchMap(req &#x3D;&gt; this.workspaceService.moveElement(req.elementType, req.elementId, req.targetId &lt; 0 ? this.textoUserRootFolder.id : req.targetId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} moved&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} renaming failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
       switchMap(() &#x3D;&gt; this.workspaceService.retrieveCorpus()),
     ),
     this.uploadFile.pipe(
-      switchMap(req &#x3D;&gt; this.workspaceService.addElement(ElementType.RESOURCE, req.parentId&lt;0 ? this.textoUserRootFolder.id : req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
+      switchMap(req &#x3D;&gt; this.workspaceService.addElement(ElementType.RESOURCE, req.parentId &lt; 0 ? this.textoUserRootFolder.id : req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
         switchMap(resp &#x3D;&gt; this.workspaceService.uploadFile(resp.id, req.file).pipe(
           tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.resourceName} uploaded&#x60;))),
           catchError((error: HttpErrorResponse) &#x3D;&gt; {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.resourceName} uploading failed: ${error.error}&#x60;));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.resourceName} uploading failed: ${error.error.message}&#x60;));
             return throwError(() &#x3D;&gt; new Error(error.error));
           }),
         )),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Resource ${req.resourceName} creation failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Resource ${req.resourceName} creation failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),
@@ -654,7 +654,7 @@ export class CorpusStateService {
       switchMap(req &#x3D;&gt; this.workspaceService.removeElement(req.elementType, req.elementId).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${req.elementType} removed&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} removing failed: ${error.error}&#x60;));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;${req.elementType} removing failed: ${error.error.message}&#x60;));
           return throwError(() &#x3D;&gt; new Error(error.error));
         }),
       )),

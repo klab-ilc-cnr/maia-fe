@@ -894,7 +894,7 @@ export class AnnotationService {
    * @param http {HttpClient} effettua le chiamate HTTP
    */
   constructor(private http: HttpClient) {
-    this.textoUrl &#x3D; environment.textoUrl;
+    this.textoUrl &#x3D; environment.maiaBeTextoUrl;
   }
 
   // INIZIO CHIAMATE CASH SERVER
@@ -960,7 +960,7 @@ export class AnnotationService {
   public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable&lt;string&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post(
-      &#x60;${this.textoUrl}/texto/resource/${textId}/text&#x60;,
+      &#x60;${this.textoUrl}/resource/${textId}/text&#x60;,
       slice,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }),
@@ -972,7 +972,7 @@ export class AnnotationService {
   public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable&lt;PaginatedResponse&gt; { //TODO cambierà la firma, non sarà lista di stringhe ma json
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;PaginatedResponse&gt;(
-      &#x60;${this.textoUrl}/texto/resource/${textId}/rows&#x60;,
+      &#x60;${this.textoUrl}/resource/${textId}/rows&#x60;,
       slice,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }),
@@ -983,7 +983,7 @@ export class AnnotationService {
   public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable&lt;TAnnotation[]&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TAnnotation[]&gt;(
-      &#x60;${this.textoUrl}/texto/resource/${resourceId}/annotations&#x60;,
+      &#x60;${this.textoUrl}/resource/${resourceId}/annotations&#x60;,
       slice,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }),
@@ -1046,7 +1046,7 @@ export class AnnotationService {
 
   public createAnnotation(annotation: TAnnotation): Observable&lt;TAnnotation&gt; {
     return this.http.post&lt;TAnnotation&gt;(
-      &#x60;${this.textoUrl}/texto/annotation/create&#x60;,
+      &#x60;${this.textoUrl}/annotation/create&#x60;,
       annotation,
     );
   }
@@ -1057,23 +1057,23 @@ export class AnnotationService {
    * @returns {Observable&lt;Object&gt;}
    */
   public deleteAnnotationById(annotationId: number) {
-    return this.http.delete(&#x60;${this.textoUrl}/texto/annotation/${annotationId}/remove&#x60;);
+    return this.http.delete(&#x60;${this.textoUrl}/annotation/${annotationId}/remove&#x60;);
   }
 
   public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {
     return this.http.post&lt;TAnnotationFeature&gt;(
-      &#x60;${this.textoUrl}/texto/annotationFeature/create&#x60;,
+      &#x60;${this.textoUrl}/annotationFeature/create&#x60;,
       annotationFeature,
     );
   }
 
   public retrieveAnnotationFeaturesById(annotationId: number): Observable&lt;TAnnotationFeature[]&gt; {
-    return this.http.get&lt;TAnnotationFeature[]&gt;(&#x60;${this.textoUrl}/texto/annotation/${annotationId}/features&#x60;);
+    return this.http.get&lt;TAnnotationFeature[]&gt;(&#x60;${this.textoUrl}/annotation/${annotationId}/features&#x60;);
   }
 
   public updateAnnotationFeature(annFeatId: number, annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {
     return this.http.post&lt;TAnnotationFeature&gt;(
-      &#x60;${this.textoUrl}/texto/annotationFeature/update&#x60;,
+      &#x60;${this.textoUrl}/annotationFeature/update&#x60;,
       annotationFeature
     );
   }

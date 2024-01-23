@@ -339,16 +339,16 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnChanges, SimpleChanges } from &#x27;@angular/core&#x27;;
-import { MenuItem, MessageService } from &#x27;primeng/api&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, Input, OnChanges, SimpleChanges } from &#x27;@angular/core&#x27;;
 import { FormGroup } from &#x27;@angular/forms&#x27;;
+import { MenuItem, MessageService } from &#x27;primeng/api&#x27;;
+import { take } from &#x27;rxjs&#x27;;
 import { LexicalEntityRelationsResponseModel } from &#x27;src/app/models/lexicon/lexical-sense-response.model&#x27;;
 import { LinguisticRelationModel } from &#x27;src/app/models/lexicon/linguistic-relation.model&#x27;;
-import { BaseLexEntityRelationsStrategy } from &#x27;./base-lex-entity-relations-strategy&#x27;;
-import { take } from &#x27;rxjs&#x27;;
-import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
-import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { BaseLexEntityRelationsStrategy } from &#x27;./base-lex-entity-relations-strategy&#x27;;
 
 export interface FormItem {
   relationshipLabel: string,
@@ -359,7 +359,7 @@ export interface FormItem {
   properties?: LinguisticRelationModel[],
 }
 
-@Component({template: &#x27;&#x27;})
+@Component({ template: &#x27;&#x27; })
 export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
   @Input() lexEntityId!: string;
@@ -368,7 +368,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
   protected strategy!: BaseLexEntityRelationsStrategy;
   formItems: FormItem[] &#x3D; [];
-  relationshipLabelByURI: { [id: string] : string } &#x3D; {};
+  relationshipLabelByURI: { [id: string]: string } &#x3D; {};
 
   /**Form per la modifica dei valori del senso */
   form &#x3D; new FormGroup({});
@@ -379,11 +379,11 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
     protected messageService: MessageService,
     protected msgConfService: MessageConfigurationService,
     protected lexiconService: LexiconService,
-  ) {}
+  ) { }
 
   protected showHttpError(err: HttpErrorResponse): void {
     console.error(err);
-    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error}&#x60;);
+    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error.message}&#x60;);
     this.messageService.add(message);
   }
 
@@ -391,14 +391,14 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
     const label &#x3D; root.label || &#x27;&#x27;;
     const uri &#x3D; root.id || &#x27;&#x27;;
 
-    const dupItem : MenuItem &#x3D; {
+    const dupItem: MenuItem &#x3D; {
       ...root,
-      items: root.items !&#x3D;&#x3D; undefined? [] : undefined,
+      items: root.items !&#x3D;&#x3D; undefined ? [] : undefined,
       command: () &#x3D;&gt; this.onMenuClickInsertFormItem(label, uri),
     };
 
     for (const menuItem of Object.values(root.items || [])) {
-      const subItem : MenuItem &#x3D; this.assignMenuTree(menuItem);
+      const subItem: MenuItem &#x3D; this.assignMenuTree(menuItem);
       dupItem.items?.push(subItem);
     }
 
@@ -410,7 +410,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes[&#x27;menuItems&#x27;]) {
       const items &#x3D; changes[&#x27;menuItems&#x27;].currentValue;
-      this.menuItems &#x3D; this.assignMenuTree({items}).items || [];
+      this.menuItems &#x3D; this.assignMenuTree({ items }).items || [];
     }
 
     if (changes[&#x27;model&#x27;]) {
@@ -420,7 +420,7 @@ export abstract class BaseLexEntityRelationsComponent implements OnChanges {
   }
 
   private onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {
-    const newItem : FormItem &#x3D; {
+    const newItem: FormItem &#x3D; {
       itemID: this.uniqueID++,
       relationshipLabel,
       relationshipURI: &#x27;&#x27;,

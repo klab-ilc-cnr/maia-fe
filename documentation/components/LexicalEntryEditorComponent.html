@@ -1296,10 +1296,10 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
 import { Component, Input, OnDestroy, OnInit } from &#x27;@angular/core&#x27;;
 import { MessageService } from &#x27;primeng/api&#x27;;
-import { forkJoin, Subscription } from &#x27;rxjs&#x27;;
+import { Subscription, forkJoin } from &#x27;rxjs&#x27;;
 import { DropdownField, SelectButtonField } from &#x27;src/app/models/dropdown-field&#x27;;
 import { LexicalEntryCore, LexicalEntryTypeOld, LinkProperty } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
-import { LexicalEntryUpdater, LEXICAL_ENTRY_RELATIONS, LinguisticRelationUpdater, LINGUISTIC_RELATION_TYPE } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
+import { LEXICAL_ENTRY_RELATIONS, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LinguisticRelationUpdater } from &#x27;src/app/models/lexicon/lexicon-updater&#x27;;
 import { CommonService } from &#x27;src/app/services/common.service&#x27;;
 import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
 import { LoggedUserService } from &#x27;src/app/services/logged-user.service&#x27;;
@@ -1455,7 +1455,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
           this.initialValues &#x3D; { ...tempInitialValues };
         },
         error: (error: HttpErrorResponse) &#x3D;&gt; {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
         }
       });
     }
@@ -1518,7 +1518,7 @@ export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
         this.loading &#x3D; false;
       },
       error: (error: HttpErrorResponse) &#x3D;&gt; {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message))
       }
     });
   }

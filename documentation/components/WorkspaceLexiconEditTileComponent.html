@@ -2292,16 +2292,16 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
   private onLexiconDeleteUpdateTree(res: any): void {
     if (res.value !&#x3D;&#x3D; this.lexicalEntryInstanceName) return;
-      this.onNodeSelect({
-        index: undefined,
-        node: this.lexicalEntryTree[0],
-        originalEvent: null,
-        type: &#x27;row&#x27;
-      });
-      this.selectedInstanceName &#x3D; this.lexicalEntryInstanceName;
-      this.selectedType &#x3D; LexicalEntryTypeOld.LEXICAL_ENTRY;
-      this.selectedNode &#x3D; this.lexicalEntryTree[0];
-      this.refreshTreeNode();
+    this.onNodeSelect({
+      index: undefined,
+      node: this.lexicalEntryTree[0],
+      originalEvent: null,
+      type: &#x27;row&#x27;
+    });
+    this.selectedInstanceName &#x3D; this.lexicalEntryInstanceName;
+    this.selectedType &#x3D; LexicalEntryTypeOld.LEXICAL_ENTRY;
+    this.selectedNode &#x3D; this.lexicalEntryTree[0];
+    this.refreshTreeNode();
   }
 
   private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
@@ -2333,7 +2333,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   /**Metodo dell&#x27;interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
   ngOnInit(): void {
     this.selectedInstanceName &#x3D; this.selectedNode.data.instanceName;
-    if(this.selectedNode.data.type &#x3D;&#x3D;&#x3D; LexicalEntryTypeOld.FORM || this.selectedNode.data.type &#x3D;&#x3D;&#x3D; LexicalEntryTypeOld.SENSE) {
+    if (this.selectedNode.data.type &#x3D;&#x3D;&#x3D; LexicalEntryTypeOld.FORM || this.selectedNode.data.type &#x3D;&#x3D;&#x3D; LexicalEntryTypeOld.SENSE) {
       this.lexicalEntryInstanceName &#x3D; this.selectedNode.parent?.parent?.data.instanceName;
     }
     this.refreshEditorView(this.selectedType, this.selectedInstanceName);
@@ -2442,7 +2442,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading &#x3D; false;
           },
           error: (error: HttpErrorResponse) &#x3D;&gt; {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error)) //TODO VALUTARE LA GESTIONE OPPORTUNA
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message)) //TODO VALUTARE LA GESTIONE OPPORTUNA
           }
         });
         break;
@@ -2480,7 +2480,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading &#x3D; false;
           },
           error: (error: HttpErrorResponse) &#x3D;&gt; {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
           }
         });
         break;
@@ -2516,7 +2516,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             this.loading &#x3D; false;
           },
           error: (error: HttpErrorResponse) &#x3D;&gt; {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
+            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
           }
         });
         break;
@@ -2646,7 +2646,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27; });
       },
       error: (error: HttpErrorResponse) &#x3D;&gt; {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error))
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message))
       }
     });
   }
@@ -2675,7 +2675,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27; });
       },
       error: (error: HttpErrorResponse) &#x3D;&gt; {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
       }
     });
   }

@@ -974,7 +974,7 @@ export class FeatureService {
    */
   constructor(private http: HttpClient) {
     this.featureUrl &#x3D; environment.featureUrl;
-    this.textoUrl &#x3D; environment.textoUrl;
+    this.textoUrl &#x3D; environment.maiaBeTextoUrl;
   }
 
   /**
@@ -1036,7 +1036,7 @@ export class FeatureService {
   public createFeature(newFeature: TFeature): Observable&lt;TFeature&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TFeature&gt;(
-      &#x60;${this.textoUrl}/texto/feature/create&#x60;,
+      &#x60;${this.textoUrl}/feature/create&#x60;,
       newFeature,
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );
@@ -1050,7 +1050,7 @@ export class FeatureService {
   public removeFeatureById(featureId: number): Observable&lt;TFeature&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.delete&lt;TFeature&gt;(
-      &#x60;${this.textoUrl}/texto/feature/${featureId}/remove&#x60;,
+      &#x60;${this.textoUrl}/feature/${featureId}/remove&#x60;,
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );
   }
@@ -1063,7 +1063,7 @@ export class FeatureService {
   public updateFeatureById(updatedFeature: TFeature): Observable&lt;TFeature&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TFeature&gt;(
-      &#x60;${this.textoUrl}/texto/feature/${updatedFeature.id}/update&#x60;,
+      &#x60;${this.textoUrl}/feature/${updatedFeature.id}/update&#x60;,
       updatedFeature,
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );
