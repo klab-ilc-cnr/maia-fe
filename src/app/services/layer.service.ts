@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
-import { Layer } from '../models/layer/layer.model';
 import { TFeature } from '../models/texto/t-feature';
 import { TLayer } from '../models/texto/t-layer';
 
@@ -14,57 +13,14 @@ import { TLayer } from '../models/texto/t-layer';
 export class LayerService {
   /**Url for texto-related requests */
   private textoUrl: string;
-  /**Url for layer-related requests */
-  private layerUrl: string;
 
   /**
    * Constructor for LayerService
    * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
-    this.layerUrl = environment.layersUrl; //inizializza gli url sulla base degli environment
     this.textoUrl = environment.maiaBeTextoUrl;
   }
-
-  /**
-   * GET che recupera l'elenco dei layer esistenti
-   * @returns {Observable<Array<Layer>>} observable della lista di layer
-   */
-  // public retrieveLayers(): Observable<Array<Layer>> {  //TODO CHECK TO REMOVE @MPapini91
-  //   return this.http.get<Array<Layer>>(`${this.layerUrl}`);
-  // }
-
-  /**
-   * PUT che richiede la modifica dei dati di un layer
-   * @param layer {Layer} layer modificato
-   * @returns {Observable<Layer>} observable del layer modificato
-   */
-  public _updateLayer(layer: Layer): Observable<Layer> { //TODO CHECK TO REMOVE @MPapini91
-    return this.http.put<Layer>(`${this.layerUrl}`, layer);
-  }
-
-  /**
-   * DELETE per la cancellazione di un layer
-   * @param layerId {number|undefined} identificativo numerico del layer
-   * @returns {Observable<number>} ?
-   */
-  public deleteLayer(layerId: number | undefined): Observable<number> { //TODO CHECK TO REMOVE @MPapini91
-    return this.http.delete<number>(`${this.layerUrl}/${layerId}`);
-  }
-
-  /**
-   * POST per la creazione di un nuovo layer
-   * @param layer {Layer} nuovo layer
-   * @returns {Observable<Layer>} observable del nuovo layer
-   */
-  public _createLayer(layer: Layer): Observable<Layer> { //TODO CHECK TO REMOVE @MPapini91
-    return this.http.post<Layer>(`${this.layerUrl}`, layer);
-  }
-
-  //FEATURES
-
-
-  //#region TEXTO services
 
   /**
    * POST to add a new layer
@@ -146,6 +102,4 @@ export class LayerService {
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );
   }
-
-  //#endregion
 }
