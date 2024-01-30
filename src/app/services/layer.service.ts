@@ -141,7 +141,7 @@ export class LayerService {
   public updateLayerById(updatedLayer: TLayer): Observable<TLayer> {
     const uuid = uuidv4();
     return this.http.post<TLayer>(
-      `${this.textoUrl}/layer/${updatedLayer.id}/update`,
+      `${this.textoUrl}/layer/update`,
       updatedLayer,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );
