@@ -6590,7 +6590,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         ...existingFeature,
         value: fl.value,
       };
-      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat.id!, updateAnnFeat));
+      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
     }
     forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
       takeUntil(this.unsubscribe$),

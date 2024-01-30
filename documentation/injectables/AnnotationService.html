@@ -66,7 +66,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Classe dei servizi per le annotazioni</p>
+                <p>Class of annotation management services</p>
 
             </p>
 
@@ -161,7 +161,7 @@
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Costruttore per AnnotationService</p>
+                            <div class="io-description"><p>Costructor for AnnotationService</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -187,7 +187,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>effettua le chiamate HTTP</p>
+                                                                <p>Performs HTTP requests</p>
 
                                                         </td>
                                                 </tr>
@@ -227,15 +227,15 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="172"
-                            class="link-to-prism">src/app/services/annotation.service.ts:172</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="83"
+                            class="link-to-prism">src/app/services/annotation.service.ts:83</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>DELETE che rimuove le feature di una annotazione dato il suo ID</p>
+                    <div class="io-description"><p>Create a new text annotation</p>
 </div>
 
                     <div class="io-description">
@@ -247,6 +247,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -261,6 +262,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>the new annotation</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -272,7 +277,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>observable dell&#39;esito</p>
+                        <p>observable of the new annotation</p>
 
                     </div>
                 </td>
@@ -301,14 +306,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="188"
-                            class="link-to-prism">src/app/services/annotation.service.ts:188</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">src/app/services/annotation.service.ts:104</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Creates an object that stores the association between annotation to a text, feature and feature value</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -319,6 +326,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -333,6 +341,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>the new annotation feature</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -344,7 +356,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the new annotation feature</p>
+
                     </div>
                 </td>
             </tr>
@@ -372,8 +385,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="184"
-                            class="link-to-prism">src/app/services/annotation.service.ts:184</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/app/services/annotation.service.ts:95</a></div>
                 </td>
             </tr>
 
@@ -450,14 +463,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="195"
-                            class="link-to-prism">src/app/services/annotation.service.ts:195</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/app/services/annotation.service.ts:116</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Retrieves the list of features with assigned value associated with an annotation</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -468,6 +483,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -482,6 +498,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>annotation identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -493,7 +513,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the annotation feature list</p>
+
                     </div>
                 </td>
             </tr>
@@ -521,14 +542,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="108"
-                            class="link-to-prism">src/app/services/annotation.service.ts:108</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/app/services/annotation.service.ts:67</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Retrieves the list of annotations associated with a portion of text.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -539,6 +562,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -553,6 +577,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>resource identifier</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>slice</td>
@@ -565,6 +593,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>: number, end: number|null} coordinates of the set of rows for which we want annotations</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -576,7 +608,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the annotation list</p>
+
                     </div>
                 </td>
             </tr>
@@ -604,15 +637,15 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="85"
-                            class="link-to-prism">src/app/services/annotation.service.ts:85</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/app/services/annotation.service.ts:32</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera un testo sulla base dell&#39;id</p>
+                    <div class="io-description"><p>Retrieves the text of a resource by successive batches</p>
 </div>
 
                     <div class="io-description">
@@ -624,6 +657,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -638,6 +672,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>resource identifier</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>slice</td>
@@ -650,6 +688,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>: number, end: number|null} coordinates of the sets of characters to be retrieved</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -661,7 +703,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>observable delle annotazioni</p>
+                        <p>observable of the text as a string</p>
 
                     </div>
                 </td>
@@ -690,14 +732,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="97"
-                            class="link-to-prism">src/app/services/annotation.service.ts:97</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/services/annotation.service.ts:50</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Retrieves the text of a resource by successive batches</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -708,6 +752,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -722,6 +767,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>resource identifier</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>slice</td>
@@ -734,6 +783,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>: number, end: number|null} coordinates of the sets of rows to be retrieved</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -745,7 +798,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the paginated response</p>
+
                     </div>
                 </td>
             </tr>
@@ -766,21 +820,23 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateAnnotationFeature(annFeatId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, annotationFeature: <a href="../classes/TAnnotationFeature.html" target="_self">TAnnotationFeature</a>)</code>
+                    <code>updateAnnotationFeature(annotationFeature: <a href="../classes/TAnnotationFeature.html" target="_self">TAnnotationFeature</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="199"
-                            class="link-to-prism">src/app/services/annotation.service.ts:199</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/app/services/annotation.service.ts:125</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Update the data of an annotation feature</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -791,21 +847,10 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>annFeatId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
                                 <tr>
                                     <td>annotationFeature</td>
                                     <td>
@@ -817,6 +862,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>the modified annotation feature</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -828,7 +877,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the annotation feature with updated data</p>
+
                     </div>
                 </td>
             </tr>
@@ -864,6 +914,12 @@
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Url for http requests to Texto</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -882,82 +938,29 @@ import { PaginatedResponse } from &#x27;../models/texto/paginated-response&#x27;
 import { TAnnotation } from &#x27;../models/texto/t-annotation&#x27;;
 import { TAnnotationFeature } from &#x27;../models/texto/t-annotation-feature&#x27;;
 
-/**Classe dei servizi per le annotazioni */
+/**Class of annotation management services */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class AnnotationService {
-
+  /**Url for http requests to Texto */
   private textoUrl: string;
+
   /**
-   * Costruttore per AnnotationService
-   * @param http {HttpClient} effettua le chiamate HTTP
+   * Costructor for AnnotationService
+   * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
     this.textoUrl &#x3D; environment.maiaBeTextoUrl;
   }
 
-  // INIZIO CHIAMATE CASH SERVER
-
-  //baseUrl &#x3D; &quot;http://localhost:8443&quot;
-  // baseUrl &#x3D; &quot;https://lari2.ilc.cnr.it/&quot;
   /**
-   * GET che recupera le annotazioni dato l&#x27;id del nodo
-   * @param nodeId {number} identificativo numerico del nodo
-   * @returns {Observable&lt;any&gt;} observable delle annotazioni
+   * Retrieves the text of a resource by successive batches
+   * @param textId {number} resource identifier
+   * @param slice {start: number, end: number|null} coordinates of the sets of characters to be retrieved
+   * @returns {Observable&lt;string&gt;} observable of the text as a string
    */
-  // public retrieveByNodeId(nodeId: number): Observable&lt;any&gt; {
-  //   const uuid &#x3D; uuidv4();
-  //   //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  // }
-
-  /**
-   * POST che effettua la creazione di una nuova annotazione
-   * @param nodeId {number} identificativo numerico del file
-   * @param item {any} la nuova annotazione
-   * @returns {Observable&lt;any&gt;} observable della nuova annotazione
-   */
-  // public create(nodeId: number, item: any): Observable&lt;any&gt; {
-  //   const uuid &#x3D; uuidv4();
-  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.post&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;, item);
-  // }
-
-  /**
-   * PUT che aggiorna i dati di un&#x27;annotazione
-   * @param item {any} un&#x27;annotazione modificata
-   * @returns {Observable&lt;any&gt;} observable dell&#x27;annotazione modificata
-   */
-  // public update(item: any) {
-  //   const uuid &#x3D; uuidv4();
-  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.put&lt;any&gt;(&#x60;${this.cashUrl}/api/annotation?requestUUID&#x3D;${uuid}&#x60;, item);
-  // }
-
-  /**
-   * GET che recupera i token dato l&#x27;id di un nodo (testuale?) //TODO verificare sullo swagger di cash
-   * @param nodeId {number} identificativo numerico
-   * @returns {Observable&lt;any&gt;} observable dell&#x27;esito
-   */
-  // public retrieveTokens(nodeId: number): Observable&lt;any&gt; {
-  //   const uuid &#x3D; uuidv4();
-
-  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/token?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  // }
-
-  /**
-   * GET che recupera un testo sulla base dell&#x27;id
-   * @param nodeId {identificativo numerico del nodo testo}
-   * @returns {Observable&lt;any&gt;} observable del testo
-   */
-  // public _retrieveText(nodeId: number): Observable&lt;any&gt; {
-  //   const uuid &#x3D; uuidv4();
-  //   //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/public/gettext?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  // }
-
-  public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable&lt;string&gt; {
+  public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable&lt;string&gt; { //NOTE Currently unused, it was a first approximation of the paginated service
     const uuid &#x3D; uuidv4();
     return this.http.post(
       &#x60;${this.textoUrl}/resource/${textId}/text&#x60;,
@@ -969,7 +972,13 @@ export class AnnotationService {
     );
   }
 
-  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable&lt;PaginatedResponse&gt; { //TODO cambierà la firma, non sarà lista di stringhe ma json
+  /**
+   * Retrieves the text of a resource by successive batches
+   * @param textId {number} resource identifier
+   * @param slice {start: number, end: number|null} coordinates of the sets of rows to be retrieved
+   * @returns {Observable&lt;PaginatedResponse&gt;} observable of the paginated response 
+   */
+  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable&lt;PaginatedResponse&gt; { //NOTE Will change the signature, it will not be list of strings but json
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;PaginatedResponse&gt;(
       &#x60;${this.textoUrl}/resource/${textId}/rows&#x60;,
@@ -980,6 +989,12 @@ export class AnnotationService {
     );
   }
 
+  /**
+   * Retrieves the list of annotations associated with a portion of text.
+   * @param resourceId {number} resource identifier
+   * @param slice {start: number, end: number|null} coordinates of the set of rows for which we want annotations
+   * @returns {Observable&lt;TAnnotation[]&gt;} observable of the annotation list
+   */
   public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable&lt;TAnnotation[]&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TAnnotation[]&gt;(
@@ -991,59 +1006,11 @@ export class AnnotationService {
     );
   }
 
-
   /**
-   * GET che recupera il contenuto dato l&#x27;id di un nodo (testuale?) //TODO verificare sullo swagger di cash
-   * @param nodeId {number} identificativo numerico
-   * @returns {Observable&lt;any&gt;} observable dell&#x27;esito
+   * Create a new text annotation
+   * @param annotation {TAnnotation} the new annotation
+   * @returns {Observable&lt;TAnnotation&gt;} observable of the new annotation
    */
-  // public retreiveContent(nodeId: number) {
-  //   const uuid &#x3D; uuidv4();
-
-  //   return this.http.get&lt;any&gt;(&#x60;${this.cashUrl}/api/v1/getcontent?requestUUID&#x3D;${uuid}&amp;nodeid&#x3D;${nodeId}&#x60;);
-  // }
-
-  /**
-   * DELETE che esegue la cancellazione di una annotazione sulla base del suo ID
-   * @param annotationId {number} identificativo numerico dell&#x27;annotazione
-   * @returns {Observable&lt;any&gt;} observable dell&#x27;esito
-   */
-  // public delete(annotationId: number): Observable&lt;any&gt; {
-  //   const uuid &#x3D; uuidv4();
-
-  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.delete&lt;any&gt;(&#x60;${this.cashUrl}/api/annotate?requestUUID&#x3D;${uuid}&amp;annotationID&#x3D;${annotationId}&#x60;);
-  // }
-
-  // FINE CHIAMATE CASH SERVER
-
-  //INIZIO CHIAMATE NOSTRO BACKEND
-
-  /**
-   * POST che effettua la creazione di una nuova feature per un&#x27;annotazione
-   * @param annFeature {AnnotationFeature} feature dell&#x27;annotazione
-   * @returns {Observable&lt;any&gt;} observable della nuova feature dell&#x27;annotazione
-   */
-  // public _createAnnotationFeature(annFeature: AnnotationFeature): Observable&lt;any&gt; {
-  //   return this.http.post&lt;any&gt;(&#x60;${this.annotationUrl}&#x60;, annFeature);
-  // }
-
-  //non necessario al momento
-  /*   public updateAnnotationFeature(annFeatures: AnnotationFeature): Observable&lt;AnnotationFeature&gt; {
-      return this.http.put&lt;AnnotationFeature&gt;(&#x60;${this.annotationUrl}&#x60;, annFeatures);
-    } */
-
-  /**
-   * DELETE che rimuove le feature di una annotazione dato il suo ID
-   * @param id {number} identificativo numerico dell&#x27;annotazione
-   * @returns {Observable&lt;boolean&gt;} observable dell&#x27;esito della cancellazione
-   */
-  // public deleteAnnotationFeature(id: number): Observable&lt;boolean&gt; {
-  //   return this.http.delete&lt;boolean&gt;(&#x60;${this.annotationUrl}/${id}&#x60;);
-  // }
-
-  //#region TEXTO BACK END
-
   public createAnnotation(annotation: TAnnotation): Observable&lt;TAnnotation&gt; {
     return this.http.post&lt;TAnnotation&gt;(
       &#x60;${this.textoUrl}/annotation/create&#x60;,
@@ -1060,6 +1027,11 @@ export class AnnotationService {
     return this.http.delete(&#x60;${this.textoUrl}/annotation/${annotationId}/remove&#x60;);
   }
 
+  /**
+   * Creates an object that stores the association between annotation to a text, feature and feature value
+   * @param annotationFeature {TAnnotationFeature} the new annotation feature
+   * @returns {Observable&lt;TAnnotationFeature&gt;} observable of the new annotation feature
+   */
   public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {
     return this.http.post&lt;TAnnotationFeature&gt;(
       &#x60;${this.textoUrl}/annotationFeature/create&#x60;,
@@ -1067,18 +1039,26 @@ export class AnnotationService {
     );
   }
 
+  /**
+   * Retrieves the list of features with assigned value associated with an annotation 
+   * @param annotationId {number} annotation identifier
+   * @returns {Observable&lt;TAnnotationFeature[]&gt;} observable of the annotation feature list
+   */
   public retrieveAnnotationFeaturesById(annotationId: number): Observable&lt;TAnnotationFeature[]&gt; {
     return this.http.get&lt;TAnnotationFeature[]&gt;(&#x60;${this.textoUrl}/annotation/${annotationId}/features&#x60;);
   }
 
-  public updateAnnotationFeature(annFeatId: number, annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {
+  /**
+   * Update the data of an annotation feature
+   * @param annotationFeature {TAnnotationFeature} the modified annotation feature
+   * @returns {Observable&lt;TAnnotationFeature&gt;} observable of the annotation feature with updated data
+   */
+  public updateAnnotationFeature(annotationFeature: TAnnotationFeature): Observable&lt;TAnnotationFeature&gt; {
     return this.http.post&lt;TAnnotationFeature&gt;(
       &#x60;${this.textoUrl}/annotationFeature/update&#x60;,
       annotationFeature
     );
   }
-
-  //#endregion
 }
 </code></pre>
     </div>
