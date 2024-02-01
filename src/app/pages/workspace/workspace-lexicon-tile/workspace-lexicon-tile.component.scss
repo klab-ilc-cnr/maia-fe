@@ -18,3 +18,7 @@ td:has(sub) {
     width: 100%;
   }
 }
+
+.tableScrollHeight{
+  height: calc(100% - 200px);
+}
