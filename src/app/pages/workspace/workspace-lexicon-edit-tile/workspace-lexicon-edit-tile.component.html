@@ -41,10 +41,10 @@
   </ng-template>
   <ng-template pTemplate>
     <app-tabs-lexical-entry *ngIf="showLexicalEntryEditor"
-      [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-tabs-lexical-entry>
+      [lexicalEntryInstanceName]="lexicalEntryInstanceName" class="w-100"></app-tabs-lexical-entry>
     <app-tabs-form *ngIf="showFormEditor" [formId]="formInstanceName"
-      [lexEntryId]="lexicalEntryInstanceName"></app-tabs-form>
+      [lexEntryId]="lexicalEntryInstanceName" class="w-100"></app-tabs-form>
     <app-tabs-sense *ngIf="showSenseEditor" [senseId]="senseInstanceName"
-      [lexEntryId]="lexicalEntryInstanceName"></app-tabs-sense>
+      [lexEntryId]="lexicalEntryInstanceName" class="w-100"></app-tabs-sense>
   </ng-template>
 </p-splitter>
