@@ -35,8 +35,7 @@
     </div>
   </div>
 </div>
-<p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true"
-  (collapsedChange)="onCollapseChange($event)">
+<p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true">
   <div class="flex flex-row">
     <div class="flex align-items-center justify-content-center m-3 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"
@@ -95,7 +94,7 @@
 
 <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
   [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
-  [scrollable]="false" [scrollHeight]="scrollHeight +'px'">
+  [scrollable]="true" scrollHeight="flex">
   <ng-template pTemplate="colgroup" let-columns>
     <colgroup>
       <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">

@@ -138,9 +138,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Riferimento al popup di conferma cancellazione di un'annotazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
-  /**Altezza calcolata per lo scroller */
-  public scrollHeight!: number;
-
   public languageItems: [{ label: string, items: any[] }] = [{
     label: 'Languages',
     items: []
@@ -204,8 +201,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
-    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 203;
-
     this.cols = [
       { field: 'name', header: '', width: '70%', display: 'true' },
       { field: 'note', width: '10%', display: 'true' },
@@ -336,19 +331,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Metodo che gestisce la visualizzazione delle checkbox di selezione */
   onChangeSelectionView() {
     this.isVisibleCheckbox = !this.isVisibleCheckbox;
-  }
-
-  /**
-   * Metodo che intercetta l'apertura e chiusura del pannello dei filtri e modifica l'altezza dello scroller
-   * @param event {boolean} definisce se il pannello dei filtri è aperto o chiuso
-   * @returns {void}
-   */
-  onCollapseChange(event: boolean) {
-    if (event) {
-      this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 203;
-      return;
-    }
-    this.scrollHeight = this.elem.nativeElement.offsetParent.offsetHeight - 420;
   }
 
   /**
