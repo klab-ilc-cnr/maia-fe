@@ -95,7 +95,7 @@
 
 <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
   [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
-  [scrollable]="true" [scrollHeight]="scrollHeight +'px'">
+  [scrollable]="false" [scrollHeight]="scrollHeight +'px'">
   <ng-template pTemplate="colgroup" let-columns>
     <colgroup>
       <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
