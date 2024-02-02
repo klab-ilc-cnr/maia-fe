@@ -970,6 +970,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       headerTitle: 'Lexicon Explorer',
       maximizedMargin: 5,
       dragit: { snap: true },
+      contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',
