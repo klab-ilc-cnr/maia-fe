@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 /**Componente del footer */
 @Component({
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
+  currentVersion = environment.interfaceVersion;
 }

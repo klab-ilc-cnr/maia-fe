@@ -69,6 +69,12 @@
               </li>
             </ul>
           </li>
+          <li *ngIf="canManageUsers" [ngClass]="{'active': isActive(['system'])}">
+            <a routerLink="/system">
+              <i class="layout-menuitem-icon pi pi-info-circle"></i>
+              <span>System Information</span>
+            </a>
+          </li>
         </ul>
       </li>
     </ul>
