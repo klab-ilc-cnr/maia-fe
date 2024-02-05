@@ -8,6 +8,8 @@ const serverUrl = '';
 
 /**Environment variables */
 export const environment = {
+  angularVersion: '14.2.9',
+  interfaceVersion: '0.0.0', //replace with current version on build
   production: false,
   envName: 'local',
   maiaBeUrl: `${serverUrl}/api`,

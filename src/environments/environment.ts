@@ -6,6 +6,8 @@
 const serverUrl = 'https://146.48.93.234:9000/maia';
 
 export const environment = {
+  angularVersion: '14.2.9',
+  interfaceVersion: '0.5.4',
   production: false,
   envName: 'local',
   maiaBeUrl: `${serverUrl}/api`,
