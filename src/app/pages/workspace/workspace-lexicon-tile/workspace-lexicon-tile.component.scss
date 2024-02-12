@@ -1,5 +1,5 @@
-#searchInput{
-    width:auto
+#searchInput {
+  width: auto
 }
 
 div.grid.p-fluid.input-search {
@@ -7,10 +7,11 @@ div.grid.p-fluid.input-search {
 }
 
 td:has(sub) {
-    overflow-x: clip;
+  overflow-x: clip;
 }
 
 #lexiconUploaderForm {
+
   label,
   input[type="text"],
   ::ng-deep p-autocomplete .p-component,
@@ -19,6 +20,18 @@ td:has(sub) {
   }
 }
 
-.tableScrollHeight{
+.tableScrollHeight {
   height: calc(100% - 200px);
+}
+
+td:has(span),
+td:has(span) div:has(span){
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td span {
+  display: inline;
 }
