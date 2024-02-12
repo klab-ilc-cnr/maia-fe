@@ -38,6 +38,12 @@
 </div>
 <p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true">
   <div class="flex flex-row">
+    <div class="flex align-items-center justify-content-center m-3 field-checkbox">
+      <p-checkbox id="caseSensitiveInput" [(ngModel)]="caseSensitive" [binary]="true" inputId="caseSensitive" (ngModelChange)="onChangeFilter()"></p-checkbox>
+      <label for="caseSensitiveInput">Case sensitive</label>
+    </div>
+  </div>
+  <div class="flex flex-row">
     <div class="flex align-items-center justify-content-center m-3 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"
         inputId="equals"></p-radioButton>

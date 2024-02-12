@@ -117,6 +117,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public showLabelName?: boolean;
   /**Modalità di ricerca (equals, etc) */
   public searchMode!: searchModeEnum;
+  public caseSensitive = false;
   /**Definisce se ci sono filtri pendenti */
   public pendingFilters!: boolean;
   /**Testo cercato */
@@ -703,8 +704,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * Metodo che aggiorna i valori dei campi di filtro, inizializzando ai valori di eventuali selezioni salvate
    */
   private updateFilterParameters() {
+    const searchText = this.caseSensitive ? (this.searchTextInput ?? '*') : (this.searchTextInput.toLowerCase() ?? '*');
     this.parameters = {
-      text: this.searchTextInput ?? '*',
+      text: searchText,
       searchMode: this.searchMode,
       type: this.selectedType ?? '',
       pos: this.selectedPartOfSpeech ?? '',
