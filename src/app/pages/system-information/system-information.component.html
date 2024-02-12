@@ -13,12 +13,16 @@
               <tr>
                 <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
                 <th pSortableColumn="description">Version<p-sortIcon field="version"></p-sortIcon></th>
+                <th></th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-item let-i="rowIndex">
               <tr>
                 <td>{{item.name}}</td>
                 <td>{{item.version}}</td>
+                <td>
+                  <i pTooltip="See details" *ngIf="item.type===0" class="pi pi-search-plus"></i>
+                </td>
               </tr>
             </ng-template>
           </p-table>

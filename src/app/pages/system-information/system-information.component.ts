@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SystemInformation } from 'src/app/models/system-information';
+import { take } from 'rxjs';
+import { InfoType, SystemInformation } from 'src/app/models/system-information';
+import { SystemStateService } from 'src/app/services/system-state.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,20 +16,40 @@ export class SystemInformationComponent implements OnInit {
     <SystemInformation>{
       name: 'maia-fe',
       version: this.interfaceVersion.toString(),
-      serverTime: '',
-      javaVersion: ''
+      type: InfoType.FE,
     },
     <SystemInformation>{
       name: 'Angular',
       version: this.angularVersion.toString(),
-      serverTime: '',
-      javaVersion: ''
+      type: InfoType.FE
     }
   ];
 
-  constructor() { }
+  constructor(
+    private systemState: SystemStateService,
+  ) { }
 
   ngOnInit(): void {
+    this.systemState.lexoSystemInfo$.pipe(take(1)).subscribe((resp: { [key: string]: any }) => {
+      this.versionsList.push(<SystemInformation>{
+        name: 'LexO',
+        version: resp['lexOVersion'],
+        type: InfoType.BE,
+      });
+    });
+    this.systemState.maiaSystemInfo$.pipe(take(1)).subscribe((resp: { [key: string]: any }) => {
+      this.versionsList.push(<SystemInformation>{
+        name: resp['application.name'],
+        version: resp['application.version'],
+        type: InfoType.BE,
+      });
+    });
+    this.systemState.textoSystemInfo$.pipe(take(1)).subscribe((resp: { [key: string]: any }) => {
+      this.versionsList.push(<SystemInformation>{
+        name: resp['application.name'],
+        version: resp['application.version'],
+        type: InfoType.BE,
+      });
+    });
   }
-
 }
