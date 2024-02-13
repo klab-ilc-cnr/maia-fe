@@ -11,7 +11,7 @@
 
   <p-tieredMenu #propertiesMenu [model]="menuItems" [popup]="true" appendTo="body"></p-tieredMenu>
 
-  <button pButton pRipple icon="pi pi-plus" type="button"
+  <button [disabled]="menuItems.length < 1" pButton pRipple icon="pi pi-plus" type="button"
   (click)="propertiesMenu.toggle($event)"
   class="p-button-rounded p-button-success mx-2 fieldset-small">
   </button>
