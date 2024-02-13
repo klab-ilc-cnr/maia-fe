@@ -150,6 +150,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeContainerHeight()
   }
 
+  @HostListener("document:jspaneldragstop", ["$event"]) checkIsNotOverflowingContainer(event: any) {
+    // let overlaps = event.panel.overlaps(this.workspaceContainer, "paddingbox", event);
+    if (event.panel.offsetTop < 0) {
+      event.panel.reposition({
+        my: 'left-top',
+        at: 'left-top',
+        of: '#panelsContainer'
+      });
+    }
+  }
+
   /**
    * Costruttore per WorkspaceComponent
    * @param router {Router} servizi per la navigazione fra le viste
@@ -814,7 +825,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       content: element,
       headerTitle: 'Corpus Explorer',
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',
@@ -899,7 +910,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       headerTitle: 'text - ' + title.toLowerCase(),
       content: textWindowComponent,
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',
@@ -969,7 +980,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       content: element,
       headerTitle: 'Lexicon Explorer',
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
@@ -1050,7 +1061,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       content: element,
       headerTitle: 'Lexicon editor - ' + lexicalEntryTree?.data?.label,
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',
