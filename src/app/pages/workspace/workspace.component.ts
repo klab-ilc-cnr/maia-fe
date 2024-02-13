@@ -982,6 +982,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         width: () => window.innerWidth * 0.2,
         height: '60vh'
       },
+      resizeit: {
+        minWidth: 250
+      },
       headerControls: {
         add: {
           html: '<span class="pi pi-tag"></span>',

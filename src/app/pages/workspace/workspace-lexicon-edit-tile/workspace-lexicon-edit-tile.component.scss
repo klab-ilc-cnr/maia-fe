@@ -13,8 +13,8 @@ p-tabView,
   }
 }
 
-td:has(span),
-td:has(span) div:has(span) {
+td:has(> span),
+td:has(> span) div:has(> span) {
   width: 100px;
   white-space: nowrap;
   overflow: hidden;
