@@ -43,6 +43,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Lista delle lingue selezionabili */
   public selectLanguages!: SelectItem[];
   filteredLanguages$!: Observable<SelectItem[]>;
+  
   /**Lista dei tipi selezionabili */
   public selectTypes$ = this.globalState.lexicalEntryTypes$.pipe(
     switchMap(types => {
@@ -420,9 +421,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         ).subscribe((data: SenseListItem[]) => {
           event.node.children = data.map((val: SenseListItem) => ({
             data: {
-              name: this.showLabelName ? val.label : val.sense,
+              name: this.showLabelName ? val.definition : val.sense,
               instanceName: val.sense,
-              label: val.label,
+              label: val.definition,
               note: val.note,
               creator: val.creator,
               creationDate: val.creationDate ? new Date(val.creationDate).toLocaleString() : '',

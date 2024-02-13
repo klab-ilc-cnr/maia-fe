@@ -12,3 +12,15 @@ p-tabView,
     height: calc(100% - 41px);
   }
 }
+
+td:has(> span),
+td:has(> span) div:has(> span) {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td span {
+  display: inline;
+}
