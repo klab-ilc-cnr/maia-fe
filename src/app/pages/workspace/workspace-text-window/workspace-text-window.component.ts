@@ -172,7 +172,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per caricare i dati iniziali del componente */
   ngOnInit(): void {
-    this.scrollingSubject.pipe(DebounceTime(200)).subscribe(value => {
+    this.scrollingSubject.pipe(DebounceTime(300)).subscribe(value => {
       this.loadData(value);
       // this.first = this.lastIndex;
     }); //toRefactor
@@ -230,44 +230,46 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.lastScrollTop = event.target.scrollTop;
     let percentageScrollHeight = 0.7 * event.target.scrollHeight;
     let percentageScrollHeightUp = 0.3 * event.target.scrollHeight;
-
+    
     if (scrollingDown && scroll < percentageScrollHeight) { return; }
     if (scrollingDown && this.textRange.end === this.textTotalRows) { return; }
-
+    
     if (!scrollingDown && scroll > percentageScrollHeightUp) { return; }
     if (!scrollingDown && this.textRange.start === 0) { return }
 
+    let newRange = new TextRange(this.textRange.start,this.textRange.end);
+    
     if (scrollingDown) {
-      this.textRange.start += this.textRowsOffset;
+      newRange.start += this.textRowsOffset;
 
-      if (this.textRange.start > (this.textTotalRows - this.textRowsOffset)) {
-        this.textRange.start = this.textTotalRows - this.textRowsOffset;
+      if (newRange.start > (this.textTotalRows - this.textRowsOffset)) {
+        newRange.start = this.textTotalRows - this.textRowsOffset;
       }
     }
     else {
-      this.textRange.start -= this.textRowsOffset;
+      newRange.start -= this.textRowsOffset;
 
-      if (this.textRange.start < 0) {
-        this.textRange.start = 0;
+      if (newRange.start < 0) {
+        newRange.start = 0;
       }
     }
 
     if (scrollingDown) {
-      this.textRange.end += this.textRowsOffset;
+      newRange.end += this.textRowsOffset;
 
-      if (this.textRange.end > this.textTotalRows) {
-        this.textRange.end = this.textTotalRows;
+      if (newRange.end > this.textTotalRows) {
+        newRange.end = this.textTotalRows;
       }
     }
     else {
-      this.textRange.end -= this.textRowsOffset;
+      newRange.end -= this.textRowsOffset;
 
-      if (this.textRange.end < this.textRowsOffset) {
-        this.textRange.end = this.textRowsOffset;
+      if (newRange.end < this.textRowsOffset) {
+        newRange.end = this.textRowsOffset;
       }
     }
 
-    this.scrollingSubject.next(this.textRange);
+    this.scrollingSubject.next(newRange);
     // this.loadData(this.lastIndex + this.rowsPaginator);
   }
 
@@ -363,7 +365,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
    * @returns {void}
    */
-  loadData(textRange: TextRange) {
+  loadData(newTextRange: TextRange) {
     if (!this.textId) {
       return;
     }
@@ -373,6 +375,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
 
     this.loaderService.show();
+    this.textRange = newTextRange;
     // this.checkScroll();
     // this.lastIndex = textRange?.end ?? this.first + this.rowsPaginator;
     // this.first = textRange?.start ?? this.first;
@@ -387,8 +390,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     // }
 
     forkJoin([
-      this.annotationService.retrieveTextSplitted(this.textId, { start: textRange.start, end: textRange.end }),
-      this.annotationService.retrieveResourceAnnotations(this.textId, { start: textRange.start, end: textRange.end }),
+      this.annotationService.retrieveTextSplitted(this.textId, { start: newTextRange.start, end: newTextRange.end }),
+      this.annotationService.retrieveResourceAnnotations(this.textId, { start: newTextRange.start, end: newTextRange.end }),
     ]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
