@@ -18,4 +18,5 @@ export class TextRow {
   endIndex: number | undefined
   xText: number | undefined
   xSentnum: number | undefined
+  rowIndex: number | undefined
 }

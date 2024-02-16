@@ -49,9 +49,8 @@
 </div>
 
 <div class="row mx-0">
-  <p-paginator class="col-8" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rowsPaginator" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsPerPageOptions"></p-paginator>
   <div class="col-8" >
-    <div class="text-container" [ngStyle]="{'height.px': textContainerHeight}">
+    <div class="text-container" (scroll)="onScroll($event)" [ngStyle]="{'height.px': textContainerHeight}">
       <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >
         <svg class="text-editor" [attr.height]="svgHeight">
           <defs>
@@ -117,7 +116,7 @@
           <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />
           <g class="sentnum unselectable">
             <text *ngFor="let row of rows; index as i" [attr.y]="row.ySentnum" [attr.x]="row.xSentnum" [attr.height]="row.height">
-              {{i+1}}
+              {{row.rowIndex}}
             </text>
             <path [attr.d]="sentnumVerticalLine"></path>
           </g>
