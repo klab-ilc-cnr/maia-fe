@@ -239,6 +239,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
       const updateAnnFeat = <TAnnotationFeature>{
         ...existingFeature,
+        annotation: {
+          id: workingAnnotation.id
+        },
+        feature: fl.feature,
         value: fl.value,
       };
       updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
