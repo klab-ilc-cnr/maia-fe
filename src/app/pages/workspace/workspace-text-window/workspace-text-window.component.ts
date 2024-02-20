@@ -26,6 +26,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { TextRange } from 'src/app/models/text/text-range';
+import { SynchRequest } from 'src/app/models/text/synch-request';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -130,18 +131,24 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
+  @ViewChild('textContainer') public textContainer!: ElementRef;
 
   //#region SCROLLER
-  public textRowsOffset = 20;
-  public textTotalRows = 0;
-  public textRange: TextRange = new TextRange(0, this.textRowsOffset);
+  public textRowsOffset: number = 0;
+  public textTotalRows: number = 0;
+  public oldTextRange?: TextRange;
+  public textRange!: TextRange;
   public lastScrollTop: number = 0;
+  public lastSvgHeight!: number;
   public scrolling: boolean = false;
-  public scrollingSubject = new Subject<TextRange>();
+  public scrollingSubject = new Subject<SynchRequest<TextRange>>();
+  public compensazioneBackend: number = 1;
+  public mostRecentRequestTime: number = 0;
+  public preventOnScrollEvent: boolean = false;
+  public scrollingDown: boolean = true;
 
   //#endregion
   public viewCheckedSubject = new Subject();
-  public scrollChecked: boolean = false;
   public endReached: boolean = false;
 
   // currentUser!: User;
@@ -172,11 +179,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per caricare i dati iniziali del componente */
   ngOnInit(): void {
-    this.scrollingSubject.pipe(DebounceTime(300)).subscribe(value => {
-      this.loadData(value);
-      // this.first = this.lastIndex;
-    }); //toRefactor
-    // this.viewCheckedSubject.pipe(DebounceTime(600)).subscribe(_ => this.checkScroll()); //toRefactor
+    this.scrollingSubject.pipe(DebounceTime(300)).subscribe(request => {
+
+      if (request.requestTime < this.mostRecentRequestTime) { return; }
+
+      this.mostRecentRequestTime = request.requestTime;
+      this.loadData(request.content);
+    });
 
     if (!this.textId) {
       return;
@@ -204,7 +213,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.loadData(this.textRange);
+    this.textRowsOffset = this.textRowsOffsetPredictor();
+    this.textRange = new TextRange(0, this.textRowsOffset + this.compensazioneBackend);
+    this.scrollingSubject.next(new SynchRequest(this.textRange, 'onAfterViewInit'));
+    this.lastSvgHeight = this.svgHeight;
   }
 
   ngOnDestroy(): void {
@@ -223,148 +235,121 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public onScroll(event: any) {
+    if (this.preventOnScrollEvent) {
+      this.preventOnScrollEvent = false;
+      return;
+    }
+
     console.log(event);
     this.scrolling = true;
-    let scroll = Math.round(event.target.offsetHeight + event.target.scrollTop) + 1;
-    let scrollingDown = this.lastScrollTop < event.target.scrollTop;
+    let scroll2 = Math.round(event.target.clientHeight + event.target.scrollTop) + 1;
+    let scroll = event.target.clientHeight + event.target.scrollTop;
+    // let scroll = Math.round(event.target.scrollTop) + 1;
+
+    if (this.lastScrollTop === event.target.scrollTop) { return; }
+
+    this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
+
+    // if (this.lastSvgHeight !== this.svgHeight) {
+    //   event.target.scrollTop = 0;
+    //   scrollingDown = true;
+    // }
+
+    this.lastSvgHeight = this.svgHeight;
     this.lastScrollTop = event.target.scrollTop;
-    let percentageScrollHeight = 0.7 * event.target.scrollHeight;
-    let percentageScrollHeightUp = 0.3 * event.target.scrollHeight;
-    
-    if (scrollingDown && scroll < percentageScrollHeight) { return; }
-    if (scrollingDown && this.textRange.end === this.textTotalRows) { return; }
-    
-    if (!scrollingDown && scroll > percentageScrollHeightUp) { return; }
-    if (!scrollingDown && this.textRange.start === 0) { return }
+    // let percentageScrollHeight = 0.7 * event.target.scrollHeight;
+    // let percentageScrollHeightUp = 0.3 * event.target.scrollHeight;
 
-    let newRange = new TextRange(this.textRange.start,this.textRange.end);
-    
-    if (scrollingDown) {
-      newRange.start += this.textRowsOffset;
+    // if (scrollingDown && scroll < percentageScrollHeight) { return; }
+    // if (scrollingDown && this.textRange.end === this.textTotalRows) { return; }
 
-      if (newRange.start > (this.textTotalRows - this.textRowsOffset)) {
-        newRange.start = this.textTotalRows - this.textRowsOffset;
+    // if (!scrollingDown && scroll > percentageScrollHeightUp) { return; }
+    // if (!scrollingDown && this.textRange.start === 0) { return }
+
+    if (!this.scrollingDown && this.textRange.start === 0) { return; }
+
+    if (!this.scrollingDown && event.target.scrollTop !== 0) { return; }
+
+    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return; }
+
+    if (this.scrollingDown && scroll < this.svgHeight) { return; }
+
+    this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
+
+    let newRange = new TextRange(this.textRange.start, this.textRange.end);
+
+    // let textRangeSizeInPixels = this.visibleRowsSizeInPixels();
+
+    if (this.scrollingDown) {
+      newRange.start += (this.textRowsOffset - 1 - this.compensazioneBackend);
+
+      if (newRange.start > (this.textTotalRows - this.textRowsOffset - 1)) {
+        newRange.start = this.textTotalRows - this.textRowsOffset - 1 - this.compensazioneBackend;
       }
     }
     else {
-      newRange.start -= this.textRowsOffset;
+      newRange.start -= (this.textRowsOffset - 1 - this.compensazioneBackend);
 
       if (newRange.start < 0) {
         newRange.start = 0;
       }
     }
 
-    if (scrollingDown) {
-      newRange.end += this.textRowsOffset;
+    if (this.scrollingDown) {
+      newRange.end += this.textRowsOffset + this.compensazioneBackend;
 
       if (newRange.end > this.textTotalRows) {
-        newRange.end = this.textTotalRows;
+        newRange.end = this.textTotalRows + this.compensazioneBackend;
       }
     }
     else {
-      newRange.end -= this.textRowsOffset;
+      newRange.end -= (this.textRowsOffset - this.compensazioneBackend);
 
       if (newRange.end < this.textRowsOffset) {
-        newRange.end = this.textRowsOffset;
+        newRange.end = (this.textRowsOffset + this.compensazioneBackend);
       }
     }
 
-    this.scrollingSubject.next(newRange);
+    this.scrollingSubject.next(new SynchRequest(newRange, 'onScroll'));
     // this.loadData(this.lastIndex + this.rowsPaginator);
   }
 
   public checkScroll() {
-    let scrollable = Math.abs(this.svg.nativeElement.scrollHeight - this.svg.nativeElement.clientHeight - this.svg.nativeElement.scrollTop) < 1;
-    // let scrollable = Math.abs(this.svgHeight) < 1;
-    if (!scrollable && !this.scrollChecked) {
-      this.scrollChecked = true;
-      this.textRowsOffset = this.textRowsOffset + 10;
-      this.loadData(this.textRange);
+    let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
+    if (!scrollable) {
+      this.textRowsOffset += 5;
+      let newRange = new TextRange(this.textRange.start, this.textRowsOffset);
+      this.scrollingSubject.next(new SynchRequest(newRange, 'checkScroll'));
+      this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
       return;
     }
+
+    //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
+    this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0);
+
+    this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
+    this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
   }
 
-  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
-    const newAnnFeat = new TAnnotationFeature();
-    newAnnFeat.annotation = annotation;
-    newAnnFeat.feature = feature;
-    newAnnFeat.value = value;
-    return this.annotationService.createAnnotationFeature(newAnnFeat);
+  public visibleRowsSizeInPixels(): number {
+    this.textContainer.nativeElement.scrollTop;
+    this.textContainer.nativeElement.clientHeight;
+    this.svgHeight;
+    return this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
   }
 
-  private createNewAnnotation(annotation: TAnnotation) {
-    const promise = new Promise<TAnnotation>((resolve, reject) => {
-      this.annotationService.createAnnotation(annotation).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
-          reject(error);
-          return throwError(() => new Error(error.error));
-        }),
-      ).subscribe(newAnn => {
-        resolve(newAnn);
-      });
-    });
-    return promise;
-  }
-
-  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
-    let workingAnnotation = this.textoAnnotation;
-    if (!this.textoAnnotation.id) {
-      this.textoAnnotation.user = { id: this.currentTextoUserId };
-      this.textoAnnotation.resource = this.currentResource;
-      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
-    }
-    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
-    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
-    for (const fl of featuresList) {
-      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
-      if (existingFeature && existingFeature.value === fl.value) {
-        continue;
-      }
-      if (!existingFeature) {
-        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
-        continue;
-      }
-      const updateAnnFeat = <TAnnotationFeature>{
-        ...existingFeature,
-        value: fl.value,
-      };
-      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
-    }
-    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(() => {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-      this.onAnnotationSaved();
-    })
+  public textRowsOffsetPredictor(): number {
+    let arbitraryRowSizeInPixels = 50;
+    let arbitraryExtraRows = 5;
+    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
   }
 
   /**
-   * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
-   * @param event {any} evento di variazione dei layer visibili
-   */
-  changeVisibleLayers(event: any) {
-    this.visibleLayers = this.selectedLayers || [];
-    this.loadData(this.textRange);
-  }
-
-  // onPageChange(event: PageEvent) {
-  //   this.first = event.first;
-  //   this.rowsPaginator = event.rows;
-  //   this.loadData();
-  // }
-
-  /**
-   * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
-   * @returns {void}
-   */
+ * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
+ * @returns {void}
+ */
   loadData(newTextRange: TextRange) {
     if (!this.textId) {
       return;
@@ -375,6 +360,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
 
     this.loaderService.show();
+    this.oldTextRange = this.textRange;
     this.textRange = newTextRange;
     // this.checkScroll();
     // this.lastIndex = textRange?.end ?? this.first + this.rowsPaginator;
@@ -623,7 +609,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         words: words,
         startIndex: start,
         endIndex: start + s.length,
-        rowIndex: this.textRange.start + index
+        rowIndex: this.textRange.start + index + 1
       })
 
       yStartRow += rowHeight;
@@ -636,6 +622,81 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.checkScroll();
   }
+
+  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
+    const newAnnFeat = new TAnnotationFeature();
+    newAnnFeat.annotation = annotation;
+    newAnnFeat.feature = feature;
+    newAnnFeat.value = value;
+    return this.annotationService.createAnnotationFeature(newAnnFeat);
+  }
+
+  private createNewAnnotation(annotation: TAnnotation) {
+    const promise = new Promise<TAnnotation>((resolve, reject) => {
+      this.annotationService.createAnnotation(annotation).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
+          reject(error);
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(newAnn => {
+        resolve(newAnn);
+      });
+    });
+    return promise;
+  }
+
+  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+    let workingAnnotation = this.textoAnnotation;
+    if (!this.textoAnnotation.id) {
+      this.textoAnnotation.user = { id: this.currentTextoUserId };
+      this.textoAnnotation.resource = this.currentResource;
+      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
+    }
+    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    for (const fl of featuresList) {
+      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
+      if (existingFeature && existingFeature.value === fl.value) {
+        continue;
+      }
+      if (!existingFeature) {
+        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
+        continue;
+      }
+      const updateAnnFeat = <TAnnotationFeature>{
+        ...existingFeature,
+        value: fl.value,
+      };
+      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
+    }
+    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+      this.onAnnotationSaved();
+    })
+  }
+
+  /**
+   * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
+   * @param event {any} evento di variazione dei layer visibili
+   */
+  changeVisibleLayers(event: any) {
+    this.visibleLayers = this.selectedLayers || [];
+    this.loadData(this.textRange);
+  }
+
+  // onPageChange(event: PageEvent) {
+  //   this.first = event.first;
+  //   this.rowsPaginator = event.rows;
+  //   this.loadData();
+  // }
 
   /**
    * Metodo che gestisce il movimento del mouse nel trascinamento
