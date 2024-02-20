@@ -214,8 +214,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.textRowsOffset = this.textRowsOffsetPredictor();
-    this.textRange = new TextRange(0, this.textRowsOffset + this.compensazioneBackend);
-    this.scrollingSubject.next(new SynchRequest(this.textRange, 'onAfterViewInit'));
+    this.textRange = new TextRange(0, this.textRowsOffset - 1);
+    this.oldTextRange = this.textRange;
+    let requestRange = new TextRange(this.textRange.start, this.textRange.end + 1 + this.compensazioneBackend)
+    this.scrollingSubject.next(new SynchRequest(requestRange, 'onAfterViewInit'));
     this.lastSvgHeight = this.svgHeight;
   }
 
@@ -268,43 +270,46 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (!this.scrollingDown && event.target.scrollTop !== 0) { return; }
 
-    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return; }
+    if (this.scrollingDown && this.textRange.end > this.textTotalRows) { return; }
 
     if (this.scrollingDown && scroll < this.svgHeight) { return; }
 
-    let newRange = new TextRange(this.textRange.start, this.textRange.end);
+    let cachedRows = 5;
+    this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end);
 
     if (this.scrollingDown) {
-      newRange.start += (this.textRowsOffset - 1 - this.compensazioneBackend);
+      this.textRange.start += this.textRowsOffset;
 
-      if (newRange.start > (this.textTotalRows - this.textRowsOffset - 1)) {
-        newRange.start = this.textTotalRows - this.textRowsOffset - 1 - this.compensazioneBackend;
+      if (this.textRange.start > this.textTotalRows - this.textRowsOffset) {
+        this.textRange.start = this.textTotalRows - this.textRowsOffset;
       }
     }
     else {
-      newRange.start -= (this.textRowsOffset - 1 - this.compensazioneBackend);
+      this.textRange.start -= this.textRowsOffset;
 
-      if (newRange.start < 0) {
-        newRange.start = 0;
+      if (this.textRange.start < 0) {
+        this.textRange.start = 0;
       }
     }
 
     if (this.scrollingDown) {
-      newRange.end += this.textRowsOffset + this.compensazioneBackend;
+      this.textRange.end += this.textRowsOffset;
 
-      if (newRange.end > this.textTotalRows) {
-        newRange.end = this.textTotalRows + this.compensazioneBackend;
+      if (this.textRange.end > this.textTotalRows) {
+        this.textRange.end = this.textTotalRows;
       }
     }
     else {
-      newRange.end -= (this.textRowsOffset - this.compensazioneBackend);
+      this.textRange.end -= this.textRowsOffset;
 
-      if (newRange.end < this.textRowsOffset) {
-        newRange.end = (this.textRowsOffset + this.compensazioneBackend);
+      if (this.textRange.end < this.textRowsOffset) {
+        this.textRange.end = this.textRowsOffset;
       }
     }
 
-    this.scrollingSubject.next(new SynchRequest(newRange, 'onScroll'));
+    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend);
+
+    this.scrollingSubject.next(new SynchRequest(requestRange, 'onScroll'));
   }
 
   public checkScroll() {
@@ -313,12 +318,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.textRowsOffset += 5;
       let newRange = new TextRange(this.textRange.start, this.textRowsOffset);
       this.scrollingSubject.next(new SynchRequest(newRange, 'checkScroll'));
-      this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
+      this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0)
       return;
     }
 
     //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
-    this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0);
+    this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
     this.preventOnScrollEvent = true;
@@ -346,8 +351,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
 
     this.loaderService.show();
-    this.oldTextRange = this.textRange;
-    this.textRange = newTextRange;
     // this.checkScroll();
     // this.lastIndex = textRange?.end ?? this.first + this.rowsPaginator;
     // this.first = textRange?.start ?? this.first;
@@ -467,9 +470,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       // })
 
       this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
-
-      console.log('Hello', this.simplifiedAnns)
-      console.log('Archi', this.simplifiedArcs)
 
       this.renderData();
     });
