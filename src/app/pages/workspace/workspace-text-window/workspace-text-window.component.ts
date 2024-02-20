@@ -240,11 +240,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(event);
     this.scrolling = true;
-    let scroll2 = Math.round(event.target.clientHeight + event.target.scrollTop) + 1;
+    // let scroll = Math.round(event.target.clientHeight + event.target.scrollTop) + 1;
     let scroll = event.target.clientHeight + event.target.scrollTop;
-    // let scroll = Math.round(event.target.scrollTop) + 1;
 
     if (this.lastScrollTop === event.target.scrollTop) { return; }
 
@@ -274,11 +272,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (this.scrollingDown && scroll < this.svgHeight) { return; }
 
-    this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
-
     let newRange = new TextRange(this.textRange.start, this.textRange.end);
-
-    // let textRangeSizeInPixels = this.visibleRowsSizeInPixels();
 
     if (this.scrollingDown) {
       newRange.start += (this.textRowsOffset - 1 - this.compensazioneBackend);
@@ -311,7 +305,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.scrollingSubject.next(new SynchRequest(newRange, 'onScroll'));
-    // this.loadData(this.lastIndex + this.rowsPaginator);
   }
 
   public checkScroll() {
@@ -331,13 +324,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
-  }
-
-  public visibleRowsSizeInPixels(): number {
-    this.textContainer.nativeElement.scrollTop;
-    this.textContainer.nativeElement.clientHeight;
-    this.svgHeight;
-    return this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
   }
 
   public textRowsOffsetPredictor(): number {
