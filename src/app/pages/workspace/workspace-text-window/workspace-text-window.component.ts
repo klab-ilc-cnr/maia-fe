@@ -277,14 +277,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end);
 
     if (this.scrollingDown) {
-      this.textRange.start += this.textRowsOffset;
+      this.textRange.start += this.textRowsOffset - 2;
 
-      if (this.textRange.start > this.textTotalRows - this.textRowsOffset) {
-        this.textRange.start = this.textTotalRows - this.textRowsOffset;
+      if (this.textRange.start > this.textTotalRows - this.textRowsOffset - 2) {
+        this.textRange.start = this.textTotalRows - this.textRowsOffset - 2;
       }
     }
     else {
-      this.textRange.start -= this.textRowsOffset;
+      this.textRange.start -= this.textRowsOffset - 2;
 
       if (this.textRange.start < 0) {
         this.textRange.start = 0;
@@ -306,10 +306,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.scrollingDown && this.textRange.start - this.cachedRows >= 0) { this.textRange.start -= this.cachedRows }
+    if (this.scrollingDown && this.textRange.start - this.cachedRows >= 0) { this.textRange.start -= this.cachedRows; }
     if (!this.scrollingDown && this.textRange.end + this.cachedRows < this.textTotalRows + this.compensazioneBackend) { this.textRange.end += (this.cachedRows + this.compensazioneBackend); }
 
-    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend);
+    //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
+    let requestRange = new TextRange(this.textRange.start !== 0 ? this.textRange.start + (this.compensazioneBackend + 1) : this.textRange.start, this.textRange.end + this.compensazioneBackend);
 
     this.scrollingSubject.next(new SynchRequest(requestRange, 'onScroll'));
   }
@@ -324,8 +325,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
+    //FIXME QUESTO SE SCROLLO VERSO IL BASSO
+    let cacheSize = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0);
+    let currentRow = this.rows.filter(r => r.rowIndex === this.oldTextRange!.end)[0];
+    let extraScrollPixels = this.textContainer.nativeElement.clientHeight - currentRow.height!;
     //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
-    this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0);
+    this.textContainer.nativeElement.scrollTop = cacheSize - extraScrollPixels;
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
     this.preventOnScrollEvent = true;
@@ -584,6 +589,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       const rowHeight = sLinesCopy.reduce((acc: any, o: any) => acc + o.height, 0);
 
+      let rowIndex = this.textRange.start + index;
+      rowIndex = this.textRange.start !== 0 ? rowIndex + this.compensazioneBackend : rowIndex; //FIXME DA ELIMINARE APPENA SISTEMATO IL BACKEND
+
       this.rows?.push({
         id: row_id + 1,
         height: rowHeight,
@@ -597,7 +605,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         words: words,
         startIndex: start,
         endIndex: start + s.length,
-        rowIndex: this.textRange.start + index
+        rowIndex: rowIndex
       })
 
       yStartRow += rowHeight;
