@@ -8,7 +8,6 @@ import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { debounceTime as DebounceTime } from 'rxjs/operators';
-import { PageEvent } from 'src/app/models/page-event';
 import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
 import { LineBuilder } from 'src/app/models/text/line-builder';
@@ -146,6 +145,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
+  public cachedRows: number = 5;
 
   //#endregion
   public viewCheckedSubject = new Subject();
@@ -270,11 +270,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (!this.scrollingDown && event.target.scrollTop !== 0) { return; }
 
-    if (this.scrollingDown && this.textRange.end > this.textTotalRows) { return; }
+    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return; }
 
     if (this.scrollingDown && scroll < this.svgHeight) { return; }
 
-    let cachedRows = 5;
     this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end);
 
     if (this.scrollingDown) {
@@ -307,6 +306,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (this.scrollingDown && this.textRange.start - this.cachedRows >= 0) { this.textRange.start -= this.cachedRows }
+    if (!this.scrollingDown && this.textRange.end + this.cachedRows < this.textTotalRows + this.compensazioneBackend) { this.textRange.end += (this.cachedRows + this.compensazioneBackend); }
+
     let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend);
 
     this.scrollingSubject.next(new SynchRequest(requestRange, 'onScroll'));
@@ -318,12 +320,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.textRowsOffset += 5;
       let newRange = new TextRange(this.textRange.start, this.textRowsOffset);
       this.scrollingSubject.next(new SynchRequest(newRange, 'checkScroll'));
-      this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0)
+      this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
       return;
     }
 
     //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
-    this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+    this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0);
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
     this.preventOnScrollEvent = true;
@@ -595,7 +597,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         words: words,
         startIndex: start,
         endIndex: start + s.length,
-        rowIndex: this.textRange.start + index + 1
+        rowIndex: this.textRange.start + index
       })
 
       yStartRow += rowHeight;
