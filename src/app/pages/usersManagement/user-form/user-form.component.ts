@@ -31,7 +31,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     confirmPassword: new FormControl<string>(''),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
-    email: new FormControl<string>(''),
+    email: new FormControl<string>('', Validators.required),
     role: new FormControl<string>('', Validators.required),
     active: new FormControl<boolean>(false),
     languages: new FormControl<Language[]>([], Validators.required),
@@ -88,13 +88,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
   public languages$ = this.languageService.retrieveAll();
 
   /**
-   * Costruttore per UserFormComponent
-   * @param route {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
-   * @param router {Router} servizi per la navigazione fra le viste
-   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param userService {UserService} servizi relativi agli utenti
-   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
-   * @param languageService {LanguageService} servizi relativi alla gestione delle lingue
+   * Costructor for UserFormComponent
+   * @param route {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
+   * @param router {Router}  A service that provides navigation among views and URL manipulation capabilities
+   * @param loaderService {LoaderService} services for the loading element
+   * @param userService {UserService} services related to users
+   * @param loggedUserService {LoggedUserService} services related to logged user
+   * @param languageService {LanguageService} services related to langauge management
+   * @param storageService {StorageService} Services to manage the local storage
+   * @param messageService {MessageService}
+   * @param msgConfService {MessageConfigurationService}
    */
   constructor(
     private route: ActivatedRoute,
@@ -107,18 +110,18 @@ export class UserFormComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
   ) {
-    this.user = new User(); //crea un nuovo utente
+    this.user = new User(); //create a new user
   }
 
-  /**Metodo dell'interfaccia OnInit nel quale si recuperano i valori iniziali del componente */
+  /**OnInit interface method in which the initial values of the component are retrieved */
   ngOnInit(): void {
     this.route.paramMap.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(params => {
-      const id = params.get('id'); //recupero l'id utente dall'url di navigazione 
+      const id = params.get('id'); //retrieve user id from navigation url
       this.isSameUser = id == this.currentMaiaUserId?.toString();
 
-      if (id === this.newId) //caso di un nuovo inserimento utente
+      if (id === this.newId) //case of a new user entry
       {
         this.userForm.get('newPassword')?.setValidators(Validators.required);
         this.userForm.get('confirmPassword')?.setValidators(Validators.required);
@@ -129,7 +132,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if ((id != null && id != undefined) && !this.isSameUser) { //caso di indicazione di un id utente (diverso da quello loggato) da modificare
+      if ((id != null && id != undefined) && !this.isSameUser) { //case of indicating a user id (other than logged in) to be changed
         this.editUser = true;
         this.loadUser(id);
         return;
@@ -145,15 +148,15 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  /**Definisce se l'utente loggato può modificare i dati utente */
+  /**Defines whether the logged-in user can edit user data */
   public get canManageUsers(): boolean {
     return this.loggedUserService.canManageUsers();
-    // return false; //TODO A SOLO USO DEI TEST
+    // return false; //NOTE ONLY FOR THE PURPOSE OF TESTING
   }
 
   /**
-   * Getter dell'essere utente in modifica
-   * @returns {boolean} definisce se è un utente in modifica
+   * Defines whether it is an editing user
+   * @returns {boolean} 
    */
   public get isEditUser(): boolean { return this.editUser; }
 

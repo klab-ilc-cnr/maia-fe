@@ -1024,7 +1024,7 @@ export class TagsetService {
    */
   public updateTagset(updatedTagset: TTagset): Observable&lt;TTagset&gt; {
     return this.http.post&lt;TTagset&gt;(
-      &#x60;${this.textoUrl}/tagset/${updatedTagset.id}/update&#x60;,
+      &#x60;${this.textoUrl}/tagset/update&#x60;,
       updatedTagset,
     );
   }
@@ -1035,7 +1035,7 @@ export class TagsetService {
    */
   public updateTagsetItem(updatedTagsetItem: TTagsetItem): Observable&lt;TTagsetItem&gt; {
     return this.http.post&lt;TTagsetItem&gt;(
-      &#x60;${this.textoUrl}/tagsetItem/${updatedTagsetItem.id}/update&#x60;,
+      &#x60;${this.textoUrl}/tagsetItem/update&#x60;,
       updatedTagsetItem,
     );
   }

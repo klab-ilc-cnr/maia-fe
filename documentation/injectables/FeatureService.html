@@ -110,7 +110,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#updateFeatureById" >updateFeatureById</a>
+                                <a href="#updateFeature" >updateFeature</a>
                             </li>
                         </ul>
                     </td>
@@ -347,18 +347,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="updateFeatureById"></a>
+                    <a name="updateFeature"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>updateFeatureById</b></span>
-                        <a href="#updateFeatureById"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateFeature</b></span>
+                        <a href="#updateFeature"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateFeatureById(updatedFeature: <a href="../classes/TFeature.html" target="_self">TFeature</a>)</code>
+                    <code>updateFeature(updatedFeature: <a href="../classes/TFeature.html" target="_self">TFeature</a>)</code>
                 </td>
             </tr>
 
@@ -521,10 +521,10 @@ export class FeatureService {
    * @param updatedFeature {TFeature} feature to be updated
    * @returns {Observable&lt;TFeature&gt;} observable of the updated feature
    */
-  public updateFeatureById(updatedFeature: TFeature): Observable&lt;TFeature&gt; {
+  public updateFeature(updatedFeature: TFeature): Observable&lt;TFeature&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TFeature&gt;(
-      &#x60;${this.textoUrl}/feature/${updatedFeature.id}/update&#x60;,
+      &#x60;${this.textoUrl}/feature/update&#x60;,
       updatedFeature,
       { headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }) },
     );
