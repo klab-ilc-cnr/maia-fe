@@ -144,7 +144,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
-  public cachedRows: number = 5;
+  public extraRowsUpOrDown: number = 5;
 
   //#endregion
   public viewCheckedSubject = new Subject();
@@ -279,11 +279,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.scrollingDown && this.textRange.start - this.cachedRows >= 0) {
-      this.textRange.start -= this.cachedRows;
+    if (this.scrollingDown && this.textRange.start - this.extraRowsUpOrDown >= 0) {
+      this.textRange.start -= this.extraRowsUpOrDown;
     }
-    if (!this.scrollingDown && this.textRange.end + this.cachedRows < this.textTotalRows + this.compensazioneBackend) {
-      this.textRange.end += this.cachedRows;
+    if (!this.scrollingDown && this.textRange.end + this.extraRowsUpOrDown < this.textTotalRows + this.compensazioneBackend) {
+      this.textRange.end += this.extraRowsUpOrDown;
     }
 
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
