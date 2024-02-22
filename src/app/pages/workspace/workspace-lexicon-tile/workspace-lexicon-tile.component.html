@@ -38,57 +38,58 @@
 </div>
 <p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true">
   <div class="flex flex-row">
-    <div class="flex align-items-center justify-content-center m-3 field-checkbox">
+    <div class="flex m-2 field-checkbox">
       <p-checkbox id="caseSensitiveInput" [(ngModel)]="caseSensitive" [binary]="true" inputId="caseSensitive" (ngModelChange)="onChangeFilter()"></p-checkbox>
       <label for="caseSensitiveInput">Case sensitive</label>
     </div>
   </div>
   <div class="flex flex-row">
-    <div class="flex align-items-center justify-content-center m-3 field-radiobutton">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"
         inputId="equals"></p-radioButton>
       <label for="equals">Equals</label>
     </div>
-    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode"
         inputId="startsWith"></p-radioButton>
       <label for="startsWith">StartsWith</label>
     </div>
-
   </div>
   <div class="flex flex-row">
-    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode"
         inputId="contains"></p-radioButton>
       <label for="contains">Contains</label>
     </div>
-    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode"
         inputId="end"></p-radioButton>
       <label for="end">End</label>
     </div>
   </div>
-  <div class="flex flex-row">
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+  <div class="flex flex-row w-100">
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectTypes$|async) || []" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectPartOfSpeech$ |async)|| []" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos"
       [showClear]="true" [filter]="true" filterBy="label">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+  </div>
+  <div class="flex flex-row w-100">
+    <p-dropdown class="flex  justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectLanguages$|async)||[]" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true">
     </p-dropdown>
-  </div>
-  <div class="flex flex-row">
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectAuthors$|async) || []" [(ngModel)]="selectedAuthor" placeholder="Author" [showClear]="true"
       [filter]="true" filterBy="label">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+  </div>
+  <div class="flex flex-row">
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectStatuses$ | async) || []" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true">
     </p-dropdown>
   </div>

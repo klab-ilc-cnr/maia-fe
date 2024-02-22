@@ -48,7 +48,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   public selectTypes$ = this.globalState.lexicalEntryTypes$.pipe(
     switchMap(types => {
       types.sort((a: OntolexType, b: OntolexType) => a.valueLabel!.localeCompare(b.valueLabel!));
-      return of(types.map(t => <SelectItem>{ label: t.valueLabel, value: t.valueId }));
+      return of(types.map(t => <SelectItem>{ label: t.valueLabel, value: t.valueLabel }));
     }),
   );
   public selectLanguages$ = this.globalState.languages$.pipe(
