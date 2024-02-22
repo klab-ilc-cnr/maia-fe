@@ -277,14 +277,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end);
 
     if (this.scrollingDown) {
-      this.textRange.start += this.textRowsOffset - 2;
+      this.textRange.start += this.textRowsOffset - 1;
 
-      if (this.textRange.start > this.textTotalRows - this.textRowsOffset - 2) {
-        this.textRange.start = this.textTotalRows - this.textRowsOffset - 2;
+      if (this.textRange.start > this.textTotalRows - this.textRowsOffset - 1) {
+        this.textRange.start = this.textTotalRows - this.textRowsOffset - 1;
       }
     }
     else {
-      this.textRange.start -= this.textRowsOffset - 2;
+      this.textRange.start -= this.textRowsOffset - 1;
 
       if (this.textRange.start < 0) {
         this.textRange.start = 0;
@@ -310,7 +310,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!this.scrollingDown && this.textRange.end + this.cachedRows < this.textTotalRows + this.compensazioneBackend) { this.textRange.end += (this.cachedRows + this.compensazioneBackend); }
 
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    let requestRange = new TextRange(this.textRange.start !== 0 ? this.textRange.start + (this.compensazioneBackend + 1) : this.textRange.start, this.textRange.end + this.compensazioneBackend);
+    let requestRange = new TextRange(this.textRange.start !== 0 ? this.textRange.start + (this.compensazioneBackend * 2) : this.textRange.start, this.textRange.end + this.compensazioneBackend);
 
     this.scrollingSubject.next(new SynchRequest(requestRange, 'onScroll'));
   }
