@@ -317,6 +317,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public checkScroll() {
     let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
+    //FIXME DA RIVEDERE QUESTO IF
     if (!scrollable) {
       this.textRowsOffset += 5;
       let newRange = new TextRange(this.textRange.start, this.textRowsOffset);
@@ -325,12 +326,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    //FIXME QUESTO SE SCROLLO VERSO IL BASSO
-    let cacheSize = this.rows.filter(r => r.rowIndex! <= this.oldTextRange!.end - 2).reduce((acc, o) => acc + (o.height || 0), 0);
-    let lastRow = this.rows.filter(r => r.rowIndex === this.oldTextRange!.end - 1)[0];
-    let extraScrollPixels = this.textContainer.nativeElement.clientHeight - lastRow.height!;
+    let scrolledBlockSize = 0;
+    let extraScrollPixels = 0;
+
+    if (this.scrollingDown) {
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.oldTextRange!.end - 2).reduce((acc, o) => acc + (o.height || 0), 0);
+      let scrollingRow = this.rows.filter(r => r.rowIndex === this.oldTextRange!.end - 1)[0];
+      extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
+    }
+    else {
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.oldTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
+    }
+
     //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
-    this.textContainer.nativeElement.scrollTop = cacheSize - extraScrollPixels;
+    this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
     this.preventOnScrollEvent = true;
