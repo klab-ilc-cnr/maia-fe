@@ -138,7 +138,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public oldTextRange?: TextRange;
   public textRange!: TextRange;
   public lastScrollTop: number = 0;
-  public lastSvgHeight!: number;
   public scrolling: boolean = false;
   public scrollingSubject = new Subject<SynchRequest<TextRange>>();
   public compensazioneBackend: number = 1;
@@ -218,22 +217,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.oldTextRange = this.textRange;
     let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend)
     this.scrollingSubject.next(new SynchRequest(requestRange, 'onAfterViewInit'));
-    this.lastSvgHeight = this.svgHeight;
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
-  }
-
-  public isInDownArea(scrollingDown: boolean) {
-    return scrollingDown && this.textRange.end > (this.textTotalRows - this.textRowsOffset) ||
-      !scrollingDown && (this.textRange.start - this.textRowsOffset) > (this.textTotalRows - this.textRowsOffset);
-  }
-
-  public isInUpArea(scrollingDown: boolean) {
-    return scrollingDown && this.textRange.start < this.textRowsOffset ||
-      !scrollingDown && this.textRange.start - this.textRowsOffset < this.textRowsOffset;
   }
 
   public onScroll(event: any) {
@@ -243,28 +231,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.scrolling = true;
-    // let scroll = Math.round(event.target.clientHeight + event.target.scrollTop) + 1;
     let scroll = event.target.clientHeight + event.target.scrollTop;
 
     if (this.lastScrollTop === event.target.scrollTop) { return; }
 
     this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
 
-    // if (this.lastSvgHeight !== this.svgHeight) {
-    //   event.target.scrollTop = 0;
-    //   scrollingDown = true;
-    // }
-
-    this.lastSvgHeight = this.svgHeight;
     this.lastScrollTop = event.target.scrollTop;
-    // let percentageScrollHeight = 0.7 * event.target.scrollHeight;
-    // let percentageScrollHeightUp = 0.3 * event.target.scrollHeight;
-
-    // if (scrollingDown && scroll < percentageScrollHeight) { return; }
-    // if (scrollingDown && this.textRange.end === this.textTotalRows) { return; }
-
-    // if (!scrollingDown && scroll > percentageScrollHeightUp) { return; }
-    // if (!scrollingDown && this.textRange.start === 0) { return }
 
     if (!this.scrollingDown && this.textRange.start === 0) { return; }
 
@@ -306,8 +279,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.scrollingDown && this.textRange.start - this.cachedRows >= 0) { this.textRange.start -= this.cachedRows; }
-    if (!this.scrollingDown && this.textRange.end + this.cachedRows < this.textTotalRows + this.compensazioneBackend) { this.textRange.end += (this.cachedRows + this.compensazioneBackend); }
+    if (this.scrollingDown && this.textRange.start - this.cachedRows >= 0) {
+      this.textRange.start -= this.cachedRows;
+    }
+    if (!this.scrollingDown && this.textRange.end + this.cachedRows < this.textTotalRows + this.compensazioneBackend) {
+      this.textRange.end += this.cachedRows;
+    }
 
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
     let requestRange = new TextRange(this.textRange.start !== 0 ? this.textRange.start + (this.compensazioneBackend * 2) : this.textRange.start, this.textRange.end + this.compensazioneBackend);
@@ -367,18 +344,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
 
     this.loaderService.show();
-    // this.checkScroll();
-    // this.lastIndex = textRange?.end ?? this.first + this.rowsPaginator;
-    // this.first = textRange?.start ?? this.first;
-
-    // if (this.first < 0) {
-    //   this.first = 0;
-    // }
-
-    // if (this.totalRecords && this.lastIndex >= this.totalRecords) {
-    //   this.first = this.lastIndex - this.rowsPaginator;
-    //   this.lastIndex = this.totalRecords;
-    // }
 
     forkJoin([
       this.annotationService.retrieveTextSplitted(this.textId, { start: newTextRange.start, end: newTextRange.end }),
