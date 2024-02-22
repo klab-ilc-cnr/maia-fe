@@ -214,9 +214,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.textRowsOffset = this.textRowsOffsetPredictor();
-    this.textRange = new TextRange(0, this.textRowsOffset - 1);
+    this.textRange = new TextRange(0, this.textRowsOffset);
     this.oldTextRange = this.textRange;
-    let requestRange = new TextRange(this.textRange.start, this.textRange.end + 1 + this.compensazioneBackend)
+    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend)
     this.scrollingSubject.next(new SynchRequest(requestRange, 'onAfterViewInit'));
     this.lastSvgHeight = this.svgHeight;
   }
@@ -326,9 +326,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     //FIXME QUESTO SE SCROLLO VERSO IL BASSO
-    let cacheSize = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0);
-    let currentRow = this.rows.filter(r => r.rowIndex === this.oldTextRange!.end)[0];
-    let extraScrollPixels = this.textContainer.nativeElement.clientHeight - currentRow.height!;
+    let cacheSize = this.rows.filter(r => r.rowIndex! <= this.oldTextRange!.end - 2).reduce((acc, o) => acc + (o.height || 0), 0);
+    let lastRow = this.rows.filter(r => r.rowIndex === this.oldTextRange!.end - 1)[0];
+    let extraScrollPixels = this.textContainer.nativeElement.clientHeight - lastRow.height!;
     //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
     this.textContainer.nativeElement.scrollTop = cacheSize - extraScrollPixels;
 
