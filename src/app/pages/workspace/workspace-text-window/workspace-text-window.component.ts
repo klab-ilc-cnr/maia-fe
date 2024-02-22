@@ -243,14 +243,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textRange.resetExtraRowsSpace();
 
     if (this.scrollingDown) {
-      this.textRange.start += this.textRowsOffset - 1;
+      this.textRange.start += this.textRowsOffset;
 
-      if (this.textRange.start > this.textTotalRows - this.textRowsOffset - 1) {
-        this.textRange.start = this.textTotalRows - this.textRowsOffset - 1;
+      if (this.textRange.start > this.textTotalRows - this.textRowsOffset) {
+        this.textRange.start = this.textTotalRows - this.textRowsOffset;
       }
     }
     else {
-      this.textRange.start -= this.textRowsOffset - 1;
+      this.textRange.start -= this.textRowsOffset;
 
       if (this.textRange.start < 0) {
         this.textRange.start = 0;
@@ -284,10 +284,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
     //#endregion
 
+    let startIndexRequest = this.calculateStartIndexRequest();
+    let endIndexRequest = this.textRange.end;
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + (this.compensazioneBackend * 2) : this.textRange.start;
-    let endCompensato = this.textRange.end + this.compensazioneBackend;
+    let startCompensato = startIndexRequest !== 0 ? startIndexRequest + (this.compensazioneBackend * 2) : startIndexRequest;
+    let endCompensato = endIndexRequest + this.compensazioneBackend;
     this.loadData(startCompensato, endCompensato);
+  }
+
+  public calculateStartIndexRequest()
+  {
+    return this.textRange.start !== 0 ?this.textRange.start - 1 : this.textRange.start;
   }
 
   public checkScroll() {
@@ -316,7 +323,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
     }
     else {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.oldTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
     }
 
     //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
@@ -487,7 +494,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     lineBuilder.yStartLine = 0;
 
-    let rowStartIndex = this.textRange.start;
+    let rowStartIndex = this.calculateStartIndexRequest();
     rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
     // if (this.scrollingDown && rowStartIndex - this.extraRowsUpOrDown >= 0) {
     //   rowStartIndex -= this.extraRowsUpOrDown;
