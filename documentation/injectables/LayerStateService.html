@@ -335,7 +335,7 @@
       switchMap(newFeature &#x3D;&gt; this.layerService.retrieveLayerFeatureList(newFeature.layer!.id!)),
     ),
     this.updateFeature.pipe(
-      switchMap(updatedFeature &#x3D;&gt; this.featureService.updateFeatureById(updatedFeature).pipe(
+      switchMap(updatedFeature &#x3D;&gt; this.featureService.updateFeature(updatedFeature).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${updatedFeature.name}&quot; updated&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating feature &quot;${updatedFeature.name}&quot; failed: ${error.error.message}&#x60;));
@@ -769,7 +769,7 @@ export class LayerStateService {
       switchMap(newFeature &#x3D;&gt; this.layerService.retrieveLayerFeatureList(newFeature.layer!.id!)),
     ),
     this.updateFeature.pipe(
-      switchMap(updatedFeature &#x3D;&gt; this.featureService.updateFeatureById(updatedFeature).pipe(
+      switchMap(updatedFeature &#x3D;&gt; this.featureService.updateFeature(updatedFeature).pipe(
         tap(() &#x3D;&gt; this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;Feature &quot;${updatedFeature.name}&quot; updated&#x60;))),
         catchError((error: HttpErrorResponse) &#x3D;&gt; {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(&#x60;Updating feature &quot;${updatedFeature.name}&quot; failed: ${error.error.message}&#x60;));
