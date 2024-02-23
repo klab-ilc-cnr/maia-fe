@@ -31,7 +31,11 @@ export class GlobalStateService {
   morphologies$ = this.lexiconService.getMorphology();
   /**Observable of the list of available POS */
   pos$ = this.morphologies$.pipe(
-    switchMap(m => of(m.find(e => e.propertyId?.endsWith('#partOfSpeech'))?.propertyValues)),
+    switchMap(m => {
+      let sortedPos = m.find(e => e.propertyId?.endsWith('#partOfSpeech'))?.propertyValues;
+      sortedPos = sortedPos?.sort((a, b) => a.valueLabel === b.valueLabel ? 0 : (a.valueLabel! > b.valueLabel! ? 1 : -1));
+      return of(sortedPos);
+    }),
     shareReplay(1),
   );
   /**Observable of the list of available authors */

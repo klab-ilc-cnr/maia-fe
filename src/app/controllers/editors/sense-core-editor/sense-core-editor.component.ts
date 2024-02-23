@@ -60,7 +60,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   morphRelationValues = (relation: string) => this.globalState.morphologies$.pipe(
     switchMap(list => {
       const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
-      return of(values);
+      const sortedValues = values.sort((a, b) => a.valueLabel === b.valueLabel ? 0 : (a.valueLabel! > b.valueLabel! ? 1 : -1));
+      return of(sortedValues);
     }),
   );
   /**
