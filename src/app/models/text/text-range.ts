@@ -40,4 +40,12 @@ export class TextRange {
         this.extraRowsAfterEnd = 0;
         this.extraRowsBeforeStart = 0;
     }
+
+    public clone() {
+        let clone = new TextRange(this._start, this.end);
+        clone.extraRowsAfterEnd = this.extraRowsAfterEnd;
+        clone.extraRowsBeforeStart = this.extraRowsBeforeStart;
+
+        return clone;
+    }
 }

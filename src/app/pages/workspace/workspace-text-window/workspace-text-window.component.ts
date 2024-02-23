@@ -226,50 +226,39 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (this.lastScrollTop === event.target.scrollTop) { return; }
 
     this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
-
     this.lastScrollTop = event.target.scrollTop;
 
+    if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
+
     //#region calcolo start e end
-    if (!this.scrollingDown && this.textRange.start === 0) { return; }
-
-    if (!this.scrollingDown && event.target.scrollTop !== 0) { return; }
-
-    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return; }
-
-    if (this.scrollingDown && scroll < this.svgHeight) { return; }
-
     this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end);
-
     this.textRange.resetExtraRowsSpace();
 
-    if (this.scrollingDown) {
-      this.textRange.start += this.textRowsOffset;
+    switch (this.scrollingDown) {
+      case true: //scolling down
+        this.textRange.start += this.textRowsOffset;
+        this.textRange.end += this.textRowsOffset;
 
-      if (this.textRange.start > this.textTotalRows - this.textRowsOffset) {
-        this.textRange.start = this.textTotalRows - this.textRowsOffset;
-      }
-    }
-    else {
-      this.textRange.start -= this.textRowsOffset;
+        if (this.textRange.start > this.textTotalRows - this.textRowsOffset) {
+          this.textRange.start = this.textTotalRows - this.textRowsOffset;
+        }
 
-      if (this.textRange.start < 0) {
-        this.textRange.start = 0;
-      }
-    }
+        if (this.textRange.end > this.textTotalRows) {
+          this.textRange.end = this.textTotalRows;
+        }
+        break;
+      case false: //scrolling UP
+        this.textRange.start -= this.textRowsOffset;
+        this.textRange.end -= this.textRowsOffset;
 
-    if (this.scrollingDown) {
-      this.textRange.end += this.textRowsOffset;
+        if (this.textRange.start < 0) {
+          this.textRange.start = 0;
+        }
 
-      if (this.textRange.end > this.textTotalRows) {
-        this.textRange.end = this.textTotalRows;
-      }
-    }
-    else {
-      this.textRange.end -= this.textRowsOffset;
-
-      if (this.textRange.end < this.textRowsOffset) {
-        this.textRange.end = this.textRowsOffset;
-      }
+        if (this.textRange.end < this.textRowsOffset) {
+          this.textRange.end = this.textRowsOffset;
+        }
+        break;
     }
     //#endregion
 
@@ -292,6 +281,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public compensazioneBackendRequest() {
     return this.textRange.start !== 0 ? this.textRange.start - 1 : this.textRange.start;
+  }
+
+  public isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
+    if (!this.scrollingDown && this.textRange.start === 0) { return true; }
+
+    if (!this.scrollingDown && scrollTop !== 0) { return true; }
+
+    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return true; }
+
+    if (this.scrollingDown && scroll < this.svgHeight) { return true; }
+
+    return false;
   }
 
   public checkScroll() {
