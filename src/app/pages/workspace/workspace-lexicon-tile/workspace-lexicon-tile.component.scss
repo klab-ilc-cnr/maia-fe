@@ -1,5 +1,6 @@
 #searchInput {
-  width: auto
+  width: auto;
+  min-width: 50px;
 }
 
 div.grid.p-fluid.input-search {
@@ -37,6 +38,9 @@ div:has(> label) {
   text-overflow: ellipsis;
 }
 
-td span {
-  display: inline;
+td {
+  padding: 0.5rem 0.5rem !important;
+  span {
+    display: inline;
+  }
 }
