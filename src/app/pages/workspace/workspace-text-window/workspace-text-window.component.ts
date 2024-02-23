@@ -320,8 +320,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
     }
 
-    //Fa ripartire l'evento OnScroll
-    this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
+    //setTimeout necessaria per evitare che lo scrolling venga settato erroneamente
+    //prima che la view del componente sia renderizzata
+    //mettere 0 è un trucco perchè la funzione viene chiamata proprio quando la view è renderizzata
+    setTimeout(() => {
+      //Fa ripartire l'evento OnScroll
+      this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
+    }, 0);
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
 
