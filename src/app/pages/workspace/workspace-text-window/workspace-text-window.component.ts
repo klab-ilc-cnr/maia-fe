@@ -132,7 +132,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   @ViewChild('textContainer') public textContainer!: ElementRef;
 
   //#region SCROLLER
-  public textRowsOffset: number = 0;
+  public textRowsOffset!: number;
   public textTotalRows: number = 0;
   public oldTextRange?: TextRange;
   public textRange!: TextRange;
@@ -142,7 +142,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
-  public extraRowsUpOrDown: number = 5;
+  public extraRowsUpOrDown!: number;
 
   //#endregion
   public viewCheckedSubject = new Subject();
@@ -203,6 +203,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.textRowsOffset = this.textRowsOffsetPredictor();
+    this.extraRowsUpOrDown = this.extraRowsOffsetPredictor();
     this.textRange = new TextRange(0, this.textRowsOffset);
     this.oldTextRange = this.textRange;
     let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend)
@@ -231,7 +232,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
 
     //#region calcolo start e end
-    this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end);
+    this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end); //FIXME
     this.textRange.resetExtraRowsSpace();
 
     switch (this.scrollingDown) {
@@ -338,6 +339,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let arbitraryRowSizeInPixels = 50;
     let arbitraryExtraRows = 5;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
+  }
+
+  public extraRowsOffsetPredictor(): number {
+    let arbitraryRowSizeInPixels = 50;
+    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
   }
 
   /**
