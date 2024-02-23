@@ -132,7 +132,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   @ViewChild('textContainer') public textContainer!: ElementRef;
 
   //#region SCROLLER
-  public textRowsOffset!: number;
+  public textRowsWideness!: number;
   public textTotalRows: number = 0;
   public oldTextRange?: TextRange;
   public textRange!: TextRange;
@@ -142,7 +142,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
-  public extraRowsUpOrDown!: number;
+  public extraRowsWidenessUpOrDown!: number;
 
   //#endregion
   public viewCheckedSubject = new Subject();
@@ -202,9 +202,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.textRowsOffset = this.textRowsOffsetPredictor();
-    this.extraRowsUpOrDown = this.extraRowsOffsetPredictor();
-    this.textRange = new TextRange(0, this.textRowsOffset);
+    this.textRowsWideness = this.textRowsRangeWidenessPredictor();
+    this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
+    this.textRange = new TextRange(0, this.textRowsWideness);
     this.oldTextRange = this.textRange;
     let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend)
     this.loadData(requestRange.start, requestRange.end);
@@ -222,14 +222,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.scrolling = true;
-    let scroll = event.target.clientHeight + event.target.scrollTop;
+    let scroll = Math.ceil(event.target.clientHeight + event.target.scrollTop);
 
     if (this.lastScrollTop === event.target.scrollTop) { return; }
 
     this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
     this.lastScrollTop = event.target.scrollTop;
 
-    if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
+    if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { 
+      return; 
+    }
 
     //#region calcolo start e end
     this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end); //FIXME
@@ -237,11 +239,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     switch (this.scrollingDown) {
       case true: //scolling down
-        this.textRange.start += this.textRowsOffset;
-        this.textRange.end += this.textRowsOffset;
+        this.textRange.start += this.textRowsWideness;
+        this.textRange.end += this.textRowsWideness;
 
-        if (this.textRange.start > this.textTotalRows - this.textRowsOffset) {
-          this.textRange.start = this.textTotalRows - this.textRowsOffset;
+        if (this.textRange.start > this.textTotalRows - this.textRowsWideness) {
+          this.textRange.start = this.textTotalRows - this.textRowsWideness;
         }
 
         if (this.textRange.end > this.textTotalRows) {
@@ -249,27 +251,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
 
         //righe extra
-        if (this.textRange.start - this.extraRowsUpOrDown >= 0
+        if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
           && !this.textRange.hasExtraRowsBeforeStart) {
-          this.textRange.extraRowsBeforeStart = this.extraRowsUpOrDown;
+          this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
         }
         break;
       case false: //scrolling UP
-        this.textRange.start -= this.textRowsOffset;
-        this.textRange.end -= this.textRowsOffset;
+        this.textRange.start -= this.textRowsWideness;
+        this.textRange.end -= this.textRowsWideness;
 
         if (this.textRange.start < 0) {
           this.textRange.start = 0;
         }
 
-        if (this.textRange.end < this.textRowsOffset) {
-          this.textRange.end = this.textRowsOffset;
+        if (this.textRange.end < this.textRowsWideness) {
+          this.textRange.end = this.textRowsWideness;
         }
 
         //righe extra 
-        if (this.textRange.end + this.extraRowsUpOrDown < this.textTotalRows + this.compensazioneBackend
+        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.compensazioneBackend
           && !this.textRange.hasExtraRowsAfterEnd) {
-          this.textRange.extraRowsAfterEnd = this.extraRowsUpOrDown;
+          this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
         }
         break;
     }
@@ -301,10 +303,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
     //FIXME DA RIVEDERE QUESTO IF
     if (!scrollable) {
-      this.textRowsOffset += 5;
-      let newRange = new TextRange(this.textRange.start, this.textRowsOffset);
+      this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
+      let newRange = new TextRange(this.textRange.start, this.textRowsWideness);
       this.loadData(newRange.start, newRange.end);
-      this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
+      // this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
       return;
     }
 
@@ -335,13 +337,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loaderService.hide();
   }
 
-  public textRowsOffsetPredictor(): number {
+  public textRowsRangeWidenessPredictor(extraRows?: number): number {
     let arbitraryRowSizeInPixels = 50;
-    let arbitraryExtraRows = 5;
+    let arbitraryExtraRows = extraRows ?? 5;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
   }
 
-  public extraRowsOffsetPredictor(): number {
+  public extraTextRowsWidenessPredictor(): number {
     let arbitraryRowSizeInPixels = 50;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
   }
