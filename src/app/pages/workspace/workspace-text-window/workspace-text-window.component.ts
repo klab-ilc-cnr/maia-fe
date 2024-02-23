@@ -284,17 +284,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
     //#endregion
 
-    let startIndexRequest = this.calculateStartIndexRequest();
-    let endIndexRequest = this.textRange.end;
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    let startCompensato = startIndexRequest !== 0 ? startIndexRequest + (this.compensazioneBackend * 2) : startIndexRequest;
-    let endCompensato = endIndexRequest + this.compensazioneBackend;
+    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
+    let endCompensato = this.textRange.end + this.compensazioneBackend;
     this.loadData(startCompensato, endCompensato);
   }
 
-  public calculateStartIndexRequest()
-  {
-    return this.textRange.start !== 0 ?this.textRange.start - 1 : this.textRange.start;
+  public compensazioneBackendRequest() {
+    return this.textRange.start !== 0 ? this.textRange.start - 1 : this.textRange.start;
   }
 
   public checkScroll() {
@@ -494,7 +491,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     lineBuilder.yStartLine = 0;
 
-    let rowStartIndex = this.calculateStartIndexRequest();
+    let rowStartIndex = this.compensazioneBackendRequest();
     rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
     // if (this.scrollingDown && rowStartIndex - this.extraRowsUpOrDown >= 0) {
     //   rowStartIndex -= this.extraRowsUpOrDown;
