@@ -675,12 +675,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loadData(this.textRange.start, this.textRange.end);
   }
 
-  // onPageChange(event: PageEvent) {
-  //   this.first = event.first;
-  //   this.rowsPaginator = event.rows;
-  //   this.loadData();
-  // }
-
   /**
    * Metodo che gestisce il movimento del mouse nel trascinamento
    * @param event {any} evento di trascinamento del mouse
