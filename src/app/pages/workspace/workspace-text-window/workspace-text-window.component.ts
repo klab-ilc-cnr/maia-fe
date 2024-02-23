@@ -7,7 +7,6 @@ import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadat
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
-import { debounceTime as DebounceTime } from 'rxjs/operators';
 import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
 import { LineBuilder } from 'src/app/models/text/line-builder';
@@ -143,10 +142,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
   public extraRowsWidenessUpOrDown!: number;
-
   //#endregion
-  public viewCheckedSubject = new Subject();
-  public endReached: boolean = false;
 
   // currentUser!: User;
   currentTextoUserId!: number;
@@ -229,16 +225,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
     this.lastScrollTop = event.target.scrollTop;
 
-    if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { 
-      return; 
-    }
+    if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
 
     //#region calcolo start e end
     this.oldTextRange = new TextRange(this.textRange.start, this.textRange.end); //FIXME
     this.textRange.resetExtraRowsSpace();
 
     switch (this.scrollingDown) {
-      case true: //scolling down
+      case true: //scolling DOWN
         this.textRange.start += this.textRowsWideness;
         this.textRange.end += this.textRowsWideness;
 
@@ -301,13 +295,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public checkScroll() {
     let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
-    //FIXME DA RIVEDERE QUESTO IF
     if (!scrollable) {
       this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
-      let newRange = new TextRange(this.textRange.start, this.textRowsWideness);
-      this.loadData(newRange.start, newRange.end);
-      // this.textContainer.nativeElement.scrollTop = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.end).reduce((acc, o) => acc + (o.height || 0), 0)
-      return;
+
+      //Fa ripartire l'evento OnScroll
+      this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
     }
 
     if (this.textRange.start === this.oldTextRange?.start &&
@@ -328,10 +320,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.oldTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
     }
 
-    //QUESTO FA RIPARTIRE L'EVENTO ONSCROLL
+    //Fa ripartire l'evento OnScroll
     this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
+
+    //Impedisce il loop infinito tra onScroll e checkScroll
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
@@ -502,15 +496,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     lineBuilder.yStartLine = 0;
 
     let rowStartIndex = this.compensazioneBackendRequest();
+    //FIXME ELIMINARE COMPENSAZIONE AL FIX DEL BACKEND
     rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
-    // if (this.scrollingDown && rowStartIndex - this.extraRowsUpOrDown >= 0) {
-    //   rowStartIndex -= this.extraRowsUpOrDown;
-    // }
-
-    // if ((this.textRange.start - this.extraRowsUpOrDown) !== 0 &&
-    //   (this.textRange.start - this.extraRowsUpOrDown) > 0) {
-    // rowStartIndex += this.compensazioneBackend; //FIXME DA ELIMINARE APPENA SISTEMATO IL BACKEND
-    // }
 
     sentences.forEach((s: any, index: number) => {
       const sWidth = this.getComputedTextLength(s, this.visualConfig.textFont);
