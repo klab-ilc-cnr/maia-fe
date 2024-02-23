@@ -246,6 +246,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         if (this.textRange.end > this.textTotalRows) {
           this.textRange.end = this.textTotalRows;
         }
+
+        //righe extra
+        if (this.textRange.start - this.extraRowsUpOrDown >= 0
+          && !this.textRange.hasExtraRowsBeforeStart) {
+          this.textRange.extraRowsBeforeStart = this.extraRowsUpOrDown;
+        }
         break;
       case false: //scrolling UP
         this.textRange.start -= this.textRowsOffset;
@@ -258,18 +264,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         if (this.textRange.end < this.textRowsOffset) {
           this.textRange.end = this.textRowsOffset;
         }
-        break;
-    }
-    //#endregion
 
-    //#region righe extra 
-    if (this.scrollingDown && this.textRange.start - this.extraRowsUpOrDown >= 0
-      && !this.textRange.hasExtraRowsBeforeStart) {
-      this.textRange.extraRowsBeforeStart = this.extraRowsUpOrDown;
-    }
-    if (!this.scrollingDown && this.textRange.end + this.extraRowsUpOrDown < this.textTotalRows + this.compensazioneBackend
-      && !this.textRange.hasExtraRowsAfterEnd) {
-      this.textRange.extraRowsAfterEnd = this.extraRowsUpOrDown;
+        //righe extra 
+        if (this.textRange.end + this.extraRowsUpOrDown < this.textTotalRows + this.compensazioneBackend
+          && !this.textRange.hasExtraRowsAfterEnd) {
+          this.textRange.extraRowsAfterEnd = this.extraRowsUpOrDown;
+        }
+        break;
     }
     //#endregion
 
