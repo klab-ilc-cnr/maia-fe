@@ -42,7 +42,7 @@ export class TextRange {
     }
 
     public clone() {
-        let clone = new TextRange(this._start, this.end);
+        let clone = new TextRange(this._start, this._end);
         clone.extraRowsAfterEnd = this.extraRowsAfterEnd;
         clone.extraRowsBeforeStart = this.extraRowsBeforeStart;
 
