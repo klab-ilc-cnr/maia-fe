@@ -144,6 +144,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public extraRowsWidenessUpOrDown!: number;
   //#endregion
 
+  public normalStyleEditorDiv: boolean = false;
+  public normalStyleTreeDiv: boolean = false;
+
   // currentUser!: User;
   currentTextoUserId!: number;
   currentResource!: ResourceElement;
@@ -334,6 +337,26 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
+  }
+
+  public expandCollapseNavigationDiv()
+  {
+    this.normalStyleTreeDiv = !this.normalStyleTreeDiv;
+
+    //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
+    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
+    let endCompensato = this.textRange.end + this.compensazioneBackend;
+    this.loadData(startCompensato, endCompensato);
+  }
+
+  public expandCollapseAnnotationDiv()
+  {
+    this.normalStyleEditorDiv = !this.normalStyleEditorDiv;
+
+    //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
+    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
+    let endCompensato = this.textRange.end + this.compensazioneBackend;
+    this.loadData(startCompensato, endCompensato);
   }
 
   public textRowsRangeWidenessPredictor(extraRows?: number): number {

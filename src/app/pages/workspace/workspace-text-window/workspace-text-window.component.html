@@ -48,8 +48,14 @@
   </div>
 </div>
 
-<div class="row mx-0">
-  <div class="col-8" >
+<div class="container">
+  <div [ngClass]="normalStyleTreeDiv ? 'normal-div' : 'normal-div compressed-div'">
+    <a *ngIf="!normalStyleTreeDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
+    <a *ngIf="normalStyleTreeDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a>
+    <div *ngIf="normalStyleTreeDiv" id="div-1">
+    </div>
+  </div>
+  <div class="expanded-div">
     <div #textContainer class="text-container" (scroll)="onScroll($event)" [ngStyle]="{'height.px': textContainerHeight}">
       <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >
         <svg class="text-editor" [attr.height]="svgHeight">
@@ -124,16 +130,18 @@
       </div>
     </div>
   </div>
-  <div class="col-4 ps-0">
-    <div class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
+  <div [ngClass]="normalStyleEditorDiv ? 'normal-div' : 'normal-div compressed-div'">
+    <a *ngIf="!normalStyleEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn">Annotation</a>
+    <a *ngIf="normalStyleEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right">></a>
+    <div *ngIf="normalStyleEditorDiv" class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
       <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
-      (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
-      <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
-        (onSave)="onAnnotationSaved()"
-        (onDelete)="onAnnotationDeleted()"
-        (onCancel)="onAnnotationCancel()">
-      </app-annotation-editor> -->
-      <app-relation-editor *ngIf="showRelationEditor"
+        (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
+        <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
+          (onSave)="onAnnotationSaved()"
+          (onDelete)="onAnnotationDeleted()"
+          (onCancel)="onAnnotationCancel()">
+        </app-annotation-editor> -->
+        <app-relation-editor *ngIf="showRelationEditor"
         [relationModel]="relation"
         [sourceAnn]="sourceAnn"
         [targetAnn]="targetAnn"

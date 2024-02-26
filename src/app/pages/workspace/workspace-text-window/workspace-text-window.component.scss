@@ -51,7 +51,7 @@
 }
 
 .filtered {
-  filter: drop-shadow(1px 1px 1px rgba(0,0,0,.8));
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .8));
 }
 
 .highlight rect {
@@ -67,7 +67,8 @@
   stroke-width: 0.5;
 }
 
-.span path, .arc path {
+.span path,
+.arc path {
   fill: none;
 }
 
@@ -162,3 +163,66 @@ path {
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: inline-flex;
+  max-width: none;
+}
+
+.normal-div {
+  width: 33.33%;
+  height: 100%;
+  position: relative;
+  float: left;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.expanded-div {
+  width: 98%;
+}
+
+.compressed-div {
+  width: 2%;
+}
+
+#div-1 {
+  min-height: 400px;
+  background-color: green;
+}
+
+
+a.expansion-btn {
+  position: absolute;
+  font-weight: bold;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+a.collapse-btn-left {
+  position: absolute;
+  font-weight: bold;
+  top: 7px;
+  right: 10px;
+  cursor: pointer;
+}
+
+a.collapse-btn-right {
+  position: absolute;
+  font-weight: bold;
+  top: 7px;
+  left: 10px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
