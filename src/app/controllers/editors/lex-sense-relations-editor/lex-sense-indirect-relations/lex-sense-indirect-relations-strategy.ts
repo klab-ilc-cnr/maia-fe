@@ -1,11 +1,11 @@
-import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { Observable, map } from 'rxjs';
-import { LexiconService } from 'src/app/services/lexicon.service';
-import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
-import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { FormItem } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
 
 export class LexSenseIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
@@ -13,18 +13,20 @@ export class LexSenseIndirectRelationsStrategy implements BaseLexEntityRelations
   constructor(
     private lexiconService: LexiconService,
     private lexEntityId: string,
-  ) {}
+  ) { }
 
-  public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[] {
-    const formItems : FormItem[] = [];
+  public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string]: string }): FormItem[] {
+    const formItems: FormItem[] = [];
     for (const [itemID, item] of model.indirectRelations.entries()) {
-      const {category, target, targetLabel, relation, properties} = item;
-      const newItem : FormItem = {
+      const { category, target, targetLabel, relation, properties } = item;
+      const inferred = item.properties.find(p => p.entity === category)?.inferred;
+      const newItem: FormItem = {
         relationshipLabel: relationshipLabelByURI[category] || 'unknown relationship',
         relationshipURI: relation,
         destinationURI: target,
         destinationLabel: targetLabel,
         itemID,
+        inferred: inferred,
         properties,
       };
       formItems.unshift(newItem);
