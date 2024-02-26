@@ -9,7 +9,7 @@
       </button>
     </ng-template>
     <ng-template pTemplate="content">
-        <div class="field col-12" *ngFor="let control of formItems">
+        <div class="field col-12" *ngFor="let control of formItems" [ngClass]="control.inferred ? 'inferred':''">
           <app-lex-entity-semantic-rel [strategy]="strategy" [control]="control" [form]="form" [formItems]="formItems">
           </app-lex-entity-semantic-rel>
         </div>

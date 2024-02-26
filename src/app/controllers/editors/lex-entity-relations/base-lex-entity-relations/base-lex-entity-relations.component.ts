@@ -15,6 +15,7 @@ export interface FormItem {
   destinationLabel: string,
   destinationURI: string,
   itemID: number,
+  inferred?: boolean,
   properties?: LinguisticRelationModel[],
 }
 
