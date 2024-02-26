@@ -346,7 +346,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
     let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
     let endCompensato = this.textRange.end + this.compensazioneBackend;
-    this.loadData(startCompensato, endCompensato);
+    setTimeout(() => {
+      this.loadData(startCompensato, endCompensato);
+    }, 200);
   }
 
   public expandCollapseAnnotationDiv()
@@ -356,7 +358,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
     let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
     let endCompensato = this.textRange.end + this.compensazioneBackend;
-    this.loadData(startCompensato, endCompensato);
+    setTimeout(() => {
+      this.loadData(startCompensato, endCompensato);
+    }, 200);
   }
 
   public textRowsRangeWidenessPredictor(extraRows?: number): number {
