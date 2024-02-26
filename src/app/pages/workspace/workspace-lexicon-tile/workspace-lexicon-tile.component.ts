@@ -43,12 +43,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Lista delle lingue selezionabili */
   public selectLanguages!: SelectItem[];
   filteredLanguages$!: Observable<SelectItem[]>;
-  
+
   /**Lista dei tipi selezionabili */
   public selectTypes$ = this.globalState.lexicalEntryTypes$.pipe(
     switchMap(types => {
       types.sort((a: OntolexType, b: OntolexType) => a.valueLabel!.localeCompare(b.valueLabel!));
-      return of(types.map(t => <SelectItem>{ label: t.valueLabel, value: t.valueLabel }));
+      return of(types.map(t => <SelectItem>{ label: t.valueLabel, value: t.valueLabel === 'lexical entry' ? '' : t.valueLabel }));
     }),
   );
   public selectLanguages$ = this.globalState.languages$.pipe(
