@@ -16,7 +16,7 @@ export class LexSenseIndirectRelationsStrategy implements BaseLexEntityRelations
   ) { }
 
   public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string]: string }): FormItem[] {
-    const formItems: FormItem[] = [];
+    let formItems: FormItem[] = [];
     for (const [itemID, item] of model.indirectRelations.entries()) {
       const { category, target, targetLabel, relation, properties } = item;
       const inferred = item.properties.find(p => p.entity === category)?.inferred;
@@ -31,6 +31,7 @@ export class LexSenseIndirectRelationsStrategy implements BaseLexEntityRelations
       };
       formItems.unshift(newItem);
     }
+    formItems = formItems.sort((a, b) => a.inferred === b.inferred ? 0 : (a.inferred! < b.inferred! ? -1 : 1));
     return formItems;
   }
 
