@@ -19,14 +19,12 @@ export class LexSenseIndirectRelationsStrategy implements BaseLexEntityRelations
     let formItems: FormItem[] = [];
     for (const [itemID, item] of model.indirectRelations.entries()) {
       const { category, target, targetLabel, relation, properties } = item;
-      const inferred = item.properties.find(p => p.entity === category)?.inferred;
       const newItem: FormItem = {
         relationshipLabel: relationshipLabelByURI[category] || 'unknown relationship',
         relationshipURI: relation,
         destinationURI: target,
         destinationLabel: targetLabel,
         itemID,
-        inferred: inferred,
         properties,
       };
       formItems.unshift(newItem);
