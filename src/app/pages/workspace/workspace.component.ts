@@ -907,7 +907,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       id: panelId,
       container: this.workspaceContainer,
-      headerTitle: 'text - ' + title.toLowerCase(),
+      headerTitle: 'Text - ' + title.toLowerCase(),
       content: textWindowComponent,
       maximizedMargin: 5,
       dragit: { snap: false },
@@ -1059,7 +1059,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconEditTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Lexicon editor - ' + lexicalEntryTree?.data?.label,
+      headerTitle: 'Lexicon Editor - ' + lexicalEntryTree?.data?.label,
       maximizedMargin: 5,
       dragit: { snap: false },
       syncMargins: true,

@@ -24,6 +24,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { TextRange } from 'src/app/models/text/text-range';
+import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
 import { NodeService } from 'src/app/services/node.service';
 
 @Component({
@@ -124,6 +125,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   textId: number | undefined;
   /**Text response */
   textRes: any;
+  textSplittedRows: TextSplittedRow[] | undefined;
   /**Lista dei layer visibili */
   visibleLayers: TLayer[] = [];
 
@@ -138,7 +140,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public textRange!: TextRange;
   public lastScrollTop: number = 0;
   public scrolling: boolean = false;
-  public compensazioneBackend: number = 1;
+  public backendIndexCompensation: number = 1;
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
@@ -210,7 +212,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
     this.textRange = new TextRange(0, this.textRowsWideness);
     this.precTextRange = this.textRange.clone();
-    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend)
+    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
     this.loadData(requestRange.start, requestRange.end);
   }
 
@@ -238,6 +240,79 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.expandRecursive(childNode, isExpand);
       });
     }
+  }
+
+  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
+    const newAnnFeat = new TAnnotationFeature();
+    newAnnFeat.annotation = annotation;
+    newAnnFeat.feature = feature;
+    newAnnFeat.value = value;
+    return this.annotationService.createAnnotationFeature(newAnnFeat);
+  }
+
+  private createNewAnnotation(annotation: TAnnotation) {
+    const promise = new Promise<TAnnotation>((resolve, reject) => {
+      this.annotationService.createAnnotation(annotation).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
+          reject(error);
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(newAnn => {
+        resolve(newAnn);
+      });
+    });
+    return promise;
+  }
+
+  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+    let workingAnnotation = this.textoAnnotation;
+    if (!this.textoAnnotation.id) {
+      this.textoAnnotation.user = { id: this.currentTextoUserId };
+      this.textoAnnotation.resource = this.currentResource;
+      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
+    }
+    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    for (const fl of featuresList) {
+      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
+      if (existingFeature && existingFeature.value === fl.value) {
+        continue;
+      }
+      if (!existingFeature) {
+        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
+        continue;
+      }
+      const updateAnnFeat = <TAnnotationFeature>{
+        ...existingFeature,
+        annotation: {
+          id: workingAnnotation.id
+        },
+        feature: fl.feature,
+        value: fl.value,
+      };
+      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
+    }
+    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+      this.onAnnotationSaved();
+    })
+  }
+
+  /**
+   * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
+   * @param event {any} evento di variazione dei layer visibili
+   */
+  changeVisibleLayers(event: any) {
+    this.visibleLayers = this.selectedLayers || [];
+    this.loadData(this.textRange.start, this.textRange.end);
   }
 
   /**
@@ -299,8 +374,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.annotation.layer = this.selectedLayer?.id;
       this.annotation.layerName = this.selectedLayer?.name;
 
-      this.textRes = textResponse.data || [];
-      this.offset = textResponse.offset;
+      this.textRes = textResponse.data?.map(d => d.text) || [];
+      this.textSplittedRows = textResponse.data;
+      this.offset = textResponse.data![0].start;
       this.annotationsRes = null;
       this.textoAnnotationsRes = tAnnotationsResponse;
 
@@ -372,7 +448,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  */
   private renderData() {
     this.rows = [];
-    const sentences = this.textRes;
+    const sentences = this.textSplittedRows;
     const row_id = 0;
     let start = 0;
 
@@ -393,16 +469,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     lineBuilder.yStartLine = 0;
 
-    let rowStartIndex = this.compensazioneBackendRequest();
-    //FIXME ELIMINARE COMPENSAZIONE AL FIX DEL BACKEND
-    rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
-
-    sentences.forEach((s: any, index: number) => {
-      const sWidth = this.getComputedTextLength(s, this.visualConfig.textFont);
+    sentences?.forEach((s: TextSplittedRow) => {
+      const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
 
       const sLines = new Array<TextLine>();
 
-      const words = s.split(/(?<=\s)/g);
+      const words = s.text.split(/(?<=\s)/g);
 
       lineBuilder.startLine = start;
 
@@ -461,7 +533,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
       else {
         lineBuilder.line = new TextLine();
-        lineBuilder.line.text = s;
+        lineBuilder.line.text = s.text;
         lineBuilder.line.words = words;
 
         const line = this.createLine(lineBuilder);
@@ -486,15 +558,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         yText: sLinesCopy[0].yText - this.visualConfig.spaceAfterTextLine,
         xSentnum: this.visualConfig.stdSentnumOffsetX,
         ySentnum: sLinesCopy[sLinesCopy.length - 1].yText,
-        text: s,
+        text: s.text,
         words: words,
         startIndex: start,
-        endIndex: start + s.length,
-        rowIndex: rowStartIndex + index
+        endIndex: start + s.text.length,
+        rowIndex: s.absolute
       })
 
       yStartRow += rowHeight;
-      start += s.length;
+      start += s.text.length;
     })
 
     this.svgHeight = this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
@@ -556,22 +628,30 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
 
         //righe extra 
-        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.compensazioneBackend
+        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
           && !this.textRange.hasExtraRowsAfterEnd) {
           this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
         }
         break;
     }
     //#endregion
-
-    //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
-    let endCompensato = this.textRange.end + this.compensazioneBackend;
-    this.loadData(startCompensato, endCompensato);
+    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
   }
 
-  public compensazioneBackendRequest() {
-    return this.textRange.start !== 0 ? this.textRange.start - 1 : this.textRange.start;
+  public expandCollapseNavigationDiv() {
+    this.normalStyleTreeDiv = !this.normalStyleTreeDiv;
+
+    setTimeout(() => {
+      this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+    }, 200);
+  }
+
+  public expandCollapseAnnotationDiv() {
+    this.normalStyleEditorDiv = !this.normalStyleEditorDiv;
+
+    setTimeout(() => {
+      this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+    }, 200);
   }
 
   public isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
@@ -605,8 +685,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let extraScrollPixels = 0;
 
     if (this.scrollingDown) {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 2).reduce((acc, o) => acc + (o.height || 0), 0);
-      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end - 1)[0];
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
       extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
     }
     else {
@@ -629,28 +709,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loaderService.hide();
   }
 
-  public expandCollapseNavigationDiv() {
-    this.normalStyleTreeDiv = !this.normalStyleTreeDiv;
-
-    //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
-    let endCompensato = this.textRange.end + this.compensazioneBackend;
-    setTimeout(() => {
-      this.loadData(startCompensato, endCompensato);
-    }, 200);
-  }
-
-  public expandCollapseAnnotationDiv() {
-    this.normalStyleEditorDiv = !this.normalStyleEditorDiv;
-
-    //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
-    let endCompensato = this.textRange.end + this.compensazioneBackend;
-    setTimeout(() => {
-      this.loadData(startCompensato, endCompensato);
-    }, 200);
-  }
-
   public textRowsRangeWidenessPredictor(extraRows?: number): number {
     let arbitraryRowSizeInPixels = 50;
     let arbitraryExtraRows = extraRows ?? 5;
@@ -660,75 +718,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public extraTextRowsWidenessPredictor(): number {
     let arbitraryRowSizeInPixels = 50;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
-  }
-
-  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
-    const newAnnFeat = new TAnnotationFeature();
-    newAnnFeat.annotation = annotation;
-    newAnnFeat.feature = feature;
-    newAnnFeat.value = value;
-    return this.annotationService.createAnnotationFeature(newAnnFeat);
-  }
-
-  private createNewAnnotation(annotation: TAnnotation) {
-    const promise = new Promise<TAnnotation>((resolve, reject) => {
-      this.annotationService.createAnnotation(annotation).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
-          reject(error);
-          return throwError(() => new Error(error.error));
-        }),
-      ).subscribe(newAnn => {
-        resolve(newAnn);
-      });
-    });
-    return promise;
-  }
-
-  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
-    let workingAnnotation = this.textoAnnotation;
-    if (!this.textoAnnotation.id) {
-      this.textoAnnotation.user = { id: this.currentTextoUserId };
-      this.textoAnnotation.resource = this.currentResource;
-      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
-    }
-    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
-    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
-    for (const fl of featuresList) {
-      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
-      if (existingFeature && existingFeature.value === fl.value) {
-        continue;
-      }
-      if (!existingFeature) {
-        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
-        continue;
-      }
-      const updateAnnFeat = <TAnnotationFeature>{
-        ...existingFeature,
-        value: fl.value,
-      };
-      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
-    }
-    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(() => {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-      this.onAnnotationSaved();
-    })
-  }
-
-  /**
-   * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
-   * @param event {any} evento di variazione dei layer visibili
-   */
-  changeVisibleLayers(event: any) {
-    this.visibleLayers = this.selectedLayers || [];
-    this.loadData(this.textRange.start, this.textRange.end);
   }
 
   /**

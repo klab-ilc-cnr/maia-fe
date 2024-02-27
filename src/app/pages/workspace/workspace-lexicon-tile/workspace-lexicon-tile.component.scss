@@ -1,5 +1,10 @@
+#lexExpCounter {
+  min-width: min-content;
+}
+
 #searchInput {
-  width: auto
+  width: auto;
+  min-width: 50px;
 }
 
 div.grid.p-fluid.input-search {
@@ -32,6 +37,14 @@ td:has(> span) div:has(> span){
   text-overflow: ellipsis;
 }
 
-td span {
-  display: inline;
+div:has(> label) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td {
+  padding: 0.5rem 0.5rem !important;
+  span {
+    display: inline;
+  }
 }
