@@ -139,7 +139,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public textRange!: TextRange;
   public lastScrollTop: number = 0;
   public scrolling: boolean = false;
-  public compensazioneBackend: number = 1;
+  public backendIndexCompensation: number = 1;
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
@@ -204,7 +204,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
     this.textRange = new TextRange(0, this.textRowsWideness);
     this.precTextRange = this.textRange.clone();
-    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.compensazioneBackend)
+    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
     this.loadData(requestRange.start, requestRange.end);
   }
 
@@ -265,7 +265,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
 
         //righe extra 
-        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.compensazioneBackend
+        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
           && !this.textRange.hasExtraRowsAfterEnd) {
           this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
         }
@@ -273,15 +273,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
     //#endregion
 
-    //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    // let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
-    // let endCompensato = this.textRange.end + this.compensazioneBackend;
-    this.loadData(this.textRange.start, this.textRange.end + this.compensazioneBackend);
+    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
   }
-
-  // public compensazioneBackendRequest() {
-  //   return this.textRange.start !== 0 ? this.textRange.start - 1 : this.textRange.start;
-  // }
 
   public isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
     if (!this.scrollingDown && this.textRange.start === 0) { return true; }
@@ -503,11 +496,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     lineBuilder.yStartLine = 0;
 
-    // let rowStartIndex = this.compensazioneBackendRequest();
-    //FIXME ELIMINARE COMPENSAZIONE AL FIX DEL BACKEND
-    // rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
-
-    sentences?.forEach((s: TextSplittedRow, index: number) => {
+    sentences?.forEach((s: TextSplittedRow) => {
       const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
 
       const sLines = new Array<TextLine>();
