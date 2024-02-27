@@ -52,10 +52,10 @@ export class FeatureService {
    * @param updatedFeature {TFeature} feature to be updated
    * @returns {Observable<TFeature>} observable of the updated feature
    */
-  public updateFeatureById(updatedFeature: TFeature): Observable<TFeature> {
+  public updateFeature(updatedFeature: TFeature): Observable<TFeature> {
     const uuid = uuidv4();
     return this.http.post<TFeature>(
-      `${this.textoUrl}/feature/${updatedFeature.id}/update`,
+      `${this.textoUrl}/feature/update`,
       updatedFeature,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
     );

@@ -220,11 +220,12 @@
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from &#x27;@angular/core&#x27;;
 import { FormControl, FormGroup } from &#x27;@angular/forms&#x27;;
 import { MessageService } from &#x27;primeng/api&#x27;;
-import { Observable, Subject, catchError, map, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
+import { Observable, Subject, catchError, forkJoin, map, take, takeUntil, throwError } from &#x27;rxjs&#x27;;
 import { formTypeEnum, searchModeEnum } from &#x27;src/app/models/lexicon/lexical-entry-request.model&#x27;;
 import { FormListItem, SenseListItem } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
 import { TAnnotation } from &#x27;src/app/models/texto/t-annotation&#x27;;
 import { TFeature, TFeatureType } from &#x27;src/app/models/texto/t-feature&#x27;;
+import { TLayer } from &#x27;src/app/models/texto/t-layer&#x27;;
 import { TTagsetItem } from &#x27;src/app/models/texto/t-tagset-item&#x27;;
 import { User } from &#x27;src/app/models/user&#x27;;
 import { AnnotationService } from &#x27;src/app/services/annotation.service&#x27;;
@@ -251,6 +252,7 @@ export interface FeatForAnn {
 })
 export class TextAnnotationEditorComponent implements OnDestroy {
   private readonly unsubscribe$ &#x3D; new Subject();
+  workingLayer!: TLayer;
   /**Tipi di feature */
   featureTypes &#x3D; TFeatureType;
   @Input() annotationFragment!: string;
@@ -462,11 +464,11 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   private createForm() {
-    this.annotationForm.controls.layer.setValue(this.annotationModel.layer?.name ?? &#x27;&#x27;);
+    this.annotationForm.controls.layer.setValue(this.workingLayer.name ?? &#x27;&#x27;);
     this.annotationForm.controls.text.setValue(this.annotationFragment);
     this.features.forEach(f &#x3D;&gt; {
       const controlName &#x3D; f.feature?.name;
-      const existingValue: string &#x3D; this.annotationModel.features?.find(af &#x3D;&gt; af.feature?.name &#x3D;&#x3D;&#x3D; controlName)?.value ?? &#x27;&#x27;;
+      const existingValue: string &#x3D; this.annotationModel.features?.find(af &#x3D;&gt; af.feature?.id &#x3D;&#x3D;&#x3D; f.feature?.id)?.value ?? &#x27;&#x27;;
       const featureType &#x3D; f.feature?.type;
       let newControl: FormControl;
       if (!controlName) {
@@ -495,10 +497,14 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   private fetchAndMapFeatures(layerId: number) {
-    this.layerService.retrieveLayerFeatureList(layerId).pipe(
+    forkJoin({
+      layer: this.layerService.retrieveLayerById(layerId),
+      features: this.layerService.retrieveLayerFeatureList(layerId),
+    }).pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe(features &#x3D;&gt; {
-      this.features &#x3D; features.map(feature &#x3D;&gt; {
+    ).subscribe(response &#x3D;&gt; {
+      this.workingLayer &#x3D; response.layer;
+      this.features &#x3D; response.features.map(feature &#x3D;&gt; {
         const tagsetId &#x3D; feature.tagset?.id;
         return &lt;FeatForAnn&gt;{
           feature: feature,

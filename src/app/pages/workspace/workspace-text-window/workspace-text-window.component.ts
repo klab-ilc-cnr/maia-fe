@@ -213,6 +213,79 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
+    const newAnnFeat = new TAnnotationFeature();
+    newAnnFeat.annotation = annotation;
+    newAnnFeat.feature = feature;
+    newAnnFeat.value = value;
+    return this.annotationService.createAnnotationFeature(newAnnFeat);
+  }
+
+  private createNewAnnotation(annotation: TAnnotation) {
+    const promise = new Promise<TAnnotation>((resolve, reject) => {
+      this.annotationService.createAnnotation(annotation).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
+          reject(error);
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(newAnn => {
+        resolve(newAnn);
+      });
+    });
+    return promise;
+  }
+
+  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+    let workingAnnotation = this.textoAnnotation;
+    if (!this.textoAnnotation.id) {
+      this.textoAnnotation.user = { id: this.currentTextoUserId };
+      this.textoAnnotation.resource = this.currentResource;
+      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
+    }
+    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
+    for (const fl of featuresList) {
+      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
+      if (existingFeature && existingFeature.value === fl.value) {
+        continue;
+      }
+      if (!existingFeature) {
+        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
+        continue;
+      }
+      const updateAnnFeat = <TAnnotationFeature>{
+        ...existingFeature,
+        annotation: {
+          id: workingAnnotation.id
+        },
+        feature: fl.feature,
+        value: fl.value,
+      };
+      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
+    }
+    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(() => {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+      this.onAnnotationSaved();
+    })
+  }
+
+  /**
+   * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
+   * @param event {any} evento di variazione dei layer visibili
+   */
+  changeVisibleLayers(event: any) {
+    this.visibleLayers = this.selectedLayers || [];
+    this.loadData(this.textRange.start, this.textRange.end);
+  }
+
   /**
  * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
  * @returns {void}
@@ -601,75 +674,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public extraTextRowsWidenessPredictor(): number {
     let arbitraryRowSizeInPixels = 50;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
-  }
-
-  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
-    const newAnnFeat = new TAnnotationFeature();
-    newAnnFeat.annotation = annotation;
-    newAnnFeat.feature = feature;
-    newAnnFeat.value = value;
-    return this.annotationService.createAnnotationFeature(newAnnFeat);
-  }
-
-  private createNewAnnotation(annotation: TAnnotation) {
-    const promise = new Promise<TAnnotation>((resolve, reject) => {
-      this.annotationService.createAnnotation(annotation).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
-          reject(error);
-          return throwError(() => new Error(error.error));
-        }),
-      ).subscribe(newAnn => {
-        resolve(newAnn);
-      });
-    });
-    return promise;
-  }
-
-  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
-    let workingAnnotation = this.textoAnnotation;
-    if (!this.textoAnnotation.id) {
-      this.textoAnnotation.user = { id: this.currentTextoUserId };
-      this.textoAnnotation.resource = this.currentResource;
-      workingAnnotation = await this.createNewAnnotation(this.textoAnnotation);
-    }
-    const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
-    const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
-    for (const fl of featuresList) {
-      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
-      if (existingFeature && existingFeature.value === fl.value) {
-        continue;
-      }
-      if (!existingFeature) {
-        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
-        continue;
-      }
-      const updateAnnFeat = <TAnnotationFeature>{
-        ...existingFeature,
-        value: fl.value,
-      };
-      updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
-    }
-    forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(() => {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-      this.onAnnotationSaved();
-    })
-  }
-
-  /**
-   * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
-   * @param event {any} evento di variazione dei layer visibili
-   */
-  changeVisibleLayers(event: any) {
-    this.visibleLayers = this.selectedLayers || [];
-    this.loadData(this.textRange.start, this.textRange.end);
   }
 
   /**

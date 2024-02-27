@@ -96,7 +96,7 @@ export class LayerStateService {
       switchMap(newFeature => this.layerService.retrieveLayerFeatureList(newFeature.layer!.id!)),
     ),
     this.updateFeature.pipe(
-      switchMap(updatedFeature => this.featureService.updateFeatureById(updatedFeature).pipe(
+      switchMap(updatedFeature => this.featureService.updateFeature(updatedFeature).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Feature "${updatedFeature.name}" updated`))),
         catchError((error: HttpErrorResponse) => {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Updating feature "${updatedFeature.name}" failed: ${error.error.message}`));
