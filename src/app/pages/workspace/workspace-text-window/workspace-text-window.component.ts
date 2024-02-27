@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
@@ -24,6 +24,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { TextRange } from 'src/app/models/text/text-range';
+import { NodeService } from 'src/app/services/node.service';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -144,6 +145,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public extraRowsWidenessUpOrDown!: number;
   //#endregion
 
+  documentTree: TreeNode[] = new Array<TreeNode>;
+
   public normalStyleEditorDiv: boolean = false;
   public normalStyleTreeDiv: boolean = false;
 
@@ -165,6 +168,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private msgConfService: MessageConfigurationService,
     private layerState: LayerStateService,
     private workspaceService: WorkspaceService,
+    private nodeService: NodeService
   ) {
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
@@ -198,6 +202,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.updateHeight(this.height);
 
+    this.nodeService.getFiles().then(files => this.documentTree = files);
   }
 
   ngAfterViewInit() {
@@ -212,6 +217,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  expandAll() {
+    this.documentTree.forEach(node => {
+      this.expandRecursive(node, true);
+    });
+  }
+
+  collapseAll() {
+    this.documentTree.forEach(node => {
+      this.expandRecursive(node, false);
+    });
+  }
+
+  private expandRecursive(node: TreeNode, isExpand: boolean) {
+    node.expanded = isExpand;
+    if (node.children) {
+      node.children.forEach(childNode => {
+        this.expandRecursive(childNode, isExpand);
+      });
+    }
   }
 
   public onScroll(event: any) {
@@ -339,8 +365,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loaderService.hide();
   }
 
-  public expandCollapseNavigationDiv()
-  {
+  public expandCollapseNavigationDiv() {
     this.normalStyleTreeDiv = !this.normalStyleTreeDiv;
 
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
@@ -351,8 +376,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }, 200);
   }
 
-  public expandCollapseAnnotationDiv()
-  {
+  public expandCollapseAnnotationDiv() {
     this.normalStyleEditorDiv = !this.normalStyleEditorDiv;
 
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND

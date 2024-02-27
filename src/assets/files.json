@@ -1,0 +1,40 @@
+{
+    "data": [
+        {
+            "label": "Documento",
+            "data": "Documents Folder",
+            "icon": "pi pi-file",
+            "children": [
+                {
+                    "label": "Paragrafo1",
+                    "data": "Work Folder",
+                    "icon": "pi pi-file",
+                    "children": [
+                        {
+                            "label": "Paragrafo1.1",
+                            "icon": "pi pi-file",
+                            "data": "Expenses Document"
+                        },
+                        {
+                            "label": "Paragrafo1.2",
+                            "icon": "pi pi-file",
+                            "data": "Resume Document"
+                        }
+                    ]
+                },
+                {
+                    "label": "Paragrafo2",
+                    "data": "Home Folder",
+                    "icon": "pi pi-file",
+                    "children": [
+                        {
+                            "label": "Paragrafo2.1",
+                            "icon": "pi pi-file",
+                            "data": "Invoices for this month"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

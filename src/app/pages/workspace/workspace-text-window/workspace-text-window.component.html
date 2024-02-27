@@ -52,7 +52,12 @@
   <div [ngClass]="normalStyleTreeDiv ? 'normal-div' : 'normal-div compressed-div'">
     <a *ngIf="!normalStyleTreeDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
     <a *ngIf="normalStyleTreeDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a>
-    <div *ngIf="normalStyleTreeDiv" id="div-1">
+    <div style="margin-bottom: 1rem; margin-left: 1rem">
+      <button class="p-button-outlined" *ngIf="normalStyleTreeDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
+      <button class="p-button-outlined" *ngIf="normalStyleTreeDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
+    </div>
+    <div *ngIf="normalStyleTreeDiv">
+      <p-tree [value]="documentTree"></p-tree>
     </div>
   </div>
   <div class="expanded-div">
