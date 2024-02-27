@@ -24,6 +24,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { TextRange } from 'src/app/models/text/text-range';
+import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -123,6 +124,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   textId: number | undefined;
   /**Text response */
   textRes: any;
+  textSplittedRows: TextSplittedRow[] | undefined;
   /**Lista dei layer visibili */
   visibleLayers: TLayer[] = [];
 
@@ -406,8 +408,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.annotation.layer = this.selectedLayer?.id;
       this.annotation.layerName = this.selectedLayer?.name;
 
-      this.textRes = textResponse.data || [];
-      this.offset = textResponse.offset;
+      this.textRes = textResponse.data?.map(d => d.text) || [];
+      this.textSplittedRows = textResponse.data;
+      this.offset = textResponse.data![0].start;
       this.annotationsRes = null;
       this.textoAnnotationsRes = tAnnotationsResponse;
 
@@ -479,7 +482,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  */
   private renderData() {
     this.rows = [];
-    const sentences = this.textRes;
+    const sentences = this.textSplittedRows;
     const row_id = 0;
     let start = 0;
 
@@ -504,12 +507,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //FIXME ELIMINARE COMPENSAZIONE AL FIX DEL BACKEND
     rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
 
-    sentences.forEach((s: any, index: number) => {
-      const sWidth = this.getComputedTextLength(s, this.visualConfig.textFont);
+    sentences?.forEach((s: TextSplittedRow, index: number) => {
+      const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
 
       const sLines = new Array<TextLine>();
 
-      const words = s.split(/(?<=\s)/g);
+      const words = s.text.split(/(?<=\s)/g);
 
       lineBuilder.startLine = start;
 
@@ -568,7 +571,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
       else {
         lineBuilder.line = new TextLine();
-        lineBuilder.line.text = s;
+        lineBuilder.line.text = s.text;
         lineBuilder.line.words = words;
 
         const line = this.createLine(lineBuilder);
@@ -593,15 +596,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         yText: sLinesCopy[0].yText - this.visualConfig.spaceAfterTextLine,
         xSentnum: this.visualConfig.stdSentnumOffsetX,
         ySentnum: sLinesCopy[sLinesCopy.length - 1].yText,
-        text: s,
+        text: s.text,
         words: words,
         startIndex: start,
-        endIndex: start + s.length,
+        endIndex: start + s.text.length,
         rowIndex: rowStartIndex + index
       })
 
       yStartRow += rowHeight;
-      start += s.length;
+      start += s.text.length;
     })
 
     this.svgHeight = this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
