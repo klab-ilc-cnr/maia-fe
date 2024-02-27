@@ -274,14 +274,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //#endregion
 
     //FIXME TOGLIERE LE COMPENSAZIONI UNA VOLTA SISTEMATO IL BACKEND
-    let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
-    let endCompensato = this.textRange.end + this.compensazioneBackend;
-    this.loadData(startCompensato, endCompensato);
+    // let startCompensato = this.textRange.start !== 0 ? this.textRange.start + this.compensazioneBackend : this.textRange.start;
+    // let endCompensato = this.textRange.end + this.compensazioneBackend;
+    this.loadData(this.textRange.start, this.textRange.end + this.compensazioneBackend);
   }
 
-  public compensazioneBackendRequest() {
-    return this.textRange.start !== 0 ? this.textRange.start - 1 : this.textRange.start;
-  }
+  // public compensazioneBackendRequest() {
+  //   return this.textRange.start !== 0 ? this.textRange.start - 1 : this.textRange.start;
+  // }
 
   public isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
     if (!this.scrollingDown && this.textRange.start === 0) { return true; }
@@ -314,8 +314,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let extraScrollPixels = 0;
 
     if (this.scrollingDown) {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 2).reduce((acc, o) => acc + (o.height || 0), 0);
-      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end - 1)[0];
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
       extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
     }
     else {
@@ -503,9 +503,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     lineBuilder.yStartLine = 0;
 
-    let rowStartIndex = this.compensazioneBackendRequest();
+    // let rowStartIndex = this.compensazioneBackendRequest();
     //FIXME ELIMINARE COMPENSAZIONE AL FIX DEL BACKEND
-    rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
+    // rowStartIndex = this.textRange.start !== 0 ? rowStartIndex + this.compensazioneBackend : rowStartIndex;
 
     sentences?.forEach((s: TextSplittedRow, index: number) => {
       const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
@@ -600,7 +600,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         words: words,
         startIndex: start,
         endIndex: start + s.text.length,
-        rowIndex: rowStartIndex + index
+        rowIndex: s.absolute
       })
 
       yStartRow += rowHeight;
