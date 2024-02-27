@@ -213,135 +213,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public onScroll(event: any) {
-    if (this.preventOnScrollEvent) {
-      this.preventOnScrollEvent = false;
-      return;
-    }
-
-    this.scrolling = true;
-    let scroll = Math.ceil(event.target.clientHeight + event.target.scrollTop);
-
-    if (this.lastScrollTop === event.target.scrollTop) { return; }
-
-    this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
-    this.lastScrollTop = event.target.scrollTop;
-
-    if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
-
-    //#region calcolo start e end
-    this.precTextRange = this.textRange.clone();
-    this.textRange.resetExtraRowsSpace();
-
-    switch (this.scrollingDown) {
-      case true: //scolling DOWN
-        this.textRange.start += this.textRowsWideness;
-        this.textRange.end += this.textRowsWideness;
-
-        if (this.textRange.start > this.textTotalRows - this.textRowsWideness) {
-          this.textRange.start = this.textTotalRows - this.textRowsWideness;
-        }
-
-        if (this.textRange.end > this.textTotalRows) {
-          this.textRange.end = this.textTotalRows;
-        }
-
-        //righe extra
-        if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
-          && !this.textRange.hasExtraRowsBeforeStart) {
-          this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
-        }
-        break;
-      case false: //scrolling UP
-        this.textRange.start -= this.textRowsWideness;
-        this.textRange.end -= this.textRowsWideness;
-
-        if (this.textRange.start < 0) {
-          this.textRange.start = 0;
-        }
-
-        if (this.textRange.end < this.textRowsWideness) {
-          this.textRange.end = this.textRowsWideness;
-        }
-
-        //righe extra 
-        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
-          && !this.textRange.hasExtraRowsAfterEnd) {
-          this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
-        }
-        break;
-    }
-    //#endregion
-
-    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-  }
-
-  public isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
-    if (!this.scrollingDown && this.textRange.start === 0) { return true; }
-
-    if (!this.scrollingDown && scrollTop !== 0) { return true; }
-
-    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return true; }
-
-    if (this.scrollingDown && scroll < this.svgHeight) { return true; }
-
-    return false;
-  }
-
-  public checkScroll() {
-    let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
-    if (!scrollable) {
-      this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
-
-      //Fa ripartire l'evento OnScroll
-      this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
-    }
-
-    if (this.textRange.start === this.precTextRange?.start &&
-      this.textRange.end === this.precTextRange.end) {
-      this.loaderService.hide();
-      return;
-    }
-
-    let scrolledBlockSize = 0;
-    let extraScrollPixels = 0;
-
-    if (this.scrollingDown) {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
-      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
-      extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
-    }
-    else {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
-    }
-
-    //setTimeout necessaria per evitare che lo scrolling venga settato erroneamente
-    //prima che la view del componente sia renderizzata
-    //mettere 0 è un trucco perchè la funzione viene chiamata proprio quando la view è renderizzata
-    setTimeout(() => {
-      //Fa ripartire l'evento OnScroll
-      this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
-    }, 0);
-
-    this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
-
-    //Impedisce il loop infinito tra onScroll e checkScroll
-    this.preventOnScrollEvent = true;
-
-    this.loaderService.hide();
-  }
-
-  public textRowsRangeWidenessPredictor(extraRows?: number): number {
-    let arbitraryRowSizeInPixels = 50;
-    let arbitraryExtraRows = extraRows ?? 5;
-    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
-  }
-
-  public extraTextRowsWidenessPredictor(): number {
-    let arbitraryRowSizeInPixels = 50;
-    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
-  }
-
   /**
  * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
  * @returns {void}
@@ -601,6 +472,135 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.sentnumVerticalLine = this.generateSentnumVerticalLine();
 
     this.checkScroll();
+  }
+
+  public onScroll(event: any) {
+    if (this.preventOnScrollEvent) {
+      this.preventOnScrollEvent = false;
+      return;
+    }
+
+    this.scrolling = true;
+    let scroll = Math.ceil(event.target.clientHeight + event.target.scrollTop);
+
+    if (this.lastScrollTop === event.target.scrollTop) { return; }
+
+    this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
+    this.lastScrollTop = event.target.scrollTop;
+
+    if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
+
+    //#region calcolo start e end
+    this.precTextRange = this.textRange.clone();
+    this.textRange.resetExtraRowsSpace();
+
+    switch (this.scrollingDown) {
+      case true: //scolling DOWN
+        this.textRange.start += this.textRowsWideness;
+        this.textRange.end += this.textRowsWideness;
+
+        if (this.textRange.start > this.textTotalRows - this.textRowsWideness) {
+          this.textRange.start = this.textTotalRows - this.textRowsWideness;
+        }
+
+        if (this.textRange.end > this.textTotalRows) {
+          this.textRange.end = this.textTotalRows;
+        }
+
+        //righe extra
+        if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
+          && !this.textRange.hasExtraRowsBeforeStart) {
+          this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
+        }
+        break;
+      case false: //scrolling UP
+        this.textRange.start -= this.textRowsWideness;
+        this.textRange.end -= this.textRowsWideness;
+
+        if (this.textRange.start < 0) {
+          this.textRange.start = 0;
+        }
+
+        if (this.textRange.end < this.textRowsWideness) {
+          this.textRange.end = this.textRowsWideness;
+        }
+
+        //righe extra 
+        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
+          && !this.textRange.hasExtraRowsAfterEnd) {
+          this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
+        }
+        break;
+    }
+    //#endregion
+
+    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+  }
+
+  public isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
+    if (!this.scrollingDown && this.textRange.start === 0) { return true; }
+
+    if (!this.scrollingDown && scrollTop !== 0) { return true; }
+
+    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return true; }
+
+    if (this.scrollingDown && scroll < this.svgHeight) { return true; }
+
+    return false;
+  }
+
+  public checkScroll() {
+    let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
+    if (!scrollable) {
+      this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
+
+      //Fa ripartire l'evento OnScroll
+      this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
+    }
+
+    if (this.textRange.start === this.precTextRange?.start &&
+      this.textRange.end === this.precTextRange.end) {
+      this.loaderService.hide();
+      return;
+    }
+
+    let scrolledBlockSize = 0;
+    let extraScrollPixels = 0;
+
+    if (this.scrollingDown) {
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
+      extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
+    }
+    else {
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
+    }
+
+    //setTimeout necessaria per evitare che lo scrolling venga settato erroneamente
+    //prima che la view del componente sia renderizzata
+    //mettere 0 è un trucco perchè la funzione viene chiamata proprio quando la view è renderizzata
+    setTimeout(() => {
+      //Fa ripartire l'evento OnScroll
+      this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
+    }, 0);
+
+    this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
+
+    //Impedisce il loop infinito tra onScroll e checkScroll
+    this.preventOnScrollEvent = true;
+
+    this.loaderService.hide();
+  }
+
+  public textRowsRangeWidenessPredictor(extraRows?: number): number {
+    let arbitraryRowSizeInPixels = 50;
+    let arbitraryExtraRows = extraRows ?? 5;
+    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
+  }
+
+  public extraTextRowsWidenessPredictor(): number {
+    let arbitraryRowSizeInPixels = 50;
+    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
   }
 
   private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
