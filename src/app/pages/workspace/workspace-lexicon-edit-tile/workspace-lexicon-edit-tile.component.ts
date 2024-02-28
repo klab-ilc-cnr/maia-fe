@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, catchError, take, takeUntil } from 'rxjs';
 import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -288,37 +288,33 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       case LexicalEntryTypeOld.SENSES_ROOT:
         this.lexiconService.getLexicalEntrySenses(event.node.parent.data.instanceName).pipe(
           takeUntil(this.unsubscribe$),
-        ).subscribe({
-          next: (data: SenseListItem[]) => {
-            event.node.children = data.map((val: SenseListItem) => ({
-              data: {
-                name: this.showLabelName ? val['label'] : val.sense,
-                instanceName: val.sense,
-                uri: val.sense,
-                label: val['label'],
-                note: val['note'],
-                creator: val['creator'],
-                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
-                status: null,
-                type: LexicalEntryTypeOld.SENSE
-              }
-            }));
-            if (isNew) {
-              event.node.expanded = true;
-              const newSenseNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
-              this.selectedNode = newSenseNode;
-              this.onNodeSelect({ node: newSenseNode })
+          catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, "Error retrieving senses")),
+        ).subscribe((data: SenseListItem[]) => {
+          event.node.children = data.map((val: SenseListItem) => ({
+            data: {
+              name: this.showLabelName ? val['definition'] : val.sense,
+              instanceName: val.sense,
+              uri: val.sense,
+              label: val['label'],
+              note: val['note'],
+              creator: val['creator'],
+              creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+              lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+              status: null,
+              type: LexicalEntryTypeOld.SENSE
             }
-
-            //refresh the data
-            this.lexicalEntryTree = [...this.lexicalEntryTree];
-
-            this.loading = false;
-          },
-          error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
+          }));
+          if (isNew) {
+            event.node.expanded = true;
+            const newSenseNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
+            this.selectedNode = newSenseNode;
+            this.onNodeSelect({ node: newSenseNode })
           }
+
+          //refresh the data
+          this.lexicalEntryTree = [...this.lexicalEntryTree];
+
+          this.loading = false;
         });
         break;
     }

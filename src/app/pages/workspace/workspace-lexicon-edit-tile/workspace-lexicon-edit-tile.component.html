@@ -1,4 +1,4 @@
-<p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[40,60]" [minSizes]="[25,40]">
+<p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[40,60]">
   <ng-template pTemplate>
     <p-treeTable #tt selectionMode="single" dataKey="instanceName" [(selection)]="selectedNode"
       [value]="lexicalEntryTree" [columns]="cols" [lazy]="true" [loading]="loading" scrollHeight="100vh"
