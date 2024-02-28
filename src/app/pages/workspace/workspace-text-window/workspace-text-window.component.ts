@@ -150,6 +150,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   //#region DOCUMENT SECTIONS NAVIGATION TREE
   documentSections: TreeNode[] = new Array<TreeNode>;
   selectedSection?: TreeNode;
+  changingSection?: boolean = false;
   rootNodeKey: string = '405092b3-7110-4e48-a524-21a20d0448ab'
   //#endregion
 
@@ -658,10 +659,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
 
         //righe extra
-        if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
-          && !this.textRange.hasExtraRowsBeforeStart) {
-          this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
-        }
+        this.addExtraRowsUp();
         break;
       case false: //scrolling UP
         this.textRange.start -= this.textRowsWideness;
@@ -684,6 +682,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
     //#endregion
     this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+  }
+
+  public addExtraRowsUp() {
+    if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
+      && !this.textRange.hasExtraRowsBeforeStart) {
+      this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
+    };
   }
 
   public expandCollapseNavigationDiv() {
@@ -724,7 +729,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     if (this.textRange.start === this.precTextRange?.start &&
-      this.textRange.end === this.precTextRange.end) {
+      this.textRange.end === this.precTextRange?.end &&
+      !this.changingSection) {
+      this.changingSection = false;
       this.loaderService.hide();
       return;
     }
@@ -769,13 +776,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public sectionSelected(event: any) {
-    if(event.node.key === this.rootNodeKey)
-    {
-      return;
-    }
+    if (event.node.key === this.rootNodeKey) { return; }
 
+    if (event.node.data.start === this.textRange.start) { return; }
+
+    this.changingSection = true;
     this.scrollingDown = false;
-    this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness)
+    this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness);
+    this.precTextRange = this.textRange.clone();
+    this.addExtraRowsUp();
     this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
     // this.messageService.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label });
   }
