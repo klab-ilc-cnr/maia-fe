@@ -25,7 +25,7 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { TextRange } from 'src/app/models/text/text-range';
 import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
-import { NodeService } from 'src/app/services/node.service';
+import { Section } from 'src/app/models/texto/section';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -170,7 +170,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private msgConfService: MessageConfigurationService,
     private layerState: LayerStateService,
     private workspaceService: WorkspaceService,
-    private nodeService: NodeService
   ) {
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
@@ -191,6 +190,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.currentResource = resource;
     });
 
+    this.workspaceService.retrieveSectionsById(this.textId)
+      .subscribe(sectionsResponse => {
+        this.documentTree = this.adaptToDocumentTree(sectionsResponse);
+      });
+
     this.layers$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(list => {
@@ -203,8 +207,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.showAnnotationEditor = true;
 
     this.updateHeight(this.height);
-
-    this.nodeService.getFiles().then(files => this.documentTree = files);
   }
 
   ngAfterViewInit() {
@@ -239,6 +241,43 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       node.children.forEach(childNode => {
         this.expandRecursive(childNode, isExpand);
       });
+    }
+  }
+
+  private adaptToDocumentTree(sectionsResponse: Section[]): Array<TreeNode> {
+    let documentTree: Array<TreeNode> =
+      [
+        {
+          label: "Documento",
+          data: "Root",
+          icon: "pi pi-file",
+          children: []
+        }
+      ];
+
+    let children = sectionsResponse.map(section => this.adaptSectionToTreeNode(section));
+    documentTree[0].children = children;
+
+    return documentTree;
+  }
+
+  private adaptSectionToTreeNode(section: Section): TreeNode {
+    if (section.children === undefined
+      || section.children === null
+      || section.children.length === 0) {
+
+      return {
+        label: section!.title,
+        data: section!.index,
+        icon: "pi pi-file"
+      };
+    }
+
+    return {
+      label: section.title,
+      data: section.index,
+      icon: "pi pi-file",
+      children: section.children.map(s => this.adaptSectionToTreeNode(s))
     }
   }
 
@@ -2282,3 +2321,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return Object.values(towers);
   }
 }
+
+
+

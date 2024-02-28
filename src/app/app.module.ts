@@ -52,7 +52,6 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
 import {TreeModule} from 'primeng/tree';
-import { NodeService } from './services/node.service';
 
 @NgModule({
   declarations: [
@@ -104,7 +103,7 @@ import { NodeService } from './services/node.service';
     SharedModule,
     TreeModule
   ],
-  providers: [NodeService, PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders],
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {
