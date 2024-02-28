@@ -147,12 +147,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public extraRowsWidenessUpOrDown!: number;
   //#endregion
 
-  //#region DOCUMENT NAVIGATION TREE
-  documentTree: TreeNode[] = new Array<TreeNode>;
+  //#region DOCUMENT SECTIONS NAVIGATION TREE
+  documentSections: TreeNode[] = new Array<TreeNode>;
+  selectedSection?: TreeNode;
+  rootNodeKey: string = '405092b3-7110-4e48-a524-21a20d0448ab'
   //#endregion
 
   public normalStyleEditorDiv: boolean = false;
-  public normalStyleTreeDiv: boolean = false;
+  public expandedDocumentSectonsDiv: boolean = true;
 
   // currentUser!: User;
   currentTextoUserId!: number;
@@ -191,7 +193,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(([resource, sectionsResponse]) => {
         this.currentResource = resource;
-        this.documentTree = this.adaptToDocumentTree(sectionsResponse, resource.name ?? '');
+        this.documentSections = this.adaptToDocumentTree(sectionsResponse, resource.name ?? '');
 
       });
 
@@ -224,19 +226,19 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   expandAll() {
-    this.documentTree.forEach(node => {
+    this.documentSections.forEach(node => {
       this.expandRecursive(node, true);
     });
 
-    this.documentTree = [...this.documentTree ]; 
+    this.documentSections = [...this.documentSections];
   }
 
   collapseAll() {
-    this.documentTree.forEach(node => {
+    this.documentSections.forEach(node => {
       this.expandRecursive(node, false);
     });
 
-    this.documentTree = [...this.documentTree ];
+    this.documentSections = [...this.documentSections];
   }
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {
@@ -253,8 +255,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       [
         {
           label: documentName,
-          data: "Root",
-          key:"rootNode",
+          data: {},
+          key: this.rootNodeKey,
           icon: "pi pi-file",
           children: []
         }
@@ -274,7 +276,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return {
         key: section.id.toString(),
         label: section!.title,
-        data: section!.index,
+        data: { index: section!.index, start: section.row_start },
         icon: "pi pi-file"
       };
     }
@@ -282,7 +284,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return {
       key: section.id.toString(),
       label: section.title,
-      data: section.index,
+      data: { index: section!.index, start: section.row_start },
       icon: "pi pi-file",
       children: section.children.map(s => this.adaptSectionToTreeNode(s))
     }
@@ -685,7 +687,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public expandCollapseNavigationDiv() {
-    this.normalStyleTreeDiv = !this.normalStyleTreeDiv;
+    this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
 
     setTimeout(() => {
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
@@ -764,6 +766,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public extraTextRowsWidenessPredictor(): number {
     let arbitraryRowSizeInPixels = 50;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
+  }
+
+  public sectionSelected(event: any) {
+    if(event.node.key === this.rootNodeKey)
+    {
+      return;
+    }
+
+    this.scrollingDown = false;
+    this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness)
+    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+    // this.messageService.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label });
   }
 
   /**

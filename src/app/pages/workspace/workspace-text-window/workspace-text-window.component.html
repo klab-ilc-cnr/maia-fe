@@ -49,20 +49,25 @@
 </div>
 
 <div class="container">
-  <div [ngClass]="normalStyleTreeDiv ? 'normal-div' : 'normal-div compressed-div'">
-    <a *ngIf="!normalStyleTreeDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
-    <a *ngIf="normalStyleTreeDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a>
+  <div [ngClass]="expandedDocumentSectonsDiv ? 'normal-div' : 'normal-div compressed-div'">
+    <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
+    <a *ngIf="expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a>
     <div style="margin-bottom: 1rem; margin-left: 1rem">
-      <button class="p-button-outlined" *ngIf="normalStyleTreeDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
-      <button class="p-button-outlined" *ngIf="normalStyleTreeDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
+      <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
+      <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
     </div>
-    <div *ngIf="normalStyleTreeDiv">
-      <p-tree [value]="documentTree" 
-      [virtualScroll]="true" [virtualScrollItemSize]="20" [scrollHeight]="textContainerHeight - 60 + 'px'"
-      [filter]="true"></p-tree>
+    <div *ngIf="expandedDocumentSectonsDiv">
+      <p-tree [value]="documentSections" 
+        [virtualScroll]="true" [virtualScrollItemSize]="20" 
+        [scrollHeight]="textContainerHeight - 60 + 'px'"
+        selectionMode="single"
+        [(selection)]="selectedSection"
+        (onNodeSelect)="sectionSelected($event)"
+        [filter]="true">
+      </p-tree>
     </div>
   </div>
-  <div class="expanded-div">
+  <div class="main-div">
     <div #textContainer class="text-container" (scroll)="onScroll($event)" [ngStyle]="{'height.px': textContainerHeight}">
       <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >
         <svg class="text-editor" [attr.height]="svgHeight">
