@@ -147,7 +147,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public extraRowsWidenessUpOrDown!: number;
   //#endregion
 
+  //#region DOCUMENT NAVIGATION TREE
   documentTree: TreeNode[] = new Array<TreeNode>;
+  //#endregion
 
   public normalStyleEditorDiv: boolean = false;
   public normalStyleTreeDiv: boolean = false;
@@ -184,15 +186,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.workspaceService.retrieveResourceElementById(this.textId).pipe(
-      take(1),
-    ).subscribe(resource => {
-      this.currentResource = resource;
-    });
+    forkJoin([this.workspaceService.retrieveResourceElementById(this.textId),
+    this.workspaceService.retrieveSectionsById(this.textId)])
+      .pipe(take(1))
+      .subscribe(([resource, sectionsResponse]) => {
+        this.currentResource = resource;
+        this.documentTree = this.adaptToDocumentTree(sectionsResponse, resource.name ?? '');
 
-    this.workspaceService.retrieveSectionsById(this.textId)
-      .subscribe(sectionsResponse => {
-        this.documentTree = this.adaptToDocumentTree(sectionsResponse);
       });
 
     this.layers$.pipe(
@@ -227,12 +227,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.documentTree.forEach(node => {
       this.expandRecursive(node, true);
     });
+
+    this.documentTree = [...this.documentTree ]; 
   }
 
   collapseAll() {
     this.documentTree.forEach(node => {
       this.expandRecursive(node, false);
     });
+
+    this.documentTree = [...this.documentTree ];
   }
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {
@@ -244,12 +248,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
   }
 
-  private adaptToDocumentTree(sectionsResponse: Section[]): Array<TreeNode> {
+  private adaptToDocumentTree(sectionsResponse: Section[], documentName: string): Array<TreeNode> {
     let documentTree: Array<TreeNode> =
       [
         {
-          label: "Documento",
+          label: documentName,
           data: "Root",
+          key:"rootNode",
           icon: "pi pi-file",
           children: []
         }
@@ -267,6 +272,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       || section.children.length === 0) {
 
       return {
+        key: section.id.toString(),
         label: section!.title,
         data: section!.index,
         icon: "pi pi-file"
@@ -274,6 +280,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     return {
+      key: section.id.toString(),
       label: section.title,
       data: section.index,
       icon: "pi pi-file",

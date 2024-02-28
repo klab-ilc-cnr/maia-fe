@@ -57,7 +57,9 @@
       <button class="p-button-outlined" *ngIf="normalStyleTreeDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
     </div>
     <div *ngIf="normalStyleTreeDiv">
-      <p-tree [value]="documentTree"></p-tree>
+      <p-tree [value]="documentTree" 
+      [virtualScroll]="true" [virtualScrollItemSize]="20" [scrollHeight]="textContainerHeight - 60 + 'px'"
+      [filter]="true"></p-tree>
     </div>
   </div>
   <div class="expanded-div">
