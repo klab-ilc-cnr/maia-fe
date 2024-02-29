@@ -1,17 +1,15 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, take, takeUntil } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
-import { LayerService } from 'src/app/services/layer.service';
-import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
-import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
@@ -166,11 +164,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param router {Router} servizi per la navigazione fra le viste
    * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
    * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param layerService {LayerService} servizi relativi ai layer
-   * @param userService {UserService} servizi relativi agli utenti //TODO verificare se possiamo rimuovere
    * @param cd {ChangeDetectorRef} fornisce funzionalità di verifica di modifiche per la visualizzazione //TODO verificare se possiamo rimuovere
    * @param vcr {ViewContainerRef} contenitore dove un o più view possono essere attaccate a un componente
-   * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param workspaceService {WorkspaceService} servizi relativi ai workspace
    * @param renderer {Renderer2} classe che può essere estesa per implementare renderizzazioni personalizzate
    * @param commonService {CommonService} servizi comuni
@@ -179,10 +174,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private loaderService: LoaderService,
-    private layerService: LayerService,
-    private userService: UserService,
     private vcr: ViewContainerRef,
-    private messageService: MessageService,
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
     private commonService: CommonService,
@@ -754,15 +746,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const openTiles = jsPanel.extensions.getTileMap();
     this.loaderService.show();
-    this.workspaceService
-      .saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles)
-      .subscribe({
-        next: () => {
-          this.workSaved = true;
-          this.loaderService.hide();
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
-        }
-      });
+    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.loaderService.hide();
+        return this.commonService.throwHttpErrorAndMessage(error, 'Error saving workspace status');
+      })
+    ).subscribe(() => {
+      this.workSaved = true;
+      this.loaderService.hide();
+    });
 
     // close panels, here we simply close all panels in the document
     // for (const panel of jsPanel.getPanels()) {
