@@ -60,7 +60,7 @@
       <p-tree id="sectionsTree" 
         [value]="documentSections" 
         [virtualScroll]="true" [virtualScrollItemSize]="20" 
-        [scrollHeight]="textContainerHeight - 60 + 'px'"
+        [scrollHeight]="sectionsTreeHeight + 'px'"
         selectionMode="single"
         [(selection)]="selectedSection"
         (onNodeSelect)="sectionSelected($event)"

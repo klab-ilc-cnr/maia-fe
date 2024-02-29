@@ -123,6 +123,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   targetLayer = new Layer();
   /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
+  sectionsTreeHeight = this.textContainerHeight - 117;
   /**Identificativo numerico del testo */
   textId: number | undefined;
   /**Text response */
@@ -769,6 +770,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateHeight(newHeight: any) {
     this.height = newHeight - Math.ceil(this.visualConfig.jsPanelHeaderBarHeight);
     this.textContainerHeight = this.height - Math.ceil(this.visualConfig.layerSelectHeightAndMargin + this.visualConfig.paddingAfterTextEditor);
+    this.sectionsTreeHeight = this.textContainerHeight - 117;
   }
 
   /**Metodo che aggiorna le dimensioni dell'editor di testo */
