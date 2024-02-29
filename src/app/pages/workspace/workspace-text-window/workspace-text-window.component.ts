@@ -50,7 +50,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     spaceAfterTextLine: 8,
     stdTextLineHeight: 18,
     stdTextOffsetX: 37,
+    maxStdTextOffsetX: 100,
     stdSentnumOffsetX: 32,
+    maxStdSentnumOffsetX: 95,
     spaceBeforeVerticalLine: 2,
     spaceAfterVerticalLine: 2,
     textFont: "13px monospace",
@@ -1061,17 +1063,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   private calculateMaxSentumWidth() {
-    const maxStdTextOffsetX = 70;
-    const maxStdSentnumOffsetX = 65;
     const sentumWidthArray = this.textSplittedRows?.map(row => this.getComputedTextLength(row.index ?? '', this.visualConfig.textFont)) ?? [0];
     const maxSentumWidth = Math.max(...sentumWidthArray);
     this.visualConfig.stdTextOffsetX = maxSentumWidth > 0 ? maxSentumWidth : this.visualConfig.stdTextOffsetX;
 
-    if (this.visualConfig.stdTextOffsetX > maxStdTextOffsetX) { this.visualConfig.stdTextOffsetX = maxStdTextOffsetX; }
+    if (this.visualConfig.stdTextOffsetX > this.visualConfig.maxStdTextOffsetX) { this.visualConfig.stdTextOffsetX = this.visualConfig.maxStdTextOffsetX; }
 
     this.visualConfig.stdSentnumOffsetX = maxSentumWidth - 5 > 0 ? maxSentumWidth - 5 : this.visualConfig.stdSentnumOffsetX;
 
-    if (this.visualConfig.stdSentnumOffsetX > maxStdSentnumOffsetX) { this.visualConfig.stdSentnumOffsetX = maxStdSentnumOffsetX; }
+    if (this.visualConfig.stdSentnumOffsetX > this.visualConfig.maxStdSentnumOffsetX) { this.visualConfig.stdSentnumOffsetX = this.visualConfig.maxStdSentnumOffsetX; }
   }
 
   private isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
