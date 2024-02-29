@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, take, takeUntil } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -11,6 +11,7 @@ import { WorkspaceService } from 'src/app/services/workspace.service';
 import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
@@ -21,6 +22,7 @@ import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
@@ -183,6 +185,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UserService,
     private vcr: ViewContainerRef,
     private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
     private commonService: CommonService,
@@ -754,15 +757,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const openTiles = jsPanel.extensions.getTileMap();
     this.loaderService.show();
-    this.workspaceService
-      .saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles)
-      .subscribe({
-        next: () => {
-          this.workSaved = true;
-          this.loaderService.hide();
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
-        }
-      });
+    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.loaderService.hide();
+        return this.commonService.throwHttpErrorAndMessage(error, 'Error saving workspace status');
+      })
+    ).subscribe(() => {
+      this.workSaved = true;
+      this.loaderService.hide();
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Workspace saved'));
+    });
 
     // close panels, here we simply close all panels in the document
     // for (const panel of jsPanel.getPanels()) {
