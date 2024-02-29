@@ -154,6 +154,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.refreshTreeNode();
   }
 
+  /**
+   * Method that updates the displayed information on the number of children of a grouping node
+   * @param res {{ option: string, instanceName: string, counter: string, children: any }} updating data
+   * @returns {boolean}
+   */
   private updateGroupingNode(res: { option: string, instanceName: string, counter: number, children: any }) {
     const children = this.lexicalEntryTree[0].children;
     if (children !== undefined) {

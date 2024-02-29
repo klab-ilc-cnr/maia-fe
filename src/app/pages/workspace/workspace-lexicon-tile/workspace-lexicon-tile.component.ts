@@ -178,6 +178,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  /**
+   * Method that updates a field among those displayed in a tree table node
+   * @param node {any} the treetable node to be updated
+   * @param field {string} type of field to be updated
+   * @param newValue {any} new value to be display
+   * @returns {boolean} 
+   */
   private updateNodeField(node: any, field: string, newValue: any) {
     let result: boolean;
     switch (field) {
@@ -201,6 +208,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     return result;
   }
 
+  /**
+   * Method that searches for the tree table node to modify
+   * @param root {any} tree table node (or object with children)
+   * @param res {{ option: string, lexicalEntry: string, uri: string, field: string, newValue: any }} updating data
+   * @returns {boolean}
+   */
   private findAndModifyNode(root: any, res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }) {
     if (res.lexicalEntry === res.uri) { //editing a lexical entry
       const editNode = root.children.find((n: any) => n.data.uri === res.uri);
@@ -217,11 +230,21 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     return false;
   }
 
+  /**
+   * Method that handles changing the data of a tree table node and updating the displayed list
+   * @param res {{ option: string, lexicalEntry: string, uri: string, field: string, newValue: any }} updating data
+   */
   private lexiconEditTreeData(res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }): void {
     this.findAndModifyNode({ children: this.results }, res);
     this.results = [...this.results];
   }
 
+  /**
+   * Method that updates the grouping node with the exact number of children
+   * @param root root {any} tree table node (or object with children)
+   * @param res {{ option: string, instanceName: string, counter: string, children: any }} updating data
+   * @returns {boolean}
+   */
   private findAndEditGroupingNode(root: any, res: { option: string, instanceName: string, counter: string, children: any }) {
     if (root.data?.instanceName === res.instanceName) {
       root.data.name = root.data.name.replace(/\(\d*\)/, `(${res.counter})`);
@@ -236,6 +259,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     return false;
   }
 
+  /**
+   * Method that handles changing the data of a tree table grouping node and updating the displayed list
+   * @param res {{ option: string, instanceName: string, counter: string, children: any }} updating data
+   */
   private updateGroupingNode(res: { option: string, instanceName: string, counter: string, children: any }) {
     this.findAndEditGroupingNode({ children: this.results }, res);
     this.results = [...this.results];
