@@ -226,30 +226,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
-    const newAnnFeat = new TAnnotationFeature();
-    newAnnFeat.annotation = annotation;
-    newAnnFeat.feature = feature;
-    newAnnFeat.value = value;
-    return this.annotationService.createAnnotationFeature(newAnnFeat);
-  }
-
-  private createNewAnnotation(annotation: TAnnotation) {
-    const promise = new Promise<TAnnotation>((resolve, reject) => {
-      this.annotationService.createAnnotation(annotation).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
-          reject(error);
-          return throwError(() => new Error(error.error));
-        }),
-      ).subscribe(newAnn => {
-        resolve(newAnn);
-      });
-    });
-    return promise;
-  }
-
   async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
     let workingAnnotation = this.textoAnnotation;
     if (!this.textoAnnotation.id) {
@@ -297,267 +273,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   changeVisibleLayers(event: any) {
     this.visibleLayers = this.selectedLayers || [];
     this.loadData(this.textRange.start, this.textRange.end);
-  }
-
-  /**
- * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
- * @returns {void}
- */
-  loadData(start: number, end: number) {
-    if (!this.textId) {
-      return;
-    }
-
-    this.annotation = new Annotation();
-    this.textoAnnotation = new TAnnotation();
-    this.relation = new Relation();
-
-    this.loaderService.show();
-
-    forkJoin([
-      this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
-      this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end }),
-    ]).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
-        this.loaderService.hide();
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(([textResponse, tAnnotationsResponse]) => {
-      // this.layersList = layersResponse;
-      this.textTotalRows = textResponse.count!;
-
-      if (this.selectedLayers) {
-        this.visibleLayers = this.selectedLayers;
-      }
-
-      // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
-      //   this.visibleLayers = this.selectedLayers = this.layersList;
-      // }
-      // else {
-      //   this.visibleLayers = this.selectedLayers;
-      // }
-
-      // this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
-
-      // this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
-
-      // this.layerOptions.unshift({
-      //   label: "Nessuna annotazione",
-      //   value: -1
-      // });
-
-      if (!this.selectedLayer) {
-        this.selectedLayer = undefined;
-      }
-
-      // this.annotation.layer = this.selectedLayer;
-      // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
-      this.textoAnnotation.layer = this.selectedLayer;
-      this.annotation.layer = this.selectedLayer?.id;
-      this.annotation.layerName = this.selectedLayer?.name;
-
-      this.textRes = textResponse.data?.map(d => d.text) || [];
-      this.textSplittedRows = textResponse.data;
-      this.offset = textResponse.data![0].start;
-      this.annotationsRes = null;
-      this.textoAnnotationsRes = tAnnotationsResponse;
-
-      this.simplifiedAnns = [];
-      this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
-
-      const layersIndex = new Array<number>();
-
-      this.visibleLayers.forEach(l => {
-        if (l.id) {
-          layersIndex.push(l.id)
-        }
-      });
-
-      tAnnotationsResponse.forEach(async (a: TAnnotation) => {
-        if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer!.id!)) {
-          const annFeat = a.features ?? [];
-          let dictFeat = {};
-          annFeat.forEach(f => {
-            dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
-          });
-          const sAnn = {
-            span: <SpanCoordinates>{
-              start: a.start - (this.offset ?? 0),
-              end: a.end - (this.offset ?? 0)
-            },
-            layer: a.layer?.id,
-            layerName: a.layer?.name,
-            value: undefined, //TODO non chiaro quale sia il valore
-            imported: undefined,
-            attributes: <Record<string, any>>{ ...dictFeat },
-            id: a.id,
-          };
-          this.simplifiedAnns.push(sAnn);
-        }
-      });
-
-      // this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
-      //   if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
-      //     const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
-      //       let { spans, ...newAnn } = a;
-      //       return {
-      //         ...newAnn,
-      //         span: sc
-      //       }
-      //     })
-
-      //     this.simplifiedAnns.push(...sAnn);
-      //   }
-
-      //   /*           if (a.attributes && a.attributes["relations"]) {
-      //               let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-      //                 if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
-      //                   this.simplifiedArcs.push(r);
-      //                 }
-      //               })
-      //             } */
-      // })
-
-      this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
-
-      this.renderData();
-    });
-  }
-
-  /**
- * @private
- * Metodo che gestisce la renderizzazione del testo annotato
- */
-  private renderData() {
-    this.rows = [];
-    const sentences = this.textSplittedRows;
-    const row_id = 0;
-    let start = 0;
-
-    const width = this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
-
-    const textFont = getComputedStyle(document.documentElement).getPropertyValue('--text-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--text-font-family');
-    this.visualConfig.textFont = textFont;
-
-    const annFont = getComputedStyle(document.documentElement).getPropertyValue('--annotation-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--annotations-font-family')
-    this.visualConfig.annotationFont = annFont;
-
-    const arcFont = getComputedStyle(document.documentElement).getPropertyValue('--arc-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--arc-font-family')
-    this.visualConfig.arcFont = arcFont;
-
-    let linesCounter = 0;
-    let yStartRow = 0;
-    const lineBuilder = new LineBuilder;
-
-    lineBuilder.yStartLine = 0;
-
-    sentences?.forEach((s: TextSplittedRow) => {
-      const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
-
-      const sLines = new Array<TextLine>();
-
-      const words = s.text.split(/(?<=\s)/g);
-
-      lineBuilder.startLine = start;
-
-      if (sWidth / width > 1) {
-        let wordAddedCounter = 0;
-        lineBuilder.line = new TextLine();
-        let lineWidth = 0;
-        lineBuilder.line.text = "";
-
-        words.forEach((w: any) => {
-          const wordWidth = this.getComputedTextLength(w, this.visualConfig.textFont);
-
-          if ((lineWidth + wordWidth) <= width) {
-            lineBuilder.line.text += w;
-            wordAddedCounter++;
-            lineWidth += wordWidth;
-
-            if (!lineBuilder.line.words) {
-              lineBuilder.line.words = [];
-            }
-
-            lineBuilder.line.words.push(w);
-          }
-          else {
-            const line = this.createLine(lineBuilder);
-            lineBuilder.yStartLine += line.height;
-
-            sLines.push(JSON.parse(JSON.stringify(line)));
-
-            lineBuilder.startLine += (line.text?.length || 0);
-            linesCounter++;
-
-            if (wordAddedCounter != words.length) {
-              lineBuilder.line.text = "";
-              lineWidth = 0;
-              lineBuilder.line.words = [];
-              lineBuilder.line.annotationsTowers = [];
-
-              lineBuilder.line.text += w;
-              wordAddedCounter++;
-              lineWidth += wordWidth;
-              lineBuilder.line.words.push(w);
-            }
-          }
-
-          if (wordAddedCounter == words.length) {
-            const line = this.createLine(lineBuilder);
-            lineBuilder.yStartLine += line.height;
-
-            sLines.push(JSON.parse(JSON.stringify(line)));
-
-            lineBuilder.startLine += (line.text?.length || 0);
-            linesCounter++;
-          }
-        })
-      }
-      else {
-        lineBuilder.line = new TextLine();
-        lineBuilder.line.text = s.text;
-        lineBuilder.line.words = words;
-
-        const line = this.createLine(lineBuilder);
-        lineBuilder.yStartLine += line.height;
-
-        sLines.push(JSON.parse(JSON.stringify(line)));
-
-        lineBuilder.startLine += (line.text?.length || 0);
-        linesCounter++;
-      }
-
-      const sLinesCopy = JSON.parse(JSON.stringify(sLines));
-
-      const rowHeight = sLinesCopy.reduce((acc: any, o: any) => acc + o.height, 0);
-
-      this.rows?.push({
-        id: row_id + 1,
-        height: rowHeight,
-        lines: sLinesCopy,
-        yBG: yStartRow,
-        xText: this.visualConfig.stdTextOffsetX,
-        yText: sLinesCopy[0].yText - this.visualConfig.spaceAfterTextLine,
-        xSentnum: this.visualConfig.stdSentnumOffsetX,
-        ySentnum: sLinesCopy[sLinesCopy.length - 1].yText,
-        text: s.text,
-        words: words,
-        startIndex: start,
-        endIndex: start + s.text.length,
-        rowIndex: s.absolute
-      })
-
-      yStartRow += rowHeight;
-      start += s.text.length;
-    })
-
-    this.svgHeight = this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
-
-    this.sentnumVerticalLine = this.generateSentnumVerticalLine();
-
-    this.checkScroll();
   }
 
   public onScroll(event: any) {
@@ -619,13 +334,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
   }
 
-  public addExtraRowsUp() {
-    if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
-      && !this.textRange.hasExtraRowsBeforeStart) {
-      this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
-    };
-  }
-
   public expandCollapseNavigationDiv() {
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
 
@@ -640,74 +348,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
     }, 200);
-  }
-
-  public isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
-    if (!this.scrollingDown && this.textRange.start === 0) { return true; }
-
-    if (!this.scrollingDown && scrollTop !== 0) { return true; }
-
-    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return true; }
-
-    if (this.scrollingDown && scroll < this.svgHeight) { return true; }
-
-    return false;
-  }
-
-  public checkScroll() {
-    let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
-    if (!scrollable) {
-      this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
-
-      //Fa ripartire l'evento OnScroll
-      this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
-    }
-
-    if (this.textRange.start === this.precTextRange?.start &&
-      this.textRange.end === this.precTextRange?.end &&
-      !this.changingSection) {
-      this.changingSection = false;
-      this.loaderService.hide();
-      return;
-    }
-
-    let scrolledBlockSize = 0;
-    let extraScrollPixels = 0;
-
-    if (this.scrollingDown) {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
-      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
-      extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
-    }
-    else {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
-    }
-
-    //setTimeout necessaria per evitare che lo scrolling venga settato erroneamente
-    //prima che la view del componente sia renderizzata
-    //mettere 0 è un trucco perchè la funzione viene chiamata proprio quando la view è renderizzata
-    setTimeout(() => {
-      //Fa ripartire l'evento OnScroll
-      this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
-    }, 0);
-
-    this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
-
-    //Impedisce il loop infinito tra onScroll e checkScroll
-    this.preventOnScrollEvent = true;
-
-    this.loaderService.hide();
-  }
-
-  public textRowsRangeWidenessPredictor(extraRows?: number): number {
-    let arbitraryRowSizeInPixels = 50;
-    let arbitraryExtraRows = extraRows ?? 5;
-    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
-  }
-
-  public extraTextRowsWidenessPredictor(): number {
-    let arbitraryRowSizeInPixels = 50;
-    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
   }
 
   public sectionSelected(event: any) {
@@ -737,71 +377,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     });
 
     this.documentSections = [...this.documentSections];
-  }
-
-  private expandRecursive(node: TreeNode, isExpand: boolean) {
-    node.expanded = isExpand;
-    if (node.children) {
-      node.children.forEach(childNode => {
-        this.expandRecursive(childNode, isExpand);
-      });
-    }
-  }
-
-  private adaptToDocumentTree(sectionsResponse: Section[], documentName: string): Array<TreeNode> {
-    let documentTree: Array<TreeNode> =
-      [
-        {
-          label: documentName,
-          data: {},
-          key: this.rootNodeKey,
-          icon: "pi pi-file",
-          children: []
-        }
-      ];
-
-    let children = sectionsResponse.map(section => this.adaptSectionToTreeNode(section, documentTree[0]));
-    documentTree[0].children = children;
-
-    return documentTree;
-  }
-
-  private adaptSectionToTreeNode(section: Section, parent: TreeNode): TreeNode {
-    if (section.children === undefined
-      || section.children === null
-      || section.children.length === 0) {
-
-      return {
-        key: section.id.toString(),
-        label: section!.title,
-        data: {
-          index: section!.index,
-          start: section.row_start,
-          end: section.row_end,
-          parent: parent
-        },
-        icon: "pi pi-file"
-      };
-    }
-
-
-    const node = {
-      key: section.id.toString(),
-      label: section.title,
-      data: {
-        index: section!.index,
-        start: section.row_start,
-        end: section.row_end,
-        parent: parent
-      },
-      children: [],
-      icon: "pi pi-file"
-    } as TreeNode
-
-    let children = section.children.map(s => this.adaptSectionToTreeNode(s, node));
-    node.children = children;
-
-    return node;
   }
 
   /**
@@ -897,46 +472,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     parent.expanded = true;
     this.expandAnchestors(parent);
-  }
-
-  getNodeWithKey(key: string, nodes: TreeNode[]): TreeNode | undefined {
-    for (let node of nodes) {
-      if (node.key === key) {
-        return node;
-      }
-
-      if (node.children) {
-        let matchedNode = this.getNodeWithKey(key, node.children);
-        if (matchedNode) {
-          return matchedNode;
-        }
-      }
-    }
-    return undefined;
-  }
-
-  private findSectionByIndex(index: number): TreeNode | null {
-    let rootNode = this.documentSections.find(s => s.key == this.rootNodeKey)!;
-    return this.searchSectionByIndex(rootNode.children ?? [], index);
-  }
-
-  private searchSectionByIndex(nodes: TreeNode[], index: number): TreeNode | null {
-    for (const node of nodes) {
-      if (this.isIndexInRange(index, node.data.start, node.data.end)) {
-        if (node.children) {
-          const childResult = this.searchSectionByIndex(node.children, index);
-          if (childResult) {
-            return childResult;
-          }
-        }
-        return node;
-      }
-    }
-    return null;
-  }
-
-  private isIndexInRange(index: number, start: number, end: number): boolean {
-    return index >= start && index <= end;
   }
 
   /**
@@ -1259,6 +794,455 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //   lastStartRec = null;
     //   lastEndRec = null;
     // }
+  }
+
+  /**
+* Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
+* @returns {void}
+*/
+  private loadData(start: number, end: number) {
+    if (!this.textId) {
+      return;
+    }
+
+    this.annotation = new Annotation();
+    this.textoAnnotation = new TAnnotation();
+    this.relation = new Relation();
+
+    this.loaderService.show();
+
+    forkJoin([
+      this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
+      this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end }),
+    ]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
+        this.loaderService.hide();
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe(([textResponse, tAnnotationsResponse]) => {
+      // this.layersList = layersResponse;
+      this.textTotalRows = textResponse.count!;
+
+      if (this.selectedLayers) {
+        this.visibleLayers = this.selectedLayers;
+      }
+
+      // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
+      //   this.visibleLayers = this.selectedLayers = this.layersList;
+      // }
+      // else {
+      //   this.visibleLayers = this.selectedLayers;
+      // }
+
+      // this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
+
+      // this.layerOptions.sort((a, b) => (a.label && b.label && a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
+
+      // this.layerOptions.unshift({
+      //   label: "Nessuna annotazione",
+      //   value: -1
+      // });
+
+      if (!this.selectedLayer) {
+        this.selectedLayer = undefined;
+      }
+
+      // this.annotation.layer = this.selectedLayer;
+      // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+      this.textoAnnotation.layer = this.selectedLayer;
+      this.annotation.layer = this.selectedLayer?.id;
+      this.annotation.layerName = this.selectedLayer?.name;
+
+      this.textRes = textResponse.data?.map(d => d.text) || [];
+      this.textSplittedRows = textResponse.data;
+      this.offset = textResponse.data![0].start;
+      this.annotationsRes = null;
+      this.textoAnnotationsRes = tAnnotationsResponse;
+
+      this.simplifiedAnns = [];
+      this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
+
+      const layersIndex = new Array<number>();
+
+      this.visibleLayers.forEach(l => {
+        if (l.id) {
+          layersIndex.push(l.id)
+        }
+      });
+
+      tAnnotationsResponse.forEach(async (a: TAnnotation) => {
+        if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer!.id!)) {
+          const annFeat = a.features ?? [];
+          let dictFeat = {};
+          annFeat.forEach(f => {
+            dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
+          });
+          const sAnn = {
+            span: <SpanCoordinates>{
+              start: a.start - (this.offset ?? 0),
+              end: a.end - (this.offset ?? 0)
+            },
+            layer: a.layer?.id,
+            layerName: a.layer?.name,
+            value: undefined, //TODO non chiaro quale sia il valore
+            imported: undefined,
+            attributes: <Record<string, any>>{ ...dictFeat },
+            id: a.id,
+          };
+          this.simplifiedAnns.push(sAnn);
+        }
+      });
+
+      // this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
+      //   if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
+      //     const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
+      //       let { spans, ...newAnn } = a;
+      //       return {
+      //         ...newAnn,
+      //         span: sc
+      //       }
+      //     })
+
+      //     this.simplifiedAnns.push(...sAnn);
+      //   }
+
+      //   /*           if (a.attributes && a.attributes["relations"]) {
+      //               let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
+      //                 if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
+      //                   this.simplifiedArcs.push(r);
+      //                 }
+      //               })
+      //             } */
+      // })
+
+      this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
+
+      this.renderData();
+    });
+  }
+
+  /**
+ * @private
+ * Metodo che gestisce la renderizzazione del testo annotato
+ */
+  private renderData() {
+    this.rows = [];
+    const sentences = this.textSplittedRows;
+    const row_id = 0;
+    let start = 0;
+
+    const width = this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
+
+    const textFont = getComputedStyle(document.documentElement).getPropertyValue('--text-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--text-font-family');
+    this.visualConfig.textFont = textFont;
+
+    const annFont = getComputedStyle(document.documentElement).getPropertyValue('--annotation-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--annotations-font-family')
+    this.visualConfig.annotationFont = annFont;
+
+    const arcFont = getComputedStyle(document.documentElement).getPropertyValue('--arc-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--arc-font-family')
+    this.visualConfig.arcFont = arcFont;
+
+    let linesCounter = 0;
+    let yStartRow = 0;
+    const lineBuilder = new LineBuilder;
+
+    lineBuilder.yStartLine = 0;
+
+    sentences?.forEach((s: TextSplittedRow) => {
+      const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
+
+      const sLines = new Array<TextLine>();
+
+      const words = s.text.split(/(?<=\s)/g);
+
+      lineBuilder.startLine = start;
+
+      if (sWidth / width > 1) {
+        let wordAddedCounter = 0;
+        lineBuilder.line = new TextLine();
+        let lineWidth = 0;
+        lineBuilder.line.text = "";
+
+        words.forEach((w: any) => {
+          const wordWidth = this.getComputedTextLength(w, this.visualConfig.textFont);
+
+          if ((lineWidth + wordWidth) <= width) {
+            lineBuilder.line.text += w;
+            wordAddedCounter++;
+            lineWidth += wordWidth;
+
+            if (!lineBuilder.line.words) {
+              lineBuilder.line.words = [];
+            }
+
+            lineBuilder.line.words.push(w);
+          }
+          else {
+            const line = this.createLine(lineBuilder);
+            lineBuilder.yStartLine += line.height;
+
+            sLines.push(JSON.parse(JSON.stringify(line)));
+
+            lineBuilder.startLine += (line.text?.length || 0);
+            linesCounter++;
+
+            if (wordAddedCounter != words.length) {
+              lineBuilder.line.text = "";
+              lineWidth = 0;
+              lineBuilder.line.words = [];
+              lineBuilder.line.annotationsTowers = [];
+
+              lineBuilder.line.text += w;
+              wordAddedCounter++;
+              lineWidth += wordWidth;
+              lineBuilder.line.words.push(w);
+            }
+          }
+
+          if (wordAddedCounter == words.length) {
+            const line = this.createLine(lineBuilder);
+            lineBuilder.yStartLine += line.height;
+
+            sLines.push(JSON.parse(JSON.stringify(line)));
+
+            lineBuilder.startLine += (line.text?.length || 0);
+            linesCounter++;
+          }
+        })
+      }
+      else {
+        lineBuilder.line = new TextLine();
+        lineBuilder.line.text = s.text;
+        lineBuilder.line.words = words;
+
+        const line = this.createLine(lineBuilder);
+        lineBuilder.yStartLine += line.height;
+
+        sLines.push(JSON.parse(JSON.stringify(line)));
+
+        lineBuilder.startLine += (line.text?.length || 0);
+        linesCounter++;
+      }
+
+      const sLinesCopy = JSON.parse(JSON.stringify(sLines));
+
+      const rowHeight = sLinesCopy.reduce((acc: any, o: any) => acc + o.height, 0);
+
+      this.rows?.push({
+        id: row_id + 1,
+        height: rowHeight,
+        lines: sLinesCopy,
+        yBG: yStartRow,
+        xText: this.visualConfig.stdTextOffsetX,
+        yText: sLinesCopy[0].yText - this.visualConfig.spaceAfterTextLine,
+        xSentnum: this.visualConfig.stdSentnumOffsetX,
+        ySentnum: sLinesCopy[sLinesCopy.length - 1].yText,
+        text: s.text,
+        words: words,
+        startIndex: start,
+        endIndex: start + s.text.length,
+        rowIndex: s.absolute
+      })
+
+      yStartRow += rowHeight;
+      start += s.text.length;
+    })
+
+    this.svgHeight = this.rows.reduce((acc, o) => acc + (o.height || 0), 0);
+
+    this.sentnumVerticalLine = this.generateSentnumVerticalLine();
+
+    this.checkScroll();
+  }
+
+  private isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
+    if (!this.scrollingDown && this.textRange.start === 0) { return true; }
+
+    if (!this.scrollingDown && scrollTop !== 0) { return true; }
+
+    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return true; }
+
+    if (this.scrollingDown && scroll < this.svgHeight) { return true; }
+
+    return false;
+  }
+
+  private checkScroll() {
+    let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
+    if (!scrollable) {
+      this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
+
+      //Fa ripartire l'evento OnScroll
+      this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
+    }
+
+    if (this.textRange.start === this.precTextRange?.start &&
+      this.textRange.end === this.precTextRange?.end &&
+      !this.changingSection) {
+      this.changingSection = false;
+      this.loaderService.hide();
+      return;
+    }
+
+    let scrolledBlockSize = 0;
+    let extraScrollPixels = 0;
+
+    if (this.scrollingDown) {
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
+      extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
+    }
+    else {
+      scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
+    }
+
+    //setTimeout necessaria per evitare che lo scrolling venga settato erroneamente
+    //prima che la view del componente sia renderizzata
+    //mettere 0 è un trucco perchè la funzione viene chiamata proprio quando la view è renderizzata
+    setTimeout(() => {
+      //Fa ripartire l'evento OnScroll
+      this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
+    }, 0);
+
+    this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
+
+    //Impedisce il loop infinito tra onScroll e checkScroll
+    this.preventOnScrollEvent = true;
+
+    this.loaderService.hide();
+  }
+
+  private textRowsRangeWidenessPredictor(extraRows?: number): number {
+    let arbitraryRowSizeInPixels = 50;
+    let arbitraryExtraRows = extraRows ?? 5;
+    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
+  }
+
+  private extraTextRowsWidenessPredictor(): number {
+    let arbitraryRowSizeInPixels = 50;
+    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
+  }
+
+  private addExtraRowsUp() {
+    if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
+      && !this.textRange.hasExtraRowsBeforeStart) {
+      this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
+    };
+  }
+
+  private expandRecursive(node: TreeNode, isExpand: boolean) {
+    node.expanded = isExpand;
+    if (node.children) {
+      node.children.forEach(childNode => {
+        this.expandRecursive(childNode, isExpand);
+      });
+    }
+  }
+
+  private adaptToDocumentTree(sectionsResponse: Section[], documentName: string): Array<TreeNode> {
+    let documentTree: Array<TreeNode> =
+      [
+        {
+          label: documentName,
+          data: {},
+          key: this.rootNodeKey,
+          icon: "pi pi-file",
+          children: []
+        }
+      ];
+
+    let children = sectionsResponse.map(section => this.adaptSectionToTreeNode(section, documentTree[0]));
+    documentTree[0].children = children;
+
+    return documentTree;
+  }
+
+  private adaptSectionToTreeNode(section: Section, parent: TreeNode): TreeNode {
+    if (section.children === undefined
+      || section.children === null
+      || section.children.length === 0) {
+
+      return {
+        key: section.id.toString(),
+        label: section!.title,
+        data: {
+          index: section!.index,
+          start: section.row_start,
+          end: section.row_end,
+          parent: parent
+        },
+        icon: "pi pi-file"
+      };
+    }
+
+
+    const node = {
+      key: section.id.toString(),
+      label: section.title,
+      data: {
+        index: section!.index,
+        start: section.row_start,
+        end: section.row_end,
+        parent: parent
+      },
+      children: [],
+      icon: "pi pi-file"
+    } as TreeNode
+
+    let children = section.children.map(s => this.adaptSectionToTreeNode(s, node));
+    node.children = children;
+
+    return node;
+  }
+
+  private findSectionByIndex(index: number): TreeNode | null {
+    let rootNode = this.documentSections.find(s => s.key == this.rootNodeKey)!;
+    return this.searchSectionByIndex(rootNode.children ?? [], index);
+  }
+
+  private searchSectionByIndex(nodes: TreeNode[], index: number): TreeNode | null {
+    for (const node of nodes) {
+      if (this.isIndexInRange(index, node.data.start, node.data.end)) {
+        if (node.children) {
+          const childResult = this.searchSectionByIndex(node.children, index);
+          if (childResult) {
+            return childResult;
+          }
+        }
+        return node;
+      }
+    }
+    return null;
+  }
+
+  private isIndexInRange(index: number, start: number, end: number): boolean {
+    return index >= start && index <= end;
+  }
+
+  private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
+    const newAnnFeat = new TAnnotationFeature();
+    newAnnFeat.annotation = annotation;
+    newAnnFeat.feature = feature;
+    newAnnFeat.value = value;
+    return this.annotationService.createAnnotationFeature(newAnnFeat);
+  }
+
+  private createNewAnnotation(annotation: TAnnotation) {
+    const promise = new Promise<TAnnotation>((resolve, reject) => {
+      this.annotationService.createAnnotation(annotation).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
+          reject(error);
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(newAnn => {
+        resolve(newAnn);
+      });
+    });
+    return promise;
   }
 
   private computeArcOffset(lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, lineArcs: Array<any>, startArcX: number, endArcX: number, arcType: string) {
