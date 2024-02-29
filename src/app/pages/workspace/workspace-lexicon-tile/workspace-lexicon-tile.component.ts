@@ -222,6 +222,25 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.results = [...this.results];
   }
 
+  private findAndEditGroupingNode(root: any, res: { option: string, instanceName: string, counter: string, children: any }) {
+    if (root.data?.instanceName === res.instanceName) {
+      root.data.name = root.data.name.replace(/\(\d*\)/, `(${res.counter})`);
+      root.children = res.children;
+      return true;
+    }
+    if (!root.children) return false;
+    for (const child of root.children) {
+      const found = this.findAndEditGroupingNode(child, res);
+      if (found) return true;
+    }
+    return false;
+  }
+
+  private updateGroupingNode(res: { option: string, instanceName: string, counter: string, children: any }) {
+    this.findAndEditGroupingNode({ children: this.results }, res);
+    this.results = [...this.results];
+  }
+
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
     this.cols = [
@@ -242,6 +261,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
           break;
         case 'lexicon_edit_tree_data':
           this.lexiconEditTreeData(res);
+          break;
+        case 'lexicon_update_counter':
+          this.updateGroupingNode(res);
           break;
         default:
           break;
