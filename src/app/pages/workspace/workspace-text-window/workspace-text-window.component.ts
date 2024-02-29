@@ -263,13 +263,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
       ];
 
-    let children = sectionsResponse.map(section => this.adaptSectionToTreeNode(section));
+    let children = sectionsResponse.map(section => this.adaptSectionToTreeNode(section, documentTree[0]));
     documentTree[0].children = children;
 
     return documentTree;
   }
 
-  private adaptSectionToTreeNode(section: Section): TreeNode {
+  private adaptSectionToTreeNode(section: Section, parent: TreeNode): TreeNode {
     if (section.children === undefined
       || section.children === null
       || section.children.length === 0) {
@@ -277,18 +277,34 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return {
         key: section.id.toString(),
         label: section!.title,
-        data: { index: section!.index, start: section.row_start },
+        data: {
+          index: section!.index,
+          start: section.row_start,
+          end: section.row_end,
+          parent: parent
+        },
         icon: "pi pi-file"
       };
     }
 
-    return {
+
+    const node = {
       key: section.id.toString(),
       label: section.title,
-      data: { index: section!.index, start: section.row_start },
-      icon: "pi pi-file",
-      children: section.children.map(s => this.adaptSectionToTreeNode(s))
-    }
+      data: {
+        index: section!.index,
+        start: section.row_start,
+        end: section.row_end,
+        parent: parent
+      },
+      children: [],
+      icon: "pi pi-file"
+    } as TreeNode
+
+    let children = section.children.map(s => this.adaptSectionToTreeNode(s, node));
+    node.children = children;
+
+    return node;
   }
 
   private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
@@ -786,7 +802,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.precTextRange = this.textRange.clone();
     this.addExtraRowsUp();
     this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-    // this.messageService.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label });
   }
 
   /**
@@ -851,6 +866,70 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
     this.showEditorAndHideOthers(EditorType.Annotation);
     this.loadData(this.textRange.start, this.textRange.end);
+  }
+
+  onRowClick(event: any) {
+    let rowIndexSelected = Number(event.target.dataset.rowIndex);
+    let section = this.findSectionByIndex(rowIndexSelected);
+
+    if (section) {
+      this.selectedSection = section;
+      this.expandAnchestors(section);
+
+      this.documentSections = [...this.documentSections];
+    }
+  }
+
+  expandAnchestors(section: TreeNode) {
+    let parent = section.data.parent;
+
+    if (!parent) {
+      section.expanded = true; //root
+      return;
+    }
+
+    parent.expanded = true;
+    this.expandAnchestors(parent);
+  }
+
+  getNodeWithKey(key: string, nodes: TreeNode[]): TreeNode | undefined {
+    for (let node of nodes) {
+      if (node.key === key) {
+        return node;
+      }
+
+      if (node.children) {
+        let matchedNode = this.getNodeWithKey(key, node.children);
+        if (matchedNode) {
+          return matchedNode;
+        }
+      }
+    }
+    return undefined;
+  }
+
+  private findSectionByIndex(index: number): TreeNode | null {
+    let rootNode = this.documentSections.find(s => s.key == this.rootNodeKey)!;
+    return this.searchSectionByIndex(rootNode.children ?? [], index);
+  }
+
+  private searchSectionByIndex(nodes: TreeNode[], index: number): TreeNode | null {
+    for (const node of nodes) {
+      if (this.isIndexInRange(index, node.data.start, node.data.end)) {
+        if (node.children) {
+          const childResult = this.searchSectionByIndex(node.children, index);
+          if (childResult) {
+            return childResult;
+          }
+        }
+        return node;
+      }
+    }
+    return null;
+  }
+
+  private isIndexInRange(index: number, start: number, end: number): boolean {
+    return index >= start && index <= end;
   }
 
   /**
