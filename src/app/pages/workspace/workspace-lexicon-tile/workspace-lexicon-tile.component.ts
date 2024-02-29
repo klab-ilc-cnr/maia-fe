@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Observable, Subscription, catchError, forkJoin, of, switchMap, take, throwError } from 'rxjs';
@@ -161,7 +161,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param lexiconService {LexiconService} servizi relativi al lessico
    * @param commonService {CommonService} servizi di uso comune
-   * @param elem {ElementRef} permette l'accesso diretto al DOM
    * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
    * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
    */
@@ -169,7 +168,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     private messageService: MessageService,
     private lexiconService: LexiconService,
     private commonService: CommonService,
-    private elem: ElementRef,
     private msgConfService: MessageConfigurationService,
     private loggedUserService: LoggedUserService,
     private globalState: GlobalStateService,
@@ -180,24 +178,47 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
-    if (root.data?.uri === uri) {
-      root.data.label = newValue;
-      root.data.name = newValue;
-      return true;
+  private updateNodeField(node: any, field: string, newValue: any) {
+    let result: boolean;
+    switch (field) {
+      case 'label':
+        node.data.label = newValue;
+        node.data.name = newValue;
+        result = true;
+        break;
+      case 'pos':
+        node.data.sub = newValue;
+        result = true;
+        break;
+      case 'status':
+        node.data.status = newValue;
+        result = true;
+        break;
+      default:
+        result = false;
+        break;
     }
+    return result;
+  }
 
+  private findAndModifyNode(root: any, res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }) {
+    if (res.lexicalEntry === res.uri) { //editing a lexical entry
+      const editNode = root.children.find((n: any) => n.data.uri === res.uri);
+      return this.updateNodeField(editNode, res.field, res.newValue);
+    }
+    if (root.data?.uri === res.uri) {
+      return this.updateNodeField(root, res.field, res.newValue);
+    }
     if (!root.children) return false;
-
     for (const child of root.children) {
-      const found = this.findAndModifyEntry(child, uri, newValue);
+      const found = this.findAndModifyNode(child, res);
       if (found) return true;
     }
     return false;
   }
 
-  private onLexiconEdiTreeLabel(res: any): void {
-    this.findAndModifyEntry({ children: this.results }, res.uri, res.newValue);
+  private lexiconEditTreeData(res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }): void {
+    this.findAndModifyNode({ children: this.results }, res);
     this.results = [...this.results];
   }
 
@@ -219,8 +240,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         case 'lexicon_edit_update_tree':
           this.loadNodes();
           break;
-        case 'lexicon_edit_label':
-          this.onLexiconEdiTreeLabel(res);
+        case 'lexicon_edit_tree_data':
+          this.lexiconEditTreeData(res);
           break;
         default:
           break;

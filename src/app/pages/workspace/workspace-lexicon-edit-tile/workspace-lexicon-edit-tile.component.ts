@@ -105,24 +105,47 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.refreshTreeNode();
   }
 
-  private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
-    if (root.data?.uri === uri) {
-      root.data.label = newValue;
-      root.data.name = newValue;
-      return true;
+  private updateNodeField(node: any, field: string, newValue: any) {
+    let result: boolean;
+    switch (field) {
+      case 'label':
+        node.data.label = newValue;
+        node.data.name = newValue;
+        result = true;
+        break;
+      case 'pos':
+        node.data.sub = newValue;
+        result = true;
+        break;
+      case 'status':
+        node.data.status = newValue;
+        result = true;
+        break;
+      default:
+        result = false;
+        break;
     }
+    return result;
+  }
 
+  private findAndModifyNode(root: any, res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }) {
+    if (res.lexicalEntry === res.uri) { //editing a lexical entry
+      const editNode = root.children.find((n: any) => n.data.uri === res.uri);
+      return this.updateNodeField(editNode, res.field, res.newValue);
+    }
+    if (root.data?.uri === res.uri || root.data?.instanceName === res.uri) {
+      return this.updateNodeField(root, res.field, res.newValue);
+    }
     if (!root.children) return false;
-
     for (const child of root.children) {
-      const found = this.findAndModifyEntry(child, uri, newValue);
+      const found = this.findAndModifyNode(child, res);
       if (found) return true;
     }
     return false;
   }
 
-  private onLexiconEditTreeLabel(res: any): void {
-    this.findAndModifyEntry(this.lexicalEntryTree[0], res.uri, res.newValue);
+  private lexiconEditTreeData(res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }): void {
+    this.findAndModifyNode({ children: this.lexicalEntryTree }, res);
     this.lexicalEntryTree = [...this.lexicalEntryTree];
   }
 
@@ -165,8 +188,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
           if (res.isRemove) this.onLexiconDeleteUpdateTree(res);
           else this.onLexiconEditUpdateTree(res);
           break;
-        case 'lexicon_edit_label':
-          this.onLexiconEditTreeLabel(res);
+        case 'lexicon_edit_tree_data':
+          this.lexiconEditTreeData(res);
           break;
         default:
           break;
