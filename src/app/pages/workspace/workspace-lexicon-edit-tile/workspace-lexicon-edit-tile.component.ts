@@ -458,16 +458,12 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getNewForm(lexEntryId, creatorName).pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe({
-      next: (res: FormCore) => {
-        const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.FORMS_ROOT);
-        this.onNodeExpand({ node: formsRootNode }, true, res.form);
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'));
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
-      },
-      error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message))
-      }
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error creating new form')),
+    ).subscribe((res: FormCore) => {
+      const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.FORMS_ROOT);
+      this.onNodeExpand({ node: formsRootNode }, true, res.form);
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
     });
   }
 
@@ -487,16 +483,12 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getNewSense(lexEntryId, creatorName).pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe({
-      next: (res: SenseCore) => {
-        const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.SENSES_ROOT);
-        this.onNodeExpand({ node: sensesRootNode }, true, res.sense);
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
-      },
-      error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
-      }
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error creating new sense')),
+    ).subscribe((res: SenseCore) => {
+      const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.SENSES_ROOT);
+      this.onNodeExpand({ node: sensesRootNode }, true, res.sense);
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
     });
   }
 
