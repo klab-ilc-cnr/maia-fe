@@ -950,6 +950,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     lineBuilder.yStartLine = 0;
 
+    this.calculateMaxSentumWidth();
+
     sentences?.forEach((s: TextSplittedRow) => {
       const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
 
@@ -1043,7 +1045,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         words: words,
         startIndex: start,
         endIndex: start + s.text.length,
-        rowIndex: s.absolute
+        rowIndex: s.absolute,
+        sectionIndex: s.index
       })
 
       yStartRow += rowHeight;
@@ -1055,6 +1058,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.sentnumVerticalLine = this.generateSentnumVerticalLine();
 
     this.checkScroll();
+  }
+
+  private calculateMaxSentumWidth() {
+    const maxStdTextOffsetX = 70;
+    const maxStdSentnumOffsetX = 65;
+    const sentumWidthArray = this.textSplittedRows?.map(row => this.getComputedTextLength(row.index ?? '', this.visualConfig.textFont)) ?? [0];
+    const maxSentumWidth = Math.max(...sentumWidthArray);
+    this.visualConfig.stdTextOffsetX = maxSentumWidth > 0 ? maxSentumWidth : this.visualConfig.stdTextOffsetX;
+
+    if (this.visualConfig.stdTextOffsetX > maxStdTextOffsetX) { this.visualConfig.stdTextOffsetX = maxStdTextOffsetX; }
+
+    this.visualConfig.stdSentnumOffsetX = maxSentumWidth - 5 > 0 ? maxSentumWidth - 5 : this.visualConfig.stdSentnumOffsetX;
+
+    if (this.visualConfig.stdSentnumOffsetX > maxStdSentnumOffsetX) { this.visualConfig.stdSentnumOffsetX = maxStdSentnumOffsetX; }
   }
 
   private isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {

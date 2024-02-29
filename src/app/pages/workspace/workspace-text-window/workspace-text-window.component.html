@@ -187,7 +187,7 @@
                   [attr.x]="row.xSentnum" 
                   [attr.height]="row.height"
                   [attr.data-rowIndex]="row.rowIndex">
-              {{row.rowIndex}}
+              {{row.sectionIndex ?? (row.rowIndex!=undefined ? row.rowIndex + 1 : '')}}
             </text>
             <path [attr.d]="sentnumVerticalLine"></path>
           </g>
