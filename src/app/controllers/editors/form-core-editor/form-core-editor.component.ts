@@ -308,9 +308,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
 
       if (relation === 'writtenRep') {
         this.commonService.notifyOther({
-          option: 'lexicon_edit_label',
+          option: 'lexicon_edit_tree_data',
+          lexicalEntry: this.formEntry.lexicalEntry,
           uri: this.formEntry.form,
-          newValue,
+          field: 'label',
+          newValue
         });
       }
     });

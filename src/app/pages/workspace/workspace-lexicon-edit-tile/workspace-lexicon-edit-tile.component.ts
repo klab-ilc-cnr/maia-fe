@@ -105,30 +105,71 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.refreshTreeNode();
   }
 
-  private findAndModifyEntry(root: any, uri: string, newValue: string): boolean {
-    if (root.data?.uri === uri) {
-      root.data.label = newValue;
-      root.data.name = newValue;
-      return true;
+  private updateNodeField(node: any, field: string, newValue: any) {
+    let result: boolean;
+    switch (field) {
+      case 'label':
+        node.data.label = newValue;
+        node.data.name = newValue;
+        result = true;
+        break;
+      case 'pos':
+        node.data.sub = newValue;
+        result = true;
+        break;
+      case 'status':
+        node.data.status = newValue;
+        result = true;
+        break;
+      default:
+        result = false;
+        break;
     }
+    return result;
+  }
 
+  private findAndModifyNode(root: any, res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }) {
+    if (res.lexicalEntry === res.uri) { //editing a lexical entry
+      const editNode = root.children.find((n: any) => n.data.uri === res.uri);
+      return this.updateNodeField(editNode, res.field, res.newValue);
+    }
+    if (root.data?.uri === res.uri || root.data?.instanceName === res.uri) {
+      return this.updateNodeField(root, res.field, res.newValue);
+    }
     if (!root.children) return false;
-
     for (const child of root.children) {
-      const found = this.findAndModifyEntry(child, uri, newValue);
+      const found = this.findAndModifyNode(child, res);
       if (found) return true;
     }
     return false;
   }
 
-  private onLexiconEditTreeLabel(res: any): void {
-    this.findAndModifyEntry(this.lexicalEntryTree[0], res.uri, res.newValue);
+  private lexiconEditTreeData(res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }): void {
+    this.findAndModifyNode({ children: this.lexicalEntryTree }, res);
     this.lexicalEntryTree = [...this.lexicalEntryTree];
   }
 
   private onLexiconEditUpdateTree(res: any): void {
     if (res.value !== this.lexicalEntryInstanceName) return;
     this.refreshTreeNode();
+  }
+
+  /**
+   * Method that updates the displayed information on the number of children of a grouping node
+   * @param res {{ option: string, instanceName: string, counter: string, children: any }} updating data
+   * @returns {boolean}
+   */
+  private updateGroupingNode(res: { option: string, instanceName: string, counter: number, children: any }) {
+    const children = this.lexicalEntryTree[0].children;
+    if (children !== undefined) {
+      for (const child of children) {
+        if (child.data?.instanceName === res.instanceName) {
+          child.data.name = child.data.name?.replace(/\(\d*\)/, `(${res.counter})`)
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per i setting iniziali e per gestire il cambio etichette */
@@ -165,8 +206,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
           if (res.isRemove) this.onLexiconDeleteUpdateTree(res);
           else this.onLexiconEditUpdateTree(res);
           break;
-        case 'lexicon_edit_label':
-          this.onLexiconEditTreeLabel(res);
+        case 'lexicon_edit_tree_data':
+          this.lexiconEditTreeData(res);
+          break;
+        case 'lexicon_update_counter':
+          this.updateGroupingNode(res);
           break;
         default:
           break;
@@ -250,39 +294,42 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       case LexicalEntryTypeOld.FORMS_ROOT:
         this.lexiconService.getLexicalEntryForms(event.node.parent.data.instanceName).pipe(
           takeUntil(this.unsubscribe$),
-        ).subscribe({
-          next: (data: FormListItem[]) => {
-            const mappedChildren: any[] = data.map((val: FormListItem) => ({
-              data: {
-                name: this.showLabelName ? val['label'] : val.form,
-                instanceName: val.form,
-                label: val['label'],
-                note: val['note'],
-                creator: val['creator'],
-                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
-                status: null,
-                type: LexicalEntryTypeOld.FORM,
-                sub: this.lexiconService.concatenateMorphology(val['morphology']),
-                isCanonical: val.type === 'canonicalForm'
-              }
-            }));
-            const sortedChildren = mappedChildren.sort((a, b) => a.label === b.label ? 0 : (a.label > b.label ? 1 : -1));
-            event.node.children = sortedChildren;
-            if (isNew) {
-              event.node.expanded = true;
-              const newFormNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
-              this.selectedNode = newFormNode;
-              this.onNodeSelect({ node: newFormNode });
+          catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error retrieving forms subtree')),
+        ).subscribe((data: FormListItem[]) => {
+          const mappedChildren: any[] = data.map((val: FormListItem) => ({
+            data: {
+              name: this.showLabelName ? val['label'] : val.form,
+              instanceName: val.form,
+              label: val['label'],
+              note: val['note'],
+              creator: val['creator'],
+              creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+              lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+              status: null,
+              type: LexicalEntryTypeOld.FORM,
+              sub: this.lexiconService.concatenateMorphology(val['morphology']),
+              isCanonical: val.type === 'canonicalForm'
             }
-            //refresh the data
-            this.lexicalEntryTree = [...this.lexicalEntryTree];
-
-            this.loading = false;
-          },
-          error: (error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
+          }));
+          const sortedChildren = mappedChildren.sort((a, b) => a.label === b.label ? 0 : (a.label > b.label ? 1 : -1));
+          event.node.children = sortedChildren;
+          if (isNew) {
+            event.node.expanded = true;
+            const newFormNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
+            this.selectedNode = newFormNode;
+            this.onNodeSelect({ node: newFormNode });
+            const children = event.node.children?.length;
+            this.commonService.notifyOther({
+              option: 'lexicon_update_counter',
+              instanceName: event.node?.data?.instanceName,
+              counter: children !== undefined ? (children) : 1,
+              children: event.node.children
+            });
           }
+          //refresh the data
+          this.lexicalEntryTree = [...this.lexicalEntryTree];
+
+          this.loading = false;
         });
         break;
       case LexicalEntryTypeOld.SENSES_ROOT:
@@ -308,7 +355,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             event.node.expanded = true;
             const newSenseNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
             this.selectedNode = newSenseNode;
-            this.onNodeSelect({ node: newSenseNode })
+            this.onNodeSelect({ node: newSenseNode });
+            const children = event.node.children?.length;
+            this.commonService.notifyOther({
+              option: 'lexicon_update_counter',
+              instanceName: event.node?.data?.instanceName,
+              counter: children !== undefined ? (children) : 1,
+              children: event.node.children
+            });
           }
 
           //refresh the data
@@ -435,16 +489,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getNewForm(lexEntryId, creatorName).pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe({
-      next: (res: FormCore) => {
-        const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.FORMS_ROOT);
-        this.onNodeExpand({ node: formsRootNode }, true, res.form);
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'));
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
-      },
-      error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message))
-      }
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error creating new form')),
+    ).subscribe((res: FormCore) => {
+      const formsRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.FORMS_ROOT);
+      this.onNodeExpand({ node: formsRootNode }, true, res.form);
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuova forma inserita!'));
     });
   }
 
@@ -464,16 +513,11 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
     this.lexiconService.getNewSense(lexEntryId, creatorName).pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe({
-      next: (res: SenseCore) => {
-        const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.SENSES_ROOT);
-        this.onNodeExpand({ node: sensesRootNode }, true, res.sense);
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
-        this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
-      },
-      error: (error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(error.error.message));
-      }
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error creating new sense')),
+    ).subscribe((res: SenseCore) => {
+      const sensesRootNode = this.lexicalEntryTree[0].children?.find(n => n.data?.type === LexicalEntryTypeOld.SENSES_ROOT);
+      this.onNodeExpand({ node: sensesRootNode }, true, res.sense);
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Nuovo senso inserito!'));
     });
   }
 

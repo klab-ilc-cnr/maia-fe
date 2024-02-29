@@ -1181,8 +1181,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="323"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:323</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="325"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:325</a></div>
                 </td>
             </tr>
 
@@ -1259,8 +1259,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="381"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:381</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="383"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:383</a></div>
                 </td>
             </tr>
 
@@ -1337,8 +1337,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="394"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:394</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="396"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:396</a></div>
                 </td>
             </tr>
 
@@ -1508,8 +1508,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="344"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:344</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="346"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:346</a></div>
                 </td>
             </tr>
 
@@ -1601,8 +1601,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="366"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:366</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="368"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:368</a></div>
                 </td>
             </tr>
 
@@ -1727,8 +1727,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="414"
-                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:414</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="416"
+                            class="link-to-prism">src/app/controllers/editors/form-core-editor/form-core-editor.component.ts:416</a></div>
                 </td>
             </tr>
 
@@ -2721,9 +2721,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
 
       if (relation &#x3D;&#x3D;&#x3D; &#x27;writtenRep&#x27;) {
         this.commonService.notifyOther({
-          option: &#x27;lexicon_edit_label&#x27;,
+          option: &#x27;lexicon_edit_tree_data&#x27;,
+          lexicalEntry: this.formEntry.lexicalEntry,
           uri: this.formEntry.form,
-          newValue,
+          field: &#x27;label&#x27;,
+          newValue
         });
       }
     });

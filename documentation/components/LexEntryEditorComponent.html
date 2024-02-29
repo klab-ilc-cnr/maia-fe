@@ -720,7 +720,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>manageUpdateObservable(updateObs: Observable<string>, relation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, newValue: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
@@ -781,6 +781,20 @@
                                     <td>
                                         <p>relazione aggiornata</p>
 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>newValue</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1506,8 +1520,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="431"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:431</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="459"
+                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:459</a></div>
                 </td>
             </tr>
 
@@ -1585,8 +1599,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="454"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:454</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="482"
+                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:482</a></div>
                 </td>
             </tr>
 
@@ -1712,8 +1726,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="471"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:471</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="499"
+                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:499</a></div>
                 </td>
             </tr>
 
@@ -1807,8 +1821,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="492"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:492</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="520"
+                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:520</a></div>
                 </td>
             </tr>
 
@@ -1933,8 +1947,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="513"
-                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:513</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="541"
+                            class="link-to-prism">src/app/controllers/editors/lex-entry-editor/lex-entry-editor.component.ts:541</a></div>
                 </td>
             </tr>
 
@@ -3174,7 +3188,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable&lt;string&gt;} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string) {
+  private async manageUpdateObservable(updateObs: Observable&lt;string&gt;, relation: string, newValue: any) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) &#x3D;&gt; {
@@ -3184,7 +3198,35 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     ).subscribe(resp &#x3D;&gt; {
       this.lexicalEntry &#x3D; &lt;LexicalEntryCore&gt;{ ...this.lexicalEntry, lastUpdate: resp };
       // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(&#x60;${this.lexicalEntry.label} update &quot;${relation}&quot; success &#x60;));
-      this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.lexicalEntry.lexicalEntry });
+      // this.commonService.notifyOther({ option: &#x27;lexicon_edit_update_tree&#x27;, value: this.lexicalEntry.lexicalEntry });
+      if (relation.endsWith(&#x27;#label&#x27;)) {
+        this.commonService.notifyOther({
+          option: &#x27;lexicon_edit_tree_data&#x27;,
+          lexicalEntry: this.lexicalEntry.lexicalEntry,
+          uri: this.lexicalEntry.lexicalEntry,
+          field: &#x27;label&#x27;,
+          newValue
+        });
+      }
+      if (relation.endsWith(&#x27;#partOfSpeech&#x27;)) {
+        newValue &#x3D; newValue.split(&#x27;#&#x27;)[1];
+        this.commonService.notifyOther({
+          option: &#x27;lexicon_edit_tree_data&#x27;,
+          lexicalEntry: this.lexicalEntry.lexicalEntry,
+          uri: this.lexicalEntry.lexicalEntry,
+          field: &#x27;pos&#x27;,
+          newValue
+        });
+      }
+      if (relation.endsWith(&#x27;#term_status&#x27;)) {
+        this.commonService.notifyOther({
+          option: &#x27;lexicon_edit_tree_data&#x27;,
+          lexicalEntry: this.lexicalEntry.lexicalEntry,
+          uri: this.lexicalEntry.lexicalEntry,
+          field: &#x27;status&#x27;,
+          newValue
+        });
+      }
     });
   }
 
@@ -3223,7 +3265,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       value: value,
       currentValue: currentValue
     };
-    this.manageUpdateObservable(this.lexiconService.updateGenericRelation(this.lexicalEntry.lexicalEntry, updater), relation);
+    this.manageUpdateObservable(this.lexiconService.updateGenericRelation(this.lexicalEntry.lexicalEntry, updater), relation, value);
   }
 
   /**
@@ -3242,7 +3284,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       relation: relation,
       value: value
     };
-    this.manageUpdateObservable(this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater), relation);
+    this.manageUpdateObservable(this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater), relation, value);
   }
 
   /**
@@ -3265,7 +3307,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       value: value,
       currentValue: currentValue ?? &#x27;&#x27;
     };
-    this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.lexicalEntry.lexicalEntry, updater), relation);
+    this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.lexicalEntry.lexicalEntry, updater), relation, value);
   }
 
   /**

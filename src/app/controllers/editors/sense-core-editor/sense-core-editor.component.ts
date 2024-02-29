@@ -266,10 +266,12 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
       if (relation === 'definition') {
         this.commonService.notifyOther({
-          option: 'lexicon_edit_label',
+          option: 'lexicon_edit_tree_data',
+          lexicalEntry: '',
           uri: this.senseEntry.sense,
-          newValue,
-        });
+          field: 'label',
+          newValue
+        })
       }
     });
   }
