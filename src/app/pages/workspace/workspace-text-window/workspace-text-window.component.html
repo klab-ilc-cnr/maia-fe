@@ -57,7 +57,8 @@
       <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
     </div>
     <div *ngIf="expandedDocumentSectonsDiv">
-      <p-tree [value]="documentSections" 
+      <p-tree id="sectionsTree" 
+        [value]="documentSections" 
         [virtualScroll]="true" [virtualScrollItemSize]="20" 
         [scrollHeight]="textContainerHeight - 60 + 'px'"
         selectionMode="single"

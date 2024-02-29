@@ -226,87 +226,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  expandAll() {
-    this.documentSections.forEach(node => {
-      this.expandRecursive(node, true);
-    });
-
-    this.documentSections = [...this.documentSections];
-  }
-
-  collapseAll() {
-    this.documentSections.forEach(node => {
-      this.expandRecursive(node, false);
-    });
-
-    this.documentSections = [...this.documentSections];
-  }
-
-  private expandRecursive(node: TreeNode, isExpand: boolean) {
-    node.expanded = isExpand;
-    if (node.children) {
-      node.children.forEach(childNode => {
-        this.expandRecursive(childNode, isExpand);
-      });
-    }
-  }
-
-  private adaptToDocumentTree(sectionsResponse: Section[], documentName: string): Array<TreeNode> {
-    let documentTree: Array<TreeNode> =
-      [
-        {
-          label: documentName,
-          data: {},
-          key: this.rootNodeKey,
-          icon: "pi pi-file",
-          children: []
-        }
-      ];
-
-    let children = sectionsResponse.map(section => this.adaptSectionToTreeNode(section, documentTree[0]));
-    documentTree[0].children = children;
-
-    return documentTree;
-  }
-
-  private adaptSectionToTreeNode(section: Section, parent: TreeNode): TreeNode {
-    if (section.children === undefined
-      || section.children === null
-      || section.children.length === 0) {
-
-      return {
-        key: section.id.toString(),
-        label: section!.title,
-        data: {
-          index: section!.index,
-          start: section.row_start,
-          end: section.row_end,
-          parent: parent
-        },
-        icon: "pi pi-file"
-      };
-    }
-
-
-    const node = {
-      key: section.id.toString(),
-      label: section.title,
-      data: {
-        index: section!.index,
-        start: section.row_start,
-        end: section.row_end,
-        parent: parent
-      },
-      children: [],
-      icon: "pi pi-file"
-    } as TreeNode
-
-    let children = section.children.map(s => this.adaptSectionToTreeNode(s, node));
-    node.children = children;
-
-    return node;
-  }
-
   private saveFeatureAnnotation(annotation: TAnnotation, feature: TFeature, value: string): Observable<TAnnotationFeature> {
     const newAnnFeat = new TAnnotationFeature();
     newAnnFeat.annotation = annotation;
@@ -804,6 +723,87 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
   }
 
+  expandAll() {
+    this.documentSections.forEach(node => {
+      this.expandRecursive(node, true);
+    });
+
+    this.documentSections = [...this.documentSections];
+  }
+
+  collapseAll() {
+    this.documentSections.forEach(node => {
+      this.expandRecursive(node, false);
+    });
+
+    this.documentSections = [...this.documentSections];
+  }
+
+  private expandRecursive(node: TreeNode, isExpand: boolean) {
+    node.expanded = isExpand;
+    if (node.children) {
+      node.children.forEach(childNode => {
+        this.expandRecursive(childNode, isExpand);
+      });
+    }
+  }
+
+  private adaptToDocumentTree(sectionsResponse: Section[], documentName: string): Array<TreeNode> {
+    let documentTree: Array<TreeNode> =
+      [
+        {
+          label: documentName,
+          data: {},
+          key: this.rootNodeKey,
+          icon: "pi pi-file",
+          children: []
+        }
+      ];
+
+    let children = sectionsResponse.map(section => this.adaptSectionToTreeNode(section, documentTree[0]));
+    documentTree[0].children = children;
+
+    return documentTree;
+  }
+
+  private adaptSectionToTreeNode(section: Section, parent: TreeNode): TreeNode {
+    if (section.children === undefined
+      || section.children === null
+      || section.children.length === 0) {
+
+      return {
+        key: section.id.toString(),
+        label: section!.title,
+        data: {
+          index: section!.index,
+          start: section.row_start,
+          end: section.row_end,
+          parent: parent
+        },
+        icon: "pi pi-file"
+      };
+    }
+
+
+    const node = {
+      key: section.id.toString(),
+      label: section.title,
+      data: {
+        index: section!.index,
+        start: section.row_start,
+        end: section.row_end,
+        parent: parent
+      },
+      children: [],
+      icon: "pi pi-file"
+    } as TreeNode
+
+    let children = section.children.map(s => this.adaptSectionToTreeNode(s, node));
+    node.children = children;
+
+    return node;
+  }
+
   /**
    * Metodo che gestisce il movimento del mouse nel trascinamento
    * @param event {any} evento di trascinamento del mouse
@@ -877,6 +877,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.expandAnchestors(section);
 
       this.documentSections = [...this.documentSections];
+
+      setTimeout(() => {
+        const selectedSectionElement = document.querySelector('#sectionsTree div[role="treeitem"][aria-selected="true"]');
+        if (selectedSectionElement) {
+          selectedSectionElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
     }
   }
 
