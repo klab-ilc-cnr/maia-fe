@@ -2,8 +2,8 @@
   <div class="col-12">
     <div class="card">
       <div class="page-header">
-        <h5>Tagset manager</h5>
-        <button pButton pRipple label="New tagset" icon="pi pi-tag" class="p-button-danger" (click)="onNew()"></button>
+        <h5>{{'TAGSET_MANAGER.tagsetManager'|translate}}</h5>
+        <button aria-label="New tagset" pButton pRipple [label]="'TAGSET_MANAGER.newTagset'|translate" icon="pi pi-tag" class="p-button-danger" (click)="onNew()"></button>
       </div>
       <div class="card-body p-fluid">
         <p-table [value]="(tagsets$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
@@ -11,8 +11,8 @@
           [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
           <ng-template pTemplate="header">
             <tr>
-              <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
-              <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
+              <th pSortableColumn="name">{{'TAGSET_MANAGER.name'|translate}}<p-sortIcon field="name"></p-sortIcon></th>
+              <th pSortableColumn="description">{{'TAGSET_MANAGER.description'|translate}}<p-sortIcon field="description"></p-sortIcon></th>
               <th></th>
             </tr>
           </ng-template>
@@ -21,11 +21,11 @@
               <td>{{tagset.name}}</td>
               <td>{{tagset.description}}</td>
               <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2"
+                <button aria-label="Edit tagset" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2"
                   (click)="onEdit(tagset)"></button>
-                  <button pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
+                  <button aria-label="Edit tagset items" pButton pRipple icon="fa-solid fa-layer-group" class="p-button-rounded p-button-info mx-2"
                   (click)="onEditTagsetItems(tagset)"></button>
-          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+          <button aria-label="Delete tagset" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
                   (click)="onDelete(tagset)"></button>
               </td>
             </tr>
@@ -47,34 +47,34 @@
       <form (ngSubmit)="onSubmitTagsetModal()" [formGroup]="tagsetForm" id="tagsetForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Name *</label>
+            <label class="form-label">{{'TAGSET_MANAGER.name'|translate}} *</label>
             <div class="p-fluid">
               <input type="text" name="name" class="form-control" formControlName="name" autofocus maxlength="300"
                 placeholder="Tagset name">
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
-                  Name is mandatory
+                  {{'TAGSET_MANAGER.nameMandatory'|translate}}
                 </div>
                 <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
-                  The tagset name cannot contain only blanks
+                  {{'TAGSET_MANAGER.nameNotBlanks'|translate}}
                 </div>
                 <div *ngIf="name.errors?.['notDuplicateName']">
-                  A tagset with this name already exists
+                  {{'TAGSET_MANAGER.tagsetSameName'|translate}}
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Description</label>
+            <label for="description" class="form-label">{{'TAGSET_MANAGER.description'|translate}}</label>
             <div class="p-fluid">
-              <textarea rows="3" formControlName="description" type="text" name="description"
+              <textarea id="description" rows="3" formControlName="description" type="text" name="description"
                 class="form-control"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="visibleEditNewTagset=false;">
-            Cancel
+            {{'GENERAL.cancel'|translate}}
           </button>
           <button type="submit" class="btn btn-primary"
             [disabled]="tagsetForm.invalid || name.value === ''">{{tagsetOnEdit!==undefined? 'Update': 'Add'}}</button>

@@ -9,6 +9,17 @@
         "login": "Accedi",
         "username": "Nome utente o E-mail"
     },
+    "TAGSET_MANAGER": {
+        "aboutDeleteTagset": "Si sta per cancellare il tagset ${tagsetName}",
+        "description": "Descrizione",
+        "editTagset": "Modifica tagset",
+        "name": "Nome",
+        "nameMandatory": "Il nome è obbligatorio",
+        "nameNotBlanks": "Il nome del tagset non può contenere solo spazi vuoti",
+        "newTagset": "Nuovo tagset",
+        "tagsetManager": "Gestione tagset",
+        "tagsetSameName": "Esiste già un tagset con questo nome"
+    },
     "USERS_MANAGER": {
         "activeUser": "Utente attivo",
         "confirmPassword": "Conferma password",

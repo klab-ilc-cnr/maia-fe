@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { TTagset } from 'src/app/models/texto/t-tagset';
+import { CommonService } from 'src/app/services/common.service';
 import { TagsetStateService } from 'src/app/services/tagset-state.service';
 import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
@@ -61,6 +62,7 @@ export class TagsetsListComponent implements OnDestroy {
     private activeRoute: ActivatedRoute,
     private router: Router,
     private tagsetState: TagsetStateService,
+    private commonService: CommonService,
   ) {
     this.tagsets$.pipe(
       takeUntil(this.unsubscribe$),
@@ -81,7 +83,8 @@ export class TagsetsListComponent implements OnDestroy {
    * @param tagset {TTagset} selected tagset
    */
   onDelete(tagset: TTagset): void {
-    const confirmMsg = `You are about to delete the tagset "${tagset.name}"`;
+    const tagsetName = tagset.name??'';
+    const confirmMsg = this.commonService.translateKey('TAGSET_MANAGER.aboutDeleteTagset').replace('${tagsetName}', tagsetName);
 
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.delete(tagset.id!), tagset.id, tagset.name);
@@ -97,7 +100,7 @@ export class TagsetsListComponent implements OnDestroy {
     this.name.setValue(tagset.name || '');
     this.name.setValidators(nameDuplicateValidator(this.tagsetsNames));
     this.description.setValue(tagset.description || '');
-    this.modalTitle = tagset.name || 'Edit tagset';
+    this.modalTitle = tagset.name || this.commonService.translateKey('TAGSET_MANAGER.editTagset');
     this.visibleEditNewTagset = true;
   }
 
@@ -113,7 +116,7 @@ export class TagsetsListComponent implements OnDestroy {
   onNew(): void {
     this.tagsetOnEdit = undefined;
     this.tagsetForm.reset();
-    this.modalTitle = 'New tagset';
+    this.modalTitle = this.commonService.translateKey('TAGSET_MANAGER.newTagset');
     this.name.setValidators(nameDuplicateValidator(this.tagsetsNames));
     this.visibleEditNewTagset = true;
   }

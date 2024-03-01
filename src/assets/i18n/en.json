@@ -9,6 +9,17 @@
         "login": "Login",
         "username": "Username or E-mail"
     },
+    "TAGSET_MANAGER": {
+        "aboutDeleteTagset": "You are about to delete the tagset ${tagsetName}",
+        "description": "Description",
+        "editTagset": "Edit tagset",
+        "name": "Name",
+        "nameMandatory": "Name is mandatory",
+        "nameNotBlanks": "The tagset name cannot contain only blanks",
+        "newTagset": "New tagset",
+        "tagsetManager": "Tagset manager",
+        "tagsetSameName": "A tagset with this name already exists"
+    },
     "USERS_MANAGER": {
         "activeUser": "Active user",
         "confirmPassword": "Confirm password",
