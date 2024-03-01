@@ -1,0 +1,18 @@
+{
+    "LOGIN": {
+        "authFailed": "Authentication failed",
+        "errorRetrievingUser": "Retrieve current user failed",
+        "login": "Login",
+        "username": "Username or E-mail"
+    },
+    "USERS_MANAGER": {
+        "details": "Details",
+        "emptyUsers": "No user found",
+        "masterData": "Master data",
+        "name": "Name",
+        "newUser": "New user",
+        "role": "Role",
+        "surname": "Surname",
+        "username": "Username"
+    }
+}

@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { catchError, take, throwError } from 'rxjs';
 import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
 import { AuthenticationService } from './services/authentication.service';
@@ -22,12 +23,19 @@ export class AppComponent implements OnInit {
    * @param storageService {StorageService} services to manage the local storage
    * @param router {Router}  service that provides navigation among views and URL manipulation capabilities
    * @param authService {AuthenticationService} services for authentication and jwt token management
+   * @param translate {TranslateService} services to manage i18n
    */
   constructor(
     private storageService: StorageService,
     private router: Router,
     private authService: AuthenticationService,
-  ) { }
+    public translate: TranslateService,
+  ) {
+    translate.addLangs(['en', 'it']);
+    translate.setDefaultLang('en');
+    const browserLang: string = translate.getBrowserLang() ?? translate.getDefaultLang();
+    translate.use(browserLang);
+  }
 
   /**OnInit interface method, used to intercept the token expiration subject */
   ngOnInit(): void {

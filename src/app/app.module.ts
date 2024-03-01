@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,19 +15,21 @@ import { FormCoreEditorComponent } from './controllers/editors/form-core-editor/
 import { FormMetadataEditorComponent } from './controllers/editors/form-metadata-editor/form-metadata-editor.component';
 import { LexEntryEditorComponent } from './controllers/editors/lex-entry-editor/lex-entry-editor.component';
 import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component';
-import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
-import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
-import { LexSenseRelationsEditorComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-relations-editor.component';
 import { LexSenseDirectRelationsComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-direct-relations/lex-sense-direct-relations.component';
 import { LexSenseIndirectRelationsComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations.component';
+import { LexSenseRelationsEditorComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-relations-editor.component';
+import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
+import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
 
-import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component';
+import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
 import { LexEntitySemanticRelIndirectComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component';
 import { LexEntitySemanticRelComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel/lex-entity-semantic-rel.component';
 import { LexEntryDirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-direct-relations/lex-entry-direct-relations.component';
 import { LexEntryIndirectRelationsComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations.component';
-import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
+import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component';
 
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -94,6 +96,13 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     BrowserAnimationsModule,
     NgbModule,
     PageControllersModule,
@@ -105,4 +114,8 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
   bootstrap: [AppComponent]
 })
 export class AppModule {
+}
+
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
 }

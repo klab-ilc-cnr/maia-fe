@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, throwError } from 'rxjs';
 import { MessageConfigurationService } from './message-configuration.service';
@@ -8,6 +9,7 @@ export class CommonService {
   constructor(
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
+    private translateService: TranslateService,
   ) { }
 
   private notify = new Subject<any>();
@@ -63,5 +65,9 @@ export class CommonService {
   public throwHttpErrorAndMessage(error: HttpErrorResponse, message: string): Observable<never> {
     this.messageService.add(this.msgConfService.generateWarningMessageConfig(message));
     return throwError(() => new Error(error.error));
+  }
+
+  public translateKey(key: string): string {
+    return this.translateService.instant(key);
   }
 }

@@ -1,0 +1,18 @@
+{
+    "LOGIN": {
+        "authFailed": "Autenticazione fallita",
+        "errorRetrievingUser": "Recupero dell'utente corrente non riuscita",
+        "login": "Accedi",
+        "username": "Nome utente o E-mail"
+    },
+    "USERS_MANAGER": {
+        "details": "Dettagli",
+        "emptyUsers": "Nessun utente trovato",
+        "masterData": "Anagrafica",
+        "name": "Nome",
+        "newUser": "Nuovo utente",
+        "role": "Ruolo",
+        "surname": "Cognome",
+        "username": "Nome utente"
+    }
+}
