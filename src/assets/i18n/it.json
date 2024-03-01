@@ -1,4 +1,8 @@
 {
+    "GENERAL": {
+        "cancel": "Annulla",
+        "save": "Salva"
+    },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",
         "errorRetrievingUser": "Recupero dell'utente corrente non riuscita",
@@ -6,13 +10,18 @@
         "username": "Nome utente o E-mail"
     },
     "USERS_MANAGER": {
+        "confirmPassword": "Conferma password",
         "details": "Dettagli",
         "emptyUsers": "Nessun utente trovato",
+        "existingUsername": "Nome utente già in uso",
         "masterData": "Anagrafica",
         "name": "Nome",
         "newUser": "Nuovo utente",
+        "passwordMandatory": "La password è obbligatoria",
         "role": "Ruolo",
         "surname": "Cognome",
-        "username": "Nome utente"
+        "username": "Nome utente",
+        "usernameMandatory": "Il nome utente è obbligatorio",
+        "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri"
     }
 }

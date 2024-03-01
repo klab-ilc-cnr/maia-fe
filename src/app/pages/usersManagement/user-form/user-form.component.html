@@ -4,24 +4,24 @@
       <div class="page-header">
         <h5>
           <div *ngIf="isEditUser || isSameUser; else elseBlock">User detail</div>
-          <ng-template #elseBlock>New user</ng-template>
+          <ng-template #elseBlock>{{'USERS_MANAGER.newUser'|translate}}</ng-template>
         </h5>
       </div>
       <div class="card-body p-fluid">
         <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
           <div class="form-group">
-            <label for="username">Username *</label>
+            <label for="username">{{'USERS_MANAGER.username'|translate}} *</label>
             <input type="text" formControlName="username" class="form-control" id="username" name="username"
               placeholder="Enter username" />
             <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
               <div *ngIf="username.errors?.['notDuplicateName']">
-                Existing username
+                {{'USERS_MANAGER.existingUsername'|translate}}
               </div>
               <div *ngIf="username.errors?.['required']">
-                Username is mandatory
+                {{'USERS_MANAGER.usernameMandatory'|translate}}
               </div>
               <div *ngIf="username.errors?.['minlength']">
-                Username must be at least 4 characters long
+                {{'USERS_MANAGER.usernameMinLenght'|translate}}
               </div>
             </div>
           </div>
@@ -29,11 +29,11 @@
             <label for="password">Password *</label>
             <p-password formControlName="newPassword" id="password" [toggleMask]="true"></p-password>
             <div *ngIf="userPwd && (userPwd.invalid && (userPwd.dirty || userPwd.touched))" class="alert alert-danger">
-              Password is mandatory
+              {{'USERS_MANAGER.passwordMandatory'|translate}}
             </div>
           </div>
           <div class="form-group" *ngIf="isNewUser">
-            <label for="confirmPassword">Confirm password *</label>
+            <label for="confirmPassword">{{'USERS_MANAGER.confirmPassword'|translate}} *</label>
             <p-password formControlName="confirmPassword" id="confirmPassword" [toggleMask]="true"></p-password>
             <div *ngIf="confirmPwd && (confirmPwd.invalid && (confirmPwd.dirty || confirmPwd.touched))"
               class="alert alert-danger">
@@ -44,7 +44,7 @@
             The new password must be the same as the confirmation password
           </div>
           <div class="form-group">
-            <label for="name">Name *</label>
+            <label for="name">{{'USERS_MANAGER.name'|translate}} *</label>
             <input type="text" formControlName="name" class="form-control" id="name" name="name"
               placeholder="Enter name" />
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="surname">Surname *</label>
+            <label for="surname">{{'USERS_MANAGER.surname'|translate}} *</label>
             <input type="text" formControlName="surname" class="form-control" id="surname" name="surname"
               placeholder="Enter surname" />
             <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger">
@@ -68,7 +68,7 @@
               </div>
           </div>
           <div class="form-group">
-            <label for="role">Role *</label>
+            <label for="role">{{'USERS_MANAGER.role'|translate}} *</label>
             <p-dropdown formControlName="role" name="role" [options]="(roles|async) ?? []" [filter]="true" [showClear]="true"
               placeholder="Select a role">
             </p-dropdown>
@@ -97,11 +97,11 @@
           </div>
           <div class="text-end">
             <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
-              Cancel
+              {{'GENERAL.save'|translate}}
             </button>
             <button type="submit" [disabled]="(!canManageUsers && user.id != currentMaiaUserId) || userForm.invalid"
               [hidden]="!canManageUsers && user.id != currentMaiaUserId" class="btn btn-danger ms-2">
-              Save
+              {{'GENERAL.save'|translate}}
             </button>
           </div>
         </form>
@@ -164,10 +164,10 @@
           </div>
           <div class="text-end">
             <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
-              Cancel
+              {{'GENERAL.save'|translate}}
             </button>
             <button type="submit" [disabled]="passwordForm.invalid" class="btn btn-danger ms-2">
-              Save
+              {{'GENERAL.save'|translate}}
             </button>
           </div>
         </form>

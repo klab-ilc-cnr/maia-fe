@@ -31,7 +31,7 @@
             <td>{{ user.role }}</td>
             <td>{{ user.active ? 'ACTIVE' : 'INACTIVE' }}</td>
             <td class="text-center">
-              <button pButton pRipple type="button" icon="pi pi-user-edit"
+              <button pButton pRipple type="button" icon="pi pi-user-edit" aria-label="Go to edit user"
                 class="p-button-rounded p-button-danger p-button-text" (click)="goToEditUserById(user.id)">
               </button>
             </td>

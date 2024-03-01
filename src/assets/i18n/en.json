@@ -1,4 +1,8 @@
 {
+    "GENERAL": {
+        "cancel": "Cancel",
+        "save": "Salva"
+    },
     "LOGIN": {
         "authFailed": "Authentication failed",
         "errorRetrievingUser": "Retrieve current user failed",
@@ -6,13 +10,18 @@
         "username": "Username or E-mail"
     },
     "USERS_MANAGER": {
+        "confirmPassword": "Confirm password",
         "details": "Details",
         "emptyUsers": "No user found",
+        "existingUsername": "Existing username",
         "masterData": "Master data",
         "name": "Name",
         "newUser": "New user",
+        "passwordMandatory": "Password is mandatory",
         "role": "Role",
         "surname": "Surname",
-        "username": "Username"
+        "username": "Username",
+        "usernameMandatory": "Username is mandatory",
+        "usernameMinLenght": "Username must be at least 4 characters long"
     }
 }
