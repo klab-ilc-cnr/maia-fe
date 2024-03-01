@@ -123,7 +123,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   targetLayer = new Layer();
   /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
-  sectionsTreeHeight = this.textContainerHeight - 117;
+  sectionsTreeHeight = this.textContainerHeight - 120;
   /**Identificativo numerico del testo */
   textId: number | undefined;
   /**Text response */
@@ -157,7 +157,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   rootNodeKey: string = '405092b3-7110-4e48-a524-21a20d0448ab'
   //#endregion
 
-  public normalStyleEditorDiv: boolean = false;
+  public widthPercentEditorDiv = 0;
+  public widthPercentSectionsDiv = 0;
+  public expandedEditorDiv: boolean = false;
   public expandedDocumentSectonsDiv: boolean = true;
 
   // currentUser!: User;
@@ -191,6 +193,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!this.textId) {
       return;
     }
+
+    this.updateTextPanelsCombinationWidth();
 
     forkJoin([this.workspaceService.retrieveResourceElementById(this.textId),
     this.workspaceService.retrieveSectionsById(this.textId)])
@@ -339,18 +343,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public expandCollapseNavigationDiv() {
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
+    this.updateTextPanelsCombinationWidth();
 
     setTimeout(() => {
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-    }, 200);
+    }, 500);
   }
 
   public expandCollapseAnnotationDiv() {
-    this.normalStyleEditorDiv = !this.normalStyleEditorDiv;
+    this.expandedEditorDiv = !this.expandedEditorDiv;
+    this.updateTextPanelsCombinationWidth();
 
     setTimeout(() => {
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-    }, 200);
+    }, 500);
   }
 
   public sectionSelected(event: any) {
@@ -475,6 +481,30 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     parent.expanded = true;
     this.expandAnchestors(parent);
+  }
+
+  public updateTextPanelsCombinationWidth() {
+    if (this.expandedEditorDiv && this.expandedDocumentSectonsDiv) {
+      this.widthPercentEditorDiv = 25;
+      this.widthPercentSectionsDiv = 25;
+      return;
+    }
+
+    if (this.expandedEditorDiv) {
+      this.widthPercentEditorDiv = 34;
+      this.widthPercentSectionsDiv = 3;
+
+      return;
+    }
+
+    if (this.expandedDocumentSectonsDiv) {
+      this.widthPercentEditorDiv = 3;
+      this.widthPercentSectionsDiv = 34;
+      return;
+    }
+
+    this.widthPercentEditorDiv = 2;
+    this.widthPercentSectionsDiv = 2;
   }
 
   /**

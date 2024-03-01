@@ -175,8 +175,7 @@ path {
   max-width: none;
 }
 
-.normal-div {
-  width: 33.33%;
+.side-div {
   height: 100%;
   position: relative;
   float: left;
@@ -186,11 +185,7 @@ path {
 }
 
 .main-div {
-  width: 98%;
-}
-
-.compressed-div {
-  width: 2%;
+  width: 96%;
 }
 
 a.expansion-btn {
@@ -204,8 +199,8 @@ a.expansion-btn {
 a.collapse-btn-left {
   position: absolute;
   font-weight: bold;
-  top: 7px;
-  right: 10px;
+  top: 3px;
+  right: 7px;
   cursor: pointer;
   font-size: 1.5rem;
 }
@@ -213,9 +208,12 @@ a.collapse-btn-left {
 a.collapse-btn-right {
   position: absolute;
   font-weight: bold;
-  top: 7px;
-  left: 10px;
+  top: 3px;
+  left: 7px;
   cursor: pointer;
   font-size: 1.5rem;
 }
 
+.sectionExpandDiv {
+  padding: 1rem 1.3rem 1rem 1rem;
+}

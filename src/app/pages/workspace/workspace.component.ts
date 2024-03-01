@@ -943,10 +943,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         componentRef.instance.updateComponentSize(panelH);
       },
       resizeit: {
+        minWidth: 800,
         resize: (panel: any, paneldata: any, event: any) => {
-          console.log('hi')
           componentRef.instance.updateHeight(paneldata.height)
-          console.log(panel, paneldata, event)
         },
         stop: (panel: any, paneldata: any, event: any) => {
           componentRef.instance.updateTextEditorSize();

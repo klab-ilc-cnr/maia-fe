@@ -49,17 +49,18 @@
 </div>
 
 <div class="container">
-  <div [ngClass]="expandedDocumentSectonsDiv ? 'normal-div' : 'normal-div compressed-div'">
+  <div [ngStyle]="{'width': widthPercentSectionsDiv+'%' }" class="side-div">
     <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
     <a *ngIf="expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a>
-    <div style="margin-bottom: 1rem; margin-left: 1rem">
+    <div class="sectionExpandDiv">
       <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
       <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
     </div>
     <div *ngIf="expandedDocumentSectonsDiv">
       <p-tree id="sectionsTree" 
         [value]="documentSections" 
-        [virtualScroll]="true" [virtualScrollItemSize]="20" 
+        [virtualScroll]="true" 
+        [virtualScrollItemSize]="20" 
         [scrollHeight]="sectionsTreeHeight + 'px'"
         selectionMode="single"
         [(selection)]="selectedSection"
@@ -195,10 +196,10 @@
       </div>
     </div>
   </div>
-  <div [ngClass]="normalStyleEditorDiv ? 'normal-div' : 'normal-div compressed-div'">
-    <a *ngIf="!normalStyleEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn">Annotation</a>
-    <a *ngIf="normalStyleEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right">></a>
-    <div *ngIf="normalStyleEditorDiv" class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
+  <div [ngStyle]="{'width': widthPercentEditorDiv+'%' }" class="side-div">
+    <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn">Annotation</a>
+    <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right">></a>
+    <div *ngIf="expandedEditorDiv" class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
       <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
         (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
         <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
