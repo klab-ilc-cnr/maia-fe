@@ -1,7 +1,10 @@
 {
     "GENERAL": {
+        "add": "Add",
+        "backToList": "Back to list",
         "cancel": "Cancel",
-        "save": "Salva"
+        "save": "Salva",
+        "update": "Update"
     },
     "LOGIN": {
         "authFailed": "Authentication failed",
@@ -17,8 +20,10 @@
         "nameMandatory": "Name is mandatory",
         "nameNotBlanks": "The tagset name cannot contain only blanks",
         "newTagset": "New tagset",
+        "newValue": "New value",
         "tagsetManager": "Tagset manager",
-        "tagsetSameName": "A tagset with this name already exists"
+        "tagsetSameName": "A tagset with this name already exists",
+        "values": "Values"
     },
     "USERS_MANAGER": {
         "activeUser": "Active user",

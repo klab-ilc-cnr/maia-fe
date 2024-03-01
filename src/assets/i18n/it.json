@@ -1,7 +1,10 @@
 {
     "GENERAL": {
+        "add": "Aggiungi",
+        "backToList": "Torna all'elenco",
         "cancel": "Annulla",
-        "save": "Salva"
+        "save": "Salva",
+        "update": "Aggiorna"
     },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",
@@ -17,8 +20,10 @@
         "nameMandatory": "Il nome è obbligatorio",
         "nameNotBlanks": "Il nome del tagset non può contenere solo spazi vuoti",
         "newTagset": "Nuovo tagset",
+        "newValue": "Nuovo valore",
         "tagsetManager": "Gestione tagset",
-        "tagsetSameName": "Esiste già un tagset con questo nome"
+        "tagsetSameName": "Esiste già un tagset con questo nome",
+        "values": "Values"
     },
     "USERS_MANAGER": {
         "activeUser": "Utente attivo",

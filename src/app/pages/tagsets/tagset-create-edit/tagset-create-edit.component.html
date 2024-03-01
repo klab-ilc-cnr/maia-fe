@@ -6,18 +6,18 @@
           {{ (ttagsetName|async)||'' }}
         </h5>
         <div class="button-group-actions">
-          <button pButton pRipple label="Back to list" icon="pi pi-arrow-left" class="p-button-secondary"
+          <button aria-label="Back to list" pButton pRipple [label]="'GENERAL.backToList'|translate" icon="pi pi-arrow-left" class="p-button-secondary"
             (click)="backToList()"></button>
         </div>
       </div>
       <div class="card-body p-fluid">
         <div class="row row-cols-1 row-cols-md-3">
           <div class="col">
-            <label class="header-label">Name</label>
+            <label class="header-label">{{'TAGSET_MANAGER.name'|translate}}</label>
             <p>{{(ttagsetName|async)||''}}</p>
           </div>
           <div class="col">
-            <label class="header-label">Description</label>
+            <label class="header-label">{{'TAGSET_MANAGER.description'|translate}}</label>
             <p>{{(ttagsetDescription|async)||''}}</p>
           </div>
         </div>
@@ -31,8 +31,8 @@
       <div class="card-body p-fluid">
         <div class="form-group">
           <div class="d-flex align-items-center justify-content-between mb-2 w-auto">
-            <label class="form-label">Values</label>
-            <button pButton pRipple type="button" label="New value" icon="pi pi-plus" class="w-auto"
+            <label class="form-label">{{'TAGSET_MANAGER.values'|translate}}</label>
+            <button aria-label="New value" pButton pRipple type="button" [label]="'TAGSET_MANAGER.newValue'|translate" icon="pi pi-plus" class="w-auto"
               (click)="showTagsetValueModal()"></button>
           </div>
           <div class="p-fluid">
@@ -41,8 +41,8 @@
               [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
               <ng-template pTemplate="header">
                 <tr>
-                  <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
-                  <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
+                  <th pSortableColumn="name">{{'TAGSET_MANAGER.name'|translate}}<p-sortIcon field="name"></p-sortIcon></th>
+                  <th pSortableColumn="description">{{'TAGSET_MANAGER.description'|translate}}<p-sortIcon field="description"></p-sortIcon></th>
                   <th></th>
                 </tr>
               </ng-template>
@@ -51,9 +51,9 @@
                   <td>{{value.name}}</td>
                   <td>{{value.description}}</td>
                   <td>
-                    <button pButton pRipple type="button" icon="pi pi-pencil"
+                    <button aria-label="Edit tagset item" pButton pRipple type="button" icon="pi pi-pencil"
                       class="p-button-rounded p-button-success mx-2" (click)="showEditValueModal(value)"></button>
-                    <button pButton pRipple type="button" icon="pi pi-trash"
+                    <button aria-label="Delete tagset item" pButton pRipple type="button" icon="pi pi-trash"
                       class="p-button-rounded p-button-danger mx-2" (click)="showDeleteValueModal(value)"></button>
                   </td>
                 </tr>
@@ -75,7 +75,7 @@
           <div class="cross-validation"
             [class.cross-validation-error]="name.errors?.['tagsetValueNotDuplicateName'] && (name.touched || name.dirty)">
             <div class="form-group">
-              <label class="form-label">Name *</label>
+              <label class="form-label">{{'TAGSET_MANAGER.name'|translate}} *</label>
               <div class="p-fluid">
                 <input type="text" name="name" class="form-control" formControlName="name" maxlength="300"
                   placeholder="Tagset value name">
@@ -94,23 +94,23 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Description</label>
+            <label for="description" class="form-label">{{'TAGSET_MANAGER.description'|translate}}</label>
             <div class="p-fluid">
-              <textarea rows="3" formControlName="description" type="text" name="description"
+              <textarea id="description" rows="3" formControlName="description" type="text" name="description"
                 class="form-control"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="visibleEditNewTagsetItem=false;">
-            Cancel
+            {{'GENERAL.cancel'|translate}}
           </button>
           <button type="submit" class="btn btn-primary" [disabled]="name.invalid || name.value ===''">
             <span *ngIf="isTagsetValueEditing; else elseBlock">
-              Update
+              {{'GENERAL.update'|translate}}
             </span>
             <ng-template #elseBlock>
-              <span>Add</span>
+              <span>{{'GENERAL.add'|translate}}</span>
             </ng-template>
           </button>
         </div>
