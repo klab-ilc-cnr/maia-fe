@@ -362,7 +362,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public sentumChanged() {
-    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+    setTimeout(() => {
+      this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+    }, 500);
   }
 
   public sectionSelected(event: any) {
@@ -973,6 +975,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const row_id = 0;
     let start = 0;
 
+    this.calculateMaxSentumWidth();
+
     const width = this.svg.nativeElement.clientWidth - 20 - this.visualConfig.stdTextOffsetX;
 
     const textFont = getComputedStyle(document.documentElement).getPropertyValue('--text-font-size') + " " + getComputedStyle(document.documentElement).getPropertyValue('--text-font-family');
@@ -989,8 +993,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const lineBuilder = new LineBuilder;
 
     lineBuilder.yStartLine = 0;
-
-    this.calculateMaxSentumWidth();
 
     sentences?.forEach((s: TextSplittedRow) => {
       const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
