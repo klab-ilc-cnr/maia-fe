@@ -1,4 +1,4 @@
-<p-tabView [(activeIndex)]="selectedTab">
+<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
   <p-tabPanel header="Lex. entry">
     <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$" *ngIf="selectedTab === 0"></app-lex-entry-editor>
   </p-tabPanel>
