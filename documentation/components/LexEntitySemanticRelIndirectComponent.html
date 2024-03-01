@@ -1283,7 +1283,11 @@ export class LexEntitySemanticRelIndirectComponent extends LexEntitySemanticRelC
                 <p class="comment">
                     <code>./lex-entity-semantic-rel-indirect.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss"></code></pre>
+                <pre class="line-numbers"><code class="language-scss">::ng-deep app-lex-entity-semantic-rel-indirect p-autocomplete,
+::ng-deep app-lex-entity-semantic-rel-indirect .p-autocomplete,
+::ng-deep app-lex-entity-semantic-rel-indirect .p-autocomplete&gt;input {
+    width: 100%;
+}</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-tree">

@@ -24,3 +24,18 @@ td:has(> span) div:has(> span) {
 td span {
   display: inline;
 }
+
+td {
+  padding: 0.5rem 0.5rem !important;
+  span {
+    display: inline;
+  }
+}
+
+::ng-deep.p-splitter-panel:first-of-type {
+  min-width: 265px;
+}
+
+::ng-deep.p-splitter-panel:last-of-type {
+  min-width: 400px;
+}

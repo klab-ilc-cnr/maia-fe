@@ -1191,8 +1191,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="303"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:303</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="305"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:305</a></div>
                 </td>
             </tr>
 
@@ -1269,8 +1269,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="316"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:316</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="318"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:318</a></div>
                 </td>
             </tr>
 
@@ -1439,8 +1439,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="336"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:336</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="338"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:338</a></div>
                 </td>
             </tr>
 
@@ -1566,8 +1566,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="283"
-                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:283</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="285"
+                            class="link-to-prism">src/app/controllers/editors/sense-core-editor/sense-core-editor.component.ts:285</a></div>
                 </td>
             </tr>
 
@@ -2380,10 +2380,12 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
       if (relation &#x3D;&#x3D;&#x3D; &#x27;definition&#x27;) {
         this.commonService.notifyOther({
-          option: &#x27;lexicon_edit_label&#x27;,
+          option: &#x27;lexicon_edit_tree_data&#x27;,
+          lexicalEntry: &#x27;&#x27;,
           uri: this.senseEntry.sense,
-          newValue,
-        });
+          field: &#x27;label&#x27;,
+          newValue
+        })
       }
     });
   }
