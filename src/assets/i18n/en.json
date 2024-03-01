@@ -10,18 +10,34 @@
         "username": "Username or E-mail"
     },
     "USERS_MANAGER": {
+        "activeUser": "Active user",
         "confirmPassword": "Confirm password",
+        "confirmPwdMandatory": "Confirmation password is mandatory",
         "details": "Details",
+        "emailMandatory": "Email is mandatory",
         "emptyUsers": "No user found",
         "existingUsername": "Existing username",
+        "languages": "Languages",
+        "managePwd": "Manage password",
         "masterData": "Master data",
         "name": "Name",
+        "nameMandatory": "Name is mandatory",
+        "newPwd": "New password",
+        "newPwdEqualsConfirm": "The new password must be the same as the confirmation password",
+        "newPwdMandatory": "New password is mandatory",
         "newUser": "New user",
+        "oldPwd": "Old password",
+        "oldPwdMandatory": "Old password is mandatory",
         "passwordMandatory": "Password is mandatory",
+        "pwdUpdated": "Password successfully updated",
         "role": "Role",
+        "roleMandatory": "Role is mandatory",
+        "selectLanguage": "You must select at least one language",
         "surname": "Surname",
+        "surnameMandatory": "Surname is mandatory",
         "username": "Username",
         "usernameMandatory": "Username is mandatory",
-        "usernameMinLenght": "Username must be at least 4 characters long"
+        "usernameMinLenght": "Username must be at least 4 characters long",
+        "userUpdated": "User successfully updated"
     }
 }

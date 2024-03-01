@@ -37,18 +37,18 @@
             <p-password formControlName="confirmPassword" id="confirmPassword" [toggleMask]="true"></p-password>
             <div *ngIf="confirmPwd && (confirmPwd.invalid && (confirmPwd.dirty || confirmPwd.touched))"
               class="alert alert-danger">
-              Confirmation password is mandatory
+              {{'USERS_MANAGER.confirmPwdMandatory'|translate}}
             </div>
           </div>
           <div *ngIf="userForm.invalid && userForm.errors?.['isMatchPasswordError']" class="alert alert-danger">
-            The new password must be the same as the confirmation password
+            {{'USERS_MANAGER.newPwdEqualsConfirm'|translate}}
           </div>
           <div class="form-group">
             <label for="name">{{'USERS_MANAGER.name'|translate}} *</label>
             <input type="text" formControlName="name" class="form-control" id="name" name="name"
               placeholder="Enter name" />
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-                Name is mandatory
+              {{'USERS_MANAGER.nameMandatory'|translate}}
             </div>
           </div>
           <div class="form-group">
@@ -56,7 +56,7 @@
             <input type="text" formControlName="surname" class="form-control" id="surname" name="surname"
               placeholder="Enter surname" />
             <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger">
-              Surname is mandatory
+              {{'USERS_MANAGER.surnameMandatory'|translate}}
             </div>
           </div>
           <div class="form-group">
@@ -64,7 +64,7 @@
             <input type="email" formControlName="email" class="form-control disabled" id="email" name="email"
               placeholder="Enter email address" />
               <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-                Email is mandatory
+                {{'USERS_MANAGER.emailMandatory'|translate}}
               </div>
           </div>
           <div class="form-group">
@@ -73,15 +73,15 @@
               placeholder="Select a role">
             </p-dropdown>
             <div *ngIf="role.invalid && (role.dirty || role.touched)" class="alert alert-danger">
-              Role is mandatory
+              {{'USERS_MANAGER.roleMandatory'|translate}}
             </div>
           </div>
           <div class="form-group d-flex align-items-center">
-            <label for="active">Active user</label>
+            <label for="active">{{'USERS_MANAGER.activeUser'|translate}}</label>
             <p-inputSwitch formControlName="active" name="active"></p-inputSwitch>
           </div>
           <div class="form-group">
-            <label for="role">Languages *</label>
+            <label for="role">{{'USERS_MANAGER.languages'|translate}} *</label>
             <p-listbox [options]="(languages$|async)??[]" formControlName="languages" name="language"
               [metaKeySelection]="false" [checkbox]="true" [filter]="true" [multiple]="true" optionLabel="name"
               [listStyle]="{'max-height':'250px'}" [style]="{'width':'15rem'}">
@@ -92,7 +92,7 @@
               </ng-template>
             </p-listbox>
             <div *ngIf="languages.invalid && (languages.dirty || languages.touched)" class="alert alert-danger">
-              You must select at least one language
+              {{'USERS_MANAGER.selectLanguage'|translate}}
             </div>
           </div>
           <div class="text-end">
@@ -109,7 +109,7 @@
     </div>
     <div class="card" *ngIf="!isNewUser">
       <div class="page-header">
-        <h5>Manage password</h5>
+        <h5>{{'USERS_MANAGER.managePwd'|translate}}</h5>
       </div>
       <div class="card-body p-fluid">
         <!-- <form *ngIf="canManageUsers && !isSameUser; else changePwd" [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
@@ -133,34 +133,34 @@
         <ng-template #changePwd> -->
         <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPwd()">
           <div class="form-group">
-            <label for="oldPassword">Old password *</label>
+            <label for="oldPassword">{{'USERS_MANAGER.oldPwd'|translate}} *</label>
             <p-password formControlName="oldPassword" id="oldPassword" [feedback]="false"
               [toggleMask]="true"></p-password>
             <div *ngIf="oldPassword && (oldPassword.invalid && (oldPassword.dirty || oldPassword.touched))"
               class="alert alert-danger">
-              Old password is mandatory
+              {{'USERS_MANAGER.oldPwdMandatory'|translate}}
             </div>
           </div>
           <div class="form-group">
-            <label for="newPassword">New password *</label>
+            <label for="newPassword">{{'USERS_MANAGER.newPwd'|translate}} *</label>
             <p-password formControlName="newPassword" id="newPassword" [toggleMask]="true"></p-password>
             <div *ngIf="newPassword && (newPassword.invalid && (newPassword.dirty || newPassword.touched))"
               class="alert alert-danger">
-              New password is mandatory
+              {{'USERS_MANAGER.newPwdMandatory'|translate}}
             </div>
           </div>
           <div class="form-group">
-            <label for="confirmPassword">Confirmation password *</label>
+            <label for="confirmPassword">{{'USERS_MANAGER.confirmPassword'|translate}} *</label>
             <p-password formControlName="confirmPassword" id="confirmPassword" [feedback]="false"
               [toggleMask]="true"></p-password>
             <div
               *ngIf="confirmPassword && (confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched))"
               class="alert alert-danger">
-              Confirmation password is mandatory
+              {{'USERS_MANAGER.confirmPwdMandatory'|translate}}
             </div>
           </div>
           <div *ngIf="passwordForm.invalid && passwordForm.errors?.['isMatchPasswordError']" class="alert alert-danger">
-            The new password must be the same as the confirmation password
+            {{'USERS_MANAGER.newPwdEqualsConfirm'|translate}}
           </div>
           <div class="text-end">
             <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">

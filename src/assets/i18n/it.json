@@ -10,18 +10,34 @@
         "username": "Nome utente o E-mail"
     },
     "USERS_MANAGER": {
+        "activeUser": "Utente attivo",
         "confirmPassword": "Conferma password",
+        "confirmPwdMandatory": "La password di conferma è obbligatoria",
         "details": "Dettagli",
+        "emailMandatory": "L'e-mail è obbligatoria",
         "emptyUsers": "Nessun utente trovato",
         "existingUsername": "Nome utente già in uso",
+        "languages": "Lingue",
+        "managePwd": "Gestione password",
         "masterData": "Anagrafica",
         "name": "Nome",
+        "nameMandatory": "Il nome è obbligatorio",
+        "newPwd": "Nuova password",
+        "newPwdEqualsConfirm": "La nuova password deve essere uguale alla password di conferma.",
+        "newPwdMandatory": "La nuova password è obbligatoria",
         "newUser": "Nuovo utente",
+        "oldPwd": "Vecchia password",
+        "oldPwdMandatory": "La vecchia password è obbligatoria",
         "passwordMandatory": "La password è obbligatoria",
+        "pwdUpdated": "Password aggiornata con successo",
         "role": "Ruolo",
+        "roleMandatory": "Il ruolo è obbligatorio",
+        "selectLanguage": "È necessario selezionare almeno una lingua",
         "surname": "Cognome",
+        "surnameMandatory": "Il cognome è obbligatorio",
         "username": "Nome utente",
         "usernameMandatory": "Il nome utente è obbligatorio",
-        "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri"
+        "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri",
+        "userUpdated": "Utente aggiornato con successo"
     }
 }
