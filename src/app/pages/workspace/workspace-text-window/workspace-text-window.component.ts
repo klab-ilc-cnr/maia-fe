@@ -363,6 +363,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public sentumChanged() {
     setTimeout(() => {
+      this.showSentum = !this.showSentum;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
     }, 500);
   }
