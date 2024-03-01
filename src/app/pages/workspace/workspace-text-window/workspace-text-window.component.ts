@@ -123,7 +123,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   targetLayer = new Layer();
   /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
-  sectionsTreeHeight = this.textContainerHeight - 120;
+  sectionsTreeHeight = this.textContainerHeight - 115;
   /**Identificativo numerico del testo */
   textId: number | undefined;
   /**Text response */
@@ -161,6 +161,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public widthPercentSectionsDiv = 0;
   public expandedEditorDiv: boolean = false;
   public expandedDocumentSectonsDiv: boolean = true;
+
+  showSentum: boolean = true;
 
   // currentUser!: User;
   currentTextoUserId!: number;
@@ -357,6 +359,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
     }, 500);
+  }
+
+  public sentumChanged() {
+    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
   }
 
   public sectionSelected(event: any) {
@@ -1095,6 +1101,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   private calculateMaxSentumWidth() {
+    if (!this.showSentum) {
+      this.visualConfig.stdTextOffsetX = 5;
+      this.visualConfig.stdSentnumOffsetX = 0;
+      return;
+    }
+
     const sentumWidthArray = this.textSplittedRows?.map(row => this.getComputedTextLength(row.index ?? '', this.visualConfig.textFont)) ?? [0];
     const maxSentumWidth = Math.max(...sentumWidthArray);
     this.visualConfig.stdTextOffsetX = maxSentumWidth > 0 ? maxSentumWidth : this.visualConfig.stdTextOffsetX;

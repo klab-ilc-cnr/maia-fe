@@ -3,7 +3,13 @@
 </div>
 
 <div class="form-group row mx-0 px-0 justify-content-center">
-  <div class="col-sm-6">
+  <div class="col-sm-1">
+    <label class="col-sm-1 col-form-label">Sentum</label>
+    <div class="p-fluid">
+      <p-inputSwitch (onChange)="sentumChanged()" [(ngModel)]="showSentum"></p-inputSwitch>
+    </div>
+  </div>
+  <div class="col-sm-5">
     <label class="col-sm-2 col-form-label">Layer</label>
     <div class="p-fluid">
       <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
@@ -17,7 +23,7 @@
     </div>
   </div>
   <div class="col-sm-6">
-    <label class="col-sm-2 col-form-label">Visibility</label>
+    <label class="col-sm-1 col-form-label">Visibility</label>
     <div class="p-fluid">
       <p-multiSelect [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Select the layers to be displayed" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
         <ng-template let-value pTemplate="selectedItems">
@@ -190,7 +196,7 @@
                   [attr.data-rowIndex]="row.rowIndex">
               {{row.sectionIndex ?? (row.rowIndex!=undefined ? row.rowIndex + 1 : '')}}
             </text>
-            <path [attr.d]="sentnumVerticalLine"></path>
+            <path *ngIf="showSentum" [attr.d]="sentnumVerticalLine"></path>
           </g>
         </svg>
       </div>
