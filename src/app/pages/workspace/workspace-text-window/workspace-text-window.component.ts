@@ -1144,7 +1144,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return true; }
 
-    if (this.scrollingDown && scroll < this.svgHeight) { return true; }
+    let isFirefox = false;
+    if (navigator.userAgent.match(/firefox|fxios/i)) { isFirefox = true; }
+
+    if (!isFirefox && this.scrollingDown && scroll < this.svgHeight) { return true; }
+
+    if (isFirefox && this.scrollingDown && this.textContainer.nativeElement.scrollTop < this.textContainer.nativeElement.scrollTopMax) { return true; }
 
     return false;
   }
