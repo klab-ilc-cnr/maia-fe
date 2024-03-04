@@ -3,7 +3,8 @@
         "add": "Add",
         "backToList": "Back to list",
         "cancel": "Cancel",
-        "save": "Salva",
+        "currentPageReportTemplate": "Elements {first} to {last} for a total of {totalRecords} elements",
+        "save": "Save",
         "update": "Update"
     },
     "LOGIN": {
@@ -14,16 +15,33 @@
     },
     "TAGSET_MANAGER": {
         "aboutDeleteTagset": "You are about to delete the tagset ${tagsetName}",
+        "aboutDeleteTagsetValue": "You are about to delete the tagset value ${tagsetValueName}",
         "description": "Description",
         "editTagset": "Edit tagset",
+        "enterNameTagsetValue": "Need to enter the name of the tagset value",
         "name": "Name",
         "nameMandatory": "Name is mandatory",
         "nameNotBlanks": "The tagset name cannot contain only blanks",
         "newTagset": "New tagset",
+        "newTagsetValue": "New tagset value",
         "newValue": "New value",
         "tagsetManager": "Tagset manager",
+        "tagsetName": "Tagset name",
         "tagsetSameName": "A tagset with this name already exists",
+        "tagsetValueName": "Enter tagset value name",
+        "tagsetValueNameNotBlanks": "Tagset value name cannot contain only blanks",
+        "tagsetValueSameName": "There already exists a value with this name",
         "values": "Values"
+    },
+    "TAGSET_STATE": {
+        "addedTagsetItem": "Tagset item added",
+        "addingTagsetItemFailed": "Adding item to tagset failed: ${errorMessage}",
+        "fetchingTagsetFailed": "Fetching tagset failed: ${errorMessage}",
+        "fetchingTagsetItemsFailed": "Fetching tagset items failed: ${errorMessage}",
+        "removedTagsetItem": "Tagset item removed",
+        "removingTagsetItemFailed": "Removing tagset item failed: ${errorMessage}",
+        "updatedTagsetItem": "Tagset item updated",
+        "updatingTagsetItemFailed": "Updating tagset item failed: ${errorMessage}"
     },
     "USERS_MANAGER": {
         "activeUser": "Active user",

@@ -37,7 +37,7 @@
           </div>
           <div class="p-fluid">
             <p-table [value]="(ttagsetItems$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-              currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
+              [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate"
               [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
               <ng-template pTemplate="header">
                 <tr>
@@ -75,20 +75,20 @@
           <div class="cross-validation"
             [class.cross-validation-error]="name.errors?.['tagsetValueNotDuplicateName'] && (name.touched || name.dirty)">
             <div class="form-group">
-              <label class="form-label">{{'TAGSET_MANAGER.name'|translate}} *</label>
+              <label for="name" class="form-label">{{'TAGSET_MANAGER.name'|translate}} *</label>
               <div class="p-fluid">
-                <input type="text" name="name" class="form-control" formControlName="name" maxlength="300"
-                  placeholder="Tagset value name">
+                <input id="name" type="text" name="name" class="form-control" formControlName="name" maxlength="300"
+                  [placeholder]="'TAGSET_MANAGER.tagsetValueName'|translate">
                 <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                   <div *ngIf="name.errors?.['required']">
-                    Need to enter the name of the tagset value
+                    {{'TAGSET_MANAGER.enterNameTagsetValue'|translate}}
                   </div>
                   <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
-                    Tagset value name cannot contain only blanks
+                    {{'TAGSET_MANAGER.tagsetValueNameNotBlanks'|translate}}
                   </div>
                 </div>
                 <div *ngIf="name.errors?.['tagsetValueNotDuplicateName']" class="invalid-feedback">
-                  There already exists a value with this name
+                  {{'TAGSET_MANAGER.tagsetValueSameName'|translate}}
                 </div>
               </div>
             </div>

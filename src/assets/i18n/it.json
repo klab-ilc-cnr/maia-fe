@@ -3,6 +3,7 @@
         "add": "Aggiungi",
         "backToList": "Torna all'elenco",
         "cancel": "Annulla",
+        "currentPageReportTemplate": "Elementi da {first} a {last} per un totale di elementi {totalRecords}.",
         "save": "Salva",
         "update": "Aggiorna"
     },
@@ -14,16 +15,33 @@
     },
     "TAGSET_MANAGER": {
         "aboutDeleteTagset": "Si sta per cancellare il tagset ${tagsetName}",
+        "aboutDeleteTagsetValue": "Si sta per cancellare il valore del tagset ${tagsetValueName}",
         "description": "Descrizione",
         "editTagset": "Modifica tagset",
+        "enterNameTagsetValue": "È necessario inserire il nome del valore del tagset",
         "name": "Nome",
         "nameMandatory": "Il nome è obbligatorio",
         "nameNotBlanks": "Il nome del tagset non può contenere solo spazi vuoti",
         "newTagset": "Nuovo tagset",
+        "newTagsetValue": "Nuovo valore del tagset",
         "newValue": "Nuovo valore",
         "tagsetManager": "Gestione tagset",
+        "tagsetName": "Nome del tagset",
         "tagsetSameName": "Esiste già un tagset con questo nome",
+        "tagsetValueName": "Inserire il nome del valore del tagset",
+        "tagsetValueNameNotBlanks": "Il nome del valore del taget non può contenere solo spazi vuoti",
+        "tagsetValueSameName": "Esiste già un valore con questo nome",
         "values": "Values"
+    },
+    "TAGSET_STATE": {
+        "addedTagsetItem": "Elemento del tagset aggiunto",
+        "addingTagsetItemFailed": "Aggiunta di un elemento al tagset fallita: ${errorMessage}",
+        "fetchingTagsetFailed": "Recupero del tagset fallito: ${errorMessage}",
+        "fetchingTagsetItemsFailed": "Recupero degli elementi del tagset fallito: ${errorMessage}",
+        "removedTagsetItem": "Elemento del tagset rimosso",
+        "removingTagsetItemFailed": "Rimozione di un elemento dal tagset fallita: ${errorMessage}",
+        "updatedTagsetItem": "Elemento del tagset aggiornato",
+        "updatingTagsetItemFailed": "Aggiornamento dell'elemento del tagset fallito: ${errorMessage}"
     },
     "USERS_MANAGER": {
         "activeUser": "Utente attivo",

@@ -7,7 +7,7 @@
       </div>
       <div class="card-body p-fluid">
         <p-table [value]="(tagsets$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-          currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
+          [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate"
           [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
           <ng-template pTemplate="header">
             <tr>
@@ -47,10 +47,10 @@
       <form (ngSubmit)="onSubmitTagsetModal()" [formGroup]="tagsetForm" id="tagsetForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">{{'TAGSET_MANAGER.name'|translate}} *</label>
+            <label for="name" class="form-label">{{'TAGSET_MANAGER.name'|translate}} *</label>
             <div class="p-fluid">
-              <input type="text" name="name" class="form-control" formControlName="name" autofocus maxlength="300"
-                placeholder="Tagset name">
+              <input id="name" type="text" name="name" class="form-control" formControlName="name" autofocus maxlength="300"
+                [placeholder]="'TAGSET_MANAGER.tagsetName'|translate">
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
                   {{'TAGSET_MANAGER.nameMandatory'|translate}}
@@ -77,7 +77,7 @@
             {{'GENERAL.cancel'|translate}}
           </button>
           <button type="submit" class="btn btn-primary"
-            [disabled]="tagsetForm.invalid || name.value === ''">{{tagsetOnEdit!==undefined? 'Update': 'Add'}}</button>
+            [disabled]="tagsetForm.invalid || name.value === ''">{{tagsetOnEdit!==undefined? ('GENERAL.update'|translate): ('GENERAL.add'|translate)}}</button>
         </div>
       </form>
     </div>
