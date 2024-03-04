@@ -3,7 +3,7 @@
     <div class="card">
       <div class="page-header">
         <h5>
-          <div *ngIf="isEditUser || isSameUser; else elseBlock">User detail</div>
+          <div *ngIf="isEditUser || isSameUser; else elseBlock">{{'USERS_MANAGER.userDetail'|translate}}</div>
           <ng-template #elseBlock>{{'USERS_MANAGER.newUser'|translate}}</ng-template>
         </h5>
       </div>
@@ -12,7 +12,7 @@
           <div class="form-group">
             <label for="username">{{'USERS_MANAGER.username'|translate}} *</label>
             <input type="text" formControlName="username" class="form-control" id="username" name="username"
-              placeholder="Enter username" />
+              [placeholder]="'USERS_MANAGER.enterUsername'|translate" />
             <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
               <div *ngIf="username.errors?.['notDuplicateName']">
                 {{'USERS_MANAGER.existingUsername'|translate}}
@@ -46,7 +46,7 @@
           <div class="form-group">
             <label for="name">{{'USERS_MANAGER.name'|translate}} *</label>
             <input type="text" formControlName="name" class="form-control" id="name" name="name"
-              placeholder="Enter name" />
+              [placeholder]="'USERS_MANAGER.enterName'|translate" />
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
               {{'USERS_MANAGER.nameMandatory'|translate}}
             </div>
@@ -54,7 +54,7 @@
           <div class="form-group">
             <label for="surname">{{'USERS_MANAGER.surname'|translate}} *</label>
             <input type="text" formControlName="surname" class="form-control" id="surname" name="surname"
-              placeholder="Enter surname" />
+              [placeholder]="'USERS_MANAGER.enterSurname'|translate" />
             <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger">
               {{'USERS_MANAGER.surnameMandatory'|translate}}
             </div>
@@ -62,7 +62,7 @@
           <div class="form-group">
             <label for="email">Email *</label>
             <input type="email" formControlName="email" class="form-control disabled" id="email" name="email"
-              placeholder="Enter email address" />
+              [placeholder]="'USERS_MANAGER.enterEmail'|translate" />
               <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
                 {{'USERS_MANAGER.emailMandatory'|translate}}
               </div>
@@ -70,7 +70,7 @@
           <div class="form-group">
             <label for="role">{{'USERS_MANAGER.role'|translate}} *</label>
             <p-dropdown formControlName="role" name="role" [options]="(roles|async) ?? []" [filter]="true" [showClear]="true"
-              placeholder="Select a role">
+              [placeholder]="'USERS_MANAGER.selectRole'|translate">
             </p-dropdown>
             <div *ngIf="role.invalid && (role.dirty || role.touched)" class="alert alert-danger">
               {{'USERS_MANAGER.roleMandatory'|translate}}
