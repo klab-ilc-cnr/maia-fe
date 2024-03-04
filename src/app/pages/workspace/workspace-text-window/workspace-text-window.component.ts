@@ -136,7 +136,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   @ViewChild('svg') public svg!: ElementRef;
   @ViewChild('textContainer') public textContainer!: ElementRef;
 
-  //#region SCROLLER
+  /**Scroller*/
   public textRowsWideness!: number;
   public textTotalRows: number = 0;
   public precTextRange?: TextRange;
@@ -148,14 +148,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
   public extraRowsWidenessUpOrDown!: number;
-  //#endregion
 
-  //#region DOCUMENT SECTIONS NAVIGATION TREE
+  /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
   selectedSection?: TreeNode;
   changingSection?: boolean = false;
   rootNodeKey: string = '405092b3-7110-4e48-a524-21a20d0448ab'
-  //#endregion
 
   public widthPercentEditorDiv = 0;
   public widthPercentSectionsDiv = 0;
@@ -461,6 +459,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loadData(this.textRange.start, this.textRange.end);
   }
 
+  /**
+   * Metodo che serve a selezionare l'elemento dell'alberatura corrispondente alla riga del testo
+   * @param event 
+   */
   onRowClick(event: any) {
     let rowIndexSelected = Number(event.target.dataset.rowIndex);
     let section = this.findSectionByIndex(rowIndexSelected);
@@ -492,6 +494,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.expandAnchestors(parent);
   }
 
+  /**
+   * Gestione dinamica della larghezza della finestra di testo e dei
+   * due pannelli laterali, alberatura testo e annotazioni
+   * @returns 
+   */
   public updateTextPanelsCombinationWidth() {
     if (this.expandedEditorDiv && this.expandedDocumentSectonsDiv) {
       this.widthPercentEditorDiv = 25;
@@ -1103,6 +1110,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.checkScroll();
   }
 
+  /**
+   * Calcola la larghezza della colonna sentum per il range correntemente caricato
+   * @returns 
+   */
   private calculateMaxSentumWidth() {
     if (!this.showSentum) {
       this.visualConfig.stdTextOffsetX = 5;
@@ -1121,6 +1132,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (this.visualConfig.stdSentnumOffsetX > this.visualConfig.maxStdSentnumOffsetX) { this.visualConfig.stdSentnumOffsetX = this.visualConfig.maxStdSentnumOffsetX; }
   }
 
+  /**
+   * Guardie di controllo utili a capire se sto scrollando nel range già caricato
+   * @param scroll 
+   * @param scrollTop 
+   * @returns 
+   */
   private isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
     if (!this.scrollingDown && this.textRange.start === 0) { return true; }
 
@@ -1133,6 +1150,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  /**
+   * Controllo sul numero di elementi caricati, presenza e gestione della barra di scrolling
+   * @returns 
+   */
   private checkScroll() {
     let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
     if (!scrollable) {
@@ -1178,17 +1199,29 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loaderService.hide();
   }
 
+  /**
+   * Serve a calcolare il numero di righe iniziale che rappresentano il range di riferimento
+   * @param extraRows Numero elementi aggiuntivi da sommare a quelli calcolati
+   * @returns Numero di elementi riga che sarà necessario caricare
+   */
   private textRowsRangeWidenessPredictor(extraRows?: number): number {
     let arbitraryRowSizeInPixels = 50;
     let arbitraryExtraRows = extraRows ?? 5;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels) + arbitraryExtraRows;
   }
 
+  /**
+   * Calcola il numero di righe aggiuntive da caricare nel range dopo lo scroll
+   * @returns 
+   */
   private extraTextRowsWidenessPredictor(): number {
     let arbitraryRowSizeInPixels = 50;
     return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
   }
 
+  /**
+   * Aggiunge le righe aggiuntive superiormente, necessarie al range di testo
+   */
   private addExtraRowsUp() {
     if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
       && !this.textRange.hasExtraRowsBeforeStart) {
@@ -1205,6 +1238,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Adapeter dei dati provenienti dal backend, a quelli necessari al componente primeng
+   * @param sectionsResponse Dati backend
+   * @param documentName Nome del documento in apertura
+   * @returns 
+   */
   private adaptToDocumentTree(sectionsResponse: Section[], documentName: string): Array<TreeNode> {
     let documentTree: Array<TreeNode> =
       [
@@ -1223,6 +1262,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return documentTree;
   }
 
+  /**
+   * Adapter del singolo nodo primeng
+   * @param section 
+   * @param parent 
+   * @returns 
+   */
   private adaptSectionToTreeNode(section: Section, parent: TreeNode): TreeNode {
     if (section.children === undefined
       || section.children === null
@@ -1261,11 +1306,22 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return node;
   }
 
+  /**
+   * Funzione di ricerca dell'appartenenza di una riga a una sezione del documento'
+   * @param index indice della riga ricercta
+   * @returns 
+   */
   private findSectionByIndex(index: number): TreeNode | null {
     let rootNode = this.documentSections.find(s => s.key == this.rootNodeKey)!;
     return this.searchSectionByIndex(rootNode.children ?? [], index);
   }
 
+  /**
+   * Funzione ricorsiva di ricerca del nodo per indice di riga
+   * @param nodes 
+   * @param index indice della riga ricercata
+   * @returns 
+   */
   private searchSectionByIndex(nodes: TreeNode[], index: number): TreeNode | null {
     for (const node of nodes) {
       if (this.isIndexInRange(index, node.data.start, node.data.end)) {
