@@ -460,7 +460,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Metodo che serve a selezionare l'elemento dell'alberatura corrispondente alla riga del testo
+   * This method selects the node of the tree related to the selected text row.
    * @param event 
    */
   onRowClick(event: any) {
@@ -495,8 +495,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Gestione dinamica della larghezza della finestra di testo e dei
-   * due pannelli laterali, alberatura testo e annotazioni
+   * Dynamic widths managment of the text view, document sections tree and annotations
    * @returns 
    */
   public updateTextPanelsCombinationWidth() {
@@ -1111,7 +1110,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calcola la larghezza della colonna sentum per il range correntemente caricato
+   * Calculates the witdh of the sentum column for the loaded range
    * @returns 
    */
   private calculateMaxSentumWidth() {
@@ -1133,7 +1132,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Guardie di controllo utili a capire se sto scrollando nel range già caricato
+   * Guards that check if user is scrolling in the loaded range
    * @param scroll 
    * @param scrollTop 
    * @returns 
@@ -1151,7 +1150,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Controllo sul numero di elementi caricati, presenza e gestione della barra di scrolling
+   * Verifies number of loaded text rows, checks and sets scrollbar height offset.
    * @returns 
    */
   private checkScroll() {
@@ -1159,7 +1158,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!scrollable) {
       this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
 
-      //Fa ripartire l'evento OnScroll
+      //Triggers th OnScroll event
       this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
     }
 
@@ -1183,26 +1182,24 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
     }
 
-    //setTimeout necessaria per evitare che lo scrolling venga settato erroneamente
-    //prima che la view del componente sia renderizzata
-    //mettere 0 è un trucco perchè la funzione viene chiamata proprio quando la view è renderizzata
+    //setTimeout it's used for UI synchronization, sometimes the UI is not rendered and we cannot set the right scrollTop
     setTimeout(() => {
-      //Fa ripartire l'evento OnScroll
+      //Trigger OnScroll event
       this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
     }, 0);
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
 
-    //Impedisce il loop infinito tra onScroll e checkScroll
+    //Prevents infinite loop between onScroll and checkScroll
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
   }
 
   /**
-   * Serve a calcolare il numero di righe iniziale che rappresentano il range di riferimento
-   * @param extraRows Numero elementi aggiuntivi da sommare a quelli calcolati
-   * @returns Numero di elementi riga che sarà necessario caricare
+   * Calculates initial number of text rows to be load
+   * @param extraRows Extra text rows to sum at the calculated ones
+   * @returns Number of text rows to be loaded
    */
   private textRowsRangeWidenessPredictor(extraRows?: number): number {
     let arbitraryRowSizeInPixels = 50;
@@ -1211,7 +1208,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calcola il numero di righe aggiuntive da caricare nel range dopo lo scroll
+   * Calculates number of extra text rows to be loaded
    * @returns 
    */
   private extraTextRowsWidenessPredictor(): number {
@@ -1221,6 +1218,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**
    * Aggiunge le righe aggiuntive superiormente, necessarie al range di testo
+   * Adds the number of text rows that needs to be loaded on top of the range
    */
   private addExtraRowsUp() {
     if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
@@ -1239,9 +1237,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Adapeter dei dati provenienti dal backend, a quelli necessari al componente primeng
-   * @param sectionsResponse Dati backend
-   * @param documentName Nome del documento in apertura
+   * Adapter for data coming from backend service, to the primeng component tree
+   * @param sectionsResponse Backend service data
+   * @param documentName Opened text name
    * @returns 
    */
   private adaptToDocumentTree(sectionsResponse: Section[], documentName: string): Array<TreeNode> {
@@ -1263,7 +1261,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Adapter del singolo nodo primeng
+   * Adapter to a primeng node
    * @param section 
    * @param parent 
    * @returns 
@@ -1307,8 +1305,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Funzione di ricerca dell'appartenenza di una riga a una sezione del documento'
-   * @param index indice della riga ricercta
+   * Find the section that contains the index
+   * @param index row index
    * @returns 
    */
   private findSectionByIndex(index: number): TreeNode | null {
@@ -1318,8 +1316,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**
    * Funzione ricorsiva di ricerca del nodo per indice di riga
+   * Recursively search for a section that contains a row index
    * @param nodes 
-   * @param index indice della riga ricercata
+   * @param index row index to search
    * @returns 
    */
   private searchSectionByIndex(nodes: TreeNode[], index: number): TreeNode | null {
