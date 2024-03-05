@@ -26,6 +26,7 @@ import { WorkspaceService } from 'src/app/services/workspace.service';
 import { TextRange } from 'src/app/models/text/text-range';
 import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
 import { Section } from 'src/app/models/texto/section';
+import { throttleTime } from 'rxjs';
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -148,6 +149,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public preventOnScrollEvent: boolean = false;
   public scrollingDown: boolean = true;
   public extraRowsWidenessUpOrDown!: number;
+  public scrollingSubject = new Subject<number>();
 
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
@@ -193,6 +195,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!this.textId) {
       return;
     }
+
+    this.scrollingSubject.pipe(throttleTime(200)).subscribe(value => this.updateTextRowsView(value));
 
     this.updateTextPanelsCombinationWidth();
 
@@ -298,6 +302,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
 
+    this.scrollingSubject.next(event);
+  }
+
+  private updateTextRowsView(event: any) {
     //#region calcolo start e end
     this.precTextRange = this.textRange.clone();
     this.textRange.resetExtraRowsSpace();
