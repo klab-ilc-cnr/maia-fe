@@ -194,7 +194,7 @@
                   [attr.x]="row.xSentnum" 
                   [attr.height]="row.height"
                   [attr.data-rowIndex]="row.rowIndex">
-              {{row.sectionIndex ?? (row.rowIndex!=undefined ? row.rowIndex + 1 : '')}}
+              {{rowSentum(row.rowIndex, row.sectionIndex)}}
             </text>
             <path *ngIf="showSentum" [attr.d]="sentnumVerticalLine"></path>
           </g>

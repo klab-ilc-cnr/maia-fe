@@ -305,50 +305,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingSubject.next(event);
   }
 
-  private updateTextRowsView(event: any) {
-    //#region calcolo start e end
-    this.precTextRange = this.textRange.clone();
-    this.textRange.resetExtraRowsSpace();
-
-    switch (this.scrollingDown) {
-      case true: //scolling DOWN
-        this.textRange.start += this.textRowsWideness;
-        this.textRange.end += this.textRowsWideness;
-
-        if (this.textRange.start > this.textTotalRows - this.textRowsWideness) {
-          this.textRange.start = this.textTotalRows - this.textRowsWideness;
-        }
-
-        if (this.textRange.end > this.textTotalRows) {
-          this.textRange.end = this.textTotalRows;
-        }
-
-        //righe extra
-        this.addExtraRowsUp();
-        break;
-      case false: //scrolling UP
-        this.textRange.start -= this.textRowsWideness;
-        this.textRange.end -= this.textRowsWideness;
-
-        if (this.textRange.start < 0) {
-          this.textRange.start = 0;
-        }
-
-        if (this.textRange.end < this.textRowsWideness) {
-          this.textRange.end = this.textRowsWideness;
-        }
-
-        //righe extra 
-        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
-          && !this.textRange.hasExtraRowsAfterEnd) {
-          this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
-        }
-        break;
-    }
-    //#endregion
-    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-  }
-
   public expandCollapseNavigationDiv() {
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
     this.updateTextPanelsCombinationWidth();
@@ -833,6 +789,64 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
+ * This function is the prosecution of the scrolling operation,
+ * it should be only called by the subject that execute the onScroll with throttle
+ * @param event 
+ */
+  private updateTextRowsView(event: any) {
+    //#region calcolo start e end
+    this.precTextRange = this.textRange.clone();
+    this.textRange.resetExtraRowsSpace();
+
+    switch (this.scrollingDown) {
+      case true: //scolling DOWN
+        this.textRange.start += this.textRowsWideness;
+        this.textRange.end += this.textRowsWideness;
+
+        if (this.textRange.start > this.textTotalRows - this.textRowsWideness) {
+          this.textRange.start = this.textTotalRows - this.textRowsWideness;
+        }
+
+        if (this.textRange.end > this.textTotalRows) {
+          this.textRange.end = this.textTotalRows;
+        }
+
+        //righe extra
+        this.addExtraRowsUp();
+        break;
+      case false: //scrolling UP
+        this.textRange.start -= this.textRowsWideness;
+        this.textRange.end -= this.textRowsWideness;
+
+        if (this.textRange.start < 0) {
+          this.textRange.start = 0;
+        }
+
+        if (this.textRange.end < this.textRowsWideness) {
+          this.textRange.end = this.textRowsWideness;
+        }
+
+        //righe extra 
+        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
+          && !this.textRange.hasExtraRowsAfterEnd) {
+          this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
+        }
+        break;
+    }
+    //#endregion
+    this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+  }
+
+  /**
+ * @param rowIndex numeric row index
+ * @param sectionIndex optional, it's the section index string
+ * @returns the string that must put in the sentum column
+ */
+  public rowSentum(rowIndex: number, sectionIndex?: string): string {
+    return sectionIndex ?? (rowIndex + 1).toString();
+  }
+
+  /**
    * @private
    * Metodo che rimuove la selezione testuale
    */
@@ -1128,8 +1142,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const sentumWidthArray = this.textSplittedRows?.map(row => this.getComputedTextLength(row.index ?? '', this.visualConfig.textFont)) ?? [0];
-    const maxSentumWidth = Math.max(...sentumWidthArray);
+    const extraSpace = 10;
+    const sentumWidthArray = this.textSplittedRows?.map(row => this.getComputedTextLength(this.rowSentum(row.absolute, row.index), this.visualConfig.textFont)) ?? [0];
+    const maxSentumWidth = Math.max(...sentumWidthArray) + extraSpace;
     this.visualConfig.stdTextOffsetX = maxSentumWidth > 0 ? maxSentumWidth : this.visualConfig.stdTextOffsetX;
 
     if (this.visualConfig.stdTextOffsetX > this.visualConfig.maxStdTextOffsetX) { this.visualConfig.stdTextOffsetX = this.visualConfig.maxStdTextOffsetX; }
