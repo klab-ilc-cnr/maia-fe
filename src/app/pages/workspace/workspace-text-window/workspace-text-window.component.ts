@@ -28,6 +28,8 @@ import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
 import { Section } from 'src/app/models/texto/section';
 import { throttleTime } from 'rxjs';
 
+enum ScrollingDirectionType { Up, Down, InRange }
+
 @Component({
   selector: 'app-workspace-text-window',
   templateUrl: './workspace-text-window.component.html',
@@ -147,9 +149,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public backendIndexCompensation: number = 1;
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
-  public scrollingDown: boolean = true;
+  public scrollingDirection: ScrollingDirectionType = ScrollingDirectionType.Down;
   public extraRowsWidenessUpOrDown!: number;
   public scrollingSubject = new Subject<number>();
+  public currentVisibleRow?: TextRow;
 
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
@@ -297,7 +300,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (this.lastScrollTop === event.target.scrollTop) { return; }
 
-    this.scrollingDown = this.lastScrollTop < event.target.scrollTop;
+    this.scrollingDirection = this.lastScrollTop < event.target.scrollTop ? ScrollingDirectionType.Down : ScrollingDirectionType.Up;
     this.lastScrollTop = event.target.scrollTop;
 
     if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
@@ -306,19 +309,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public expandCollapseNavigationDiv() {
+    this.currentVisibleRow = this.findCurrentVisibleRow();
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
     this.updateTextPanelsCombinationWidth();
 
     setTimeout(() => {
+      this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
     }, 500);
   }
 
   public expandCollapseAnnotationDiv() {
+    this.currentVisibleRow = this.findCurrentVisibleRow();
     this.expandedEditorDiv = !this.expandedEditorDiv;
     this.updateTextPanelsCombinationWidth();
 
     setTimeout(() => {
+      this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
     }, 500);
   }
@@ -336,7 +343,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (event.node.data.start === this.textRange.start) { return; }
 
     this.changingSection = true;
-    this.scrollingDown = false;
+    this.scrollingDirection = ScrollingDirectionType.Up
     this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness);
     this.precTextRange = this.textRange.clone();
     this.addExtraRowsUp();
@@ -798,8 +805,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.precTextRange = this.textRange.clone();
     this.textRange.resetExtraRowsSpace();
 
-    switch (this.scrollingDown) {
-      case true: //scolling DOWN
+    switch (this.scrollingDirection) {
+      case ScrollingDirectionType.Down: //scolling DOWN
         this.textRange.start += this.textRowsWideness;
         this.textRange.end += this.textRowsWideness;
 
@@ -814,7 +821,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         //righe extra
         this.addExtraRowsUp();
         break;
-      case false: //scrolling UP
+      case ScrollingDirectionType.Up: //scrolling UP
         this.textRange.start -= this.textRowsWideness;
         this.textRange.end -= this.textRowsWideness;
 
@@ -1161,18 +1168,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * @returns 
    */
   private isScrollingInLoadedRange(scroll: number, scrollTop: number): boolean {
-    if (!this.scrollingDown && this.textRange.start === 0) { return true; }
+    if (this.scrollingDirection === ScrollingDirectionType.Up && this.textRange.start === 0) { return true; }
 
-    if (!this.scrollingDown && scrollTop !== 0) { return true; }
+    if (this.scrollingDirection === ScrollingDirectionType.Up && scrollTop !== 0) { return true; }
 
-    if (this.scrollingDown && this.textRange.end === this.textTotalRows) { return true; }
+    if (this.scrollingDirection === ScrollingDirectionType.Down && this.textRange.end === this.textTotalRows) { return true; }
 
     let isFirefox = false;
     if (navigator.userAgent.match(/firefox|fxios/i)) { isFirefox = true; }
 
-    if (!isFirefox && this.scrollingDown && scroll < this.svgHeight) { return true; }
+    if (!isFirefox && this.scrollingDirection === ScrollingDirectionType.Down && scroll < this.svgHeight) { return true; }
 
-    if (isFirefox && this.scrollingDown && this.textContainer.nativeElement.scrollTop < this.textContainer.nativeElement.scrollTopMax) { return true; }
+    if (isFirefox && this.scrollingDirection === ScrollingDirectionType.Down && this.textContainer.nativeElement.scrollTop < this.textContainer.nativeElement.scrollTopMax) { return true; }
 
     return false;
   }
@@ -1201,13 +1208,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let scrolledBlockSize = 0;
     let extraScrollPixels = 0;
 
-    if (this.scrollingDown) {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
-      let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
-      extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
-    }
-    else {
-      scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
+    switch (this.scrollingDirection) {
+      case ScrollingDirectionType.Down:
+        scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+        let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
+        extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
+        break;
+      case ScrollingDirectionType.Up:
+        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
+        break;
+      case ScrollingDirectionType.InRange:
+        if (!this.currentVisibleRow) { break; }
+
+        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.currentVisibleRow!.rowIndex - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+        break;
     }
 
     //setTimeout it's used for UI synchronization, sometimes the UI is not rendered and we cannot set the right scrollTop
@@ -1222,6 +1236,30 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
+  }
+
+  /**
+ * Search and return the row that is visible in the UI
+ * @returns the row that is visible in the UI
+ */
+  private findCurrentVisibleRow(): TextRow | undefined {
+    const scrollHeightStart = this.textContainer.nativeElement.clientHeight + this.textContainer.nativeElement.scrollTop;
+    const scrollHeigthEnd = scrollHeightStart + this.textContainer.nativeElement.clientHeight;
+    let partialHeight = 0;
+    let currentRow: TextRow | undefined = undefined;
+
+    for (var fieldIndex = 0; fieldIndex < this.rows.length; fieldIndex++) {
+      let row = this.rows[fieldIndex];
+
+      if (scrollHeightStart <= (row.height + partialHeight)
+        && (row.height + partialHeight) <= scrollHeigthEnd) {
+        currentRow = row;
+        break;
+      }
+      partialHeight += row.height;
+    }
+
+    return currentRow;
   }
 
   /**
