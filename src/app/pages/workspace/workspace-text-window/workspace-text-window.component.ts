@@ -1246,20 +1246,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const scrollHeightStart = this.textContainer.nativeElement.clientHeight + this.textContainer.nativeElement.scrollTop;
     const scrollHeigthEnd = scrollHeightStart + this.textContainer.nativeElement.clientHeight;
     let partialHeight = 0;
-    let currentRow: TextRow | undefined = undefined;
 
     for (var fieldIndex = 0; fieldIndex < this.rows.length; fieldIndex++) {
       let row = this.rows[fieldIndex];
+      partialHeight += row.height;
 
       if (scrollHeightStart <= (row.height + partialHeight)
         && (row.height + partialHeight) <= scrollHeigthEnd) {
-        currentRow = row;
-        break;
+        return row;
       }
-      partialHeight += row.height;
     }
 
-    return currentRow;
+    return undefined;
   }
 
   /**
