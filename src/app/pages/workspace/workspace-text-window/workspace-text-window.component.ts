@@ -1220,7 +1220,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       case ScrollingDirectionType.InRange:
         if (!this.currentVisibleRow) { break; }
 
-        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.currentVisibleRow!.rowIndex - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.currentVisibleRow!.rowIndex).reduce((acc, o) => acc + (o.height || 0), 0);
         break;
     }
 
@@ -1246,20 +1246,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const scrollHeightStart = this.textContainer.nativeElement.clientHeight + this.textContainer.nativeElement.scrollTop;
     const scrollHeigthEnd = scrollHeightStart + this.textContainer.nativeElement.clientHeight;
     let partialHeight = 0;
-    let currentRow: TextRow | undefined = undefined;
+
+    if (this.textContainer.nativeElement.scrollTop === 0) { return this.rows[0]; }
 
     for (var fieldIndex = 0; fieldIndex < this.rows.length; fieldIndex++) {
       let row = this.rows[fieldIndex];
+      partialHeight += row.height;
 
       if (scrollHeightStart <= (row.height + partialHeight)
         && (row.height + partialHeight) <= scrollHeigthEnd) {
-        currentRow = row;
-        break;
+        return row;
       }
-      partialHeight += row.height;
     }
 
-    return currentRow;
+    return undefined;
   }
 
   /**
