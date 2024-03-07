@@ -1,3 +1,6 @@
+/**
+ * Represents the widness of a text divided in rows. Start and end are text rows indexes.
+ */
 
 export class TextRange {
     public _start: number;

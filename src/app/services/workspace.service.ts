@@ -387,7 +387,8 @@ export class WorkspaceService {
     return this.http.get<ResourceElement>(`${this.textoUrl}/resource/${resourceId}`);
   }
 
-  public retrieveSectionsById(resourceId: number): Observable<Array<Section>> {
+  /**Retrieve all the sections for a resoruce by Id */
+  public retrieveSectionsByResourceId(resourceId: number): Observable<Array<Section>> {
     return this.http.get<Array<Section>>(`${this.textoUrl}/resource/${resourceId}/sections`);
   }
 }
