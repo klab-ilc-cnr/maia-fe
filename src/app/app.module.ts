@@ -51,7 +51,6 @@ import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
-import {TreeModule} from 'primeng/tree';
 
 @NgModule({
   declarations: [
@@ -100,8 +99,7 @@ import {TreeModule} from 'primeng/tree';
     PageControllersModule,
     FontAwesomeModule,
     IconsModule,
-    SharedModule,
-    TreeModule
+    SharedModule
   ],
   providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders],
   bootstrap: [AppComponent]
