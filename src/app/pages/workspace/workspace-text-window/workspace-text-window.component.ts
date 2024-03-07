@@ -2290,7 +2290,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const localAnns = this.simplifiedAnns.filter((a: any) =>
       (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
       (a.span.start < (startIndex || 0) && a.span.end >= (startIndex || 0) && a.span.end <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
-      (a.span.start >= (startIndex || 0) && a.span.start <= (endIndex || 0) && a.span.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
+      (a.span.start >= (startIndex || 0) && a.span.start < (endIndex || 0) && a.span.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
       (a.span.start < (startIndex || 0) && a.span.end > (endIndex || 0)));
 
     localAnns.sort((a: any, b: any) => (a.span.end - a.span.start) - (b.span.end - b.span.start));
