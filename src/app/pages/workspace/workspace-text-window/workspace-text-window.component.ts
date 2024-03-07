@@ -406,7 +406,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
-    this.textoAnnotation = new TAnnotation();
     this.loadData(this.textRange.start, this.textRange.end);
   }
 
