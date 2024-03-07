@@ -116,6 +116,11 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
 export class AppModule {
 }
 
+/**
+ * Function to manage translation dependency
+ * @param httpClient {HttpClient} Performs HTTP requests
+ * @returns {TranslateHttpLoader}
+ */
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }

@@ -6,6 +6,12 @@ import { Observable, Subject, throwError } from 'rxjs';
 import { MessageConfigurationService } from './message-configuration.service';
 @Injectable()
 export class CommonService {
+  /**
+   * Constructor for CommonService
+   * @param messageService {MessageService}
+   * @param msgConfService {MessageConfigurationService}
+   * @param translateService {TranslateService} services to manage translation from ngx-translate
+   */
   constructor(
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
@@ -67,6 +73,11 @@ export class CommonService {
     return throwError(() => new Error(error.error));
   }
 
+  /**
+   * Given a key, returns the corresponding string in the browser language or the default language
+   * @param key {string} key in i18n files
+   * @returns {string} translated string
+   */
   public translateKey(key: string): string {
     return this.translateService.instant(key);
   }

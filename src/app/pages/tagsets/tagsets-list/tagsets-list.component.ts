@@ -57,6 +57,7 @@ export class TagsetsListComponent implements OnDestroy {
    * @param activeRoute {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
    * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
    * @param tagsetState {TagsetStateService} service that manages the general state of the tagsets
+   * @param commonService {CommonService} services related to shared functionality 
    */
   constructor(
     private activeRoute: ActivatedRoute,
@@ -83,7 +84,7 @@ export class TagsetsListComponent implements OnDestroy {
    * @param tagset {TTagset} selected tagset
    */
   onDelete(tagset: TTagset): void {
-    const tagsetName = tagset.name??'';
+    const tagsetName = tagset.name ?? '';
     const confirmMsg = this.commonService.translateKey('TAGSET_MANAGER.aboutDeleteTagset').replace('${tagsetName}', tagsetName);
 
     this.popupDeleteItem.confirmMessage = confirmMsg;
