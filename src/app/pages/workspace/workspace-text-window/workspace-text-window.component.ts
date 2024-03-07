@@ -204,7 +204,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.updateTextPanelsCombinationWidth();
 
     forkJoin([this.workspaceService.retrieveResourceElementById(this.textId),
-    this.workspaceService.retrieveSectionsById(this.textId)])
+    this.workspaceService.retrieveSectionsByResourceId(this.textId)])
       .pipe(take(1))
       .subscribe(([resource, sectionsResponse]) => {
         this.currentResource = resource;
