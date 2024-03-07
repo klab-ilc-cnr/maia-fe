@@ -3,7 +3,13 @@
 </div>
 
 <div class="form-group row mx-0 px-0 justify-content-center">
-  <div class="col-sm-6">
+  <div class="col-sm-1">
+    <label class="col-sm-1 col-form-label">Sentum</label>
+    <div class="p-fluid">
+      <p-inputSwitch (onChange)="sentumChanged()" [ngModel]="showSentum"></p-inputSwitch>
+    </div>
+  </div>
+  <div class="col-sm-5">
     <label class="col-sm-2 col-form-label">Layer</label>
     <div class="p-fluid">
       <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
@@ -17,7 +23,7 @@
     </div>
   </div>
   <div class="col-sm-6">
-    <label class="col-sm-2 col-form-label">Visibility</label>
+    <label class="col-sm-1 col-form-label">Visibility</label>
     <div class="p-fluid">
       <p-multiSelect [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Select the layers to be displayed" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
         <ng-template let-value pTemplate="selectedItems">
@@ -48,12 +54,31 @@
   </div>
 </div>
 
-<div class="row mx-0">
-  <p-paginator class="col-8" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rowsPaginator" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsPerPageOptions"></p-paginator>
-  <div class="col-8" >
-    <div class="text-container" [ngStyle]="{'height.px': textContainerHeight}">
+<div class="container">
+  <div [ngStyle]="{'width': widthPercentSectionsDiv+'%' }" class="side-div">
+    <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
+    <a *ngIf="expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a>
+    <div class="sectionExpandDiv">
+      <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
+      <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
+    </div>
+    <div *ngIf="expandedDocumentSectonsDiv">
+      <p-tree id="sectionsTree" 
+        [value]="documentSections" 
+        [virtualScroll]="true" 
+        [virtualScrollItemSize]="20" 
+        [scrollHeight]="sectionsTreeHeight + 'px'"
+        selectionMode="single"
+        [(selection)]="selectedSection"
+        (onNodeSelect)="sectionSelected($event)"
+        [filter]="true">
+      </p-tree>
+    </div>
+  </div>
+  <div class="main-div">
+    <div #textContainer class="text-container" (scroll)="onScroll($event)" [ngStyle]="{'height.px': textContainerHeight}">
       <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >
-        <svg class="text-editor" [attr.height]="svgHeight">
+        <svg class="text-editor" [attr.height]="svgHeight" (click)="onRowClick($event)">
           <defs>
             <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
               <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>
@@ -67,7 +92,11 @@
             <marker></marker>
           </defs>
           <g class="background">
-            <rect *ngFor="let row of rows; index as i" class="background" [ngClass]="{'background0': i%2, 'background1 bordered': !(i%2)}" [attr.height]="row.height" [attr.y]="row.yBG"></rect>
+            <rect *ngFor="let row of rows; index as i" class="background" 
+                  [ngClass]="{'background0': i%2, 'background1 bordered': !(i%2)}" 
+                  [attr.height]="row.height" 
+                  [attr.y]="row.yBG"
+                  [attr.data-rowIndex]="row.rowIndex"></rect>
           </g>
           <g class="glow">
 
@@ -76,7 +105,18 @@
             <g *ngFor="let row of rows">
               <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="line.x" [attr.height]="line.height! + 4" class="span">
                 <g *ngFor="let h of line.highlights">
-                  <rect [attr.id]="h.id" [attr.x]="h.coordinates.x" [attr.y]="h.coordinates.y" [attr.height]="h.height" [attr.width]="h.width" [attr.fill]="h.bgColor" [attr.stroke]="h.bgColor" stroke-width="0px" rx="3px" ry="3px" stroke-linejoin="round"></rect>
+                  <rect [attr.id]="h.id" 
+                        [attr.x]="h.coordinates.x" 
+                        [attr.y]="h.coordinates.y" 
+                        [attr.height]="h.height" 
+                        [attr.width]="h.width" 
+                        [attr.fill]="h.bgColor" 
+                        [attr.stroke]="h.bgColor" 
+                        stroke-width="0px" 
+                        rx="3px" 
+                        ry="3px" 
+                        stroke-linejoin="round"
+                        [attr.data-rowIndex]="row.rowIndex"></rect>
                 </g>
               </g>
             </g>
@@ -84,7 +124,10 @@
           <g class="text">
             <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
               <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-index]="line.startIndex" [attr.end-index]="line.endIndex">
-                <tspan *ngFor="let w of line.words" [attr.y]="line.yText" style="white-space: pre;">{{w}}</tspan>
+                <tspan *ngFor="let w of line.words" 
+                        [attr.y]="line.yText" 
+                        style="white-space: pre;"
+                        [attr.data-rowIndex]="row.rowIndex">{{w}}</tspan>
               </tspan>
             </text>
             <!-- <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="37" [attr.height]="row.height" (mouseup)="selectionchange($event)">{{row.text}}</text> -->
@@ -93,9 +136,26 @@
           <g *ngFor="let row of rows">
             <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="arc">
               <g *ngFor="let arc of line.arcs">
-                <rect *ngIf="arc.circleVisible; else elseBlock" [attr.x]="arc.circleStartX" [attr.y]="arc.circleStartY" [attr.height]="arc.circleHeight" [attr.width]="arc.circleWidth" fill="black" stroke="black" stroke-width="0.5px" rx="3px" ry="3px" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)"></rect>
+                <rect *ngIf="arc.circleVisible; else elseBlock" 
+                      [attr.x]="arc.circleStartX" 
+                      [attr.y]="arc.circleStartY" 
+                      [attr.height]="arc.circleHeight" 
+                      [attr.width]="arc.circleWidth" 
+                      fill="black" stroke="black" 
+                      stroke-width="0.5px" 
+                      rx="3px" 
+                      ry="3px" 
+                      (click)="openRelation(arc.relationId)" 
+                      (mouseenter)="overEnterRelation(arc.relationId)" 
+                      (mouseleave)="overLeaveRelation(arc.relationId)"
+                      [attr.data-rowIndex]="row.rowIndex"></rect>
                 <ng-template #elseBlock>
-                  <text [attr.x]="arc.label.startXText" [attr.y]="arc.label.yArcLabel" (click)="openRelation(arc.relationId)" (mouseenter)="overEnterRelation(arc.relationId)" (mouseleave)="overLeaveRelation(arc.relationId)">{{arc.label.text}}</text>
+                  <text [attr.x]="arc.label.startXText" 
+                        [attr.y]="arc.label.yArcLabel" 
+                        (click)="openRelation(arc.relationId)" 
+                        (mouseenter)="overEnterRelation(arc.relationId)" 
+                        (mouseleave)="overLeaveRelation(arc.relationId)"
+                        [attr.data-rowIndex]="row.rowIndex">{{arc.label.text}}</text>
                 </ng-template>
                 <path [attr.d]="arc.firstSegmentPath" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
                 <path [attr.d]="arc.secondSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
@@ -106,7 +166,20 @@
             <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
               <g *ngFor="let anns of line.annotationsTowers">
                 <g *ngFor="let a of anns.tower">
-                  <rect [attr.x]="a.startX" [attr.y]="a.y" [attr.height]="a.height" [attr.width]="a.width" [attr.fill]="a.bgColor" [attr.stroke]="a.borderColor" [attr.id]="a.id" (click)="openAnnotation(a.id)" stroke-width="0.5px" rx="3px" ry="3px" (mousedown)="startDrawing($event, a)" (mouseup)="endDrawingAndCreateRelation($event, a)"></rect>
+                  <rect [attr.x]="a.startX" 
+                        [attr.y]="a.y" 
+                        [attr.height]="a.height" 
+                        [attr.width]="a.width" 
+                        [attr.fill]="a.bgColor" 
+                        [attr.stroke]="a.borderColor" 
+                        [attr.id]="a.id" 
+                        (click)="openAnnotation(a.id)" 
+                        stroke-width="0.5px" 
+                        rx="3px" 
+                        ry="3px" 
+                        (mousedown)="startDrawing($event, a)" 
+                        (mouseup)="endDrawingAndCreateRelation($event, a)"
+                        [attr.data-rowIndex]="row.rowIndex"></rect>
                   <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
                 </g>
                 <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>
@@ -116,25 +189,31 @@
           <!-- -->
           <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />
           <g class="sentnum unselectable">
-            <text *ngFor="let row of rows; index as i" [attr.y]="row.ySentnum" [attr.x]="row.xSentnum" [attr.height]="row.height">
-              {{i+1}}
+            <text *ngFor="let row of rows; index as i" 
+                  [attr.y]="row.ySentnum" 
+                  [attr.x]="row.xSentnum" 
+                  [attr.height]="row.height"
+                  [attr.data-rowIndex]="row.rowIndex">
+              {{rowSentum(row.rowIndex, row.sectionIndex)}}
             </text>
-            <path [attr.d]="sentnumVerticalLine"></path>
+            <path *ngIf="showSentum" [attr.d]="sentnumVerticalLine"></path>
           </g>
         </svg>
       </div>
     </div>
   </div>
-  <div class="col-4 ps-0">
-    <div class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
+  <div [ngStyle]="{'width': widthPercentEditorDiv+'%' }" class="side-div">
+    <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn">Annotation</a>
+    <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right">></a>
+    <div *ngIf="expandedEditorDiv" class="editor-container" [ngStyle]="{'height.px': textContainerHeight}">
       <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
-      (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
-      <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
-        (onSave)="onAnnotationSaved()"
-        (onDelete)="onAnnotationDeleted()"
-        (onCancel)="onAnnotationCancel()">
-      </app-annotation-editor> -->
-      <app-relation-editor *ngIf="showRelationEditor"
+        (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
+        <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
+          (onSave)="onAnnotationSaved()"
+          (onDelete)="onAnnotationDeleted()"
+          (onCancel)="onAnnotationCancel()">
+        </app-annotation-editor> -->
+        <app-relation-editor *ngIf="showRelationEditor"
         [relationModel]="relation"
         [sourceAnn]="sourceAnn"
         [targetAnn]="targetAnn"

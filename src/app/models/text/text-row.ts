@@ -13,9 +13,11 @@ export class TextRow {
   yBG: number | undefined
   yText?: number | undefined
   ySentnum: number | undefined
-  height: number | undefined
+  height!: number
   startIndex: number | undefined
   endIndex: number | undefined
   xText: number | undefined
   xSentnum: number | undefined
+  rowIndex!: number
+  sectionIndex: string | undefined
 }

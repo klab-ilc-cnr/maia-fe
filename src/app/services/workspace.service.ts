@@ -11,6 +11,7 @@ import { Tile } from '../models/tile/tile.model';
 import { TextoUser } from '../models/user';
 import { WorkspaceChoice } from '../models/workspace-choice.model';
 import { Workspace } from '../models/workspace.model';
+import { Section } from '../models/texto/section';
 
 /**Classe dei servizi per i workspace */
 @Injectable({
@@ -384,5 +385,10 @@ export class WorkspaceService {
 
   public retrieveResourceElementById(resourceId: number): Observable<ResourceElement> {
     return this.http.get<ResourceElement>(`${this.textoUrl}/resource/${resourceId}`);
+  }
+
+  /**Retrieve all the sections for a resoruce by Id */
+  public retrieveSectionsByResourceId(resourceId: number): Observable<Array<Section>> {
+    return this.http.get<Array<Section>>(`${this.textoUrl}/resource/${resourceId}/sections`);
   }
 }
