@@ -320,27 +320,21 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  public async expandCollapseAnnotationDiv(annotationId?: number) {
+  public expandCollapseAnnotationDiv(annotationId?: number) {
     this.currentVisibleRow = this.findCurrentVisibleRow();
     this.expandedEditorDiv = annotationId ? true : !this.expandedEditorDiv;
 
     this.updateTextPanelsCombinationWidth();
 
-
     setTimeout(() => {
+      if (annotationId && annotationId != this.visibleAnnotationId) {
+        this.visibleAnnotationId = annotationId;
+        this.openAnnotation(this.visibleAnnotationId!);
+      }
+
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-
-      setTimeout(() => {
-        if (this.expandedEditorDiv && (annotationId || this.visibleAnnotationId)) {
-          this.visibleAnnotationId = annotationId ?? this.visibleAnnotationId;
-          this.openAnnotation(this.visibleAnnotationId!);
-        }
-      }, 1000);
-
     }, 500);
-
-
   }
 
   public sentumChanged() {
@@ -897,11 +891,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // this.annotation = new Annotation();
-    // this.textoAnnotation = new TAnnotation();
+    this.loaderService.show();
+
+    if (!this.visibleAnnotationId) {
+      this.annotation = new Annotation();
+      this.textoAnnotation = new TAnnotation();
+    }
+
     this.relation = new Relation();
 
-    this.loaderService.show();
 
     forkJoin([
       this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
@@ -1254,12 +1252,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
-
-    setTimeout(() => {
-      if (this.expandedEditorDiv && this.visibleAnnotationId) {
-        this.openAnnotation(this.visibleAnnotationId!);
-      }
-    }, 1000);
   }
 
   /**
