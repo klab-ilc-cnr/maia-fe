@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -16,7 +17,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
-import { TieredMenuModule } from 'primeng/tieredmenu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -31,6 +31,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -116,6 +117,7 @@ const PIPES = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule,
     PRIMENG_MODULES
   ],
   exports: [
@@ -126,6 +128,7 @@ const PIPES = [
     DIRECTIVES,
     COMPONENTS,
     PIPES,
+    TranslateModule,
   ]
 })
 export class SharedModule { }
