@@ -5,6 +5,7 @@ import { Subject, of, switchMap, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { TTagset } from 'src/app/models/texto/t-tagset';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
+import { CommonService } from 'src/app/services/common.service';
 import { TagsetStateService } from 'src/app/services/tagset-state.service';
 import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
@@ -75,11 +76,13 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
    * @param activeRoute {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
    * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
    * @param tagsetState {TagsetStateService} service that manages the general state of the tagsets
+   * @param commonService {CommonService} services related to shared functionality 
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
     private tagsetState: TagsetStateService,
+    private commonService: CommonService,
   ) {
     this.tagsetState.tagset$.pipe(
       takeUntil(this.unsubscribe$),
@@ -127,7 +130,8 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
    * @param value {TTagsetItem} tagset value item
    */
   showDeleteValueModal(value: TTagsetItem): void {
-    const confirmMsg = `You are about to delete the tagset "${value.name}"`;
+    const valueName: string = value.name ?? '';
+    const confirmMsg = this.commonService.translateKey('TAGSET_MANAGER.aboutDeleteTagsetValue').replace('${tagsetValueName}', valueName);
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteValue((value)), value);
   }
@@ -149,7 +153,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
   /**Method that displays the modal for entering a new tagset value */
   showTagsetValueModal() {
     this.ttagsetItemOnEdit = undefined;
-    this.newEditTitle = 'New tagset value'
+    this.newEditTitle = this.commonService.translateKey('TAGSET_MANAGER.newTagsetValue');
     this.tagsetItemForm.reset();
     this.name.setValidators(nameDuplicateValidator(this.ttagsetItemsName));
     this.visibleEditNewTagsetItem = true;

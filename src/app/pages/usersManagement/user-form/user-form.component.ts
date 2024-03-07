@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { Subject, catchError, take, takeUntil, throwError } from 'rxjs';
 import { Language } from 'src/app/models/language';
 import { User } from 'src/app/models/user';
+import { CommonService } from 'src/app/services/common.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -98,6 +99,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
    * @param storageService {StorageService} Services to manage the local storage
    * @param messageService {MessageService}
    * @param msgConfService {MessageConfigurationService}
+   * @param commonService {CommonService} services related to shared functionality 
    */
   constructor(
     private route: ActivatedRoute,
@@ -109,6 +111,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
+    private commonService: CommonService,
   ) {
     this.user = new User(); //create a new user
   }
@@ -183,6 +186,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       }
     };
     this.loaderService.show();
+    const successMessage = this.commonService.translateKey('USERS_MANAGER.userUpdated');
     if (this.isNewUser) {
       this.userService.save(updatedUser).pipe(
         takeUntil(this.unsubscribe$),
@@ -200,7 +204,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
             return throwError(() => new Error(error.error));
           }),
         ).subscribe(() => {
-          this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMessage));
           this.goToUserList();
           this.loaderService.hide();
         });
@@ -214,7 +218,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
           return throwError(() => new Error(error.error));
         }),
       ).subscribe(() => {
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig('User successfully updated'));
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMessage));
         this.goToUserList();
         this.loaderService.hide();
       });
@@ -237,7 +241,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Password successfully updated'));
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('USERS_MANAGER.pwdUpdated')));
     });
   }
 

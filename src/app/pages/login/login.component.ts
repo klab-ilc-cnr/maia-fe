@@ -49,7 +49,7 @@ export class LoginComponent {
     }
     this.authenticationService.login({ username: username, password: password }).pipe(
       take(1),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Authentication failed')),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, this.commonService.translateKey('LOGIN.authFailed'))),
     ).subscribe(jwt => {
       this.storageService.setToken(jwt);
       this.storageService.setExpiration();
@@ -61,7 +61,7 @@ export class LoginComponent {
   private retrieveCurrentUser(): void {
     this.userService.retrieveCurrentUser().pipe(
       take(1),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Retrieve current user failed'))
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, this.commonService.translateKey('LOGIN.errorRetrievingUser'))),
     ).subscribe(user => {
       this.storageService.setCurrentUser(user);
       this.router.navigate(['']);
