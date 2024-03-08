@@ -163,7 +163,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public widthPercentEditorDiv = 0;
   public widthPercentSectionsDiv = 0;
-  public expandedEditorDiv: boolean = false;
+  public expandedEditorDiv: boolean = true;
   public expandedDocumentSectonsDiv: boolean = true;
 
   showSentum: boolean = true;
@@ -775,6 +775,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.showEditorAndHideOthers(EditorType.Relation);
 
     this.endDrawing(event)
+  }
+
+  onResizeEnd()
+  {
+    this.updateTextEditorSize();
   }
 
   /**

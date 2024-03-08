@@ -171,22 +171,18 @@ path {
   margin: 0;
   padding: 0;
   width: 100%;
-  display: inline-flex;
+  // display: inline-flex;
   max-width: none;
 }
 
-.side-div {
-  height: 100%;
-  position: relative;
-  float: left;
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-}
-
-.main-div {
-  width: 96%;
-}
+// .side-div {
+//   height: 100%;
+//   position: relative;
+//   float: left;
+//   -webkit-transition: all 0.5s ease-in-out;
+//   -moz-transition: all 0.5s ease-in-out;
+//   transition: all 0.5s ease-in-out;
+// }
 
 a.expansion-btn {
   position: absolute;
@@ -215,9 +211,9 @@ a.collapse-btn-right {
 }
 
 .sectionExpandDiv {
-  padding: 0rem 1.3rem 1rem 1rem;
+  padding: 1rem 1.3rem 1rem 1rem;
 }
 
-.affiancati{
-  display: flex;
+.text-container{
+  overflow: scroll;
 }
