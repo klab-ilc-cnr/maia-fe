@@ -169,6 +169,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   showSentum: boolean = true;
 
+  lateralSplitExpandedSize: number = 23;
+  lateralSplitCollapsedSize: number = 4;
+  documentSectionsSplit: number = this.lateralSplitExpandedSize;
+  annotationSplitSize: number = this.lateralSplitCollapsedSize;
+  get textSplitSize() {
+    return 100 - this.documentSectionsSplit - this.annotationSplitSize;
+  }
+
   // currentUser!: User;
   currentTextoUserId!: number;
   currentResource!: ResourceElement;
@@ -202,8 +210,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.scrollingSubject.pipe(throttleTime(200)).subscribe(value => this.updateTextRowsView(value));
-
-    this.updateTextPanelsCombinationWidth();
 
     forkJoin([this.workspaceService.retrieveResourceElementById(this.textId),
     this.workspaceService.retrieveSectionsByResourceId(this.textId)])
@@ -313,9 +319,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public expandCollapseNavigationDiv() {
+
     this.currentVisibleRow = this.findCurrentVisibleRow();
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
-    this.updateTextPanelsCombinationWidth();
+
+    this.updateDocumentSectionsSplitSize();
 
     setTimeout(() => {
       this.scrollingDirection = ScrollingDirectionType.InRange;
@@ -327,7 +335,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.currentVisibleRow = this.findCurrentVisibleRow();
     this.expandedEditorDiv = annotationId ? true : !this.expandedEditorDiv;
 
-    this.updateTextPanelsCombinationWidth();
+    this.updateAnnotationsSplitSize();
 
     setTimeout(() => {
       if (annotationId && annotationId != this.visibleAnnotationId) {
@@ -475,32 +483,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Dynamic widths managment of the text view, document sections tree and annotations
+   * Updates the document sections split size
    * @returns 
    */
-  public updateTextPanelsCombinationWidth() {
-    if (this.expandedEditorDiv && this.expandedDocumentSectonsDiv) {
-      this.widthPercentEditorDiv = 25;
-      this.widthPercentSectionsDiv = 25;
-      return;
-    }
-
-    if (this.expandedEditorDiv) {
-      this.widthPercentEditorDiv = 34;
-      this.widthPercentSectionsDiv = 3;
-
-      return;
-    }
-
-    if (this.expandedDocumentSectonsDiv) {
-      this.widthPercentEditorDiv = 3;
-      this.widthPercentSectionsDiv = 34;
-      return;
-    }
-
-    this.widthPercentEditorDiv = 2;
-    this.widthPercentSectionsDiv = 2;
+  public updateDocumentSectionsSplitSize() {
+    this.documentSectionsSplit = this.expandedDocumentSectonsDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
   }
+
+    /**
+   * Updates the annotations split size
+   * @returns 
+   */
+    public updateAnnotationsSplitSize() {
+      this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
+    }
 
   /**
    * Metodo che gestisce le variazioni di selezione sul testo
@@ -780,7 +776,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.endDrawing(event)
   }
 
-  onResizeEnd() {
+  onResizeEnd(event: any) {
+    this.documentSectionsSplit = Math.round(event.sizes[0]);
+    this.annotationSplitSize = Math.round(event.sizes[2]);
     this.updateTextEditorSize();
   }
 

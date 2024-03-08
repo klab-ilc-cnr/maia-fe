@@ -55,10 +55,13 @@
 </div>
 
 <div class="container">
-  <p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[25, 50, 25]" [minSizes]="[0, 10, 10]" styleClass="mb-5"  (onResizeEnd)="onResizeEnd()">
+  <p-splitter [style]="{'min-height': '100%'}" 
+      [panelSizes]="[documentSectionsSplit, textSplitSize, annotationSplitSize]" 
+      styleClass="mb-5"
+      (onResizeEnd)="onResizeEnd($event)">
     <ng-template pTemplate>
-        <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
-        <!-- <a *ngIf="expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a> -->
+        <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn pi pi-list"></a>
+        <a *ngIf="expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left pi pi-chevron-circle-left"></a>
         <div *ngIf="expandedDocumentSectonsDiv" class="w-100">
           <div class="sectionExpandDiv">
             <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
@@ -204,8 +207,8 @@
         </div>
     </ng-template>
     <ng-template pTemplate>
-        <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn">Annotation</a>
-        <!-- <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right">></a> -->
+        <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn pi pi-file-edit"></a>
+        <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right pi pi-chevron-circle-right"></a>
         <div *ngIf="expandedEditorDiv" class="w-100" [ngStyle]="{'height.px': textContainerHeight}">
           <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
             (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>

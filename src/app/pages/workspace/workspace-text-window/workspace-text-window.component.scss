@@ -173,16 +173,8 @@ path {
   width: 100%;
   // display: inline-flex;
   max-width: none;
+  max-height: 80%;
 }
-
-// .side-div {
-//   height: 100%;
-//   position: relative;
-//   float: left;
-//   -webkit-transition: all 0.5s ease-in-out;
-//   -moz-transition: all 0.5s ease-in-out;
-//   transition: all 0.5s ease-in-out;
-// }
 
 a.expansion-btn {
   position: absolute;
@@ -190,6 +182,7 @@ a.expansion-btn {
   cursor: pointer;
   writing-mode: vertical-rl;
   text-orientation: upright;
+  font-size: 2rem
 }
 
 a.collapse-btn-left {
@@ -198,7 +191,7 @@ a.collapse-btn-left {
   top: 3px;
   right: 7px;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.5rem
 }
 
 a.collapse-btn-right {
@@ -207,13 +200,9 @@ a.collapse-btn-right {
   top: 3px;
   left: 7px;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.5rem
 }
 
 .sectionExpandDiv {
   padding: 1rem 1.3rem 1rem 1rem;
-}
-
-.text-container{
-  overflow: scroll;
 }
