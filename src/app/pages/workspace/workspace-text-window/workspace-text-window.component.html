@@ -61,8 +61,8 @@
       (onResizeEnd)="onResizeEnd($event)">
     <ng-template pTemplate>
         <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn pi pi-list"></a>
-        <a *ngIf="expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left pi pi-chevron-circle-left"></a>
         <div *ngIf="expandedDocumentSectonsDiv" class="w-100">
+          <a (click)="expandCollapseNavigationDiv()" class="collapse-btn-left pi pi-chevron-circle-left"></a>
           <div class="sectionExpandDiv">
             <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
             <button #collapseBtn class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>

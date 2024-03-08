@@ -186,21 +186,21 @@ a.expansion-btn {
 }
 
 a.collapse-btn-left {
-  position: absolute;
+  float: right;
+  position: relative;
   font-weight: bold;
-  top: 3px;
-  right: 7px;
+  top: 4px;
   cursor: pointer;
-  font-size: 1.5rem
+  font-size: 1rem;
 }
 
 a.collapse-btn-right {
-  position: absolute;
+  float: left;
+  position: relative;
   font-weight: bold;
-  top: 3px;
-  left: 7px;
+  top: 4px;
   cursor: pointer;
-  font-size: 1.5rem
+  font-size: 1rem;
 }
 
 .sectionExpandDiv {

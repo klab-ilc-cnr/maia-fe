@@ -176,7 +176,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   get textSplitSize() {
     return 100 - this.documentSectionsSplit - this.annotationSplitSize;
   }
-
+  
   // currentUser!: User;
   currentTextoUserId!: number;
   currentResource!: ResourceElement;
@@ -328,7 +328,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-    }, 500);
+    }, 200);
   }
 
   public expandCollapseAnnotationDiv(annotationId?: number) {
@@ -345,7 +345,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-    }, 500);
+    }, 200);
   }
 
   public sentumChanged() {
