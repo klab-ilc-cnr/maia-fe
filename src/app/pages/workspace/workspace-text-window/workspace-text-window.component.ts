@@ -139,6 +139,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
   @ViewChild('textContainer') public textContainer!: ElementRef;
+  @ViewChild('collapseBtn') public collapseBtn!: ElementRef;
 
   /**Scroller*/
   public textRowsWideness!: number;
@@ -163,7 +164,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public widthPercentEditorDiv = 0;
   public widthPercentSectionsDiv = 0;
-  public expandedEditorDiv: boolean = true;
+  public expandedEditorDiv: boolean = false;
   public expandedDocumentSectonsDiv: boolean = true;
 
   showSentum: boolean = true;
@@ -185,7 +186,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private layerState: LayerStateService,
-    private workspaceService: WorkspaceService,
+    private workspaceService: WorkspaceService
   ) {
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
@@ -234,6 +235,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.precTextRange = this.textRange.clone();
     let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
     this.loadData(requestRange.start, requestRange.end);
+
+    this.collapseBtn.nativeElement.click();
   }
 
   ngOnDestroy(): void {
@@ -777,8 +780,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.endDrawing(event)
   }
 
-  onResizeEnd()
-  {
+  onResizeEnd() {
     this.updateTextEditorSize();
   }
 

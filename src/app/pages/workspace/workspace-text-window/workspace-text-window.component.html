@@ -55,14 +55,14 @@
 </div>
 
 <div class="container">
-  <p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[25, 50, 25]" [minSizes]="[0, 10, 10]" styleClass="mb-5" (onResizeEnd)="onResizeEnd()">
+  <p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[25, 50, 25]" [minSizes]="[0, 10, 10]" styleClass="mb-5"  (onResizeEnd)="onResizeEnd()">
     <ng-template pTemplate>
         <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn">Navigation</a>
         <!-- <a *ngIf="expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="collapse-btn-left"><</a> -->
         <div *ngIf="expandedDocumentSectonsDiv" class="w-100">
           <div class="sectionExpandDiv">
             <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
-            <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
+            <button #collapseBtn class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
           </div>
           <p-tree id="sectionsTree" 
             [value]="documentSections" 
