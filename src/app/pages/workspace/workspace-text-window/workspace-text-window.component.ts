@@ -79,6 +79,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   annotation = new Annotation();
   textoAnnotation = new TAnnotation();
   offset: number | undefined;
+  visibleAnnotationId?: number;
   /**Annotation response */
   annotationsRes: any;
   textoAnnotationsRes: TAnnotation[] = [];
@@ -319,12 +320,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  public expandCollapseAnnotationDiv() {
+  public expandCollapseAnnotationDiv(annotationId?: number) {
     this.currentVisibleRow = this.findCurrentVisibleRow();
-    this.expandedEditorDiv = !this.expandedEditorDiv;
+    this.expandedEditorDiv = annotationId ? true : !this.expandedEditorDiv;
+
     this.updateTextPanelsCombinationWidth();
 
     setTimeout(() => {
+      if (annotationId && annotationId != this.visibleAnnotationId) {
+        this.visibleAnnotationId = annotationId;
+        this.openAnnotation(this.visibleAnnotationId!);
+      }
+
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
     }, 500);
@@ -399,7 +406,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
-    this.textoAnnotation = new TAnnotation();
     this.loadData(this.textRange.start, this.textRange.end);
   }
 
@@ -583,7 +589,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textoAnnotation = ann;
     const computedStart = this.textoAnnotation.start! - (this.offset ?? 0);
     const computedEnd = this.textoAnnotation.end! - (this.offset ?? 0);
-    this.selectedTText = this.textRes.join('').substring(computedStart, computedEnd);
+    const newSelectedText = this.textRes.join('').substring(computedStart, computedEnd);
+    this.selectedTText = newSelectedText != '' ? newSelectedText : this.selectedTText; // show old value if not selecting a new one
     // this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
     // this.annotation.layerName = this.selectedLayer?.name;
 
@@ -681,7 +688,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const ann = this.annotationsRes.annotations.find((a: any) => a.id == annotation.id);
+    const ann = this.annotationsRes?.annotations?.find((a: any) => a.id == annotation.id);
 
     if (!ann) {
       return;
@@ -883,11 +890,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.annotation = new Annotation();
-    this.textoAnnotation = new TAnnotation();
+    this.loaderService.show();
+
+    if (!this.visibleAnnotationId) {
+      this.annotation = new Annotation();
+      this.textoAnnotation = new TAnnotation();
+    }
+
     this.relation = new Relation();
 
-    this.loaderService.show();
 
     forkJoin([
       this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
@@ -907,12 +918,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.visibleLayers = this.selectedLayers;
       }
 
-      // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
-      //   this.visibleLayers = this.selectedLayers = this.layersList;
-      // }
-      // else {
-      //   this.visibleLayers = this.selectedLayers;
-      // }
+      if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
+        this.visibleLayers = this.selectedLayers = this.layersList;
+      }
+      else {
+        this.visibleLayers = this.selectedLayers;
+      }
 
       // this.layerOptions = layersResponse.map(item => ({ label: item.name, value: item.id })); //ottiene le opzioni di layer mappando la risposta in forma più compatta
 
@@ -929,7 +940,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       // this.annotation.layer = this.selectedLayer;
       // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
-      this.textoAnnotation.layer = this.selectedLayer;
+      this.textoAnnotation.layer = this.selectedLayer ?? this.textoAnnotation.layer;
       this.annotation.layer = this.selectedLayer?.id;
       this.annotation.layerName = this.selectedLayer?.name;
 
@@ -938,6 +949,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.offset = textResponse.data![0].start;
       this.annotationsRes = null;
       this.textoAnnotationsRes = tAnnotationsResponse;
+
+      if (!this.textoAnnotationsRes.find(t => t.id === this.textoAnnotation.id)) {
+        this.textoAnnotationsRes.push(this.textoAnnotation);
+      }
 
       this.simplifiedAnns = [];
       this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
@@ -951,7 +966,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       });
 
       tAnnotationsResponse.forEach(async (a: TAnnotation) => {
-        if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer!.id!)) {
+        if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer?.id!)) {
           const annFeat = a.features ?? [];
           let dictFeat = {};
           annFeat.forEach(f => {
