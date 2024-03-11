@@ -387,8 +387,11 @@ export class WorkspaceService {
     return this.http.get<ResourceElement>(`${this.textoUrl}/resource/${resourceId}`);
   }
 
-  /**Retrieve all the sections for a resoruce by Id */
-  public retrieveSectionsByResourceId(resourceId: number): Observable<Array<Section>> {
-    return this.http.get<Array<Section>>(`${this.textoUrl}/util/resource/${resourceId}/sections`);
+  /**
+   * Retrieve all the sections for a resoruce by Id
+   * @param lazy {string} defines whether the tree upload is lazy or not
+   */
+  public retrieveSectionsByResourceId(resourceId: number, lazy?: string): Observable<Array<Section>> {
+    return this.http.get<Array<Section>>(`${this.textoUrl}/util/resource/${resourceId}/sections?lazy=${lazy ? lazy : 'false'}`);
   }
 }
