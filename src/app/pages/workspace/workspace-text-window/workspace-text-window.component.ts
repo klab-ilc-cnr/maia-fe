@@ -176,7 +176,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   get textSplitSize() {
     return 100 - this.documentSectionsSplit - this.annotationSplitSize;
   }
-  
+
   // currentUser!: User;
   currentTextoUserId!: number;
   currentResource!: ResourceElement;
@@ -776,9 +776,32 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.endDrawing(event)
   }
 
+  onResizeStart(event: any) {
+    //FIXME CAPIRE QUALE DEI DUE PANNELLI RENDERE VISIBILE
+    this.expandedDocumentSectonsDiv = true;
+    this.expandedEditorDiv = true;
+  }
+
   onResizeEnd(event: any) {
     this.documentSectionsSplit = Math.round(event.sizes[0]);
     this.annotationSplitSize = Math.round(event.sizes[2]);
+
+    // if(this.documentSectionsSplit > this.lateralSplitCollapsedSize)
+    // {
+    //   this.expandedDocumentSectonsDiv = true;
+    // }
+    // else{
+    //   this.expandedDocumentSectonsDiv = false;
+    // }
+
+    // if(this.annotationSplitSize > this.lateralSplitCollapsedSize)
+    // {
+    //   this.expandedEditorDiv = true;
+    // }
+    // else{
+    //   this.expandedEditorDiv = false;
+    // }
+
     this.updateTextEditorSize();
   }
 
