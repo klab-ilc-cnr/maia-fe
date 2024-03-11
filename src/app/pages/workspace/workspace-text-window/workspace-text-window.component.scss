@@ -171,18 +171,18 @@ path {
   margin: 0;
   padding: 0;
   width: 100%;
-  // display: inline-flex;
   max-width: none;
   max-height: 80%;
 }
 
 a.expansion-btn {
-  position: absolute;
   font-weight: bold;
   cursor: pointer;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-size: 2rem
+  font-size: 2rem;
+  margin-top: 1rem;
+  margin-left:auto;
+  margin-right: auto;
+  text-align:center;
 }
 
 a.collapse-btn-left {

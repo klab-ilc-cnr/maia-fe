@@ -139,7 +139,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
   @ViewChild('textContainer') public textContainer!: ElementRef;
-  @ViewChild('collapseBtn') public collapseBtn!: ElementRef;
 
   /**Scroller*/
   public textRowsWideness!: number;
@@ -241,8 +240,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.precTextRange = this.textRange.clone();
     let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
     this.loadData(requestRange.start, requestRange.end);
-
-    this.collapseBtn.nativeElement.click();
   }
 
   ngOnDestroy(): void {
@@ -777,30 +774,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   onResizeStart(event: any) {
-    //FIXME CAPIRE QUALE DEI DUE PANNELLI RENDERE VISIBILE
+    const annotationElement = document.getElementById('annotationPanelPlaceholder');
+    const isAnnotationPanel = event.originalEvent.currentTarget.nextElementSibling.contains(annotationElement);
+
+    if(isAnnotationPanel){
+      this.expandedEditorDiv = true;
+      return;
+    }
+
     this.expandedDocumentSectonsDiv = true;
-    this.expandedEditorDiv = true;
   }
 
   onResizeEnd(event: any) {
     this.documentSectionsSplit = Math.round(event.sizes[0]);
     this.annotationSplitSize = Math.round(event.sizes[2]);
-
-    // if(this.documentSectionsSplit > this.lateralSplitCollapsedSize)
-    // {
-    //   this.expandedDocumentSectonsDiv = true;
-    // }
-    // else{
-    //   this.expandedDocumentSectonsDiv = false;
-    // }
-
-    // if(this.annotationSplitSize > this.lateralSplitCollapsedSize)
-    // {
-    //   this.expandedEditorDiv = true;
-    // }
-    // else{
-    //   this.expandedEditorDiv = false;
-    // }
 
     this.updateTextEditorSize();
   }

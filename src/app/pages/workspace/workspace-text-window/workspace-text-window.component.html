@@ -55,14 +55,13 @@
 </div>
 
 <div class="container">
-  <!-- {{documentSectionsSplit}} {{textSplitSize}} {{annotationSplitSize}} -->
   <p-splitter [style]="{'min-height': '100%'}" 
       [panelSizes]="[documentSectionsSplit, textSplitSize, annotationSplitSize]"
       [minSizes]="[lateralSplitCollapsedSize, lateralSplitCollapsedSize, lateralSplitCollapsedSize]"
       styleClass="mb-5"
       (onResizeStart)="onResizeStart($event)"
       (onResizeEnd)="onResizeEnd($event)">
-    <ng-template pTemplate id="navigationtree">
+    <ng-template pTemplate>
         <a *ngIf="!expandedDocumentSectonsDiv" (click)="expandCollapseNavigationDiv()" class="expansion-btn pi pi-list"></a>
         <div *ngIf="expandedDocumentSectonsDiv" class="w-100">
           <a (click)="expandCollapseNavigationDiv()" class="collapse-btn-left pi pi-chevron-circle-left"></a>
@@ -209,28 +208,29 @@
           </div>
         </div>
     </ng-template>
-    <ng-template pTemplate id="annotationdiv">
-        <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn pi pi-file-edit"></a>
-        <div *ngIf="expandedEditorDiv" class="w-100" [ngStyle]="{'height.px': textContainerHeight}">
-          <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right pi pi-chevron-circle-right"></a>
-          <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
-            (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
-            <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
-              (onSave)="onAnnotationSaved()"
-              (onDelete)="onAnnotationDeleted()"
-              (onCancel)="onAnnotationCancel()">
-            </app-annotation-editor> -->
-            <app-relation-editor *ngIf="showRelationEditor"
-            [relationModel]="relation"
-            [sourceAnn]="sourceAnn"
-            [targetAnn]="targetAnn"
-            [sourceLayer]="sourceLayer"
-            [targetLayer]="targetLayer"
-            (onSave)="onRelationSaved()"
-            (onDelete)="onRelationDeleted()"
-            (onCancel)="onRelationCancel()">
-          </app-relation-editor>
-        </div>
+    <ng-template pTemplate>
+      <span id="annotationPanelPlaceholder" style="display:none;"></span>
+      <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn pi pi-file-edit"></a>
+      <div *ngIf="expandedEditorDiv" class="w-100" [ngStyle]="{'height.px': textContainerHeight}">
+        <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right pi pi-chevron-circle-right"></a>
+        <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
+          (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
+          <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
+            (onSave)="onAnnotationSaved()"
+            (onDelete)="onAnnotationDeleted()"
+            (onCancel)="onAnnotationCancel()">
+          </app-annotation-editor> -->
+          <app-relation-editor *ngIf="showRelationEditor"
+          [relationModel]="relation"
+          [sourceAnn]="sourceAnn"
+          [targetAnn]="targetAnn"
+          [sourceLayer]="sourceLayer"
+          [targetLayer]="targetLayer"
+          (onSave)="onRelationSaved()"
+          (onDelete)="onRelationDeleted()"
+          (onCancel)="onRelationCancel()">
+        </app-relation-editor>
+      </div>
     </ng-template>
   </p-splitter>
 </div>
