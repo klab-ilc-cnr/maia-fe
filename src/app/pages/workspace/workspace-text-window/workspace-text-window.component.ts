@@ -127,7 +127,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   targetLayer = new Layer();
   /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
-  sectionsTreeHeight = this.textContainerHeight - 115;
+  /**Sections panel header height */
+  sectionsHeaderHeight = 130;
+  /**Sections document tree height*/
+  get sectionsTreeHeight() {
+    return this.textContainerHeight - this.sectionsHeaderHeight;
+  }
   /**Identificativo numerico del testo */
   textId: number | undefined;
   /**Text response */
@@ -161,10 +166,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   changingSection?: boolean = false;
   rootNodeKey: string = '405092b3-7110-4e48-a524-21a20d0448ab'
 
+  /**Resizible panels settings */
   public widthPercentEditorDiv = 0;
   public widthPercentSectionsDiv = 0;
   public expandedEditorDiv: boolean = false;
   public expandedDocumentSectonsDiv: boolean = true;
+
+  /**Resizible panels dynamic size settings */
+  lateralSplitExpandedSize: number = 24;
+  lateralSplitCollapsedSize: number = 3;
+  documentSectionsSplit: number = this.lateralSplitExpandedSize;
+  annotationSplitSize: number = this.lateralSplitCollapsedSize;
+  get textSplitSize() {
+    return 100 - this.documentSectionsSplit - this.annotationSplitSize;
+  }
 
   showSentum: boolean = true;
 
@@ -185,7 +200,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private layerState: LayerStateService,
-    private workspaceService: WorkspaceService,
+    private workspaceService: WorkspaceService
   ) {
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
@@ -201,8 +216,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.scrollingSubject.pipe(throttleTime(200)).subscribe(value => this.updateTextRowsView(value));
-
-    this.updateTextPanelsCombinationWidth();
 
     forkJoin([this.workspaceService.retrieveResourceElementById(this.textId),
     this.workspaceService.retrieveSectionsByResourceId(this.textId)])
@@ -310,21 +323,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public expandCollapseNavigationDiv() {
+
     this.currentVisibleRow = this.findCurrentVisibleRow();
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
-    this.updateTextPanelsCombinationWidth();
+
+    this.updateDocumentSectionsSplitSize();
 
     setTimeout(() => {
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-    }, 500);
+    }, 200);
   }
 
   public expandCollapseAnnotationDiv(annotationId?: number) {
     this.currentVisibleRow = this.findCurrentVisibleRow();
     this.expandedEditorDiv = annotationId ? true : !this.expandedEditorDiv;
 
-    this.updateTextPanelsCombinationWidth();
+    this.updateAnnotationsSplitSize();
 
     setTimeout(() => {
       if (annotationId && annotationId != this.visibleAnnotationId) {
@@ -334,7 +349,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
-    }, 500);
+    }, 200);
   }
 
   public sentumChanged() {
@@ -472,31 +487,19 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Dynamic widths managment of the text view, document sections tree and annotations
+   * Updates the document sections split size
    * @returns 
    */
-  public updateTextPanelsCombinationWidth() {
-    if (this.expandedEditorDiv && this.expandedDocumentSectonsDiv) {
-      this.widthPercentEditorDiv = 25;
-      this.widthPercentSectionsDiv = 25;
-      return;
-    }
+  public updateDocumentSectionsSplitSize() {
+    this.documentSectionsSplit = this.expandedDocumentSectonsDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
+  }
 
-    if (this.expandedEditorDiv) {
-      this.widthPercentEditorDiv = 34;
-      this.widthPercentSectionsDiv = 3;
-
-      return;
-    }
-
-    if (this.expandedDocumentSectonsDiv) {
-      this.widthPercentEditorDiv = 3;
-      this.widthPercentSectionsDiv = 34;
-      return;
-    }
-
-    this.widthPercentEditorDiv = 2;
-    this.widthPercentSectionsDiv = 2;
+  /**
+ * Updates the annotations split size
+ * @returns 
+ */
+  public updateAnnotationsSplitSize() {
+    this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
   }
 
   /**
@@ -777,6 +780,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.endDrawing(event)
   }
 
+  /**p-splitter on resize start event handler */
+  onResizeStart(event: any) {
+    const annotationElement = document.getElementById('annotationPanelPlaceholder');
+    const isAnnotationPanel = event.originalEvent.currentTarget.nextElementSibling.contains(annotationElement);
+
+    if (isAnnotationPanel) {
+      this.expandedEditorDiv = true;
+      return;
+    }
+
+    this.expandedDocumentSectonsDiv = true;
+  }
+
+  /**p-splitter on resize end event handler */
+  onResizeEnd(event: any) {
+    this.documentSectionsSplit = Math.round(event.sizes[0]);
+    this.annotationSplitSize = Math.round(event.sizes[2]);
+
+    this.updateTextEditorSize();
+  }
+
   /**
    * Metodo che aggiorna le dimensioni del componente
    * @param newHeight {any} nuova altezza
@@ -793,7 +817,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateHeight(newHeight: any) {
     this.height = newHeight - Math.ceil(this.visualConfig.jsPanelHeaderBarHeight);
     this.textContainerHeight = this.height - Math.ceil(this.visualConfig.layerSelectHeightAndMargin + this.visualConfig.paddingAfterTextEditor);
-    this.sectionsTreeHeight = this.textContainerHeight - 117;
   }
 
   /**Metodo che aggiorna le dimensioni dell'editor di testo */
