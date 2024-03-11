@@ -127,7 +127,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   targetLayer = new Layer();
   /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
-  sectionsTreeHeight = this.textContainerHeight - 130;
+  sectionsHeaderHeight = 130;
+  get sectionsTreeHeight() {
+    return this.textContainerHeight - this.sectionsHeaderHeight;
+  }
   /**Identificativo numerico del testo */
   textId: number | undefined;
   /**Text response */
@@ -487,13 +490,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.documentSectionsSplit = this.expandedDocumentSectonsDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
   }
 
-    /**
-   * Updates the annotations split size
-   * @returns 
-   */
-    public updateAnnotationsSplitSize() {
-      this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
-    }
+  /**
+ * Updates the annotations split size
+ * @returns 
+ */
+  public updateAnnotationsSplitSize() {
+    this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
+  }
 
   /**
    * Metodo che gestisce le variazioni di selezione sul testo
@@ -777,7 +780,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const annotationElement = document.getElementById('annotationPanelPlaceholder');
     const isAnnotationPanel = event.originalEvent.currentTarget.nextElementSibling.contains(annotationElement);
 
-    if(isAnnotationPanel){
+    if (isAnnotationPanel) {
       this.expandedEditorDiv = true;
       return;
     }
@@ -808,7 +811,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateHeight(newHeight: any) {
     this.height = newHeight - Math.ceil(this.visualConfig.jsPanelHeaderBarHeight);
     this.textContainerHeight = this.height - Math.ceil(this.visualConfig.layerSelectHeightAndMargin + this.visualConfig.paddingAfterTextEditor);
-    this.sectionsTreeHeight = this.textContainerHeight - 130;
   }
 
   /**Metodo che aggiorna le dimensioni dell'editor di testo */
