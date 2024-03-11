@@ -8,5 +8,6 @@ export enum TileType {
     LEXICON = "LEXICON",
     CORPUS = "CORPUS",
     LAYERS_LIST = "LAYERS_LIST",
-    LEXICON_EDIT = "LEXICON_EDIT"
+    LEXICON_EDIT = "LEXICON_EDIT",
+    SEARCH = "SEARCH"
 }
