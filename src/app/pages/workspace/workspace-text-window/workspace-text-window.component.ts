@@ -127,7 +127,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   targetLayer = new Layer();
   /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
+  /**Sections panel header height */
   sectionsHeaderHeight = 130;
+  /**Sections document tree height*/
   get sectionsTreeHeight() {
     return this.textContainerHeight - this.sectionsHeaderHeight;
   }
@@ -164,13 +166,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   changingSection?: boolean = false;
   rootNodeKey: string = '405092b3-7110-4e48-a524-21a20d0448ab'
 
+  /**Resizible panels settings */
   public widthPercentEditorDiv = 0;
   public widthPercentSectionsDiv = 0;
   public expandedEditorDiv: boolean = false;
   public expandedDocumentSectonsDiv: boolean = true;
 
-  showSentum: boolean = true;
-
+  /**Resizible panels dynamic size settings */
   lateralSplitExpandedSize: number = 24;
   lateralSplitCollapsedSize: number = 3;
   documentSectionsSplit: number = this.lateralSplitExpandedSize;
@@ -178,6 +180,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   get textSplitSize() {
     return 100 - this.documentSectionsSplit - this.annotationSplitSize;
   }
+
+  showSentum: boolean = true;
 
   // currentUser!: User;
   currentTextoUserId!: number;
@@ -776,6 +780,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.endDrawing(event)
   }
 
+  /**p-splitter on resize start event handler */
   onResizeStart(event: any) {
     const annotationElement = document.getElementById('annotationPanelPlaceholder');
     const isAnnotationPanel = event.originalEvent.currentTarget.nextElementSibling.contains(annotationElement);
@@ -788,6 +793,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.expandedDocumentSectonsDiv = true;
   }
 
+  /**p-splitter on resize end event handler */
   onResizeEnd(event: any) {
     this.documentSectionsSplit = Math.round(event.sizes[0]);
     this.annotationSplitSize = Math.round(event.sizes[2]);
