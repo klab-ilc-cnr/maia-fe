@@ -127,7 +127,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   targetLayer = new Layer();
   /**Altezza del contenitore del testo */
   textContainerHeight: number = window.innerHeight / 2;
-  sectionsTreeHeight = this.textContainerHeight - 115;
+  sectionsTreeHeight = this.textContainerHeight - 130;
   /**Identificativo numerico del testo */
   textId: number | undefined;
   /**Text response */
@@ -168,8 +168,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   showSentum: boolean = true;
 
-  lateralSplitExpandedSize: number = 23;
-  lateralSplitCollapsedSize: number = 4;
+  lateralSplitExpandedSize: number = 24;
+  lateralSplitCollapsedSize: number = 3;
   documentSectionsSplit: number = this.lateralSplitExpandedSize;
   annotationSplitSize: number = this.lateralSplitCollapsedSize;
   get textSplitSize() {
@@ -808,7 +808,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateHeight(newHeight: any) {
     this.height = newHeight - Math.ceil(this.visualConfig.jsPanelHeaderBarHeight);
     this.textContainerHeight = this.height - Math.ceil(this.visualConfig.layerSelectHeightAndMargin + this.visualConfig.paddingAfterTextEditor);
-    this.sectionsTreeHeight = this.textContainerHeight - 117;
+    this.sectionsTreeHeight = this.textContainerHeight - 130;
   }
 
   /**Metodo che aggiorna le dimensioni dell'editor di testo */

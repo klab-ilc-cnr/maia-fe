@@ -55,7 +55,7 @@
 </div>
 
 <div class="container">
-  <p-splitter [style]="{'min-height': '100%'}" 
+  <p-splitter
       [panelSizes]="[documentSectionsSplit, textSplitSize, annotationSplitSize]"
       [minSizes]="[lateralSplitCollapsedSize, lateralSplitCollapsedSize, lateralSplitCollapsedSize]"
       styleClass="mb-5"
@@ -69,7 +69,7 @@
             <button class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Expand all" (click)="expandAll()" style="margin-right: .5rem"></button>
             <button #collapseBtn class="p-button-outlined" *ngIf="expandedDocumentSectonsDiv" pButton type="button" label="Collapse all" (click)="collapseAll()"></button>
           </div>
-          <p-tree id="sectionsTree" 
+          <p-tree id="sectionsTree"
             [value]="documentSections" 
             [virtualScroll]="true" 
             [virtualScrollItemSize]="20" 

@@ -206,3 +206,7 @@ a.collapse-btn-right {
 .sectionExpandDiv {
   padding: 1rem 1.3rem 1rem 1rem;
 }
+
+::ng-deep.p-treenode-label {
+  white-space: nowrap;
+}
