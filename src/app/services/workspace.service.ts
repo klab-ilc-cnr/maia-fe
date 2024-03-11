@@ -5,13 +5,13 @@ import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { ElementType } from '../models/corpus/element-type';
 import { CorpusElement, FolderElement, ResourceElement } from '../models/texto/corpus-element';
+import { Section } from '../models/texto/section';
 import { TextChoice } from '../models/tile/text-choice-element.model';
 import { TextTileContent } from '../models/tile/text-tile-content.model';
 import { Tile } from '../models/tile/tile.model';
 import { TextoUser } from '../models/user';
 import { WorkspaceChoice } from '../models/workspace-choice.model';
 import { Workspace } from '../models/workspace.model';
-import { Section } from '../models/texto/section';
 
 /**Classe dei servizi per i workspace */
 @Injectable({
@@ -389,6 +389,6 @@ export class WorkspaceService {
 
   /**Retrieve all the sections for a resoruce by Id */
   public retrieveSectionsByResourceId(resourceId: number): Observable<Array<Section>> {
-    return this.http.get<Array<Section>>(`${this.textoUrl}/resource/${resourceId}/sections`);
+    return this.http.get<Array<Section>>(`${this.textoUrl}/util/resource/${resourceId}/sections`);
   }
 }
