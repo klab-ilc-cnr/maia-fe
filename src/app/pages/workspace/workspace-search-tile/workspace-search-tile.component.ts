@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Observable, of, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
+import { SearchRequest } from 'src/app/models/search/search-request';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 
@@ -14,7 +15,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   constructor(private corpusStateService: CorpusStateService) { }
 
-  selectedDocuments: any[] = [];
+  selectedDocuments: TreeNode<CorpusElement>[] = [];
   files!: TreeNode<CorpusElement>[];
 
   ngOnInit(): void {
@@ -23,6 +24,28 @@ export class WorkspaceSearchTileComponent implements OnInit {
     ).subscribe(result => {
       this.files = result;
     });
+  }
+
+  onClickSearch() {
+    let request = new SearchRequest();
+
+    request.selectedResourcesIds = this.mapSelectedDocumentsIds();
+
+    console.log(request.selectedResourcesIds);
+  }
+
+  private expandRecursive(node: TreeNode, isExpand: boolean) {
+    node.expanded = isExpand;
+    if (node.children) {
+      node.children.forEach(childNode => {
+        this.expandRecursive(childNode, isExpand);
+      });
+    }
+  }
+
+  /**extract only ids of the files from the document tree */
+  private mapSelectedDocumentsIds(): Array<Number> {
+      return this.selectedDocuments.filter(selectedNode => selectedNode.leaf).map(leaf => leaf.data?.id!);
   }
 
   /**
@@ -46,12 +69,14 @@ export class WorkspaceSearchTileComponent implements OnInit {
   private mapToTreeNode(element: CorpusElement): TreeNode<CorpusElement> {
     const node: TreeNode<CorpusElement> = {};
     if ('children' in element) {
+      node.key = element.id.toString();
       const e = <FolderElement>element;
       node.children = this.mapToTreeNodes(e.children);
       node.expandedIcon = "pi pi-folder-open";
       node.collapsedIcon = "pi pi-folder";
     }
     if (element.type === ElementType.RESOURCE) {
+      node.key = element.id.toString();
       node.icon = "pi pi-file";
       node.leaf = true;
     }

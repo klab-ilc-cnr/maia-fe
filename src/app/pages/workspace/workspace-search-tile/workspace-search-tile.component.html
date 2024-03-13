@@ -1,21 +1,29 @@
 <div class="container p-4">
     <div class="row">
-      <div class="col">
-        <p-treeSelect [(ngModel)]="selectedDocuments" 
-            (onShow)="reloadSelectedDocuments()"
-            [options]="files" 
-            [metaKeySelection]="false" 
-            selectionMode="checkbox" 
-            placeholder="Select Item" 
-            [filter]="true" 
-            [filterInputAutoFocus]="true">
-        </p-treeSelect>
-    </div>
+        <div class="col">
+          <p-treeSelect [(ngModel)]="selectedDocuments" 
+              (onShow)="reloadSelectedDocuments()"
+              [options]="files" 
+              [metaKeySelection]="false" 
+              selectionMode="checkbox" 
+              placeholder="Select Item" 
+              [filter]="true" 
+              [filterInputAutoFocus]="true">
+          </p-treeSelect>
+      </div>
       <div class="col">
         Column
       </div>
       <div class="col">
         Column
+      </div>
+    </div>
+    <div class="row">
+      <div class="col d-flex justify-content-end">
+        <button pButton type="button" label="Search" (click)="onClickSearch()" class="mx-2"></button>
+        <button pButton type="button" label="Clear" class="mx-2"></button>
+        <button disabled pButton type="button" label="Save As" class="mx-2"></button>
+        <button pButton type="button" label="Export" class="mx-2"></button>
       </div>
     </div>
     <div class="row">
