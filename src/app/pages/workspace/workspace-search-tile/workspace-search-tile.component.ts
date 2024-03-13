@@ -7,6 +7,13 @@ import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-elemen
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { SearchService } from 'src/app/services/search.service';
 
+/**selectButton model for search mode*/
+interface SearchMode {
+  name: string,
+  code: string
+  inactive: boolean
+}
+
 @Component({
   selector: 'app-workspace-search-tile',
   templateUrl: './workspace-search-tile.component.html',
@@ -15,10 +22,15 @@ import { SearchService } from 'src/app/services/search.service';
 export class WorkspaceSearchTileComponent implements OnInit {
 
   constructor(private corpusStateService: CorpusStateService,
-              private searchService: SearchService) { }
+    private searchService: SearchService) { }
 
   selectedDocuments: TreeNode<CorpusElement>[] = [];
   files!: TreeNode<CorpusElement>[];
+
+  searchValue: string = '';
+  searchModes!: Array<SearchMode>;
+  selectedSearchMode!: SearchMode;
+  searchLabel: string = '';
 
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
@@ -26,8 +38,21 @@ export class WorkspaceSearchTileComponent implements OnInit {
     ).subscribe(result => {
       this.files = result;
     });
+
+    this.initSearchMode();
   }
 
+  /**search mode handler */
+  onSearchModeChange() {
+    if (this.selectedSearchMode.code === 'form') {
+      this.searchLabel = 'insert form';
+      return;
+    }
+
+    this.searchLabel = 'insert lemma';
+  }
+
+  /**prepare data and send search request */
   onSearch() {
     let request = new SearchRequest();
 
@@ -44,6 +69,18 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.selectedDocuments = [];
   }
 
+
+  /**init searchMode data */
+  private initSearchMode() {
+    this.searchModes = [
+      { name: 'form', code: 'form', inactive: false },
+      { name: 'lemma', code: 'lemma', inactive: false },
+    ];
+
+    this.selectedSearchMode = this.searchModes[0];
+    this.onSearchModeChange();
+  }
+
   private expandRecursive(node: TreeNode, isExpand: boolean) {
     node.expanded = isExpand;
     if (node.children) {
@@ -55,7 +92,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**extract only ids of the files from the document tree */
   private mapSelectedDocumentsIds(): Array<Number> {
-      return this.selectedDocuments.filter(selectedNode => selectedNode.leaf).map(leaf => leaf.data?.id!);
+    return this.selectedDocuments.filter(selectedNode => selectedNode.leaf).map(leaf => leaf.data?.id!);
   }
 
   /**

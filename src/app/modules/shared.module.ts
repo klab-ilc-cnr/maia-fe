@@ -48,6 +48,7 @@ import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.dire
 import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value-not-duplicate-name.directive';
 import { UriValidator } from '../validators/uri-validator.directive';
 import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
+import { InputTextModule } from 'primeng/inputtext';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -87,6 +88,7 @@ const PRIMENG_MODULES = [
   InputNumberModule,
   PaginatorModule,
   PasswordModule,
+  InputTextModule
 ];
 
 const DIRECTIVES = [
