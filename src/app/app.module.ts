@@ -55,6 +55,7 @@ import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
 import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
 import { CorpusStateService } from './services/corpus-state.service';
+import { SearchService } from './services/search.service';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,7 @@ import { CorpusStateService } from './services/corpus-state.service';
     IconsModule,
     SharedModule
   ],
-  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders, CorpusStateService],
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders, CorpusStateService, SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -5,6 +5,7 @@ import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
   selector: 'app-workspace-search-tile',
@@ -13,7 +14,8 @@ import { CorpusStateService } from 'src/app/services/corpus-state.service';
 })
 export class WorkspaceSearchTileComponent implements OnInit {
 
-  constructor(private corpusStateService: CorpusStateService) { }
+  constructor(private corpusStateService: CorpusStateService,
+              private searchService: SearchService) { }
 
   selectedDocuments: TreeNode<CorpusElement>[] = [];
   files!: TreeNode<CorpusElement>[];
@@ -32,6 +34,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
     request.selectedResourcesIds = this.mapSelectedDocumentsIds();
 
     console.log(request.selectedResourcesIds);
+
+    this.searchService.search(request).subscribe(result => {
+      console.log(result);
+    });
   }
 
   onClear() {
