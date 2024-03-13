@@ -14,6 +14,11 @@ interface SearchMode {
   inactive: boolean
 }
 
+interface DropdownModel {
+  name: string,
+  code: string
+}
+
 @Component({
   selector: 'app-workspace-search-tile',
   templateUrl: './workspace-search-tile.component.html',
@@ -31,6 +36,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   searchModes!: Array<SearchMode>;
   selectedSearchMode!: SearchMode;
   searchLabel: string = '';
+  contextLenghtDefaultValue = 10;
+  contextLength: number = this.contextLenghtDefaultValue;
+  contextMaxLenght: number = 100;
 
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
@@ -59,6 +67,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     request.selectedResourcesIds = this.mapSelectedDocumentsIds();
     request.searchMode = this.selectedSearchMode.code;
     request.searchValue = this.searchValue.trim();
+    request.contextLength = this.contextLength;
 
     if (!request.searchValue) { return; }
 
@@ -71,6 +80,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.selectedDocuments = [];
     this.searchValue = '';
     this.selectedSearchMode = this.searchModes[0];
+    this.contextLength = this.contextLenghtDefaultValue;
   }
 
 

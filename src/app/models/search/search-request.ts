@@ -2,5 +2,6 @@
 export class SearchRequest {
     selectedResourcesIds : Array<Number> = [];
     searchValue!: string;
-    searchMode!: string
+    searchMode!: string;
+    contextLength!: number;
   }

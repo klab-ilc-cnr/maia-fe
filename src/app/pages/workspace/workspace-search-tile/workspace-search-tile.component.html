@@ -12,18 +12,28 @@
               [filterInputAutoFocus]="true">
           </p-treeSelect>
 
-          <span class="p-input-icon-left">
-            <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
-            <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
-             [placeholder]="this.searchLabel"
-             [(ngModel)]="searchValue" />
-             <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
-              Insert valid search value
-             </small>
-          </span>
-          <p-selectButton (onChange)="onSearchModeChange()" optionDisabled="inactive" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
-
+          <div class="input-group">
+            <span class="p-input-icon-left flex-fill">
+              <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
+              <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
+              class="w-100"
+              [placeholder]="this.searchLabel"
+              [(ngModel)]="searchValue" />
+              <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
+                Insert valid search value
+              </small>
+            </span>
+            <p-selectButton (onChange)="onSearchModeChange()" optionDisabled="inactive" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
+          </div>
+          <p-dropdown class="mx-5" [disabled]="true" placeholder="Pos" optionLabel="name"></p-dropdown>
+          
+          <div class="slider-input mx-5">
+            <label class="mb-2">Context Length: {{contextLength}}</label>
+            <p-slider [min]="0" [max]="contextMaxLenght" [(ngModel)]="contextLength"></p-slider>
+          </div>
+      </div>
     </div>
+
     <div class="row">
       <div class="col d-flex justify-content-end">
         <button pButton type="button" label="Search" (click)="onSearch()" class="mx-2"></button>
@@ -35,4 +45,4 @@
     <div class="row">
         GRIGLIA
     </div>
-  </div>
+</div>
