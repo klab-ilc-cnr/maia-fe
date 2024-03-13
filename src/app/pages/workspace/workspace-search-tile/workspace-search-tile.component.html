@@ -13,8 +13,13 @@
           </p-treeSelect>
 
           <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input type="text" pInputText [placeholder]="this.searchLabel" [(ngModel)]="searchValue" />
+            <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
+            <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
+             [placeholder]="this.searchLabel"
+             [(ngModel)]="searchValue" />
+             <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
+              Insert valid search value
+             </small>
           </span>
           <p-selectButton (onChange)="onSearchModeChange()" optionDisabled="inactive" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
 

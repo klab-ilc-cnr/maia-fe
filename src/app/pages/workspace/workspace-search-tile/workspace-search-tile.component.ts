@@ -57,8 +57,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
     let request = new SearchRequest();
 
     request.selectedResourcesIds = this.mapSelectedDocumentsIds();
+    request.searchMode = this.selectedSearchMode.code;
+    request.searchValue = this.searchValue.trim();
 
-    console.log(request.selectedResourcesIds);
+    if (!request.searchValue) { return; }
 
     this.searchService.search(request).subscribe(result => {
       console.log(result);
@@ -67,6 +69,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   onClear() {
     this.selectedDocuments = [];
+    this.searchValue = '';
+    this.selectedSearchMode = this.searchModes[0];
   }
 
 
@@ -74,7 +78,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   private initSearchMode() {
     this.searchModes = [
       { name: 'form', code: 'form', inactive: false },
-      { name: 'lemma', code: 'lemma', inactive: false },
+      { name: 'lemma', code: 'lemma', inactive: true },
     ];
 
     this.selectedSearchMode = this.searchModes[0];
