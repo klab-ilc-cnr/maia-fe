@@ -26,12 +26,16 @@ export class WorkspaceSearchTileComponent implements OnInit {
     });
   }
 
-  onClickSearch() {
+  onSearch() {
     let request = new SearchRequest();
 
     request.selectedResourcesIds = this.mapSelectedDocumentsIds();
 
     console.log(request.selectedResourcesIds);
+  }
+
+  onClear() {
+    this.selectedDocuments = [];
   }
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {
