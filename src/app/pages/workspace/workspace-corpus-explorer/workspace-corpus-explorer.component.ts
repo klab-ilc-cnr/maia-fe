@@ -5,6 +5,7 @@ import { Observable, of, switchMap } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
+import { FileUploadType } from 'src/app/models/texto/file-upload-type.enum';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -40,7 +41,7 @@ export class WorkspaceCorpusExplorerComponent {
    */
   private deleteElement = (id: number, type: ElementType): void => {
     this.corpusStateService.removeElement.next({ elementType: type, elementId: id });
-    if(id === this.selectedNode?.data?.id) {
+    if (id === this.selectedNode?.data?.id) {
       this.selectedNode = undefined;
     }
   }
@@ -93,13 +94,19 @@ export class WorkspaceCorpusExplorerComponent {
   get getTargetFolder() { return this.moveElementForm.get('targetFolder'); }
   set setTargetFolder(node: TreeNode<CorpusElement>) { this.getTargetFolder?.setValue(node); }
 
+  fileUploadTypes = Object.values(FileUploadType);
+
   uploaderForm = new FormGroup({
     file: new FormControl<File | null>(null, Validators.required),
+    fileType: new FormControl<FileUploadType>(FileUploadType.PLAIN),
+    splitLine: new FormControl<boolean>(true),
     parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null)
   });
   get getFile() { return this.uploaderForm.get('file'); }
   get getParentFolder() { return this.uploaderForm.get('parentFolder'); }
   set setParentFolder(node: TreeNode<CorpusElement>) { this.getParentFolder?.setValue(node); }
+  get getSplitLine() { return this.uploaderForm.get('splitLine'); }
+  set setSplitLine(split: boolean) { this.getSplitLine?.setValue(true) }
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -266,7 +273,7 @@ export class WorkspaceCorpusExplorerComponent {
     const elementType = this.selectedNode!.data!.type;
     const elementId = this.selectedNode!.data!.id;
     this.corpusStateService.renameElement.next({ elementType: elementType, elementId: elementId, newName: newName });
-    if(this.selectedNode && this.selectedNode.data) {
+    if (this.selectedNode && this.selectedNode.data) {
       this.selectedNode.label = newName;
       this.selectedNode.data.name = newName;
     }
@@ -346,6 +353,7 @@ export class WorkspaceCorpusExplorerComponent {
       this.setParentFolder = this.selectedNode;
     }
     this.visibleUploadFile = true;
+    this.setSplitLine = true;
   }
 
   private mapToOnlyFolders(nodes: TreeNode<CorpusElement>[]): TreeNode<CorpusElement>[] {

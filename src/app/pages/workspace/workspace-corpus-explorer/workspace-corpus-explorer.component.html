@@ -41,7 +41,7 @@
 <p-contextMenu #cm appendTo="body" [model]="items"></p-contextMenu>
 
 <p-dialog header="Upload file" class="modal" [(visible)]="visibleUploadFile" [modal]="true"
-  [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
+  [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body" *ngIf="visibleUploadFile">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form (ngSubmit)="onSubmitFileUploaderModal()" [formGroup]="uploaderForm" id="fileUploaderForm" class="validated">
@@ -59,6 +59,16 @@
             <div *ngIf="!isFileUploaded && isFileSizeExceed" class="invalid-feedback">
               File size exceeds the allowed 10MB
             </div>
+          </div>
+          <div class="form-group row">
+            <span class="col-6">
+              <label class="form-label w-100">File type</label>
+              <p-dropdown formControlName="fileType" styleClass="w-100" [options]="fileUploadTypes"></p-dropdown>
+            </span>
+            <span class="col-6">
+              <label class="form-label w-100">Splitting</label>
+              <p-inputSwitch formControlName="splitLine"></p-inputSwitch>
+            </span>
           </div>
           <div class="form-group">
             <label class="form-label">Select folder *</label>
