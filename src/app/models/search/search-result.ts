@@ -1,5 +1,7 @@
 /**Model of a search result */
 export class SearchResult {
+    /**string id of the search result */
+    id!:string;
     /**index of the search result */
     index!: number;
     /**the index of the row in the text body*/

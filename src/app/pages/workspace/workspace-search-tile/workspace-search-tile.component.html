@@ -45,9 +45,9 @@
     </div>
     <div class="">
       <p-table #dt 
+      dataKey="id"
       [value]="searchResults" 
-      [(selection)]="selectedSearchResults" 
-      dataKey="id" 
+      [(selection)]="selectedSearchResults"
       [rowHover]="true"
       [rows]="5"
       [scrollable]="true"
@@ -77,7 +77,7 @@
             </tr>
             <tr>
                 <th>
-                    <p-tableCheckbox [value]="selectAll"></p-tableCheckbox>
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
                 <th>
                     <p-columnFilter type="text" field="text"></p-columnFilter>
@@ -99,6 +99,7 @@
         <ng-template pTemplate="body" let-searchResult>
             <tr class="p-selectable-row">
                 <td>
+                    <p-tableCheckbox [value]="searchResult"></p-tableCheckbox>
                 </td>
                 <td>
                     {{searchResult.text}}
