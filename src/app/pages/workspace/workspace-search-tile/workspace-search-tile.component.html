@@ -1,13 +1,14 @@
-<div class="container m-2">
+<div class="card container">
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
               class="mx-5"
               (onShow)="reloadSelectedDocuments()"
-              [options]="files" 
-              [metaKeySelection]="false" 
-              selectionMode="checkbox" 
-              placeholder="Select Item" 
+              [options]="files"
+              [metaKeySelection]="false"
+              selectionMode="checkbox"
+              display=""
+              placeholder="Select File" 
               [filter]="true" 
               [filterInputAutoFocus]="true">
           </p-treeSelect>
@@ -44,5 +45,5 @@
     </div>
     <div class="row">
         GRIGLIA
+      </div>
     </div>
-</div>

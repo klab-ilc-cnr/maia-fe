@@ -14,11 +14,6 @@ interface SearchMode {
   inactive: boolean
 }
 
-interface DropdownModel {
-  name: string,
-  code: string
-}
-
 @Component({
   selector: 'app-workspace-search-tile',
   templateUrl: './workspace-search-tile.component.html',
@@ -36,9 +31,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   searchModes!: Array<SearchMode>;
   selectedSearchMode!: SearchMode;
   searchLabel: string = '';
-  contextLenghtDefaultValue = 10;
+  contextLenghtDefaultValue = 5;
   contextLength: number = this.contextLenghtDefaultValue;
-  contextMaxLenght: number = 100;
+  contextMaxLenght: number = 10;
 
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
@@ -83,7 +78,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.contextLength = this.contextLenghtDefaultValue;
   }
 
-
   /**init searchMode data */
   private initSearchMode() {
     this.searchModes = [
@@ -93,15 +87,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
     this.selectedSearchMode = this.searchModes[0];
     this.onSearchModeChange();
-  }
-
-  private expandRecursive(node: TreeNode, isExpand: boolean) {
-    node.expanded = isExpand;
-    if (node.children) {
-      node.children.forEach(childNode => {
-        this.expandRecursive(childNode, isExpand);
-      });
-    }
   }
 
   /**extract only ids of the files from the document tree */
