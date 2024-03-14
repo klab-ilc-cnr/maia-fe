@@ -3,6 +3,7 @@ import { TreeNode } from 'primeng/api';
 import { Observable, of, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
+import { SearchResult } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { SearchService } from 'src/app/services/search.service';
@@ -35,6 +36,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
   contextLength: number = this.contextLenghtDefaultValue;
   contextMaxLenght: number = 10;
 
+  //**kwic data */
+  searchResults: Array<SearchResult> = [];
+  selectedSearchResults: Array<SearchResult> = [];
+  loading: boolean = false;
+  selectAll:boolean = false;
+
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
       switchMap(docs => of(this.mapToTreeNodes(docs))),
@@ -57,6 +64,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**prepare data and send search request */
   onSearch() {
+    this.loading = true;
     let request = new SearchRequest();
 
     request.selectedResourcesIds = this.mapSelectedDocumentsIds();
@@ -67,7 +75,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
     if (!request.searchValue) { return; }
 
     this.searchService.search(request).subscribe(result => {
-      console.log(result);
+      this.searchResults = result;
+      this.loading = false;
     });
   }
 

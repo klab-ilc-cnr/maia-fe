@@ -1,4 +1,4 @@
-<div class="card container">
+<div class="card">
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
@@ -43,7 +43,88 @@
         <button pButton type="button" label="Export" class="p-button-info mx-2"></button>
       </div>
     </div>
-    <div class="row">
-        GRIGLIA
-      </div>
+    <div class="">
+      <p-table #dt 
+      [value]="searchResults" 
+      [(selection)]="selectedSearchResults" 
+      dataKey="id" 
+      [rowHover]="true"
+      [rows]="10"
+      [scrollable]="true"
+      [showCurrentPageReport]="true" 
+      [rowsPerPageOptions]="[10,25,50]" 
+      [loading]="loading"
+      [paginator]="true" 
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [filterDelay]="0">
+        <ng-template pTemplate="caption">
+            <div class="table-header">
+                Number of results: 
+            </div>
+            <div class="table-header">
+              Selected: 
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th></th>
+                <th style="width:22%">Text</th>
+                <th style="width:22%">Ref</th>
+                <th style="width:22%">Left context</th>
+                <th style="width:22%">KWIC</th>
+                <th style="width:12%">Right context</th>
+            </tr>
+            <tr>
+                <th>
+                    <p-tableCheckbox [value]="selectAll"></p-tableCheckbox>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="text"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="textHeader"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="leftContext"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="kwic"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="rightContext"></p-columnFilter>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-searchResult>
+            <tr class="p-selectable-row">
+                <td>
+                </td>
+                <td>
+                    {{searchResult.text}}
+                </td>
+                <td>
+                    <span class="p-column-title">Name</span>
+                    {{searchResult.textHeader}}
+                </td>
+                <td>
+                    <span class="p-column-title">Name</span>
+                    {{searchResult.leftContext}}
+                </td>
+                <td>
+                    <span class="p-column-title">Name</span>
+                    {{searchResult.kwic}}
+                </td>
+                <td>
+                    <span class="p-column-title">Name</span>
+                    {{searchResult.rightContext}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">No results found.</td>
+            </tr>
+        </ng-template>
+      </p-table>
     </div>
+</div>

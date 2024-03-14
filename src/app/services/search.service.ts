@@ -3,6 +3,7 @@ import { SearchRequest } from '../models/search/search-request';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { SearchResult } from '../models/search/search-result';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class SearchService {
   }
 
   search(request: SearchRequest) {
-    return this.http.post<SearchResult>(this.searchUrl, request);
+    // return this.http.post<Array<SearchResult>>(this.searchUrl, request);
+    return this.http.get<Array<SearchResult>>('assets/mock/search/search1.json');
   }
 }
