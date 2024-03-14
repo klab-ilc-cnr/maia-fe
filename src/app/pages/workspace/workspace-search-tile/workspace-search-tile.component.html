@@ -4,6 +4,7 @@
           <p-treeSelect [(ngModel)]="selectedDocuments"
               class="mx-5"
               (onShow)="reloadSelectedDocuments()"
+              style="max-width: 150px;"
               [options]="files"
               [metaKeySelection]="false"
               selectionMode="checkbox"
