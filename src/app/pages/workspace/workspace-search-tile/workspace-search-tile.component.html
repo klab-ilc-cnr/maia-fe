@@ -49,8 +49,9 @@
       [(selection)]="selectedSearchResults" 
       dataKey="id" 
       [rowHover]="true"
-      [rows]="10"
+      [rows]="5"
       [scrollable]="true"
+      [scrollHeight]="tableContainerHeight+'px'"
       [showCurrentPageReport]="true" 
       [rowsPerPageOptions]="[10,25,50]" 
       [loading]="loading"
@@ -103,19 +104,15 @@
                     {{searchResult.text}}
                 </td>
                 <td>
-                    <span class="p-column-title">Name</span>
                     {{searchResult.textHeader}}
                 </td>
                 <td>
-                    <span class="p-column-title">Name</span>
                     {{searchResult.leftContext}}
                 </td>
                 <td>
-                    <span class="p-column-title">Name</span>
-                    {{searchResult.kwic}}
+                    <b>{{searchResult.kwic}}</b>
                 </td>
                 <td>
-                    <span class="p-column-title">Name</span>
                     {{searchResult.rightContext}}
                 </td>
             </tr>

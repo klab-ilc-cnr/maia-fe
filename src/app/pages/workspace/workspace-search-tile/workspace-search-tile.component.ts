@@ -25,6 +25,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
   constructor(private corpusStateService: CorpusStateService,
     private searchService: SearchService) { }
 
+  currentPanelHeight: number = 500;
+
   selectedDocuments: TreeNode<CorpusElement>[] = [];
   files!: TreeNode<CorpusElement>[];
 
@@ -40,7 +42,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   searchResults: Array<SearchResult> = [];
   selectedSearchResults: Array<SearchResult> = [];
   loading: boolean = false;
-  selectAll:boolean = false;
+  selectAll: boolean = false;
+  tableContainerHeight: number = window.innerHeight / 2;
+  tableHeaderHegith: number = 250;
 
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
@@ -50,6 +54,15 @@ export class WorkspaceSearchTileComponent implements OnInit {
     });
 
     this.initSearchMode();
+  }
+
+  /**
+ * Updates the height of the content of the panel
+ * @param newHeight {any} newHeight
+ */
+  updateHeight(newHeight: number) {
+    this.currentPanelHeight = newHeight;
+    this.tableContainerHeight = newHeight - this.tableHeaderHegith;
   }
 
   /**search mode handler */
@@ -77,6 +90,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchService.search(request).subscribe(result => {
       this.searchResults = result;
       this.loading = false;
+      this.updateHeight(this.currentPanelHeight);
     });
   }
 

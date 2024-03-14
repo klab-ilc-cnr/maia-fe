@@ -625,11 +625,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       const searchTileElement = jsPanel.create(searchTileConfig);
       searchTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
       searchTileElement.titlebar.style.fontSize = '14px'
-  
-  
+      
       searchTileElement
         .resize({
-          height: window.innerHeight / 2
+          height: 500
         })
         .reposition();
   
@@ -1183,11 +1182,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.5,
-        height: '60vh'
+        width: () => window.innerWidth * 0.6
       },
       resizeit: {
-        minWidth: 600
+        minWidth: 600,
+        minHeight: 500,
+        resize: (panel: any, paneldata: any, event: any) => {
+          componentRef.instance.updateHeight(paneldata.height)
+        }
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.SEARCH);
