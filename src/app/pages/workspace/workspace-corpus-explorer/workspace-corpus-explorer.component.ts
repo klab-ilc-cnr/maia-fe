@@ -11,7 +11,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
-/**Componente del pannello di esplorazione corpus */
+/**Class of the corpus exploration component */
 @Component({
   selector: 'app-workspace-corpus-explorer',
   templateUrl: './workspace-corpus-explorer.component.html',
@@ -19,25 +19,31 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   providers: [CorpusStateService]
 })
 export class WorkspaceCorpusExplorerComponent {
+  /**Observable of the corpus element tree */
   files$ = this.corpusStateService.filesystem$.pipe(
     switchMap(docs => of(this.mapToTreeNodes(docs))),
   );
 
+  /**Observable of the list of folder nodes (possibly nested) in the corpus */
   folders$!: Observable<TreeNode<CorpusElement>[]>;
 
-  //#region VARIABILI DI VISUALIZZAZIONE DEI MODALI
+  //#region MODAL DISPLAY VARIABLES
+  /**Defines the visibility of the creation panel of a new folder */
   visibleAddFolder = false;
+  /**Defines the visibility of the panel to rename a corpus element */
   visibleRename = false;
+  /**Defines the visibility of the panel to move an item in the corpus */
   visibleMove = false;
+  /**Defines panel visibility for loading a new file into the corpus */
   visibleUploadFile = false;
   //#endregion
 
   /**
    * @private
-   * Effettua la cancellazione di un elemento
-   * @param id {number} identificativo numerico dell'elemento
-   * @param name {string} nome dell'elemento
-   * @param type {ElementType} tipo di elemento (cartella o file)
+   * Performs deletion of an item
+   * @param id {number} element identifier
+   * @param name {string} element name
+   * @param type {ElementType} element type (folder or file)
    */
   private deleteElement = (id: number, type: ElementType): void => {
     this.corpusStateService.removeElement.next({ elementType: type, elementId: id });
@@ -46,25 +52,25 @@ export class WorkspaceCorpusExplorerComponent {
     }
   }
 
-  /**Evento di selezione di un testo */
+  /**Text selection event */
   @Output() onTextSelectEvent = new EventEmitter<any>();
 
   /**
    * @private
-   * Conteggio dei click
+   * Click counting
    */
   private clickCount = 0;
 
-  /**Getter che definisce se debba essere visualizzata l'opzione di cancellazione */
+  /**Getter that defines whether the delete option should be displayed */
   public get shouldDeleteBeDisplayed(): boolean {
-    return this.loggedUserService.currentUser?.role == "ADMINISTRATOR"; //hanno diritto di cancellazione solo i ruoli amministratore
+    return this.loggedUserService.currentUser?.role == "ADMINISTRATOR"; //only administrator roles are entitled to cancellation
   }
 
-  /**File caricato */
+  /**Uploaded file */
   fileUploaded: File | undefined;
-  /**Definisce se si è superata la dimensione massima di un file */
+  /**Defines whether the maximum size of a file has been exceeded */
   isFileSizeExceed = false;
-  /**Definisce se un file è stato caricato */
+  /**Defines whether a file has been uploaded */
   isFileUploaded = false;
   /**Definisce se l'uploader dei file è stato toccato */
   isFileUploaderTouched = false;
@@ -106,7 +112,7 @@ export class WorkspaceCorpusExplorerComponent {
   get getParentFolder() { return this.uploaderForm.get('parentFolder'); }
   set setParentFolder(node: TreeNode<CorpusElement>) { this.getParentFolder?.setValue(node); }
   get getSplitLine() { return this.uploaderForm.get('splitLine'); }
-  set setSplitLine(split: boolean) { this.getSplitLine?.setValue(true) }
+  set setSplitLine(split: boolean) { this.getSplitLine?.setValue(split) }
 
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -216,7 +222,7 @@ export class WorkspaceCorpusExplorerComponent {
 
     if (this.fileUploaded && this.getParentFolder?.valid) {
       const parentId = this.getParentFolder.value?.data?.id;
-      this.corpusStateService.uploadFile.next({ parentId: (parentId ? parentId : -1), resourceName: this.fileUploaded.name.split('.')[0], file: this.fileUploaded });
+      this.corpusStateService.uploadFile.next({ parentId: (parentId ? parentId : -1), resourceName: this.fileUploaded.name.split('.')[0], file: this.fileUploaded, uploader: this.uploaderForm.get('fileType')?.value ?? FileUploadType.PLAIN, splitLine: this.getSplitLine?.value ?? true });
     }
     else {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig("Error loading file"));
@@ -354,6 +360,7 @@ export class WorkspaceCorpusExplorerComponent {
     }
     this.visibleUploadFile = true;
     this.setSplitLine = true;
+    this.uploaderForm.get('fileType')?.setValue(FileUploadType.PLAIN);
   }
 
   private mapToOnlyFolders(nodes: TreeNode<CorpusElement>[]): TreeNode<CorpusElement>[] {
