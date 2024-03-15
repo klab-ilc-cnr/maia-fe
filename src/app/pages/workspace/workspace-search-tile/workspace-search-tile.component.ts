@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TreeNode } from 'primeng/api';
+import { Table } from 'primeng/table';
 import { Observable, of, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
@@ -50,8 +51,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
   tableHeaderHegith: number = 270;
   totalRecords: number = 0;
   visibleRows: number = 10;
+  tableCleared = false;
 
   @ViewChild('searchInput') searchInput: any;
+  @ViewChild('dt') searchResultsTable!: Table;
 
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
@@ -64,6 +67,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
   }
 
   loadSearchResults(event: any) {
+    if (this.tableCleared) {
+      return;
+    }
+
     this.loading = true;
     setTimeout(() => {//FIXME eliminare quando ci sarà il backend
       this.searchRequest.start = event.first;
@@ -100,12 +107,13 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchInput.control.markAsTouched();
     const searchValue = this.searchValue?.trim();
 
-    if (!searchValue) { 
-      return; 
+    if (!searchValue) {
+      return;
     }
 
     this.loading = true;
 
+    this.tableCleared = false;
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.selectedResourcesIds = this.mapSelectedDocumentsIds();
@@ -124,10 +132,14 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   onClear() {
     this.searchRequest = new SearchRequest();
+    this.searchResults = [];
+    this.tableCleared = true;
+    this.selectedSearchResults = [];
     this.selectedDocuments = [];
     this.searchValue = '';
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
+    this.searchResultsTable.reset();
     this.updateTableHeight();
   }
 
