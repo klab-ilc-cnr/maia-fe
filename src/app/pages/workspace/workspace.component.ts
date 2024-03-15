@@ -1199,7 +1199,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: searchPanelId,
       component: componentRef,
       panelConfig: config,
-      tileType: TileType.CORPUS
+      tileType: TileType.SEARCH
     };
   }
 }
