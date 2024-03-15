@@ -46,38 +46,46 @@
     <div class="">
       <p-table #dt 
       dataKey="id"
-      [value]="searchResults" 
+      [value]="searchResults"
+      [lazy]="true"
+      [lazyLoadOnInit]="false"
+      (onLazyLoad)="loadSearchResults($event)"
+      [totalRecords]="totalRecords"
       [(selection)]="selectedSearchResults"
       [rowHover]="true"
-      [rows]="5"
+      [rows]="visibleRows"
       [scrollable]="true"
       [scrollHeight]="tableContainerHeight+'px'"
       [showCurrentPageReport]="true" 
-      [rowsPerPageOptions]="[10,25,50]" 
+      [rowsPerPageOptions]="[10,25,50,100,200]" 
       [loading]="loading"
-      [paginator]="true" 
+      [paginator]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [filterDelay]="0">
         <ng-template pTemplate="caption">
             <div class="table-header">
-                Number of results: 
+                Number of results: {{totalRecords}}
             </div>
             <div class="table-header">
-              Selected: 
+              Selected: {{selectedSearchResults.length}}
           </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th></th>
-                <th style="width:22%">Text</th>
-                <th style="width:22%">Ref</th>
-                <th style="width:22%">Left context</th>
-                <th style="width:22%">KWIC</th>
-                <th style="width:12%">Right context</th>
+                <th>Index</th>
+                <th>Text</th>
+                <th>Ref</th>
+                <th>Left context</th>
+                <th>KWIC</th>
+                <th>Right context</th>
             </tr>
             <tr>
                 <th>
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="index"></p-columnFilter>
                 </th>
                 <th>
                     <p-columnFilter type="text" field="text"></p-columnFilter>
@@ -100,6 +108,9 @@
             <tr class="p-selectable-row">
                 <td>
                     <p-tableCheckbox [value]="searchResult"></p-tableCheckbox>
+                </td>
+                <td>
+                    {{searchResult.index}}
                 </td>
                 <td>
                     {{searchResult.text}}

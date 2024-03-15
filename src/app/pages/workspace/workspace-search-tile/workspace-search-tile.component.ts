@@ -40,11 +40,14 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   //**kwic data */
   searchResults: Array<SearchResult> = [];
+  searchRequest = new SearchRequest();
   selectedSearchResults: Array<SearchResult> = [];
   loading: boolean = false;
   selectAll: boolean = false;
   tableContainerHeight: number = window.innerHeight / 2;
   tableHeaderHegith: number = 250;
+  totalRecords: number = 0;
+  visibleRows: number = 5;
 
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
@@ -54,6 +57,18 @@ export class WorkspaceSearchTileComponent implements OnInit {
     });
 
     this.initSearchMode();
+  }
+
+  loadSearchResults(event: any) {
+    this.loading = true;
+    setTimeout(() => {
+      this.searchRequest.start = event.first;
+      this.searchRequest.end = event.first + event.rows;
+      this.searchService.search(this.searchRequest).subscribe(result => {
+        this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
+      })
+      this.loading = false;
+    }, 1000);
   }
 
   /**
@@ -78,23 +93,26 @@ export class WorkspaceSearchTileComponent implements OnInit {
   /**prepare data and send search request */
   onSearch() {
     this.loading = true;
-    let request = new SearchRequest();
 
-    request.selectedResourcesIds = this.mapSelectedDocumentsIds();
-    request.searchMode = this.selectedSearchMode.code;
-    request.searchValue = this.searchValue.trim();
-    request.contextLength = this.contextLength;
+    this.searchRequest.start = 0;
+    this.searchRequest.end = this.visibleRows;
+    this.searchRequest.selectedResourcesIds = this.mapSelectedDocumentsIds();
+    this.searchRequest.searchMode = this.selectedSearchMode.code;
+    this.searchRequest.searchValue = this.searchValue.trim();
+    this.searchRequest.contextLength = this.contextLength;
 
-    if (!request.searchValue) { return; }
+    if (!this.searchRequest.searchValue) { return; }
 
-    this.searchService.search(request).subscribe(result => {
-      this.searchResults = result;
+    this.searchService.search(this.searchRequest).subscribe(result => {
+      this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
       this.loading = false;
+      this.totalRecords = result.length;//FIXME PUT TOTALRECORDS
       this.updateHeight(this.currentPanelHeight);
     });
   }
 
   onClear() {
+    this.searchRequest = new SearchRequest();
     this.selectedDocuments = [];
     this.searchValue = '';
     this.selectedSearchMode = this.searchModes[0];
