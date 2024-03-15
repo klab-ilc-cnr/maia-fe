@@ -22,7 +22,7 @@ export class SearchService {
   }
 
   search(request: SearchRequest) {
-    // return this.http.post<Array<SearchResult>>(this.searchUrl, request);
-    return this.http.get<Array<SearchResult>>('assets/mock/search/search1.json');
+    // return this.http.post<SearchResult>(this.searchUrl, request);
+    return this.http.get<SearchResult>('assets/mock/search/search1.json');
   }
 }

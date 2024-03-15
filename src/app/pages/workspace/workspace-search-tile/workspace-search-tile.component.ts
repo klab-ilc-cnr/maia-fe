@@ -4,7 +4,7 @@ import { Table } from 'primeng/table';
 import { Observable, of, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
-import { SearchResult } from 'src/app/models/search/search-result';
+import { SearchResult, SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
@@ -42,9 +42,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   contextMaxLenght: number = 10;
 
   //**kwic data */
-  searchResults: Array<SearchResult> = [];
+  searchResults: Array<SearchResultRow> = [];
   searchRequest = new SearchRequest();
-  selectedSearchResults: Array<SearchResult> = [];
+  selectedSearchResults: Array<SearchResultRow> = [];
   loading: boolean = false;
   selectAll: boolean = false;
   tableContainerHeight: number = window.innerHeight / 2;
@@ -77,7 +77,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
       this.searchRequest.end = event.first + event.rows;
       this.searchService.search(this.searchRequest).subscribe(result => {
         // this.searchResults = result; //FIXME ripristinare quando ci sarà il backend
-        this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
+        this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
+        this.totalRecords = result.totalRecords;
       })
       this.loading = false;
     }, 1000);
@@ -124,9 +125,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
 
     this.searchService.search(this.searchRequest).subscribe(result => {
-      this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
+      this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
       this.loading = false;
-      this.totalRecords = result.length;//FIXME PUT TOTALRECORDS
+      this.totalRecords = result.totalRecords;
       this.updateTableHeight();
     });
   }

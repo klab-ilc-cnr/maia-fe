@@ -1,5 +1,13 @@
 /**Model of a search result */
 export class SearchResult {
+    /**number of total elements */
+    totalRecords!:number;
+    /**row results*/
+    data!:Array<SearchResultRow>;
+}
+
+/**Model of a search result row */
+export class SearchResultRow {
     /**string id of the search result */
     id!:string;
     /**index of the search result */
