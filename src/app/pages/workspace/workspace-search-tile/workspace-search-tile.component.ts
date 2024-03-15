@@ -28,11 +28,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
     private searchService: SearchService,
     private commonService: CommonService) { }
 
+  /**initial panel size */
   currentPanelHeight: number = 500;
 
-  selectedDocuments: TreeNode<CorpusElement>[] = [];
-  files!: TreeNode<CorpusElement>[];
-
+  /**search data parameters */
   searchValue: string = '';
   searchModes!: Array<SearchMode>;
   selectedSearchMode!: SearchMode;
@@ -40,8 +39,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
   contextLenghtDefaultValue = 5;
   contextLength: number = this.contextLenghtDefaultValue;
   contextMaxLenght: number = 10;
+  files!: TreeNode<CorpusElement>[];
+  selectedDocuments: TreeNode<CorpusElement>[] = [];
 
-  //**kwic data */
+  //**kwic table data */
   searchResults: Array<SearchResultRow> = [];
   searchRequest = new SearchRequest();
   selectedSearchResults: Array<SearchResultRow> = [];
@@ -76,7 +77,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
       this.searchRequest.start = event.first;
       this.searchRequest.end = event.first + event.rows;
       this.searchService.search(this.searchRequest).subscribe(result => {
-        // this.searchResults = result; //FIXME ripristinare quando ci sarà il backend
+        // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
         this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
         this.totalRecords = result.totalRecords;
       })
@@ -125,13 +126,15 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
 
     this.searchService.search(this.searchRequest).subscribe(result => {
-      this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
+      // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
+      this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
       this.loading = false;
       this.totalRecords = result.totalRecords;
       this.updateTableHeight();
     });
   }
 
+  /**clear function results and data */
   onClear() {
     this.searchRequest = new SearchRequest();
     this.searchResults = [];
