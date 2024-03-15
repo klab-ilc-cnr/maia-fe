@@ -47,7 +47,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   loading: boolean = false;
   selectAll: boolean = false;
   tableContainerHeight: number = window.innerHeight / 2;
-  tableHeaderHegith: number = 250;
+  tableHeaderHegith: number = 270;
   totalRecords: number = 0;
   visibleRows: number = 10;
 
@@ -110,7 +110,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
       this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
       this.loading = false;
       this.totalRecords = result.length;//FIXME PUT TOTALRECORDS
-      this.updateHeight(this.currentPanelHeight);
+      this.updateTableHeight();
     });
   }
 
@@ -120,6 +120,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchValue = '';
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
+    this.updateTableHeight();
+  }
+
+  /**update the table heigth */
+  updateTableHeight() {
+    this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith - 20;
   }
 
   /**init searchMode data */
