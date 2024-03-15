@@ -55,6 +55,7 @@
       [rowHover]="true"
       [rows]="visibleRows"
       [scrollable]="true"
+      [resizableColumns]="true"
       [scrollHeight]="tableContainerHeight+'px'"
       [showCurrentPageReport]="true" 
       [rowsPerPageOptions]="[10,25,50,100,200]" 
@@ -72,13 +73,13 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th></th>
-                <th>{{'SEARCH.columns.index'|translate}}</th>
-                <th>{{'SEARCH.columns.text'|translate}}</th>
-                <th>{{'SEARCH.columns.ref'|translate}}</th>
-                <th>{{'SEARCH.columns.leftContext'|translate}}</th>
-                <th>{{'SEARCH.columns.kwic'|translate}}</th>
-                <th>{{'SEARCH.columns.rightContext'|translate}}</th>
+                <th pResizableColumn></th>
+                <th pResizableColumn>{{'SEARCH.columns.index'|translate}}</th>
+                <th pResizableColumn>{{'SEARCH.columns.text'|translate}}</th>
+                <th pResizableColumn>{{'SEARCH.columns.ref'|translate}}</th>
+                <th pResizableColumn>{{'SEARCH.columns.leftContext'|translate}}</th>
+                <th pResizableColumn>{{'SEARCH.columns.kwic'|translate}}</th>
+                <th pResizableColumn>{{'SEARCH.columns.rightContext'|translate}}</th>
             </tr>
             <tr>
                 <th>

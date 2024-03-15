@@ -7,3 +7,7 @@
 .slider-input {
   min-inline-size: max-content;
 }
+
+:host ::ng-deep .p-datatable .p-column-resizer {
+  border-right: inset;
+}

@@ -151,7 +151,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**update the table heigth */
   updateTableHeight() {
-    this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith - 20;
+    this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith - 10;
   }
 
   /**init searchMode data */
