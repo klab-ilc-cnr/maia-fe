@@ -120,6 +120,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchRequest.searchMode = this.selectedSearchMode.code;
     this.searchRequest.searchValue = searchValue;
     this.searchRequest.contextLength = this.contextLength;
+    this.searchResultsTable.clear();
 
 
     this.searchService.search(this.searchRequest).subscribe(result => {
