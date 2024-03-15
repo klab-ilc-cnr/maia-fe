@@ -47,7 +47,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   tableContainerHeight: number = window.innerHeight / 2;
   tableHeaderHegith: number = 250;
   totalRecords: number = 0;
-  visibleRows: number = 5;
+  visibleRows: number = 10;
 
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
@@ -61,11 +61,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   loadSearchResults(event: any) {
     this.loading = true;
-    setTimeout(() => {
+    setTimeout(() => {//FIXME eliminare quando ci sarà il backend
       this.searchRequest.start = event.first;
       this.searchRequest.end = event.first + event.rows;
       this.searchService.search(this.searchRequest).subscribe(result => {
-        this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
+        // this.searchResults = result; //FIXME ripristinare quando ci sarà il backend
+        this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
       })
       this.loading = false;
     }, 1000);
