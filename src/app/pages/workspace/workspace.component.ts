@@ -25,6 +25,8 @@ import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/wo
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
+import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
+import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -213,6 +215,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         // ]
         command: (event) => { this.openLexiconPanel(event) }
       },
+      {
+        label: 'Search',
+        command: (event) => { this.openSearchPanel(event) }
+      }
       // {
       //   label: 'Ontology',
       //   // items: [
@@ -296,6 +302,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.LEXICON:
+          case TileType.SEARCH:
             // case TileType.LEXICON_EDIT: //TODO era una mia aggiunta ma il salvataggio su BE non pare gestito
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
@@ -320,6 +327,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             break;
 
           case TileType.LAYERS_LIST:
+            this.tileMap.delete(panelId);
+            console.log('Deleted ', this.getTileMap());
+            break;
+
+          case TileType.SEARCH:
             this.tileMap.delete(panelId);
             console.log('Deleted ', this.getTileMap());
             break;
@@ -588,6 +600,56 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     lexiconEditTileElement.addToTileMap(tileObject);
     lexiconEditTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
+
+    /**
+   * Opens the search tile
+   * @param event {any}
+   * @returns {void}
+   */
+    openSearchPanel(event: any) {
+      const searchPanelId = 'searchTile'
+  
+      const panelExist = jsPanel.getPanels().find(
+        (x: { id: string; }) => x.id === searchPanelId
+      );
+  
+      if (panelExist) {
+        panelExist.front()
+        return;
+      }
+  
+      const result = this.generateSearchPanelConfiguration(searchPanelId);
+  
+      const searchTileConfig = result.panelConfig;
+  
+      const searchTileElement = jsPanel.create(searchTileConfig);
+      searchTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+      searchTileElement.titlebar.style.fontSize = '14px'
+  
+  
+      searchTileElement
+        .resize({
+          height: window.innerHeight / 2
+        })
+        .reposition();
+  
+      const { content, ...text } = searchTileConfig;
+  
+      searchTileConfig.content = undefined;
+  
+      const tileObject: Tile<SearchTileContent> = {
+        id: undefined,
+        workspaceId: this.workspaceId,
+        content: undefined,
+        tileConfig: searchTileConfig,
+        type: TileType.SEARCH
+      };
+  
+  
+      searchTileElement.addToTileMap(tileObject);
+      searchTileElement.addComponentToList(result.id, result.component, result.tileType);
+    }
+  
 
   /**
    * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
@@ -1092,6 +1154,53 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       tileType: TileType.LEXICON_EDIT
     };
 
+  }
+
+  /**
+   * @private
+   * Generates search tile configurations
+   * @param searchPanelId {string} search tile identifier
+   * @returns search tile configurations
+   */
+  private generateSearchPanelConfiguration(searchPanelId: string) {
+    const componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent);
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: searchPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Search',
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
+      syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.5,
+        height: '60vh'
+      },
+      resizeit: {
+        minWidth: 600
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.SEARCH);
+        this.removeComponentFromList(panel.id);
+      }
+    };
+
+    return {
+      id: searchPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.SEARCH
+    };
   }
 }
 

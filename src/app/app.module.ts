@@ -53,6 +53,7 @@ import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
+import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     TextAnnotationEditorComponent,
     LoginComponent,
     MatchNewPasswordDirective,
+    WorkspaceSearchTileComponent
   ],
   imports: [
     BrowserModule,
