@@ -5,6 +5,7 @@ import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResult } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
+import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { SearchService } from 'src/app/services/search.service';
 
@@ -23,7 +24,8 @@ interface SearchMode {
 export class WorkspaceSearchTileComponent implements OnInit {
 
   constructor(private corpusStateService: CorpusStateService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private commonService: CommonService) { }
 
   currentPanelHeight: number = 500;
 
@@ -84,11 +86,11 @@ export class WorkspaceSearchTileComponent implements OnInit {
   /**search mode handler */
   onSearchModeChange() {
     if (this.selectedSearchMode.code === 'form') {
-      this.searchLabel = 'insert form';
+      this.searchLabel = this.commonService.translateKey('SEARCH.insertForm');
       return;
     }
 
-    this.searchLabel = 'insert lemma';
+    this.searchLabel = this.commonService.translateKey('SEARCH.insertLemma');
   }
 
   /**prepare data and send search request */
@@ -123,8 +125,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
   /**init searchMode data */
   private initSearchMode() {
     this.searchModes = [
-      { name: 'form', code: 'form', inactive: false },
-      { name: 'lemma', code: 'lemma', inactive: true },
+      { name: this.commonService.translateKey('SEARCH.form'), code: 'form', inactive: false },
+      { name: this.commonService.translateKey('SEARCH.lemma'), code: 'lemma', inactive: true },
     ];
 
     this.selectedSearchMode = this.searchModes[0];

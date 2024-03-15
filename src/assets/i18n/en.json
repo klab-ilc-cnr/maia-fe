@@ -79,5 +79,31 @@
         "usernameMandatory": "Username is mandatory",
         "usernameMinLenght": "Username must be at least 4 characters long",
         "userUpdated": "User successfully updated"
+    },
+    "SEARCH":{
+        "insertForm" : "insert form",
+        "insertLemma": "insert lemma",
+        "form": "form",
+        "lemma": "lemma",
+        "noResult": "No results found.",
+        "contextLength": "context length",
+        "validSearchValue": "insert a value",
+        "numberOfResults": "Number of results",
+        "selected": "Selected",
+        "selectFile": "Select file",
+        "columns": {
+            "index": "Index",
+            "text": "Text",
+            "ref": "Ref",
+            "leftContext": "Left context",
+            "kwic": "KWIC",
+            "rightContext": "Right context"
+        },
+        "buttons":{
+            "search":"Search",
+            "clear":"Clear",
+            "saveAs": "Save As",
+            "export": "Export"
+        }
     }
 }

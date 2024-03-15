@@ -8,7 +8,7 @@
               [metaKeySelection]="false"
               selectionMode="checkbox"
               display=""
-              placeholder="Select File" 
+              [placeholder]="'SEARCH.selectFile'|translate"
               [filter]="true" 
               [filterInputAutoFocus]="true">
           </p-treeSelect>
@@ -21,7 +21,7 @@
               [placeholder]="this.searchLabel"
               [(ngModel)]="searchValue" />
               <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
-                Insert valid search value
+                {{'SEARCH.validSearchValue'|translate}}
               </small>
             </span>
             <p-selectButton (onChange)="onSearchModeChange()" optionDisabled="inactive" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
@@ -29,7 +29,7 @@
           <p-dropdown class="mx-5" [disabled]="true" placeholder="Pos" optionLabel="name"></p-dropdown>
           
           <div class="slider-input mx-5">
-            <label class="mb-2">Context Length: {{contextLength}}</label>
+            <label class="mb-2">{{'SEARCH.contextLength'|translate}}: {{contextLength}}</label>
             <p-slider [min]="0" [max]="contextMaxLenght" [(ngModel)]="contextLength"></p-slider>
           </div>
       </div>
@@ -37,10 +37,10 @@
 
     <div class="row">
       <div class="col d-flex justify-content-end">
-        <button pButton type="button" label="Search" (click)="onSearch()" class="mx-2"></button>
-        <button pButton type="button" label="Clear" (click)="onClear()" class="p-button-secondary mx-2"></button>
-        <button disabled pButton type="button" label="Save As" class="p-button-help mx-2"></button>
-        <button pButton type="button" label="Export" class="p-button-info mx-2"></button>
+        <button pButton type="button" (click)="onSearch()" class="mx-2">{{'SEARCH.buttons.search'|translate}}</button>
+        <button pButton type="button" (click)="onClear()" class="p-button-secondary mx-2">{{'SEARCH.buttons.clear'|translate}}</button>
+        <button disabled pButton type="button" class="p-button-help mx-2">{{'SEARCH.buttons.saveAs'|translate}}</button>
+        <button pButton type="button" class="p-button-info mx-2">{{'SEARCH.buttons.export'|translate}}</button>
       </div>
     </div>
     <div class="">
@@ -60,25 +60,25 @@
       [rowsPerPageOptions]="[10,25,50,100,200]" 
       [loading]="loading"
       [paginator]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate"
       [filterDelay]="0">
         <ng-template pTemplate="caption">
             <div class="table-header">
-                Number of results: {{totalRecords}}
+                {{'SEARCH.numberOfResults'|translate}}: {{totalRecords}}
             </div>
             <div class="table-header">
-              Selected: {{selectedSearchResults.length}}
+                {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
           </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th></th>
-                <th>Index</th>
-                <th>Text</th>
-                <th>Ref</th>
-                <th>Left context</th>
-                <th>KWIC</th>
-                <th>Right context</th>
+                <th>{{'SEARCH.columns.index'|translate}}</th>
+                <th>{{'SEARCH.columns.text'|translate}}</th>
+                <th>{{'SEARCH.columns.ref'|translate}}</th>
+                <th>{{'SEARCH.columns.leftContext'|translate}}</th>
+                <th>{{'SEARCH.columns.kwic'|translate}}</th>
+                <th>{{'SEARCH.columns.rightContext'|translate}}</th>
             </tr>
             <tr>
                 <th>
@@ -131,7 +131,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="8">No results found.</td>
+                <td colspan="8">{{'SEARCH.noResult'|translate}}</td>
             </tr>
         </ng-template>
       </p-table>
