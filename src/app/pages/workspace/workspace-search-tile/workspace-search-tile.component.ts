@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Observable, of, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -51,6 +51,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
   totalRecords: number = 0;
   visibleRows: number = 10;
 
+  @ViewChild('searchInput') searchInput: any;
+
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
       switchMap(docs => of(this.mapToTreeNodes(docs))),
@@ -95,16 +97,22 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**prepare data and send search request */
   onSearch() {
+    this.searchInput.control.markAsTouched();
+    const searchValue = this.searchValue?.trim();
+
+    if (!searchValue) { 
+      return; 
+    }
+
     this.loading = true;
 
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.selectedResourcesIds = this.mapSelectedDocumentsIds();
     this.searchRequest.searchMode = this.selectedSearchMode.code;
-    this.searchRequest.searchValue = this.searchValue.trim();
+    this.searchRequest.searchValue = searchValue;
     this.searchRequest.contextLength = this.contextLength;
 
-    if (!this.searchRequest.searchValue) { return; }
 
     this.searchService.search(this.searchRequest).subscribe(result => {
       this.searchResults = result.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME
