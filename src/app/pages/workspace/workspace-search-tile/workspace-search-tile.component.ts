@@ -133,6 +133,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   onClear() {
     this.searchRequest = new SearchRequest();
     this.searchResults = [];
+    this.totalRecords = 0;
     this.tableCleared = true;
     this.selectedSearchResults = [];
     this.selectedDocuments = [];
