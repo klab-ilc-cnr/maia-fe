@@ -752,7 +752,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule } from &#x27;@angular/core&#x27;;
 import { BrowserModule } from &#x27;@angular/platform-browser&#x27;;
 
-import { HttpClientModule } from &#x27;@angular/common/http&#x27;;
+import { HttpClient, HttpClientModule } from &#x27;@angular/common/http&#x27;;
 import { BrowserAnimationsModule } from &#x27;@angular/platform-browser/animations&#x27;;
 import { FontAwesomeModule } from &#x27;@fortawesome/angular-fontawesome&#x27;;
 import { NgbModule } from &#x27;@ng-bootstrap/ng-bootstrap&#x27;;
@@ -766,19 +766,21 @@ import { FormCoreEditorComponent } from &#x27;./controllers/editors/form-core-ed
 import { FormMetadataEditorComponent } from &#x27;./controllers/editors/form-metadata-editor/form-metadata-editor.component&#x27;;
 import { LexEntryEditorComponent } from &#x27;./controllers/editors/lex-entry-editor/lex-entry-editor.component&#x27;;
 import { LexEntryMetadataEditorComponent } from &#x27;./controllers/editors/lex-entry-metadata-editor/lex-entry-metadata-editor.component&#x27;;
-import { LexicalEntryEditorComponent } from &#x27;./controllers/editors/lexical-entry-editor/lexical-entry-editor.component&#x27;;
-import { RelationEditorComponent } from &#x27;./controllers/editors/relation-editor/relation-editor.component&#x27;;
-import { LexSenseRelationsEditorComponent } from &#x27;./controllers/editors/lex-sense-relations-editor/lex-sense-relations-editor.component&#x27;;
 import { LexSenseDirectRelationsComponent } from &#x27;./controllers/editors/lex-sense-relations-editor/lex-sense-direct-relations/lex-sense-direct-relations.component&#x27;;
 import { LexSenseIndirectRelationsComponent } from &#x27;./controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations.component&#x27;;
+import { LexSenseRelationsEditorComponent } from &#x27;./controllers/editors/lex-sense-relations-editor/lex-sense-relations-editor.component&#x27;;
+import { LexicalEntryEditorComponent } from &#x27;./controllers/editors/lexical-entry-editor/lexical-entry-editor.component&#x27;;
+import { RelationEditorComponent } from &#x27;./controllers/editors/relation-editor/relation-editor.component&#x27;;
 
-import { LexEntryRelationsEditorComponent } from &#x27;./controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component&#x27;;
+import { LexEntityIndirectRelPropertyComponent } from &#x27;./controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component&#x27;;
 import { LexEntitySemanticRelIndirectComponent } from &#x27;./controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-semantic-rel-indirect.component&#x27;;
 import { LexEntitySemanticRelComponent } from &#x27;./controllers/editors/lex-entity-relations/lex-entity-semantic-rel/lex-entity-semantic-rel.component&#x27;;
 import { LexEntryDirectRelationsComponent } from &#x27;./controllers/editors/lex-entry-relations-editor/lex-entry-direct-relations/lex-entry-direct-relations.component&#x27;;
 import { LexEntryIndirectRelationsComponent } from &#x27;./controllers/editors/lex-entry-relations-editor/lex-entry-indirect-relations/lex-entry-indirect-relations.component&#x27;;
-import { LexEntityIndirectRelPropertyComponent } from &#x27;./controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component&#x27;;
+import { LexEntryRelationsEditorComponent } from &#x27;./controllers/editors/lex-entry-relations-editor/lex-entry-relations-editor.component&#x27;;
 
+import { TranslateLoader, TranslateModule } from &#x27;@ngx-translate/core&#x27;;
+import { TranslateHttpLoader } from &#x27;@ngx-translate/http-loader&#x27;;
 import { SenseCoreEditorComponent } from &#x27;./controllers/editors/sense-core-editor/sense-core-editor.component&#x27;;
 import { SenseMetadataEditorComponent } from &#x27;./controllers/editors/sense-metadata-editor/sense-metadata-editor.component&#x27;;
 import { TextAnnotationEditorComponent } from &#x27;./controllers/editors/text-annotation-editor/text-annotation-editor.component&#x27;;
@@ -845,6 +847,13 @@ import { MatchNewPasswordDirective } from &#x27;./validators/match-new-password.
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     BrowserAnimationsModule,
     NgbModule,
     PageControllersModule,
@@ -857,7 +866,15 @@ import { MatchNewPasswordDirective } from &#x27;./validators/match-new-password.
 })
 export class AppModule {
 }
-</code></pre>
+
+/**
+ * Function to manage translation dependency
+ * @param httpClient {HttpClient} Performs HTTP requests
+ * @returns {TranslateHttpLoader}
+ */
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}</code></pre>
     </div>
 </div>
 

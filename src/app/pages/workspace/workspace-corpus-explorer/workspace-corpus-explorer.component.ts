@@ -79,49 +79,62 @@ export class WorkspaceCorpusExplorerComponent {
   /**Nodo documentale selezionato */
   selectedNode: TreeNode<CorpusElement> | undefined;
 
-  /**Riferimento al form di aggiunta folder */
+  /**Reference to add folder form */
   addFolderRForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null)
   });
+  /**Getter for name in add folder form */
   get addFolderName() { return this.addFolderRForm.get('name'); }
+  /**Getter for parentFolder in add folder form */
   get addFolderParent() { return this.addFolderRForm.get('parentFolder'); }
+  /**Setter for parentFolder in add folder form */
   set setAddFolderParent(node: TreeNode<CorpusElement>) { this.addFolderRForm.get('parentFolder')?.setValue(node); }
-
+  /**Form to rename a folder */
   renameElementForm = new FormGroup({
     newName: new FormControl<string>('', [Validators.required, whitespacesValidator]),
   });
+  /**Getter for newName in rename folder form */
   get getNewName() { return this.renameElementForm.get('newName'); }
+  /**Setter for newName in rename folder form */
   set setNewName(n: string) { this.getNewName?.setValue(n); }
-
+  /**Form to move and element */
   moveElementForm = new FormGroup({
     targetFolder: new FormControl<TreeNode<CorpusElement> | null>(null),
   });
+  /**Getter for targetFolder in move element form */
   get getTargetFolder() { return this.moveElementForm.get('targetFolder'); }
+  /**Setter for targetFolder in move element form */
   set setTargetFolder(node: TreeNode<CorpusElement>) { this.getTargetFolder?.setValue(node); }
-
+  /**Enum of the type of uploaders available (plain-text) */
   fileUploadTypes = Object.values(FileUploadType);
-
+  /**Form to add a file to corpus */
   uploaderForm = new FormGroup({
     file: new FormControl<File | null>(null, Validators.required),
     fileType: new FormControl<FileUploadType>(FileUploadType.PLAIN),
     splitLine: new FormControl<boolean>(true),
     parentFolder: new FormControl<TreeNode<CorpusElement> | null>(null)
   });
+  /**Getter for file in upload file form */
   get getFile() { return this.uploaderForm.get('file'); }
+  /**Getter for parentFolder in upload file form */
   get getParentFolder() { return this.uploaderForm.get('parentFolder'); }
+  /**Setter for parentFolder in upload file form */
   set setParentFolder(node: TreeNode<CorpusElement>) { this.getParentFolder?.setValue(node); }
+  /**Getter for splitLine in upload file form */
   get getSplitLine() { return this.uploaderForm.get('splitLine'); }
+  /**Setter for splitLine in upload file form */
   set setSplitLine(split: boolean) { this.getSplitLine?.setValue(split) }
 
-  /**Riferimento al popup di conferma cancellazione */
+  /**Reference to cancellation confirmation popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**
-   * Costruttore per WorkspaceCorpusExplorerComponent
-   * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
-   * @param messageService {MessageService} servizi per la gestione dei messaggi
-   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
+   * Costructor for WorkspaceCorpusExplorerComponent
+   * @param loggedUserService {LoggedUserService} services related to logged user
+   * @param messageService {MessageService} services to manage messages
+   * @param msgConfService {MessageConfigurationService} services related to message configuration
+   * @param corpusStateService {CorpusStateService} Corpus state management services
    */
   constructor(
     private loggedUserService: LoggedUserService,
@@ -131,8 +144,8 @@ export class WorkspaceCorpusExplorerComponent {
   ) { }
 
   /**
-   * Metodo che gestisce la selezione di un nodo dell'albero documentale
-   * @param event {any} evento di click su un nodo dell'albero documentale
+   * Method that handles the selection of a node in the document tree
+   * @param event { originalEvent: MouseEvent, node: TreeNode<CorpusElement> } Click event on a node in the document tree
    */
   nodeSelect(event: { originalEvent: MouseEvent, node: TreeNode<CorpusElement> }): void {
     this.clickCount++; //unito al timeout, viene utilizzato per gestire comportamenti diversi per click singolo e doppio click
@@ -151,8 +164,8 @@ export class WorkspaceCorpusExplorerComponent {
   }
 
   /**
-   * Metodo che gestisce l'evento di upload di un file
-   * @param event {any} evento di upload di un file
+   * Method that handles the upload event of a file
+   * @param event {any} upload event of a file
    * @returns {void}
    */
   onFileUpload(event: any): void {
@@ -174,17 +187,17 @@ export class WorkspaceCorpusExplorerComponent {
     this.isFileSizeExceed = false;
   }
 
-  /**Metodo che gestisce il tocco sull'uploader */
+  /**Method that handles touch on the uploader */
   onFileUploaderTouch(): void {
     this.isFileUploaderTouched = true;
   }
 
   /**
-   * Metodo che sottomette il form di aggiunta cartella
+   * Method that submits the add folder form
    * @returns {void}
    */
   onSubmitAddFolderModal(): void {
-    if (this.addFolderRForm.invalid) { //caso di form non valido
+    if (this.addFolderRForm.invalid) { //invalid form
       this.addFolderRForm.markAllAsTouched();
       return;
     }
@@ -212,11 +225,11 @@ export class WorkspaceCorpusExplorerComponent {
   }
 
   /**
-   * Metodo che sottomette l'upload di un file
+   * Method that submits the upload of a file
    * @returns {void}
    */
   onSubmitFileUploaderModal(): void {
-    if (this.uploaderForm.invalid || !this.fileUploaded) { //caso di form non valido o file non caricato
+    if (this.uploaderForm.invalid || !this.fileUploaded) { //invalid form or file not uploaded
       return this.saveUploadFileWithFormErrors();
     }
 
@@ -232,7 +245,7 @@ export class WorkspaceCorpusExplorerComponent {
   }
 
   /**
-   * Metodo che sottomette il form di spostamento di un elemento nel sistema documentale
+   * Method that submits the form of moving an item to the document system
    * @returns {void}
    */
   onSubmitMoveModal(): void {
@@ -256,7 +269,7 @@ export class WorkspaceCorpusExplorerComponent {
   }
 
   /**
-   * Metodo che sottomette il form per rinominare un elemento documentale
+   * Method that submits form to rename a document element
    * @returns {void}
    */
   onSubmitRenameModal(): void {
@@ -287,16 +300,21 @@ export class WorkspaceCorpusExplorerComponent {
 
   }
 
+  /**
+   * Method that handles the opening of the context menu
+   * @param event {{ originalEvent: PointerEvent, node: TreeNode<CorpusElement> }} event right clicking on a tree node
+   */
   onOpenContextMenu(event: { originalEvent: PointerEvent, node: TreeNode<CorpusElement> }) {
     this.generateContextMenu(event.node);
   }
 
+  /**Method that reloads the file system */
   reload(): void {
     this.corpusStateService.refreshFileSystem.next(null);
     this.selectedNode = undefined;
   }
 
-  /**Metodo che gestisce la visualizzazione del form di aggiunta cartella */
+  /**Method that handles the display of the add folder form */
   showAddFolderModal(): void {
     this.addFolderRForm.reset();
 
@@ -311,7 +329,7 @@ export class WorkspaceCorpusExplorerComponent {
     this.visibleAddFolder = true;
   }
 
-  /**Metodo che gestisce la visualizzazione del popup di conferma cancellazione di un elemento documentale */
+  /**Method that handles the display of the delete confirmation popup for a document item */
   showDeleteModal(): void {
     if (this.selectedNode && this.selectedNode.data) {
       const element_id = this.selectedNode.data.id;
@@ -329,7 +347,7 @@ export class WorkspaceCorpusExplorerComponent {
     }
   }
 
-  /**Metodo che gestisce la visualizzazione del modale di spostamento di un elemento documentale */
+  /**Method that handles the display of the modal shift of a document element */
   showMoveModal(): void {
     this.moveElementForm.reset();
     this.folders$ = this.files$.pipe(
@@ -338,7 +356,7 @@ export class WorkspaceCorpusExplorerComponent {
     this.visibleMove = true;
   }
 
-  /**Metodo che gestisce la visualizzazione del modale per rinominare un elemento documentale */
+  /**Method that handles the modal display to rename a document element */
   showRenameModal(): void {
     this.renameElementForm.reset();
 
@@ -349,7 +367,7 @@ export class WorkspaceCorpusExplorerComponent {
     this.visibleRename = true;
   }
 
-  /**Metodo che gestisce la visualizzazione del modale di caricamento di un nuovo file */
+  /**Method that handles the display of the loading modal of a new file */
   showUploadFileModal(): void {
     this.uploaderForm.reset();
     this.folders$ = this.files$.pipe(
@@ -363,6 +381,11 @@ export class WorkspaceCorpusExplorerComponent {
     this.uploaderForm.get('fileType')?.setValue(FileUploadType.PLAIN);
   }
 
+  /**
+   * Method that maps the entire corpus element tree to its folder type elements only
+   * @param nodes {TreeNode<CorpusElement>[]} List of tree nodes representing the corpus
+   * @returns {TreeNode<CorpusElement>[]} List of tree nodes representing folders in the corpus
+   */
   private mapToOnlyFolders(nodes: TreeNode<CorpusElement>[]): TreeNode<CorpusElement>[] {
     const folderTree: TreeNode<CorpusElement>[] = [];
     nodes.forEach(node => {
@@ -380,6 +403,11 @@ export class WorkspaceCorpusExplorerComponent {
     return folderTree;
   }
 
+  /**
+   * Method that maps a list of corpus elements to a list of tree nodes
+   * @param elements {CorpusElement[]} list of corpus elements
+   * @returns {TreeNode<CorpusElement>[]} List of corpus elements as nodes in a tree
+   */
   private mapToTreeNodes(elements: CorpusElement[]): TreeNode<CorpusElement>[] {
     const result: TreeNode<CorpusElement>[] = [];
     elements.forEach(element => {
@@ -388,6 +416,11 @@ export class WorkspaceCorpusExplorerComponent {
     return result;
   }
 
+  /**
+   * Method that maps a corpus element to a tree node representing it
+   * @param element {CorpusElement} single element of the corpus
+   * @returns {TreeNode<CorpusElement>} Single tree node representing an element of the corpus
+   */
   private mapToTreeNode(element: CorpusElement): TreeNode<CorpusElement> {
     const node: TreeNode<CorpusElement> = {};
     if ('children' in element) {
@@ -407,8 +440,8 @@ export class WorkspaceCorpusExplorerComponent {
 
   /**
    * @private
-   * Metodo che produce il menu contestuale customizzato
-   * @param node {TreeNode} nodo dell'albero documentale sul quale è avvenuto il click
+   * Method that produces the custom context menu
+   * @param node {TreeNode} Document tree node on which the click occurred
    * @returns {void}
    */
   private generateContextMenu(node: TreeNode<CorpusElement>): void {
@@ -460,7 +493,7 @@ export class WorkspaceCorpusExplorerComponent {
 
   /**
    * @private
-   * Metodo che segna i campi del form come touched e segnala il mancato caricamento
+   * Method that marks form fields as touched and reports failure to load
    */
   private saveUploadFileWithFormErrors(): void {
     this.uploaderForm.markAllAsTouched();
