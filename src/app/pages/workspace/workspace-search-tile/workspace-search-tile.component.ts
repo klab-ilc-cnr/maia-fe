@@ -102,6 +102,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.search();
   }
 
+  /**set the request filters based on the table ones */
   setColumnFilters(){
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
