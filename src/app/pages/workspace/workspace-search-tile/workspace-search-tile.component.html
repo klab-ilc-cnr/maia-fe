@@ -50,6 +50,7 @@
       [lazy]="true"
       [lazyLoadOnInit]="false"
       (onLazyLoad)="lazyLoadSearchResults($event)"
+      (onPage)="onPage($event)"
       [totalRecords]="totalRecords"
       [(selection)]="selectedSearchResults"
       [rowHover]="true"
@@ -91,22 +92,48 @@
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
                                 class="p-column-filter p-inputtext">
-                        </ng-template></p-columnFilter>
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="text" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false"></p-columnFilter>
+                    <p-columnFilter type="text" field="text" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
+                                class="p-column-filter p-inputtext">
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="textHeader" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false"></p-columnFilter>
+                    <p-columnFilter type="text" field="textHeader" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
+                                class="p-column-filter p-inputtext">
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="leftContext" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false"></p-columnFilter>
+                    <p-columnFilter type="text" field="leftContext" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
+                                class="p-column-filter p-inputtext">
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="kwic" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false"></p-columnFilter>
+                    <p-columnFilter type="text" field="kwic" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
+                                class="p-column-filter p-inputtext">
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="rightContext" matchMode="contains" [showMenu]="false"  [showClearButton]="false" [showClearButton]="false"></p-columnFilter>
+                    <p-columnFilter type="text" field="rightContext" matchMode="contains" [showMenu]="false"  [showClearButton]="false" [showClearButton]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
+                                class="p-column-filter p-inputtext">
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
             </tr>
         </ng-template>

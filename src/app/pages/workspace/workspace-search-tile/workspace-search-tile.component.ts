@@ -53,6 +53,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   totalRecords: number = 0;
   visibleRows: number = 10;
   tableCleared = false;
+  changingPage = false;
 
   @ViewChild('searchInput') searchInput: any;
   @ViewChild('dt') searchResultsTable!: Table;
@@ -74,8 +75,19 @@ export class WorkspaceSearchTileComponent implements OnInit {
       );
   }
 
+  /**handler for page change */
+  onPage(event: any) {
+    this.changingPage = true;
+  }
+
   /**debouce the search on filters input */
   lazyLoadSearchResults(event: any) {
+    if (this.changingPage) {
+      this.changingPage = false;
+      this.lazyLoadSearchResultsDebounced(event);
+      return;
+    }
+
     this.filtersSubject.next(event);
   }
 
@@ -130,7 +142,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     }
 
     this.loading = true;
-    
+
     setTimeout(() => {//FIXME eliminare quando ci sarà il backend
       this.searchService.search(this.searchRequest).subscribe(result => {
         // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
