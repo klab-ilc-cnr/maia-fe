@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card h-100">
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
@@ -43,7 +43,7 @@
         <button pButton type="button" class="p-button-info mx-2">{{'SEARCH.buttons.export'|translate}}</button>
       </div>
     </div>
-    <div class="row over">
+    <div #tableContainer class="row over">
       <p-table #dt 
       dataKey="id"
       [value]="searchResults"
@@ -61,6 +61,8 @@
       [rowsPerPageOptions]="[10,25,50,100,200]" 
       [loading]="loading"
       [paginator]="true"
+      styleClass="p-datatable-gridlines"
+      paginatorDropdownAppendTo="body"
       [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate"
       [filterDelay]="0">
         <ng-template pTemplate="caption">

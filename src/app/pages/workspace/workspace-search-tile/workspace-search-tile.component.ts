@@ -49,7 +49,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   loading: boolean = false;
   selectAll: boolean = false;
   tableContainerHeight: number = window.innerHeight / 2;
-  tableHeaderHegith: number = 270;
+  tableHeaderHegith: number = 265;
   totalRecords: number = 0;
   visibleRows: number = 10;
   tableCleared = false;
@@ -124,14 +124,15 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchRequest.contextLength = this.contextLength;
     this.searchResultsTable.clear();
 
-
-    this.searchService.search(this.searchRequest).subscribe(result => {
-      // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
-      this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
-      this.loading = false;
-      this.totalRecords = result.totalRecords;
-      this.updateTableHeight();
-    });
+    setTimeout(() => {//FIXME eliminare quando ci sarà il backend
+      this.searchService.search(this.searchRequest).subscribe(result => {
+        // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
+        this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
+        this.loading = false;
+        this.totalRecords = result.totalRecords;
+        this.updateTableHeight();
+      });
+    }, 1000);
   }
 
   /**clear function results and data */
@@ -151,7 +152,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**update the table heigth */
   updateTableHeight() {
-    this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith - 10;
+    this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith;
   }
 
   /**init searchMode data */

@@ -8,18 +8,18 @@
   min-inline-size: max-content;
 }
 
-:host ::ng-deep .p-datatable .p-column-resizer {
-  border-right: inset;
-}
-
-:host ::ng-deep .p-treeselect{
+:host ::ng-deep .p-treeselect {
   width: 200px;
 }
 
-:host ::ng-deep .p-selectbutton{
+:host ::ng-deep .p-selectbutton {
   display: flex;
 }
 
-:host ::ng-deep .p-paginator{
+:host ::ng-deep .p-paginator {
   min-width: 650px;
+}
+
+small {
+  max-height: 20px;
 }
