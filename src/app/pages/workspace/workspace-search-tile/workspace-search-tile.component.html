@@ -13,13 +13,13 @@
               [filterInputAutoFocus]="true">
           </p-treeSelect>
 
-          <div class="input-group">
+          <div class="p-inputgroup">
             <span class="p-input-icon-left flex-fill">
               <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
               <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
-              class="w-100"
-              [placeholder]="this.searchLabel"
-              [(ngModel)]="searchValue" />
+                class="w-100"
+                [placeholder]="this.searchLabel"
+                [(ngModel)]="searchValue" />
               <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
                 {{'SEARCH.validSearchValue'|translate}}
               </small>
@@ -43,7 +43,7 @@
         <button pButton type="button" class="p-button-info mx-2">{{'SEARCH.buttons.export'|translate}}</button>
       </div>
     </div>
-    <div class="">
+    <div class="row over">
       <p-table #dt 
       dataKey="id"
       [value]="searchResults"

@@ -1185,7 +1185,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         width: () => window.innerWidth * 0.6
       },
       resizeit: {
-        minWidth: 600,
+        minWidth: 730,
         minHeight: 500,
         resize: (panel: any, paneldata: any, event: any) => {
           componentRef.instance.updateHeight(paneldata.height)

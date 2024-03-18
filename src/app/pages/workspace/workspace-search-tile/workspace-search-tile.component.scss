@@ -11,3 +11,15 @@
 :host ::ng-deep .p-datatable .p-column-resizer {
   border-right: inset;
 }
+
+:host ::ng-deep .p-treeselect{
+  width: 200px;
+}
+
+:host ::ng-deep .p-selectbutton{
+  display: flex;
+}
+
+:host ::ng-deep .p-paginator{
+  min-width: 650px;
+}
