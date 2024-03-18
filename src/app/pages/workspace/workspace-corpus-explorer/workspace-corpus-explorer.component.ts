@@ -6,6 +6,7 @@ import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { FileUploadType } from 'src/app/models/texto/file-upload-type.enum';
+import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -135,12 +136,14 @@ export class WorkspaceCorpusExplorerComponent {
    * @param messageService {MessageService} services to manage messages
    * @param msgConfService {MessageConfigurationService} services related to message configuration
    * @param corpusStateService {CorpusStateService} Corpus state management services
+   * @param commonService {CommonService} services of common features
    */
   constructor(
     private loggedUserService: LoggedUserService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private corpusStateService: CorpusStateService,
+    private commonService: CommonService
   ) { }
 
   /**
@@ -206,7 +209,7 @@ export class WorkspaceCorpusExplorerComponent {
     const folderName = this.addFolderName?.value;
 
     if (!folderName) {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig('Missing data'));
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(this.commonService.translateKey('CORPUS_EXPLORER.missingData')));
       return;
     }
 
@@ -238,7 +241,7 @@ export class WorkspaceCorpusExplorerComponent {
       this.corpusStateService.uploadFile.next({ parentId: (parentId ? parentId : -1), resourceName: this.fileUploaded.name.split('.')[0], file: this.fileUploaded, uploader: this.uploaderForm.get('fileType')?.value ?? FileUploadType.PLAIN, splitLine: this.getSplitLine?.value ?? true });
     }
     else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig("Error loading file"));
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(this.commonService.translateKey('CORPUS_EXPLORER.errorLoadingFile')));
     }
 
     this.visibleUploadFile = false;
