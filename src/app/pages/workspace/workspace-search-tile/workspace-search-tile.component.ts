@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, Subject, debounceTime, of, switchMap, throttleTime } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResult, SearchResultRow } from 'src/app/models/search/search-result';
@@ -57,6 +57,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
   @ViewChild('searchInput') searchInput: any;
   @ViewChild('dt') searchResultsTable!: Table;
 
+  private filtersSubject: Subject<any> = new Subject();
+
   ngOnInit(): void {
     this.corpusStateService.filesystem$.pipe(
       switchMap(docs => of(this.mapToTreeNodes(docs))),
@@ -65,24 +67,26 @@ export class WorkspaceSearchTileComponent implements OnInit {
     });
 
     this.initSearchMode();
+
+    this.filtersSubject.pipe(debounceTime(1000))
+      .subscribe((event) =>
+        this.lazyLoadSearchResultsDebounced(event)
+      );
   }
 
-  loadSearchResults(event: any) {
+  /**debouce the search on filters input */
+  lazyLoadSearchResults(event: any) {
+    this.filtersSubject.next(event);
+  }
+
+  //**executs the lazy load */
+  lazyLoadSearchResultsDebounced(event: any) {
     if (this.tableCleared) {
+      this.tableCleared = false;
       return;
     }
 
-    this.loading = true;
-    setTimeout(() => {//FIXME eliminare quando ci sarà il backend
-      this.searchRequest.start = event.first;
-      this.searchRequest.end = event.first + event.rows;
-      this.searchService.search(this.searchRequest).subscribe(result => {
-        // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
-        this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
-        this.totalRecords = result.totalRecords;
-      })
-      this.loading = false;
-    }, 1000);
+    this.search();
   }
 
   /**
@@ -106,24 +110,27 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**prepare data and send search request */
   onSearch() {
-    this.searchInput.control.markAsTouched();
-    const searchValue = this.searchValue?.trim();
-
-    if (!searchValue) {
-      return;
-    }
-
-    this.loading = true;
-
-    this.tableCleared = false;
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.selectedResourcesIds = this.mapSelectedDocumentsIds();
     this.searchRequest.searchMode = this.selectedSearchMode.code;
-    this.searchRequest.searchValue = searchValue;
+    this.searchRequest.searchValue = this.searchValue?.trim();;
     this.searchRequest.contextLength = this.contextLength;
-    this.searchResultsTable.clear();
+    this.clearTable();
 
+    this.search();
+  }
+
+  /**validate inputs and start the search */
+  search() {
+    this.searchInput.control.markAsTouched();
+
+    if (!this.searchRequest.searchValue) {
+      return;
+    }
+
+    this.loading = true;
+    
     setTimeout(() => {//FIXME eliminare quando ci sarà il backend
       this.searchService.search(this.searchRequest).subscribe(result => {
         // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
@@ -135,24 +142,41 @@ export class WorkspaceSearchTileComponent implements OnInit {
     }, 1000);
   }
 
+  /**clears table and prevent triggering lazy loading multiple times */
+  clearTable() {
+    this.searchResultsTable.clear();
+    this.tableCleared = true;
+  }
+
+  /**reset table and prevent triggering lazy loading */
+  resetTable() {
+    this.searchResultsTable.reset();
+    this.tableCleared = true;
+  }
+
   /**clear function results and data */
   onClear() {
     this.searchRequest = new SearchRequest();
     this.searchResults = [];
     this.totalRecords = 0;
-    this.tableCleared = true;
     this.selectedSearchResults = [];
     this.selectedDocuments = [];
     this.searchValue = '';
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
-    this.searchResultsTable.reset();
+    this.resetTable();
     this.updateTableHeight();
   }
 
   /**update the table heigth */
   updateTableHeight() {
     this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith;
+  }
+
+  /**used for casting table filters of type input */
+  toHtmlInputElement(target: EventTarget | null): HTMLInputElement {
+    this.searchInput.control.markAsTouched();
+    return target as HTMLInputElement;
   }
 
   /**init searchMode data */
