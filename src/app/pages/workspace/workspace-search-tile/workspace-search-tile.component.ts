@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TreeNode } from 'primeng/api';
+import { FilterMetadata, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap, throttleTime } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -98,7 +98,17 @@ export class WorkspaceSearchTileComponent implements OnInit {
       return;
     }
 
+    this.setColumnFilters();
     this.search();
+  }
+
+  setColumnFilters(){
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
 
   /**
@@ -125,10 +135,11 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.selectedResourcesIds = this.mapSelectedDocumentsIds();
-    this.searchRequest.searchMode = this.selectedSearchMode.code;
-    this.searchRequest.searchValue = this.searchValue?.trim();;
-    this.searchRequest.contextLength = this.contextLength;
+    this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
+    this.searchRequest.filters.searchValue = this.searchValue?.trim();;
+    this.searchRequest.filters.contextLength = this.contextLength;
     this.clearTable();
+    this.setColumnFilters();
 
     this.search();
   }
@@ -137,7 +148,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   search() {
     this.searchInput.control.markAsTouched();
 
-    if (!this.searchRequest.searchValue) {
+    if (!this.searchRequest.filters.searchValue) {
       return;
     }
 
