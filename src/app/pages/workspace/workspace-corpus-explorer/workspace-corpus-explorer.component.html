@@ -1,28 +1,32 @@
 <div class="button-group-actions mb-3">
-  <button class="btn btn-outline-success rounded-circle" pTooltip="Upload file" tooltipPosition="bottom"
-    (click)="showUploadFileModal()">
+  <button type="button" aria-label="Upload file" class="btn btn-outline-success rounded-circle"
+    [pTooltip]="'CORPUS_EXPLORER.uploadFileTitle'|translate" tooltipPosition="bottom" (click)="showUploadFileModal()">
     <app-icon-upload-file style="margin-right: 0.3rem"></app-icon-upload-file>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" pTooltip="Add folder" tooltipPosition="bottom"
-    (click)="showAddFolderModal()">
+  <button type="button" aria-label="Add folder" class="btn btn-outline-primary rounded-circle"
+    [pTooltip]="'CORPUS_EXPLORER.addFolderTitle'|translate" tooltipPosition="bottom" (click)="showAddFolderModal()">
     <app-icon-add-folder></app-icon-add-folder>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" pTooltip="Rename" tooltipPosition="bottom"
-    (click)="showRenameModal()" [disabled]="!selectedNode">
+  <button type="button" aria-label="Rename" class="btn btn-outline-primary rounded-circle"
+    [pTooltip]="'CORPUS_EXPLORER.renameTitle'|translate" tooltipPosition="bottom" (click)="showRenameModal()"
+    [disabled]="!selectedNode">
     <app-icon-rename></app-icon-rename>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" pTooltip="Move" tooltipPosition="bottom"
-    (click)="showMoveModal()" [disabled]="!selectedNode">
+  <button type="button" aria-label="Move" class="btn btn-outline-primary rounded-circle"
+    [pTooltip]="'CORPUS_EXPLORER.moveTitle'|translate" tooltipPosition="bottom" (click)="showMoveModal()"
+    [disabled]="!selectedNode">
     <!-- <app-icon-move></app-icon-move> -->
     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="20" viewBox="0 -960 960 960" width="20">
       <path
         d="m493-293 147-147-147-147-42 42 75 75H320v60h206l-75 75 42 42ZM141-160q-24 0-42-18.5T81-220v-520q0-23 18-41.5t42-18.5h280l60 60h340q23 0 41.5 18.5T881-680v460q0 23-18.5 41.5T821-160H141Zm0-580v520h680v-460H456l-60-60H141Zm0 0v520-520Z" />
     </svg>
   </button>
-  <button class="btn btn-outline-primary rounded-circle" pTooltip="Refresh" tooltipPosition="bottom" (click)="reload()">
+  <button type="button" aria-label="Refresh" class="btn btn-outline-primary rounded-circle"
+    [pTooltip]="'CORPUS_EXPLORER.refreshBtn'|translate" tooltipPosition="bottom" (click)="reload()">
     <app-icon-move></app-icon-move>
   </button>
-  <button *ngIf="shouldDeleteBeDisplayed" class="btn btn-outline-danger rounded-circle" pTooltip="Delete"
+  <button type="button" aria-label="Delete" *ngIf="shouldDeleteBeDisplayed"
+    class="btn btn-outline-danger rounded-circle" [pTooltip]="'CORPUS_EXPLORER.deleteBtn'|translate"
     tooltipPosition="bottom" (click)="showDeleteModal()">
     <i class="pi pi-trash"></i>
   </button>
@@ -40,44 +44,56 @@
 
 <p-contextMenu #cm appendTo="body" [model]="items"></p-contextMenu>
 
-<p-dialog header="Upload file" class="modal" [(visible)]="visibleUploadFile" [modal]="true"
-  [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
+<p-dialog [header]="'CORPUS_EXPLORER.uploadFileTitle'|translate" class="modal" [(visible)]="visibleUploadFile"
+  [modal]="true" [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body" *ngIf="visibleUploadFile">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form (ngSubmit)="onSubmitFileUploaderModal()" [formGroup]="uploaderForm" id="fileUploaderForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Select file *</label>
+            <label class="form-label">{{'CORPUS_EXPLORER.selectFile'|translate}} *</label>
             <!--TODO temporaneamente rimossi i formati accettati , .xml, .reg, .bat, .pls, .m3u, .m3u8, .srt, .ies, .air, .stp, .xspf, .dix, .sfm, .theme, .torrent-->
             <input type="file" class="form-control"
               [ngClass]="{'is-invalid': !isFileUploaded && (isFileUploaderTouched || isFileSizeExceed)}"
               aria-label="file example" id="fileUploader" accept="text/plain" formControlName="file"
               (change)="onFileUpload($event)" (click)="onFileUploaderTouch()" />
             <div *ngIf="!isFileUploaded && isFileUploaderTouched" class="invalid-feedback">
-              Need to select a plain text file
+              {{'CORPUS_EXPLORER.plainTextErrorMsg'|translate}}
             </div>
             <div *ngIf="!isFileUploaded && isFileSizeExceed" class="invalid-feedback">
-              File size exceeds the allowed 10MB
+              {{'CORPUS_EXPLORER.fileExceedsSizeErrorMsg'|translate}}
             </div>
           </div>
+          <div class="form-group row">
+            <span class="col-6">
+              <label class="form-label w-100">{{'CORPUS_EXPLORER.uploaderType'|translate}}</label>
+              <p-dropdown formControlName="fileType" styleClass="w-100" [options]="fileUploadTypes"></p-dropdown>
+            </span>
+            <span class="col-6">
+              <label class="form-label w-100">{{'CORPUS_EXPLORER.splitOnNewLine'|translate}}</label>
+              <p-inputSwitch formControlName="splitLine"></p-inputSwitch>
+            </span>
+          </div>
           <div class="form-group">
-            <label class="form-label">Select folder *</label>
+            <label class="form-label">{{'CORPUS_EXPLORER.selectFolder'|translate}} *</label>
             <div class="p-fluid">
-              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]" [showClear]="true"
-                placeholder="Select folder" appendTo="body"></p-treeSelect>
+              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]"
+                [showClear]="true" [placeholder]="'CORPUS_EXPLORER.rootFolder'|translate"
+                appendTo="body"></p-treeSelect>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <div class="w-full mb-4">
-            <em>Check that the file uses UTF-8 encoding</em>
+            <em>{{'CORPUS_EXPLORER.checkFileEncoding'|translate}}</em>
           </div>
           <div>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
               (click)="visibleUploadFile = false;">
-              Annulla
+              {{'GENERAL.cancel'|translate}}
             </button>
-            <button type="submit" class="btn btn-primary" [disabled]="uploaderForm.invalid || (!isFileUploaded && (isFileUploaderTouched || isFileSizeExceed))">Conferma</button>
+            <button type="submit" class="btn btn-primary"
+              [disabled]="uploaderForm.invalid || (!isFileUploaded && (isFileUploaderTouched || isFileSizeExceed))">{{'GENERAL.confirm'|translate}}</button>
           </div>
         </div>
       </form>
@@ -85,61 +101,61 @@
   </div>
 </p-dialog>
 
-<p-dialog header="Add folder" class="modal" [(visible)]="visibleAddFolder" [modal]="true"
+<p-dialog [header]="'CORPUS_EXPLORER.addFolderTitle'|translate" class="modal" [(visible)]="visibleAddFolder" [modal]="true"
   [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form (ngSubmit)="onSubmitAddFolderModal()" [formGroup]="addFolderRForm" id="addFolderForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">New folder name *</label>
+            <label class="form-label">{{'CORPUS_EXPLORER.newFolderName'|translate}} *</label>
             <input formControlName="name" type="text" name="name" class="form-control" maxlength="300"
               placeholder="New folder name">
             <div *ngIf="addFolderName?.invalid" class="invalid-feedback">
               <div *ngIf="addFolderName?.errors?.['required']">
-                New folder name required
+                {{'CORPUS_EXPLORER.newFolderNameRequired'|translate}}
               </div>
               <div *ngIf="addFolderName?.errors?.['isNotOnlyWhitespaces']">
-                The name of the new folder cannot contain only blanks
+                {{'CORPUS_EXPLORER.newFolderNameNotBlanks'|translate}}
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Select folder</label>
+            <label class="form-label">{{'CORPUS_EXPLORER.selectFolder'|translate}}</label>
             <div class="p-fluid">
               <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async) || []" [showClear]="true"
-                placeholder="Select folder" appendTo="body"></p-treeSelect>
+                [placeholder]="'CORPUS_EXPLORER.rootFolder'|translate" appendTo="body"></p-treeSelect>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
             (click)="visibleAddFolder = !visibleAddFolder;">
-            Cancel
+            {{'GENERAL.cancel'|translate}}
           </button>
-          <button type="submit" class="btn btn-primary" [disabled]="addFolderRForm.invalid">Confirm</button>
+          <button type="submit" class="btn btn-primary" [disabled]="addFolderRForm.invalid">{{'GENERAL.confirm'|translate}}</button>
         </div>
       </form>
     </div>
   </div>
 </p-dialog>
 
-<p-dialog header="Rename" class="modal" [(visible)]="visibleRename" [modal]="true"
+<p-dialog [header]="'CORPUS_EXPLORER.renameTitle'|translate" class="modal" [(visible)]="visibleRename" [modal]="true"
   [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form (ngSubmit)="onSubmitRenameModal()" [formGroup]="renameElementForm" id="renameForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">New name *</label>
+            <label class="form-label">{{'CORPUS_EXPLORER.newName'|translate}} *</label>
             <input formControlName="newName" type="text" name="newElementName" class="form-control" maxlength="300"
               placeholder="New name">
             <div *ngIf="getNewName?.invalid && (getNewName?.touched || getNewName?.dirty)" class="invalid-feedback">
               <div *ngIf="getNewName?.errors?.['required']">
-                New name required
+                {{'CORPUS_EXPLORER.newNameRequired'|translate}}
               </div>
               <div *ngIf="getNewName?.errors?.['isNotOnlyWhitespaces']">
-                The new name cannot contain only blanks
+                {{'CORPUS_EXPLORER.newNameNotBlanks'|translate}}
               </div>
             </div>
           </div>
@@ -147,34 +163,34 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
             (click)="visibleRename = !visibleRename">
-            Cancel
+            {{'GENERAL.cancel'|translate}}
           </button>
-          <button type="submit" class="btn btn-primary" [disabled]="renameElementForm.invalid">Confirm</button>
+          <button type="submit" class="btn btn-primary" [disabled]="renameElementForm.invalid">{{'GENERAL.confirm'|translate}}</button>
         </div>
       </form>
     </div>
   </div>
 </p-dialog>
 
-<p-dialog header="Move" class="modal" [(visible)]="visibleMove" [modal]="true"
+<p-dialog [header]="'CORPUS_EXPLORER.moveTitle'|translate" class="modal" [(visible)]="visibleMove" [modal]="true"
   [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form (ngSubmit)="onSubmitMoveModal()" [formGroup]="moveElementForm" id="moveForm" class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Select a target folder</label>
+            <label class="form-label">{{'CORPUS_EXPLORER.selectTargetFolder'|translate}}</label>
             <div class="p-fluid">
               <p-treeSelect name="targetFolder" formControlName="targetFolder" [options]="(folders$ | async) || []" [showClear]="true"
-                placeholder="Select folder" appendTo="body"></p-treeSelect>
+                [placeholder]="'CORPUS_EXPLORER.rootFolder'|translate" appendTo="body"></p-treeSelect>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="visibleMove = !visibleMove;">
-            Cancel
+            {{'GENERAL.cancel'|translate}}
           </button>
-          <button type="submit" class="btn btn-primary" [disabled]="moveElementForm.invalid">Confirm</button>
+          <button type="submit" class="btn btn-primary" [disabled]="moveElementForm.invalid">{{'GENERAL.confirm'|translate}}</button>
         </div>
       </form>
     </div>
