@@ -981,7 +981,7 @@ export class AnnotationService {
   public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable&lt;PaginatedResponse&gt; { //NOTE Will change the signature, it will not be list of strings but json
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;PaginatedResponse&gt;(
-      &#x60;${this.textoUrl}/resource/${textId}/rows&#x60;,
+      &#x60;${this.textoUrl}/util/resource/${textId}/rows&#x60;,
       slice,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }),
@@ -998,7 +998,7 @@ export class AnnotationService {
   public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable&lt;TAnnotation[]&gt; {
     const uuid &#x3D; uuidv4();
     return this.http.post&lt;TAnnotation[]&gt;(
-      &#x60;${this.textoUrl}/resource/${resourceId}/annotations&#x60;,
+      &#x60;${this.textoUrl}/util/resource/${resourceId}/annotations&#x60;,
       slice,
       {
         headers: new HttpHeaders({ &#x27;UUID&#x27;: uuid }),

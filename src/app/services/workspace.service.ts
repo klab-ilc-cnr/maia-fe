@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { ElementType } from '../models/corpus/element-type';
 import { CorpusElement, FolderElement, ResourceElement } from '../models/texto/corpus-element';
+import { FileUploadType } from '../models/texto/file-upload-type.enum';
 import { Section } from '../models/texto/section';
 import { TextChoice } from '../models/tile/text-choice-element.model';
 import { TextTileContent } from '../models/tile/text-tile-content.model';
@@ -190,12 +191,20 @@ export class WorkspaceService {
   //   return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
   // }
 
-  public uploadFile(resourceId: number, file: File) {
+  /**
+   * Executes the http request to load a new file into the corpus
+   * @param resourceId {number} resource identifier
+   * @param file {File} file to be uploaded
+   * @param uploader {FileUploadType} type of uploader needed (marked, plain, etc)
+   * @param splitLine {boolean} defines whether to split on new line
+   * @returns {Observable<Object>}
+   */
+  public uploadFile(resourceId: number, file: File, uploader: FileUploadType, splitLine: boolean) {
     const uuid = uuidv4();
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(
-      `${this.textoUrl}/resource/${resourceId}/upload`,
+      `${this.textoUrl}/resource/${resourceId}/upload?uploader=${uploader}&splitline=${splitLine}`,
       formData,
       {
         headers: new HttpHeaders({ 'UUID': uuid })

@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Subject, catchError, merge, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 import { ElementType } from '../models/corpus/element-type';
 import { FolderElement } from '../models/texto/corpus-element';
+import { FileUploadType } from '../models/texto/file-upload-type.enum';
 import { MessageConfigurationService } from './message-configuration.service';
 import { WorkspaceService } from './workspace.service';
 
@@ -23,7 +24,7 @@ export class CorpusStateService {
   /**Subject to move an element in the file system */
   moveElement = new Subject<{ elementType: ElementType, elementId: number, targetId: number }>();
   /**Subject to upload a file to the file system */
-  uploadFile = new Subject<{ parentId: number, resourceName: string, file: File }>();
+  uploadFile = new Subject<{ parentId: number, resourceName: string, file: File, uploader: FileUploadType, splitLine: boolean }>();
   /**Subject to remove an element from the file system */
   removeElement = new Subject<{ elementType: ElementType, elementId: number }>();
   /**Observable of the file system as corpus element list */
@@ -64,7 +65,7 @@ export class CorpusStateService {
     ),
     this.uploadFile.pipe(
       switchMap(req => this.workspaceService.addElement(ElementType.RESOURCE, req.parentId < 0 ? this.textoUserRootFolder.id : req.parentId, req.resourceName, this.textoCurrentUserId).pipe(
-        switchMap(resp => this.workspaceService.uploadFile(resp.id, req.file).pipe(
+        switchMap(resp => this.workspaceService.uploadFile(resp.id, req.file, req.uploader, req.splitLine).pipe(
           tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.resourceName} uploaded`))),
           catchError((error: HttpErrorResponse) => {
             this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.resourceName} uploading failed: ${error.error.message}`));
