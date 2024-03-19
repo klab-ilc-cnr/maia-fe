@@ -258,7 +258,7 @@ export class WorkspaceCorpusExplorerComponent {
     }
 
     if (this.selectedNode?.data?.id === this.getTargetFolder?.value?.data?.id) {
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig(`You cannot move the folder ${this.selectedNode?.label} within itself`));
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey('CORPUS_EXPLORER.cannotMoveFolder').replace('${folderName}', (this.selectedNode?.label ?? ''))));
       return;
     }
 
@@ -284,12 +284,12 @@ export class WorkspaceCorpusExplorerComponent {
     const newName = this.getNewName?.value;
 
     if (!newName) {
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig('New name missing'));
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey('CORPUS_EXPLORER.newNameMissing')));
       return;
     }
 
     if (newName === this.selectedNode?.label) {
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig('New name is equal to current name'));
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey('CORPUS_EXPLORER.newNameEquals')));
       return;
     }
     const elementType = this.selectedNode!.data!.type;
@@ -338,12 +338,7 @@ export class WorkspaceCorpusExplorerComponent {
       const element_id = this.selectedNode.data.id;
       const name = this.selectedNode.label || "";
       const type = this.selectedNode.data.type;
-
-      let confirmMsg = `You are about to delete the ${name} folder`;
-      if (type == ElementType.RESOURCE) {
-        confirmMsg = `You are about to delete the ${name} file`;
-      }
-
+      const confirmMsg = this.commonService.translateKey('CORPUS_EXPLORER.deleteMsg').replace('${elementName}', name);
       this.popupDeleteItem.confirmMessage = confirmMsg;
 
       this.popupDeleteItem.showDeleteConfirm(() => this.deleteElement(element_id, type), element_id, type);
@@ -449,7 +444,7 @@ export class WorkspaceCorpusExplorerComponent {
    */
   private generateContextMenu(node: TreeNode<CorpusElement>): void {
     const menuAddFolder = {
-      label: 'Add folder',
+      label: this.commonService.translateKey('CORPUS_EXPLORER.addFolderTitle'),
       icon: 'fa-solid fa-folder-plus',
       command: (event: any) => {
         console.info('add folder event', event)
@@ -463,14 +458,14 @@ export class WorkspaceCorpusExplorerComponent {
 
     cmItems.push(...[
       {
-        label: 'Move',
+        label: this.commonService.translateKey('CORPUS_EXPLORER.moveTitle'),
         icon: 'fa-solid fa-sync',
         command: (event: any) => {
           this.showMoveModal()
         }
       },
       {
-        label: 'Delete',
+        label: this.commonService.translateKey('CORPUS_EXPLORER.deleteBtn'),
         icon: 'pi pi-trash',
         command: (event: any) => {
           this.showDeleteModal()
@@ -479,7 +474,7 @@ export class WorkspaceCorpusExplorerComponent {
     ]);
 
     const menuRename = {
-      label: 'Rename',
+      label: this.commonService.translateKey('CORPUS_EXPLORER.renameTitle'),
       icon: 'fa-solid fa-pen',
       command: (event: any) => {
         this.showRenameModal()
