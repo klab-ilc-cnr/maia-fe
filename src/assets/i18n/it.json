@@ -91,6 +91,8 @@
         "numberOfResults": "Numero di risultati",
         "selected": "Selezionati",
         "selectFile": "Seleziona file",
+        "exportAll": "Esporta tutto",
+        "exportSelected": "Esporta selezionati",
         "columns": {
             "index": "Indice",
             "text": "Testo",

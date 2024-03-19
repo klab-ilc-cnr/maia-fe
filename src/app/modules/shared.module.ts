@@ -50,6 +50,7 @@ import { UriValidator } from '../validators/uri-validator.directive';
 import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
 import { InputTextModule } from 'primeng/inputtext';
 import {SliderModule} from 'primeng/slider';
+import {SplitButtonModule} from 'primeng/splitbutton';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -90,7 +91,8 @@ const PRIMENG_MODULES = [
   PaginatorModule,
   PasswordModule,
   InputTextModule,
-  SliderModule
+  SliderModule,
+  SplitButtonModule
 ];
 
 const DIRECTIVES = [

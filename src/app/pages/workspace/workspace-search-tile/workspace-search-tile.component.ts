@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FilterMetadata, TreeNode } from 'primeng/api';
+import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap, throttleTime } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -55,6 +55,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   tableCleared = false;
   changingPage = false;
 
+  /**export button items */
+  exportItems!: MenuItem[];
+
   @ViewChild('searchInput') searchInput: any;
   @ViewChild('dt') searchResultsTable!: Table;
 
@@ -73,6 +76,24 @@ export class WorkspaceSearchTileComponent implements OnInit {
       .subscribe((event) =>
         this.lazyLoadSearchResultsDebounced(event)
       );
+
+    this.initExportMenuItems();
+  }
+
+  //**init for export menu button */
+  initExportMenuItems() {
+    this.exportItems = [
+      {
+        label: this.commonService.translateKey('SEARCH.exportAll'), command: () => {
+          // this.exportAll();
+        }
+      },
+      {
+        label: this.commonService.translateKey('SEARCH.exportSelected'), command: () => {
+          // this.exportSelected();
+        }
+      }
+    ];
   }
 
   /**handler for page change */
@@ -103,7 +124,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   }
 
   /**set the request filters based on the table ones */
-  setColumnFilters(){
+  setColumnFilters() {
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
