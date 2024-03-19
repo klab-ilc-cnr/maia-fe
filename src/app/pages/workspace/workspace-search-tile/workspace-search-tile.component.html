@@ -93,7 +93,7 @@
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="index" matchMode="contains" [showMenu]="false" [showClearButton]="false">
+                    <p-columnFilter type="text" field="index" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
                                 class="p-column-filter p-inputtext">
@@ -101,7 +101,7 @@
                     </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="text" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                    <p-columnFilter type="text" field="text" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
                                 class="p-column-filter p-inputtext">
@@ -109,7 +109,7 @@
                     </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="textHeader" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                    <p-columnFilter type="text" field="textHeader" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
                                 class="p-column-filter p-inputtext">
@@ -117,7 +117,7 @@
                     </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="leftContext" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                    <p-columnFilter type="text" field="leftContext" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
                                 class="p-column-filter p-inputtext">
@@ -125,7 +125,7 @@
                     </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="kwic" matchMode="contains" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
+                    <p-columnFilter type="text" field="kwic" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
                                 class="p-column-filter p-inputtext">
@@ -133,7 +133,7 @@
                     </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="rightContext" matchMode="contains" [showMenu]="false"  [showClearButton]="false" [showClearButton]="false">
+                    <p-columnFilter type="text" field="rightContext" matchMode="contains" class="w-100" [showMenu]="false"  [showClearButton]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
                                 class="p-column-filter p-inputtext">
@@ -156,14 +156,18 @@
                 <td>
                     {{searchResult.textHeader}}
                 </td>
-                <td>
-                    {{searchResult.leftContext}}
+                <td class="justify-content-end">
+                    <div class="leftContext">
+                        {{searchResult.leftContext}}
+                    </div>
                 </td>
-                <td>
+                <td class="justify-content-center">
                     <b>{{searchResult.kwic}}</b>
                 </td>
-                <td>
-                    {{searchResult.rightContext}}
+                <td class="rightContext justify-content-start">
+                    <div class="rightContext">
+                        {{searchResult.rightContext}}
+                    </div>
                 </td>
             </tr>
         </ng-template>

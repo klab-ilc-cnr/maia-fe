@@ -23,3 +23,16 @@
 small {
   max-height: 20px;
 }
+
+.leftContext {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  direction: rtl;
+}
+
+.rightContext {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
