@@ -8,6 +8,7 @@ import { SearchResult, SearchResultRow } from 'src/app/models/search/search-resu
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { SearchService } from 'src/app/services/search.service';
 
 /**selectButton model for search mode*/
@@ -26,7 +27,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   constructor(private corpusStateService: CorpusStateService,
     private searchService: SearchService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private loaderService: LoaderService) { }
 
   /**initial panel size */
   currentPanelHeight: number = 500;
@@ -98,12 +100,36 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /** esports all the rows */
   exportAll() {
-    this.searchService.exportAll().subscribe();
+    this.loaderService.show();
+
+    this.searchService.exportAll().subscribe({
+      next: (document) => {
+        this.loaderService.hide();
+        (window as any)["saveAs"](
+          document,
+          `${this.commonService.translateKey('SEARCH.exportAllFileName')}.xlsx`
+        );
+      },
+      error: (error) => {
+        this.loaderService.hide();
+      },
+    });
   }
 
   /**esports only the selected rows */
   exportSelected() {
-    this.searchService.exportSelected(this.selectedSearchResults.map(e => e.id)).subscribe();
+    this.searchService.exportSelected(this.selectedSearchResults.map(e => e.id)).subscribe({
+      next: (document) => {
+        this.loaderService.hide();
+        (window as any)["saveAs"](
+          document,
+          `${this.commonService.translateKey('SEARCH.exportSelectedFileName')}.xlsx`
+        );
+      },
+      error: (error) => {
+        this.loaderService.hide();
+      },
+    });
   }
 
   /**handler for page change */

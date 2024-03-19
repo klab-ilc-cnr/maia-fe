@@ -93,6 +93,8 @@
         "selectFile": "Select file",
         "exportAll": "Export all",
         "exportSelected": "Export selected",
+        "exportSelectedFileName": "export_selected",
+        "exportAllFileName": "export_all",
         "columns": {
             "index": "Index",
             "text": "Text",
