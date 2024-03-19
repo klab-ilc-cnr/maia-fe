@@ -85,15 +85,25 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.exportItems = [
       {
         label: this.commonService.translateKey('SEARCH.exportAll'), command: () => {
-          // this.exportAll();
+          this.exportAll();
         }
       },
       {
         label: this.commonService.translateKey('SEARCH.exportSelected'), command: () => {
-          // this.exportSelected();
+          this.exportSelected();
         }
       }
     ];
+  }
+
+  /** esports all the rows */
+  exportAll() {
+    this.searchService.exportAll().subscribe();
+  }
+
+  /**esports only the selected rows */
+  exportSelected() {
+    this.searchService.exportSelected(this.selectedSearchResults.map(e => e.id)).subscribe();
   }
 
   /**handler for page change */
