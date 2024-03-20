@@ -1,0 +1,38 @@
+.center-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slider-input {
+  min-inline-size: max-content;
+}
+
+:host ::ng-deep .p-treeselect {
+  width: 200px;
+}
+
+:host ::ng-deep .p-selectbutton {
+  display: flex;
+}
+
+:host ::ng-deep .p-paginator {
+  min-width: 650px;
+}
+
+small {
+  max-height: 20px;
+}
+
+.leftContext {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  direction: rtl;
+}
+
+.rightContext {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

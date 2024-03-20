@@ -216,17 +216,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         command: (event) => { this.openLexiconPanel(event) }
       },
       {
+        label: 'Ontology',
+        // items: [
+        //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
+        //   { label: 'Ontologia 2' },
+        //   { label: 'Ontologia 3' }
+        // ]
+      },
+      {
         label: 'Search',
         command: (event) => { this.openSearchPanel(event) }
       }
-      // {
-      //   label: 'Ontology',
-      //   // items: [
-      //   //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
-      //   //   { label: 'Ontologia 2' },
-      //   //   { label: 'Ontologia 3' }
-      //   // ]
-      // },
       // {
       //   label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
       // }
@@ -235,8 +235,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
       } */
     ];
-    if (!environment.demoHide) {
-      this.items.push({ label: 'Ontology' });
+    if (environment.demoHide) {
+      this.items.splice(2, 1); /**remove ontology from menu */
     }
 
     this.activeRoute.paramMap.pipe(
@@ -601,55 +601,54 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     lexiconEditTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
-    /**
-   * Opens the search tile
-   * @param event {any}
-   * @returns {void}
-   */
-    openSearchPanel(event: any) {
-      const searchPanelId = 'searchTile'
-  
-      const panelExist = jsPanel.getPanels().find(
-        (x: { id: string; }) => x.id === searchPanelId
-      );
-  
-      if (panelExist) {
-        panelExist.front()
-        return;
-      }
-  
-      const result = this.generateSearchPanelConfiguration(searchPanelId);
-  
-      const searchTileConfig = result.panelConfig;
-  
-      const searchTileElement = jsPanel.create(searchTileConfig);
-      searchTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
-      searchTileElement.titlebar.style.fontSize = '14px'
-  
-  
-      searchTileElement
-        .resize({
-          height: window.innerHeight / 2
-        })
-        .reposition();
-  
-      const { content, ...text } = searchTileConfig;
-  
-      searchTileConfig.content = undefined;
-  
-      const tileObject: Tile<SearchTileContent> = {
-        id: undefined,
-        workspaceId: this.workspaceId,
-        content: undefined,
-        tileConfig: searchTileConfig,
-        type: TileType.SEARCH
-      };
-  
-  
-      searchTileElement.addToTileMap(tileObject);
-      searchTileElement.addComponentToList(result.id, result.component, result.tileType);
+  /**
+ * Opens the search tile
+ * @param event {any}
+ * @returns {void}
+ */
+  openSearchPanel(event: any) {
+    const searchPanelId = 'searchTile'
+
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === searchPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
     }
-  
+
+    const result = this.generateSearchPanelConfiguration(searchPanelId);
+
+    const searchTileConfig = result.panelConfig;
+
+    const searchTileElement = jsPanel.create(searchTileConfig);
+    searchTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    searchTileElement.titlebar.style.fontSize = '14px'
+
+    searchTileElement
+      .resize({
+        height: 500
+      })
+      .reposition();
+
+    const { content, ...text } = searchTileConfig;
+
+    searchTileConfig.content = undefined;
+
+    const tileObject: Tile<SearchTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: searchTileConfig,
+      type: TileType.SEARCH
+    };
+
+
+    searchTileElement.addToTileMap(tileObject);
+    searchTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
 
   /**
    * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
@@ -1183,11 +1182,34 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.5,
-        height: '60vh'
+        width: () => window.innerWidth * 0.6
       },
       resizeit: {
-        minWidth: 600
+        minWidth: 730,
+        minHeight: 500,
+        resize: (panel: any, paneldata: any, event: any) => {
+          componentRef.instance.updateHeight(paneldata.height)
+        }
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.SEARCH);
