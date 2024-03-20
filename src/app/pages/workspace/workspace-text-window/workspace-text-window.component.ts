@@ -187,6 +187,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   currentTextoUserId!: number;
   currentResource!: ResourceElement;
 
+  /**starting row index */
+  startingRowIndex!: number;
+
   /**
    * Costruttore per WorkspaceTextWindowComponent
    * @param annotationService {AnnotationService} servizi relativi alle annotazioni
@@ -214,6 +217,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!this.textId) {
       return;
     }
+
+    this.startingRowIndex = this.startingRowIndex ?? 0;
 
     this.scrollingSubject.pipe(throttleTime(200)).subscribe(value => this.updateTextRowsView(value));
 
@@ -243,7 +248,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.textRowsWideness = this.textRowsRangeWidenessPredictor();
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
-    this.textRange = new TextRange(0, this.textRowsWideness);
+    this.textRange = new TextRange(this.startingRowIndex, this.textRowsWideness);
     this.precTextRange = this.textRange.clone();
     let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
     this.loadData(requestRange.start, requestRange.end);

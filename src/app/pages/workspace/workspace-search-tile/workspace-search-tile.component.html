@@ -40,7 +40,6 @@
         <button pButton type="button" (click)="onSearch()" class="mx-2">{{'SEARCH.buttons.search'|translate}}</button>
         <button pButton type="button" (click)="onClear()" class="p-button-secondary mx-2">{{'SEARCH.buttons.clear'|translate}}</button>
         <button disabled pButton type="button" class="p-button-help mx-2">{{'SEARCH.buttons.saveAs'|translate}}</button>
-        <!-- <button pButton type="button" class="p-button-info mx-2">{{'SEARCH.buttons.export'|translate}}</button> -->
         <p-splitButton appendTo="body" 
             label="{{'SEARCH.buttons.export'|translate}}"
             [model]="exportItems" 
@@ -143,7 +142,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-searchResult>
-            <tr class="p-selectable-row">
+            <tr class="p-selectable-row" (dblclick)="tableRowDoubleClickHandler($event, searchResult)">
                 <td>
                     <p-tableCheckbox [value]="searchResult"></p-tableCheckbox>
                 </td>

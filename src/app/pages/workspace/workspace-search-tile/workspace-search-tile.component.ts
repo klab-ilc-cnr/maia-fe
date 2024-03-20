@@ -98,7 +98,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
     ];
   }
 
-  /** esports all the rows */
+  /**manages double click on a table row */
+  tableRowDoubleClickHandler(event: any, rowNode: any) {
+    this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode] });
+  }
+
+  /** exports all the rows */
   exportAll() {
     this.loaderService.show();
 
@@ -116,7 +121,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     });
   }
 
-  /**esports only the selected rows */
+  /**exports only the selected rows */
   exportSelected() {
     this.searchService.exportSelected(this.selectedSearchResults.map(e => e.id)).subscribe({
       next: (document) => {

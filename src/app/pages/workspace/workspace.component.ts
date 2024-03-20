@@ -27,6 +27,7 @@ import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspac
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
 import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
+import { SearchResult, SearchResultRow } from 'src/app/models/search/search-result';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -189,10 +190,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.commonService.notifyObservable$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
-      if ('option' in res && res.option === 'onLexiconTreeElementDoubleClickEvent') {
-        const selectedSubTree = structuredClone(res.value[0]);
-        const showLabelName = structuredClone(res.value[1]);
-        this.openLexiconEditTile(selectedSubTree, showLabelName);
+      if ('option' in res) {
+        switch (res.option) {
+          case 'onLexiconTreeElementDoubleClickEvent':
+            const selectedSubTree = structuredClone(res.value[0]);
+            const showLabelName = structuredClone(res.value[1]);
+            this.openLexiconEditTile(selectedSubTree, showLabelName);
+            break;
+          case 'onSearchResultTableDoubleClickEvent':
+            const searchResultRow : SearchResultRow = structuredClone(res.value[0]);
+            this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex);
+            break;
+        }
       }
     })
 
@@ -445,7 +454,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param title {string} titolo del testo
    * @returns {void}
    */
-  openTextPanel(textId: number, title: string) {
+  openTextPanel(textId: number, title: string, startingRowIndex?: number) {
     const modalTextSelect = jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');
     })
@@ -466,7 +475,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const res = this.generateTextTilePanelConfiguration(panelId, textId, title);
+    const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
     const textTileConfig = res.panelConfig;
 
@@ -694,7 +703,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     for (const [index, tile] of storedTiles.entries()) {
       switch (tile.type as TileType) {
         case TileType.TEXT:
-          var textTileComponent = this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle);
+          var textTileComponent = this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle, 0);
 
           //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
           //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
@@ -920,9 +929,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param title {string} titolo del testo
    * @returns configurazione del pannello di annotazione di un testo
    */
-  private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string) {
+  private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string, startingRowIndex: number) {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
+    componentRef.instance.startingRowIndex = startingRowIndex;
     componentRef.instance.height = window.innerHeight / 3 * 2;
     // componentRef.instance.visibleLayers = this.visibleLayers;
 
