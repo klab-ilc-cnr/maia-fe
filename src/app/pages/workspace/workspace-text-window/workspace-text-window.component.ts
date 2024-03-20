@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, tap, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
@@ -158,7 +158,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public scrollingDirection: ScrollingDirectionType = ScrollingDirectionType.Down;
   public extraRowsWidenessUpOrDown!: number;
   public scrollingSubject = new Subject<number>();
-  public currentVisibleRow?: TextRow;
+  public currentVisibleRowIndex?: number;
 
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
@@ -248,10 +248,30 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.textRowsWideness = this.textRowsRangeWidenessPredictor();
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
-    this.textRange = new TextRange(this.startingRowIndex, this.textRowsWideness);
-    this.precTextRange = this.textRange.clone();
-    let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
-    this.loadData(requestRange.start, requestRange.end);
+    this.loadInitialData();
+  }
+
+  /**initialize text range and load data */
+  loadInitialData() {
+    this.annotationService.retrieveTextSplitted(this.textId!, { start: 0, end: 1 })// FIXME usare servizio ad hoc quando disponibile per recuperare il totale delle righe
+      .subscribe((result) => {
+        this.textTotalRows = result.count!
+
+        let start = this.startingRowIndex;
+        let end = this.startingRowIndex + this.textRowsWideness;
+
+        if (end > this.textTotalRows) {
+          end = this.textTotalRows;
+        }
+
+        this.textRange = new TextRange(start, end);
+        this.precTextRange = this.textRange.clone();
+        this.addExtraRowsUp();
+        let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
+        this.scrollingDirection = ScrollingDirectionType.InRange;
+        this.currentVisibleRowIndex = this.startingRowIndex;
+        this.loadData(requestRange.start, requestRange.end);
+      });
   }
 
   ngOnDestroy(): void {
@@ -329,7 +349,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public expandCollapseNavigationDiv() {
 
-    this.currentVisibleRow = this.findCurrentVisibleRow();
+    this.currentVisibleRowIndex = this.findCurrentVisibleRow()?.rowIndex;
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
 
     this.updateDocumentSectionsSplitSize();
@@ -341,7 +361,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public expandCollapseAnnotationDiv(annotationId?: number) {
-    this.currentVisibleRow = this.findCurrentVisibleRow();
+    this.currentVisibleRowIndex = this.findCurrentVisibleRow()?.rowIndex;
     this.expandedEditorDiv = annotationId ? true : !this.expandedEditorDiv;
 
     this.updateAnnotationsSplitSize();
@@ -832,14 +852,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**
  * This function is the prosecution of the scrolling operation,
- * it should be only called by the subject that execute the onScroll with throttle
+ * it should be only called by the subject that exectus the onScroll with throttle
  * @param event 
  */
-  private updateTextRowsView(event: any) {
-    //#region calcolo start e end
+  private updateTextRowsView(event?: any) {
     this.precTextRange = this.textRange.clone();
     this.textRange.resetExtraRowsSpace();
 
+    //#region calcolo start e end
     switch (this.scrollingDirection) {
       case ScrollingDirectionType.Down: //scolling DOWN
         this.textRange.start += this.textRowsWideness;
@@ -869,6 +889,28 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
 
         //righe extra 
+        if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
+          && !this.textRange.hasExtraRowsAfterEnd) {
+          this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
+        }
+        break;
+      case ScrollingDirectionType.InRange: //scrolling IN RANGE
+
+        this.textRange.start -= this.textRowsWideness % 2 === 0 ? this.textRowsWideness / 2 : (this.textRowsWideness / 2) + 1;
+        this.textRange.end += this.textRowsWideness / 2;
+
+        if (this.textRange.start < 0) {
+          this.textRange.start = 0;
+        }
+
+        if (this.textRange.end > this.textTotalRows) {
+          this.textRange.end = this.textTotalRows;
+        }
+
+        //righe extra up
+        this.addExtraRowsUp();
+
+        //righe extra down
         if (this.textRange.end + this.extraRowsWidenessUpOrDown < this.textTotalRows + this.backendIndexCompensation
           && !this.textRange.hasExtraRowsAfterEnd) {
           this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
@@ -1237,7 +1279,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
 
       //Triggers th OnScroll event
-      this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
+      // this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
+      this.scrollingDirection = ScrollingDirectionType.InRange;
+      this.updateTextRowsView();
+      return;
     }
 
     if (this.textRange.start === this.precTextRange?.start &&
@@ -1261,9 +1306,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
         break;
       case ScrollingDirectionType.InRange:
-        if (!this.currentVisibleRow) { break; }
+        if (!this.currentVisibleRowIndex) { break; }
 
-        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.currentVisibleRow!.rowIndex).reduce((acc, o) => acc + (o.height || 0), 0);
+        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.currentVisibleRowIndex!).reduce((acc, o) => acc + (o.height || 0), 0);
         break;
     }
 
@@ -1333,7 +1378,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (this.textRange.start - this.extraRowsWidenessUpOrDown >= 0
       && !this.textRange.hasExtraRowsBeforeStart) {
       this.textRange.extraRowsBeforeStart = this.extraRowsWidenessUpOrDown;
+      return;
     };
+
+    this.textRange.extraRowsBeforeStart = this.textRange.start;
   }
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {

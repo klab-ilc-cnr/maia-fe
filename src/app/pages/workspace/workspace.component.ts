@@ -198,7 +198,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             this.openLexiconEditTile(selectedSubTree, showLabelName);
             break;
           case 'onSearchResultTableDoubleClickEvent':
-            const searchResultRow : SearchResultRow = structuredClone(res.value[0]);
+            const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex);
             break;
         }
@@ -471,7 +471,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (panelExist) { //caso di pannello già presente
-      panelExist.front()
+      const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
+      textTileComponent.component.instance.startingRowIndex = startingRowIndex;
+      textTileComponent.component.instance.loadInitialData();
+      panelExist.front();
       return;
     }
 
@@ -699,6 +702,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.setItem(this.storageName, storedData)
 
     let currPanelElement;
+    let componentRef;
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
     for (const [index, tile] of storedTiles.entries()) {
       switch (tile.type as TileType) {
@@ -713,9 +717,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           currPanelElement = jsPanel.layout.restoreId({
             id: tile.tileConfig.id,
             config: mergedConfig,
-            storagename: this.storageName
+            storagename: this.storageName,
           });
-          //currPanelElement = jsPanel.create(mergedConfig);
+          
+          componentRef = textTileComponent.component
 
           break;
 
@@ -727,10 +732,25 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           currPanelElement = jsPanel.layout.restoreId({
             id: tile.tileConfig.id,
             config: mergedConfigCorpus,
-            storagename: this.storageName
+            storagename: this.storageName,
           });
+          
+          componentRef = corupusComponent.component;
 
-          //currPanelElement = jsPanel.create(mergedConfigCorpus);
+          break;
+
+        case TileType.SEARCH:
+          const searchComponent = this.generateSearchPanelConfiguration(tile.tileConfig.id);
+          const mergedConfigSearch = { ...searchComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigSearch,
+            storagename: this.storageName,
+          });
+          
+          componentRef = searchComponent.component;
 
           break;
 
@@ -742,8 +762,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           currPanelElement = jsPanel.layout.restoreId({
             id: tile.tileConfig.id,
             config: mergedConfigLexicon,
-            storagename: this.storageName
+            storagename: this.storageName,
           });
+          
+          componentRef = lexiconComponent.component;
 
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
           // è necessario reinserirlo manualmente
@@ -762,7 +784,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       currPanelElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
       currPanelElement.titlebar.style.fontSize = '14px'
       currPanelElement.addToTileMap(tile);
-      currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+      currPanelElement.addComponentToList(tile.tileConfig.id, componentRef, tile.type);
 
     }
 
