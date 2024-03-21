@@ -151,6 +151,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
   lazyLoadSearchResults(event: any) {
     if (this.changingPage) {
       this.changingPage = false;
+      this.searchRequest.start = event.first;
+      this.searchRequest.end = event.first + event.rows;
       this.lazyLoadSearchResultsDebounced(event);
       return;
     }
