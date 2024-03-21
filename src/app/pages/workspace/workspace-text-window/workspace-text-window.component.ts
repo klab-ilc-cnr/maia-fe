@@ -853,7 +853,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**
  * This function is the prosecution of the scrolling operation,
- * it should be only called by the subject that exectus the onScroll with throttle
  * @param event 
  */
   private updateTextRowsView(event?: any) {
