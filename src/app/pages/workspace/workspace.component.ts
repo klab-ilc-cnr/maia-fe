@@ -471,9 +471,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (panelExist) { //caso di pannello già presente
-      const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
-      textTileComponent.component.instance.startingRowIndex = startingRowIndex;
-      textTileComponent.component.instance.loadInitialData();
+      if (startingRowIndex) {
+        const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
+        textTileComponent.component.instance.startingRowIndex = startingRowIndex;
+        textTileComponent.component.instance.loadInitialData();
+      }
+
       panelExist.front();
       return;
     }
@@ -719,7 +722,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             config: mergedConfig,
             storagename: this.storageName,
           });
-          
+
           componentRef = textTileComponent.component
 
           break;
@@ -734,7 +737,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             config: mergedConfigCorpus,
             storagename: this.storageName,
           });
-          
+
           componentRef = corupusComponent.component;
 
           break;
@@ -749,7 +752,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             config: mergedConfigSearch,
             storagename: this.storageName,
           });
-          
+
           componentRef = searchComponent.component;
 
           break;
@@ -764,7 +767,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             config: mergedConfigLexicon,
             storagename: this.storageName,
           });
-          
+
           componentRef = lexiconComponent.component;
 
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
