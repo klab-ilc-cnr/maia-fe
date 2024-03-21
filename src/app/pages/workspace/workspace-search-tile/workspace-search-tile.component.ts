@@ -41,7 +41,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   contextLenghtDefaultValue = 5;
   contextLength: number = this.contextLenghtDefaultValue;
   contextMaxLenght: number = 10;
-  files!: TreeNode<CorpusElement>[];
+  files$!: Observable<TreeNode<CorpusElement>[]>;
   selectedDocuments: TreeNode<CorpusElement>[] = [];
 
   //**kwic table data */
@@ -66,11 +66,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   private filtersSubject: Subject<any> = new Subject();
 
   ngOnInit(): void {
-    this.corpusStateService.filesystem$.pipe(
+    this.files$ = this.corpusStateService.filesystem$.pipe(
       switchMap(docs => of(this.mapToTreeNodes(docs))),
-    ).subscribe(result => {
-      this.files = result;
-    });
+    );
 
     this.initSearchMode();
 

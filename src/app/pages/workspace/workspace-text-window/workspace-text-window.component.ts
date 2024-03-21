@@ -858,7 +858,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private updateTextRowsView(event?: any) {
     this.precTextRange = this.textRange.clone();
     this.textRange.resetExtraRowsSpace();
-
+    
     //#region calcolo start e end
     switch (this.scrollingDirection) {
       case ScrollingDirectionType.Down: //scolling DOWN
