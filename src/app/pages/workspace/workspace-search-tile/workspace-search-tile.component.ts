@@ -77,11 +77,11 @@ export class WorkspaceSearchTileComponent implements OnInit {
         this.lazyLoadSearchResultsDebounced(event)
       );
 
-    this.initExportMenuItems();
+    this.setExportMenuItems();
   }
 
   //**init for export menu button */
-  initExportMenuItems() {
+  setExportMenuItems() {
     this.exportItems = [
       {
         label: this.commonService.translateKey('SEARCH.exportAll'), command: () => {
@@ -91,9 +91,14 @@ export class WorkspaceSearchTileComponent implements OnInit {
       {
         label: this.commonService.translateKey('SEARCH.exportSelected'), command: () => {
           this.exportSelected();
-        }
+        },
+        disabled: this.selectedSearchResults.length === 0
       }
     ];
+  }
+
+  isAnyRowSelected(): boolean {
+    return this.selectedSearchResults.length === 0;
   }
 
   /**manages double click on a table row */
@@ -121,6 +126,8 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**exports only the selected rows */
   exportSelected() {
+    if (!this.selectedSearchResults) { return; }
+
     this.searchService.exportSelected(this.selectedSearchResults.map(e => e.id)).subscribe({
       next: (document) => {
         this.loaderService.hide();

@@ -40,9 +40,12 @@
         <button pButton type="button" (click)="onSearch()" class="mx-2">{{'SEARCH.buttons.search'|translate}}</button>
         <button pButton type="button" (click)="onClear()" class="p-button-secondary mx-2">{{'SEARCH.buttons.clear'|translate}}</button>
         <button disabled pButton type="button" class="p-button-help mx-2">{{'SEARCH.buttons.saveAs'|translate}}</button>
-        <p-splitButton appendTo="body" 
+        <p-splitButton #ua appendTo="body" 
             label="{{'SEARCH.buttons.export'|translate}}"
-            [model]="exportItems" 
+            (onClick)="ua.onDropdownButtonClick($event)"
+            (onDropdownClick)="setExportMenuItems()"
+            [model]="exportItems"
+            [disabled]="searchResults.length === 0"
             styleClass="p-button-raised p-button-info mx-2">
         </p-splitButton>
       </div>
