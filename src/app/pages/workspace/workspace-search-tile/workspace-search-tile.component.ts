@@ -51,7 +51,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   loading: boolean = false;
   selectAll: boolean = false;
   tableContainerHeight!: number;
-  tableHeaderHegith: number = 265;
+  tableHeaderHegith: number = 250;
   totalRecords: number = 0;
   visibleRows: number = 10;
   tableCleared = false;
@@ -227,7 +227,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     setTimeout(() => {//FIXME eliminare quando ci sarà il backend
       this.searchService.search(this.searchRequest).subscribe(result => {
         // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
-        this.searchResults = result.data.slice(this.searchRequest.start, (this.searchRequest.start + this.searchRequest.end)); //FIXME eliminare quando ci sarà il backend
+        this.searchResults = result.data.slice(this.searchRequest.start, this.searchRequest.end); //FIXME eliminare quando ci sarà il backend
         this.loading = false;
         this.totalRecords = result.totalRecords;
         this.updateTableHeight();
