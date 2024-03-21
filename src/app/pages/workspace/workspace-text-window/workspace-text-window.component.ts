@@ -253,6 +253,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**initialize text range and load data */
   loadInitialData() {
+    // this.annotationService.retrieveTextTotalRows(this.textId) // FIXME usare questo servizio quando disponibile su backend
     this.annotationService.retrieveTextSplitted(this.textId!, { start: 0, end: 1 })// FIXME usare servizio ad hoc quando disponibile per recuperare il totale delle righe
       .subscribe((result) => {
         this.textTotalRows = result.count!
