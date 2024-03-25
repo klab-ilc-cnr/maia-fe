@@ -37,14 +37,14 @@ small {
   text-overflow: ellipsis;
 }
 
-::ng-deep .p-datatable .p-datatable-header {
+:host::ng-deep .p-datatable .p-datatable-header {
   padding: 0;
 }
 
-::ng-deep .p-datatable .p-datatable-thead > tr > th {
+:host::ng-deep .p-datatable .p-datatable-thead > tr > th {
   padding: 0.5rem;
 }
 
-::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+:host::ng-deep .p-datatable .p-datatable-tbody > tr > td {
   padding: 0.5rem;
 }
