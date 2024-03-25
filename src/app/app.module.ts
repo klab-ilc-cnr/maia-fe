@@ -114,7 +114,7 @@ import { SearchService } from './services/search.service';
     IconsModule,
     SharedModule
   ],
-  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders, CorpusStateService, SearchService],
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {

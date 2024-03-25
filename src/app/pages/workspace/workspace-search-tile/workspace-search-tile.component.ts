@@ -21,7 +21,8 @@ interface SearchMode {
 @Component({
   selector: 'app-workspace-search-tile',
   templateUrl: './workspace-search-tile.component.html',
-  styleUrls: ['./workspace-search-tile.component.scss']
+  styleUrls: ['./workspace-search-tile.component.scss'],
+  providers: [CorpusStateService]
 })
 export class WorkspaceSearchTileComponent implements OnInit {
 
