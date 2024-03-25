@@ -1,0 +1,280 @@
+{
+  "totalRecords": 25,
+  "data": [
+    {
+      "id": "1000_id",
+      "index": 1000,
+      "rowIndex": 100,
+      "text": "il_puledro_impenato",
+      "textId": 340168,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1001_id",
+      "index": 1001,
+      "rowIndex": 408,
+      "text": "il_puledro_impenato",
+      "textId": 340168,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1002_id",
+      "index": 1002,
+      "rowIndex": 1611,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima dellaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "rightContext": "continua poi il testooooooooooooooooooooooooooooooooo aaaaaaaaaaaaaaaaaaaaaaaa",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1003_id",
+      "index": 1003,
+      "rowIndex": 77,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1004_id",
+      "index": 1004,
+      "rowIndex": 157,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1005_id",
+      "index": 1005,
+      "rowIndex": 4,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1006_id",
+      "index": 1006,
+      "rowIndex": 7,
+      "text": "Lotr 1.1.1",
+      "textId": 122,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1007_id",
+      "index": 1007,
+      "rowIndex": 44,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1008_id",
+      "index": 1008,
+      "rowIndex": 77,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1009_id",
+      "index": 1009,
+      "rowIndex": 157,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1010_id",
+      "index": 1010,
+      "rowIndex": 4,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "10011_id",
+      "index": 1011,
+      "rowIndex": 7,
+      "text": "Lotr 1.1.1",
+      "textId": 122,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1012_id",
+      "index": 10012,
+      "rowIndex": 44,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1013_id",
+      "index": 1013,
+      "rowIndex": 77,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1014_id",
+      "index": 1014,
+      "rowIndex": 157,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1015_id",
+      "index": 1015,
+      "rowIndex": 4,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1016_id",
+      "index": 1016,
+      "rowIndex": 7,
+      "text": "Lotr 1.1.1",
+      "textId": 122,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1017_id",
+      "index": 1017,
+      "rowIndex": 44,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1018_id",
+      "index": 1018,
+      "rowIndex": 77,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1019_id",
+      "index": 1019,
+      "rowIndex": 157,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1020_id",
+      "index": 1020,
+      "rowIndex": 4,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1021_id",
+      "index": 1021,
+      "rowIndex": 7,
+      "text": "Lotr 1.1.1",
+      "textId": 122,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1022_id",
+      "index": 1022,
+      "rowIndex": 44,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1023_id",
+      "index": 1023,
+      "rowIndex": 77,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    },
+    {
+      "id": "1024_id",
+      "index": 1024,
+      "rowIndex": 157,
+      "text": "Decameron",
+      "textId": 123,
+      "textHeader": "Par.1",
+      "leftContext": "testo prima della",
+      "rightContext": "continua poi il testo",
+      "kwic": "parola chiave"
+    }
+  ]
+}

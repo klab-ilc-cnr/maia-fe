@@ -76,6 +76,15 @@ export class AnnotationService {
   }
 
   /**
+   * Retrieves the number of rows in a text
+   * @param textId {number} resource identifier
+   * @returns number of rows
+   */
+  retrieveTextTotalRows(textId: number) : Observable<number> {
+    return this.http.get<number>(`${this.textoUrl}/resource/${textId}/rowCount`);
+  }
+
+  /**
    * Create a new text annotation
    * @param annotation {TAnnotation} the new annotation
    * @returns {Observable<TAnnotation>} observable of the new annotation

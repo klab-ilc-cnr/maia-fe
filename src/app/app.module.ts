@@ -54,6 +54,8 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
 import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
+import { CorpusStateService } from './services/corpus-state.service';
+import { SearchService } from './services/search.service';
 
 @NgModule({
   declarations: [
