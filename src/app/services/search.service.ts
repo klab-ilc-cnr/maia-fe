@@ -18,11 +18,11 @@ export class SearchService {
    * @param http {HttpClient} HTTP Calls
    */
   constructor(private http: HttpClient) {
-    this.searchUrl = environment.searchUrl;
+    this.searchUrl = `${environment.maiaBeTextoUrl}/util/search`;
   }
 
   search(request: SearchRequest): Observable<SearchResult> {
-    // return this.http.post<SearchResult>(this.searchUrl, request);
+    // return this.http.post<SearchResult>(`${this.searchUrl}`, request);
     return this.http.get<SearchResult>('assets/mock/search/search1.json'); //FIXME eliminare ed agganciare al servizio backend
   }
 

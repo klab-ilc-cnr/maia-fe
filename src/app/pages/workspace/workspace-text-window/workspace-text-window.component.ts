@@ -253,10 +253,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**initialize text range and load data */
   loadInitialData() {
-    // this.annotationService.retrieveTextTotalRows(this.textId) // FIXME usare questo servizio quando disponibile su backend
-    this.annotationService.retrieveTextSplitted(this.textId!, { start: 0, end: 1 })// FIXME usare servizio ad hoc quando disponibile per recuperare il totale delle righe
+    this.annotationService.retrieveTextTotalRows(this.textId!)
       .subscribe((result) => {
-        this.textTotalRows = result.count!
+        this.textTotalRows = result!
 
         let start = this.startingRowIndex;
         let end = this.startingRowIndex + this.textRowsWideness;
@@ -858,7 +857,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private updateTextRowsView(event?: any) {
     this.precTextRange = this.textRange.clone();
     this.textRange.resetExtraRowsSpace();
-    
+
     //#region calcolo start e end
     switch (this.scrollingDirection) {
       case ScrollingDirectionType.Down: //scolling DOWN
