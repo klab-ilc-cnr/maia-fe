@@ -50,7 +50,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
   searchRequest = new SearchRequest();
   selectedSearchResults: Array<SearchResultRow> = [];
   loading: boolean = false;
-  selectAll: boolean = false;
   tableContainerHeight!: number;
   tableHeaderHegith: number = 250;
   totalRecords: number = 0;
@@ -285,7 +284,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   }
 
   /**extract only ids of the files from the document tree */
-  private mapSelectedDocumentsIds(): Array<Number> {
+  private mapSelectedDocumentsIds(): Array<number> {
     return this.selectedDocuments.filter(selectedNode => selectedNode.leaf).map(leaf => leaf.data?.id!);
   }
 

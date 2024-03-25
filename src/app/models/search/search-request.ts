@@ -2,7 +2,7 @@
 export class SearchRequest {
   start!: number;
   end!: number;
-  selectedResourcesIds: Array<Number> = [];
+  selectedResourcesIds: Array<number> = [];
   filters : SearchFilters = new SearchFilters();
 }
 
