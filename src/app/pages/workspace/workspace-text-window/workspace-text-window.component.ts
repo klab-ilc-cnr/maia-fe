@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
@@ -27,6 +27,7 @@ import { TextRange } from 'src/app/models/text/text-range';
 import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
 import { Section } from 'src/app/models/texto/section';
 import { throttleTime } from 'rxjs';
+import { Tree } from 'primeng/tree';
 
 enum ScrollingDirectionType { Up, Down, InRange }
 
@@ -144,6 +145,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
   @ViewChild('textContainer') public textContainer!: ElementRef;
+  @ViewChild('st') public documentSectionsTreeElement!: Tree;
 
   /**Scroller*/
   public textRowsWideness!: number;
@@ -200,7 +202,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private layerState: LayerStateService,
-    private workspaceService: WorkspaceService
+    private workspaceService: WorkspaceService,
+    private cdref: ChangeDetectorRef
   ) {
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
@@ -451,6 +454,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loadData(this.textRange.start, this.textRange.end);
   }
 
+  forceRefreshDocumentTree: boolean = true;
   /**
    * This method selects the node of the tree related to the selected text row.
    * @param event 
@@ -466,12 +470,52 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.documentSections = [...this.documentSections];
 
       setTimeout(() => {
-        const selectedSectionElement = document.querySelector('#sectionsTree div[role="treeitem"][aria-selected="true"]');
-        if (selectedSectionElement) {
-          selectedSectionElement.scrollIntoView({ behavior: 'smooth' });
+        const { found, index } = this.CalculateSectionsTreeIndex(this.documentSections, this.selectedSection!);
+        if (found) {
+          this.documentSectionsTreeElement.scrollToVirtualIndex(index);
+
+          /**there is an unresolved bug in the primeng component this is a workaround
+           * more info about the bug here https://github.com/primefaces/primeng/issues/11948
+          */
+          setTimeout(() => {
+            if (!document.querySelector('#sectionsTree div[role="treeitem"][aria-selected="true"]')) {
+              this.forceRefreshDocumentTree = false;
+              this.cdref.detectChanges();
+              this.forceRefreshDocumentTree = true;
+              this.cdref.detectChanges();
+              this.documentSectionsTreeElement.scrollToVirtualIndex(index);
+            }
+          }, 200);
+
         }
       });
     }
+  }
+
+  /**
+   * Function that traverse tree in depth-first (pre-order) manner to find node's index.
+   * @returns if found, the index of the the tree that is selected
+   */
+  private CalculateSectionsTreeIndex(tree: TreeNode[], selectedSection: TreeNode,
+    startIndex: number = 0): { found: boolean; index: number } {
+    let index: number = startIndex;
+    let found = false;
+    for (const node of tree) {
+      found = node === selectedSection;
+      if (found) {
+        break;
+      }
+
+      index++;
+      if (node.expanded) {
+        ({ found, index } = this.CalculateSectionsTreeIndex(node.children!, selectedSection, index));
+        if (found) {
+          break;
+        }
+      }
+    }
+
+    return { found, index };
   }
 
   expandAnchestors(section: TreeNode) {
