@@ -37,6 +37,9 @@
         "uploaderType": "Uploader type",
         "uploadFileTitle": "Upload file"
     },
+    "DICTIONARY": {
+        "dictionaryMenuItem": "Dictionary"
+    },
     "LOGIN": {
         "authFailed": "Authentication failed",
         "errorRetrievingUser": "Retrieve current user failed",

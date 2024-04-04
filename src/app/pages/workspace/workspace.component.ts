@@ -12,9 +12,12 @@ import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-
 import { HttpErrorResponse } from '@angular/common/http';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
+import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
+import { DictionaryExplorerTile } from 'src/app/models/tile/dictionary-explorer-tile.model';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
+import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
 import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -24,10 +27,8 @@ import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
-import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
-import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
-import { SearchResult, SearchResultRow } from 'src/app/models/search/search-result';
+import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -235,6 +236,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         label: 'Search',
         command: (event) => { this.openSearchPanel(event) }
+      },
+      {
+        label: 'Dictionary',
+        command: (event) => { this.openDictionaryPanel(event) }
       }
       // {
       //   label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
@@ -664,6 +669,48 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     searchTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
+  openDictionaryPanel(event: any) {
+    const dictionaryPanelId = 'dictionaryTile'
+
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === dictionaryPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    const result = this.generateDictionaryPanelConfiguration(dictionaryPanelId);
+
+    const dictionaryTileConfig = result.panelConfig;
+
+    const dictionaryTileElement = jsPanel.create(dictionaryTileConfig);
+    dictionaryTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    dictionaryTileElement.titlebar.style.fontSize = '14px'
+
+    dictionaryTileElement
+      .resize({
+        height: 500
+      })
+      .reposition();
+
+    const { content, ...text } = dictionaryTileConfig;
+
+    dictionaryTileConfig.content = undefined;
+
+    const tileObject: Tile<DictionaryExplorerTile> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: dictionaryTileConfig,
+      type: TileType.DICTIONARY
+    };
+
+
+    dictionaryTileElement.addToTileMap(tileObject);
+    dictionaryTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
 
   /**
    * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
@@ -1257,6 +1304,70 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       component: componentRef,
       panelConfig: config,
       tileType: TileType.SEARCH
+    };
+  }
+
+  private generateDictionaryPanelConfiguration(dictionaryPanelId: string) {
+    const componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent); //TODO switch with WorkspaceDictionaryTileComponent
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: dictionaryPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: this.commonService.translateKey('DICTIONARY.dictionaryMenuItem'),
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
+      syncMargins: true,
+      theme: {
+        bgPanel: '#a8c0ce',
+        colorHeader: 'black',
+        border: 'thin solid #a8c0ce',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.6
+      },
+      resizeit: {
+        minWidth: 730,
+        minHeight: 500,
+        resize: (panel: any, paneldata: any, event: any) => {
+          componentRef.instance.updateHeight(paneldata.height)
+        }
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.DICTIONARY);
+        this.removeComponentFromList(panel.id);
+      }
+    };
+
+    return {
+      id: dictionaryPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.DICTIONARY
     };
   }
 }

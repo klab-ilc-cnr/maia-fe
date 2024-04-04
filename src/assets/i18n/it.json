@@ -37,6 +37,9 @@
         "uploaderType": "Tipo di caricamento",
         "uploadFileTitle": "Carica file"
     },
+    "DICTIONARY": {
+        "dictionaryMenuItem": "Vocabolario"
+    },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",
         "errorRetrievingUser": "Recupero dell'utente corrente non riuscita",
