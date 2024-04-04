@@ -25,6 +25,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { WorkspaceDictionaryTileComponent } from './workspace-dictionary-tile/workspace-dictionary-tile.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
@@ -1308,7 +1309,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private generateDictionaryPanelConfiguration(dictionaryPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent); //TODO switch with WorkspaceDictionaryTileComponent
+    const componentRef = this.vcr.createComponent(WorkspaceDictionaryTileComponent);
 
     const element = componentRef.location.nativeElement;
 
@@ -1328,38 +1329,30 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.6
+        width: () => window.innerWidth * 0.2,
+        height: '60vh'
       },
       resizeit: {
-        minWidth: 730,
-        minHeight: 500,
-        resize: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateHeight(paneldata.height)
+        minWidth: 250
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+          }
         }
-      },
-      onmaximized: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onminimized: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onnormalized: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onsmallified: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onunsmallified: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.DICTIONARY);
         this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        const panelIDs = jsPanel.getPanels(function () {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+        console.log(panelIDs)
       }
     };
 
