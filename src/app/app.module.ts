@@ -56,6 +56,7 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
 import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
 import { CorpusStateService } from './services/corpus-state.service';
 import { SearchService } from './services/search.service';
+import { WorkspaceDictionaryTileComponent } from './pages/workspace/workspace-dictionary-tile/workspace-dictionary-tile.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import { SearchService } from './services/search.service';
     TextAnnotationEditorComponent,
     LoginComponent,
     MatchNewPasswordDirective,
-    WorkspaceSearchTileComponent
+    WorkspaceSearchTileComponent,
+    WorkspaceDictionaryTileComponent
   ],
   imports: [
     BrowserModule,
