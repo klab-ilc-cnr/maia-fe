@@ -37,8 +37,23 @@
         "uploaderType": "Tipo di caricamento",
         "uploadFileTitle": "Carica file"
     },
-    "DICTIONARY": {
-        "dictionaryMenuItem": "Vocabolario"
+    "DICTIONARY_EXPLORER": {
+        "addEntry": "Aggiungi nuova voce",
+        "editor": "Redattore",
+        "export": "Esporta",
+        "filtersPanel": "Filtri",
+        "language": "Lingua",
+        "refresh": "Aggiorna i risultati",
+        "remove": "Elimina",
+        "SEARCH_GUIDE": {
+            "title": "Esempi di ricerca",
+            "multiCharWildcard": "Ricerca con carattere jolly che sostituisce più caratteri:",
+            "singleCharWildCard": "Ricerca con carattere jolly che sostituisce un carattere:",
+            "fuzzy": "Ricerca fuzzy:",
+            "weightedFuzzy": "Ricerca fuzzy pesata:"
+        },
+        "selection": "Selezione",
+        "status": "Status"
     },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",

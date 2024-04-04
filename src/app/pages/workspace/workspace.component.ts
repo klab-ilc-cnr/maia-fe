@@ -1317,7 +1317,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: dictionaryPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: this.commonService.translateKey('DICTIONARY.dictionaryMenuItem'),
+      headerTitle: 'Dictionary Explorer',
       maximizedMargin: 5,
       dragit: { snap: false },
       contentOverflow: 'hidden',

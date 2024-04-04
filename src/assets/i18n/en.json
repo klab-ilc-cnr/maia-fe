@@ -37,8 +37,23 @@
         "uploaderType": "Uploader type",
         "uploadFileTitle": "Upload file"
     },
-    "DICTIONARY": {
-        "dictionaryMenuItem": "Dictionary"
+    "DICTIONARY_EXPLORER": {
+        "addEntry": "Add new entry",
+        "editor": "Editor",
+        "export": "Export",
+        "filtersPanel": "Filters",
+        "language": "Language",
+        "refresh": "Refresh results",
+        "remove": "Remove",
+        "SEARCH_GUIDE": {
+            "title": "Search examples",
+            "multiCharWildcard": "Multiple character wildcard search:",
+            "singleCharWildCard": "Single character wildcard search:",
+            "fuzzy": "Fuzzy search:",
+            "weightedFuzzy": "Weighted fuzzy search:"
+        },
+        "selection": "Selection",
+        "status": "Status"
     },
     "LOGIN": {
         "authFailed": "Authentication failed",

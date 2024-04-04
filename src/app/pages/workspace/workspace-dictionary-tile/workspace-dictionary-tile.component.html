@@ -1,1 +1,83 @@
-<p>workspace-dictionary-tile works!</p>
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
+            [pTooltip]="'DICTIONARY_EXPLORER.addEntry'|translate" tooltipPosition="bottom"></button>
+        <!--TODO Dynamically manage the button enablement once the management of selections from list is implemented-->
+        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" [disabled]="true"
+            [pTooltip]="'DICTIONARY_EXPLORER.remove'|translate" tooltipPosition="bottom"></button>
+    </div>
+    <div class="p-toolbar-group-end">
+        <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"
+            [pTooltip]="'DICTIONARY_EXPLORER.export'|translate" tooltipPosition="bottom"
+            [disabled]="true"></button><!--TODO Dynamically manage the button enablement once the related services are implemented-->
+    </div>
+</p-toolbar>
+<div class="grid p-fluid input-search">
+    <div class="flex card-container w-full">
+        <div class="p-inputgroup">
+            <p-button [pTooltip]="'DICTIONARY_EXPLORER.refresh'|translate" class="mr-2" icon="pi pi-spinner"
+                [loading]="loading" (onClick)="false"></p-button>
+            <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)"
+                icon="pi pi-info-circle"></button>
+            <form [formGroup]="searchTextForm" autocomplete="off">
+                <input id="searchInput" class="flex-grow-1 flex align-items-center justify-content-center" type="text"
+                    pInputText size="15" placeholder="*" formControlName="search" />
+            </form>
+            <button pButton pRipple type="button" icon="pi pi-filter-slash" pTooltip="Reset" class="p-button-secondary"
+                (click)="onResetFilters()"></button>
+            <span id="lexExpCounter"
+                class="flex-none flex w-2 align-items-center justify-content-center font-weight-bold font-italic">
+                {{counter}}</span>
+        </div>
+    </div>
+</div>
+<form autocomplete="off" [formGroup]="filtersForm">
+    <p-panel iconPos="left" [header]="'DICTIONARY_EXPLORER.filtersPanel'|translate" [toggleable]="true"
+        [collapsed]="true">
+        <div class="flex flex-row">
+            <div class="flex m-2 field-checkbox">
+                <p-checkbox id="caseSensitiveInput" [binary]="true" inputId="caseSensitive"
+                    formControlName="caseSensitive"></p-checkbox>
+                <label for="caseSensitiveInput">Case sensitive</label>
+            </div>
+        </div>
+        <div class="flex flex-row flex-wrap">
+            <div *ngFor="let match of matchRadioGroup" class="flex col-6 field-radiobutton">
+                <p-radioButton [inputId]="match.key" [value]="match.key" formControlName="match"></p-radioButton>
+                <label [for]="match.key" class="ml-2">{{ match.name }}</label>
+            </div>
+        </div>
+        <div class="flex flex-row w-100">
+            <p-dropdown class="flex  justify-content-between col-6" styleClass="w-100" [options]="[]"
+                [placeholder]="'DICTIONARY_EXPLORER.language'|translate" [showClear]="true" formControlName="language">
+            </p-dropdown>
+            <p-dropdown class="flex justify-content-between col-6" styleClass="w-100" [options]="[]"
+                [placeholder]="'DICTIONARY_EXPLORER.editor'|translate" [showClear]="true" [filter]="true"
+                filterBy="label" formControlName="editor">
+            </p-dropdown>
+        </div>
+        <div class="flex flex-row">
+            <p-dropdown class="flex justify-content-between col-6" styleClass="w-100" [options]="[]"
+                [placeholder]="'DICTIONARY_EXPLORER.status'|translate" [showClear]="true" formControlName="status">
+            </p-dropdown>
+        </div>
+    </p-panel>
+</form>
+<div class="flex justify-content-start">
+    <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"
+      [pTooltip]="'DICTIONARY_EXPLORER.selection'|translate" (click)="isVisibleCheckbox=!isVisibleCheckbox"></button>
+  </div>  
+<p-overlayPanel #op [dismissable]="true">
+    <ng-template pTemplate>
+        <h3>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.title'|translate}}</h3>
+        <br>
+        <span><b>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.multiCharWildcard'|translate}}</b></span>
+        <span><i>te*</i></span>
+        <br><span><b>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.singleCharWildCard'|translate}}</b></span>
+        <span><i>te?t</i></span><br>
+        <b>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.fuzzy'|translate}}</b>
+        <span><i>test~</i></span>
+        <br><b>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.weightedFuzzy'|translate}}</b>
+        <span><i>test~0.8</i></span>
+    </ng-template>
+</p-overlayPanel>
