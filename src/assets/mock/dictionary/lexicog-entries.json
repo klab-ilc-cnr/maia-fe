@@ -1,0 +1,505 @@
+{
+    "totalHits": 72101,
+    "list": [
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective noun",
+            "label": "bello",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_1",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "cabaret",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_2",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective",
+            "label": "dubbio1",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_3",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "dubbio2",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_4",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "eclissi",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_5",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "verb",
+            "label": "falciare",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_6",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "gabella": "gabella",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_7",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "hènna",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_8",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "verb",
+            "label": "idealizzare",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_9",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "jazz",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_11",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "karatè ",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_11",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective",
+            "label": "lamentoso",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_12",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective noun",
+            "label": "mùltiplo",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_13",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "nepotismo",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_14",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "verb",
+            "label": "ondulare",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_15",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective",
+            "label": "pittorésco",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_16",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "verb",
+            "label": "quantificare",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_17",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective",
+            "label": "rigettabile",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_18",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "verb",
+            "label": "slargare",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_19",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "tinta",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_20",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective",
+            "label": "ubiquo",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_21",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "vulgata",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_22",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "noun",
+            "label": "wafer",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_23",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "adjective noun",
+            "label": "xifoide",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_24",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        },
+        {
+            "creator": "Mafalda.Papini",
+            "lastUpdate": "2024-03-25T15:38:15.136+01:00",
+            "creationDate": "2024-03-14T11:38:54.256+01:00",
+            "confidence": -1.0,
+            "status": "working",
+            "revisor": "",
+            "pos": "verb",
+            "label": "zampettare",
+            "language": "it",
+            "author": "",
+            "note": "<p><strong>lorem </strong>ipsum </p>",
+            "hasChildren": true,
+            "lexicogEntry": "http://vocabo/italiano/test#LexO_25",
+            "completionDate": "",
+            "revisionDate": "",
+            "images": [
+                ""
+            ]
+        }
+    ]
+}
