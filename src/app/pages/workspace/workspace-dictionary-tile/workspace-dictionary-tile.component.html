@@ -27,7 +27,7 @@
                 (click)="onResetFilters()"></button>
             <span id="lexExpCounter"
                 class="flex-none flex w-2 align-items-center justify-content-center font-weight-bold font-italic">
-                {{counter}}</span>
+                {{counter$|async}}</span>
         </div>
     </div>
 </div>
@@ -66,7 +66,35 @@
 <div class="flex justify-content-start">
     <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"
       [pTooltip]="'DICTIONARY_EXPLORER.selection'|translate" (click)="isVisibleCheckbox=!isVisibleCheckbox"></button>
-  </div>  
+</div>  
+<div class="tableScrollHeight">
+    <!--TODO develop tree table-->
+    <p-treeTable [value]="(lexicogEntries$|async) || []" dataKey="lexicogEntry" [lazy]="true" [scrollable]="true"
+        scrollHeight="flex">
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+            <tr>
+                <td *ngFor="let col of cols; let i = index">
+                    <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0" [pTooltip]="'Mostra lemmi'"></p-treeTableToggler>
+                    <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
+                    <span *ngIf="col.field === 'name'">{{
+                        rowData[col.field] }}</span>            
+                    <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
+                    [status]="rowData[col.field]"></app-icon-lock>        
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+              <td [attr.colspan]="cols.length">No result</td>
+            </tr>
+          </ng-template>      
+    </p-treeTable>
+</div>
 <p-overlayPanel #op [dismissable]="true">
     <ng-template pTemplate>
         <h3>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.title'|translate}}</h3>
