@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { TreeNode } from 'primeng/api';
+import { Subject, debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs';
+import { LexicogEntryCore } from 'src/app/models/dictionary/lexicog-entry-core.model';
+import { DictionaryStateService } from 'src/app/services/dictionary-state.service';
 
 @Component({
   selector: 'app-workspace-dictionary-tile',
@@ -12,7 +15,10 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   /**Defines whether loading is in progress */
   loading = false;
   /**Number of vocabulary items retrieved */
-  counter = 0;
+  counter$ = this.dictionaryState.totalHits$;
+  lexicogEntries$ = this.dictionaryState.lexicogEntries$.pipe(
+    map(entries => entries?.map(entry => this.mapLexicogEntryToTreenode(entry))),
+  ); //FIXME per qualche motivo non sembra recuperare i dati di mock, da verificare
   /**Control for the search input text */
   searchTextForm = new FormGroup({
     search: new FormControl<string>('')
@@ -32,10 +38,18 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     { name: 'Contains', key: 'contains' },
     { name: 'End', key: 'end' }
   ];
+  cols = [
+    { field: 'label', header: '', width: '70%', display: 'true' },
+    { field: 'creator', header: '', width: '10%', display: 'true' },
+    { field: 'status', header: '', width: '10%', display: 'true' },
+    { field: '', header: '', width: '10%', display: 'true' },
+  ]
 
   isVisibleCheckbox = false;
 
-  constructor() { }
+  constructor(
+    private dictionaryState: DictionaryStateService,
+  ) { }
 
   ngOnInit(): void {
     this.searchTextForm.valueChanges.pipe(
@@ -73,5 +87,12 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private createFilters() {
     //TODO develop filters management
     console.info('CREAZIONE DEL FILTRO ALLA LISTA');
+  }
+
+  private mapLexicogEntryToTreenode(lexicogEntry: LexicogEntryCore): TreeNode<LexicogEntryCore> {
+    return <TreeNode<LexicogEntryCore>>{
+      data: lexicogEntry,
+      children: lexicogEntry.hasChildren ? [] : null
+    };
   }
 }
