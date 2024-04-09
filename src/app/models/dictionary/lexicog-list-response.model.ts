@@ -4,5 +4,5 @@ export interface LexicogListResponse {
     /**Total number of results */
     totalHits: number;
     /**List of lexicog entries retrieved */
-    data: LexicogEntryCore[];
+    list: LexicogEntryCore[];
 }
