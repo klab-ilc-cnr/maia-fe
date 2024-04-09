@@ -18,7 +18,7 @@ export class DictionaryStateService {
   );
 
   lexicogEntries$ = this.lexicogListResponse$.pipe(
-    map(resp => resp.data),
+    map(resp => resp.list),
     shareReplay(1),
   );
 

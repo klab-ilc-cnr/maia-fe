@@ -40,9 +40,9 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   ];
   cols = [
     { field: 'label', header: '', width: '70%', display: 'true' },
-    { field: 'creator', header: '', width: '10%', display: 'true' },
-    { field: 'status', header: '', width: '10%', display: 'true' },
-    { field: '', header: '', width: '10%', display: 'true' },
+    { field: 'creator', width: '10%', display: 'true' },
+    { field: 'status', header: 'Stato', width: '10%', display: 'true' },
+    { field: '', header: 'Button', width: '10%', display: 'true' },
   ]
 
   isVisibleCheckbox = false;
