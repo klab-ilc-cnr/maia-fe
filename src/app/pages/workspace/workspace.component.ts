@@ -12,9 +12,11 @@ import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-
 import { HttpErrorResponse } from '@angular/common/http';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
+import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
+import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
 import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -24,10 +26,8 @@ import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
-import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
-import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
-import { SearchResult, SearchResultRow } from 'src/app/models/search/search-result';
+import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -312,7 +312,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LAYERS_LIST:
           case TileType.LEXICON:
           case TileType.SEARCH:
-            // case TileType.LEXICON_EDIT: //TODO era una mia aggiunta ma il salvataggio su BE non pare gestito
+          case TileType.LEXICON_EDIT: 
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
             break;
@@ -343,6 +343,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.SEARCH:
             this.tileMap.delete(panelId);
             console.log('Deleted ', this.getTileMap());
+            break;
+
+          case TileType.LEXICON_EDIT:
+            this.tileMap.delete(panelId);
             break;
 
           default:
@@ -780,6 +784,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
                     }); */
 
           break;
+
+        case TileType.LEXICON_EDIT:
+          const lexiconEditComponent = this.generateLexiconEditTileConfiguration(tile.tileConfig.id) //FIXME capire come gestire il caso in assenza del subtree
 
         default:
           console.error("type " + tile.type + " not implemented");
