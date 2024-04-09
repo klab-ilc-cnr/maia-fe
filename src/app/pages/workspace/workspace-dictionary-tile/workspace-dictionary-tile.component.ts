@@ -38,12 +38,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     { name: 'Contains', key: 'contains' },
     { name: 'End', key: 'end' }
   ];
-  cols = [
-    { field: 'label', header: '', width: '70%', display: 'true' },
-    { field: 'creator', width: '10%', display: 'true' },
-    { field: 'status', header: 'Stato', width: '10%', display: 'true' },
-    { field: '', header: 'Button', width: '10%', display: 'true' },
-  ]
+  cols!: any[];
 
   isVisibleCheckbox = false;
 
@@ -52,6 +47,14 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.cols = [
+      { field: 'label', header: '', width: '70%', display: 'true' },
+      { field: 'creator', width: '10%', display: 'true' },
+      { field: 'status', header: 'Autore', width: '10%', display: 'true' },
+      { field: 'add', header: 'Stato', width: '10%', display: 'true' },
+
+    ]
+  
     this.searchTextForm.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
