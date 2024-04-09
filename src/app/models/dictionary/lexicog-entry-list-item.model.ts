@@ -1,4 +1,4 @@
-export interface LexicogEntryCore {
+export interface LexicogEntryListItem {
     creator: string;
     lastUpdate: string;
     creationDate: string;

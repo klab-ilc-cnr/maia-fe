@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { Subject, debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs';
-import { LexicogEntryCore } from 'src/app/models/dictionary/lexicog-entry-core.model';
+import { LexicogEntryListItem } from 'src/app/models/dictionary/lexicog-entry-list-item.model';
 import { DictionaryStateService } from 'src/app/services/dictionary-state.service';
 
 @Component({
@@ -92,8 +92,8 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     console.info('CREAZIONE DEL FILTRO ALLA LISTA');
   }
 
-  private mapLexicogEntryToTreenode(lexicogEntry: LexicogEntryCore): TreeNode<LexicogEntryCore> {
-    return <TreeNode<LexicogEntryCore>>{
+  private mapLexicogEntryToTreenode(lexicogEntry: LexicogEntryListItem): TreeNode<LexicogEntryListItem> {
+    return <TreeNode<LexicogEntryListItem>>{
       data: lexicogEntry,
       children: lexicogEntry.hasChildren ? [] : null
     };
