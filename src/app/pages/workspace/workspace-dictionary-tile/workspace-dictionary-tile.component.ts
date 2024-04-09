@@ -41,6 +41,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   cols!: any[];
 
   isVisibleCheckbox = false;
+  isAddDictionaryEntryVisible = false;
 
   constructor(
     private dictionaryState: DictionaryStateService,
