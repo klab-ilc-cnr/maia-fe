@@ -5,6 +5,7 @@
         "cancel": "Annulla",
         "confirm": "Conferma",
         "currentPageReportTemplate": "Elementi da {first} a {last} per un totale di elementi {totalRecords}.",
+        "noResult": "Nessun risultato",
         "save": "Salva",
         "update": "Aggiorna"
     },
@@ -39,6 +40,7 @@
     },
     "DICTIONARY_EXPLORER": {
         "addEntry": "Aggiungi nuova voce",
+        "addLemma": "Aggiungi lemma",
         "editor": "Redattore",
         "export": "Esporta",
         "filtersPanel": "Filtri",
@@ -53,6 +55,7 @@
             "weightedFuzzy": "Ricerca fuzzy pesata:"
         },
         "selection": "Selezione",
+        "showLemmas": "Mostra lemmi",
         "status": "Status"
     },
     "LOGIN": {

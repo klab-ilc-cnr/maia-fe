@@ -5,6 +5,7 @@
         "cancel": "Cancel",
         "confirm": "Confirm",
         "currentPageReportTemplate": "Elements {first} to {last} for a total of {totalRecords} elements",
+        "noResult": "No result",
         "save": "Save",
         "update": "Update"
     },
@@ -39,6 +40,7 @@
     },
     "DICTIONARY_EXPLORER": {
         "addEntry": "Add new entry",
+        "addLemma": "Add lemma",
         "editor": "Editor",
         "export": "Export",
         "filtersPanel": "Filters",
@@ -53,6 +55,7 @@
             "weightedFuzzy": "Weighted fuzzy search:"
         },
         "selection": "Selection",
+        "showLemmas": "Show lemmas",
         "status": "Status"
     },
     "LOGIN": {

@@ -1,7 +1,7 @@
 <p-toolbar>
     <div class="p-toolbar-group-start">
-        <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
-            [pTooltip]="'DICTIONARY_EXPLORER.addEntry'|translate" tooltipPosition="bottom"></button>
+        <button aria-label="Add entry" type="button" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
+            [pTooltip]="'DICTIONARY_EXPLORER.addEntry'|translate" tooltipPosition="bottom" (click)="isAddDictionaryEntryVisible=true"></button>
         <!--TODO Dynamically manage the button enablement once the management of selections from list is implemented-->
         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" [disabled]="true"
             [pTooltip]="'DICTIONARY_EXPLORER.remove'|translate" tooltipPosition="bottom"></button>
@@ -80,7 +80,7 @@
             <tr>
                 <td *ngFor="let col of cols; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
-                        [pTooltip]="rowNode.hasChildren?'Mostra lemmi': ''"></p-treeTableToggler>
+                        [pTooltip]="rowNode.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
                     <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
                     <span *ngIf="col.field === 'label'">{{
                         rowData[col.field] }}</span>
@@ -89,13 +89,13 @@
                         [tooltip]="'<em>Editor</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ (rowData['creationDate']|date)+'<br><em>Last update</em>: '+ (rowData['lastUpdate']|date)"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
                     <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]" [status]="rowData[col.field]"></app-icon-lock>
                     <button type="button" aria-label="Add lemma" *ngIf="col.field === 'add'" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-primary"
-                    [pTooltip]="'Aggiungi lemma'" tooltipPosition="top"></button>        
+                    [pTooltip]="'DICTIONARY_EXPLORER.addLemma'|translate" tooltipPosition="top"></button>        
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-              <td [attr.colspan]="cols.length">No result</td>
+              <td [attr.colspan]="cols.length">{{'GENERAL.noResult'|translate}}</td>
             </tr>
           </ng-template>      
     </p-treeTable>
@@ -114,3 +114,14 @@
         <span><i>test~0.8</i></span>
     </ng-template>
 </p-overlayPanel>
+<p-dialog *ngIf="isAddDictionaryEntryVisible" [(visible)]="isAddDictionaryEntryVisible">
+    <ng-template pTemplate="header">
+        <h5 class="modal-title">{{'DICTIONARY_EXPLORER.addEntry'|translate}}</h5>
+      </ng-template>
+    <ng-template pTemplate="content">
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+
+    </ng-template>
+</p-dialog>
