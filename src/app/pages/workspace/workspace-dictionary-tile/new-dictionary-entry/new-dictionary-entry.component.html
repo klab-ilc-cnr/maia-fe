@@ -1,24 +1,27 @@
 <div class="modal-content">
-    <form>
+    <form [formGroup]="entryForm">
         <div class="formgrid grid">
             <div class="field col-4">
                 <label for="dictLang" class="form-label w-full">Lingua *</label>
-                <p-dropdown id="dictLang" styleClass="w-full"></p-dropdown>
+                <p-dropdown id="dictLang" styleClass="w-full" [options]="(languages$|async)||[]" optionLabel="label"
+                    optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel"
+                    placeholder="Select value" formControlName="language"></p-dropdown>
             </div>
             <div class="field col-4">
                 <label for="dictName" class="form-label w-full">Nome *</label>
-                <p-autoComplete id="dictName" styleClass="w-full" inputStyleClass="w-full"></p-autoComplete>
+                <input pInputText type="text" class="w-full" id="dictName" formControlName="name">
+                <!-- <p-autoComplete id="dictName" styleClass="w-full" inputStyleClass="w-full" formControlName="name"></p-autoComplete> -->
             </div>
             <div class="field col-4">
             </div>
             <div class="field col-12">
                 <p-fieldset>
                     <ng-template pTemplate="header">
-                        Definisci lemmi<button pButton pRipple icon="pi pi-plus" type="button"
+                        Definisci lemmi<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddLemma()"
                             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
                     </ng-template>
                     <ng-template pTemplate="content">
-                        test
+                        <app-new-lemma-trio *ngFor="let lemma of lemmas.controls; index as index" [index]="index" (remove)="onRemoveLemma($event)"></app-new-lemma-trio>
                     </ng-template>
                 </p-fieldset>
             </div>
