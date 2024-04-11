@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 
-const serverUrl = 'https://146.48.93.234:9000/maia';
+// const serverUrl = 'https://146.48.93.234:9000/maia';
+const serverUrl = 'https://146.48.93.207:9000/maia';
 
 export const environment = {
   production: false,

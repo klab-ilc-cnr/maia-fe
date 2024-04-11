@@ -2,4 +2,12 @@
     height: 1.5rem !important;
     width: 1.5rem;
   }
-  
+  ::ng-deep legend {
+    width: auto;
+    float: inherit;
+    font-size: inherit;
+    font-weight: 600;
+  }
+  ::ng-deep app-generic-autocomplete>p-autocomplete{
+    display: grid !important;
+  }

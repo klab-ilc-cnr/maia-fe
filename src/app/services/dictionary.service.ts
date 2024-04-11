@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-request.model';
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
+import { searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,19 +19,19 @@ export class DictionaryService {
   }
 
   retrieveLexicogEntryList(): Observable<LexicogEntriesResponse> {
-    // return this.http.post<LexicogEntriesResponse>(
-    //   `${this.lexoUrl}/lexicon/data/dictionaryEntries`,
-    //   <LexicogEntriesRequest>{ //FIXME da sostituire con un body passato, serve solo per il test preliminare
-    //     text: '',
-    //     searchMode: searchModeEnum.startsWith,
-    //     pos: '',
-    //     author: '',
-    //     lang: '',
-    //     status: '',
-    //     offset: 0,
-    //     limit: 0
-    //   }
-    // );
-    return this.http.get<LexicogEntriesResponse>('assets/mock/dictionary/lexicog-entries.json'); //FIXME replace with backend service
+    return this.http.post<LexicogEntriesResponse>(
+      `${this.lexoUrl}/lexicon/data/dictionaryEntries`,
+      <LexicogEntriesRequest>{ //FIXME da sostituire con un body passato, serve solo per il test preliminare
+        text: '',
+        searchMode: searchModeEnum.startsWith,
+        pos: '',
+        author: '',
+        lang: '',
+        status: '',
+        offset: 0,
+        limit: 500
+      }
+    );
+    // return this.http.get<LexicogEntriesResponse>('assets/mock/dictionary/lexicog-entries.json'); //FIXME replace with backend service
   }
 }
