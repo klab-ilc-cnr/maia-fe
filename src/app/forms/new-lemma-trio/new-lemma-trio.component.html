@@ -3,29 +3,26 @@
         <div class="field col-4">
             <label class="form-label w-full">Lemma *</label>
             <p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
-                appendTo="body" [virtualScroll]="true" field="label" [showEmptyMessage]="true"
-                emptyMessage="No matching" formControlName="lemma">
+                appendTo="body" [virtualScroll]="true" field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
+                [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate" formControlName="lemma">
                 <ng-template let-item pTemplate="item">
                     {{item['label']}}<sub>{{item['pos']}}</sub>
                 </ng-template>
             </p-autoComplete>
-            <!-- <app-generic-autocomplete field="label" valueField="lexicalEntry" [filterFn]="lexEntryList"
-                [showOptionSuffix]="true" suffixField="pos" [forceSelection]="false" styeClass="w-full"
-                inputStyleClass="w-full" (selected)="onSelection($event)"></app-generic-autocomplete> -->
         </div>
         <div class="field col-4">
             <label class="form-label w-full">POS *</label>
             <p-dropdown styleClass="w-full" [options]="(pos$|async)||[]" optionLabel="valueLabel" optionValue="valueId"
-                appendTo="body" [filter]="true" filterBy="valueLabel" placeholder="Select value" formControlName="pos"></p-dropdown>
+                appendTo="body" [filter]="true" filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate" formControlName="pos"></p-dropdown>
         </div>
         <div class="field col-3">
-            <label class="form-label w-full">Tipo</label>
+            <label class="form-label w-full">{{ 'DICTIONARY_EXPLORER.CREATE_ENTRY.type'|translate }}</label>
             <p-multiSelect styleClass="w-full" [options]="(lexicalEntryTypes$|async)||[]" optionLabel="valueLabel"
-                optionValue="valueLabel" appendTo="body" [filter]="true" filterBy="valueLabel"
-                placeholder="Select value" formControlName="type"></p-multiSelect>
+                optionValue="valueId" appendTo="body" [filter]="true" filterBy="valueLabel"
+                [placeholder]="'GENERAL.selectValue'|translate" formControlName="type"></p-multiSelect>
         </div>
         <div class="field col-1 m-auto">
-            <button pButton pRipple type="button" icon="pi pi-times" (click)="onRemoveNewLemmaTrio()"
+            <button aria-label="remove" pButton pRipple type="button" icon="pi pi-times" (click)="onRemoveNewLemmaTrio()"
                 class="p-button-rounded p-button-danger p-button-text"></button>
         </div>
     </div>

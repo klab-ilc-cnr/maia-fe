@@ -25,11 +25,19 @@ export class NewDictionaryEntryComponent implements OnInit {
   }
 
   onAddLemma(isDefault?: boolean) {
-    const newLemma = { lemma: new FormControl<string>(''), pos: new FormControl<string>(''), type: new FormControl<string>('') };
+    const newLemma = { lemma: new FormControl<string>(''), pos: new FormControl<string>(''), type: new FormControl<string[]>([]), isFromLexicon: new FormControl<boolean>(false) };
     this.lemmas.push(new FormGroup(newLemma));
+  }
+
+  onChangeLemmaValue(lemma: { lemma: string, pos: string, type: string[], isFromLexicon: boolean}, index: number) {
+    this.lemmas.at(index).setValue(lemma);
   }
 
   onRemoveLemma(index: number) {
     this.lemmas.removeAt(index);
+  }
+
+  onSubmitNewEntry() {
+    console.info(this.entryForm.value)
   }
 }

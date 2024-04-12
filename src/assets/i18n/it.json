@@ -7,6 +7,7 @@
         "currentPageReportTemplate": "Elementi da {first} a {last} per un totale di elementi {totalRecords}.",
         "noResult": "Nessun risultato",
         "save": "Salva",
+        "selectValue": "Seleziona valore",
         "update": "Aggiorna"
     },
     "CORPUS_EXPLORER": {
@@ -41,6 +42,14 @@
     "DICTIONARY_EXPLORER": {
         "addEntry": "Aggiungi nuova voce",
         "addLemma": "Aggiungi lemma",
+        "CREATE_ENTRY": {
+            "addEntry": "Aggiungi",
+            "defineLemmas": "Definisci lemmi",
+            "entryLabel": "Nome",
+            "language": "Lingua",
+            "noMatching": "Nessuna corrispondenza",
+            "type": "Tipo"
+        },
         "editor": "Redattore",
         "export": "Esporta",
         "filtersPanel": "Filtri",

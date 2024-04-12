@@ -14,6 +14,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 export class NewLemmaTrioComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   @Input() index?: number;
+  /**Emit the index of the row to be removed */
   @Output() remove = new EventEmitter<number>();
   @Output() changeValue = new EventEmitter<{
     lemma: string,
@@ -26,7 +27,7 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
 
   currentFilter$ = new BehaviorSubject<string>('');
   suggestions = this.currentFilter$.pipe(
-    debounceTime(300),
+    debounceTime(500),
     switchMap(text => this.lexEntryList(text)),
   );
   lexEntryList = (text: string) => this.lexiconService.getLexicalEntriesList({
@@ -51,6 +52,13 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
   });
   get lemma() { return this.lemmaForm.get('lemma') as FormControl }
 
+  rowValue = {
+    lemma: '',
+    pos: '',
+    type: [],
+    isFromLexicon: false
+  };
+
   constructor(
     private globalState: GlobalStateService,
     private lexiconService: LexiconService,
@@ -60,22 +68,38 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
     this.lemma.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       distinctUntilChanged(),
-      debounceTime(300),
+      debounceTime(500),
     ).subscribe(lemma => {
       if (typeof (lemma) !== 'string') {
         this.setAndDisablePos(lemma);
         this.setAndDisableType(lemma);
+        this.rowValue = {
+          lemma: lemma.lexicalEntry,
+          pos: this.lemmaForm.get('pos')?.value,
+          type: this.lemmaForm.get('type')?.value,
+          isFromLexicon: true
+        };
       } else {
         this.lemmaForm.get('pos')?.enable();
         this.lemmaForm.get('type')?.enable();
+        this.rowValue.isFromLexicon = false;
       }
     });
 
     this.lemmaForm.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
+      debounceTime(300),
     ).subscribe(value => {
-      console.info(value)
-    })
+      if(!this.rowValue.isFromLexicon) {
+        this.rowValue = {
+          ...this.rowValue,
+          lemma: value.lemma,
+          pos: value.pos,
+          type: value.type
+        };
+      }
+      this.changeValue.emit(this.rowValue);
+    });
   }
 
   ngOnDestroy(): void {
@@ -106,10 +130,11 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
 
   private setAndDisableType(lexicalEntry: LexicalEntryListItem) {
     const typeControl = this.lemmaForm.get('type');
+    const values: string[] = [];
     lexicalEntry.type.forEach(t => {
-      typeControl?.setValue(t); //FIXME qualcosa non torna con la valorizzazione
-    })
-    // typeControl?.setValue(lexicalEntry.type[0]);
+      values.push('http://www.w3.org/ns/lemon/ontolex#'+t); //FIXME Understand how to manage in a generalized way
+    });
+    typeControl?.setValue(values);
     typeControl?.disable();
   }
 }

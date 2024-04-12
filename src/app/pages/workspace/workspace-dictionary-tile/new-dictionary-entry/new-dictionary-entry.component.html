@@ -1,30 +1,39 @@
 <div class="modal-content">
-    <form [formGroup]="entryForm">
+    <form [formGroup]="entryForm" (ngSubmit)="onSubmitNewEntry()">
         <div class="formgrid grid">
             <div class="field col-4">
-                <label for="dictLang" class="form-label w-full">Lingua *</label>
+                <label for="dictLang"
+                    class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.language'|translate}} *</label>
                 <p-dropdown id="dictLang" styleClass="w-full" [options]="(languages$|async)||[]" optionLabel="label"
-                    optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel"
-                    placeholder="Select value" formControlName="language"></p-dropdown>
+                    optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel" placeholder="Select value"
+                    formControlName="language"></p-dropdown>
             </div>
             <div class="field col-4">
-                <label for="dictName" class="form-label w-full">Nome *</label>
+                <label for="dictName"
+                    class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.entryLabel'|translate}} *</label>
                 <input pInputText type="text" class="w-full" id="dictName" formControlName="name">
-                <!-- <p-autoComplete id="dictName" styleClass="w-full" inputStyleClass="w-full" formControlName="name"></p-autoComplete> -->
             </div>
             <div class="field col-4">
+                <!--NOTE placeholder for default lemma button-->
             </div>
             <div class="field col-12">
                 <p-fieldset>
                     <ng-template pTemplate="header">
-                        Definisci lemmi<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddLemma()"
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.defineLemmas'|translate}}<button pButton pRipple
+                            icon="pi pi-plus" type="button" (click)="onAddLemma()"
                             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
                     </ng-template>
                     <ng-template pTemplate="content">
-                        <app-new-lemma-trio *ngFor="let lemma of lemmas.controls; index as index" [index]="index" (remove)="onRemoveLemma($event)"></app-new-lemma-trio>
+                        <app-new-lemma-trio *ngFor="let lemma of lemmas.controls; index as index" [index]="index"
+                            (remove)="onRemoveLemma($event)"
+                            (changeValue)="onChangeLemmaValue($event, index)"></app-new-lemma-trio>
                     </ng-template>
                 </p-fieldset>
             </div>
+        </div>
+        <div class="field col-12 d-flex justify-content-end mb-0">
+            <button [disabled]="entryForm.invalid" class="btn btn-primary float-right"
+                type="submit">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.addEntry'|translate}}</button>
         </div>
     </form>
 </div>
