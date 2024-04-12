@@ -15,13 +15,13 @@
             <p-dropdown styleClass="w-full" [options]="(pos$|async)||[]" optionLabel="valueLabel" optionValue="valueId"
                 appendTo="body" [filter]="true" filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate" formControlName="pos"></p-dropdown>
         </div>
-        <div class="field col-3">
+        <div class="field" [ngClass]="isRemoveVisible ? 'col-3' : 'col-4'">
             <label class="form-label w-full">{{ 'DICTIONARY_EXPLORER.CREATE_ENTRY.type'|translate }}</label>
             <p-multiSelect styleClass="w-full" [options]="(lexicalEntryTypes$|async)||[]" optionLabel="valueLabel"
                 optionValue="valueId" appendTo="body" [filter]="true" filterBy="valueLabel"
                 [placeholder]="'GENERAL.selectValue'|translate" formControlName="type"></p-multiSelect>
         </div>
-        <div class="field col-1 m-auto">
+        <div class="field col-1 m-auto" *ngIf="isRemoveVisible">
             <button aria-label="remove" pButton pRipple type="button" icon="pi pi-times" (click)="onRemoveNewLemmaTrio()"
                 class="p-button-rounded p-button-danger p-button-text"></button>
         </div>

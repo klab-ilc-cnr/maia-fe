@@ -89,7 +89,7 @@
                         [tooltip]="'<em>Editor</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ (rowData['creationDate']|date)+'<br><em>Last update</em>: '+ (rowData['lastUpdate']|date)"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
                     <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]" [status]="rowData[col.field]"></app-icon-lock>
                     <button type="button" aria-label="Add lemma" *ngIf="col.field === 'add'" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-primary"
-                    [pTooltip]="'DICTIONARY_EXPLORER.addLemma'|translate" tooltipPosition="top"></button>        
+                    [pTooltip]="'DICTIONARY_EXPLORER.addLemma'|translate" tooltipPosition="top" (click)="onShowNewLemmaDialog(rowData)"></button>        
                 </td>
             </tr>
         </ng-template>
@@ -120,5 +120,16 @@
       </ng-template>
     <ng-template pTemplate="content">
         <app-new-dictionary-entry></app-new-dictionary-entry>
+    </ng-template>
+</p-dialog>
+<p-dialog *ngIf="isAddLemmaVisible" [(visible)]="isAddLemmaVisible">
+    <ng-template pTemplate="header">
+        <h5 class="modal-title">{{'DICTIONARY_EXPLORER.addLemma'|translate}}</h5>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <app-new-lemma-trio (changeValue)="onNewLemmaEmitValue($event)" [isRemoveVisible]="false"></app-new-lemma-trio>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button [disabled]="!newLemmaTemp || (newLemmaTemp?.lemma === '' || newLemmaTemp?.pos === '')" type="button" class="btn btn-primary" (click)="onAddNewLemma()">{{'DICTIONARY_EXPLORER.addLemma'|translate}}</button>
     </ng-template>
 </p-dialog>

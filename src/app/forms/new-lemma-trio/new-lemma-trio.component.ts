@@ -14,6 +14,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 export class NewLemmaTrioComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   @Input() index?: number;
+  @Input() isRemoveVisible = true;
   /**Emit the index of the row to be removed */
   @Output() remove = new EventEmitter<number>();
   @Output() changeValue = new EventEmitter<{
