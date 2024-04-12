@@ -42,6 +42,9 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
 
   isVisibleCheckbox = false;
   isAddDictionaryEntryVisible = false;
+  isAddLemmaVisible = false;
+  newLemmaTemp?: { lemma: string, pos: string, type: string[], isFromLexicon: boolean};
+  entryForLemmaTemp?: LexicogEntryListItem;
 
   constructor(
     private dictionaryState: DictionaryStateService,
@@ -75,6 +78,20 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  onAddNewLemma() {
+    console.group('Data to add lemma')
+    console.info('dictionary entry', this.entryForLemmaTemp)
+    console.info('new lemma', this.newLemmaTemp)
+    console.groupEnd()
+    this.isAddLemmaVisible = false;
+    this.entryForLemmaTemp = undefined;
+    this.newLemmaTemp = undefined;
+  }
+
+  onNewLemmaEmitValue(lemma: { lemma: string, pos: string, type: string[], isFromLexicon: boolean}) {
+    this.newLemmaTemp = lemma;
+  }
+
   onResetFilters() {
     this.searchTextForm.reset({
       search: ''
@@ -88,6 +105,10 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     });
   }
 
+  onShowNewLemmaDialog(entry: LexicogEntryListItem) {
+    this.isAddLemmaVisible = true;
+    this.entryForLemmaTemp = entry;
+  }
   private createFilters() {
     //TODO develop filters management
     console.info('CREAZIONE DEL FILTRO ALLA LISTA');
