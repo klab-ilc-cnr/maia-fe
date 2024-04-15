@@ -130,6 +130,6 @@
         <app-new-lemma-trio (changeValue)="onNewLemmaEmitValue($event)" [isRemoveVisible]="false"></app-new-lemma-trio>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button [disabled]="!newLemmaTemp || (newLemmaTemp?.lemma === '' || newLemmaTemp?.pos === '')" type="button" class="btn btn-primary" (click)="onAddNewLemma()">{{'DICTIONARY_EXPLORER.addLemma'|translate}}</button>
+        <button [disabled]="!newLemmaTemp || (newLemmaTemp.lemma === '' || newLemmaTemp.pos === '')" type="button" class="btn btn-primary" (click)="onAddNewLemma()">{{'DICTIONARY_EXPLORER.addLemma'|translate}}</button>
     </ng-template>
 </p-dialog>
