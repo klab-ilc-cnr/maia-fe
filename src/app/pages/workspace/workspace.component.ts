@@ -964,11 +964,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#CCE1F2',
         bgContent: '#fff',
         colorHeader: 'black',
         colorContent: `#${jsPanel.colorNames.gray700}`,
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #CCE1F2',
         borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
@@ -1050,9 +1050,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#CCE1F2',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #CCE1F2',
         borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
@@ -1120,9 +1120,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#C6F8E5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #C6F8E5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1200,9 +1200,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#C6F8E5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #C6F8E5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1259,9 +1259,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#FBF7D5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #FBF7D5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1323,9 +1323,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#F9DED7',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #F9DED7',
         borderRadius: '.33rem',
       },
       panelSize: {
