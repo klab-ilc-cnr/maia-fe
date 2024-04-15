@@ -82,8 +82,7 @@
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
                         [pTooltip]="rowNode.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
                     <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
-                    <span *ngIf="col.field === 'label'">{{
-                        rowData[col.field] }}</span>
+                    <span *ngIf="col.field === 'label'" class="fw-bold">{{rowData[col.field] }}</span>
                     <sub *ngIf="col.field === 'label'">{{ rowData['pos'] }}</sub>
                     <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
                         [tooltip]="'<em>Editor</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ (rowData['creationDate']|date)+'<br><em>Last update</em>: '+ (rowData['lastUpdate']|date)"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
