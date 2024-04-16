@@ -85,7 +85,8 @@
           <div #textContainer class="text-container w-100" (scroll)="onScroll($event)" [ngStyle]="{'height.px': textContainerHeight}">
           <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg 
           >
-          <!-- (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)"  -->
+          <!-- #76 CPU usage in Text panel #169
+            (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)"  -->
             <svg class="text-editor" [attr.height]="svgHeight" (click)="onRowClick($event)">
               <defs>
                 <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
@@ -187,7 +188,8 @@
                             ry="3px" 
                             [attr.data-rowIndex]="row.rowIndex"
                             >
-                            <!-- (mousedown)="startDrawing($event, a)" 
+                            <!-- #76 CPU usage in Text panel #169
+                              (mousedown)="startDrawing($event, a)" 
                             (mouseup)="endDrawingAndCreateRelation($event, a)" -->
                         </rect>
                       <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
