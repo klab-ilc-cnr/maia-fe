@@ -20,6 +20,7 @@ import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model
 import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
@@ -181,7 +182,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
     private commonService: CommonService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private lexiconService: LexiconService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
@@ -581,6 +583,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   openLexiconEditTile(selectedSubTree: TreeNode<LexicalEntryOld>, showLabelName: boolean) {
     // var lexiconEditTileId = 'lexiconEditTile';
     const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryTypeOld.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
+    console.info('tree', lexicalEntryTree)
     const idAfterHash = lexicalEntryTree?.data?.instanceName?.split('#')[1];
     const lexiconEditTileId = this.lexiconEditTilePrefix + idAfterHash;
     const panelExist = jsPanel.getPanels().find(
@@ -786,7 +789,51 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           break;
 
         case TileType.LEXICON_EDIT:
-          const lexiconEditComponent = this.generateLexiconEditTileConfiguration(tile.tileConfig.id) //FIXME capire come gestire il caso in assenza del subtree
+          const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace('lexiconEditTile_', '');  //FIXME verificare perché spara il componente nella base del workspace invece che nel panel
+          this.lexiconService.getLexicalEntry(lexEntryId).pipe(
+            take(1),
+          ).subscribe(le => {
+            const treeNode = {
+              data: {
+                name: le.lexicalEntry,
+                instanceName: le.lexicalEntry,
+                label: le.label,
+                note: le['note'],
+                creator: le['creator'],
+                creationDate: le['creationDate'] ? new Date(le['creationDate']).toLocaleString() : '',
+                lastUpdate: le['lastUpdate'] ? new Date(le['lastUpdate']).toLocaleString() : '',
+                status: le['status'],
+                uri: le['lexicalEntry'],
+                type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+                sub: le.pos
+              },
+              children: [{
+                data: {
+                  name: 'form (0)',
+                  instanceName: '_form_' + le.lexicalEntry,
+                  type: LexicalEntryTypeOld.FORMS_ROOT
+                }
+              },
+              {
+                data: {
+                  name: 'sense (0)',
+                  instanceName: '_sense_' + le.lexicalEntry,
+                  type: LexicalEntryTypeOld.SENSES_ROOT
+                }
+              }]
+            };
+            const lexiconEditComponent = this.generateLexiconEditTileConfiguration(tile.tileConfig.id,treeNode,true);
+            const mergedConfigLexiconEdit = { ...lexiconEditComponent.panelConfig, ...tile.tileConfig };
+            currPanelElement = jsPanel.layout.restoreId({
+              id: tile.tileConfig.id,
+              config: mergedConfigLexiconEdit,
+              storagename: this.storageName,
+            });
+  
+            componentRef = lexiconEditComponent.component;
+  
+          });
+          break;
 
         default:
           console.error("type " + tile.type + " not implemented");
