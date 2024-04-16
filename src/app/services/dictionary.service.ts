@@ -18,7 +18,7 @@ export class DictionaryService {
 
   retrieveLexicogEntryList(): Observable<LexicogEntriesResponse> {
     // return this.http.post<LexicogEntriesResponse>(
-    //   `${this.lexoUrl}/lexicon/data/dictionaryEntries`,
+    //   `${this.lexoUrl}/data/dictionaryEntries`,
     //   <LexicogEntriesRequest>{ //FIXME da sostituire con un body passato, serve solo per il test preliminare
     //     text: '',
     //     searchMode: searchModeEnum.startsWith,
