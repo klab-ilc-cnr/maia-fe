@@ -27,7 +27,8 @@
                 (click)="onResetFilters()"></button>
             <span id="lexExpCounter"
                 class="flex-none flex w-2 align-items-center justify-content-center font-weight-bold font-italic">
-                {{counter$|async}}</span>
+                {{counter}}</span>
+                <!-- {{counter$|async}}</span> -->
         </div>
     </div>
 </div>
@@ -69,8 +70,9 @@
 </div>  
 <div class="tableScrollHeight">
     <!--TODO develop tree table-->
-    <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="(lexicogEntries$|async) || []" [scrollable]="true" [columns]="cols"
-        scrollHeight="flex">
+    <!-- <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="(lexicogEntries$|async) || []" [scrollable]="true" [columns]="cols" -->
+    <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols" [rows]="rows"
+        scrollHeight="flex" [lazy]="true" (onLazyLoad)="loadNodes($event)" [totalRecords]="counter" [paginator]="true">
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
               <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
@@ -83,7 +85,7 @@
                         [pTooltip]="rowNode.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
                     <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
                     <span *ngIf="col.field === 'label'" class="fw-bold">{{rowData[col.field] }}</span>
-                    <sub *ngIf="col.field === 'label'">{{ rowData['pos'] }}</sub>
+                    <sub *ngIf="col.field === 'label'">{{ rowData['pos'].join(' ') }}</sub>
                     <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
                         [tooltip]="'<em>Editor</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ (rowData['creationDate']|date)+'<br><em>Last update</em>: '+ (rowData['lastUpdate']|date)"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
                     <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]" [status]="rowData[col.field]"></app-icon-lock>
@@ -118,7 +120,7 @@
         <h5 class="modal-title">{{'DICTIONARY_EXPLORER.addEntry'|translate}}</h5>
       </ng-template>
     <ng-template pTemplate="content">
-        <app-new-dictionary-entry></app-new-dictionary-entry>
+        <app-new-dictionary-entry (submitEntry)="onSubmitEntry($event)"></app-new-dictionary-entry>
     </ng-template>
 </p-dialog>
 <p-dialog *ngIf="isAddLemmaVisible" [(visible)]="isAddLemmaVisible">

@@ -4,33 +4,40 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-request.model';
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
-import { searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
+import { CommonService } from './common.service';
+import { LoggedUserService } from './logged-user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DictionaryService {
   private lexoUrl: string;
+  private prefix = environment.lexoPrefix;
+  private encodedBaseIRI = this.commonService.encodeUrl(environment.lexoBaseIRI);
+  private currentUser = this.loggedUserService.currentUser!;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private commonService: CommonService,
+    private loggedUserService: LoggedUserService,
   ) {
     this.lexoUrl = environment.maiaBeLexoUrl;
   }
 
-  retrieveLexicogEntryList(): Observable<LexicogEntriesResponse> {
+  addDictionaryEntry(lang: string, label: string) {
+    return this.http.post(
+      `${this.lexoUrl}/dictionary/create/entry?author=${this.currentUser.username}&prefix=${this.prefix}&baseIRI=${this.encodedBaseIRI}`,
+      {
+        lang: lang,
+        label: label
+      }
+    );
+  }
+
+  retrieveLexicogEntryList(request: LexicogEntriesRequest): Observable<LexicogEntriesResponse> {
     return this.http.post<LexicogEntriesResponse>(
       `${this.lexoUrl}/data/dictionaryEntries`,
-      <LexicogEntriesRequest>{ //FIXME da sostituire con un body passato, serve solo per il test preliminare
-        text: '',
-        searchMode: searchModeEnum.startsWith,
-        pos: '',
-        author: '',
-        lang: '',
-        status: '',
-        offset: 0,
-        limit: 500
-      }
+      request
     );
   }
 }

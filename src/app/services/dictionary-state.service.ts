@@ -12,7 +12,7 @@ export class DictionaryStateService {
   ) { }
 
   lexicogListResponse$ = merge(
-    this.dictionaryService.retrieveLexicogEntryList(),
+    // this.dictionaryService.retrieveLexicogEntryList(),
   ).pipe(
     shareReplay(1),
   );

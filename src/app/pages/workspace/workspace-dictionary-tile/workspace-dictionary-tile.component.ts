@@ -1,24 +1,37 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
-import { Subject, debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs';
+import { Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil } from 'rxjs';
+import { LexicogEntriesRequest } from 'src/app/models/dictionary/lexicog-entries-request.model';
 import { LexicogEntryListItem } from 'src/app/models/dictionary/lexicog-entry-list-item.model';
-import { DictionaryStateService } from 'src/app/services/dictionary-state.service';
+import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { CommonService } from 'src/app/services/common.service';
+import { DictionaryService } from 'src/app/services/dictionary.service';
 
 @Component({
   selector: 'app-workspace-dictionary-tile',
   templateUrl: './workspace-dictionary-tile.component.html',
-  styleUrls: ['./workspace-dictionary-tile.component.scss']
+  styleUrls: ['./workspace-dictionary-tile.component.scss'],
 })
 export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  rows = 500;
+  lexicogRequest: LexicogEntriesRequest = {
+    text: '',
+    searchMode: searchModeEnum.startsWith,
+    pos: '',
+    author: '',
+    lang: '',
+    status: '',
+    offset: 0,
+    limit: this.rows
+  };
   /**Defines whether loading is in progress */
   loading = false;
   /**Number of vocabulary items retrieved */
-  counter$ = this.dictionaryState.totalHits$;
-  lexicogEntries$ = this.dictionaryState.lexicogEntries$.pipe(
-    map(entries => entries?.map(entry => this.mapLexicogEntryToTreenode(entry))),
-  ); //FIXME per qualche motivo non sembra recuperare i dati di mock, da verificare
+  counter!: number;
+  lexicogEntries: TreeNode<LexicogEntryListItem>[] = [];
   /**Control for the search input text */
   searchTextForm = new FormGroup({
     search: new FormControl<string>('')
@@ -43,11 +56,12 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   isVisibleCheckbox = false;
   isAddDictionaryEntryVisible = false;
   isAddLemmaVisible = false;
-  newLemmaTemp?: { lemma: string, pos: string, type: string[], isFromLexicon: boolean};
+  newLemmaTemp?: { lemma: string, pos: string, type: string[], isFromLexicon: boolean };
   entryForLemmaTemp?: LexicogEntryListItem;
 
   constructor(
-    private dictionaryState: DictionaryStateService,
+    private dictionaryService: DictionaryService,
+    private commonService: CommonService,
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +72,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       { field: 'add', header: 'Stato', width: '10%', display: 'true' },
 
     ]
-  
+
     this.searchTextForm.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
@@ -71,11 +85,32 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.createFilters();
     });
+
+    this.loadNodes(null);
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  loadNodes(event: any) {
+    if (event) { //not on first load
+      this.lexicogRequest.offset = event.first;
+      this.lexicogRequest.limit = event.first + event.rows;
+    }
+    this.loading = true;
+    this.dictionaryService.retrieveLexicogEntryList(this.lexicogRequest).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
+    ).subscribe(resp => {
+      this.lexicogEntries = resp.list.map(entry => this.mapLexicogEntryToTreenode(entry));
+      this.counter = resp.totalHits;
+      this.loading = false;
+    })
   }
 
   onAddNewLemma() {
@@ -88,7 +123,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.newLemmaTemp = undefined;
   }
 
-  onNewLemmaEmitValue(lemma: { lemma: string, pos: string, type: string[], isFromLexicon: boolean}) {
+  onNewLemmaEmitValue(lemma: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }) {
     this.newLemmaTemp = lemma;
   }
 
@@ -109,6 +144,20 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.isAddLemmaVisible = true;
     this.entryForLemmaTemp = entry;
   }
+
+  onSubmitEntry(entryData: any) {
+    console.info(entryData);
+    this.dictionaryService.addDictionaryEntry(entryData.language, entryData.name).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(newEntry => {
+      this.loadNodes(null); //FIXME To be optimized with dynamic insertion of the new entry into the list, without full update
+      console.info(newEntry);
+      //TODO add creation and association of lemmas
+    });
+    this.isAddDictionaryEntryVisible = false;
+  }
+
   private createFilters() {
     //TODO develop filters management
     console.info('CREAZIONE DEL FILTRO ALLA LISTA');
