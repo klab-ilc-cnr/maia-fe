@@ -1,12 +1,10 @@
-export interface LexicogEntryListItem {
-    creator: string;
-    lastUpdate: string;
-    creationDate: string;
-    confidence: number;
+import { LexicogEntryBase } from "./lexicog-entry-base.model";
+
+/**Interface of features of a dictionary entry in the list version */
+export interface LexicogEntryListItem extends LexicogEntryBase {
     status: string;
     revisor: string;
     pos: string;
-    label: string;
     language: string;
     author: string;
     note: string;
