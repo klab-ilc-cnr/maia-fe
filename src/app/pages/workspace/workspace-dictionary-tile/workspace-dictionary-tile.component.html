@@ -28,7 +28,6 @@
             <span id="lexExpCounter"
                 class="flex-none flex w-2 align-items-center justify-content-center font-weight-bold font-italic">
                 {{counter}}</span>
-                <!-- {{counter$|async}}</span> -->
         </div>
     </div>
 </div>
@@ -49,7 +48,7 @@
             </div>
         </div>
         <div class="flex flex-row w-100">
-            <p-dropdown class="flex  justify-content-between col-6" styleClass="w-100" [options]="[]"
+            <p-dropdown class="flex  justify-content-between col-6" styleClass="w-100" [options]="(languages$|async)||[]"
                 [placeholder]="'DICTIONARY_EXPLORER.language'|translate" [showClear]="true" formControlName="language">
             </p-dropdown>
             <p-dropdown class="flex justify-content-between col-6" styleClass="w-100" [options]="[]"
@@ -58,7 +57,7 @@
             </p-dropdown>
         </div>
         <div class="flex flex-row">
-            <p-dropdown class="flex justify-content-between col-6" styleClass="w-100" [options]="[]"
+            <p-dropdown class="flex justify-content-between col-6" styleClass="w-100" [options]="statuses" appendTo="body"
                 [placeholder]="'DICTIONARY_EXPLORER.status'|translate" [showClear]="true" formControlName="status">
             </p-dropdown>
         </div>
@@ -69,10 +68,11 @@
       [pTooltip]="'DICTIONARY_EXPLORER.selection'|translate" (click)="isVisibleCheckbox=!isVisibleCheckbox"></button>
 </div>  
 <div class="tableScrollHeight">
-    <!--TODO develop tree table-->
-    <!-- <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="(lexicogEntries$|async) || []" [scrollable]="true" [columns]="cols" -->
-    <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols" [rows]="rows"
-        scrollHeight="flex" [lazy]="true" (onLazyLoad)="loadNodes($event)" [totalRecords]="counter" [paginator]="true">
+    <!--NOTE il componente sembra non supportare la combinazione virtual scroll + lazy loading https://github.com/primefaces/primeng/issues/11789 -->
+    <!-- <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols" [rows]="rows"
+        scrollHeight="flex" [lazy]="true" (onLazyLoad)="loadNodes($event)" [totalRecords]="counter" [paginator]="true"> -->
+        <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols"
+        scrollHeight="flex" [virtualRowHeight]="44" [virtualScroll]="true">
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
               <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">

@@ -10,7 +10,7 @@ EpiLexo is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 You should have received a copy of the GNU General Public License along with EpiLexo. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { LexicalEntryListItem } from "./lexical-entry.model"
+import { LexicalEntryListItem } from "./lexical-entry.model";
 
 /**Interfaccia che rappresenta i filtri della richiesta di un'entrata lessicale */
 export interface LexicalEntryRequest {
@@ -57,4 +57,10 @@ export enum searchModeEnum {
 export enum formTypeEnum {
   flexed = "flexed",
   entry = "entry"
+}
+
+export enum STATUSES {
+  working = "working",
+  completed = "completed",
+  reviewed = "reviewed"
 }

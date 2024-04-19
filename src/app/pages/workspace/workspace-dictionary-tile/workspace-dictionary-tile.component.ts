@@ -5,9 +5,10 @@ import { TreeNode } from 'primeng/api';
 import { Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil } from 'rxjs';
 import { LexicogEntriesRequest } from 'src/app/models/dictionary/lexicog-entries-request.model';
 import { LexicogEntryListItem } from 'src/app/models/dictionary/lexicog-entry-list-item.model';
-import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { STATUSES, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
+import { GlobalStateService } from 'src/app/services/global-state.service';
 
 @Component({
   selector: 'app-workspace-dictionary-tile',
@@ -16,7 +17,10 @@ import { DictionaryService } from 'src/app/services/dictionary.service';
 })
 export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
-  rows = 500;
+  rows = 5000;
+  statuses = Object.values(STATUSES);
+  /**List of available languages */
+  languages$ = this.globalState.languages$; //FIXME probably to be changed
   lexicogRequest: LexicogEntriesRequest = {
     text: '',
     searchMode: searchModeEnum.startsWith,
@@ -39,7 +43,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   /**Form to manage filters */
   filtersForm = new FormGroup({
     caseSensitive: new FormControl<boolean>(false),
-    match: new FormControl<string>('startsWith'),
+    match: new FormControl<searchModeEnum>(searchModeEnum.startsWith),
     language: new FormControl<string>(''),
     editor: new FormControl<string>(''),
     status: new FormControl<string>('')
@@ -62,6 +66,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   constructor(
     private dictionaryService: DictionaryService,
     private commonService: CommonService,
+    private globalState: GlobalStateService,
   ) { }
 
   ngOnInit(): void {
@@ -78,15 +83,15 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       debounceTime(500),
       distinctUntilChanged(),
     ).subscribe(() => {
-      this.createFilters();
+      this.createFilters(true);
     });
     this.filtersForm.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(() => {
-      this.createFilters();
+      this.createFilters(false);
     });
 
-    this.loadNodes(null);
+    this.loadNodes();
   }
 
   ngOnDestroy(): void {
@@ -94,11 +99,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  loadNodes(event: any) {
-    if (event) { //not on first load
-      this.lexicogRequest.offset = event.first;
-      this.lexicogRequest.limit = event.first + event.rows;
-    }
+  loadNodes() {
     this.loading = true;
     this.dictionaryService.retrieveLexicogEntryList(this.lexicogRequest).pipe(
       takeUntil(this.unsubscribe$),
@@ -111,6 +112,15 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.counter = resp.totalHits;
       this.loading = false;
     })
+  }
+
+  onAddAssociateLemmas(lemmas: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[]) {
+    const requests = [];
+    lemmas.forEach((lemma, i) => {
+      console.info('insert {lemma} at {i}');
+      //TODO per ogni lemma creo una richiesta http
+    });
+    //TODO passo la lista di richieste 
   }
 
   onAddNewLemma() {
@@ -127,19 +137,24 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.newLemmaTemp = lemma;
   }
 
+  /**Restore initial state of filters */
   onResetFilters() {
     this.searchTextForm.reset({
       search: ''
     });
     this.filtersForm.reset({
       caseSensitive: false,
-      match: 'startsWith',
+      match: searchModeEnum.startsWith,
       language: '',
       editor: '',
       status: ''
     });
   }
 
+  /**
+   * Method that handles the display of the insertion dialog for a new lemma
+   * @param entry {LexicogEntryListItem} dictionary entry to which associate the lemma
+   */
   onShowNewLemmaDialog(entry: LexicogEntryListItem) {
     this.isAddLemmaVisible = true;
     this.entryForLemmaTemp = entry;
@@ -151,31 +166,26 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(newEntry => {
-      this.loadNodes(null); //FIXME To be optimized with dynamic insertion of the new entry into the list, without full update
+      this.onAddAssociateLemmas(entryData.lemmas);
+      this.loadNodes(); //FIXME To be optimized with dynamic insertion of the new entry into the list, without full update
       console.info(newEntry);
-      const lemmas = entryData.lemmas;
-      if(lemmas.length <= 0) return;
-      const addAndAssociate: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[] = [];
-      const associate: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[] = [];
-      lemmas.forEach(lemma => {
-        if(lemma.isFromLexicon) {
-          associate.push(lemma); //TODO rifletti se meglio una lista di lemmi o di chiamate
-        } else {
-          addAndAssociate.push(lemma);
-        }
-      });
-      console.group('Lemmi da lavorare');
-      console.info('add & associate', addAndAssociate);
-      console.info('associate', associate);
-      console.groupEnd();
-      //TODO add creation and association of lemmas
     });
     this.isAddDictionaryEntryVisible = false;
   }
 
-  private createFilters() {
-    //TODO develop filters management
-    console.info('CREAZIONE DEL FILTRO ALLA LISTA');
+  private createFilters(isSearchInput: boolean) {
+    if(isSearchInput) {
+      this.lexicogRequest.text = this.searchTextForm.get('search')?.value || '';
+    } else {
+    const values = this.filtersForm.value;
+    if(values.match) {
+      this.lexicogRequest.searchMode = values.match;
+    }
+    this.lexicogRequest.author = values.editor || '';
+    this.lexicogRequest.lang = values.language || '';
+    this.lexicogRequest.status = values.status || '';
+  }
+    this.loadNodes();
   }
 
   private mapLexicogEntryToTreenode(lexicogEntry: LexicogEntryListItem): TreeNode<LexicogEntryListItem> {
