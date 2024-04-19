@@ -2,7 +2,8 @@ import { LexicogEntryBase } from "./lexicog-entry-base.model";
 
 /**Interface of the features of a dictionary entry in the full version */
 export interface LexicogEntryCore extends LexicogEntryBase {
-        component: null,
+        label: string;
+        component: string;
         describes: {
             entity: string;
             label: string;

@@ -8,8 +8,8 @@ export interface LexicogEntryListItem extends LexicogEntryBase {
     language: string;
     author: string;
     note: string;
-    hasChildren: boolean;
-    lexicogEntry: string;
+    children: boolean;
+    dictionaryEntry: string;
     completionDate: string;
     revisionDate: string;
     images: string[];

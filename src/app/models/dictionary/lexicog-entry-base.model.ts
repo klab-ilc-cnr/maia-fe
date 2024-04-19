@@ -4,5 +4,4 @@ export interface LexicogEntryBase {
     lastUpdate: string;
     creationDate: string;
     confidence: number;
-    label: string;
 }

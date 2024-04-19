@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil } from 'rxjs';
 import { LexicogEntriesRequest } from 'src/app/models/dictionary/lexicog-entries-request.model';
+import { LexicogEntryBase } from 'src/app/models/dictionary/lexicog-entry-base.model';
 import { LexicogEntryListItem } from 'src/app/models/dictionary/lexicog-entry-list-item.model';
 import { STATUSES, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -35,7 +36,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   loading = false;
   /**Number of vocabulary items retrieved */
   counter!: number;
-  lexicogEntries: TreeNode<LexicogEntryListItem>[] = [];
+  lexicogEntries: TreeNode<LexicogEntryBase>[] = [];
   /**Control for the search input text */
   searchTextForm = new FormGroup({
     search: new FormControl<string>('')
@@ -133,6 +134,30 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.newLemmaTemp = undefined;
   }
 
+  onFetchChildren(event: {originalEvent: PointerEvent, node: TreeNode<any>}) {
+    console.info('expand', event)
+    this.loading = true;
+    const dictionaryId = event.node.data?.dictionaryEntry;
+    console.info(dictionaryId)
+    if(!dictionaryId) return; //TODO aggiungere un messaggio di errore
+    this.dictionaryService.retrieveComponents(dictionaryId).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
+    ).subscribe(children => {
+      this.loading = false;
+      const node = event.node;
+      node.children = children.map(component => <TreeNode<any>>{
+        data: component,
+        leaf: true
+      })
+      console.info(children)
+      this.lexicogEntries = [...this.lexicogEntries];
+    });
+  }
+
   onNewLemmaEmitValue(lemma: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }) {
     this.newLemmaTemp = lemma;
   }
@@ -191,7 +216,8 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private mapLexicogEntryToTreenode(lexicogEntry: LexicogEntryListItem): TreeNode<LexicogEntryListItem> {
     return <TreeNode<LexicogEntryListItem>>{
       data: lexicogEntry,
-      children: lexicogEntry.hasChildren ? [] : null
+      // children: lexicogEntry.children ? [<TreeNode<any>>{}] : null
+      leaf: !lexicogEntry.children
     };
   }
 }

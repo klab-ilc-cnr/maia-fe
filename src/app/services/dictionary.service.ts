@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LexicogComponent } from '../models/dictionary/lexicog-component.model';
 import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-request.model';
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
 import { LexicogEntryCore } from '../models/dictionary/lexicog-entry-core.model';
@@ -46,6 +47,10 @@ export class DictionaryService {
         label: label
       }
     );
+  }
+
+  retrieveComponents(parentEntityId: string): Observable<LexicogComponent[]> {
+    return this.http.get<LexicogComponent[]>(`${this.lexoUrl}/data/lexicographicComponents?id=${this.commonService.encodeUrl(parentEntityId)}`)
   }
 
   /**

@@ -72,7 +72,7 @@
     <!-- <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols" [rows]="rows"
         scrollHeight="flex" [lazy]="true" (onLazyLoad)="loadNodes($event)" [totalRecords]="counter" [paginator]="true"> -->
         <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols"
-        scrollHeight="flex" [virtualRowHeight]="44" [virtualScroll]="true">
+        scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true" (onNodeExpand)="onFetchChildren($event)">
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
               <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
@@ -82,7 +82,7 @@
             <tr>
                 <td *ngFor="let col of cols; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
-                        [pTooltip]="rowNode.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
+                        [pTooltip]="rowNode.children?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
                     <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
                     <span *ngIf="col.field === 'label'" class="fw-bold">{{rowData[col.field] }}</span>
                     <sub *ngIf="col.field === 'label'">{{ rowData['pos'].join(' ') }}</sub>
