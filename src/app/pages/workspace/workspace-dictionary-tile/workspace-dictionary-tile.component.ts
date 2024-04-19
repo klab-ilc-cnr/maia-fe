@@ -145,7 +145,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.entryForLemmaTemp = entry;
   }
 
-  onSubmitEntry(entryData: any) {
+  onSubmitEntry(entryData: {language: string, name: string, lemmas: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[]}) {
     console.info(entryData);
     this.dictionaryService.addDictionaryEntry(entryData.language, entryData.name).pipe(
       take(1),
@@ -153,6 +153,21 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     ).subscribe(newEntry => {
       this.loadNodes(null); //FIXME To be optimized with dynamic insertion of the new entry into the list, without full update
       console.info(newEntry);
+      const lemmas = entryData.lemmas;
+      if(lemmas.length <= 0) return;
+      const addAndAssociate: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[] = [];
+      const associate: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[] = [];
+      lemmas.forEach(lemma => {
+        if(lemma.isFromLexicon) {
+          associate.push(lemma); //TODO rifletti se meglio una lista di lemmi o di chiamate
+        } else {
+          addAndAssociate.push(lemma);
+        }
+      });
+      console.group('Lemmi da lavorare');
+      console.info('add & associate', addAndAssociate);
+      console.info('associate', associate);
+      console.groupEnd();
       //TODO add creation and association of lemmas
     });
     this.isAddDictionaryEntryVisible = false;
