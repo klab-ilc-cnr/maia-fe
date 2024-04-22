@@ -226,7 +226,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
     this.searchService.search(this.searchRequest).subscribe(result => {
       this.searchResults = result.data;
-      this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`)
+      this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
       this.loading = false;
       this.totalRecords = result.count;
       this.updateTableHeight();
