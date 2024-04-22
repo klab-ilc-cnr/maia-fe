@@ -2,8 +2,8 @@
 export class SearchRequest {
   start!: number;
   end!: number;
-  selectedResourcesIds: Array<number> = [];
-  filters : SearchFilters = new SearchFilters();
+  resources: Array<number> = [];
+  filter : SearchFilters = new SearchFilters();
 }
 
 export class SearchFilters {
@@ -17,5 +17,5 @@ export class SearchFilters {
   leftContext?: string;
   rightContext?: string;
   text?: string;
-  textHeader?: string;
+  reference?: string;
 }

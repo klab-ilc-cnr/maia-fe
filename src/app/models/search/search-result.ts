@@ -1,7 +1,7 @@
 /**Model of a search result */
 export class SearchResult {
     /**number of total elements */
-    totalRecords!:number;
+    count!:number;
     /**row results*/
     data!:Array<SearchResultRow>;
 }
@@ -19,7 +19,7 @@ export class SearchResultRow {
     /**text id */
     textId!: number;
     /**the corpus index */
-    textHeader: string = '';
+    reference: string = '';
     /**partial text to show before */
     leftContext: string = '';
     /**partial text to show after */

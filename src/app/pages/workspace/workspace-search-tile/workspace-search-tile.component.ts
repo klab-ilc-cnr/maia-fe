@@ -173,12 +173,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**set the request filters based on the table ones */
   setColumnFilters() {
-    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
-    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
-    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
-    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
-    this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
-    this.searchRequest.filters.textHeader = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
+    this.searchRequest.filter.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
+    this.searchRequest.filter.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
+    this.searchRequest.filter.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
+    this.searchRequest.filter.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
+    this.searchRequest.filter.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
+    this.searchRequest.filter.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
 
   /**
@@ -204,10 +204,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
   onSearch() {
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
-    this.searchRequest.selectedResourcesIds = this.mapSelectedDocumentsIds();
-    this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
-    this.searchRequest.filters.searchValue = this.searchValue?.trim();;
-    this.searchRequest.filters.contextLength = this.contextLength;
+    this.searchRequest.resources = this.mapSelectedDocumentsIds();
+    this.searchRequest.filter.searchMode = this.selectedSearchMode.code;
+    this.searchRequest.filter.searchValue = this.searchValue?.trim();;
+    this.searchRequest.filter.contextLength = this.contextLength;
     this.clearTable();
     this.setColumnFilters();
 
@@ -218,21 +218,19 @@ export class WorkspaceSearchTileComponent implements OnInit {
   search() {
     this.searchInput.control.markAsTouched();
 
-    if (!this.searchRequest.filters.searchValue) {
+    if (!this.searchRequest.filter.searchValue) {
       return;
     }
 
     this.loading = true;
 
-    setTimeout(() => {//FIXME eliminare quando ci sarà il backend
-      this.searchService.search(this.searchRequest).subscribe(result => {
-        // this.searchResults = result.data; //FIXME ripristinare quando ci sarà il backend
-        this.searchResults = result.data.slice(this.searchRequest.start, this.searchRequest.end); //FIXME eliminare quando ci sarà il backend
-        this.loading = false;
-        this.totalRecords = result.totalRecords;
-        this.updateTableHeight();
-      });
-    }, 1000);
+    this.searchService.search(this.searchRequest).subscribe(result => {
+      this.searchResults = result.data;
+      this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`)
+      this.loading = false;
+      this.totalRecords = result.count;
+      this.updateTableHeight();
+    });
   }
 
   /**clears table and prevent triggering lazy loading multiple times */
