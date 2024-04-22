@@ -11,6 +11,10 @@ import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
 
+export enum DICTIONARY_NODE {
+  entry = 'ENTRY',
+  lemma = 'LEMMA'
+}
 @Component({
   selector: 'app-workspace-dictionary-tile',
   templateUrl: './workspace-dictionary-tile.component.html',
@@ -115,7 +119,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     })
   }
 
-  onAddAssociateLemmas(lemmas: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[]) {
+  onAddAssociateLemmas(lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[]) {
     const requests = [];
     lemmas.forEach((lemma, i) => {
       console.info('insert {lemma} at {i}');
@@ -134,12 +138,12 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.newLemmaTemp = undefined;
   }
 
-  onFetchChildren(event: {originalEvent: PointerEvent, node: TreeNode<any>}) {
+  onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
     console.info('expand', event)
     this.loading = true;
     const dictionaryId = event.node.data?.dictionaryEntry;
     console.info(dictionaryId)
-    if(!dictionaryId) return; //TODO aggiungere un messaggio di errore
+    if (!dictionaryId) return; //TODO aggiungere un messaggio di errore
     this.dictionaryService.retrieveComponents(dictionaryId).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
@@ -151,6 +155,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       const node = event.node;
       node.children = children.map(component => <TreeNode<any>>{
         data: component,
+        type: DICTIONARY_NODE.lemma,
         leaf: true
       })
       console.info(children)
@@ -185,7 +190,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.entryForLemmaTemp = entry;
   }
 
-  onSubmitEntry(entryData: {language: string, name: string, lemmas: {lemma: string, pos: string, type: string[], isFromLexicon: boolean}[]}) {
+  onSubmitEntry(entryData: { language: string, name: string, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[] }) {
     console.info(entryData);
     this.dictionaryService.addDictionaryEntry(entryData.language, entryData.name).pipe(
       take(1),
@@ -199,24 +204,24 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   }
 
   private createFilters(isSearchInput: boolean) {
-    if(isSearchInput) {
+    if (isSearchInput) {
       this.lexicogRequest.text = this.searchTextForm.get('search')?.value || '';
     } else {
-    const values = this.filtersForm.value;
-    if(values.match) {
-      this.lexicogRequest.searchMode = values.match;
+      const values = this.filtersForm.value;
+      if (values.match) {
+        this.lexicogRequest.searchMode = values.match;
+      }
+      this.lexicogRequest.author = values.editor || '';
+      this.lexicogRequest.lang = values.language || '';
+      this.lexicogRequest.status = values.status || '';
     }
-    this.lexicogRequest.author = values.editor || '';
-    this.lexicogRequest.lang = values.language || '';
-    this.lexicogRequest.status = values.status || '';
-  }
     this.loadNodes();
   }
 
   private mapLexicogEntryToTreenode(lexicogEntry: LexicogEntryListItem): TreeNode<LexicogEntryListItem> {
     return <TreeNode<LexicogEntryListItem>>{
       data: lexicogEntry,
-      // children: lexicogEntry.children ? [<TreeNode<any>>{}] : null
+      type: DICTIONARY_NODE.entry,
       leaf: !lexicogEntry.children
     };
   }
