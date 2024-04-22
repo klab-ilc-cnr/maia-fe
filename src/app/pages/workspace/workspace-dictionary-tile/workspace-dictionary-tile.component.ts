@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TreeNode } from 'primeng/api';
+import { MenuItem, TreeNode } from 'primeng/api';
 import { Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil } from 'rxjs';
 import { LexicogEntriesRequest } from 'src/app/models/dictionary/lexicog-entries-request.model';
 import { LexicogEntryBase } from 'src/app/models/dictionary/lexicog-entry-base.model';
@@ -22,10 +22,13 @@ export enum DICTIONARY_NODE {
 })
 export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  /**Number of rows (nodes) to be retrieved */
   rows = 5000;
+  /**Working statuses */
   statuses = Object.values(STATUSES);
   /**List of available languages */
   languages$ = this.globalState.languages$; //FIXME probably to be changed
+  /**Body for the http request of the list of dictionary entries */
   lexicogRequest: LexicogEntriesRequest = {
     text: '',
     searchMode: searchModeEnum.startsWith,
@@ -40,6 +43,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   loading = false;
   /**Number of vocabulary items retrieved */
   counter!: number;
+  /**List of treenodes representing a dictionary entry or a lexicographic component */
   lexicogEntries: TreeNode<LexicogEntryBase>[] = [];
   /**Control for the search input text */
   searchTextForm = new FormGroup({
@@ -61,12 +65,46 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     { name: 'End', key: 'end' }
   ];
   cols!: any[];
-
+  /**Defines whether to display selection checkboxes */
   isVisibleCheckbox = false;
+  /**Defines whether to display the dialog to create a new dictionary entry with or without lemmas */
   isAddDictionaryEntryVisible = false;
+  /**Defines whether to display the dialog to add a lemma to a dictionary entry */
   isAddLemmaVisible = false;
   newLemmaTemp?: { lemma: string, pos: string, type: string[], isFromLexicon: boolean };
   entryForLemmaTemp?: LexicogEntryListItem;
+
+  public selectedNode!: TreeNode;
+  items: MenuItem[] = [];
+  entryCM: MenuItem[] = [{
+    label: this.commonService.translateKey('DICTIONARY_EXPLORER.CONTEXTMENU.delete'),
+    icon: 'pi pi-trash',
+    command: () => {
+      console.info('delete', this.selectedNode)
+    },
+  }];
+  lemmaCM: MenuItem[] = [{
+    label: this.commonService.translateKey('DICTIONARY_EXPLORER.CONTEXTMENU.move'),
+    icon: 'pi pi-arrows-alt',
+    disabled: true, //TODO future enhancement
+    command: () => {
+      console.info('Move', this.selectedNode)
+    },
+  },
+  {
+    label: this.commonService.translateKey('DICTIONARY_EXPLORER.CONTEXTMENU.dissociate'),
+    icon: 'pi pi-eraser',
+    command: () => {
+      console.info('dissociate', this.selectedNode)
+    },
+  },
+  {
+    label: this.commonService.translateKey('DICTIONARY_EXPLORER.CONTEXTMENU.delete'),
+    icon: 'pi pi-trash',
+    command: () => {
+      console.info('delete', this.selectedNode)
+    },
+  }];
 
   public selectedNodes: TreeNode[] = [];
 
@@ -104,6 +142,14 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  loadContextMenu() {
+    if (this.selectedNode.type === DICTIONARY_NODE.entry) {
+      this.items = [...this.entryCM];
+    } else if (this.selectedNode.type === DICTIONARY_NODE.lemma) {
+      this.items = [...this.lemmaCM];
+    }
   }
 
   loadNodes() {

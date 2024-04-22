@@ -72,14 +72,14 @@
     <!-- <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols" [rows]="rows"
         scrollHeight="flex" [lazy]="true" (onLazyLoad)="loadNodes($event)" [totalRecords]="counter" [paginator]="true"> -->
         <p-treeTable selectionMode="checkbox" [(selection)]="selectedNodes" dataKey="dictionaryEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols"
-        scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true" (onNodeExpand)="onFetchChildren($event)">
+        scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true" (onNodeExpand)="onFetchChildren($event)" [(contextMenuSelection)]="selectedNode" [contextMenu]="cm" contextMenuSelectionMode="separate" (onContextMenuSelect)="loadContextMenu()">
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
               <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
             </colgroup>
           </ng-template>
               <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-            <tr>
+            <tr [ttContextMenuRow]="rowNode">
                 <td *ngFor="let col of cols; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
                         [pTooltip]="rowNode.children?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
@@ -102,6 +102,7 @@
             </tr>
           </ng-template>      
     </p-treeTable>
+    <p-contextMenu #cm [model]="items" appendTo="body"></p-contextMenu>
 </div>
 <p-overlayPanel #op [dismissable]="true">
     <ng-template pTemplate>

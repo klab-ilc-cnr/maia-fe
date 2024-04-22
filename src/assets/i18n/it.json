@@ -42,6 +42,11 @@
     "DICTIONARY_EXPLORER": {
         "addEntry": "Aggiungi nuova voce",
         "addLemma": "Aggiungi lemma",
+        "CONTEXTMENU": {
+            "delete": "Elimina",
+            "dissociate": "Dissocia",
+            "move": "Sposta"
+        },
         "CREATE_ENTRY": {
             "addEntry": "Aggiungi",
             "defineLemmas": "Definisci lemmi",
