@@ -68,6 +68,8 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   newLemmaTemp?: { lemma: string, pos: string, type: string[], isFromLexicon: boolean };
   entryForLemmaTemp?: LexicogEntryListItem;
 
+  public selectedNodes: TreeNode[] = [];
+
   constructor(
     private dictionaryService: DictionaryService,
     private commonService: CommonService,
