@@ -270,7 +270,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     return <TreeNode<LexicogEntryListItem>>{
       data: lexicogEntry,
       type: DICTIONARY_NODE.entry,
-      leaf: !lexicogEntry.children
+      leaf: !lexicogEntry.hasChildren
     };
   }
 }

@@ -82,7 +82,7 @@
             <tr [ttContextMenuRow]="rowNode">
                 <td *ngFor="let col of cols; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
-                        [pTooltip]="rowNode.children?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
+                        [pTooltip]="rowNode.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
                     <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
                     <span *ngIf="col.field === 'label' && rowNode.node.type === 'ENTRY'" class="fw-bold">{{rowData[col.field] }}</span>
                     <span *ngIf="col.field === 'label' && rowNode.node.type === 'LEMMA'">{{rowData['referredEntityLabel'] }}</span>
