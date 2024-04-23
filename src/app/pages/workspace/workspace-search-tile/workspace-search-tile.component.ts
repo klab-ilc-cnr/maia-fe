@@ -173,12 +173,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**set the request filters based on the table ones */
   setColumnFilters() {
-    this.searchRequest.filter.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
-    this.searchRequest.filter.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
-    this.searchRequest.filter.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
-    this.searchRequest.filter.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
-    this.searchRequest.filter.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
-    this.searchRequest.filter.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
+    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
+    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
+    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
+    this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
+    this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
 
   /**
@@ -205,9 +205,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.resources = this.mapSelectedDocumentsIds();
-    this.searchRequest.filter.searchMode = this.selectedSearchMode.code;
-    this.searchRequest.filter.searchValue = this.searchValue?.trim();;
-    this.searchRequest.filter.contextLength = this.contextLength;
+    this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
+    this.searchRequest.filters.searchValue = this.searchValue?.trim();
+    this.searchRequest.filters.contextLength = this.contextLength;
     this.clearTable();
     this.setColumnFilters();
 
@@ -218,7 +218,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   search() {
     this.searchInput.control.markAsTouched();
 
-    if (!this.searchRequest.filter.searchValue) {
+    if (!this.searchRequest.filters.searchValue) {
       return;
     }
 

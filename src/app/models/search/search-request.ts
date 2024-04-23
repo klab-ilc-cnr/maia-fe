@@ -3,7 +3,7 @@ export class SearchRequest {
   start!: number;
   end!: number;
   resources: Array<number> = [];
-  filter : SearchFilters = new SearchFilters();
+  filters : SearchFilters = new SearchFilters();
 }
 
 export class SearchFilters {
