@@ -12,7 +12,6 @@ export const environment = {
   envName: 'local',
   maiaBeUrl: `${serverUrl}/api`,
   usersUrl: `${serverUrl}/api/users`,
-  searchUrl: `${serverUrl}/api/search`,
   languagesUrl: `${serverUrl}/api/languages`,
   workspacesUrl: `${serverUrl}/api/workspaces`,
   layersUrl: `${serverUrl}/api/layers`,
