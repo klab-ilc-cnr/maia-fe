@@ -28,6 +28,7 @@ import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
 import { Section } from 'src/app/models/texto/section';
 import { throttleTime } from 'rxjs';
 import { Tree } from 'primeng/tree';
+import { CommonService } from 'src/app/services/common.service';
 
 enum ScrollingDirectionType { Up, Down, InRange }
 
@@ -205,6 +206,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private layerState: LayerStateService,
+    private commonService: CommonService,
     private workspaceService: WorkspaceService,
     private cdref: ChangeDetectorRef
   ) {
@@ -257,6 +259,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**initialize text range and load data */
   loadInitialData() {
     this.annotationService.retrieveTextTotalRows(this.textId!)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error retrieving text total rows')),
+    )
       .subscribe((result) => {
         this.textTotalRows = result!
 
