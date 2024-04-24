@@ -157,6 +157,7 @@ export class WorkspaceCorpusExplorerComponent {
       if (this.clickCount === 1) { //caso del click singolo al momento non utilizzato
       } else if (this.clickCount === 2) {
         if (event.node.data?.type === ElementType.RESOURCE) {
+          this.clickCount = 0;
           this.onTextSelectEvent.emit(event.node.data);
           return;
         }
