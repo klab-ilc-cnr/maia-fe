@@ -306,6 +306,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.lexiconService.getNamespaces().pipe(take(1)).subscribe(ns => {
       this.namespaceList = ns;
     });
+    this.loadNodes();
   }
 
   /**Metodo che esegue il caricamento dei nodi */
@@ -758,7 +759,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   private resetFilters() {
     //this.counter = 0;
     this.offset = 0;
-    this.limit = 500;
+    this.limit = 12000;
     this.searchTextInput = '';
     this.searchMode = searchModeEnum.startsWith;
     this.selectedLanguage = undefined;

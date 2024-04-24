@@ -101,9 +101,13 @@
 </div>
 
 <div class="tableScrollHeight">
-  <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
+  <!--NOTE virtual scroll + lazy loading combination doesn't work properly-->
+  <!-- <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
     [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
-    [scrollable]="true" scrollHeight="flex">
+    [scrollable]="true" scrollHeight="flex"> -->
+  <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
+    [columns]="cols" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
+    [scrollable]="true" scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true">
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
         <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">

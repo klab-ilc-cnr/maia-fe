@@ -1,0 +1,29 @@
+<form [formGroup]="lemmaForm">
+    <div class="formgrid grid">
+        <div class="field col-4">
+            <label class="form-label w-full">Lemma *</label>
+            <p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
+                appendTo="body" [virtualScroll]="true" field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
+                [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate" formControlName="lemma">
+                <ng-template let-item pTemplate="item">
+                    {{item['label']}}<sub>{{item['pos']}}</sub>
+                </ng-template>
+            </p-autoComplete>
+        </div>
+        <div class="field col-4">
+            <label class="form-label w-full">POS *</label>
+            <p-dropdown styleClass="w-full" [options]="(pos$|async)||[]" optionLabel="valueLabel" optionValue="valueId"
+                appendTo="body" [filter]="true" filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate" formControlName="pos"></p-dropdown>
+        </div>
+        <div class="field" [ngClass]="isRemoveVisible ? 'col-3' : 'col-4'">
+            <label class="form-label w-full">{{ 'DICTIONARY_EXPLORER.CREATE_ENTRY.type'|translate }}</label>
+            <p-multiSelect styleClass="w-full" [options]="(lexicalEntryTypes$|async)||[]" optionLabel="valueLabel"
+                optionValue="valueId" appendTo="body" [filter]="true" filterBy="valueLabel"
+                [placeholder]="'GENERAL.selectValue'|translate" formControlName="type"></p-multiSelect>
+        </div>
+        <div class="field col-1 m-auto" *ngIf="isRemoveVisible">
+            <button aria-label="remove" pButton pRipple type="button" icon="pi pi-times" (click)="onRemoveNewLemmaTrio()"
+                class="p-button-rounded p-button-danger p-button-text"></button>
+        </div>
+    </div>
+</form>

@@ -25,6 +25,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { WorkspaceDictionaryTileComponent } from './workspace-dictionary-tile/workspace-dictionary-tile.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
@@ -963,11 +964,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#CCE1F2',
         bgContent: '#fff',
         colorHeader: 'black',
         colorContent: `#${jsPanel.colorNames.gray700}`,
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #CCE1F2',
         borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
@@ -1049,9 +1050,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#CCE1F2',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #CCE1F2',
         borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
@@ -1119,9 +1120,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#C6F8E5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #C6F8E5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1199,9 +1200,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#C6F8E5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #C6F8E5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1258,9 +1259,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#FBF7D5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #FBF7D5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1308,7 +1309,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private generateDictionaryPanelConfiguration(dictionaryPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent); //TODO switch with WorkspaceDictionaryTileComponent
+    const componentRef = this.vcr.createComponent(WorkspaceDictionaryTileComponent);
 
     const element = componentRef.location.nativeElement;
 
@@ -1316,50 +1317,42 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: dictionaryPanelId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: this.commonService.translateKey('DICTIONARY.dictionaryMenuItem'),
+      headerTitle: 'Dictionary Explorer',
       maximizedMargin: 5,
       dragit: { snap: false },
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#F9DED7',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #F9DED7',
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.6
+        width: () => window.innerWidth * 0.2,
+        height: '60vh'
       },
       resizeit: {
-        minWidth: 730,
-        minHeight: 500,
-        resize: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateHeight(paneldata.height)
+        minWidth: 250
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+          }
         }
-      },
-      onmaximized: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onminimized: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onnormalized: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onsmallified: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
-      },
-      onunsmallified: function (this: any, panel: any, status: any) {
-        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.DICTIONARY);
         this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        const panelIDs = jsPanel.getPanels(function () {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+        console.log(panelIDs)
       }
     };
 

@@ -57,6 +57,7 @@ import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search
 import { CorpusStateService } from './services/corpus-state.service';
 import { SearchService } from './services/search.service';
 import { WorkspaceDictionaryTileComponent } from './pages/workspace/workspace-dictionary-tile/workspace-dictionary-tile.component';
+import { NewDictionaryEntryComponent } from './pages/workspace/workspace-dictionary-tile/new-dictionary-entry/new-dictionary-entry.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { WorkspaceDictionaryTileComponent } from './pages/workspace/workspace-di
     LoginComponent,
     MatchNewPasswordDirective,
     WorkspaceSearchTileComponent,
-    WorkspaceDictionaryTileComponent
+    WorkspaceDictionaryTileComponent,
+    NewDictionaryEntryComponent
   ],
   imports: [
     BrowserModule,

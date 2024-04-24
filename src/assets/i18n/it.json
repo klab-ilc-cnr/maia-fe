@@ -5,7 +5,9 @@
         "cancel": "Annulla",
         "confirm": "Conferma",
         "currentPageReportTemplate": "Elementi da {first} a {last} per un totale di elementi {totalRecords}.",
+        "noResult": "Nessun risultato",
         "save": "Salva",
+        "selectValue": "Seleziona valore",
         "update": "Aggiorna"
     },
     "CORPUS_EXPLORER": {
@@ -37,8 +39,38 @@
         "uploaderType": "Tipo di caricamento",
         "uploadFileTitle": "Carica file"
     },
-    "DICTIONARY": {
-        "dictionaryMenuItem": "Vocabolario"
+    "DICTIONARY_EXPLORER": {
+        "addEntry": "Aggiungi nuova voce",
+        "addLemma": "Aggiungi lemma",
+        "CONTEXTMENU": {
+            "delete": "Elimina",
+            "dissociate": "Dissocia",
+            "move": "Sposta"
+        },
+        "CREATE_ENTRY": {
+            "addEntry": "Aggiungi",
+            "defineLemmas": "Definisci lemmi",
+            "entryLabel": "Nome",
+            "language": "Lingua",
+            "noMatching": "Nessuna corrispondenza",
+            "type": "Tipo"
+        },
+        "editor": "Redattore",
+        "export": "Esporta",
+        "filtersPanel": "Filtri",
+        "language": "Lingua",
+        "refresh": "Aggiorna i risultati",
+        "remove": "Elimina",
+        "SEARCH_GUIDE": {
+            "title": "Esempi di ricerca",
+            "multiCharWildcard": "Ricerca con carattere jolly che sostituisce più caratteri:",
+            "singleCharWildCard": "Ricerca con carattere jolly che sostituisce un carattere:",
+            "fuzzy": "Ricerca fuzzy:",
+            "weightedFuzzy": "Ricerca fuzzy pesata:"
+        },
+        "selection": "Selezione",
+        "showLemmas": "Mostra lemmi",
+        "status": "Status"
     },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",
