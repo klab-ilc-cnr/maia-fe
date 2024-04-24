@@ -1,21 +1,15 @@
-import { STATUSES } from "../lexicon/lexical-entry-request.model";
-import { LexicogEntryBase } from "./lexicog-entry-base.model";
+import { LexicogListItem } from "./lexicog-list-item.model";
 
-export interface LexicogComponent extends LexicogEntryBase {
-    component: string;
+/**Describes a Lexicographic Component and by extension an Entry (dictionary entry) as a special case */
+export interface LexicogComponent extends LexicogListItem {
+    confidence: number;
+    /**Position in the component list (used for sorting the lexical entries of an entry and the senses of a lexical entry) */
     position: number;
-    /**Entity described by component
-     * @example "http://lexica/mylexicon#sakarater_verb_osc_entry"
-     */
+    /**Identifier of the entity linked through the component (for example, the component of an entry will point to a lexical entry) */
     referredEntity: string;
-    referredEntityType: string[];
-    referredEntityLabel: string;
-    pos: string;
-    status: STATUSES;
     revisor: string;
     author: string;
     note: string;
-    hasChildren: boolean;
     completionDate: string;
     revisionDate: string;
 }
