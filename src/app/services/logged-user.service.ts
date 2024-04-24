@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { StorageService } from './storage.service';
 
-/**Classe dei servizi per l'utente loggato */
+/**Class of services for managing the logged-in user */
 @Injectable({
   providedIn: 'root'
 })
 export class LoggedUserService {
 
-  /**Costruttore per LoggedUserService */
+  /**
+   * Constructor for LoggedUserService
+   * @param storageService {StorageService} Services to manage the local storage
+   */
   constructor(
     private storageService: StorageService,
   ) { }
 
-  /**Getter dei dati dell'utente loggato */
+  /**Getter of logged-in user data */
   public get currentUser(): User | undefined {
     const storageUser = this.storageService.getCurrentUser();
     if (!storageUser) {
@@ -23,8 +26,8 @@ export class LoggedUserService {
   }
 
   /**
-   * Metodo che valuta se l'utente è autorizzato alla gestione utenze
-   * @returns {boolean} definisce se l'utente può gestire le utenze
+   * Method that evaluates whether the user is authorized to manage users
+   * @returns {boolean} defines whether the user is authorized
    */
   public canManageUsers(): boolean {
     const user = this.currentUser;
@@ -35,8 +38,8 @@ export class LoggedUserService {
   }
 
   /**
-   * Metodo che valuta se l'utente è autorizzato alla gestione dei layer
-   * @returns {boolean} definisce se l'utente può gestire i layer
+   * Method that evaluates whether the user is authorized to manage layers
+   * @returns {boolean} defines whether the user is authorized
    */
   public canManageLayers(): boolean {
     const user = this.currentUser;
@@ -47,8 +50,8 @@ export class LoggedUserService {
   }
 
   /**
-   * Metodo che valuta se l'utente è autorizzato alla gestione dei tagset
-   * @returns {boolean} definisce se l'utente può gestire i tagset
+   * Method that evaluates whether the user is authorized to manage tagsets
+   * @returns {boolean} defines whether the user is authorized
    */
   public canManageTagsets(): boolean {
     const user = this.currentUser;
@@ -58,6 +61,10 @@ export class LoggedUserService {
     return (user?.role === "ADMINISTRATOR");
   }
 
+  /**
+   * Method that evaluates whether the user is authorized to manage lexicon
+   * @returns {boolean} defines whether the user is authorized
+   */
   public canManageLexicon(): boolean {
     const user = this.currentUser;
     if (!user || user === undefined) return false;

@@ -3,40 +3,24 @@
 // The list of file replacements can be found in `angular.json`.
 
 
-const clientid = "projectx-fe";
-// const appName = "/projectx-fe"
-const appName = "/maia-fe"
-// const issuer = "http://localhost:8080/realms/princnr";
-// const allowedUrls = 'http://localhost:9000/projectx/api';
-// const allowedUrls = 'https://klab.ilc.cnr.it/projectx/api'; //TODO sostituire con il backend xeel
-const allowedUrls = 'https://146.48.93.234:9000/maia/api'; //TODO sostituire con il backend xeel
+const serverUrl = 'https://146.48.93.234:9000/maia';
 
 export const environment = {
   production: false,
   envName: 'local',
-  allowedUrls: allowedUrls,
-  usersUrl: allowedUrls + '/users',
-  languagesUrl: allowedUrls + '/languages',
-  workspacesUrl: allowedUrls + '/workspaces',
-  layersUrl: allowedUrls + '/layers',
-  featureUrl: allowedUrls + '/features',
-  tagsetUrl: allowedUrls + '/tagsets',
-  annotationUrl: allowedUrls + '/annotations',
-  relationUrl: allowedUrls + '/relations',
-  lexoUrl: "https://146.48.93.234:9000/maia/lexo/",
-  textoUrl: "https://146.48.93.234:9000/maia",
-  textoDebugUrl: "https://macalbanesi:9443",
+  maiaBeUrl: `${serverUrl}/api`,
+  usersUrl: `${serverUrl}/api/users`,
+  languagesUrl: `${serverUrl}/api/languages`,
+  workspacesUrl: `${serverUrl}/api/workspaces`,
+  layersUrl: `${serverUrl}/api/layers`,
+  featureUrl: `${serverUrl}/api/features`,
+  tagsetUrl: `${serverUrl}/api/tagsets`,
+  annotationUrl: `${serverUrl}/api/annotations`,
+  relationUrl: `${serverUrl}/api/relations`,
+  maiaBeLexoUrl: `${serverUrl}/lexo`,
+  maiaBeTextoUrl: `${serverUrl}/texto`,
   lexoPrefix: "ferrandi",
   lexoBaseIRI: "http://rut/somali/ferrandi#",
   applicationSubTitle: " - develop",
   demoHide: false,
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

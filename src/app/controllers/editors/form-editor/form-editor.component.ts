@@ -152,7 +152,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       httpList.push(this.lexiconService.updateLexicalForm(currentUserName, this.instanceName, <FormUpdater>{ relation: FORM_RELATIONS.NOTE, value: this.noteInput }));
       this.initialValues.note = this.noteInput!;
     }
-    if(this.morphologicalForms.length !== 1 || this.morphologicalForms[0].selectedProperty?.code !== "") {
+    if (this.morphologicalForms.length !== 1 || this.morphologicalForms[0].selectedProperty?.code !== "") {
       this.morphologicalForms.forEach(mf => {
         const currentValueIndex = this.initialValues.morphs.findIndex(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code);
         const currentValue = this.initialValues.morphs.find(e => mf.selectedTrait !== undefined && e.trait === mf.selectedTrait.code)?.value;
@@ -183,7 +183,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
         },
         error: (error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error));
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
         }
       });
     }
@@ -263,7 +263,7 @@ export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.lastUpdate = new Date(res).toLocaleString();
         },
         error: (error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error))
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
         }
       });
     }

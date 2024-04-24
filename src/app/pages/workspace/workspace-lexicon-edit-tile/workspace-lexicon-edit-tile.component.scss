@@ -12,3 +12,30 @@ p-tabView,
     height: calc(100% - 41px);
   }
 }
+
+td:has(> span),
+td:has(> span) div:has(> span) {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td span {
+  display: inline;
+}
+
+td {
+  padding: 0.5rem 0.5rem !important;
+  span {
+    display: inline;
+  }
+}
+
+::ng-deep.p-splitter-panel:first-of-type {
+  min-width: 265px;
+}
+
+::ng-deep.p-splitter-panel:last-of-type {
+  min-width: 400px;
+}

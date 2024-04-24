@@ -148,7 +148,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @param propertyValue {string} valore iniziale della proprietà
    */
   private movePropertyToForm(propertyID: string, propertyValue: string): void {
-    const fieldProperty : PropertyElement = { propertyID, propertyValue };
+    const fieldProperty: PropertyElement = { propertyID, propertyValue };
     const control = new FormControl<string>(propertyValue, Validators.required);
     this.definitionFormItems.push(fieldProperty);
     this.definition.addControl(propertyID, control);
@@ -211,7 +211,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       else {
         definition?.setValue('');
       }
-     });
+    });
   }
 
   /**
@@ -238,6 +238,16 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * TrackBy function based on the index of the element in the array, added to avoid losing the focus
+   * @param index {number} index of the element in the ngFor
+   * @param item {any} element
+   * @returns {number}
+   */
+  trackByIndexFn(index: number, item: any) {
+    return index;
+  }
+
+  /**
    * @private
    * Metodo che gestisce l'observable di update
    * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
@@ -252,14 +262,16 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(resp => {
       this.senseEntry = <SenseCore>{ ...this.senseEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
+      // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
 
       if (relation === 'definition') {
         this.commonService.notifyOther({
-          option: 'lexicon_edit_label',
+          option: 'lexicon_edit_tree_data',
+          lexicalEntry: '',
           uri: this.senseEntry.sense,
-          newValue,
-        });
+          field: 'label',
+          newValue
+        })
       }
     });
   }
@@ -277,7 +289,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const updater = <LexicalSenseUpdater> {
+    const updater = <LexicalSenseUpdater>{
       relation: this.commonService.getSenseUpdateRelation(relation),
       value: newValue,
     };

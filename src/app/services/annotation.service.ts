@@ -7,85 +7,32 @@ import { PaginatedResponse } from '../models/texto/paginated-response';
 import { TAnnotation } from '../models/texto/t-annotation';
 import { TAnnotationFeature } from '../models/texto/t-annotation-feature';
 
-/**Classe dei servizi per le annotazioni */
+/**Class of annotation management services */
 @Injectable({
   providedIn: 'root'
 })
 export class AnnotationService {
-
+  /**Url for http requests to Texto */
   private textoUrl: string;
+
   /**
-   * Costruttore per AnnotationService
-   * @param http {HttpClient} effettua le chiamate HTTP
+   * Costructor for AnnotationService
+   * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
-    this.textoUrl = environment.textoUrl;
+    this.textoUrl = environment.maiaBeTextoUrl;
   }
 
-  // INIZIO CHIAMATE CASH SERVER
-
-  //baseUrl = "http://localhost:8443"
-  // baseUrl = "https://lari2.ilc.cnr.it/"
   /**
-   * GET che recupera le annotazioni dato l'id del nodo
-   * @param nodeId {number} identificativo numerico del nodo
-   * @returns {Observable<any>} observable delle annotazioni
+   * Retrieves the text of a resource by successive batches
+   * @param textId {number} resource identifier
+   * @param slice {start: number, end: number|null} coordinates of the sets of characters to be retrieved
+   * @returns {Observable<string>} observable of the text as a string
    */
-  // public retrieveByNodeId(nodeId: number): Observable<any> {
-  //   const uuid = uuidv4();
-  //   //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.get<any>(`${this.cashUrl}/api/public/annotation?requestUUID=${uuid}&nodeid=${nodeId}`);
-  // }
-
-  /**
-   * POST che effettua la creazione di una nuova annotazione
-   * @param nodeId {number} identificativo numerico del file
-   * @param item {any} la nuova annotazione
-   * @returns {Observable<any>} observable della nuova annotazione
-   */
-  // public create(nodeId: number, item: any): Observable<any> {
-  //   const uuid = uuidv4();
-  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.post<any>(`${this.cashUrl}/api/annotation?requestUUID=${uuid}&nodeid=${nodeId}`, item);
-  // }
-
-  /**
-   * PUT che aggiorna i dati di un'annotazione
-   * @param item {any} un'annotazione modificata
-   * @returns {Observable<any>} observable dell'annotazione modificata
-   */
-  // public update(item: any) {
-  //   const uuid = uuidv4();
-  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.put<any>(`${this.cashUrl}/api/annotation?requestUUID=${uuid}`, item);
-  // }
-
-  /**
-   * GET che recupera i token dato l'id di un nodo (testuale?) //TODO verificare sullo swagger di cash
-   * @param nodeId {number} identificativo numerico
-   * @returns {Observable<any>} observable dell'esito
-   */
-  // public retrieveTokens(nodeId: number): Observable<any> {
-  //   const uuid = uuidv4();
-
-  //   return this.http.get<any>(`${this.cashUrl}/api/v1/token?requestUUID=${uuid}&nodeid=${nodeId}`);
-  // }
-
-  /**
-   * GET che recupera un testo sulla base dell'id
-   * @param nodeId {identificativo numerico del nodo testo}
-   * @returns {Observable<any>} observable del testo
-   */
-  // public _retrieveText(nodeId: number): Observable<any> {
-  //   const uuid = uuidv4();
-  //   //SIM: aggiunto public/ e rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.get<any>(`${this.cashUrl}/api/public/gettext?requestUUID=${uuid}&nodeid=${nodeId}`);
-  // }
-
-  public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable<string> {
+  public retrieveText(textId: number, slice: { start: number, end: number | null }): Observable<string> { //NOTE Currently unused, it was a first approximation of the paginated service
     const uuid = uuidv4();
     return this.http.post(
-      `${this.textoUrl}/texto/resource/${textId}/text`,
+      `${this.textoUrl}/resource/${textId}/text`,
       slice,
       {
         headers: new HttpHeaders({ 'UUID': uuid }),
@@ -94,10 +41,16 @@ export class AnnotationService {
     );
   }
 
-  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable<PaginatedResponse> { //TODO cambierà la firma, non sarà lista di stringhe ma json
+  /**
+   * Retrieves the text of a resource by successive batches
+   * @param textId {number} resource identifier
+   * @param slice {start: number, end: number|null} coordinates of the sets of rows to be retrieved
+   * @returns {Observable<PaginatedResponse>} observable of the paginated response 
+   */
+  public retrieveTextSplitted(textId: number, slice: { start: number, end: number }): Observable<PaginatedResponse> { //NOTE Will change the signature, it will not be list of strings but json
     const uuid = uuidv4();
     return this.http.post<PaginatedResponse>(
-      `${this.textoUrl}/texto/resource/${textId}/rows`,
+      `${this.textoUrl}/util/resource/${textId}/rows`,
       slice,
       {
         headers: new HttpHeaders({ 'UUID': uuid }),
@@ -105,10 +58,16 @@ export class AnnotationService {
     );
   }
 
+  /**
+   * Retrieves the list of annotations associated with a portion of text.
+   * @param resourceId {number} resource identifier
+   * @param slice {start: number, end: number|null} coordinates of the set of rows for which we want annotations
+   * @returns {Observable<TAnnotation[]>} observable of the annotation list
+   */
   public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable<TAnnotation[]> {
     const uuid = uuidv4();
     return this.http.post<TAnnotation[]>(
-      `${this.textoUrl}/texto/resource/${resourceId}/annotations`,
+      `${this.textoUrl}/util/resource/${resourceId}/annotations`,
       slice,
       {
         headers: new HttpHeaders({ 'UUID': uuid }),
@@ -116,87 +75,57 @@ export class AnnotationService {
     );
   }
 
-
   /**
-   * GET che recupera il contenuto dato l'id di un nodo (testuale?) //TODO verificare sullo swagger di cash
-   * @param nodeId {number} identificativo numerico
-   * @returns {Observable<any>} observable dell'esito
+   * Create a new text annotation
+   * @param annotation {TAnnotation} the new annotation
+   * @returns {Observable<TAnnotation>} observable of the new annotation
    */
-  // public retreiveContent(nodeId: number) {
-  //   const uuid = uuidv4();
-
-  //   return this.http.get<any>(`${this.cashUrl}/api/v1/getcontent?requestUUID=${uuid}&nodeid=${nodeId}`);
-  // }
-
-  /**
-   * DELETE che esegue la cancellazione di una annotazione sulla base del suo ID
-   * @param annotationId {number} identificativo numerico dell'annotazione
-   * @returns {Observable<any>} observable dell'esito
-   */
-  // public delete(annotationId: number): Observable<any> {
-  //   const uuid = uuidv4();
-
-  //   //SIM: rimosso v1/ per compatibilità con la nuova api di CASH
-  //   return this.http.delete<any>(`${this.cashUrl}/api/annotate?requestUUID=${uuid}&annotationID=${annotationId}`);
-  // }
-
-  // FINE CHIAMATE CASH SERVER
-
-  //INIZIO CHIAMATE NOSTRO BACKEND
-
-  /**
-   * POST che effettua la creazione di una nuova feature per un'annotazione
-   * @param annFeature {AnnotationFeature} feature dell'annotazione
-   * @returns {Observable<any>} observable della nuova feature dell'annotazione
-   */
-  // public _createAnnotationFeature(annFeature: AnnotationFeature): Observable<any> {
-  //   return this.http.post<any>(`${this.annotationUrl}`, annFeature);
-  // }
-
-  //non necessario al momento
-  /*   public updateAnnotationFeature(annFeatures: AnnotationFeature): Observable<AnnotationFeature> {
-      return this.http.put<AnnotationFeature>(`${this.annotationUrl}`, annFeatures);
-    } */
-
-  /**
-   * DELETE che rimuove le feature di una annotazione dato il suo ID
-   * @param id {number} identificativo numerico dell'annotazione
-   * @returns {Observable<boolean>} observable dell'esito della cancellazione
-   */
-  // public deleteAnnotationFeature(id: number): Observable<boolean> {
-  //   return this.http.delete<boolean>(`${this.annotationUrl}/${id}`);
-  // }
-
-  //#region TEXTO BACK END
-
   public createAnnotation(annotation: TAnnotation): Observable<TAnnotation> {
     return this.http.post<TAnnotation>(
-      `${this.textoUrl}/texto/annotation/create`,
+      `${this.textoUrl}/annotation/create`,
       annotation,
     );
   }
 
+  /**
+   * Delete an annotation by ID
+   * @param annotationId {number} annotation identifier
+   * @returns {Observable<Object>}
+   */
   public deleteAnnotationById(annotationId: number) {
-    return this.http.get(`${this.textoUrl}/texto/annotation/${annotationId}/remove`);
+    return this.http.delete(`${this.textoUrl}/annotation/${annotationId}/remove`);
   }
 
+  /**
+   * Creates an object that stores the association between annotation to a text, feature and feature value
+   * @param annotationFeature {TAnnotationFeature} the new annotation feature
+   * @returns {Observable<TAnnotationFeature>} observable of the new annotation feature
+   */
   public createAnnotationFeature(annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
     return this.http.post<TAnnotationFeature>(
-      `${this.textoUrl}/texto/annotationFeature/create`,
+      `${this.textoUrl}/annotationFeature/create`,
       annotationFeature,
     );
   }
 
+  /**
+   * Retrieves the list of features with assigned value associated with an annotation 
+   * @param annotationId {number} annotation identifier
+   * @returns {Observable<TAnnotationFeature[]>} observable of the annotation feature list
+   */
   public retrieveAnnotationFeaturesById(annotationId: number): Observable<TAnnotationFeature[]> {
-    return this.http.get<TAnnotationFeature[]>(`${this.textoUrl}/texto/annotation/${annotationId}/features`);
+    return this.http.get<TAnnotationFeature[]>(`${this.textoUrl}/annotation/${annotationId}/features`);
   }
 
-  public updateAnnotationFeature(annFeatId: number, annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
+  /**
+   * Update the data of an annotation feature
+   * @param annotationFeature {TAnnotationFeature} the modified annotation feature
+   * @returns {Observable<TAnnotationFeature>} observable of the annotation feature with updated data
+   */
+  public updateAnnotationFeature(annotationFeature: TAnnotationFeature): Observable<TAnnotationFeature> {
     return this.http.post<TAnnotationFeature>(
-      `${this.textoUrl}/texto/annotationFeature/update`,
+      `${this.textoUrl}/annotationFeature/update`,
       annotationFeature
     );
   }
-
-  //#endregion
 }

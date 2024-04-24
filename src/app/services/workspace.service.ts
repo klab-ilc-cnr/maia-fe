@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { ElementType } from '../models/corpus/element-type';
 import { CorpusElement, FolderElement, ResourceElement } from '../models/texto/corpus-element';
+import { FileUploadType } from '../models/texto/file-upload-type.enum';
+import { Section } from '../models/texto/section';
 import { TextChoice } from '../models/tile/text-choice-element.model';
 import { TextTileContent } from '../models/tile/text-tile-content.model';
 import { Tile } from '../models/tile/tile.model';
@@ -29,7 +31,7 @@ export class WorkspaceService {
    */
   constructor(private http: HttpClient) {
     this.workspacesUrl = environment.workspacesUrl; //inizializzo i due url dall'environment
-    this.textoUrl = environment.textoUrl;
+    this.textoUrl = environment.maiaBeTextoUrl;
   }
 
   //WORKSPACE
@@ -168,12 +170,11 @@ export class WorkspaceService {
     const uuid = uuidv4();
     const user = userId ? `/${userId}` : '';
     return this.http.get<CorpusElement[]>(
-      `${this.textoUrl}/texto/user${user}/tree`,
+      `${this.textoUrl}/user${user}/tree`,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
       }
     );
-    // return this.http.get(`${this.textoDebugUrl}/texto/user${user}/tree`); //DEBUG
   }
 
   /**
@@ -190,12 +191,20 @@ export class WorkspaceService {
   //   return this.http.post<any>(`${this.cashUrl}/api/crud/uploadFile?requestUUID=${uuid}&element-id=${element_id}`, formData);
   // }
 
-  public uploadFile(resourceId: number, file: File) {
+  /**
+   * Executes the http request to load a new file into the corpus
+   * @param resourceId {number} resource identifier
+   * @param file {File} file to be uploaded
+   * @param uploader {FileUploadType} type of uploader needed (marked, plain, etc)
+   * @param splitLine {boolean} defines whether to split on new line
+   * @returns {Observable<Object>}
+   */
+  public uploadFile(resourceId: number, file: File, uploader: FileUploadType, splitLine: boolean) {
     const uuid = uuidv4();
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(
-      `${this.textoUrl}/texto/resource/${resourceId}/upload`,
+      `${this.textoUrl}/resource/${resourceId}/upload?uploader=${uploader}&splitline=${splitLine}`,
       formData,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -236,7 +245,7 @@ export class WorkspaceService {
       name: newName
     };
     return this.http.post(
-      `${this.textoUrl}/texto/${operationUrl}/${elementId}/update`,
+      `${this.textoUrl}/${operationUrl}/${elementId}/update`,
       payload,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -268,11 +277,17 @@ export class WorkspaceService {
   //   return this.http.post<any>(`${this.cashUrl}/api/crud/${operationUrl}`, payload);
   // }
 
+  /**
+   * Delete an element from the corpus
+   * @param elementType {string} type of the element to be removed (folder or resource)
+   * @param elementId {number} element identifier
+   * @returns {Observable<Object>}
+   */
   public removeElement(elementType: string, elementId: number) {
     const uuid = uuidv4();
     const operationUrl = elementType === ElementType.FOLDER ? 'folder' : 'resource';
-    return this.http.get(
-      `${this.textoUrl}/texto/${operationUrl}/${elementId}/remove`,
+    return this.http.delete(
+      `${this.textoUrl}/${operationUrl}/${elementId}/remove`,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
       }
@@ -320,7 +335,7 @@ export class WorkspaceService {
       }
     };
     return this.http.post(
-      `${this.textoUrl}/texto/${operationUrl}/${elementId}/update`,
+      `${this.textoUrl}/${operationUrl}/${elementId}/update`,
       payload,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -359,7 +374,7 @@ export class WorkspaceService {
     };
 
     return this.http.post<CorpusElement>(
-      `${this.textoUrl}/texto/${operationUrl}/create`,
+      `${this.textoUrl}/${operationUrl}/create`,
       payload,
       {
         headers: new HttpHeaders({ 'UUID': uuid })
@@ -369,15 +384,23 @@ export class WorkspaceService {
   // FINE CHIAMATE CASH SERVER
 
   public getTextoCurrentUserId(): Observable<TextoUser> {
-    return this.http.get<TextoUser>(`${this.textoUrl}/texto/user/me`)
+    return this.http.get<TextoUser>(`${this.textoUrl}/user/me`)
   }
 
   public getTextoUserRootFolder(userId?: number): Observable<FolderElement> {
     const operationUrl = userId ? `/${userId}` : '';
-    return this.http.get<FolderElement>(`${this.textoUrl}/texto/user${operationUrl}/home`);
+    return this.http.get<FolderElement>(`${this.textoUrl}/user${operationUrl}/home`);
   }
 
   public retrieveResourceElementById(resourceId: number): Observable<ResourceElement> {
-    return this.http.get<ResourceElement>(`${this.textoUrl}/texto/resource/${resourceId}`);
+    return this.http.get<ResourceElement>(`${this.textoUrl}/resource/${resourceId}`);
+  }
+
+  /**
+   * Retrieve all the sections for a resoruce by Id
+   * @param lazy {string} defines whether the tree upload is lazy or not
+   */
+  public retrieveSectionsByResourceId(resourceId: number, lazy?: string): Observable<Array<Section>> {
+    return this.http.get<Array<Section>>(`${this.textoUrl}/util/resource/${resourceId}/sections?lazy=${lazy ? lazy : 'false'}`);
   }
 }

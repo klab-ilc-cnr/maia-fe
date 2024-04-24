@@ -1,4 +1,4 @@
-<p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[40,60]" [minSizes]="[20,40]">
+<p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[40,60]">
   <ng-template pTemplate>
     <p-treeTable #tt selectionMode="single" dataKey="instanceName" [(selection)]="selectedNode"
       [value]="lexicalEntryTree" [columns]="cols" [lazy]="true" [loading]="loading" scrollHeight="100vh"
@@ -26,7 +26,7 @@
             <sub
               *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
             <button pButton type="button" icon="pi pi-plus"
-              class="p-element p-button-rounded mx-2 p-button p-component p-button-icon-only"
+              class="p-element p-button-rounded mx-2 p-button-sm p-component p-button-icon-only"
               *ngIf="col.field === 'creator' && (rowData['type'] == LexicalEntryType.FORMS_ROOT || rowData['type'] == LexicalEntryType.SENSES_ROOT)"
               (click)="onAdd($event, rowData['type'])"></button>
           </td>
@@ -41,10 +41,10 @@
   </ng-template>
   <ng-template pTemplate>
     <app-tabs-lexical-entry *ngIf="showLexicalEntryEditor"
-      [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-tabs-lexical-entry>
+      [lexicalEntryInstanceName]="lexicalEntryInstanceName" class="w-100"></app-tabs-lexical-entry>
     <app-tabs-form *ngIf="showFormEditor" [formId]="formInstanceName"
-      [lexEntryId]="lexicalEntryInstanceName"></app-tabs-form>
+      [lexEntryId]="lexicalEntryInstanceName" class="w-100"></app-tabs-form>
     <app-tabs-sense *ngIf="showSenseEditor" [senseId]="senseInstanceName"
-      [lexEntryId]="lexicalEntryInstanceName"></app-tabs-sense>
+      [lexEntryId]="lexicalEntryInstanceName" class="w-100"></app-tabs-sense>
   </ng-template>
 </p-splitter>

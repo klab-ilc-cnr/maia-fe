@@ -7,7 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { PROJECTX_ROUTES } from './routes/projectx.routes';
 import { WORKSPACES_ROUTES } from './routes/workspaces.routes';
 
-/**Route iniziali */
+/**Initial routes */
 const routes: Routes = [
   {
     path: 'login',

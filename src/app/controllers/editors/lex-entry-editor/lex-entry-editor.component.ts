@@ -409,7 +409,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable<string>, relation: string) {
+  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, newValue: any) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -418,8 +418,36 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(resp => {
       this.lexicalEntry = <LexicalEntryCore>{ ...this.lexicalEntry, lastUpdate: resp };
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
-      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
+      // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${this.lexicalEntry.label} update "${relation}" success `));
+      // this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.lexicalEntry.lexicalEntry });
+      if (relation.endsWith('#label')) {
+        this.commonService.notifyOther({
+          option: 'lexicon_edit_tree_data',
+          lexicalEntry: this.lexicalEntry.lexicalEntry,
+          uri: this.lexicalEntry.lexicalEntry,
+          field: 'label',
+          newValue
+        });
+      }
+      if (relation.endsWith('#partOfSpeech')) {
+        newValue = newValue.split('#')[1];
+        this.commonService.notifyOther({
+          option: 'lexicon_edit_tree_data',
+          lexicalEntry: this.lexicalEntry.lexicalEntry,
+          uri: this.lexicalEntry.lexicalEntry,
+          field: 'pos',
+          newValue
+        });
+      }
+      if (relation.endsWith('#term_status')) {
+        this.commonService.notifyOther({
+          option: 'lexicon_edit_tree_data',
+          lexicalEntry: this.lexicalEntry.lexicalEntry,
+          uri: this.lexicalEntry.lexicalEntry,
+          field: 'status',
+          newValue
+        });
+      }
     });
   }
 
@@ -458,7 +486,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       value: value,
       currentValue: currentValue
     };
-    this.manageUpdateObservable(this.lexiconService.updateGenericRelation(this.lexicalEntry.lexicalEntry, updater), relation);
+    this.manageUpdateObservable(this.lexiconService.updateGenericRelation(this.lexicalEntry.lexicalEntry, updater), relation, value);
   }
 
   /**
@@ -477,7 +505,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       relation: relation,
       value: value
     };
-    this.manageUpdateObservable(this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater), relation);
+    this.manageUpdateObservable(this.lexiconService.updateLexicalEntry(this.currentUser.name, this.lexicalEntry.lexicalEntry, updater), relation, value);
   }
 
   /**
@@ -500,7 +528,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       value: value,
       currentValue: currentValue ?? ''
     };
-    this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.lexicalEntry.lexicalEntry, updater), relation);
+    this.manageUpdateObservable(this.lexiconService.updateLinguisticRelation(this.lexicalEntry.lexicalEntry, updater), relation, value);
   }
 
   /**

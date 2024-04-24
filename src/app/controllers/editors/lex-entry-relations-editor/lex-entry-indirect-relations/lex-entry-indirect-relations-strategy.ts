@@ -1,24 +1,24 @@
-import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
-import { FormItem } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
-import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { Observable, map } from 'rxjs';
-import { LexiconService } from 'src/app/services/lexicon.service';
 import { LexicalEntriesResponse, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy';
+import { FormItem } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
 
 export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
 
   constructor(
     private lexiconService: LexiconService,
     private lexEntityId: string,
-  ) {}
+  ) { }
 
-  public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[] {
-    const formItems : FormItem[] = [];
+  public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string]: string }): FormItem[] {
+    let formItems: FormItem[] = [];
     for (const [itemID, item] of model.indirectRelations.entries()) {
-      const {category, target, targetLabel, relation, properties} = item;
-      const newItem : FormItem = {
+      const { category, target, targetLabel, relation, properties } = item;
+      const newItem: FormItem = {
         relationshipLabel: relationshipLabelByURI[category] || 'unknown relationship',
         relationshipURI: relation,
         destinationURI: target,
@@ -28,6 +28,7 @@ export class LexEntryIndirectRelationsStrategy implements BaseLexEntityRelations
       };
       formItems.unshift(newItem);
     }
+    formItems = formItems.sort((a, b) => a.inferred === b.inferred ? 0 : (a.inferred! < b.inferred! ? -1 : 1));
     return formItems;
   }
 

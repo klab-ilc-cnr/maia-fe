@@ -4,6 +4,7 @@ export enum _ElementType {
   File = "file"
 }
 
+/**Enum of the Corpus element types */
 export enum ElementType {
   FOLDER = 'Folder',
   RESOURCE = 'Resource'

@@ -1,87 +1,65 @@
 <p-toast></p-toast>
 
 <div class="grid">
-    <div class="col-12">
-        <div class="card">
-            <div class="page-header">
-                <h5>Workspace</h5>
-                <p-button label="New workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"
-                    class="ms-start"></p-button>
-            </div>
-            <p-table #dt [value]="workspaces" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-                currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
-                [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
-                selectionMode="single"
-                (onRowSelect)="openWorkspace($event)">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="note">Note<p-sortIcon field="note"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="updated">Last access<p-sortIcon field="updated"></p-sortIcon>
-                        </th>
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-workspace>
-                    <tr [pSelectableRow]="workspace">
-                        <td>{{workspace.name}}</td>
-                        <td>{{workspace.note}}</td>
-                        <td>{{workspace.updated | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
-                        <td>
-                            <button pButton pRipple icon="pi pi-desktop"
-                                class="p-button-rounded mx-2"
-                                (click)="goToWorkspace(workspace.id)"></button>
-                            <button pButton pRipple icon="pi pi-pencil"
-                                class="p-button-rounded p-button-success mx-2"
-                                (click)="showEditWorkspaceModal(workspace)"></button>
-                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
-                                (click)="showDeleteWorkspaceModal(workspace)"></button>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="summary">
-                    <div class="p-d-flex p-ai-center p-jc-between">
-                      In total there are {{workspaces ? workspaces.length : 0 }} workspaces.
-                    </div>
-                </ng-template>
-            </p-table>
-        </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="page-header">
+        <h5>Workspace</h5>
+        <p-button label="New workspace" icon="pi pi-desktop" styleClass="p-button-danger" (click)="showWorkspaceModal()"
+          class="ms-start"></p-button>
+      </div>
+      <p-table #dt [value]="(workspaces$|async) || []" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
+        [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true" selectionMode="single"
+        (onRowSelect)="openWorkspace($event)">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="note">Note<p-sortIcon field="note"></p-sortIcon>
+            </th>
+            <th pSortableColumn="updated">Last access<p-sortIcon field="updated"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-workspace>
+          <tr [pSelectableRow]="workspace">
+            <td>{{workspace.name}}</td>
+            <td>{{workspace.note}}</td>
+            <td>{{workspace.updated | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
+            <td>
+              <button pButton pRipple icon="pi pi-desktop" class="p-button-rounded mx-2"
+                (click)="goToWorkspace(workspace.id)"></button>
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2"
+                (click)="showEditWorkspaceModal(workspace)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+                (click)="showDeleteWorkspaceModal(workspace)"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            In total there are {{ (workspaces$|async)?.length }} workspaces.
+          </div>
+        </ng-template>
+      </p-table>
     </div>
+  </div>
 </div>
 
-<div
-  class="modal fade"
-  id="workspaceModal"
-  tabindex="-1"
-  aria-labelledby="workspaceModalLabel"
-  aria-hidden="true"
->
+<p-dialog [header]="workspaceModalTitle" class="modal" [(visible)]="visibleWorkspaceDialog" [modal]="true"
+  [style]="{ minWidth: '30vw', maxWidth: '50vw' }" appendTo="body">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form
-        (ngSubmit)="onSubmitWorkspaceModal(workspaceForm)"
-        #workspaceForm="ngForm"
-        id="workspaceForm"
-        class="validated"
-      >
-        <input type="hidden" #id="ngModel" name="id" [(ngModel)]="workspace.id">
-        <div class="modal-header">
-          <h5 class="modal-title" id="workspaceModalLabel">{{workspaceModalTitle}}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+      <form [formGroup]="tWorkspaceForm" (ngSubmit)="onSubmitWorkspaceModal()" id="workspaceForm"
+        class="validated">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Name *</label>
+            <label for="name" class="form-label">Name *</label>
             <div class="p-fluid">
-              <input #name="ngModel" type="text" name="name" class="form-control" [(ngModel)]="workspace.name"
-                required autofocus maxlength="300" placeholder="Nome workspace" appWhitespacesValidator>
+              <input formControlName="name" type="text" name="name" class="form-control" id="name" autofocus
+                maxlength="300" placeholder="Nome workspace">
               <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">
                 <div *ngIf="name.errors?.['required']">
                   Name is mandatory
@@ -89,21 +67,25 @@
                 <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
                   The workspace name cannot contain only blanks
                 </div>
+                <div *ngIf="name.errors?.['notDuplicateName']">
+                  Name is already used
+                </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Note</label>
+            <label for="note" class="form-label">Note</label>
             <div class="p-fluid">
-              <textarea rows="3" #note="ngModel" type="text" name="note" class="form-control" [(ngModel)]="workspace.note"></textarea>
+              <textarea rows="3" formControlName="note" type="text" name="note" id="note"
+                class="form-control"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-secondary" (click)="visibleWorkspaceDialog = false">
             Cancel
           </button>
-          <button type="button" class="btn btn-primary" (click)="onSubmitWorkspaceModal(workspaceForm)">
+          <button type="submit" class="btn btn-primary" [disabled]="tWorkspaceForm.invalid || name.value === ''">
             <span *ngIf="isEditing; else elseBlock">
               Update
             </span>
@@ -115,6 +97,6 @@
       </form>
     </div>
   </div>
-</div>
+</p-dialog>
 
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

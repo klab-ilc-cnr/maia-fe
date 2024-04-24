@@ -62,6 +62,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Services to manage the local storage</p>
+
+            </p>
 
 
 
@@ -77,6 +84,9 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                <a href="#tokenPrefix" >tokenPrefix</a>
+                            </li>
                             <li>
                                 <a href="#tokenTimeout" >tokenTimeout</a>
                             </li>
@@ -140,6 +150,24 @@
     </table>
 </section>
 
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/storage.service.ts:16</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
 
             <section>
     
@@ -168,14 +196,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="68"
-                            class="link-to-prism">src/app/services/storage.service.ts:68</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">src/app/services/storage.service.ts:106</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Clean local storage</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -207,17 +237,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">src/app/services/storage.service.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">src/app/services/storage.service.ts:71</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Retrieve current user from local storage (if the user is logged in)</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >User | null</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>logged user</p>
 
                     </div>
                 </td>
@@ -246,17 +284,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="33"
-                            class="link-to-prism">src/app/services/storage.service.ts:33</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/app/services/storage.service.ts:53</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Retrieve expiration date from local storage</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>number | null</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>expiration date</p>
 
                     </div>
                 </td>
@@ -285,17 +331,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="20"
-                            class="link-to-prism">src/app/services/storage.service.ts:20</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/app/services/storage.service.ts:35</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Retrieve jwt token from local storage</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>string | null</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>jwt token value</p>
 
                     </div>
                 </td>
@@ -324,17 +378,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/app/services/storage.service.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">src/app/services/storage.service.ts:96</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Check if the jwt token is expired</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>is the jwt token expired</p>
 
                     </div>
                 </td>
@@ -363,17 +425,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="50"
-                            class="link-to-prism">src/app/services/storage.service.ts:50</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="83"
+                            class="link-to-prism">src/app/services/storage.service.ts:83</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Check if the user is logged in</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>is the user logged in</p>
 
                     </div>
                 </td>
@@ -402,14 +472,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="38"
-                            class="link-to-prism">src/app/services/storage.service.ts:38</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/app/services/storage.service.ts:62</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Set the current user in the local storage</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -420,6 +492,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -434,6 +507,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>logged user</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -473,14 +550,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="24"
-                            class="link-to-prism">src/app/services/storage.service.ts:24</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/app/services/storage.service.ts:40</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Sets the expiration date of the token and starts the timeout</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -512,14 +591,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="15"
-                            class="link-to-prism">src/app/services/storage.service.ts:15</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">src/app/services/storage.service.ts:26</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Set the jwt token in local storage</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -530,6 +611,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -544,6 +626,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>jwt token</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -571,6 +657,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="tokenPrefix"></a>
+                    <span class="name">
+                        <span ><b>tokenPrefix</b></span>
+                        <a href="#tokenPrefix"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/storage.service.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="tokenTimeout"></a>
                     <span class="name">
                         <span ><b>tokenTimeout</b></span>
@@ -585,10 +697,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/services/storage.service.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/storage.service.ts:15</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject signaling the expiration of the token</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -606,47 +724,80 @@ const TOKEN_KEY &#x3D; &#x27;jwt-token&#x27;;
 const EXPIRATION_KEY &#x3D; &#x27;token_expiration&#x27;;
 const USER_KEY &#x3D; &#x27;current-user&#x27;;
 
+/**Services to manage the local storage */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class StorageService {
+  /**Subject signaling the expiration of the token */
   tokenTimeout &#x3D; new Subject&lt;any&gt;();
+  tokenPrefix: string;
 
+  constructor() {
+    this.tokenPrefix &#x3D; document.URL.split(&#x27;/#&#x27;)[0];
+  }
+
+  /**
+   * Set the jwt token in local storage
+   * @param jwt {string} jwt token
+   */
   public setToken(jwt: string): void {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.setItem(TOKEN_KEY, jwt);
+    localStorage.removeItem(&#x60;${this.tokenPrefix}_${TOKEN_KEY}&#x60;);
+    localStorage.setItem(&#x60;${this.tokenPrefix}_${TOKEN_KEY}&#x60;, jwt);
   }
 
+  /**
+   * Retrieve jwt token from local storage
+   * @returns {string|null} jwt token value
+   */
   public getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(&#x60;${this.tokenPrefix}_${TOKEN_KEY}&#x60;);
   }
 
+  /**Sets the expiration date of the token and starts the timeout */
   public setExpiration(): void {
     const expDate &#x3D; new Date().getTime() + 5400000; //token expire after 90 minutes
     setTimeout(() &#x3D;&gt; {
       this.tokenTimeout.next(null);
     }, 5370000); //warning displayed 30s before token expiration
-    localStorage.removeItem(EXPIRATION_KEY);
-    localStorage.setItem(EXPIRATION_KEY, expDate.toString())
+    localStorage.removeItem(&#x60;${this.tokenPrefix}_${EXPIRATION_KEY}&#x60;);
+    localStorage.setItem(&#x60;${this.tokenPrefix}_${EXPIRATION_KEY}&#x60;, expDate.toString())
   }
 
+  /**
+   * Retrieve expiration date from local storage
+   * @returns {number|null} expiration date
+   */
   public getExpiration(): number | null {
-    const exp &#x3D; localStorage.getItem(EXPIRATION_KEY)
+    const exp &#x3D; localStorage.getItem(&#x60;${this.tokenPrefix}_${EXPIRATION_KEY}&#x60;)
     return exp ? +exp : null;
   }
 
+  /**
+   * Set the current user in the local storage
+   * @param currentUser {User} logged user
+   */
   public setCurrentUser(currentUser: User): void {
-    localStorage.removeItem(USER_KEY);
-    localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
+    localStorage.removeItem(&#x60;${this.tokenPrefix}_${USER_KEY}&#x60;);
+    localStorage.setItem(&#x60;${this.tokenPrefix}_${USER_KEY}&#x60;, JSON.stringify(currentUser));
   }
+
+  /**
+   * Retrieve current user from local storage (if the user is logged in)
+   * @returns {User|null} logged user
+   */
   public getCurrentUser(): User | null {
-    const storageUser &#x3D; localStorage.getItem(USER_KEY);
+    const storageUser &#x3D; localStorage.getItem(&#x60;${this.tokenPrefix}_${USER_KEY}&#x60;);
     if (storageUser) {
       return JSON.parse(storageUser);
     }
     return null;
   }
 
+  /**
+   * Check if the user is logged in
+   * @returns {boolean} is the user logged in
+   */
   public isLoggedIn(): boolean {
     const currentUser &#x3D; this.getCurrentUser();
     const jwt &#x3D; this.getToken();
@@ -656,6 +807,10 @@ export class StorageService {
     return false;
   }
 
+  /**
+   * Check if the jwt token is expired
+   * @returns {boolean} is the jwt token expired
+   */
   public isExpired(): boolean {
     const exp &#x3D; this.getExpiration();
     if (!exp) {
@@ -665,8 +820,13 @@ export class StorageService {
     return current &gt;&#x3D; exp;
   }
 
+  /**Clean local storage */
   public cleanStorage(): void {
-    localStorage.clear();
+    for (const key in localStorage) {
+      if (key.indexOf(&#x60;${this.tokenPrefix}_&#x60;) &gt;&#x3D; 0) {
+        localStorage.removeItem(key);
+      }
+    }
   }
 }
 </code></pre>

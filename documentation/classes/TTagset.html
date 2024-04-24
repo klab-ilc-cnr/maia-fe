@@ -66,6 +66,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class describing a tagset</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
@@ -141,10 +148,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/app/models/texto/t-tagset.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/models/texto/t-tagset.ts:8</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Description of the tagset</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -167,10 +180,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/app/models/texto/t-tagset.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/models/texto/t-tagset.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Name of the tagset</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -199,11 +218,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:4</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Numeric identifier</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -232,11 +257,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:5</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:8</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Annotation status (e.g. REMOVED)</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -265,11 +296,17 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:6</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/AnnotationCore.html#source" target="_self" >AnnotationCore:10</a></code>
 </div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Timestamp of the last edit</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -287,8 +324,11 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AnnotationCore } from &quot;./annotation-core&quot;;
 
+/**Class describing a tagset */
 export class TTagset extends AnnotationCore {
+  /**Name of the tagset */
   name: string | undefined;
+  /**Description of the tagset */
   description: string | undefined;
 }
 </code></pre>

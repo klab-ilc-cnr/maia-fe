@@ -1,128 +1,125 @@
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
-import { LoaderService } from 'src/app/services/loader.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkspaceChoice } from 'src/app/models/workspace-choice.model';
-import { WorkspaceService } from 'src/app/services/workspace.service';
 import { MessageService } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
+import { WorkspaceChoice } from 'src/app/models/workspace-choice.model';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { WorkspaceStateService } from 'src/app/services/workspace-state.service';
+import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
+import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import Swal from 'sweetalert2';
-import { NgForm } from '@angular/forms';
 
-/**Componente della lista dei workspace */
+/**Class describing the workspace list component */
 @Component({
   selector: 'app-workspace-list',
   templateUrl: './workspace-list.component.html',
   styleUrls: ['./workspace-list.component.scss'],
 })
-export class WorkspaceListComponent implements OnInit {
+export class WorkspaceListComponent {
+  /**Subject for subscribe management */
+  private readonly unsubscribe$ = new Subject();
+  /**Defines whether the workspace creation/editing modal is visible */
+  visibleWorkspaceDialog = false;
   /**
-   * @private
-   * Effettua la cancellazione di un workspace
-   * @param id {number} identificativo numerico del workspace
-   * @param name {string} nome del workspace
+   * Perform a workspace deletion
+   * @param id {number} workspace identifier
+   * @param name {string} workspace name
    */
   private delete = (id: number, name: string): void => {
-    this.showOperationInProgress('Sto cancellando');
-
-    const errorMsg = 'Errore nell\'eliminare il workspace \'' + name + '\'';
-    const successMsg = 'Workspace \'' + name + '\' eliminato con successo';
-
-    this.workspaceService.deleteWorkspace(id).subscribe({
-      next: (data) => {
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        Swal.close();
-        this.loadData();
-      },
-      error: () => {
-        this.showOperationFailed('Cancellazione Fallita: ' + errorMsg)
-      }
-    })
+    this.workspaceState.removeWorkspace.next(id);
   }
 
-  /**Getter del titolo del workspace per il modale */
+  /**
+   * Getter for workspace modal title
+   * @returns {string}
+   */
   public get workspaceModalTitle(): string {
-    if (((!this.workspaceForm) || (!this.workspaceForm.value)) || (!this.workspaceForm.value.name)) { //caso di inserimento di un nuovo workspace
-      return "Nuovo workspace";
+    if (((!this.tWorkspaceForm) || (!this.tWorkspaceForm.value)) || (!this.name.value)) { //caso di inserimento di un nuovo workspace
+      return "New workspace";
     }
-
-    return this.workspaceForm.value.name;
+    return this.name.value;
   }
 
-  /**Getter che definisce se siamo in modalità di modifica */
+  /**
+   * Getter, defines wheter the workspace is in edit mode
+   * @returns {boolean}
+   */
   public get isEditing(): boolean {
     if (this.workspace && this.workspace.id) {
       return true;
     }
-
     return false;
   }
 
-  /**Lista dei workspace per la selezione */
-  workspaces: WorkspaceChoice[] = [];
+  /**Observable of the list of workspaces */
+  workspaces$ = this.workspaceState.workspaces$;
+  /**List of workspace names already used */
+  workspaceNames: string[] = [];
+  /**Form to manage workspace data */
+  tWorkspaceForm = new FormGroup({
+    name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
+    note: new FormControl<string | null>(null)
+  });
+  /**Getter for workspace name field control */
+  get name() { return this.tWorkspaceForm.controls.name }
+  /**Getter for workspace note field control */
+  get note() { return this.tWorkspaceForm.controls.note }
 
   /**Workspace di tipo choice in lavorazione */
   workspace: WorkspaceChoice = new WorkspaceChoice;
 
-  /**Definisce se è aperto il dialog del workspace */
-  workspaceDialog = false;
-  /** ? */ //TODO verificare perché non sembra utilizzato
-  submitted = false;
-
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
-  /**Riferimento al form di modifica/creazione workspace */
-  @ViewChild(NgForm) public workspaceForm!: NgForm;
 
   /**
-   * Costruttore per WorkspaceListComponent
-   * @param router {Router} servizi per la navigazione fra le viste
-   * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
-   * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param workspaceService {WorkspaceService} servizi relativi ai workspace
-   * @param messageService {MessageService} servizi per la gestione dei messaggi
-   * @param msgConfService {MessageConfigurationService} servizi per la configurazione dei messaggi per messageService
-   * @param confirmationService {ConfirmationService} servizi per i messaggi di conferma
+   * Costructor for WorkspaceListComponent
+   * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
+   * @param activeRoute {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
+   * @param messageService {MessageService} services for message management
+   * @param msgConfService {MessageConfigurationService} services for configuration of messages
    */
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private activeRoute: ActivatedRoute,
-    private loaderService: LoaderService,
-    private workspaceService: WorkspaceService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private confirmationService: ConfirmationService) { } //TODO verificare se serve ancora
-
-  /**Metodo dell'interfaccia OnInit, utilizzato per il caricamento iniziale dei dati */
-  ngOnInit(): void {
-    this.loadData();
+    private workspaceState: WorkspaceStateService,
+  ) {
+    this.workspaces$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(w => {
+      this.workspaceNames = w.map(ws => ws.name!);
+    })
   }
 
-  /**Metodo dell'interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal */
+  /**OnDestroy interface method, used for closing any swal popups and managing unsubscribe */
   ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
     Swal.close();
   }
 
-  /**Metodo che naviga verso un nuovo workspace */
+  /**Method navigating to a new workspace */
   goToNewWorkspace() {
     this.router.navigate(["/workspace", "new"], { relativeTo: this.activeRoute });
   }
 
   /**
-   * Metodo che naviga verso un workspace esistente
-   * @param workspaceId {string} identificativo del workspace
+   * Method that navigates to an existing workspace
+   * @param workspaceId {string} workspace identifier (covering also new as id)
    */
   goToWorkspace(workspaceId: string) {
     this.router.navigate(["/workspace", workspaceId], { relativeTo: this.activeRoute });
   }
 
   /**
-   * Metodo che sottomette il salvataggio di un nuovo workspace
-   * @param form {NgForm} form di modifica/creazione di un workspace
+   * Method that submits saving a new workspace
    * @returns {void}
    */
-  onSubmitWorkspaceModal(form: NgForm): void {
-    if (this.workspaceForm.invalid) {
+  onSubmitWorkspaceModal(): void {
+    if (this.tWorkspaceForm.invalid) {
       return this.saveWithFormErrors();
     }
 
@@ -130,8 +127,8 @@ export class WorkspaceListComponent implements OnInit {
   }
 
   /**
-   * Metodo che apre un workspace
-   * @param event {any} evento di selezione di una riga della tabella
+   * Method that opens a workspace
+   * @param event {any} table row selection event
    */
   openWorkspace(event: any) {
     if (event.data.id) {
@@ -140,8 +137,8 @@ export class WorkspaceListComponent implements OnInit {
   }
 
   /**
-   * Metodo che visualizza il popup di conferma cancellazione di un workspace ed eventualmente richiama la sua rimozione
-   * @param workspace {WorkspaceChoice} workspace da cancellare
+   * Method that displays the popup confirming deletion of a workspace and possibly prompting its removal
+   * @param workspace {WorkspaceChoice} workspace to be deleted
    */
   showDeleteWorkspaceModal(workspace: WorkspaceChoice) {
     const confirmMsg = 'Stai per cancellare il workspace \'' + workspace.name + '\'';
@@ -151,51 +148,28 @@ export class WorkspaceListComponent implements OnInit {
   }
 
   /**
-   * Metodo che richiama l'apertura del modale di modifica dei dati di un workspace
-   * @param workspace {WorkspaceChoice} workspace da modificare
+   * Method that invokes the opening of a workspace data editing modal
+   * @param workspace {WorkspaceChoice} workspace to be updated
    */
   showEditWorkspaceModal(workspace: WorkspaceChoice) {
-    this.resetForm();
+    this.tWorkspaceForm.reset();
+    this.name.setValue(workspace.name || '');
+    this.note.setValue(workspace.note || null);
+    const tempNames = this.workspaceNames.filter(w => w !== workspace.name);
+    this.name.setValidators(nameDuplicateValidator(tempNames));
+    this.visibleWorkspaceDialog = true;
     this.workspace = JSON.parse(JSON.stringify(workspace));
-
-    $('#workspaceModal').modal('show');
   }
 
-  /**Metodo che richiama l'apertua del modale di inserimento di un nuovo workspace */
+  /**Method that invokes the modal opening of inserting a new workspace */
   showWorkspaceModal() {
-    this.resetForm();
-
-    $('#workspaceModal').modal('show');
+    this.tWorkspaceForm.reset();
+    this.name.setValidators(nameDuplicateValidator(this.workspaceNames));
+    this.visibleWorkspaceDialog = true;
   }
 
   /**
-   * @private
-   * Metodo che carica i dati di base del componente
-   */
-  private loadData() {
-    this.loaderService.show();
-    this.workspaceService.retrieveWorkspaceChoiceList()
-      .subscribe({
-        next: (data: WorkspaceChoice[]) => {
-          this.workspaces = data;
-          this.loaderService.hide();
-        }
-      });
-  }
-
-  /**
-   * @private
-   * Metodo che resetta il workspace in lavorazione e marca i campi come nuovi
-   */
-  private resetForm() {
-    this.workspace = new WorkspaceChoice();
-    this.workspaceForm.form.markAsUntouched();
-    this.workspaceForm.form.markAsPristine();
-  }
-
-  /**
-   * @private
-   * Metodo che gestisce il salvataggio del form di un workspace nuovo o in modifica
+   * Method that handles saving the form of a new or editing workspace
    * @returns {void}
    */
   private save(): void {
@@ -203,87 +177,24 @@ export class WorkspaceListComponent implements OnInit {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig("Errore durante il salvataggio!"));
       return;
     }
-
-    let successMsg = "Operazione effettuata con successo";
-    let apiCall;
-
+    this.workspace = <WorkspaceChoice>{
+      ...this.workspace,
+      name: this.name.value,
+      note: this.note.value
+    };
     if (this.isEditing && this.workspace.name?.trim() && this.workspace.id) {
-      successMsg = "Workspace modificato con successo";
-      apiCall = this.workspaceService.updateWorkspace(this.workspace);
+      this.workspaceState.updateWorkspace.next(this.workspace);
     }
     else {
-      successMsg = "Workspace creato con successo";
-      apiCall = this.workspaceService.createWorkspace(this.workspace);
+      this.workspaceState.addWorkspace.next(this.workspace);
     }
-
-    this.loaderService.show();
-    apiCall.subscribe({
-      next: () => {
-        $('#workspaceModal').modal('hide');
-
-        this.saveWorkspaceCompleted();
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        this.loadData();
-      },
-      error: (err: string) => {
-        $('#workspaceModal').modal('hide');
-
-        this.saveWorkspaceCompleted();
-        this.loaderService.hide();
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(err));
-      }
-    });
+    this.visibleWorkspaceDialog = false;
   }
 
   /**
-   * @private
-   * Metodo che segna tutti i campi del form touched per segnalare errori
+   * Method that marks all fields in the form touched to report errors
    */
   private saveWithFormErrors(): void {
-    this.workspaceForm.form.markAllAsTouched();
-  }
-
-  /**
-   * @private
-   * Metodo che su completamento del salvatggio aggiorna la lista dei workspace, chiude il dialog e carica i dati iniziali
-   */
-  private saveWorkspaceCompleted() {
-    this.workspaces = [...this.workspaces];
-    this.workspaceDialog = false;
-
-    this.loaderService.hide();
-    this.loadData();
-  }
-
-  /**
-   * @private
-   * Metodo che visualizza il popup di operazione fallita
-   * @param errorMessage {string} messaggio di errore
-   */
-  private showOperationFailed(errorMessage: string): void {
-    Swal.fire({
-      icon: 'error',
-      title: errorMessage,
-      showConfirmButton: true
-    });
-  }
-
-  /**
-   * @private
-   * Metodo che visualizza il popup di operazione in corso
-   * @param message {string} messaggio da visualizzare
-   */
-  private showOperationInProgress(message: string): void {
-    Swal.fire({
-      icon: 'warning',
-      titleText: message,
-      text: 'per favore attendere',
-      customClass: {
-        container: 'swal2-container'
-      },
-      showCancelButton: false,
-      showConfirmButton: false
-    });
+    this.tWorkspaceForm.markAllAsTouched();
   }
 }

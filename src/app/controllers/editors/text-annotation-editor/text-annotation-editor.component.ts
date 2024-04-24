@@ -2,11 +2,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, map, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, map, take, takeUntil, throwError } from 'rxjs';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
+import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { User } from 'src/app/models/user';
 import { AnnotationService } from 'src/app/services/annotation.service';
@@ -33,6 +34,7 @@ export interface FeatForAnn {
 })
 export class TextAnnotationEditorComponent implements OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  workingLayer!: TLayer;
   /**Tipi di feature */
   featureTypes = TFeatureType;
   @Input() annotationFragment!: string;
@@ -62,7 +64,11 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     return false;
   }
 
-  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel || !this.annotationModel?.layer || !this.annotationModel?.layer.id || (!this.annotationModel.start && this.annotationModel.start !== 0) || !this.annotationModel.end) }
+  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel 
+    || !this.annotationModel?.layer 
+    || !this.annotationModel?.layer.id 
+    || (!this.annotationModel.start && this.annotationModel.start !== 0) 
+    || !this.annotationModel.end) }
 
   public get shouldBeDisabled(): boolean { //FIXME sostituire con una pipe
     if (!this.isEditing) {
@@ -165,12 +171,12 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   private deleteAnnotation = (id: number): void => {
     this.showOperationInProgress('Deletion in progress');
     const successMsg = 'Annotation successfully removed';
-    this.annotationService.deleteAnnotationById(id).pipe(
+    this.annotationService.deleteAnnotationById(id).pipe( //FIXME referenced records cannot be deleted, including annotations with enhanced features. Under discussion is the deletion policy
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Deleting annotation failed: ${error.error}`));
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Deleting annotation failed: ${error.error.message}`));
         Swal.close();
-        return throwError(() => new Error(error.error));
+        return throwError(() => new Error(error.error.message));
       }),
     ).subscribe(() => {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
@@ -220,7 +226,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   showDeleteModal() {
-    if(!this.annotationModel.id || this.annotationModel.id === undefined) {
+    if (!this.annotationModel.id || this.annotationModel.id === undefined) {
       return;
     }
     const confirmMessage = 'You are about to delete an annotation';
@@ -244,11 +250,11 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   private createForm() {
-    this.annotationForm.controls.layer.setValue(this.annotationModel.layer?.name ?? '');
+    this.annotationForm.controls.layer.setValue(this.workingLayer.name ?? '');
     this.annotationForm.controls.text.setValue(this.annotationFragment);
     this.features.forEach(f => {
       const controlName = f.feature?.name;
-      const existingValue: string = this.annotationModel.features?.find(af => af.feature?.name === controlName)?.value ?? '';
+      const existingValue: string = this.annotationModel.features?.find(af => af.feature?.id === f.feature?.id)?.value ?? '';
       const featureType = f.feature?.type;
       let newControl: FormControl;
       if (!controlName) {
@@ -277,10 +283,14 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   private fetchAndMapFeatures(layerId: number) {
-    this.layerService.retrieveLayerFeatureList(layerId).pipe(
+    forkJoin({
+      layer: this.layerService.retrieveLayerById(layerId),
+      features: this.layerService.retrieveLayerFeatureList(layerId),
+    }).pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe(features => {
-      this.features = features.map(feature => {
+    ).subscribe(response => {
+      this.workingLayer = response.layer;
+      this.features = response.features.map(feature => {
         const tagsetId = feature.tagset?.id;
         return <FeatForAnn>{
           feature: feature,

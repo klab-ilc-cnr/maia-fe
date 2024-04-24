@@ -2,6 +2,7 @@ import { LanguagesListComponent } from "../pages/lexicon/languages-list/language
 import { LanguagesViewComponent } from "../pages/lexicon/languages-view/languages-view.component";
 import { NamespacesListComponent } from "../pages/lexicon/namespaces-list/namespaces-list.component";
 
+/**Routes related to lexicon management */
 export const LEXICON_ROUTES = [
   {
     path: 'languages',
@@ -12,7 +13,7 @@ export const LEXICON_ROUTES = [
     loadChildren: () => import('../modules/namespaces.module').then(m => m.NamespacesModule),
   },
 ];
-
+/**Routes related to languages management */
 export const LANGUAGES_MANAGEMENT_ROUTES = [
   {
     path: '',
@@ -24,6 +25,7 @@ export const LANGUAGES_MANAGEMENT_ROUTES = [
   }
 
 ];
+/**Routes related to namespaces management */
 export const NAMESPACES_ROUTES = [
   {
     path: '',

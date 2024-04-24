@@ -73,6 +73,9 @@
                             <a href="#FeatureType" title="src/app/models/feature/feature-type.ts" ><b>FeatureType</b>&nbsp;&nbsp;&nbsp;(src/.../feature-type.ts)</a>
                         </li>
                         <li>
+                            <a href="#FileUploadType" title="src/app/models/texto/file-upload-type.enum.ts" ><b>FileUploadType</b>&nbsp;&nbsp;&nbsp;(src/.../file-upload-type.enum.ts)</a>
+                        </li>
+                        <li>
                             <a href="#FORM_RELATIONS" title="src/app/models/lexicon/lexicon-updater.ts" ><b>FORM_RELATIONS</b>&nbsp;&nbsp;&nbsp;(src/.../lexicon-updater.ts)</a>
                         </li>
                         <li>
@@ -100,7 +103,7 @@
                             <a href="#LINGUISTIC_RELATION_TYPE" title="src/app/models/lexicon/lexicon-updater.ts" ><b>LINGUISTIC_RELATION_TYPE</b>&nbsp;&nbsp;&nbsp;(src/.../lexicon-updater.ts)</a>
                         </li>
                         <li>
-                            <a href="#Roles" title="src/app/models/roles.ts" ><b>Roles</b>&nbsp;&nbsp;&nbsp;(src/.../roles.ts)</a>
+                            <a href="#ScrollingDirectionType" title="src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts" ><b>ScrollingDirectionType</b>&nbsp;&nbsp;&nbsp;(src/.../workspace-text-window.component.ts)</a>
                         </li>
                         <li>
                             <a href="#searchModeEnum" title="src/app/models/lexicon/lexical-entry-request.model.ts" ><b>searchModeEnum</b>&nbsp;&nbsp;&nbsp;(src/.../lexical-entry-request.model.ts)</a>
@@ -167,6 +170,12 @@
                         <span class="name "><b>ElementType</b><a href="#ElementType"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Enum of the Corpus element types</p>
+</div>
+                        </td>
+                    </tr>
                         <tr>
                             <td class="col-md-4">
                                 &nbsp;FOLDER
@@ -303,6 +312,39 @@
                         <tr>
                             <td class="col-md-4">
                                 <i>Value : </i><code>SENSE</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <h3>src/app/models/texto/file-upload-type.enum.ts</h3>
+    <section>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="FileUploadType"></a>
+                        <span class="name "><b>FileUploadType</b><a href="#FileUploadType"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;PLAIN
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>plain-text</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;MARKED
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>marked-text</code>
                             </td>
                         </tr>
             </tbody>
@@ -1054,80 +1096,29 @@
             </tbody>
         </table>
 </section>
-    <h3>src/app/models/roles.ts</h3>
+    <h3>src/app/pages/workspace/workspace-text-window/workspace-text-window.component.ts</h3>
     <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="Roles"></a>
-                        <span class="name "><b>Roles</b><a href="#Roles"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="ScrollingDirectionType"></a>
+                        <span class="name "><b>ScrollingDirectionType</b><a href="#ScrollingDirectionType"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-description"><p>Enumerazione dei ruoli previsti per un utente</p>
-</div>
-                        </td>
-                    </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;AMMINISTRATORE
+                                &nbsp;Up
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>AMMINISTRATORE</code>
+                                &nbsp;Down
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;SUPERVISORE
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>SUPERVISORE</code>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                &nbsp;LESSICOGRAFO
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>LESSICOGRAFO</code>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                &nbsp;ANNOTATORE
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>ANNOTATORE</code>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                &nbsp;LESSICOGRAFO_ANNOTATORE
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>LESSICOGRAFO_ANNOTATORE</code>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                &nbsp;UTENTE_VIEWER
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Value : </i><code>UTENTE_VIEWER</code>
+                                &nbsp;InRange
                             </td>
                         </tr>
             </tbody>
@@ -1143,6 +1134,12 @@
                         <span class="name "><b>TFeatureType</b><a href="#TFeatureType"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Enum of supported feature types</p>
+</div>
+                        </td>
+                    </tr>
                         <tr>
                             <td class="col-md-4">
                                 &nbsp;STRING

@@ -15,7 +15,8 @@
       pTooltip="Upload CoNLL" tooltipPosition="bottom"
       (click)="isUploadLexiconVisible = !isUploadLexiconVisible"></button>
     <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2" pTooltip="Export"
-      tooltipPosition="bottom" [disabled]="demoHide"></button><!--TODO: DISABLED IN THE DEMO, remove demoHide as soon as development is complete-->
+      tooltipPosition="bottom"
+      [disabled]="demoHide"></button><!--TODO: DISABLED IN THE DEMO, remove demoHide as soon as development is complete-->
   </div>
 </p-toolbar>
 <div class="grid p-fluid input-search">
@@ -30,102 +31,111 @@
         (keyup)="onChangeFilter()" />
       <button pButton pRipple type="button" icon="pi pi-filter-slash" pTooltip="Reset" class="p-button-secondary"
         (click)="reset()"></button>
-      <span class="flex-none flex w-1 align-items-center justify-content-center font-weight-bold font-italic">
+      <span id="lexExpCounter" class="flex-none flex w-2 align-items-center justify-content-center font-weight-bold font-italic">
         {{counter}}</span>
     </div>
   </div>
 </div>
-<p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true"
-  (collapsedChange)="onCollapseChange($event)">
+<p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true">
   <div class="flex flex-row">
-    <div class="flex align-items-center justify-content-center m-3 field-radiobutton">
+    <div class="flex m-2 field-checkbox">
+      <p-checkbox id="caseSensitiveInput" [(ngModel)]="caseSensitive" [binary]="true" inputId="caseSensitive" (ngModelChange)="onChangeFilter()"></p-checkbox>
+      <label for="caseSensitiveInput">Case sensitive</label>
+    </div>
+  </div>
+  <div class="flex flex-row">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"
         inputId="equals"></p-radioButton>
       <label for="equals">Equals</label>
     </div>
-    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode"
         inputId="startsWith"></p-radioButton>
       <label for="startsWith">StartsWith</label>
     </div>
-
   </div>
   <div class="flex flex-row">
-    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode"
         inputId="contains"></p-radioButton>
       <label for="contains">Contains</label>
     </div>
-    <div class="flex align-items-center justify-content-center m-3  field-radiobutton">
+    <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode"
         inputId="end"></p-radioButton>
       <label for="end">End</label>
     </div>
   </div>
-  <div class="flex flex-row">
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+  <div class="flex flex-row w-100">
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectTypes$|async) || []" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectPartOfSpeech$ |async)|| []" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos"
       [showClear]="true" [filter]="true" filterBy="label">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+  </div>
+  <div class="flex flex-row w-100">
+    <p-dropdown class="flex  justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectLanguages$|async)||[]" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true">
     </p-dropdown>
-  </div>
-  <div class="flex flex-row">
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectAuthors$|async) || []" [(ngModel)]="selectedAuthor" placeholder="Author" [showClear]="true"
       [filter]="true" filterBy="label">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+  </div>
+  <div class="flex flex-row">
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="(selectStatuses$ | async) || []" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true">
     </p-dropdown>
-    <p-dropdown class="flex align-items-center justify-content-center m-2 " (onChange)="onChangeFilter()"
+    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
       [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true">
     </p-dropdown>
   </div>
 </p-panel>
 
-<div class="flex justify-content-end">
+<div class="flex justify-content-start">
   <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"
     pTooltip="Selection" (click)="onChangeSelectionView()"></button>
 </div>
 
-<p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
-  [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
-  [scrollable]="true" [scrollHeight]="scrollHeight +'px'">
-  <ng-template pTemplate="colgroup" let-columns>
-    <colgroup>
-      <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
-    </colgroup>
-  </ng-template>
-  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-    <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
-      <td *ngFor="let col of cols; let i = index">
-        <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-        <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
-        <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
-          [status]="rowData[col.field]"></app-icon-lock>
-        <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
-        <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
-          [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
-        <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
-          rowData[col.field] }}</span>
-        <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
-          [pTooltip]="rowData['sub']" tooltipPosition="bottom"
-          [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] }}</span>
-        <sub *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
-      </td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td [attr.colspan]="cols.length">No result</td>
-    </tr>
-  </ng-template>
-</p-treeTable>
+<div class="tableScrollHeight">
+  <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
+    [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
+    [scrollable]="true" scrollHeight="flex">
+    <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+        <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
+        <td *ngFor="let col of cols; let i = index">
+          <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
+          <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
+            [status]="rowData[col.field]"></app-icon-lock>
+          <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
+          <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
+            [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
+          <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
+            rowData[col.field] }}</span>
+          <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
+            [pTooltip]="rowData['sub']" tooltipPosition="bottom"
+            [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] }}</span>
+          <sub
+            *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="cols.length">No result</td>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+</div>
 
 <p-overlayPanel #op [dismissable]="true">
   <ng-template pTemplate>
@@ -169,8 +179,8 @@
           <div class="form-group field col-6">
             <label class="form-label">Base IRI *</label>
             <p-autoComplete #baseIRI="ngModel" name="baseIRI" [(ngModel)]="selectedBaseIRI" [suggestions]="filteredBase"
-              (completeMethod)="filterBase($event)" (onSelect)="onSelectPrefixBaseIRI($event, false)"
-              [required]="true" appendTo="body"></p-autoComplete>
+              (completeMethod)="filterBase($event)" (onSelect)="onSelectPrefixBaseIRI($event, false)" [required]="true"
+              appendTo="body"></p-autoComplete>
           </div>
           <div class="field col-6">
             <label class="form-label">Author *</label>

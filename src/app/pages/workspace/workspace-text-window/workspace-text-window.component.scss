@@ -51,7 +51,7 @@
 }
 
 .filtered {
-  filter: drop-shadow(1px 1px 1px rgba(0,0,0,.8));
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .8));
 }
 
 .highlight rect {
@@ -67,7 +67,8 @@
   stroke-width: 0.5;
 }
 
-.span path, .arc path {
+.span path,
+.arc path {
   fill: none;
 }
 
@@ -162,3 +163,50 @@ path {
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+  max-height: 80%;
+}
+
+a.expansion-btn {
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 2rem;
+  margin-top: 1rem;
+  margin-left:auto;
+  margin-right: auto;
+  text-align:center;
+}
+
+a.collapse-btn-left {
+  float: right;
+  position: relative;
+  font-weight: bold;
+  top: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+a.collapse-btn-right {
+  float: left;
+  position: relative;
+  font-weight: bold;
+  top: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.sectionExpandDiv {
+  padding: 1rem 1.3rem 1rem 1rem;
+}
+
+::ng-deep.p-treenode-label {
+  white-space: nowrap;
+}

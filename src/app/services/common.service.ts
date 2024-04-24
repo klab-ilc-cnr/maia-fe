@@ -1,13 +1,21 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, throwError } from 'rxjs';
 import { MessageConfigurationService } from './message-configuration.service';
 @Injectable()
 export class CommonService {
+  /**
+   * Constructor for CommonService
+   * @param messageService {MessageService}
+   * @param msgConfService {MessageConfigurationService}
+   * @param translateService {TranslateService} services to manage translation from ngx-translate
+   */
   constructor(
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
+    private translateService: TranslateService,
   ) { }
 
   private notify = new Subject<any>();
@@ -63,5 +71,14 @@ export class CommonService {
   public throwHttpErrorAndMessage(error: HttpErrorResponse, message: string): Observable<never> {
     this.messageService.add(this.msgConfService.generateWarningMessageConfig(message));
     return throwError(() => new Error(error.error));
+  }
+
+  /**
+   * Given a key, returns the corresponding string in the browser language or the default language
+   * @param key {string} key in i18n files
+   * @returns {string} translated string
+   */
+  public translateKey(key: string): string {
+    return this.translateService.instant(key);
   }
 }

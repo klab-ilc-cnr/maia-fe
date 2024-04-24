@@ -17,7 +17,7 @@
         </ng-template>
         <ng-template pTemplate="content">
           <form [formGroup]="form.controls.definition">
-            <div class="field col-12" *ngFor="let control of definitionFormItems">
+            <div class="field col-12" *ngFor="let control of definitionFormItems; let i=index; trackBy:trackByIndexFn">
               <label [for]="control.propertyID">{{control.propertyID}}</label>
               <div class="d-flex justify-content-between" style="align-items: center;">
                 <textarea pInputTextarea [formControlName]="control.propertyID" [name]="control.propertyID"

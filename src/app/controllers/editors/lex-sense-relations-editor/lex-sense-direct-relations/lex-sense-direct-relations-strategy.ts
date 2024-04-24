@@ -1,11 +1,11 @@
-import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
 import { Observable, map, of } from 'rxjs';
-import { LexiconService } from 'src/app/services/lexicon.service';
-import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
-import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntityRelationsResponseModel } from 'src/app/models/lexicon/lexical-sense-response.model';
+import { LINGUISTIC_RELATION_TYPE } from 'src/app/models/lexicon/lexicon-updater';
+import { LexiconService } from 'src/app/services/lexicon.service';
+import { BaseLexEntityRelationsStrategy, SuggestionEntry } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations-strategy';
 import { FormItem } from '../../lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component';
 
 export class LexSenseDirectRelationsStrategy implements BaseLexEntityRelationsStrategy {
@@ -13,23 +13,25 @@ export class LexSenseDirectRelationsStrategy implements BaseLexEntityRelationsSt
   constructor(
     private lexiconService: LexiconService,
     private lexEntityId: string,
-  ) {}
+  ) { }
 
-  public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string] : string }): FormItem[] {
-    const formItems: FormItem[] = [];
+  public populateRelationships(model: LexicalEntityRelationsResponseModel, relationshipLabelByURI: { [id: string]: string }): FormItem[] {
+    let formItems: FormItem[] = [];
     for (const [itemID, item] of model.directRelations.entries()) {
-      const {link, entity, label} = item;
+      const { link, entity, label } = item;
       if (!link) continue;
-      const newItem : FormItem = {
+      const newItem: FormItem = {
         relationshipLabel: relationshipLabelByURI[link],
         relationshipURI: link,
         destinationURI: entity || '',
         destinationLabel: label || '',
-        itemID
+        itemID,
+        inferred: item.inferred
       };
 
       formItems.unshift(newItem);
     }
+    formItems = formItems.sort((a, b) => a.inferred === b.inferred ? 0 : (a.inferred! < b.inferred! ? -1 : 1));
     return formItems;
   }
 

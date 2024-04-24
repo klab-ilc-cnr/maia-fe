@@ -1,17 +1,15 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, take, takeUntil } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
-import { LayerService } from 'src/app/services/layer.service';
-import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
-import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
@@ -21,6 +19,7 @@ import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
@@ -87,7 +86,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @private
    * Nome della proprietà del localstorage che memorizza i tile
    */
-  private storageName = "storedTiles";
+  private storageName = `${this.storageService.tokenPrefix}_storedTiles`;
 
   /**Sottoscrizione per tracciare emissioni da Common Service */
   // private subscription!: Subscription;
@@ -149,16 +148,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeContainerHeight()
   }
 
+  @HostListener("document:jspaneldragstop", ["$event"]) checkIsNotOverflowingContainer(event: any) {
+    // let overlaps = event.panel.overlaps(this.workspaceContainer, "paddingbox", event);
+    if (event.panel.offsetTop < 0) {
+      event.panel.reposition({
+        my: 'left-top',
+        at: 'left-top',
+        of: '#panelsContainer'
+      });
+    }
+  }
+
   /**
    * Costruttore per WorkspaceComponent
    * @param router {Router} servizi per la navigazione fra le viste
    * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
    * @param loaderService {LoaderService} servizi per la gestione del segnale di caricamento
-   * @param layerService {LayerService} servizi relativi ai layer
-   * @param userService {UserService} servizi relativi agli utenti //TODO verificare se possiamo rimuovere
    * @param cd {ChangeDetectorRef} fornisce funzionalità di verifica di modifiche per la visualizzazione //TODO verificare se possiamo rimuovere
    * @param vcr {ViewContainerRef} contenitore dove un o più view possono essere attaccate a un componente
-   * @param messageService {MessageService} servizi per la gestione dei messaggi
    * @param workspaceService {WorkspaceService} servizi relativi ai workspace
    * @param renderer {Renderer2} classe che può essere estesa per implementare renderizzazioni personalizzate
    * @param commonService {CommonService} servizi comuni
@@ -167,13 +174,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private loaderService: LoaderService,
-    private layerService: LayerService,
-    private userService: UserService,
     private vcr: ViewContainerRef,
-    private messageService: MessageService,
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private storageService: StorageService
+  ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
@@ -740,15 +746,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const openTiles = jsPanel.extensions.getTileMap();
     this.loaderService.show();
-    this.workspaceService
-      .saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles)
-      .subscribe({
-        next: () => {
-          this.workSaved = true;
-          this.loaderService.hide();
-          this.messageService.add({ severity: 'success', summary: 'Successo', detail: 'Workspace salvato', life: 3000 });
-        }
-      });
+    this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.loaderService.hide();
+        return this.commonService.throwHttpErrorAndMessage(error, 'Error saving workspace status');
+      })
+    ).subscribe(() => {
+      this.workSaved = true;
+      this.loaderService.hide();
+    });
 
     // close panels, here we simply close all panels in the document
     // for (const panel of jsPanel.getPanels()) {
@@ -811,7 +818,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       content: element,
       headerTitle: 'Corpus Explorer',
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',
@@ -893,10 +900,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       id: panelId,
       container: this.workspaceContainer,
-      headerTitle: 'text - ' + title.toLowerCase(),
+      headerTitle: 'Text - ' + title.toLowerCase(),
       content: textWindowComponent,
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',
@@ -936,10 +943,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         componentRef.instance.updateComponentSize(panelH);
       },
       resizeit: {
+        minWidth: 600,
         resize: (panel: any, paneldata: any, event: any) => {
-          console.log('hi')
           componentRef.instance.updateHeight(paneldata.height)
-          console.log(panel, paneldata, event)
         },
         stop: (panel: any, paneldata: any, event: any) => {
           componentRef.instance.updateTextEditorSize();
@@ -966,7 +972,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       content: element,
       headerTitle: 'Lexicon Explorer',
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',
@@ -977,6 +984,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       panelSize: {
         width: () => window.innerWidth * 0.2,
         height: '60vh'
+      },
+      resizeit: {
+        minWidth: 250
       },
       headerControls: {
         add: {
@@ -1041,9 +1051,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconEditTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Lexicon management - ' + lexicalEntryTree?.data?.label,
+      headerTitle: 'Lexicon Editor - ' + lexicalEntryTree?.data?.label,
       maximizedMargin: 5,
-      dragit: { snap: true },
+      dragit: { snap: false },
       syncMargins: true,
       theme: {
         bgPanel: '#a8c0ce',

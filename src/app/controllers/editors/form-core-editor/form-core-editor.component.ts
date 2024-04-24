@@ -132,7 +132,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       debounceTime(500),
       distinctUntilChanged(),
-    ).subscribe((resp: {[key: string]: any}) => {
+    ).subscribe((resp: { [key: string]: any }) => {
       for (const key in resp) {
         const currentPropertyId = this.labelFormItems.findIndex(e => e.propertyID === key);
         if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== resp[key]) {
@@ -184,7 +184,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    */
   private movePropertyToForm(propertyID: string, propertyValue: string) {
     const formControl = new FormControl<string>(propertyValue, Validators.required);
-    const property = <PropertyElement> { propertyID, propertyValue };
+    const property = <PropertyElement>{ propertyID, propertyValue };
     this.label.addControl(propertyID, formControl);
     this.labelFormItems.push(property);
     this.representationItems = this.representationItems.filter(i => i.label !== propertyID);
@@ -199,8 +199,8 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.labelFormItems.splice(index, 1);
     this.label.removeControl(propertyID);
     this.representationItems.push({
-        label: propertyID,
-        command: () => this.movePropertyToForm(propertyID, ''),
+      label: propertyID,
+      command: () => this.movePropertyToForm(propertyID, ''),
     });
   }
 
@@ -278,6 +278,16 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
+ * TrackBy function based on the index of the element in the array, added to avoid losing the focus
+ * @param index {number} index of the element in the ngFor
+ * @param item {any} element
+ * @returns {number}
+ */
+  trackByIndexFn(index: number, item: any) {
+    return index;
+  }
+
+  /**
    * @private
    * Metodo che gestisce l'observable di update
    * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
@@ -287,20 +297,22 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        const msg = this.msgConfService.generateSuccessMessageConfig(`"${relation}" update failed`);
+        const msg = this.msgConfService.generateWarningMessageConfig(`"${relation}" update failed`);
         this.messageService.add(msg);
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(resp => {
       this.formEntry = { ...this.formEntry, lastUpdate: resp };
-      const msg = this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success`);
-      this.messageService.add(msg);
+      // const msg = this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success`);
+      // this.messageService.add(msg);
 
       if (relation === 'writtenRep') {
         this.commonService.notifyOther({
-          option: 'lexicon_edit_label',
+          option: 'lexicon_edit_tree_data',
+          lexicalEntry: this.formEntry.lexicalEntry,
           uri: this.formEntry.form,
-          newValue,
+          field: 'label',
+          newValue
         });
       }
     });

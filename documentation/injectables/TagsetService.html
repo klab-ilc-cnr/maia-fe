@@ -66,7 +66,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Classe dei servizi relativi ai tagset</p>
+                <p>Tagset-related services</p>
 
             </p>
 
@@ -86,10 +86,6 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#tagsetUrl" >tagsetUrl</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
                                 <a href="#textoUrl" >textoUrl</a>
                             </li>
                         </ul>
@@ -106,19 +102,11 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#create" >create</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
                                 <a href="#createTagset" >createTagset</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#createTagsetItem" >createTagsetItem</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#delete" >delete</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -139,22 +127,6 @@
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#removeTagsetItemById" >removeTagsetItemById</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#retrieve" >retrieve</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#retrieveById" >retrieveById</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#retrieveCanBeDeleted" >retrieveCanBeDeleted</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#update" >update</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -187,13 +159,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/services/tagset.service.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/tagset.service.ts:14</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Costruttore per TagsetService</p>
+                            <div class="io-description"><p>Constructor for TagsetService</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -219,7 +191,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>effettua le chiamate HTTP</p>
+                                                                <p>Performs HTTP requests</p>
 
                                                         </td>
                                                 </tr>
@@ -237,85 +209,6 @@
     <h3 id="methods">
         Methods
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="create"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>create</b></span>
-                        <a href="#create"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(item: <a href="../classes/Tagset.html" target="_self">Tagset</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/app/services/tagset.service.ts:63</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>POST che richiede la creazione di un nuovo tagset</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>item</td>
-                                    <td>
-                                                <code><a href="../classes/Tagset.html" target="_self" >Tagset</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>tagset da inserire</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable del nuovo tagset</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -338,14 +231,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="100"
-                            class="link-to-prism">src/app/services/tagset.service.ts:100</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/app/services/tagset.service.ts:29</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>POST to add a new tagset</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -356,6 +251,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -370,6 +266,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>new tagset to be added</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -381,7 +281,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the new tagset</p>
+
                     </div>
                 </td>
             </tr>
@@ -409,86 +310,15 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="107"
-                            class="link-to-prism">src/app/services/tagset.service.ts:107</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/app/services/tagset.service.ts:40</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>newTagsetItem</td>
-                                    <td>
-                                                <code><a href="../classes/TTagsetItem.html" target="_self" >TTagsetItem</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;TTagsetItem&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="delete"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>delete</b></span>
-                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="86"
-                            class="link-to-prism">src/app/services/tagset.service.ts:86</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>DELETE che richiede la rimozione di un tagset</p>
+                    <div class="io-description"><p>POST to add a new tagset item (or value)</p>
 </div>
 
                     <div class="io-description">
@@ -505,9 +335,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>id</td>
+                                    <td>newTagsetItem</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                <code><a href="../classes/TTagsetItem.html" target="_self" >TTagsetItem</a></code>
                                     </td>
 
                                     <td>
@@ -516,7 +346,7 @@
 
 
                                     <td>
-                                        <p>identificativo numerico del tagset</p>
+                                        <p>new tagset item to be added</p>
 
                                     </td>
                                 </tr>
@@ -526,11 +356,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;boolean&gt;</code>
+                        <b>Returns : </b>    <code>Observable&lt;TTagsetItem&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable dell&#39;esito della rimozione</p>
+                        <p>new tagset item</p>
 
                     </div>
                 </td>
@@ -559,14 +389,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="114"
-                            class="link-to-prism">src/app/services/tagset.service.ts:114</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/app/services/tagset.service.ts:51</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET to retrieve a tagset by ID</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -577,6 +409,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -591,6 +424,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>tagset identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -602,7 +439,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the tagset</p>
+
                     </div>
                 </td>
             </tr>
@@ -630,14 +468,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="118"
-                            class="link-to-prism">src/app/services/tagset.service.ts:118</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/app/services/tagset.service.ts:59</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET to retrieve the item of the tagset by tagset ID</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -648,6 +488,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -662,6 +503,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>tagset identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -673,7 +518,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the item list for tagset</p>
+
                     </div>
                 </td>
             </tr>
@@ -701,17 +547,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="122"
-                            class="link-to-prism">src/app/services/tagset.service.ts:122</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">src/app/services/tagset.service.ts:66</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>GET to retrieve all the tagsets</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>Observable&lt;TTagset[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>observable of the tagset list</p>
 
                     </div>
                 </td>
@@ -740,14 +594,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="126"
-                            class="link-to-prism">src/app/services/tagset.service.ts:126</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="74"
+                            class="link-to-prism">src/app/services/tagset.service.ts:74</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Delete tagset by ID</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -758,6 +614,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -772,6 +629,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>tagset identifier</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -779,11 +640,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>Observable&lt;TTagset&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the removed tagset</p>
+
                     </div>
                 </td>
             </tr>
@@ -811,14 +673,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="130"
-                            class="link-to-prism">src/app/services/tagset.service.ts:130</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/app/services/tagset.service.ts:82</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Delete an item from tagset using tagset ID</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -829,6 +693,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -843,129 +708,8 @@
                                     </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="retrieve"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>retrieve</b></span>
-                        <a href="#retrieve"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieve()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/app/services/tagset.service.ts:35</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera l&#39;elenco completo dei tagset</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Tagset.html" target="_self" >Observable&lt;Tagset[]&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable della lista di tagset</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="retrieveById"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>retrieveById</b></span>
-                        <a href="#retrieveById"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieveById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/app/services/tagset.service.ts:49</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>GET che recupera un dato tagset attraverso l&#39;id</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>identificativo numerico del tagset</p>
+                                        <p>tagset item identifier</p>
 
                                     </td>
                                 </tr>
@@ -975,169 +719,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Tagset.html" target="_self" >Observable&lt;Tagset&gt;</a></code>
+                        <b>Returns : </b>    <code>Observable&lt;TTagsetItem&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>observable del tagset recuperato</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="retrieveCanBeDeleted"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>retrieveCanBeDeleted</b></span>
-                        <a href="#retrieveCanBeDeleted"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retrieveCanBeDeleted(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="95"
-                            class="link-to-prism">src/app/services/tagset.service.ts:95</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>GET che richiede se un tagset è cancellabile</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>identificativo numerico del tagset</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Observable&lt;boolean&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable che definisce se un tagset può essere cancellato o meno</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="update"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>update</b></span>
-                        <a href="#update"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(item: <a href="../classes/Tagset.html" target="_self">Tagset</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="77"
-                            class="link-to-prism">src/app/services/tagset.service.ts:77</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>PUT che aggiorna i dati del tagset</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>item</td>
-                                    <td>
-                                                <code><a href="../classes/Tagset.html" target="_self" >Tagset</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>tagset modificato</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Tagset.html" target="_self" >Observable&lt;Tagset&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>observable del tagset modificato</p>
+                        <p>observable of the item removed from tagset</p>
 
                     </div>
                 </td>
@@ -1166,14 +752,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="134"
-                            class="link-to-prism">src/app/services/tagset.service.ts:134</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">src/app/services/tagset.service.ts:90</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>POST to update tagset data</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1184,6 +772,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1198,6 +787,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>updated tagset data</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1209,7 +802,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>observable of the updated tagset</p>
+
                     </div>
                 </td>
             </tr>
@@ -1237,14 +831,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="141"
-                            class="link-to-prism">src/app/services/tagset.service.ts:141</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/app/services/tagset.service.ts:101</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>POST to update an item of a tagset</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -1255,6 +851,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1269,6 +866,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>updated item data</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1280,7 +881,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>Observable of the updated item</p>
+
                     </div>
                 </td>
             </tr>
@@ -1292,39 +894,6 @@
     <h3 id="inputs">
         Properties
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="tagsetUrl"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>tagsetUrl</b></span>
-                        <a href="#tagsetUrl"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/services/tagset.service.ts:19</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Url per le chiamate relative ai tagset</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1345,10 +914,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/services/tagset.service.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/tagset.service.ts:14</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Url for texto-related requests</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -1364,147 +939,106 @@ import { Observable } from &#x27;rxjs&#x27;;
 import { environment } from &#x27;src/environments/environment&#x27;;
 import { TTagset } from &#x27;../models/texto/t-tagset&#x27;;
 import { TTagsetItem } from &#x27;../models/texto/t-tagset-item&#x27;;
-import { Tagset } from &#x27;./../models/tagset/tagset&#x27;;
 
-/**Classe dei servizi relativi ai tagset */
+/**Tagset-related services */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
 export class TagsetService {
-
-  /**
-   * @private
-   * Url per le chiamate relative ai tagset
-   */
-  private tagsetUrl: string;
+  /**Url for texto-related requests */
   private textoUrl: string;
 
   /**
-   * Costruttore per TagsetService
-   * @param http {HttpClient} effettua le chiamate HTTP
+   * Constructor for TagsetService
+   * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
-    this.tagsetUrl &#x3D; environment.tagsetUrl; //recupero l&#x27;url dall&#x27;environment
-    this.textoUrl &#x3D; environment.textoUrl;
+    this.textoUrl &#x3D; environment.maiaBeTextoUrl;
   }
 
   /**
-   * GET che recupera l&#x27;elenco completo dei tagset
-   * @returns {Observable&lt;Tagset[]&gt;} observable della lista di tagset
+   * POST to add a new tagset
+   * @param newTagset {TTagset} new tagset to be added
+   * @returns {Observable&lt;TTagset&gt;} observable of the new tagset
    */
-  public retrieve(): Observable&lt;Tagset[]&gt; {
-    // MOCK
-    // return this.http.get&lt;Tagset[]&gt;(&#x60;assets/mock/tagsets.json&#x60;);
-    // FINE MOCK
-
-    /* La seguente riga è da DECOMMENTARE dopo aver demockato */
-    return this.http.get&lt;Tagset[]&gt;(this.tagsetUrl);
-  }
-
-  /**
-   * GET che recupera un dato tagset attraverso l&#x27;id
-   * @param id {number} identificativo numerico del tagset
-   * @returns {Observable&lt;Tagset&gt;} observable del tagset recuperato
-   */
-  public retrieveById(id: number): Observable&lt;Tagset&gt; {
-    // MOCK
-    //return this.http.get&lt;Tagset&gt;(&#x60;assets/mock/tagsets/tagset${id}.json&#x60;);
-    // FINE MOCK
-
-    /* La seguente riga è da DECOMMENTARE dopo aver demockato */
-    return this.http.get&lt;Tagset&gt;(&#x60;${this.tagsetUrl}/${id}&#x60;);
-  }
-
-  /**
-   * POST che richiede la creazione di un nuovo tagset
-   * @param item {Tagset} tagset da inserire
-   * @returns {Observable&lt;Tagset&gt;} observable del nuovo tagset
-   */
-  public create(item: Tagset) {
-    // MOCK
-    //return this.http.post&lt;Tagset&gt;(&#x27;assets/mock/tagsets.json&#x27;, item);
-    // FINE MOCK
-
-    /* La seguente riga è da DECOMMENTARE dopo aver demockato */
-    return this.http.post&lt;Tagset&gt;(&#x60;${this.tagsetUrl}&#x60;, item);
-  }
-
-  /**
-   * PUT che aggiorna i dati del tagset
-   * @param item {Tagset} tagset modificato
-   * @returns {Observable&lt;Tagset&gt;} observable del tagset modificato
-   */
-  public update(item: Tagset): Observable&lt;Tagset&gt; {
-    return this.http.put&lt;Tagset&gt;(&#x60;${this.tagsetUrl}&#x60;, item);
-  }
-
-  /**
-   * DELETE che richiede la rimozione di un tagset
-   * @param id {number} identificativo numerico del tagset
-   * @returns {Observable&lt;boolean&gt;} observable dell&#x27;esito della rimozione
-   */
-  public delete(id: number): Observable&lt;boolean&gt; {
-    return this.http.delete&lt;boolean&gt;(&#x60;${this.tagsetUrl}/${id}&#x60;);
-  }
-
-  /**
-   * GET che richiede se un tagset è cancellabile
-   * @param id {number} identificativo numerico del tagset
-   * @returns {Observable&lt;boolean&gt;} observable che definisce se un tagset può essere cancellato o meno
-   */
-  public retrieveCanBeDeleted(id: number): Observable&lt;boolean&gt; {
-    return this.http.get&lt;boolean&gt;(&#x60;${this.tagsetUrl}/canbedeleted/${id}&#x60;);
-  }
-
-  //#region TEXTO
   public createTagset(newTagset: TTagset): Observable&lt;TTagset&gt; {
     return this.http.post&lt;TTagset&gt;(
-      &#x60;${this.textoUrl}/texto/tagset/create&#x60;,
+      &#x60;${this.textoUrl}/tagset/create&#x60;,
       newTagset
     );
   }
-
+  /**
+   * POST to add a new tagset item (or value)
+   * @param newTagsetItem {TTagsetItem} new tagset item to be added
+   * @returns {Observable&lt;TTagsetItem&gt;} new tagset item
+   */
   public createTagsetItem(newTagsetItem: TTagsetItem): Observable&lt;TTagsetItem&gt; {
     return this.http.post&lt;TTagsetItem&gt;(
-      &#x60;${this.textoUrl}/texto/tagsetItem/create&#x60;,
+      &#x60;${this.textoUrl}/tagsetItem/create&#x60;,
       newTagsetItem
     );
   }
-
+  /**
+   * GET to retrieve a tagset by ID
+   * @param tagsetId {number} tagset identifier
+   * @returns {Observable&lt;TTagset&gt;} observable of the tagset
+   */
   public getTagsetById(tagsetId: number): Observable&lt;TTagset&gt; {
-    return this.http.get&lt;TTagset&gt;(&#x60;${this.textoUrl}/texto/tagset/${tagsetId}&#x60;);
+    return this.http.get&lt;TTagset&gt;(&#x60;${this.textoUrl}/tagset/${tagsetId}&#x60;);
   }
-
+  /**
+   * GET to retrieve the item of the tagset by tagset ID
+   * @param tagsetId {number} tagset identifier
+   * @returns {Observable&lt;TTagsetItem[]&gt;} observable of the item list for tagset
+   */
   public getTagsetItemsById(tagsetId: number): Observable&lt;TTagsetItem[]&gt; {
-    return this.http.get&lt;TTagsetItem[]&gt;(&#x60;${this.textoUrl}/texto/tagset/${tagsetId}/items&#x60;);
+    return this.http.get&lt;TTagsetItem[]&gt;(&#x60;${this.textoUrl}/tagset/${tagsetId}/items&#x60;);
   }
-
+  /**
+   * GET to retrieve all the tagsets
+   * @returns {Observable&lt;TTagset&gt;} observable of the tagset list
+   */
   public getTagsetsList(): Observable&lt;TTagset[]&gt; {
-    return this.http.get&lt;TTagset[]&gt;(&#x60;${this.textoUrl}/texto/tagset/list&#x60;);
+    return this.http.get&lt;TTagset[]&gt;(&#x60;${this.textoUrl}/tagset/list&#x60;);
   }
-
-  public removeTagsetById(tagsetId: number) {
-    return this.http.get&lt;TTagset&gt;(&#x60;${this.textoUrl}/texto/tagset/${tagsetId}/remove&#x60;);
+  /**
+   * Delete tagset by ID
+   * @param tagsetId {number} tagset identifier
+   * @returns {Observable&lt;TTagset&gt;} observable of the removed tagset
+   */
+  public removeTagsetById(tagsetId: number): Observable&lt;TTagset&gt; { //TODO CHECK RETURN TYPE
+    return this.http.delete&lt;TTagset&gt;(&#x60;${this.textoUrl}/tagset/${tagsetId}/remove&#x60;);
   }
-
-  public removeTagsetItemById(tagsetItemId: number) {
-    return this.http.get&lt;TTagsetItem&gt;(&#x60;${this.textoUrl}/texto/tagsetItem/${tagsetItemId}/remove&#x60;);
+  /**
+   * Delete an item from tagset using tagset ID
+   * @param tagsetItemId {number} tagset item identifier
+   * @returns {Observable&lt;TTagsetItem&gt;} observable of the item removed from tagset
+   */
+  public removeTagsetItemById(tagsetItemId: number): Observable&lt;TTagsetItem&gt; { //TODO CHECK RETURN TYPE
+    return this.http.delete&lt;TTagsetItem&gt;(&#x60;${this.textoUrl}/tagsetItem/${tagsetItemId}/remove&#x60;);
   }
-
+  /**
+   * POST to update tagset data
+   * @param updatedTagset {TTagset} updated tagset data
+   * @returns {Observable&lt;TTagset&gt;} observable of the updated tagset
+   */
   public updateTagset(updatedTagset: TTagset): Observable&lt;TTagset&gt; {
     return this.http.post&lt;TTagset&gt;(
-      &#x60;${this.textoUrl}/texto/tagset/${updatedTagset.id}/update&#x60;,
+      &#x60;${this.textoUrl}/tagset/update&#x60;,
       updatedTagset,
     );
   }
-
+  /**
+   * POST to update an item of a tagset
+   * @param updatedTagsetItem {TTagsetItem} updated item data
+   * @returns {Observable&lt;TTagsetItem&gt;} Observable of the updated item
+   */
   public updateTagsetItem(updatedTagsetItem: TTagsetItem): Observable&lt;TTagsetItem&gt; {
     return this.http.post&lt;TTagsetItem&gt;(
-      &#x60;${this.textoUrl}/texto/tagsetItem/${updatedTagsetItem.id}/update&#x60;,
+      &#x60;${this.textoUrl}/tagsetItem/update&#x60;,
       updatedTagsetItem,
     );
   }
-  //#endregion
 }
 </code></pre>
     </div>

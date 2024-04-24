@@ -65,7 +65,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Direttiva per la validazione di un uri</p>
+                <p>Directive for the validation of a uri</p>
 
             </p>
 
@@ -169,7 +169,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metodo dell&#39;interfaccia Validator che verifica che un uri sia correttamente formato</p>
+                    <div class="io-description"><p>Validator interface method that verifies that a uri is correctly formed</p>
 </div>
 
                     <div class="io-description">
@@ -197,7 +197,7 @@
 
 
                                     <td>
-                                        <p>campo di input da validare</p>
+                                        <p>control to validate</p>
 
                                     </td>
                                 </tr>
@@ -211,7 +211,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>eventuale errore di validazione</p>
+                        <p>any validation errors</p>
 
                     </div>
                 </td>
@@ -226,12 +226,12 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive } from &#x27;@angular/core&#x27;;
-import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors } from &#x27;@angular/forms&#x27;;
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn } from &#x27;@angular/forms&#x27;;
 
 /**
- * Funzione di validazione che controlla che l&#x27;uri sia correttamente formato
- * @param control {AbstractControl} campo di input da validare
- * @returns {ValidatorFn} restituisce eventuali errori di validazione
+ * Validation function that checks that the uri is correctly formed
+ * @param control {AbstractControl} control to validate
+ * @returns {ValidatorFn} returns any validation errors
  */
 export const uriValidator: ValidatorFn &#x3D; (control: AbstractControl): ValidationErrors | null &#x3D;&gt; {
     if (!control || !control.value) { return null; }
@@ -243,7 +243,7 @@ export const uriValidator: ValidatorFn &#x3D; (control: AbstractControl): Valida
     return error;
 }
 
-/**Direttiva per la validazione di un uri */
+/**Directive for the validation of a uri */
 @Directive({
     selector: &#x27;[appUriValidator]&#x27;,
     providers: [
@@ -252,9 +252,9 @@ export const uriValidator: ValidatorFn &#x3D; (control: AbstractControl): Valida
 })
 export class UriValidator implements Validator {
     /**
-     * Metodo dell&#x27;interfaccia Validator che verifica che un uri sia correttamente formato
-     * @param control {AbstractControl} campo di input da validare
-     * @returns {ValidationErrors|null} eventuale errore di validazione
+     * Validator interface method that verifies that a uri is correctly formed
+     * @param control {AbstractControl} control to validate
+     * @returns {ValidationErrors|null} any validation errors
      */
     public validate(control: AbstractControl): ValidationErrors | null {
         return uriValidator(control)

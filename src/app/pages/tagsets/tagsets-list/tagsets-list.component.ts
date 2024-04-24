@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { TTagset } from 'src/app/models/texto/t-tagset';
+import { CommonService } from 'src/app/services/common.service';
 import { TagsetStateService } from 'src/app/services/tagset-state.service';
 import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
-/**Componente della lista dei tagset */
+/**Tagset list component */
 @Component({
   selector: 'app-tagsets-list',
   templateUrl: './tagsets-list.component.html',
@@ -16,40 +17,53 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   providers: [TagsetStateService]
 })
 export class TagsetsListComponent implements OnDestroy {
+  /**Subject for subscribe management */
   private readonly unsubscribe$ = new Subject();
+  /**Defines whether the creation/insertion modal of a tagset is visible */
   visibleEditNewTagset = false;
+  /**Title for the creation/insertion modal */
   modalTitle = '';
+  /**Observable of the tagsets list */
   tagsets$ = this.tagsetState.tagsets$;
+  /**List of existing tagsets names */
   tagsetsNames: string[] = [];
+  /**Observable of the total number of tagsets */
   tagsetTotal$ = this.tagsetState.tagsetsTotal$;
+  /**Tagset description form */
   tagsetForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     description: new FormControl<string>(''),
   });
+  /**Getter for the form name field */
   get name() { return this.tagsetForm.controls.name; }
+  /**Getter for the form description field */
   get description() { return this.tagsetForm.controls.description; }
+  /**Current tagset to be edited */
   tagsetOnEdit: TTagset | undefined;
 
   /**
-   * Esegue la rimozione di un tagset
-   * @param id {number} identificativo numerico del tagset
+   * Performs removal of a tagset
+   * @param id {number} tagset numeric identifier
    */
   private delete = (id: number): void => {
     this.tagsetState.removeTagset.next(id);
   }
 
-  /**Riferimento al popup di cancellazione elemento */
+  /**Reference to item deletion popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**
-   * Costruttore per TagsetsListComponent
-   * @param activeRoute {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
-   * @param router {Router} servizi per la navigazione fra le viste
+   * Costructor for TagsetsListComponent
+   * @param activeRoute {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
+   * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
+   * @param tagsetState {TagsetStateService} service that manages the general state of the tagsets
+   * @param commonService {CommonService} services related to shared functionality 
    */
   constructor(
     private activeRoute: ActivatedRoute,
     private router: Router,
     private tagsetState: TagsetStateService,
+    private commonService: CommonService,
   ) {
     this.tagsets$.pipe(
       takeUntil(this.unsubscribe$),
@@ -59,25 +73,27 @@ export class TagsetsListComponent implements OnDestroy {
     });
   }
 
+  /**Method of the OnDestroy interface, used to emit the unsubscribe subject */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
   }
 
   /**
-   * Metodo che visualizza il popup di conferma cancellazione ed eventualmente richiama proprietà di cancellazione
-   * @param tagset {TTagset} tagset selezionato
+   * Method that displays the delete confirmation popup and possibly invokes delete properties
+   * @param tagset {TTagset} selected tagset
    */
   onDelete(tagset: TTagset): void {
-    const confirmMsg = `You are about to delete the tagset "${tagset.name}"`;
+    const tagsetName = tagset.name ?? '';
+    const confirmMsg = this.commonService.translateKey('TAGSET_MANAGER.aboutDeleteTagset').replace('${tagsetName}', tagsetName);
 
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.delete(tagset.id!), tagset.id, tagset.name);
   }
 
   /**
-   * Metodo che esegue la navigazione di un tagset per la sua modifica
-   * @param tagset {Tagset} tagset selezionato
+   * Method that browses a tagset for its modification
+   * @param tagset {TTagset} selected tagset
    */
   onEdit(tagset: TTagset): void {
     this.tagsetForm.reset();
@@ -85,23 +101,31 @@ export class TagsetsListComponent implements OnDestroy {
     this.name.setValue(tagset.name || '');
     this.name.setValidators(nameDuplicateValidator(this.tagsetsNames));
     this.description.setValue(tagset.description || '');
-    this.modalTitle = tagset.name || 'Edit tagset';
+    this.modalTitle = tagset.name || this.commonService.translateKey('TAGSET_MANAGER.editTagset');
     this.visibleEditNewTagset = true;
   }
 
+  /**
+   * Method that performs navigation on the detail of a tagset to edit its items
+   * @param tagset {TTagset} selected tagset
+   */
   onEditTagsetItems(tagset: TTagset) {
     this.router.navigate([tagset.id], { relativeTo: this.activeRoute });
   }
 
-  /**Metodo che esegue la navigazione su un "nuovo" tagset */
+  /**Method that performs navigation on a "new" tagset */
   onNew(): void {
     this.tagsetOnEdit = undefined;
     this.tagsetForm.reset();
-    this.modalTitle = 'New tagset';
+    this.modalTitle = this.commonService.translateKey('TAGSET_MANAGER.newTagset');
     this.name.setValidators(nameDuplicateValidator(this.tagsetsNames));
     this.visibleEditNewTagset = true;
   }
 
+  /**
+   * Method that submits form data in the popup for creating or editing a tagset
+   * @returns {void}
+   */
   onSubmitTagsetModal() {
     if (this.tagsetForm.invalid || this.name.value === '') return;
     if (this.tagsetOnEdit !== undefined) {

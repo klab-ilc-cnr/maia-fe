@@ -65,7 +65,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/controllers/editors/semantic-rel-editor/base-relations/base-relations.component.ts</code>
+            <code>src/app/controllers/editors/lex-entity-relations/base-lex-entity-relations/base-lex-entity-relations.component.ts</code>
         </p>
 
 
@@ -93,6 +93,13 @@
                                         <a href="#destinationURI" 
 >
                                             destinationURI
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#inferred" 
+>
+                                            inferred
                                         </a>
                                 </li>
                                 <li>
@@ -191,6 +198,44 @@
                                         </td>
                                     </tr>
 
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="inferred"></a>
+                                        <span class="name "><b>inferred</b>
+                                            <a href="#inferred">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>inferred:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -339,12 +384,16 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnChanges, SimpleChanges } from &#x27;@angular/core&#x27;;
-import { SenseCore  } from &#x27;src/app/models/lexicon/lexical-entry.model&#x27;;
-import { MenuItem } from &#x27;primeng/api&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { Component, Input, OnChanges, SimpleChanges } from &#x27;@angular/core&#x27;;
 import { FormGroup } from &#x27;@angular/forms&#x27;;
-import { LexicalSenseResponseModel } from &#x27;src/app/models/lexicon/lexical-sense-response.model&#x27;;
+import { MenuItem, MessageService } from &#x27;primeng/api&#x27;;
+import { take } from &#x27;rxjs&#x27;;
+import { LexicalEntityRelationsResponseModel } from &#x27;src/app/models/lexicon/lexical-sense-response.model&#x27;;
 import { LinguisticRelationModel } from &#x27;src/app/models/lexicon/linguistic-relation.model&#x27;;
+import { LexiconService } from &#x27;src/app/services/lexicon.service&#x27;;
+import { MessageConfigurationService } from &#x27;src/app/services/message-configuration.service&#x27;;
+import { BaseLexEntityRelationsStrategy } from &#x27;./base-lex-entity-relations-strategy&#x27;;
 
 export interface FormItem {
   relationshipLabel: string,
@@ -352,38 +401,50 @@ export interface FormItem {
   destinationLabel: string,
   destinationURI: string,
   itemID: number,
+  inferred?: boolean,
   properties?: LinguisticRelationModel[],
 }
 
-@Component({template: &#x27;&#x27;})
-export abstract class BaseRelationsComponent implements OnChanges {
+@Component({ template: &#x27;&#x27; })
+export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
-  @Input() senseEntry!: SenseCore;
-  @Input() model!: LexicalSenseResponseModel;
+  @Input() lexEntityId!: string;
+  @Input() model!: LexicalEntityRelationsResponseModel;
   @Input() menuItems: MenuItem[] &#x3D; [];
 
+  protected strategy!: BaseLexEntityRelationsStrategy;
   formItems: FormItem[] &#x3D; [];
-  relationshipLabelByURI: { [id: string] : string } &#x3D; {};
+  relationshipLabelByURI: { [id: string]: string } &#x3D; {};
 
   /**Form per la modifica dei valori del senso */
   form &#x3D; new FormGroup({});
 
   uniqueID &#x3D; 0;
 
-  abstract populateRelationships(model: LexicalSenseResponseModel): FormItem[];
+  public constructor(
+    protected messageService: MessageService,
+    protected msgConfService: MessageConfigurationService,
+    protected lexiconService: LexiconService,
+  ) { }
+
+  protected showHttpError(err: HttpErrorResponse): void {
+    console.error(err);
+    const message &#x3D; this.msgConfService.generateErrorMessageConfig(&#x60;${err.name}: ${err.error.message}&#x60;);
+    this.messageService.add(message);
+  }
 
   private assignMenuTree(root: MenuItem): MenuItem {
     const label &#x3D; root.label || &#x27;&#x27;;
     const uri &#x3D; root.id || &#x27;&#x27;;
 
-    const dupItem : MenuItem &#x3D; {
+    const dupItem: MenuItem &#x3D; {
       ...root,
-      items: root.items !&#x3D;&#x3D; undefined? [] : undefined,
+      items: root.items !&#x3D;&#x3D; undefined ? [] : undefined,
       command: () &#x3D;&gt; this.onMenuClickInsertFormItem(label, uri),
     };
 
     for (const menuItem of Object.values(root.items || [])) {
-      const subItem : MenuItem &#x3D; this.assignMenuTree(menuItem);
+      const subItem: MenuItem &#x3D; this.assignMenuTree(menuItem);
       dupItem.items?.push(subItem);
     }
 
@@ -395,23 +456,33 @@ export abstract class BaseRelationsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes[&#x27;menuItems&#x27;]) {
       const items &#x3D; changes[&#x27;menuItems&#x27;].currentValue;
-      this.menuItems &#x3D; this.assignMenuTree({items}).items || [];
+      this.menuItems &#x3D; this.assignMenuTree({ items }).items || [];
     }
 
     if (changes[&#x27;model&#x27;]) {
-      this.formItems &#x3D; this.populateRelationships(changes[&#x27;model&#x27;].currentValue);
+      this.formItems &#x3D; this.strategy.populateRelationships(changes[&#x27;model&#x27;].currentValue, this.relationshipLabelByURI);
       this.uniqueID &#x3D; this.formItems.length;
     }
   }
 
-  onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {
-    const newItem : FormItem &#x3D; {
+  private onMenuClickInsertFormItem(relationshipLabel: string, relationshipURI: string): FormItem {
+    const newItem: FormItem &#x3D; {
       itemID: this.uniqueID++,
       relationshipLabel,
-      relationshipURI,
+      relationshipURI: &#x27;&#x27;,
       destinationURI: &#x27;&#x27;,
       destinationLabel: &#x27;&#x27;,
     };
+
+    this.strategy.createRelationship(relationshipURI).pipe(
+      take(1)
+    ).subscribe({
+      next: (newItemRelationshipURI: string) &#x3D;&gt; {
+        newItem.relationshipURI &#x3D; newItemRelationshipURI;
+      },
+      error: this.showHttpError
+    });
+
     this.formItems.unshift(newItem);
     return newItem;
   }

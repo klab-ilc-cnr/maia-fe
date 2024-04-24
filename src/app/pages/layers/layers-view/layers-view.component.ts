@@ -1,13 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SelectItem } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
-import { CreateFeature } from 'src/app/models/feature/create-feature';
-import { Feature } from 'src/app/models/feature/feature';
-import { Layer } from 'src/app/models/layer/layer.model';
-import { Tagset } from 'src/app/models/tagset/tagset';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagset } from 'src/app/models/texto/t-tagset';
@@ -16,7 +11,7 @@ import { TagsetStateService } from 'src/app/services/tagset-state.service';
 import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
-/**Componente della vista di dettaglio di un layer corredata dall'elenco delle feature */
+/**Component of the detail view of a layer accompanied by the feature list */
 @Component({
   selector: 'app-layers-view',
   templateUrl: './layers-view.component.html',
@@ -24,63 +19,64 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   providers: [LayerStateService, TagsetStateService]
 })
 export class LayersViewComponent implements OnInit {
+  /**Subject for subscribe management */
   private readonly unsubscribe$ = new Subject();
+  /**Defines whether the creation/insertion modal of a feature is visible */
   visibleEditNewFeature = false;
+  /**Current layer */
   tlayer!: TLayer;
+  /**Observable of the current layer */
   tlayer$ = this.layerState.layer$;
+  /**Observable of the feature list for the current layer */
   features$ = this.layerState.features$;
+  /**Feature description form */
   featuresForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     type: new FormControl<string>('', Validators.required),
     tagset: new FormControl<TTagset | null>(null),
     description: new FormControl<string>(''),
   });
+  /**Getter for the form name field */
   get name() { return this.featuresForm.controls.name; }
+  /**Getter for the form type field */
   get type() { return this.featuresForm.controls.type; }
+  /**Getter for the form tagset field */
   get tagset() { return this.featuresForm.controls.tagset; }
+  /**Getter for the form description field */
   get description() { return this.featuresForm.controls.description; }
+  /**Observable of the tagset list */
   tagsets$ = this.tagsetState.tagsets$;
+  /**Feature names list */
   featureNames: string[] = [];
+  /**Enum of feature types */
   public featureTypes = TFeatureType;
+  /**Current feature on edit */
   featureOnEdit: TFeature | undefined;
+  /**Current feature title */
   newEditTitle = '';
   /**
-   * Effettua la rimozione di una feature
-   * @param id {number} identificativo numerico della feature
-   * @param name {string} nome della feature
+   * Perform feature removal
+   * @param id {number} numerical feature identifier
+   * @param name {string} feature name
    */
   private deleteFeature = (feature: TFeature): void => {
     this.layerState.removeFeature.next(feature);
   }
 
-  /**Getter che definisce se una feature è in modifica */
+  /**Getter that defines whether a feature is being edited */
   public get isEditing(): boolean {
     return this.featureOnEdit !== undefined;
   }
 
-  /**Identificativo numerico del layer in lavorazione */
-  layerId!: number;
-  /**Layer in lavorazione */
-  layerInfo: Layer | undefined;
-  /**Lista delle feature */
-  features: Feature[] = [];
-  /**Oggetto che rappresenta una nuova feature in creazione */
-  featureModel: CreateFeature = new CreateFeature();
-
-  /**Lista di elementi selezionabili che rappresentano i tipi di feature */
-  featureTypeOptions = new Array<SelectItem>();
-  /**Lista di tagset */
-  tagsetList: Tagset[] = [];
-  /**Lista di elementi selezionabili che rappresentano i possibili tagset */
-  tagsetOptions = new Array<SelectItem>();
-
-  /**Riferimento al popup di cancellazione di un elemento */
+  /**Reference to item deletion popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**
-   * Costruttore per LayersViewComponent
-   * @param route {ActivatedRoute} fornisce l'accesso alle informazioni di una route associata con un componente caricato in un outlet
-   * @param router {Router} servizi per la navigazione fra le viste
+   * Constructor for LayersViewComponent
+   * @param route {ActivatedRoute} Provides access to information about a route associated with a component that is loaded in an outlet
+   * @param router {Router} A service that provides navigation among views and URL manipulation capabilities
+   * @param layerState {LayerStateService} service that manages the general state of the layers
+   * @param tagsetState {TagsetStateService} service that manages the general state of the tagset
    */
   constructor(
     private route: ActivatedRoute,
@@ -101,7 +97,7 @@ export class LayersViewComponent implements OnInit {
     });
   }
 
-  /**Metodo dell'interfaccia OnInit utilizzato per inizializzare i valori di partenza del componente */
+  /**OnInit interface method used to initialize the starting values of the component */
   ngOnInit(): void {
     this.route.paramMap.pipe(
       takeUntil(this.unsubscribe$),
@@ -127,19 +123,19 @@ export class LayersViewComponent implements OnInit {
     })
   }
 
-  /**Metodo dell'interfaccia OnDestroy, utilizzato per chiudere eventuali popup swal aperti */
+  /**Method of the OnDestroy interface, used to emit the unsubscribe subject */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
   }
 
-  /**Metodo che naviga "indietro" sulla pagina dei layer */
+  /**Method that navigates "back" to the layers page */
   back() {
     this.router.navigate(['layers']);
   }
 
   /**
-   * Metodo che sottomette il form della feature per salvarne i dati
+   * Method that submits the feature form to save its data
    * @returns {void}
    */
   onSubmitFeatureModal(): void {
@@ -156,7 +152,7 @@ export class LayersViewComponent implements OnInit {
     this.featureOnEdit = undefined;
   }
 
-  /**Metodo che visualizza il modale per lavorazione della nuova feature */
+  /**Method that displays the modal for processing the new feature */
   showFeatureModal() {
     this.featureOnEdit = undefined;
     this.newEditTitle = 'New feature';
@@ -166,8 +162,8 @@ export class LayersViewComponent implements OnInit {
   }
 
   /**
-   * Metodo che gestisce la visualizzazione dei popup di cancellazione di una feature e invoca la sua effettiva eliminazione
-   * @param feature {Feature} feature da rimuovere
+   * Method that handles the display of feature deletion popups and invokes its actual deletion
+   * @param feature {TFeature} feature to be removed
    */
   showDeleteFeatureModal(feature: TFeature) {
     const confirmMsg = 'Stai per cancellare la feature \'' + feature.name + '\'';
@@ -176,8 +172,8 @@ export class LayersViewComponent implements OnInit {
   }
 
   /**
-   * Metodo che visualizza il modale di edit di una feature
-   * @param feature {Feature} feature da modificare
+   * Method that displays the edit modal of a feature
+   * @param feature {TFeature} feature to be modified
    */
   showEditFeatureModal(feature: TFeature) {
     this.newEditTitle = feature.name!;

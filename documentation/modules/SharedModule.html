@@ -56,13 +56,13 @@
 <title>cluster_SharedModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-32.8 8,-230.8 1866,-230.8 1866,-32.8 8,-32.8"/>
 </g>
-<g id="clust13" class="cluster">
-<title>cluster_SharedModule_exports</title>
-<polygon fill="none" stroke="black" points="16,-170.8 16,-222.8 1858,-222.8 1858,-170.8 16,-170.8"/>
-</g>
 <g id="clust2" class="cluster">
 <title>cluster_SharedModule_declarations</title>
 <polygon fill="none" stroke="black" points="32,-40.8 32,-92.8 1843,-92.8 1843,-40.8 32,-40.8"/>
+</g>
+<g id="clust13" class="cluster">
+<title>cluster_SharedModule_exports</title>
+<polygon fill="none" stroke="black" points="16,-170.8 16,-222.8 1858,-222.8 1858,-170.8 16,-170.8"/>
 </g>
 <!-- AutocompleteCheckboxComponent -->
 <g id="node1" class="node">
@@ -402,6 +402,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CommonModule } from &#x27;@angular/common&#x27;;
 import { NgModule } from &#x27;@angular/core&#x27;;
 import { FormsModule, ReactiveFormsModule } from &#x27;@angular/forms&#x27;;
+import { TranslateModule } from &#x27;@ngx-translate/core&#x27;;
 import { AutoCompleteModule } from &#x27;primeng/autocomplete&#x27;;
 import { ButtonModule } from &#x27;primeng/button&#x27;;
 import { CardModule } from &#x27;primeng/card&#x27;;
@@ -417,7 +418,6 @@ import { InputNumberModule } from &#x27;primeng/inputnumber&#x27;;
 import { InputSwitchModule } from &#x27;primeng/inputswitch&#x27;;
 import { ListboxModule } from &#x27;primeng/listbox&#x27;;
 import { MenuModule } from &#x27;primeng/menu&#x27;;
-import { TieredMenuModule } from &#x27;primeng/tieredmenu&#x27;;
 import { MenubarModule } from &#x27;primeng/menubar&#x27;;
 import { MultiSelectModule } from &#x27;primeng/multiselect&#x27;;
 import { OverlayPanelModule } from &#x27;primeng/overlaypanel&#x27;;
@@ -432,6 +432,7 @@ import { SplitterModule } from &#x27;primeng/splitter&#x27;;
 import { TableModule } from &#x27;primeng/table&#x27;;
 import { TabViewModule } from &#x27;primeng/tabview&#x27;;
 import { TagModule } from &#x27;primeng/tag&#x27;;
+import { TieredMenuModule } from &#x27;primeng/tieredmenu&#x27;;
 import { ToastModule } from &#x27;primeng/toast&#x27;;
 import { ToggleButtonModule } from &#x27;primeng/togglebutton&#x27;;
 import { ToolbarModule } from &#x27;primeng/toolbar&#x27;;
@@ -517,6 +518,7 @@ const PIPES &#x3D; [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule,
     PRIMENG_MODULES
   ],
   exports: [
@@ -527,6 +529,7 @@ const PIPES &#x3D; [
     DIRECTIVES,
     COMPONENTS,
     PIPES,
+    TranslateModule,
   ]
 })
 export class SharedModule { }

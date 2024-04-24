@@ -2,8 +2,8 @@
   <div class="col-12">
     <div class="card">
       <div class="page-header">
-        <h5>Master data</h5>
-        <p-button label="New user" icon="pi pi-user-plus" styleClass="p-button-danger" (click)="goToNewUser()"
+        <h5>{{'USERS_MANAGER.masterData'|translate}}</h5>
+        <p-button [label]="'USERS_MANAGER.newUser'|translate" icon="pi pi-user-plus" styleClass="p-button-danger" (click)="goToNewUser()"
           class="ms-start"></p-button>
       </div>
       <p-table #dt [value]="(users|async) ?? []" [rowHover]="true" [responsive]="true" [scrollable]="false" [paginator]="true"
@@ -12,13 +12,13 @@
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th pSortableColumn="username">Username</th>
-            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-            <th pSortableColumn="surname">Surname <p-sortIcon field="surname"></p-sortIcon></th>
+            <th pSortableColumn="username">{{'USERS_MANAGER.username'|translate}}</th>
+            <th pSortableColumn="name">{{'USERS_MANAGER.name'|translate}} <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="surname">{{'USERS_MANAGER.surname'|translate}} <p-sortIcon field="surname"></p-sortIcon></th>
             <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
-            <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+            <th pSortableColumn="role">{{'USERS_MANAGER.role'|translate}} <p-sortIcon field="role"></p-sortIcon></th>
             <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-            <th class="text-center">Details</th>
+            <th class="text-center">{{'USERS_MANAGER.details'|translate}}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user columns="col" let-i="rowIndex">
@@ -31,7 +31,7 @@
             <td>{{ user.role }}</td>
             <td>{{ user.active ? 'ACTIVE' : 'INACTIVE' }}</td>
             <td class="text-center">
-              <button pButton pRipple type="button" icon="pi pi-user-edit"
+              <button pButton pRipple type="button" icon="pi pi-user-edit" aria-label="Go to edit user"
                 class="p-button-rounded p-button-danger p-button-text" (click)="goToEditUserById(user.id)">
               </button>
             </td>
@@ -39,7 +39,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="7">No user found</td>
+            <td colspan="7">{{'USERS_MANAGER.emptyUsers'|translate}}</td>
           </tr>
         </ng-template>
       </p-table>

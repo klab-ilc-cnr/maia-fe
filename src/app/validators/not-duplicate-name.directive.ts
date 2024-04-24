@@ -1,13 +1,13 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, ValidatorFn } from '@angular/forms';
 
-/**Errore di validazione sulla duplicazione dei nomi */
+/**Validation error on duplicate names */
 const VALIDATOR_ERROR = { 'notDuplicateName': true };
 
 /**
- * Funzione che valuta se il valore di un campo di input è già presente in una lista di stringhe
- * @param options {string[]} nomi sui quali valutare duplicazione
- * @returns {ValidatorFn} restituisce un eventuale errore di validazione della duplicazione
+ * Function that evaluates whether the value of an input field is already in a list of strings
+ * @param options {string[]} names on which to evaluate duplication
+ * @returns {ValidatorFn} returns a possible duplication validation error
  */
 export function nameDuplicateValidator(options: string[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
@@ -23,7 +23,7 @@ export function nameDuplicateValidator(options: string[]): ValidatorFn {
   };
 }
 
-/**Direttiva di validazione, definisce se un valore di input è già presente in una lista di stringhe */
+/**Validation directive, defines whether an input value is already in a list of strings */
 @Directive({
   selector: '[appNotDuplicateName]',
   providers: [
@@ -31,14 +31,14 @@ export function nameDuplicateValidator(options: string[]): ValidatorFn {
   ]
 })
 export class NotDuplicateNameDirective {
-  /**Lista di stringhe sulle quali effettuale la validazione */
+  /**List of strings on which to perform validation */
   @Input('appNotDuplicateName')
   options: string[] = [];
 
   /**
-   * Metodo dell'interfaccia Validator che verifica se il valore di un campo di input è già presente in una lista di stringhe
-   * @param control {AbstractControl} campo di input da validare
-   * @returns {{ [key: string]: any } | null} eventuale errore di duplicazione nomi
+   * Validator interface method that checks whether the value of an input field is already in a list of strings
+   * @param control {AbstractControl} control to validate
+   * @returns {{ [key: string]: any } | null} eventual duplicate name error
    */
   validate(control: AbstractControl): { [key: string]: any } | null {
     return this.options ? nameDuplicateValidator(this.options)(control)

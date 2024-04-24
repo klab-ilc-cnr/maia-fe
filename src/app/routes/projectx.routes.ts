@@ -1,6 +1,6 @@
 import { WorkspaceListComponent } from "../pages/workspace/workspace-list/workspace-list.component";
 
-/**Route relative alle diverse pagine dell'applicazione */
+/**Routes related to the different pages of the application */
 export const PROJECTX_ROUTES = [
     {
         path: 'usersManagement',
