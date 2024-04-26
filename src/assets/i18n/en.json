@@ -51,8 +51,11 @@
             "addEntry": "Add",
             "defineLemmas": "Define lemmas",
             "entryLabel": "Name",
+            "fullEntry": "Full entry",
             "language": "Language",
             "noMatching": "No matching",
+            "referralEntry": "Referral entry",
+            "seeFullEntry": "See full entry",
             "type": "Type"
         },
         "editor": "Editor",
