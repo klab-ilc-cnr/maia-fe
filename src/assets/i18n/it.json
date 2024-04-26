@@ -51,8 +51,11 @@
             "addEntry": "Aggiungi",
             "defineLemmas": "Definisci lemmi",
             "entryLabel": "Nome",
+            "fullEntry": "Voce piena",
             "language": "Lingua",
             "noMatching": "Nessuna corrispondenza",
+            "referralEntry": "Voce di rinvio",
+            "seeFullEntry": "Vedi voce piena",
             "type": "Tipo"
         },
         "editor": "Redattore",

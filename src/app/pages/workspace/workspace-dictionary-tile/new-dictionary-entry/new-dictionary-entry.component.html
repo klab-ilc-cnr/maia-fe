@@ -4,7 +4,7 @@
             <div class="field col-4">
                 <label for="dictLang"
                     class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.language'|translate}} *</label>
-                <p-dropdown id="dictLang" styleClass="w-full" [options]="(languages$|async)||[]" optionLabel="label"
+                <p-dropdown id="dictLang" styleClass="w-full" [options]="languages" optionLabel="label"
                     optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel" placeholder="Select value"
                     formControlName="language"></p-dropdown>
             </div>
@@ -16,7 +16,30 @@
             <div class="field col-4">
                 <!--NOTE placeholder for default lemma button-->
             </div>
-            <div class="field col-12">
+            <div class="field col-6 d-flex">
+                <div class="field-checkbox">
+                    <p-radioButton inputId="full" value="fullEntry" formControlName="selectedCategory"></p-radioButton>
+                    <label for="full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.fullEntry'|translate}}</label>
+                </div>
+                <div class="field-checkbox ml-2">
+                    <p-radioButton inputId="referral" value="referralEntry"
+                        formControlName="selectedCategory"></p-radioButton>
+                    <label>{{'DICTIONARY_EXPLORER.CREATE_ENTRY.referralEntry'|translate}}</label>
+                </div>
+            </div>
+            <div class="field col-6" *ngIf="selectedCategory?.value === 'referralEntry'">
+                <label for="sameAsFullEntry">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.seeFullEntry'|translate}}</label>
+                <p-autoComplete inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
+                    (completeMethod)="onFilter($event)" [delay]="300" appendTo="body" [virtualScroll]="true"
+                    field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
+                    [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate"
+                    formControlName="fullEntry">
+                    <ng-template let-item pTemplate="item">
+                        {{item['label']}}<sub>{{item['pos'].join(' ')}}</sub>
+                    </ng-template>
+                </p-autoComplete>
+            </div>
+            <div class="field col-12" *ngIf="selectedCategory?.value === 'fullEntry'">
                 <p-fieldset>
                     <ng-template pTemplate="header">
                         {{'DICTIONARY_EXPLORER.CREATE_ENTRY.defineLemmas'|translate}}<button pButton pRipple

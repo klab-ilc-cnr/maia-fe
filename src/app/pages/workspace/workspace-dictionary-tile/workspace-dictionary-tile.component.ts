@@ -244,6 +244,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(newEntry => {
+      //TODO aggiungere controlli: se piena o vuota e se vuota vedere il tipo d fullEntry per capire se aggiungere relazione o aggiungere entrata o relazione
       this.onAddAssociateLemmas(entryData.lemmas);
       this.loadNodes(); //FIXME To be optimized with dynamic insertion of the new entry into the list, without full update
       console.info(newEntry);
