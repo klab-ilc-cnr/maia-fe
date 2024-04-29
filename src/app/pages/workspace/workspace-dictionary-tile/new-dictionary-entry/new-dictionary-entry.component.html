@@ -29,7 +29,8 @@
             </div>
             <div class="field col-6" *ngIf="selectedCategory?.value === 'referralEntry'">
                 <label for="sameAsFullEntry">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.seeFullEntry'|translate}}</label>
-                <p-autoComplete inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
+                <div class="d-flex w-full">
+                    <p-autoComplete style="width: inherit;" inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
                     (completeMethod)="onFilter($event)" [delay]="300" appendTo="body" [virtualScroll]="true"
                     field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
                     [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate"
@@ -38,6 +39,9 @@
                         {{item['label']}}<sub>{{item['pos'].join(' ')}}</sub>
                     </ng-template>
                 </p-autoComplete>
+                <p-button type="button" aria-label="Selection" icon="pi pi-check" styleClass="p-button p-button-success"
+                    [pTooltip]="'DICTIONARY_EXPLORER.CREATE_ENTRY.addFullEntry'|translate"></p-button><!--NOTE Explicit selection in case of manual entry-->
+                </div>
             </div>
             <div class="field col-12" *ngIf="selectedCategory?.value === 'fullEntry'">
                 <p-fieldset>
