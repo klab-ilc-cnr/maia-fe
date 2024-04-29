@@ -49,6 +49,7 @@
         },
         "CREATE_ENTRY": {
             "addEntry": "Add",
+            "addFullEntry": "Add full entry",
             "defineLemmas": "Define lemmas",
             "entryLabel": "Name",
             "fullEntry": "Full entry",

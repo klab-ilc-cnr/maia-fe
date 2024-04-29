@@ -49,6 +49,7 @@
         },
         "CREATE_ENTRY": {
             "addEntry": "Aggiungi",
+            "addFullEntry": "Aggiungi voce piena",
             "defineLemmas": "Definisci lemmi",
             "entryLabel": "Nome",
             "fullEntry": "Voce piena",
