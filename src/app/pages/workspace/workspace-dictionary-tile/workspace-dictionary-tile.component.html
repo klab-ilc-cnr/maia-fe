@@ -71,7 +71,7 @@
     <!--NOTE il componente sembra non supportare la combinazione virtual scroll + lazy loading https://github.com/primefaces/primeng/issues/11789 -->
     <!-- <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols" [rows]="rows"
         scrollHeight="flex" [lazy]="true" (onLazyLoad)="loadNodes($event)" [totalRecords]="counter" [paginator]="true"> -->
-        <p-treeTable selectionMode="checkbox" [(selection)]="selectedNodes" dataKey="dictionaryEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols"
+        <p-treeTable selectionMode="checkbox" [(selection)]="selectedNodes" dataKey="id" [value]="lexicogEntries" [scrollable]="true" [columns]="cols"
         scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true" (onNodeExpand)="onFetchChildren($event)" [(contextMenuSelection)]="selectedNode" [contextMenu]="cm" contextMenuSelectionMode="separate" (onContextMenuSelect)="loadContextMenu()">
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
@@ -84,14 +84,12 @@
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
                         [pTooltip]="rowNode.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
                     <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
-                    <span *ngIf="col.field === 'label' && rowNode.node.type === 'ENTRY'" class="fw-bold">{{rowData[col.field] }}</span>
-                    <span *ngIf="col.field === 'label' && rowNode.node.type === 'LEMMA'">{{rowData['referredEntityLabel'] }}</span>
-                    <sub *ngIf="col.field === 'label' && rowNode.node.type === 'ENTRY'" class="ml-1">{{ rowData['pos'].join(' ') }}</sub>
-                    <sub *ngIf="col.field === 'label' && rowNode.node.type === 'LEMMA'" class="ml-1">{{ rowData['pos'] }}</sub>
+                    <span *ngIf="col.field === 'label'" [ngClass]="rowNode.node.type === 'ENTRY'?'fw-bold':''">{{rowData[col.field] }}</span>
+                    <sub *ngIf="col.field === 'label'" class="ml-1">{{ rowData['pos'].join(' ') }}</sub>
                     <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
                         [tooltip]="'<em>Editor</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ (rowData['creationDate']|date)+'<br><em>Last update</em>: '+ (rowData['lastUpdate']|date)"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
                     <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]" [status]="rowData[col.field]"></app-icon-lock>
-                    <button type="button" aria-label="Add lemma" *ngIf="col.field === 'add' && rowNode.node.type === 'ENTRY'" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-primary"
+                    <button type="button" aria-label="Add lemma" *ngIf="col.field === 'add' && rowNode.node.type === 'ENTRY' && !rowNode.node.data.isReferralItem" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-primary"
                     [pTooltip]="'DICTIONARY_EXPLORER.addLemma'|translate" tooltipPosition="top" (click)="onShowNewLemmaDialog(rowData)"></button>        
                 </td>
             </tr>

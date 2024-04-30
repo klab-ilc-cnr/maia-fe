@@ -2,10 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Subject, catchError, debounceTime, distinctUntilChanged, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, take, takeUntil } from 'rxjs';
+import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
+import { DictionaryListItem } from 'src/app/models/dictionary/dictionary-list-item.model';
 import { LexicogEntriesRequest } from 'src/app/models/dictionary/lexicog-entries-request.model';
-import { LexicogEntryBase } from 'src/app/models/dictionary/lexicog-entry-base.model';
-import { LexicogEntryListItem } from 'src/app/models/dictionary/lexicog-entry-list-item.model';
 import { STATUSES, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
@@ -44,7 +44,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   /**Number of vocabulary items retrieved */
   counter!: number;
   /**List of treenodes representing a dictionary entry or a lexicographic component */
-  lexicogEntries: TreeNode<LexicogEntryBase>[] = [];
+  lexicogEntries: TreeNode<DictionaryListItem>[] = [];
   /**Control for the search input text */
   searchTextForm = new FormGroup({
     search: new FormControl<string>('')
@@ -72,7 +72,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   /**Defines whether to display the dialog to add a lemma to a dictionary entry */
   isAddLemmaVisible = false;
   newLemmaTemp?: { lemma: string, pos: string, type: string[], isFromLexicon: boolean };
-  entryForLemmaTemp?: LexicogEntryListItem;
+  entryForLemmaTemp?: DictionaryListItem;
 
   public selectedNode!: TreeNode;
   items: MenuItem[] = [];
@@ -120,8 +120,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       { field: 'creator', width: '10%', display: 'true' },
       { field: 'status', header: 'Autore', width: '10%', display: 'true' },
       { field: 'add', header: 'Stato', width: '10%', display: 'true' },
-
-    ]
+    ];
 
     this.searchTextForm.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
@@ -167,29 +166,62 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     })
   }
 
-  onAddAssociateLemmas(lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[]) {
-    const requests = [];
+  onAddAssociateLemmas(dictionaryEntry: DictionaryEntry, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[]) {
+    const requests: Observable<any>[] = [];
     lemmas.forEach((lemma, i) => {
-      console.info('insert {lemma} at {i}');
-      //TODO per ogni lemma creo una richiesta http
+      const position = i + 1;
+      if (lemma.isFromLexicon) {
+        requests.push(this.dictionaryService.associateLexEntryWithDictionaryEntry(dictionaryEntry.id, lemma.lemma, position));
+      } else {
+        requests.push(this.dictionaryService.createAndAssociateLexicalEntry(dictionaryEntry.language, lemma.lemma, lemma.pos, lemma.type, dictionaryEntry.id, position));
+      }
     });
-    //TODO passo la lista di richieste 
+    const combinedRequests = concat(...requests);
+    combinedRequests.pipe(
+      last(),
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
+    ).subscribe(() => {
+      this.loadNodes();
+    });
   }
 
-  onAddNewLemma() {
-    console.group('Data to add lemma')
-    console.info('dictionary entry', this.entryForLemmaTemp)
-    console.info('new lemma', this.newLemmaTemp)
-    console.groupEnd()
-    this.isAddLemmaVisible = false;
-    this.entryForLemmaTemp = undefined;
-    this.newLemmaTemp = undefined;
+  async onAddNewLemma() {
+    if (!this.newLemmaTemp || !this.entryForLemmaTemp) {
+      console.error('No lemma value to save');
+      return;
+    }
+    let request: Observable<any>;
+    let position = 1;
+    if (this.entryForLemmaTemp.hasChildren) {
+      position = (await lastValueFrom(this.dictionaryService.retrieveComponents(this.entryForLemmaTemp.id).pipe(take(1)))).length + 1;
+    }
+    if (this.newLemmaTemp?.isFromLexicon) {
+      request = this.dictionaryService.associateLexEntryWithDictionaryEntry(this.entryForLemmaTemp.id, this.newLemmaTemp.lemma, position)
+    } else {
+      request = this.dictionaryService.createAndAssociateLexicalEntry(this.entryForLemmaTemp.language, this.newLemmaTemp.lemma, this.newLemmaTemp.pos, this.newLemmaTemp.type, this.entryForLemmaTemp.id, position);
+    }
+    request.pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
+    ).subscribe(() => {
+      this.isAddLemmaVisible = false;
+      this.entryForLemmaTemp = undefined;
+      this.newLemmaTemp = undefined;
+      this.loadNodes();
+    });
   }
 
   onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
     console.info('expand', event)
     this.loading = true;
-    const dictionaryId = event.node.data?.dictionaryEntry;
+    const dictionaryId = event.node.data?.id; 
     console.info(dictionaryId)
     if (!dictionaryId) return; //TODO aggiungere un messaggio di errore
     this.dictionaryService.retrieveComponents(dictionaryId).pipe(
@@ -233,20 +265,32 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
    * Method that handles the display of the insertion dialog for a new lemma
    * @param entry {LexicogEntryListItem} dictionary entry to which associate the lemma
    */
-  onShowNewLemmaDialog(entry: LexicogEntryListItem) {
+  onShowNewLemmaDialog(entry: DictionaryListItem) {
     this.isAddLemmaVisible = true;
     this.entryForLemmaTemp = entry;
   }
 
-  onSubmitEntry(entryData: { language: string, name: string, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[] }) {
-    console.info(entryData);
+  onSubmitEntry(entryData: { language: string, name: string, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[], fullEntry: string, selectedCategory: string }) {
     this.dictionaryService.addDictionaryEntry(entryData.language, entryData.name).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(newEntry => {
-      //TODO aggiungere controlli: se piena o vuota e se vuota vedere il tipo d fullEntry per capire se aggiungere relazione o aggiungere entrata o relazione
-      this.onAddAssociateLemmas(entryData.lemmas);
-      this.loadNodes(); //FIXME To be optimized with dynamic insertion of the new entry into the list, without full update
+      switch(entryData.selectedCategory) {
+        case 'referralEntry': {
+          console.info('to be implemented'); //TODO implementare l'aggiunta di una relazione sameAs
+          break;
+        }
+        case 'fullEntry': {
+          if(entryData.lemmas.length>0) {
+            this.onAddAssociateLemmas(newEntry, entryData.lemmas);
+          }
+          break;
+        }
+        default:
+          console.error('Entry category not mapped');
+          break;
+      }
+      this.loadNodes();
       console.info(newEntry);
     });
     this.isAddDictionaryEntryVisible = false;
@@ -267,8 +311,8 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.loadNodes();
   }
 
-  private mapLexicogEntryToTreenode(lexicogEntry: LexicogEntryListItem): TreeNode<LexicogEntryListItem> {
-    return <TreeNode<LexicogEntryListItem>>{
+  private mapLexicogEntryToTreenode(lexicogEntry: DictionaryListItem): TreeNode<DictionaryListItem> {
+    return <TreeNode<DictionaryListItem>>{
       data: lexicogEntry,
       type: DICTIONARY_NODE.entry,
       leaf: !lexicogEntry.hasChildren
