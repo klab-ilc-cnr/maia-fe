@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, lastValueFrom, take, takeUntil } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -21,6 +21,7 @@ import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model
 import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
@@ -183,7 +184,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
     private commonService: CommonService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private lexiconService: LexiconService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
@@ -194,45 +196,35 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe((res) => {
       if ('option' in res) {
         switch (res.option) {
-          case 'onLexiconTreeElementDoubleClickEvent':
+          case 'onLexiconTreeElementDoubleClickEvent': {
             const selectedSubTree = structuredClone(res.value[0]);
             const showLabelName = structuredClone(res.value[1]);
             this.openLexiconEditTile(selectedSubTree, showLabelName);
             break;
-          case 'onSearchResultTableDoubleClickEvent':
+          }
+          case 'onSearchResultTableDoubleClickEvent': {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex);
             break;
+          }
+          default:
+            break;
         }
       }
-    })
+    });
 
     this.items = [
       {
         label: 'Corpus',
         styleClass: 'p-button-raised p-button-text',
-        // items: [
-        // { label: 'Apri', id: 'OPEN', command: (event) => { this.openTextChoicePanel(event) } },
-        // { separator: true },
-        // { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } }
-        // ]
         command: (event) => { this.openExploreCorpusPanel(event) }
       },
       {
         label: 'Lexicon',
-        // items: [
-        //   { label: 'Apri', id: 'LEXICON', command: (event) => { this.openLexiconPanel(event) } },
-        //   { label: 'Lessico 2' }
-        // ]
         command: (event) => { this.openLexiconPanel(event) }
       },
       {
         label: 'Ontology',
-        // items: [
-        //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
-        //   { label: 'Ontologia 2' },
-        //   { label: 'Ontologia 3' }
-        // ]
       },
       {
         label: 'Search',
@@ -242,13 +234,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'Dictionary',
         command: (event) => { this.openDictionaryPanel(event) }
       }
-      // {
-      //   label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
-      // }
-      /*,
-      {
-        label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
-      } */
     ];
     if (environment.demoHide) {
       this.items.splice(2, 1); /**remove ontology from menu */
@@ -302,6 +287,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     jsPanel.extend({
       //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
+      lexiconEditTileMap: new Map<number, Tile<LexiconEditTileContent>>(),
       textTileMap: new Map<number, Tile<TextTileContent>>(),
       tileMap: new Map<number, Tile<any>>(),
       componentsList: new Array<any>(),
@@ -318,7 +304,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LAYERS_LIST:
           case TileType.LEXICON:
           case TileType.SEARCH:
-            // case TileType.LEXICON_EDIT: //TODO era una mia aggiunta ma il salvataggio su BE non pare gestito
+          case TileType.LEXICON_EDIT:
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
             break;
@@ -351,6 +337,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('Deleted ', this.getTileMap());
             break;
 
+          case TileType.LEXICON_EDIT:
+            this.tileMap.delete(panelId);
+            console.log('Deleted ', this.getTileMap());
+            break;
+
           default:
             console.error("type " + type + " not implemented");
         }
@@ -374,11 +365,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             this.textTileMap.delete(panelId);
             console.log('Deleted ', this.getTextTileMap());
             break;
+          case TileType.LEXICON_EDIT:
+            this.lexiconEditTileMap.delete(panelId);
+            console.log('Deleted ', this.getLexiconEditTileMap());
+            break;
           default:
             console.error("type ${type} not implemented");
         }
 
         return this;
+      },
+      getLexiconEditTileMap: function () {
+        return this.lexiconEditTileMap;
       },
       getTextTileMap: function () {
         return this.textTileMap;
@@ -610,10 +608,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const { content, ...text } = lexiconEditTileConfig;
 
+    lexiconEditTileConfig.content = undefined;
+    const lexiconEditTileContent: LexiconEditTileContent = { contentId: lexicalEntryTree?.data?.instanceName }  //NOTE For multiple panels, it is critical to pass the content id into the related content property (so that the data can be retrieved without display errors).
+
     const tileObject: Tile<LexiconEditTileContent> = {
       id: undefined,
       workspaceId: this.workspaceId,
-      content: undefined,
+      content: lexiconEditTileContent,
       tileConfig: lexiconEditTileConfig,
       type: TileType.LEXICON_EDIT
     };
@@ -718,7 +719,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param workspaceStatus {Workspace} status del workspace
    * @returns {void}
    */
-  restoreTiles(workspaceStatus: Workspace) {
+  async restoreTiles(workspaceStatus: Workspace) {
     console.log('restore');
     this.loaderService.show();
 
@@ -774,6 +775,56 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           componentRef = textTileComponent.component
 
           break;
+        case TileType.LEXICON_EDIT: {
+          const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace(this.lexiconEditTilePrefix, '');
+          const lexicalEntry = await lastValueFrom(this.lexiconService.getLexicalEntry(tile.content.contentId));
+          console.info(lexicalEntry)
+          const lexEntryNode = <TreeNode<LexicalEntryOld>>{
+            data: {
+              name: lexicalEntry.label,
+              instanceName: lexicalEntry.lexicalEntry,
+              label: lexicalEntry.label,
+              note: lexicalEntry['note'],
+              creator: lexicalEntry['creator'],
+              creationDate: lexicalEntry['creationDate'] ? new Date(lexicalEntry['creationDate']).toLocaleString() : '',
+              lastUpdate: lexicalEntry['lastUpdate'] ? new Date(lexicalEntry['lastUpdate']).toLocaleString() : '',
+              status: lexicalEntry['status'],
+              uri: lexicalEntry['lexicalEntry'],
+              type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+              sub: lexicalEntry.pos
+            },
+            children: [{
+              data: {
+                name: 'form (0)',
+                instanceName: '_form_' + lexicalEntry.lexicalEntry,
+                type: LexicalEntryTypeOld.FORMS_ROOT
+              }
+            },
+            {
+              data: {
+                name: 'sense (0)',
+                instanceName: '_sense_' + lexicalEntry.lexicalEntry,
+                type: LexicalEntryTypeOld.SENSES_ROOT
+              }
+            }]
+          };
+          const lexiconEditTileComponent = this.generateLexiconEditTileConfiguration(tile.id || lexEntryId, lexEntryNode, true);
+
+          //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
+          //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
+          const mergedConfig = { ...lexiconEditTileComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfig,
+            storagename: this.storageName,
+          });
+
+          componentRef = lexiconEditTileComponent.component
+
+          break;
+        }
 
         case TileType.CORPUS:
           const corupusComponent = this.generateCorpusExplorerPanelConfiguration(tile.tileConfig.id);
