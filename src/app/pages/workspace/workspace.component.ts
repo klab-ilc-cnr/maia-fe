@@ -609,7 +609,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const { content, ...text } = lexiconEditTileConfig;
 
     lexiconEditTileConfig.content = undefined;
-    const lexiconEditTileContent: LexiconEditTileContent = { contentId: lexicalEntryTree?.data?.instanceName }
+    const lexiconEditTileContent: LexiconEditTileContent = { contentId: lexicalEntryTree?.data?.instanceName }  //NOTE For multiple panels, it is critical to pass the content id into the related content property (so that the data can be retrieved without display errors).
 
     const tileObject: Tile<LexiconEditTileContent> = {
       id: undefined,
@@ -776,7 +776,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           break;
         case TileType.LEXICON_EDIT: {
-          const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace(this.lexiconEditTilePrefix, '');  //FIXME verificare perché spara il componente nella base del workspace invece che nel panel
+          const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace(this.lexiconEditTilePrefix, '');
           const lexicalEntry = await lastValueFrom(this.lexiconService.getLexicalEntry(tile.content.contentId));
           console.info(lexicalEntry)
           const lexEntryNode = <TreeNode<LexicalEntryOld>>{
