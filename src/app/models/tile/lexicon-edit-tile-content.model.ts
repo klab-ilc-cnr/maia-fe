@@ -1,3 +1,3 @@
 export class LexiconEditTileContent {
-    contentId: number | undefined;
+    contentId: string | undefined;
 }

@@ -608,10 +608,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const { content, ...text } = lexiconEditTileConfig;
 
+    lexiconEditTileConfig.content = undefined;
+    const lexiconEditTileContent: LexiconEditTileContent = { contentId: lexicalEntryTree?.data?.instanceName }
+
     const tileObject: Tile<LexiconEditTileContent> = {
       id: undefined,
       workspaceId: this.workspaceId,
-      content: undefined,
+      content: lexiconEditTileContent,
       tileConfig: lexiconEditTileConfig,
       type: TileType.LEXICON_EDIT
     };
