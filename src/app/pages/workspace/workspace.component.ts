@@ -777,7 +777,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           break;
         case TileType.LEXICON_EDIT: {
           const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace(this.lexiconEditTilePrefix, '');  //FIXME verificare perché spara il componente nella base del workspace invece che nel panel
-          const lexicalEntry = await lastValueFrom(this.lexiconService.getLexicalEntry(lexEntryId));
+          const lexicalEntry = await lastValueFrom(this.lexiconService.getLexicalEntry(tile.content.contentId));
           console.info(lexicalEntry)
           const lexEntryNode = <TreeNode<LexicalEntryOld>>{
             data: {
@@ -808,7 +808,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             }]
           };
-          const lexiconEditTileComponent = this.generateLexiconEditTileConfiguration(lexEntryId, lexEntryNode, true);
+          const lexiconEditTileComponent = this.generateLexiconEditTileConfiguration(tile.id || lexEntryId, lexEntryNode, true);
 
           //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
           //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
