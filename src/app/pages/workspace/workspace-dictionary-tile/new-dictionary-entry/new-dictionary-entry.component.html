@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="field col-6" *ngIf="selectedCategory?.value === 'referralEntry'">
-                <label for="sameAsFullEntry">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.seeFullEntry'|translate}}</label>
+                <label for="sameAsFullEntry">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.seeFullEntry'|translate}} *</label>
                 <div class="d-flex w-full">
                     <p-autoComplete style="width: inherit;" inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
                     (completeMethod)="onFilter($event)" [delay]="300" appendTo="body" [virtualScroll]="true"
