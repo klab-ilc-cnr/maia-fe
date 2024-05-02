@@ -341,7 +341,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             this.tileMap.delete(panelId);
             console.log('Deleted ', this.getTileMap());
             break;
-  
+
           default:
             console.error("type " + type + " not implemented");
         }
@@ -773,7 +773,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           break;
         case TileType.LEXICON_EDIT: {
-          const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace(this.textTilePrefix, '');  //FIXME verificare perché spara il componente nella base del workspace invece che nel panel
+          const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace(this.lexiconEditTilePrefix, '');  //FIXME verificare perché spara il componente nella base del workspace invece che nel panel
           const lexicalEntry = await lastValueFrom(this.lexiconService.getLexicalEntry(lexEntryId));
           console.info(lexicalEntry)
           const lexEntryNode = <TreeNode<LexicalEntryOld>>{
