@@ -56,7 +56,7 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
   rowValue = {
     lemma: '',
     pos: '',
-    type: [],
+    type: <string[]>[],
     isFromLexicon: false
   };
 
@@ -66,7 +66,7 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.lemmaForm.get('type')?.setValue(['http://www.w3.org/ns/lemon/ontolex#LexicalEntry']); //TODO optimize field prevalorisation
+    this.lemmaForm.get('type')?.setValue('http://www.w3.org/ns/lemon/ontolex#LexicalEntry'); //TODO optimize field prevalorisation
     this.lemma.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       distinctUntilChanged(),
@@ -97,7 +97,7 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
           ...this.rowValue,
           lemma: value.lemma,
           pos: value.pos,
-          type: value.type
+          type: [value.type]
         };
       }
       this.changeValue.emit(this.rowValue);
