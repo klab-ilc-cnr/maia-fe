@@ -113,12 +113,14 @@ export class NewDictionaryEntryComponent implements OnInit, OnDestroy {
     switch (category) {
       case 'fullEntry':
         this.entryForm.get('fullEntry')?.reset('');
+        this.entryForm.get('fullEntry')?.removeValidators(Validators.required);
         break;
       case 'referralEntry': {
         const i = 0;
         while (i < this.lemmas.controls.length) {
           this.lemmas.removeAt(i);
         }
+        this.entryForm.get('fullEntry')?.setValidators(Validators.required);
         break;
       }
       default:
