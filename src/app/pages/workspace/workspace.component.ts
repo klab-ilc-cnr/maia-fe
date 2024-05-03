@@ -305,6 +305,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON:
           case TileType.SEARCH:
           case TileType.LEXICON_EDIT:
+          case TileType.DICTIONARY:
             this.tileMap.set(this.id, tile);
             console.log('Added ', this.getTileMap())
             break;
@@ -318,26 +319,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       removeFromTileMap: function (panelId: number, type: TileType) {
         switch (type) {
           case TileType.TEXT:
-            this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
-            break;
-
           case TileType.CORPUS:
-            this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
-            break;
-
           case TileType.LAYERS_LIST:
-            this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
-            break;
-
           case TileType.SEARCH:
-            this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
-            break;
-
           case TileType.LEXICON_EDIT:
+          case TileType.DICTIONARY:
             this.tileMap.delete(panelId);
             console.log('Deleted ', this.getTileMap());
             break;
@@ -879,6 +865,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
                     }); */
 
           break;
+
+        case TileType.DICTIONARY: {
+          const dictionaryComponent = this.generateDictionaryPanelConfiguration(tile.tileConfig.id);
+          const mergedConfigDictionary = {...dictionaryComponent.panelConfig, ...tile.tileConfig};
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigDictionary,
+            storagename: this.storageName
+          });
+          componentRef = dictionaryComponent.component;
+          break;
+        }
 
         default:
           console.error("type " + tile.type + " not implemented");
