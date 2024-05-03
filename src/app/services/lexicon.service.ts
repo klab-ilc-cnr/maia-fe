@@ -39,6 +39,18 @@ export class LexiconService {
     this.encodedBaseIRI = this.commonService.encodeUrl(environment.lexoBaseIRI);
   }
 
+  createNewLexicalEntry(author: string, language: string, label: string, pos: string, type: string): Observable<LexicalEntryCore> {
+    return this.http.post<LexicalEntryCore>(
+      `${this.lexoUrl}/lexicon/create/entry?author=${author}&prefix=${environment.lexoPrefix}&baseIRI=${this.encodedBaseIRI}`,
+      {
+        lang: language, 
+        label: label,
+        pos: pos,
+        type: [type]
+      }
+    );
+  }
+
   /**
    * GET to delete a form
    * @param formID {string} form instanceName

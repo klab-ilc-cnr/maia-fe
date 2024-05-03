@@ -82,6 +82,20 @@
         "showLemmas": "Show lemmas",
         "status": "Status"
     },
+    "LEXICON_EXPLORER": {
+        "addNewLE": "New lexical entry",
+        "NEW_LEXICAL_ENTRY": {
+            "language": "Language",
+            "languageRequired": "Language is mandatory",
+            "label": "Label",
+            "labelNotBlanks": "Label cannot contain only blanks",
+            "labelRequired": "Label is mandatory",
+            "pos": "Part of speech",
+            "posRequired": "POS is mandatory",
+            "type": "Type",
+            "typeRequired": "Type is mandatory"
+        }
+    },
     "LOGIN": {
         "authFailed": "Authentication failed",
         "errorRetrievingUser": "Retrieve current user failed",

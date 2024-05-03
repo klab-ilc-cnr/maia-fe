@@ -82,6 +82,20 @@
         "showLemmas": "Mostra lemmi",
         "status": "Status"
     },
+    "LEXICON_EXPLORER": {
+        "addNewLE": "Nuova entrata lessicale",
+        "NEW_LEXICAL_ENTRY": {
+            "language": "Lingua",
+            "languageRequired": "La lingua è obbligatoria",
+            "label": "Etichetta",
+            "labelNotBlanks": "L'etichetta non può contenere solo spazi",
+            "labelRequired": "L'etichetta è obbligatoria",
+            "pos": "Parte del discorso",
+            "posRequired": "La POS è obbligatoria",
+            "type": "Tipo",
+            "typeRequired": "Il tipo è obbligatorio"
+        }
+    },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",
         "errorRetrievingUser": "Recupero dell'utente corrente non riuscita",

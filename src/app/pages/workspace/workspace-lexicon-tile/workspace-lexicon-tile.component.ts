@@ -1,12 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
-import { Observable, Subscription, catchError, forkJoin, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { LEXICAL_ENTRY_RELATIONS, LexicalEntryUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { Namespace } from 'src/app/models/lexicon/namespace.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -14,6 +13,7 @@ import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -22,12 +22,11 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./workspace-lexicon-tile.component.scss']
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
+  private readonly unsubscribe$ = new Subject();
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
   isUploadLexiconVisible = false;
 
-  /**Sottoscrizione usata per la gestione del click sull'icona tag */
-  private subscription!: Subscription;
   /**Parametri di richiesta di un'entrata lessicale */
   private parameters: LexicalEntryRequest | undefined;
 
@@ -58,7 +57,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         return {
           label: l.label,
           command: () => {
-            this.onAddNewLexicalEntry(l.label!);
+            // this.onAddNewLexicalEntry(l.label!);
           }
         }
       });
@@ -153,6 +152,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   _selectedFile!: File;
   isOverwriteLexicon = false;
   inputAuthor!: string;
+  isAddLexicalEntryVisible = false;
+  /**List of available languages */
+  languages: LexoLanguage[] = [];
+  pos$ = this.globalState.pos$;
+  types$ = this.globalState.lexicalEntryTypes$;
+  /**Form to add a new lexical entry */
+  addLexEntryForm = new FormGroup({
+    lang: new FormControl<string>('', Validators.required),
+    label: new FormControl<string>('', [Validators.required, whitespacesValidator]),
+    pos: new FormControl<string>('', Validators.required),
+    type: new FormControl<string>('', Validators.required)
+  });
+  get lang() { return this.addLexEntryForm.controls.lang }
+  get label() { return this.addLexEntryForm.controls.label }
+  get pos() { return this.addLexEntryForm.controls.pos }
+  get type() { return this.addLexEntryForm.controls.type }
 
   /* @ViewChild('tt') public tt!: TreeTable; */
 
@@ -175,7 +190,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -245,7 +261,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param res {{ option: string, instanceName: string, counter: string, children: any }} updating data
    * @returns {boolean}
    */
-  private findAndEditGroupingNode(root: any, res: { option: string, instanceName: string, counter: string, children: any }) {
+  private findAndEditGroupingNode(root: any, res: { option: string, instanceName: string, counter: string, children: any }): boolean {
     if (root.data?.instanceName === res.instanceName) {
       root.data.name = root.data.name.replace(/\(\d*\)/, `(${res.counter})`);
       root.children = res.children;
@@ -270,6 +286,12 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
+    this.globalState.languages$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(l =>{
+      this.languages = l;
+      this.lang.setValue(this.languages[0].label);
+    })
     this.cols = [
       { field: 'name', header: '', width: '70%', display: 'true' },
       { field: 'note', width: '10%', display: 'true' },
@@ -277,7 +299,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       { field: 'status', header: 'Stato', width: '10%', display: 'true' },
     ];
 
-    this.subscription = this.commonService.notifyObservable$.subscribe((res) => {
+    this.commonService.notifyObservable$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((res) => {
       switch (res.option) {
         case 'tag_clicked':
           this.alternateLabelInstanceName();
@@ -367,43 +391,35 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.filteredPrefix = filtered;
   }
 
-  /**
-   * Method that handles the creation of a new lexical entry
-   * @param language {string} selected language code
-   */
-  onAddNewLexicalEntry(language: string) {
+  /**Method that handles the creation of a new lexical entry */
+  onAddNewLexicalEntry() {
+    console.info(this.addLexEntryForm.value);
     const currentUser = this.loggedUserService.currentUser;
     const creator = currentUser?.name + '.' + currentUser?.surname;
-    this.lexiconService.getNewLexicalEntry(creator).pipe(
+    this.lexiconService.createNewLexicalEntry(creator, this.lang.value!, this.label.value!, this.pos.value!, this.type.value!).pipe(
       take(1),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe(lexEntry => {
-      const updater: LexicalEntryUpdater = {
-        relation: LEXICAL_ENTRY_RELATIONS.ENTRY,
-        value: language
-      };
-      this.lexiconService.updateLexicalEntry(creator, lexEntry.lexicalEntry, updater).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
-          return throwError(() => new Error(error.error));
-        }),
-      ).subscribe(() => {
-        const successMsg = "New lexical entry created";
-        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
-        // this.loadNodes();
-        this.addLexEntryToTreeStructure(lexEntry);
-      },
-      );
-    })
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(ne => {
+      this.addLexEntryToTreeStructure(ne);
+      this.isAddLexicalEntryVisible = false;
+    });
   }
 
   /**Metodo che gestisce la visualizzazione delle checkbox di selezione */
   onChangeSelectionView() {
     this.isVisibleCheckbox = !this.isVisibleCheckbox;
+  }
+
+  /**Method that handles cleanup of lexical entry creation form */
+  onCloseNewLexEntryDialog() {
+    this.addLexEntryForm.reset({
+      lang: this.languages[0].label,
+      label: '',
+      pos: '',
+      type: ''
+    });
+    this.addLexEntryForm.markAsPristine();
+    this.addLexEntryForm.markAsUntouched();
   }
 
   /**
