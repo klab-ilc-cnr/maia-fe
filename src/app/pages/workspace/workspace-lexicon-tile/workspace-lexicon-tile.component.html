@@ -1,11 +1,8 @@
 <p-toolbar>
   <div class="p-toolbar-group-start">
     <p-toast></p-toast>
-    <p-menu #menu [model]="languageItems" [popup]="true" appendTo="body"></p-menu>
-    <!-- <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
-      (click)="onAddNewLexicalEntry()"></button> -->
     <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
-      (click)="menu.toggle($event)" pTooltip="Add lexical entry" tooltipPosition="bottom"></button>
+      (click)="isAddLexicalEntryVisible = true" [pTooltip]="'LEXICON_EXPLORER.addNewLE'|translate" tooltipPosition="bottom"></button>
     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
       [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()" pTooltip="Remove"
       tooltipPosition="bottom"></button>
@@ -211,3 +208,59 @@
   </ng-template>
 </p-dialog>
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
+<p-dialog *ngIf="isAddLexicalEntryVisible" [(visible)]="isAddLexicalEntryVisible" id="newLexEntryDialog" (visibleChange)="onCloseNewLexEntryDialog()">
+  <ng-template pTemplate="header">
+    <h5 class="modal-title">{{'LEXICON_EXPLORER.addNewLE'|translate}}</h5>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <form autocomplete="off" [formGroup]="addLexEntryForm" (ngSubmit)="onAddNewLexicalEntry()">
+      <div class="formgrid grid">
+        <div class="field col-6 form-group">
+          <label class="w-full form-label" for="newLELang">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.language'|translate }}
+            *</label>
+          <p-dropdown name="lang" id="newLELang" styleClass="w-full" [options]="languages" optionLabel="label"
+            optionValue="label" appendTo="body" [filter]="true" filterBy="label" formControlName="lang"></p-dropdown>
+          <div *ngIf="lang.invalid && (lang.touched || lang.dirty)" class="invalid-feedback">
+            <div *ngIf="lang.errors?.['required']">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.languageRequired'|translate }}
+            </div>
+          </div>
+        </div>
+        <div class="field col-6 form-group">
+          <label class="w-full form-label" for="newLELabel">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.label'|translate }}
+            *</label>
+          <input name="label" pInputText type="text" id="newLELabel" class="w-full" formControlName="label">
+          <div *ngIf="label.invalid && (label.touched || label.dirty)" class="invalid-feedback">
+            <div *ngIf="label.errors?.['required']">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.labelRequired'|translate }}
+            </div>
+            <div *ngIf="label.errors?.['isNotOnlyWhitespaces']">{{
+              'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.labelNotBlanks'|translate }}</div>
+          </div>
+        </div>
+        <div class="field col-6 form-group">
+          <label class="w-full form-label" for="newLEPos">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.pos'|translate }}
+            *</label>
+          <p-dropdown name="pos" inputId="newLEPos" styleClass="w-full" formControlName="pos"
+            [options]="(pos$|async)||[]" optionLabel="valueLabel" optionValue="valueId" appendTo="body" [filter]="true"
+            filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate"></p-dropdown>
+          <div *ngIf="pos.invalid && (pos.touched || pos.dirty)" class="invalid-feedback">
+            <div *ngIf="pos.errors?.['required']">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.posRequired'|translate }}</div>
+          </div>
+        </div>
+        <div class="field col-6 form-group">
+          <label class="w-full form-label" for="newLEType">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.type'|translate }}
+            *</label>
+          <p-dropdown name="type" inputId="newLEType" styleClass="w-full" formControlName="type"
+            [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" appendTo="body"
+            [filter]="true" filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate"></p-dropdown>
+            <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">
+              <div *ngIf="type.errors?.['required']">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.typeRequired'|translate }}</div>
+            </div>  
+        </div>
+      </div>
+      <div class="field col-12 d-flex justify-content-end mb-0">
+        <button [disabled]="addLexEntryForm.invalid" class="btn btn-primary float-right"
+          type="submit">{{'GENERAL.add'|translate}}</button>
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>
