@@ -118,6 +118,8 @@
           <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
             [status]="rowData[col.field]"></app-icon-lock>
           <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
+          <!--TODO completare con tooltip e dialog con la label del dictionary associato-->
+          <i class="pi pi-link pointer" *ngIf="col.field === 'isDescribedByLexicographicComponent'&& rowData['type'] == LexicalEntryType.LEXICAL_ENTRY && rowData['isDescribedByLexicographicComponent']"></i>
           <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
           <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{

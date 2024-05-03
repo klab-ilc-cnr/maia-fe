@@ -293,8 +293,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.lang.setValue(this.languages[0].label);
     })
     this.cols = [
-      { field: 'name', header: '', width: '70%', display: 'true' },
+      { field: 'name', header: '', width: '60%', display: 'true' },
       { field: 'note', width: '10%', display: 'true' },
+      { field: 'isDescribedByLexicographicComponent', header: 'Component', width: '10%', display: 'true' },
       { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
       { field: 'status', header: 'Stato', width: '10%', display: 'true' },
     ];
@@ -749,7 +750,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         status: item['status'],
         uri: item['lexicalEntry'],
         type: LexicalEntryTypeOld.LEXICAL_ENTRY,
-        sub: item.pos
+        sub: item.pos,
+        isDescribedByLexicographicComponent: item.isDescribedByLexicographicComponent,
       },
       children: [{
         data: {
