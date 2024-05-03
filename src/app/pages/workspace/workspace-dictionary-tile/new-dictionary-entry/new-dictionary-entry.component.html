@@ -8,10 +8,18 @@
                     optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel" placeholder="Select value"
                     formControlName="language"></p-dropdown>
             </div>
-            <div class="field col-4">
+            <div class="field col-4 form-group">
                 <label for="dictName"
                     class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.entryLabel'|translate}} *</label>
                 <input pInputText type="text" class="w-full" id="dictName" formControlName="name">
+                <div class="invalid-feedback" *ngIf="name.invalid && (name.touched || name.dirty)">
+                    <div *ngIf="name.errors?.['required']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.nameMandatory'|translate}}
+                    </div>
+                    <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.nameNotBlanks'|translate}}
+                    </div>
+                </div>
             </div>
             <div class="field col-4">
                 <!--NOTE placeholder for default lemma button-->

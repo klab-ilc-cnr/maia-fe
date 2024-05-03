@@ -5,6 +5,7 @@ import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.mod
 import { LexoLanguage } from 'src/app/models/lexicon/lexical-entry.model';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
+import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 @Component({
   selector: 'app-new-dictionary-entry',
@@ -36,11 +37,12 @@ export class NewDictionaryEntryComponent implements OnInit, OnDestroy {
   /**Form to add new dictionary entries and lemmas (lexical entries) */
   entryForm = new FormGroup({
     language: new FormControl<string>('', [Validators.required]),
-    name: new FormControl<string>('', [Validators.required]),
+    name: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     selectedCategory: new FormControl<string>('fullEntry'),
     fullEntry: new FormControl<string>(''),
     lemmas: new FormArray([])
   });
+  get name() { return this.entryForm.controls.name }
   get language() { return this.entryForm.get('language') }
   /**Getter for the lemma's forms */
   get lemmas() { return <FormArray>this.entryForm.get('lemmas') }

@@ -1,6 +1,6 @@
 <form [formGroup]="lemmaForm">
     <div class="formgrid grid">
-        <div class="field col-4">
+        <div class="field col-4 form-group">
             <label class="form-label w-full">Lemma *</label>
             <p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
                 appendTo="body" [virtualScroll]="true" field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
@@ -9,6 +9,14 @@
                     {{item['label']}}<sub>{{item['pos']}}</sub>
                 </ng-template>
             </p-autoComplete>
+            <div class="invalid-feedback" *ngIf="lemma.invalid && (lemma.touched || lemma.dirty)">
+                <div *ngIf="lemma.errors?.['required']">
+                    {{'DICTIONARY_EXPLORER.CREATE_ENTRY.lemmaMandatory'|translate}}
+                </div>
+                <div *ngIf="lemma.errors?.['isNotOnlyWhitespaces']">
+                    {{'DICTIONARY_EXPLORER.CREATE_ENTRY.lemmaNotBlanks'|translate}}
+                </div>
+            </div>
         </div>
         <div class="field col-4">
             <label class="form-label w-full">POS *</label>

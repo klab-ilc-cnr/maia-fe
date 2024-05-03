@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
+import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 @Component({
   selector: 'app-new-lemma-trio',
@@ -47,9 +48,9 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
   );
 
   lemmaForm = new FormGroup({
-    lemma: new FormControl(),
-    pos: new FormControl(),
-    type: new FormControl()
+    lemma: new FormControl<string|LexicalEntryListItem>('', [Validators.required, whitespacesValidator]),
+    pos: new FormControl<string>('', Validators.required),
+    type: new FormControl<string>('')
   });
   get lemma() { return this.lemmaForm.get('lemma') as FormControl }
 
@@ -77,8 +78,8 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
         this.setAndDisableType(lemma);
         this.rowValue = {
           lemma: lemma.lexicalEntry,
-          pos: this.lemmaForm.get('pos')?.value,
-          type: this.lemmaForm.get('type')?.value,
+          pos: this.lemmaForm.get('pos')?.value ?? '',
+          type: [this.lemmaForm.get('type')!.value!],
           isFromLexicon: true
         };
       } else {
@@ -92,12 +93,12 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       debounceTime(300),
     ).subscribe(value => {
-      if (!this.rowValue.isFromLexicon) {
+      if (!this.rowValue.isFromLexicon && typeof (value.lemma) === 'string') {
         this.rowValue = {
           ...this.rowValue,
           lemma: value.lemma,
-          pos: value.pos,
-          type: [value.type]
+          pos: value.pos!,
+          type: [value.type!]
         };
       }
       this.changeValue.emit(this.rowValue);
@@ -132,11 +133,7 @@ export class NewLemmaTrioComponent implements OnInit, OnDestroy {
 
   private setAndDisableType(lexicalEntry: LexicalEntryListItem) {
     const typeControl = this.lemmaForm.get('type');
-    const values: string[] = [];
-    lexicalEntry.type.forEach(t => {
-      values.push('http://www.w3.org/ns/lemon/ontolex#' + t); //FIXME Understand how to manage in a generalized way
-    });
-    typeControl?.setValue(values);
+    typeControl?.setValue('http://www.w3.org/ns/lemon/ontolex#' + lexicalEntry.type[0]);
     typeControl?.disable();
   }
 }
