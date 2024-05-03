@@ -35,7 +35,7 @@
                     <label>{{'DICTIONARY_EXPLORER.CREATE_ENTRY.referralEntry'|translate}}</label>
                 </div>
             </div>
-            <div class="field col-6" *ngIf="selectedCategory?.value === 'referralEntry'">
+            <div class="field col-6 form-group" *ngIf="selectedCategory?.value === 'referralEntry'">
                 <label for="sameAsFullEntry">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.seeFullEntry'|translate}} *</label>
                 <div class="d-flex w-full">
                     <p-autoComplete style="width: inherit;" inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
@@ -49,6 +49,14 @@
                 </p-autoComplete>
                 <p-button type="button" aria-label="Selection" icon="pi pi-check" styleClass="p-button p-button-success"
                     [pTooltip]="'DICTIONARY_EXPLORER.CREATE_ENTRY.addFullEntry'|translate"></p-button><!--NOTE Explicit selection in case of manual entry-->
+                </div>
+                <div class="invalid-feedback" *ngIf="fullEntry.invalid && (fullEntry.touched || fullEntry.dirty)">
+                    <div *ngIf="fullEntry.errors?.['required']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.fullEntryMandatory'|translate}}
+                    </div>
+                    <div *ngIf="fullEntry.errors?.['isNotOnlyWhitespaces']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.fullEntryNotBlanks'|translate}}
+                    </div>
                 </div>
             </div>
             <div class="field col-12" *ngIf="selectedCategory?.value === 'fullEntry'">

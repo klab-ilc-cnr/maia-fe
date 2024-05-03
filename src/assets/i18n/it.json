@@ -53,6 +53,8 @@
             "defineLemmas": "Definisci lemmi",
             "entryLabel": "Nome",
             "fullEntry": "Voce piena",
+            "fullEntryMandatory": "L'etichetta della voce piena è obbligatoria",
+            "fullEntryNotBlanks": "L'etichetta della voce piena non può contenere solo spazi",
             "language": "Lingua",
             "lemmaMandatory": "L'etichetta del lemma è obbligatoria",
             "lemmaNotBlanks": "L'etichetta del lemma non può contenere solo spazi",

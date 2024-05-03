@@ -53,6 +53,8 @@
             "defineLemmas": "Define lemmas",
             "entryLabel": "Name",
             "fullEntry": "Full entry",
+            "fullEntryMandatory": "Full entry label is mandatory",
+            "fullEntryNotBlanks": "The label of the full entry cannot contain only blanks",
             "language": "Language",
             "lemmaMandatory": "Lemma label is mandatory",
             "lemmaNotBlanks": "Lemma label cannot contain only blanks",

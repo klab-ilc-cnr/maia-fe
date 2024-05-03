@@ -44,6 +44,7 @@ export class NewDictionaryEntryComponent implements OnInit, OnDestroy {
   });
   get name() { return this.entryForm.controls.name }
   get language() { return this.entryForm.get('language') }
+  get fullEntry() { return this.entryForm.controls.fullEntry }
   /**Getter for the lemma's forms */
   get lemmas() { return <FormArray>this.entryForm.get('lemmas') }
   get selectedCategory() { return this.entryForm.get('selectedCategory') }
@@ -115,14 +116,15 @@ export class NewDictionaryEntryComponent implements OnInit, OnDestroy {
     switch (category) {
       case 'fullEntry':
         this.entryForm.get('fullEntry')?.reset('');
-        this.entryForm.get('fullEntry')?.removeValidators(Validators.required);
+        this.fullEntry.clearValidators();
+        this.fullEntry.updateValueAndValidity();
         break;
       case 'referralEntry': {
         const i = 0;
         while (i < this.lemmas.controls.length) {
           this.lemmas.removeAt(i);
         }
-        this.entryForm.get('fullEntry')?.setValidators(Validators.required);
+        this.entryForm.get('fullEntry')?.setValidators([Validators.required, whitespacesValidator]);
         break;
       }
       default:
