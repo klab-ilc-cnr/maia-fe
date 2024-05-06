@@ -97,13 +97,6 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     command: () => {
       console.info('dissociate', this.selectedNode)
     },
-  },
-  {
-    label: this.commonService.translateKey('DICTIONARY_EXPLORER.CONTEXTMENU.delete'),
-    icon: 'pi pi-trash',
-    command: () => {
-      console.info('delete', this.selectedNode)
-    },
   }];
 
   public selectedNodes: TreeNode[] = [];

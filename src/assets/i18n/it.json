@@ -84,6 +84,8 @@
     },
     "LEXICON_EXPLORER": {
         "addNewLE": "Nuova entrata lessicale",
+        "associatedToDictionary": "Collegato a voci di dizionario",
+        "linkedToDictionaries": "è collegato alle voci:",
         "NEW_LEXICAL_ENTRY": {
             "language": "Lingua",
             "languageRequired": "La lingua è obbligatoria",

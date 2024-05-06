@@ -82,8 +82,8 @@
             <tr [ttContextMenuRow]="rowNode">
                 <td *ngFor="let col of cols; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
-                        [pTooltip]="rowNode.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
-                    <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
+                        [pTooltip]="rowData.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
+                    <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && rowNode.node.type === 'ENTRY' && !rowData.hasChildren"></p-treeTableCheckbox>
                     <span *ngIf="col.field === 'label'" [ngClass]="rowNode.node.type === 'ENTRY'?'fw-bold':''">{{rowData[col.field] }}</span>
                     <sub *ngIf="col.field === 'label'" class="ml-1">{{ rowData['pos'].join(' ') }}</sub>
                     <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"

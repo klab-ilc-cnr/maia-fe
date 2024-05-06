@@ -9,6 +9,7 @@ import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, 
 import { Namespace } from 'src/app/models/lexicon/namespace.model';
 import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
+import { DictionaryService } from 'src/app/services/dictionary.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
@@ -169,6 +170,15 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   get pos() { return this.addLexEntryForm.controls.pos }
   get type() { return this.addLexEntryForm.controls.type }
 
+  /**Defines whether the list of dictionary entries to which a lexical entry is linked is visible */
+  isAssociatedDictionariesVisible = false;
+  /**Label of the lexical entry whose dictionary entries we require */
+  expandedLexicalEntryLabel = '';
+  /**ID of the lexical entry whose dictionary entries we require */
+  expandedLexicalEntryId = '';
+  /**List of dictionary entries to which the lexical entry is linked */
+  associatedDictionariesList: any[] = []; //TODO modificare il tipo a string[] una volta pronto il mapping di maia-be
+
   /* @ViewChild('tt') public tt!: TreeTable; */
 
   /**
@@ -178,6 +188,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    * @param commonService {CommonService} servizi di uso comune
    * @param msgConfService {MessageConfigurationService} servizi di configurazione dei messaggi
    * @param loggedUserService {LoggedUserService} servizi relativi all'utente loggato
+   * @param globalState {GlobalStateService} services related to the status of the lexicon
+   * @param dictionaryService {DictionaryService} services related to the dictionary
    */
   constructor(
     private messageService: MessageService,
@@ -186,6 +198,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     private msgConfService: MessageConfigurationService,
     private loggedUserService: LoggedUserService,
     private globalState: GlobalStateService,
+    private dictionaryService: DictionaryService,
   ) { }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
@@ -569,6 +582,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
    */
   onNodeUnselect(event: any) {
     console.log('Unselected ' + event.node.data.uri); //TODO vedi branch lexicon
+  }
+
+  /**
+   * Method that retrieves the dictionary entries to which a lexical entry is linked and displays the corresponding dialog
+   * @param lexicalEntry {LexicalEntryOld} lexical entry for which we need linked dictionaries
+   */
+  onOpenLinkedDictionaries(lexicalEntry: LexicalEntryOld) {
+    this.expandedLexicalEntryId = lexicalEntry.instanceName!;
+    this.expandedLexicalEntryLabel = lexicalEntry.label!;
+    this.dictionaryService.retrieveDictionariesByLexicalEntryId(this.expandedLexicalEntryId).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe((dictionaries: any[]) => {
+      this.associatedDictionariesList = dictionaries.map(d => d.label); //TODO rimuovere mapping quando sarà modificato il servizio di maia-be
+      this.isAssociatedDictionariesVisible = true;
+    });
   }
 
   /**Metodo che gestisce la rimozione dei nodi selezionati */

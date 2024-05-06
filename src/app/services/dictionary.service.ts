@@ -78,6 +78,10 @@ export class DictionaryService {
     return this.http.get<LexicographicComponent[]>(`${this.lexoUrl}/data/lexicographicComponents?id=${this.commonService.encodeUrl(parentEntityId)}`)
   }
 
+  retrieveDictionariesByLexicalEntryId(lexicalEntryID: string): Observable<any[]> { //TODO modificare il tipo di ritorno una volta pronto il mapping dei dati da parte di maia-be
+    return this.http.get<any[]>(`${this.lexoUrl}/data/dictionaryEntryByLexicalEntry?id=${this.commonService.encodeUrl(lexicalEntryID)}`);
+  }
+
   /**
    * Requires the list of dictionary entries corresponding to a set of filters
    * @param request {LexicogEntriesRequest} set of indexes and filters 
