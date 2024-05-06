@@ -10,7 +10,7 @@ export const whitespacesValidator: ValidatorFn = (control: AbstractControl): Val
   if (!control || !control.value) { return null; }
   const error = { 'isNotOnlyWhitespaces': true };
 
-  if (!control.value.trim()) {
+  if (typeof(control.value)==='string' && !control.value.trim()) {
     return error;
   }
   return null;

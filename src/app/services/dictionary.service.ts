@@ -74,6 +74,20 @@ export class DictionaryService {
     );
   }
 
+  /**
+   * Request http to delete a component
+   * @param lexicographicComponentId {string} component identifier
+   * @returns {Observable<string>} timestamp
+   */
+  dissociateComponent(lexicographicComponentId: string) {
+    return this.http.get(
+      `${this.lexoUrl}/delete/lexicographicComponent?id=${this.commonService.encodeUrl(lexicographicComponentId)}`,
+      {
+        responseType: 'text'
+      }
+    );
+  }
+
   retrieveComponents(parentEntityId: string): Observable<LexicographicComponent[]> {
     return this.http.get<LexicographicComponent[]>(`${this.lexoUrl}/data/lexicographicComponents?id=${this.commonService.encodeUrl(parentEntityId)}`)
   }

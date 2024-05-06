@@ -16,7 +16,7 @@
     <div class="flex card-container w-full">
         <div class="p-inputgroup">
             <p-button [pTooltip]="'DICTIONARY_EXPLORER.refresh'|translate" class="mr-2" icon="pi pi-spinner"
-                [loading]="loading" (onClick)="false"></p-button>
+                [loading]="loading" (onClick)="loadNodes()"></p-button>
             <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)"
                 icon="pi pi-info-circle"></button>
             <form [formGroup]="searchTextForm" autocomplete="off" class="w-full">

@@ -95,7 +95,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     label: this.commonService.translateKey('DICTIONARY_EXPLORER.CONTEXTMENU.dissociate'),
     icon: 'pi pi-eraser',
     command: () => {
-      console.info('dissociate', this.selectedNode)
+      this.dissociateLemmaFromDictionaryEntry();
     },
   }];
 
@@ -302,6 +302,23 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.lexicogRequest.status = values.status || '';
     }
     this.loadNodes();
+  }
+
+  /**
+   * Method that handles the dissociation of a lemma from a dictionary entry
+   * @returns {void}
+   */
+  private dissociateLemmaFromDictionaryEntry() {
+    if(!this.selectedNode) {
+      console.error('Node not selected');
+      return;
+    }
+    this.dictionaryService.dissociateComponent(this.selectedNode.data.id).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(() => {
+      this.loadNodes();
+    });
   }
 
   private mapLexicogEntryToTreenode(lexicogEntry: DictionaryListItem): TreeNode<DictionaryListItem> {
