@@ -178,6 +178,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
         return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
       }),
     ).subscribe(() => {
+      this.commonService.notifyOther({option: 'lexicon_edit_update_tree'});
       this.loadNodes();
     });
   }
@@ -207,6 +208,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.isAddLemmaVisible = false;
       this.entryForLemmaTemp = undefined;
       this.newLemmaTemp = undefined;
+      this.commonService.notifyOther({option: 'lexicon_edit_update_tree'});
       this.loadNodes();
     });
   }
@@ -317,6 +319,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(() => {
+      this.commonService.notifyOther({ option: 'lexentry_dissociated_from_dictionary', lexicalEntry: this.selectedNode.data.referredEntity });
       this.loadNodes();
     });
   }

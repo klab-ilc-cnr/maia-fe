@@ -330,6 +330,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         case 'lexicon_update_counter':
           this.updateGroupingNode(res);
           break;
+        case 'lexentry_dissociated_from_dictionary':
+          this.updateIsDescribedByLexicographicComponent(res.lexicalEntry)
+          break;
         default:
           break;
       }
@@ -873,4 +876,18 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       }
     }
   }
+
+  private async updateIsDescribedByLexicographicComponent(lexicalEntryId: string) {
+    const lexEntryIndex = this.results.findIndex(node => node.data?.instanceName === lexicalEntryId);
+    this.dictionaryService.retrieveDictionariesByLexicalEntryId(lexicalEntryId).pipe(
+      take(1),
+      catchError(() => {
+        this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = false;
+        return of([]);
+      }),
+    ).subscribe((dictionaries: any[]) => {
+      this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = dictionaries.length>0;  
+    });
+  }
+
 }
