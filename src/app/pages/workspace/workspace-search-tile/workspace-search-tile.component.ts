@@ -239,7 +239,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   setResizeTableWidth(width: string) {
     (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.width = width;
-    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = width;
+    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
 }
 
   /**clears table and prevent triggering lazy loading multiple times */
