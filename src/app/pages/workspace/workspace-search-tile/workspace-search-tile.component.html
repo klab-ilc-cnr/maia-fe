@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
-              class="mx-5 dropdownDimensions"
+              class="mr-5 dropdownDimensions"
               styleClass="w-100"
               (onShow)="reloadSelectedDocuments()"
               [options]="(files$|async)||[]"
@@ -29,7 +29,7 @@
           </div>
           <p-dropdown styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="true" placeholder="Pos" optionLabel="name"></p-dropdown>
           
-          <div class="slider-input mx-5">
+          <div class="slider-input ml-5">
             <label class="mb-2">{{'SEARCH.contextLength'|translate}}: {{contextLength}}</label>
             <p-slider [min]="0" [max]="contextMaxLenght" [(ngModel)]="contextLength"></p-slider>
           </div>
