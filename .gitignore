@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/maia
 
 # Node
 /node_modules
