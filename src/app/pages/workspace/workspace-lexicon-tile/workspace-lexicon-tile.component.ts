@@ -301,7 +301,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   ngOnInit(): void {
     this.globalState.languages$.pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe(l =>{
+    ).subscribe(l => {
       this.languages = l;
       this.lang.setValue(this.languages[0].label);
     })
@@ -597,8 +597,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     this.dictionaryService.retrieveDictionariesByLexicalEntryId(this.expandedLexicalEntryId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-    ).subscribe((dictionaries: any[]) => {
-      this.associatedDictionariesList = dictionaries.map(d => d.label); //TODO rimuovere mapping quando sarà modificato il servizio di maia-be
+    ).subscribe((dictionaries: string[]) => {
+      this.associatedDictionariesList = dictionaries;
       this.isAssociatedDictionariesVisible = true;
     });
   }
@@ -885,8 +885,8 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = false;
         return of([]);
       }),
-    ).subscribe((dictionaries: any[]) => {
-      this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = dictionaries.length>0;  
+    ).subscribe((dictionaries: string[]) => {
+      this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = dictionaries.length > 0;
     });
   }
 
