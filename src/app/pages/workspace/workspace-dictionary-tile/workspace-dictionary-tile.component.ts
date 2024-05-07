@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MenuItem, TreeNode } from 'primeng/api';
+import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, take, takeUntil } from 'rxjs';
+import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionaryListItem } from 'src/app/models/dictionary/dictionary-list-item.model';
 import { LexicogEntriesRequest } from 'src/app/models/dictionary/lexicog-entries-request.model';
@@ -10,6 +11,7 @@ import { STATUSES, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-r
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 export enum DICTIONARY_NODE {
   entry = 'ENTRY',
@@ -22,6 +24,7 @@ export enum DICTIONARY_NODE {
 })
 export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   /**Number of rows (nodes) to be retrieved */
   rows = 5000;
   /**Working statuses */
@@ -80,7 +83,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     label: this.commonService.translateKey('DICTIONARY_EXPLORER.CONTEXTMENU.delete'),
     icon: 'pi pi-trash',
     command: () => {
-      console.info('delete', this.selectedNode)
+      this.deleteDictionaryEntry(this.selectedNode.data);
     },
   }];
   lemmaCM: MenuItem[] = [{
@@ -105,6 +108,8 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     private dictionaryService: DictionaryService,
     private commonService: CommonService,
     private globalState: GlobalStateService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
   ) { }
 
   ngOnInit(): void {
@@ -211,6 +216,11 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       this.loadNodes();
     });
+  }
+
+  onDeleteDictionaryEntries() {
+    const entries = this.selectedNodes.map(tn => tn.data);
+    this.showDeleteModal(entries);
   }
 
   onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
@@ -362,10 +372,30 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
 
   private deleteDictionaryEntry(dictionaryEntry: DictionaryListItem) {
     if (dictionaryEntry.hasChildren) {
-      //TODO aggiungere messaggio di avviso per azione non disponibile
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey('DICTIONARY_EXPLORER.firstRemoveLemmas')))
       return;
     }
-    //TODO inserisci visualizzazione conferma cancellazione
+    this.loading = true;
+    this.showDeleteModal([dictionaryEntry]);
+  }
+
+  private deleteDictionaryEntries(dictEntriesId: string[]) {
+    const deleteRequests: any[] = [];
+    dictEntriesId.forEach(id => {
+      deleteRequests.push(this.dictionaryService.deleteDictionaryEntry(id));
+    });
+    const combinedRequests = concat(...deleteRequests);
+    combinedRequests.pipe(
+      last(),
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
+    ).subscribe(() => {
+      this.loading = false;
+      this.loadNodes();
+    })
   }
 
   /**
@@ -392,5 +422,12 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       type: DICTIONARY_NODE.entry,
       leaf: !lexicogEntry.hasChildren
     };
+  }
+
+  private showDeleteModal(entriesList: DictionaryListItem[]): void {
+    const entriesIdList = entriesList.map(d => d.id);
+    const confirmMessage = entriesIdList.length === 1 ? this.commonService.translateKey('DICTIONARY_EXPLORER.deleteDictionaryEntry').replace('${dictionaryEntryLabel}', entriesList[0].label) : this.commonService.translateKey('DICTIONARY_EXPLORER.deleteDictionaryEntries');
+    this.popupDeleteItem.confirmMessage = confirmMessage;
+    this.popupDeleteItem.showDeleteConfirm(() => this.deleteDictionaryEntries(entriesIdList), 'delete_dictionary_entries');
   }
 }

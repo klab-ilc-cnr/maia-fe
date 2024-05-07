@@ -121,7 +121,7 @@ export class DictionaryService {
    */
   deleteDictionaryEntry(dictionaryEntryId: string): Observable<string> {
     return this.http.get(
-      `${this.lexoUrl}/delete/dictionaryEntry?id=${dictionaryEntryId}`,
+      `${this.lexoUrl}/delete/dictionaryEntry?id=${this.commonService.encodeUrl(dictionaryEntryId)}`,
       {
         responseType: 'text',
       }

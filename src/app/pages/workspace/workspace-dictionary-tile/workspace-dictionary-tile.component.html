@@ -3,8 +3,8 @@
         <button aria-label="Add entry" type="button" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
             [pTooltip]="'DICTIONARY_EXPLORER.addEntry'|translate" tooltipPosition="bottom" (click)="isAddDictionaryEntryVisible=true"></button>
         <!--TODO Dynamically manage the button enablement once the management of selections from list is implemented-->
-        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" [disabled]="true"
-            [pTooltip]="'DICTIONARY_EXPLORER.remove'|translate" tooltipPosition="bottom"></button>
+        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" [disabled]="!selectedNodes || selectedNodes.length===0"
+            [pTooltip]="'DICTIONARY_EXPLORER.remove'|translate" tooltipPosition="bottom" (click)="onDeleteDictionaryEntries()"></button>
     </div>
     <div class="p-toolbar-group-end">
         <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"
@@ -136,3 +136,4 @@
         <button [disabled]="!newLemmaTemp || (newLemmaTemp.lemma === '' || newLemmaTemp.pos === '')" type="button" class="btn btn-primary" (click)="onAddNewLemma()">{{'DICTIONARY_EXPLORER.addLemma'|translate}}</button>
     </ng-template>
 </p-dialog>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

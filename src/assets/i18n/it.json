@@ -65,9 +65,12 @@
             "seeFullEntry": "Vedi voce piena",
             "type": "Tipo"
         },
+        "deleteDictionaryEntries": "Vuoi cancellare le voci di dizionario selezionate?",
+        "deleteDictionaryEntry": "Vuoi cancellare la voce '${dictionaryEntryLabel}'?",
         "editor": "Redattore",
         "export": "Esporta",
         "filtersPanel": "Filtri",
+        "firstRemoveLemmas": "Prima è necessario dissociare i lemmi",
         "language": "Lingua",
         "refresh": "Aggiorna i risultati",
         "remove": "Elimina",
