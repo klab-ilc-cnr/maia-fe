@@ -60,6 +60,12 @@ export class DictionaryService {
     );
   }
 
+  /**
+   * Http request linking with a sameAs relation one full entry and one referral entry
+   * @param referralEntryId {string} referral entry identifier
+   * @param fullEntryId {string} full entry identifier
+   * @returns {Observable<string>} timestamp
+   */
   associateReferralEntry(referralEntryId: string, fullEntryId: string): Observable<string> {
     return this.http.post(
       `${this.lexoUrl}/dictionary/associate/referralEntry`,
@@ -85,6 +91,27 @@ export class DictionaryService {
         position: position
       }
     );
+  }
+
+  /**
+   * Http request that creates the full entry and the referral entry and links them with a sameAs relationship
+   * @param lang {string} dictionary language code
+   * @param referralEntryLabel {string} label of the new referral entry
+   * @param fullEntryLabel {string} label of the new full entry
+   * @returns {Observable<string>} timestamp
+   */
+  createAndAssociateReferralEntry(lang: string, fullEntryLabel: string, referralEntryLabel: string): Observable<string> {
+    return this.http.post(
+      `${this.lexoUrl}/dictionary/createAndAssociate/referralEntry?author=${this.currentUser.username}&prefix=${this.prefix}&baseIRI=${this.encodedBaseIRI}`,
+      {
+        lang: lang,
+        fullEntryLabel: fullEntryLabel,
+        referralEntryLabel: referralEntryLabel,
+      },
+      {
+        responseType: 'text'
+      }
+    )
   }
 
   /**

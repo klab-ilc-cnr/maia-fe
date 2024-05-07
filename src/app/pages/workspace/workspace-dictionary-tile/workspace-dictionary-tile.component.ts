@@ -265,10 +265,15 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.entryForLemmaTemp = entry;
   }
 
+  /**
+   * Method that saves a new dictionary entry with any lemmas or full entry
+   * @param entryData {{ language: string, name: string, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[], fullEntry: any, selectedCategory: string }} new dictionary form data
+   * @returns {void}
+   */
   onSubmitEntry(entryData: { language: string, name: string, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[], fullEntry: any, selectedCategory: string }) {
     this.loading = true;
     if (entryData.selectedCategory === 'referralEntry' && typeof (entryData.fullEntry) === 'string') {
-      //TODO inserire il servizio che crea entrambe le voci e poi crea l'associazione sameAs
+      return this.createAndAssociateReferralToFullEntry(entryData.language, entryData.name, entryData.fullEntry);
     }
     this.dictionaryService.addDictionaryEntry(entryData.language, entryData.name).pipe(
       take(1),
@@ -283,7 +288,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
             console.error('Need to specify a full entry');
             return;
           }
-          this.addAssociateFullEntry(newEntry.id, entryData.fullEntry);
+          this.associateToFullEntry(newEntry.id, entryData.fullEntry);
           break;
         }
         case 'fullEntry': {
@@ -302,7 +307,12 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.isAddDictionaryEntryVisible = false;
   }
 
-  private addAssociateFullEntry(referralEntryId: string, fullEntry: DictionaryListItem) {
+  /**
+   * Method that links a referral entry to the corresponding full entry
+   * @param referralEntryId {string} referral entry identifier
+   * @param fullEntry {DictionaryListItem} object describing the full entry to which it points
+   */
+  private associateToFullEntry(referralEntryId: string, fullEntry: DictionaryListItem) {
     this.dictionaryService.associateReferralEntry(referralEntryId, fullEntry.id).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -313,6 +323,26 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.loadNodes();
     });
+  }
+
+  /**
+   * Method that creates full entry and referral entry and connects them with a sameAs relationship
+   * @param lang {string} dictionary language code
+   * @param referralEntryLabel {string} label of the new referral entry
+   * @param fullEntryLabel {string} label of the new full entry
+   */
+  private createAndAssociateReferralToFullEntry(lang: string, referralEntryLabel: string, fullEntryLabel: string) {
+    this.dictionaryService.createAndAssociateReferralEntry(lang, fullEntryLabel, referralEntryLabel).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
+    ).subscribe(() => {
+      this.isAddDictionaryEntryVisible = false;
+      this.loading = false;
+      this.loadNodes();
+    })
   }
 
   private createFilters(isSearchInput: boolean) {
