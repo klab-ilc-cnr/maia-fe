@@ -360,6 +360,14 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.loadNodes();
   }
 
+  private deleteDictionaryEntry(dictionaryEntry: DictionaryListItem) {
+    if (dictionaryEntry.hasChildren) {
+      //TODO aggiungere messaggio di avviso per azione non disponibile
+      return;
+    }
+    //TODO inserisci visualizzazione conferma cancellazione
+  }
+
   /**
    * Method that handles the dissociation of a lemma from a dictionary entry
    * @returns {void}

@@ -11,6 +11,4 @@ export interface DictionaryEntry extends DictionaryBase, DictionaryListItem {
     note: string[];
     /**List of entities (dictionary entries) to which it is linked by a type relationship see also */
     seeAlso: any[]; //TODO sostituire con il modello dati corretto
-    /**Entity (dictionary entry) to which it is linked by a relationship of type sameAs */
-    sameDictionaryEntryAs: any; //TODO sostituire con il modello dati corretto
 }

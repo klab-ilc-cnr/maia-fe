@@ -115,6 +115,20 @@ export class DictionaryService {
   }
 
   /**
+   * Request http to delete a dictionary entry
+   * @param dictionaryEntryId {string} dictionary entry identifier
+   * @returns {Observable<string>} timestamp
+   */
+  deleteDictionaryEntry(dictionaryEntryId: string): Observable<string> {
+    return this.http.get(
+      `${this.lexoUrl}/delete/dictionaryEntry?id=${dictionaryEntryId}`,
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+  /**
    * Request http to delete a component
    * @param lexicographicComponentId {string} component identifier
    * @returns {Observable<string>} timestamp
