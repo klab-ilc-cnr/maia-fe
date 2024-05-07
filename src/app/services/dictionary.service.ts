@@ -60,6 +60,19 @@ export class DictionaryService {
     );
   }
 
+  associateReferralEntry(referralEntryId: string, fullEntryId: string): Observable<string> {
+    return this.http.post(
+      `${this.lexoUrl}/dictionary/associate/referralEntry`,
+      {
+        referralEntryId: referralEntryId,
+        fullEntryId: fullEntryId
+      },
+      {
+        responseType: 'text'
+      }
+    );
+  }
+
   createAndAssociateLexicalEntry(lang: string, label: string, pos: string, type: string[], dictionaryId: string, position: number) {
     return this.http.post(
       `${this.lexoUrl}/dictionary/createAndAssociate/entry?author=${this.currentUser.username}&prefix=${this.prefix}&baseIRI=${this.encodedBaseIRI}`,

@@ -178,7 +178,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
         return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
       }),
     ).subscribe(() => {
-      this.commonService.notifyOther({option: 'lexicon_edit_update_tree'});
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       this.loadNodes();
     });
   }
@@ -208,7 +208,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.isAddLemmaVisible = false;
       this.entryForLemmaTemp = undefined;
       this.newLemmaTemp = undefined;
-      this.commonService.notifyOther({option: 'lexicon_edit_update_tree'});
+      this.commonService.notifyOther({ option: 'lexicon_edit_update_tree' });
       this.loadNodes();
     });
   }
@@ -216,7 +216,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
     console.info('expand', event)
     this.loading = true;
-    const dictionaryId = event.node.data?.id; 
+    const dictionaryId = event.node.data?.id;
     console.info(dictionaryId)
     if (!dictionaryId) return; //TODO aggiungere un messaggio di errore
     this.dictionaryService.retrieveComponents(dictionaryId).pipe(
@@ -265,18 +265,29 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.entryForLemmaTemp = entry;
   }
 
-  onSubmitEntry(entryData: { language: string, name: string, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[], fullEntry: string, selectedCategory: string }) {
+  onSubmitEntry(entryData: { language: string, name: string, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[], fullEntry: any, selectedCategory: string }) {
+    this.loading = true;
+    if (entryData.selectedCategory === 'referralEntry' && typeof (entryData.fullEntry) === 'string') {
+      //TODO inserire il servizio che crea entrambe le voci e poi crea l'associazione sameAs
+    }
     this.dictionaryService.addDictionaryEntry(entryData.language, entryData.name).pipe(
       take(1),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
     ).subscribe(newEntry => {
-      switch(entryData.selectedCategory) {
+      switch (entryData.selectedCategory) {
         case 'referralEntry': {
-          console.info('to be implemented'); //TODO implementare l'aggiunta di una relazione sameAs
+          if (!entryData.fullEntry) {
+            console.error('Need to specify a full entry');
+            return;
+          }
+          this.addAssociateFullEntry(newEntry.id, entryData.fullEntry);
           break;
         }
         case 'fullEntry': {
-          if(entryData.lemmas.length>0) {
+          if (entryData.lemmas.length > 0) {
             this.onAddAssociateLemmas(newEntry, entryData.lemmas);
           }
           break;
@@ -289,6 +300,19 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       console.info(newEntry);
     });
     this.isAddDictionaryEntryVisible = false;
+  }
+
+  private addAssociateFullEntry(referralEntryId: string, fullEntry: DictionaryListItem) {
+    this.dictionaryService.associateReferralEntry(referralEntryId, fullEntry.id).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => {
+        this.loading = false;
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }),
+    ).subscribe(() => {
+      this.loading = false;
+      this.loadNodes();
+    });
   }
 
   private createFilters(isSearchInput: boolean) {
@@ -311,7 +335,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   private dissociateLemmaFromDictionaryEntry() {
-    if(!this.selectedNode) {
+    if (!this.selectedNode) {
       console.error('Node not selected');
       return;
     }
