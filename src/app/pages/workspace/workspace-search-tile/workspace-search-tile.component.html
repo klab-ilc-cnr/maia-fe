@@ -2,7 +2,8 @@
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
-              class="mx-5"
+              class="mr-5 dropdownDimensions"
+              styleClass="w-100"
               (onShow)="reloadSelectedDocuments()"
               [options]="(files$|async)||[]"
               [metaKeySelection]="false"
@@ -14,6 +15,7 @@
           </p-treeSelect>
 
           <div class="p-inputgroup">
+            <p-selectButton (onChange)="onSearchModeChange()" optionDisabled="inactive" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
             <span class="p-input-icon-left flex-fill">
               <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
               <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
@@ -24,11 +26,10 @@
                 {{'SEARCH.validSearchValue'|translate}}
               </small>
             </span>
-            <p-selectButton (onChange)="onSearchModeChange()" optionDisabled="inactive" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
           </div>
-          <p-dropdown class="mx-5" [disabled]="true" placeholder="Pos" optionLabel="name"></p-dropdown>
+          <p-dropdown styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="true" placeholder="Pos" optionLabel="name"></p-dropdown>
           
-          <div class="slider-input mx-5">
+          <div class="slider-input ml-5">
             <label class="mb-2">{{'SEARCH.contextLength'|translate}}: {{contextLength}}</label>
             <p-slider [min]="0" [max]="contextMaxLenght" [(ngModel)]="contextLength"></p-slider>
           </div>
@@ -36,6 +37,9 @@
     </div>
 
     <div class="row">
+      <div class="col d-flex justify-content-start">
+            {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
+      </div>
       <div class="col d-flex justify-content-end">
         <button pButton type="button" (click)="onSearch()" class="mx-2">{{'SEARCH.buttons.search'|translate}}</button>
         <button pButton type="button" (click)="onClear()" class="p-button-secondary mx-2">{{'SEARCH.buttons.clear'|translate}}</button>
@@ -73,14 +77,6 @@
       styleClass="p-datatable-gridlines"
       paginatorDropdownAppendTo="body"
       [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate">
-        <ng-template pTemplate="caption">
-            <div class="table-header">
-                {{'SEARCH.numberOfResults'|translate}}: {{totalRecords}}
-            </div>
-            <div class="table-header">
-                {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
-          </div>
-        </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th pResizableColumn></th>
