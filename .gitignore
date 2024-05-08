@@ -43,8 +43,8 @@ testem.log
 Thumbs.db
 
 # environments
-*environment.collaudo.ts
-*environment.complit.ts
-*environment.demo-articolo.ts
+/src/environments/environment.collaudo.ts
+/src/environments/environment.complit.ts
+/src/environments/environment.demo-articolo.ts
 #*environment.production.ts
-*environment.ts
+/src/environments/environment.ts
