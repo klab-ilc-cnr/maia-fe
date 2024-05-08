@@ -17,5 +17,5 @@ export const environment = {
   lexoPrefix: "lex",
   lexoBaseIRI: "http://lexica/mylexicon#",
   applicationSubTitle: " VocaBO",
-  demoHide: false,
+  demoHide: true,
 };

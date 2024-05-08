@@ -42,9 +42,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
-#environments
-/src/environments/environment.collaudo.ts
-/src/environments/environment.complit.ts
-/src/environments/environment.demo-articolo.ts
-/src/environments/environment.production.ts
-/src/environments/environment.ts
+# environments
+*environment.collaudo.ts
+*environment.complit.ts
+*environment.demo-articolo.ts
+#*environment.production.ts
+*environment.ts

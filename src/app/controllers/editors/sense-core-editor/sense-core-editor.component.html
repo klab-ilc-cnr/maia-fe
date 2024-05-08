@@ -31,7 +31,7 @@
         </ng-template>
       </p-fieldset>
     </div>
-    <div class="field col-12">
+    <div class="field col-12" *ngIf="!demoHide"> <!--NOTE REMOVE DEMOHIDE WHEN FULLY DEVELOPED-->
       <p-fieldset>
         <ng-template pTemplate="header">
           Morphological Restriction <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
