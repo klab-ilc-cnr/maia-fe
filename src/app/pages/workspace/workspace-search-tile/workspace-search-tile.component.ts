@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap, throttleTime } from 'rxjs';
@@ -56,6 +56,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   visibleRows: number = 10;
   tableCleared = false;
   changingPage = false;
+
+  /** Delta for correct resizing internal search result table */
+  nativeTableDelta = 57;
 
   /**export button items */
   exportItems!: MenuItem[];
@@ -185,9 +188,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
  * Updates the height of the content of the panel
  * @param newHeight {any} newHeight
  */
-  updateHeight(newHeight: number) {
+  updateHeight(newHeight: number, newWidth: number) {
     this.currentPanelHeight = newHeight;
     this.tableContainerHeight = newHeight - this.tableHeaderHegith;
+    this.setResizeTableWidth((newWidth - this.nativeTableDelta) + 'px')
   }
 
   /**search mode handler */
@@ -232,6 +236,11 @@ export class WorkspaceSearchTileComponent implements OnInit {
       this.updateTableHeight();
     });
   }
+
+  setResizeTableWidth(width: string) {
+    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.width = width;
+    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
+}
 
   /**clears table and prevent triggering lazy loading multiple times */
   clearTable() {

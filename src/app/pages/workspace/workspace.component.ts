@@ -1223,28 +1223,33 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         minWidth: 730,
         minHeight: 500,
         resize: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateHeight(paneldata.height)
+          componentRef.instance.updateHeight(paneldata.height, paneldata.width);
         }
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
       },
       onminimized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);;
       },
       onnormalized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
       },
       onsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
       },
       onunsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.SEARCH);
