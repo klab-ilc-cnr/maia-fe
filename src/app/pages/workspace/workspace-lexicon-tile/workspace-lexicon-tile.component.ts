@@ -575,7 +575,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
       return;
     }
-    console.info(node)
     this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
     // }
   }
