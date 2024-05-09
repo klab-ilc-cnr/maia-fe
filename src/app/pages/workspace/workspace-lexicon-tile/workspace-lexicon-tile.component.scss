@@ -2,6 +2,12 @@
   min-width: min-content;
 }
 
+#newLexEntryDialog {
+  ::ng-deep.p-dialog {
+    width: 25vw;
+  }
+}
+
 #searchInput {
   width: auto;
   min-width: 50px;
@@ -47,4 +53,8 @@ td {
   span {
     display: inline;
   }
+}
+
+.pi-link.link-pointer {
+  cursor: pointer;
 }

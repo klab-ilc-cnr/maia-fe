@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/maia
 
 # Node
 /node_modules
@@ -41,9 +42,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
-#environments
+# environments
 /src/environments/environment.collaudo.ts
 /src/environments/environment.complit.ts
 /src/environments/environment.demo-articolo.ts
-/src/environments/environment.production.ts
+#*environment.production.ts
 /src/environments/environment.ts

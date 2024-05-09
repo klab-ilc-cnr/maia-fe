@@ -13,6 +13,7 @@ export class LexicalEntryOld {
   uri?: string
   sub?: string
   isCanonical?: boolean
+  isDescribedByLexicographicComponent?: boolean
 }
 
 export interface LexicalElementBase {
@@ -60,6 +61,7 @@ export interface LexicalEntryListItem extends LexicalElementBase {
   author: string,
   note: string,
   hasChildren: boolean,
+  isDescribedByLexicographicComponent: boolean,
   lexicalEntry: string,
   morphology: MorphologyProperty[],
   completionDate: string,

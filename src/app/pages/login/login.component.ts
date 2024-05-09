@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CommonService } from 'src/app/services/common.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
 
 /**Component for logging into the application */
 @Component({
@@ -15,6 +16,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  subTitle = environment.applicationSubTitle;
   /**Authentication data form */
   loginForm = new FormGroup({
     username: new FormControl<string>('', Validators.required),

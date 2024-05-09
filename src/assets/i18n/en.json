@@ -5,7 +5,9 @@
         "cancel": "Cancel",
         "confirm": "Confirm",
         "currentPageReportTemplate": "Elements {first} to {last} for a total of {totalRecords} elements",
+        "noResult": "No result",
         "save": "Save",
+        "selectValue": "Select value",
         "update": "Update"
     },
     "CORPUS_EXPLORER": {
@@ -36,6 +38,68 @@
         "splitOnNewLine": "Split on new line",
         "uploaderType": "Uploader type",
         "uploadFileTitle": "Upload file"
+    },
+    "DICTIONARY_EXPLORER": {
+        "addEntry": "Add new entry",
+        "addLemma": "Add lemma",
+        "CONTEXTMENU": {
+            "delete": "Delete",
+            "dissociate": "Dissociate",
+            "move": "Move"
+        },
+        "CREATE_ENTRY": {
+            "addEntry": "Add",
+            "addFullEntry": "Add full entry",
+            "defineLemmas": "Define lemmas",
+            "entryLabel": "Name",
+            "fullEntry": "Full entry",
+            "fullEntryMandatory": "Full entry label is mandatory",
+            "fullEntryNotBlanks": "The label of the full entry cannot contain only blanks",
+            "language": "Language",
+            "lemmaMandatory": "Lemma label is mandatory",
+            "lemmaNotBlanks": "Lemma label cannot contain only blanks",
+            "nameMandatory": "Dictionary entry label is mandatory",
+            "nameNotBlanks": "The dictionary entry label cannot contain only blanks",
+            "noMatching": "No matching",
+            "referralEntry": "Referral entry",
+            "seeFullEntry": "See full entry",
+            "type": "Type"
+        },
+        "deleteDictionaryEntries": "Do you want to delete selected dictionary entries?",
+        "deleteDictionaryEntry": "Do you want to delete the entry '${dictionaryEntryLabel}'?",
+        "editor": "Editor",
+        "export": "Export",
+        "filtersPanel": "Filters",
+        "firstRemoveLemmas": "First it is necessary to dissociate the lemmas",
+        "language": "Language",
+        "refresh": "Refresh results",
+        "remove": "Remove",
+        "SEARCH_GUIDE": {
+            "title": "Search examples",
+            "multiCharWildcard": "Multiple character wildcard search:",
+            "singleCharWildCard": "Single character wildcard search:",
+            "fuzzy": "Fuzzy search:",
+            "weightedFuzzy": "Weighted fuzzy search:"
+        },
+        "selection": "Selection",
+        "showLemmas": "Show lemmas",
+        "status": "Status"
+    },
+    "LEXICON_EXPLORER": {
+        "addNewLE": "New lexical entry",
+        "associatedToDictionary": "Linked to dictionary entries",
+        "linkedToDictionaries": "is connected to the entries:",
+        "NEW_LEXICAL_ENTRY": {
+            "language": "Language",
+            "languageRequired": "Language is mandatory",
+            "label": "Label",
+            "labelNotBlanks": "Label cannot contain only blanks",
+            "labelRequired": "Label is mandatory",
+            "pos": "Part of speech",
+            "posRequired": "POS is mandatory",
+            "type": "Type",
+            "typeRequired": "Type is mandatory"
+        }
     },
     "LOGIN": {
         "authFailed": "Authentication failed",
