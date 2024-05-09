@@ -62,11 +62,13 @@
       [lazyLoadOnInit]="false"
       (onLazyLoad)="lazyLoadSearchResults($event)"
       (onPage)="onPage($event)"
+      (onColResize)="onColResize($event)"
       [totalRecords]="totalRecords"
       [(selection)]="selectedSearchResults"
       [rowHover]="true"
       [(rows)]="visibleRows"
       [scrollable]="true"
+      scrollDirection="both"
       [resizableColumns]="true"
       columnResizeMode="expand"
       [scrollHeight]="tableContainerHeight+'px'"
@@ -79,19 +81,19 @@
       [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate">
         <ng-template pTemplate="header">
             <tr>
-                <th pResizableColumn></th>
-                <th pResizableColumn>{{'SEARCH.columns.index'|translate}}</th>
-                <th pResizableColumn>{{'SEARCH.columns.text'|translate}}</th>
-                <th pResizableColumn>{{'SEARCH.columns.ref'|translate}}</th>
-                <th pResizableColumn>{{'SEARCH.columns.leftContext'|translate}}</th>
-                <th pResizableColumn>{{'SEARCH.columns.kwic'|translate}}</th>
-                <th pResizableColumn>{{'SEARCH.columns.rightContext'|translate}}</th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[0]}" pResizableColumn></th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[1]}" pResizableColumn>{{'SEARCH.columns.index'|translate}}</th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[2]}" pResizableColumn>{{'SEARCH.columns.text'|translate}}</th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[3]}" pResizableColumn>{{'SEARCH.columns.ref'|translate}}</th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[4]}" pResizableColumn>{{'SEARCH.columns.leftContext'|translate}}</th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[5]}" pResizableColumn>{{'SEARCH.columns.kwic'|translate}}</th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[6]}" pResizableColumn>{{'SEARCH.columns.rightContext'|translate}}</th>
             </tr>
             <tr>
-                <th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[1]}">
                     <p-columnFilter type="text" field="index" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
@@ -99,7 +101,7 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[2]}">
                     <p-columnFilter type="text" field="text" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
@@ -107,7 +109,7 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[3]}">
                     <p-columnFilter type="text" field="textHeader" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
@@ -115,7 +117,7 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[4]}">
                     <p-columnFilter type="text" field="leftContext" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
@@ -123,7 +125,7 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[5]}">
                     <p-columnFilter type="text" field="kwic" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
@@ -131,7 +133,7 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th>
+                <th [ngStyle]="{'width.%': colDefaultWidths[6]}">
                     <p-columnFilter type="text" field="rightContext" matchMode="contains" class="w-100" [showMenu]="false" [showClearButton]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input [ngModel]="value" pInputText type="text" (input)="filter(toHtmlInputElement($event.target).value)"
@@ -143,27 +145,27 @@
         </ng-template>
         <ng-template pTemplate="body" let-searchResult>
             <tr class="p-selectable-row" (dblclick)="tableRowDoubleClickHandler($event, searchResult)">
-                <td>
+                <td [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center">
                     <p-tableCheckbox [value]="searchResult"></p-tableCheckbox>
                 </td>
-                <td>
+                <td [ngStyle]="{'width.%': colDefaultWidths[1]}">
                     {{searchResult.index}}
                 </td>
-                <td>
+                <td [ngStyle]="{'width.%': colDefaultWidths[2]}">
                     {{searchResult.text}}
                 </td>
-                <td>
+                <td [ngStyle]="{'width.%': colDefaultWidths[3]}">
                     {{searchResult.reference}}
                 </td>
-                <td class="justify-content-end">
+                <td [ngStyle]="{'width.%': colDefaultWidths[4]}" class="justify-content-end">
                     <div class="leftContext">
                         {{searchResult.leftContext}}
                     </div>
                 </td>
-                <td class="justify-content-center">
+                <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center">
                     <b>{{searchResult.kwic}}</b>
                 </td>
-                <td class="rightContext justify-content-start">
+                <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start">
                     <div class="rightContext">
                         {{searchResult.rightContext}}
                     </div>
@@ -172,7 +174,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="8">{{'SEARCH.noResult'|translate}}</td>
+                <td style="width:100%">{{'SEARCH.noResult'|translate}}</td>
             </tr>
         </ng-template>
       </p-table>
