@@ -8,9 +8,11 @@ import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.mode
 import { DictionaryListItem } from 'src/app/models/dictionary/dictionary-list-item.model';
 import { LexicogEntriesRequest } from 'src/app/models/dictionary/lexicog-entries-request.model';
 import { STATUSES, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
+import { LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 export enum DICTIONARY_NODE {
@@ -102,6 +104,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     },
   }];
 
+  /**List of nodes selected by checkbox */
   public selectedNodes: TreeNode[] = [];
 
   constructor(
@@ -110,6 +113,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     private globalState: GlobalStateService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
+    private lexiconService: LexiconService,
   ) { }
 
   ngOnInit(): void {
@@ -218,13 +222,18 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**Method that handles the deletion of n dictionary entries */
   onDeleteDictionaryEntries() {
     const entries = this.selectedNodes.map(tn => tn.data);
     this.showDeleteModal(entries);
   }
 
+/**
+ * Method that retrieves the components associated with a dictionary entry
+ * @param event {{originalEvent: PointerEvent, node: TreeNode<any>}} event emitted on the expansion of a node
+ * @returns {void}
+ */
   onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
-    console.info('expand', event)
     this.loading = true;
     const dictionaryId = event.node.data?.id;
     console.info(dictionaryId)
@@ -250,6 +259,20 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
 
   onNewLemmaEmitValue(lemma: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }) {
     this.newLemmaTemp = lemma;
+  }
+
+  onOpenTreeNode(event: any, node: any) {
+    switch (node.node.type) {
+      case DICTIONARY_NODE.entry:
+        //TODO open Dictionary Editor
+        console.info('dovrebbe aprire dictionary editor');
+        break;
+      case DICTIONARY_NODE.lemma:
+        this.openLemmaInLexiconEditor(node.node);
+        break;
+      default:
+        break;
+    }
   }
 
   /**Restore initial state of filters */
@@ -422,6 +445,43 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       type: DICTIONARY_NODE.entry,
       leaf: !lexicogEntry.hasChildren
     };
+  }
+
+  private async openLemmaInLexiconEditor(node: TreeNode<any>) {
+    console.info(node)
+    const item = await lastValueFrom(this.lexiconService.getLexicalEntry(node.data.referredEntity));
+    console.info('corresponding lexical entry', item);
+    const mappedLexicalEntry = {
+      data: {
+        name: item.label,
+        instanceName: item.lexicalEntry,
+        label: item.label,
+        note: item['note'],
+        creator: item['creator'],
+        creationDate: item['creationDate'] ? new Date(item['creationDate']).toLocaleString() : '',
+        lastUpdate: item['lastUpdate'] ? new Date(item['lastUpdate']).toLocaleString() : '',
+        status: item['status'],
+        uri: item['lexicalEntry'],
+        type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+        sub: item.pos,
+        isDescribedByLexicographicComponent: item.isDescribedByLexicographicComponent,
+      },
+      children: [{
+        data: {
+          name: 'form (0)',
+          instanceName: '_form_' + item.lexicalEntry,
+          type: LexicalEntryTypeOld.FORMS_ROOT
+        }
+      },
+      {
+        data: {
+          name: 'sense (0)',
+          instanceName: '_sense_' + item.lexicalEntry,
+          type: LexicalEntryTypeOld.SENSES_ROOT
+        }
+      }]
+    };
+    this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [mappedLexicalEntry, true] });
   }
 
   private showDeleteModal(entriesList: DictionaryListItem[]): void {
