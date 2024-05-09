@@ -57,6 +57,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
   tableCleared = false;
   changingPage = false;
 
+  colDefaultWidths = [4, 6, 15, 15, 25, 10, 25];
+
+  /** object used to memorize primeng table data */
+  pTabelColumnWidthStates : any;
+
+
   /** Delta for correct resizing internal search result table */
   nativeTableDelta = 57;
 
@@ -81,6 +87,11 @@ export class WorkspaceSearchTileComponent implements OnInit {
       );
 
     this.setExportMenuItems();
+  }
+
+  ngAfterViewInit() : void{
+    this.pTabelColumnWidthStates = {columnWidths : ''}
+    this.searchResultsTable.saveColumnWidths(this.pTabelColumnWidthStates);
   }
 
   //**init for export menu button */
@@ -252,6 +263,13 @@ export class WorkspaceSearchTileComponent implements OnInit {
   resetTable() {
     this.searchResultsTable.reset();
     this.tableCleared = true;
+    this.searchResultsTable.columnWidthsState = this.pTabelColumnWidthStates.columnWidths;
+    this.setResizeTableWidth(this.pTabelColumnWidthStates.tableWidth);
+    this.searchResultsTable.restoreColumnWidths();
+  }
+
+  onColResize(event : any){
+    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
   }
 
   /**clear function results and data */
