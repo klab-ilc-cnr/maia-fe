@@ -2,9 +2,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-
-// const serverUrl = 'https://146.48.93.234:9000/maia';
-const serverUrl = 'https://146.48.93.207:9000/maia';
+const serverUrl = 'URL';
 
 export const environment = {
   production: false,
