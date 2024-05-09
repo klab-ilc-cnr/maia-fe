@@ -79,7 +79,7 @@
             </colgroup>
           </ng-template>
               <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-            <tr [ttContextMenuRow]="rowNode">
+            <tr [ttContextMenuRow]="rowNode" (dblclick)="onOpenTreeNode($event, rowNode)">
                 <td *ngFor="let col of cols; let i = index">
                     <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"
                         [pTooltip]="rowData.hasChildren?('DICTIONARY_EXPLORER.showLemmas'|translate): ''"></p-treeTableToggler>
