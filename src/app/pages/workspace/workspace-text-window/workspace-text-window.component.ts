@@ -1024,16 +1024,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const isSameLayers = this.commonService.compareArrays(visibleLayersIds,this.lastRenderedLayers);//I check if the same layers are visible as in the previous call
     const isSameRows = this.startRow === start && this.endRow === end;
 
-    if(isSameRows && isSameLayers) { //rows and annotations have not changed, I just need to recalculate the svg
-      this.renderData();
-      return;
+    let rowsReq: Observable<PaginatedResponse>;
+    let annotationsReq:Observable<TAnnotation[]>;
+    if(visibleLayersIds.length === 0) {
+      annotationsReq = of(<TAnnotation[]>[]);
+    } else {
+      if(isSameRows) {
+        annotationsReq = isSameLayers ? of(this.textoAnnotationsRes) : this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds });
+      } else {
+        annotationsReq = this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds });
+      }
     }
 
-    let requests = [];
-    let rowsReq: Observable<PaginatedResponse>;
-    const annotationsReq = visibleLayersIds.length > 0 ? 
-      this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds }) 
-      : of(<TAnnotation[]>[]);
     if(!isSameRows) {
       rowsReq = this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end });
     } else {
