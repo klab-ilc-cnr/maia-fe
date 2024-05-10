@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  applicationSubTitle = environment.applicationSubTitle;
+  applicationSubTitle = ` - ${environment.applicationSubTitle}`;;
   loggedUserName = this.loggedUserService.currentUser?.name + ' ' + this.loggedUserService.currentUser?.surname;
 
   /**

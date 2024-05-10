@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  subTitle = environment.applicationSubTitle;
+  subTitle = ` - ${environment.applicationSubTitle}`;
   /**Authentication data form */
   loginForm = new FormGroup({
     username: new FormControl<string>('', Validators.required),

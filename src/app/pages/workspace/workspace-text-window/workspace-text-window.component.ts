@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, tap, throwError } from 'rxjs';
+import { Tree } from 'primeng/tree';
+import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
@@ -12,23 +13,21 @@ import { Relations } from 'src/app/models/relation/relations';
 import { LineBuilder } from 'src/app/models/text/line-builder';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { TextLine } from 'src/app/models/text/text-line';
+import { TextRange } from 'src/app/models/text/text-range';
 import { TextRow } from 'src/app/models/text/text-row';
 import { ResourceElement } from 'src/app/models/texto/corpus-element';
+import { PaginatedResponse, TextSplittedRow } from 'src/app/models/texto/paginated-response';
+import { Section } from 'src/app/models/texto/section';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
 import { TFeature } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { AnnotationService } from 'src/app/services/annotation.service';
+import { CommonService } from 'src/app/services/common.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { TextRange } from 'src/app/models/text/text-range';
-import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
-import { Section } from 'src/app/models/texto/section';
-import { throttleTime } from 'rxjs';
-import { Tree } from 'primeng/tree';
-import { CommonService } from 'src/app/services/common.service';
 
 enum ScrollingDirectionType { Up, Down, InRange }
 
@@ -107,7 +106,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Layer selezionato */
   selectedLayer: TLayer | undefined;
   /**Lista di layer selezionati */
-  selectedLayers: TLayer[] | undefined;
+  selectedLayers: TLayer[] | undefined = [];
+  startRow: number|null = null;
+  endRow: number|null = null;
+  lastRenderedLayers: number[] = [];
 
   sentnumVerticalLine = "M 0 0";
   /**Definisce se visualizzare l'editor di annotazione */
@@ -1018,10 +1020,36 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.relation = new Relation();
 
+    const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
+    const isSameLayers = this.commonService.compareArrays(visibleLayersIds,this.lastRenderedLayers);//I check if the same layers are visible as in the previous call
+    const isSameRows = this.startRow === start && this.endRow === end;
+
+    if(isSameRows && isSameLayers) { //rows and annotations have not changed, I just need to recalculate the svg
+      this.renderData();
+      return;
+    }
+
+    let requests = [];
+    let rowsReq: Observable<PaginatedResponse>;
+    const annotationsReq = visibleLayersIds.length > 0 ? 
+      this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds }) 
+      : of(<TAnnotation[]>[]);
+    if(!isSameRows) {
+      rowsReq = this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end });
+    } else {
+      const paginatedResponse = <PaginatedResponse>{
+        data: this.textSplittedRows,
+        count: this.textTotalRows,
+        start: start,
+        end: end,
+        offset: this.offset
+      };
+      rowsReq = of(paginatedResponse);
+    }
 
     forkJoin([
-      this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
-      this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end }),
+      rowsReq,
+      annotationsReq
     ]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
@@ -1030,6 +1058,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(([textResponse, tAnnotationsResponse]) => {
+      this.startRow = start;
+      this.endRow = end;
+      this.lastRenderedLayers = visibleLayersIds;
       // this.layersList = layersResponse;
       this.textTotalRows = textResponse.count!;
 
