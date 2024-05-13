@@ -107,8 +107,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   selectedLayer: TLayer | undefined;
   /**Lista di layer selezionati */
   selectedLayers: TLayer[] | undefined = [];
-  startRow: number|null = null;
-  endRow: number|null = null;
+  startRow: number | null = null;
+  endRow: number | null = null;
   lastRenderedLayers: number[] = [];
 
   sentnumVerticalLine = "M 0 0";
@@ -261,10 +261,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**initialize text range and load data */
   loadInitialData() {
     this.annotationService.retrieveTextTotalRows(this.textId!)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error retrieving text total rows')),
-    )
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error retrieving text total rows')),
+      )
       .subscribe((result) => {
         this.textTotalRows = result!
 
@@ -1021,22 +1021,22 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
 
     const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
-    const isSameLayers = this.commonService.compareArrays(visibleLayersIds,this.lastRenderedLayers);//I check if the same layers are visible as in the previous call
+    const isSameLayers = this.commonService.compareArrays(visibleLayersIds, this.lastRenderedLayers);//I check if the same layers are visible as in the previous call
     const isSameRows = this.startRow === start && this.endRow === end;
 
     let rowsReq: Observable<PaginatedResponse>;
-    let annotationsReq:Observable<TAnnotation[]>;
-    if(visibleLayersIds.length === 0) {
+    let annotationsReq: Observable<TAnnotation[]>;
+    if (visibleLayersIds.length === 0) {
       annotationsReq = of(<TAnnotation[]>[]);
     } else {
-      if(isSameRows) {
+      if (isSameRows) {
         annotationsReq = isSameLayers ? of(this.textoAnnotationsRes) : this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds });
       } else {
         annotationsReq = this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds });
       }
     }
 
-    if(!isSameRows) {
+    if (!isSameRows) {
       rowsReq = this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end });
     } else {
       const paginatedResponse = <PaginatedResponse>{
@@ -1379,11 +1379,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let extraScrollPixels = 0;
 
     switch (this.scrollingDirection) {
-      case ScrollingDirectionType.Down:
+      case ScrollingDirectionType.Down: {
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
-        let scrollingRow = this.rows.filter(r => r.rowIndex === this.precTextRange!.end)[0];
+        const precTextRangeEnd = Math.trunc(this.precTextRange!.end); //remove decimals otherwise it doesn't find matching rowIndex
+        const scrollingRow = this.rows.filter(r => r.rowIndex === precTextRangeEnd)[0];
         extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
         break;
+      }
       case ScrollingDirectionType.Up:
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.precTextRange!.start).reduce((acc, o) => acc + (o.height || 0), 0);
         break;
