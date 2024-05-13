@@ -39,6 +39,17 @@
         "uploaderType": "Uploader type",
         "uploadFileTitle": "Upload file"
     },
+    "DICTIONARY_EDITOR": {
+        "EDIT_TAB": {
+            "title": "Entry"
+        },
+        "PREVIEW_TAB": {
+            "title": "Preview"
+        },
+        "SORT_TAB": {
+            "title": "Sorting"
+        }
+    },
     "DICTIONARY_EXPLORER": {
         "addEntry": "Add new entry",
         "addLemma": "Add lemma",
