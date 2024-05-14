@@ -1387,7 +1387,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         if (scrollingRow === undefined) {
           console.warn('scrolling row undefined', this.precTextRange!.end)
         }
-        if (scrollingRow.height === undefined) {
+        if (scrollingRow?.height === undefined) {
           console.warn('scrolling row height undefined', scrollingRow)
         }
         extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRowHeight;
