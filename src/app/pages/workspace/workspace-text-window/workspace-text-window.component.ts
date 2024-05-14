@@ -107,8 +107,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   selectedLayer: TLayer | undefined;
   /**Lista di layer selezionati */
   selectedLayers: TLayer[] | undefined = [];
-  startRow: number | null = null;
-  endRow: number | null = null;
+  previousStartRow: number | null = null;
+  previousEndRow: number | null = null;
   lastRenderedLayers: number[] = [];
 
   sentnumVerticalLine = "M 0 0";
@@ -1022,7 +1022,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
     const isSameLayers = this.commonService.compareArrays(visibleLayersIds, this.lastRenderedLayers);//I check if the same layers are visible as in the previous call
-    const isSameRows = this.startRow === start && this.endRow === end;
+    const isSameRows = this.previousStartRow === start && this.previousEndRow === end;
 
     let rowsReq: Observable<PaginatedResponse>;
     let annotationsReq: Observable<TAnnotation[]>;
@@ -1060,8 +1060,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(([textResponse, tAnnotationsResponse]) => {
-      this.startRow = start;
-      this.endRow = end;
+      this.previousStartRow = start;
+      this.previousEndRow = end;
       this.lastRenderedLayers = visibleLayersIds;
       // this.layersList = layersResponse;
       this.textTotalRows = textResponse.count!;
