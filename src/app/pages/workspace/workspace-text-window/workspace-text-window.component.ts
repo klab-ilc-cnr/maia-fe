@@ -1385,7 +1385,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         const scrollingRow = this.rows.filter(r => r.rowIndex === precTextRangeEnd)[0];
         const scrollingRowHeight = scrollingRow?.height || 0;
         if (scrollingRow === undefined) {
-          console.warn('scrolling row undefined', this.precTextRange!.end)
+          console.group('scrolling row undefined')
+          console.warn('end index', this.precTextRange!.end)
+          console.info('rows', this.rows)
+          console.groupEnd()
         }
         if (scrollingRow?.height === undefined) {
           console.warn('scrolling row height undefined', scrollingRow)
