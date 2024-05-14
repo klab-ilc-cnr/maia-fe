@@ -1383,7 +1383,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
         const precTextRangeEnd = Math.trunc(this.precTextRange!.end); //remove decimals otherwise it doesn't find matching rowIndex
         const scrollingRow = this.rows.filter(r => r.rowIndex === precTextRangeEnd)[0];
-        extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRow.height!;
+        const scrollingRowHeight = scrollingRow?.height || 0;
+        if (scrollingRow === undefined) {
+          console.warn('scrolling row undefined', this.precTextRange!.end)
+        }
+        if (scrollingRow.height === undefined) {
+          console.warn('scrolling row height undefined', scrollingRow)
+        }
+        extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRowHeight;
         break;
       }
       case ScrollingDirectionType.Up:
