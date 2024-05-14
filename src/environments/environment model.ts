@@ -23,6 +23,6 @@ export const environment = {
   maiaBeTextoUrl: `${serverUrl}/texto`,
   lexoPrefix: "ferrandi",
   lexoBaseIRI: "http://rut/somali/ferrandi#",
-  applicationSubTitle: " - NAME",
+  applicationSubTitle: "NAME",
   demoHide: false,
 };

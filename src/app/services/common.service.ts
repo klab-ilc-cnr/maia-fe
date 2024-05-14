@@ -81,4 +81,9 @@ export class CommonService {
   public translateKey(key: string): string {
     return this.translateService.instant(key);
   }
+
+  public compareArrays(a: any[], b: any[]): boolean {
+    if(a.length!==b.length) return false;
+    return a.every(item => b.includes(item));
+  }
 }

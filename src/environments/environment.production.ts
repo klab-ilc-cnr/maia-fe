@@ -16,6 +16,6 @@ export const environment = {
   maiaBeTextoUrl: `${serverUrl}/texto`,
   lexoPrefix: "lex",
   lexoBaseIRI: "http://lexica/mylexicon#",
-  applicationSubTitle: " VocaBO",
+  applicationSubTitle: "VocaBO",
   demoHide: true,
 };
