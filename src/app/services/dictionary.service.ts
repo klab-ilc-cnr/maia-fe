@@ -151,6 +151,15 @@ export class DictionaryService {
   }
 
   /**
+   * Request http to retrieve a dictionary entry with all its data
+   * @param dictEntryId {string} dictionary entry identifier
+   * @returns {Observable<DictionaryEntry>} a complete dictionary entry
+   */
+  retrieveDictionaryEntryById(dictEntryId: string): Observable<DictionaryEntry> {
+    return this.http.get<DictionaryEntry>(`${this.lexoUrl}/data/dictionaryEntry?id=${this.commonService.encodeUrl(dictEntryId)}`)
+  }
+
+  /**
    * Requires the list of dictionary entries corresponding to a set of filters
    * @param request {LexicogEntriesRequest} set of indexes and filters 
    * @returns {Observable<LexicogEntriesResponse>} observable of the corresponding occurrences and their total number

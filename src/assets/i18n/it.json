@@ -39,6 +39,17 @@
         "uploaderType": "Tipo di caricamento",
         "uploadFileTitle": "Carica file"
     },
+    "DICTIONARY_EDITOR": {
+        "EDIT_TAB": {
+            "title": "Voce"
+        },
+        "PREVIEW_TAB": {
+            "title": "Anteprima"
+        },
+        "SORT_TAB": {
+            "title": "Ordinamento"
+        }
+    },
     "DICTIONARY_EXPLORER": {
         "addEntry": "Aggiungi nuova voce",
         "addLemma": "Aggiungi lemma",
