@@ -56,6 +56,7 @@ import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
+import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/workspace-dictionary-editor-tile/workspace-dictionary-editor-tile.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     MatchNewPasswordDirective,
     WorkspaceSearchTileComponent,
     WorkspaceDictionaryTileComponent,
-    NewDictionaryEntryComponent
+    NewDictionaryEntryComponent,
+    WorkspaceDictionaryEditorTileComponent
   ],
   imports: [
     BrowserModule,
