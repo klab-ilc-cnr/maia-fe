@@ -228,11 +228,11 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.showDeleteModal(entries);
   }
 
-/**
- * Method that retrieves the components associated with a dictionary entry
- * @param event {{originalEvent: PointerEvent, node: TreeNode<any>}} event emitted on the expansion of a node
- * @returns {void}
- */
+  /**
+   * Method that retrieves the components associated with a dictionary entry
+   * @param event {{originalEvent: PointerEvent, node: TreeNode<any>}} event emitted on the expansion of a node
+   * @returns {void}
+   */
   onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
     this.loading = true;
     const dictionaryId = event.node.data?.id;
@@ -264,8 +264,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   onOpenTreeNode(event: any, node: any) {
     switch (node.node.type) {
       case DICTIONARY_NODE.entry:
-        //TODO open Dictionary Editor
-        console.info('dovrebbe aprire dictionary editor');
+        this.commonService.notifyOther({ option: "onDictionaryEntryDblClickEvent", value: node.node.data.id });
         break;
       case DICTIONARY_NODE.lemma:
         this.openLemmaInLexiconEditor(node.node);
