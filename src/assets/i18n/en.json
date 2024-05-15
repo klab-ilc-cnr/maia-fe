@@ -41,6 +41,8 @@
     },
     "DICTIONARY_EDITOR": {
         "EDIT_TAB": {
+            "fullEntry": "Full entry",
+            "label": "Dictionary entry",
             "title": "Entry"
         },
         "PREVIEW_TAB": {
