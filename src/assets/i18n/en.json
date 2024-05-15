@@ -41,9 +41,16 @@
     },
     "DICTIONARY_EDITOR": {
         "EDIT_TAB": {
+            "aroundDecameron": "Around the Decameron",
+            "dictCorporaEtAl": "Dictionaries, corpora, and other resources",
+            "firstAttestAbs": "I absolute attestation",
+            "firstAttestBocc": "I attestation in Boccaccio",
             "fullEntry": "Full entry",
             "label": "Dictionary entry",
-            "title": "Entry"
+            "linguisticSemanticComm": "Linguistic and semantic commentary",
+            "misc": "Polyrhymes / locutions / phraseology / collocations",
+            "title": "Entry",
+            "vocs": "The Decameron, the Crusche and other vocabularies"
         },
         "PREVIEW_TAB": {
             "title": "Preview"

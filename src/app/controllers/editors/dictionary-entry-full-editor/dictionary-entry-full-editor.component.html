@@ -1,1 +1,50 @@
-<p>dictionary-entry-full-editor works!</p>
+<p-skeleton *ngIf="!dictionaryEntry; else dictionaryForm"></p-skeleton>
+<ng-template #dictionaryForm>
+    <div class="card">
+        <form class="grid formgrid" [formGroup]="fullEntryForm">
+            <div class="field col-12">
+                <p-selectButton [options]="statusForm" formControlName="status" class="float-right">
+                    <ng-template let-item>
+                      <app-icon-lock [status]="item"></app-icon-lock>
+                    </ng-template>
+                  </p-selectButton>
+            </div>
+            <div class="field col-6">
+                <label class="form-label w-full" for="entryLabel">{{'DICTIONARY_EDITOR.EDIT_TAB.label'|translate}} *</label>
+                <input class="w-full" pInputText type="text" name="label" id="entryLabel" formControlName="label">
+            </div>
+            <div class="field col-6">
+                <label class="form-label w-full" for="firstAttestationB">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</label>
+                <p-dropdown inputId="firstAttestationB" styleClass="w-full"></p-dropdown>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="">{{'DICTIONARY_EDITOR.EDIT_TAB.dictCorporaEtAl'|translate}}:</label>
+                <p-editor class="w-full"></p-editor>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="">{{'DICTIONARY_EDITOR.EDIT_TAB.linguisticSemanticComm'|translate}}:</label>
+                <p-editor class="w-full"></p-editor>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="">{{'DICTIONARY_EDITOR.EDIT_TAB.aroundDecameron'|translate}}:</label>
+                <p-editor class="w-full"></p-editor>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestAbs'|translate}}:</label>
+                <p-editor class="w-full"></p-editor>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="">Boccaccio e Dante:</label>
+                <p-editor class="w-full"></p-editor>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="">{{'DICTIONARY_EDITOR.EDIT_TAB.vocs'|translate}}:</label>
+                <p-editor class="w-full"></p-editor>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="">{{'DICTIONARY_EDITOR.EDIT_TAB.misc'|translate}}:</label>
+                <p-editor class="w-full"></p-editor>
+            </div>
+        </form>
+    </div>
+</ng-template>
