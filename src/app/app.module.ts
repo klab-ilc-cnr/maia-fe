@@ -57,6 +57,8 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
 import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/workspace-dictionary-editor-tile/workspace-dictionary-editor-tile.component';
+import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
+import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +100,9 @@ import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/worksp
     WorkspaceSearchTileComponent,
     WorkspaceDictionaryTileComponent,
     NewDictionaryEntryComponent,
-    WorkspaceDictionaryEditorTileComponent
+    WorkspaceDictionaryEditorTileComponent,
+    DictionaryEntryReferralEditorComponent,
+    DictionaryEntryFullEditorComponent
   ],
   imports: [
     BrowserModule,

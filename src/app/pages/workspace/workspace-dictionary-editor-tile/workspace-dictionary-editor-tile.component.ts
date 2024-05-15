@@ -9,6 +9,9 @@ import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.mode
 export class WorkspaceDictionaryEditorTileComponent implements OnInit {
   public panelId!: string;
   public dictionaryEntry!: DictionaryEntry;
+  get isReferral() { return this.dictionaryEntry.sameDictionaryEntryAs.length>0 } 
+  /**Currently active tab */
+  selectedTab = 0;
 
   constructor() { }
 
