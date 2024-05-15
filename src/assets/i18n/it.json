@@ -41,6 +41,8 @@
     },
     "DICTIONARY_EDITOR": {
         "EDIT_TAB": {
+            "fullEntry": "Voce piena",
+            "label": "Voce",
             "title": "Voce"
         },
         "PREVIEW_TAB": {
