@@ -1,7 +1,7 @@
 <p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
     <p-tabPanel [header]="'DICTIONARY_EDITOR.EDIT_TAB.title'|translate">
         <app-dictionary-entry-referral-editor *ngIf="selectedTab === 0 && isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-referral-editor>
-        <app-dictionary-entry-full-editor *ngIf="selectedTab === 0 && !isReferral"></app-dictionary-entry-full-editor>
+        <app-dictionary-entry-full-editor *ngIf="selectedTab === 0 && !isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-full-editor>
     </p-tabPanel>
     <p-tabPanel [header]="'DICTIONARY_EDITOR.SORT_TAB.title'|translate" [disabled]="true"> <!--TODO manage disable when implemented-->
         <!--TODO add implementation-->>
