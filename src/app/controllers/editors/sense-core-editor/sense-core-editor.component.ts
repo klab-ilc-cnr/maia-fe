@@ -39,6 +39,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
     definition: new FormGroup({}),
+    lexicalConcepts: new FormControl(),
     morphology: new FormArray<FormControl>([]),
   });
   /**Lista di controllo delle relazioni morfologiche */
@@ -65,6 +66,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       return of(values);
     }),
   );
+
+  lexicalConcepts$ = this.globalState.lexicalConcepts$;
   /**
    * Funzione di cancellazione di un senso
    * @param senseId {string} identificativo del senso

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, merge, of, shareReplay, switchMap } from 'rxjs';
+import { Subject, map, merge, of, shareReplay, switchMap } from 'rxjs';
 import { LexiconService } from './lexicon.service';
 
 /**Service class for global lexicon status management */
@@ -23,6 +23,10 @@ export class GlobalStateService {
   ).pipe(
     shareReplay(1),
   );
+  lexicalConcepts$ = this.lexiconService.getLexicalConcepts().pipe(
+    map(resp => resp.list),
+    shareReplay(1),
+  )
   /**Observable of the list of lexical entry types */
   lexicalEntryTypes$ = this.lexiconService.getLexicalEntryTypes().pipe(
     shareReplay(1),

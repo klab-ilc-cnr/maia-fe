@@ -4,6 +4,7 @@ import { Observable, mergeMap, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
 import { LexEntityRelationTypeModel } from '../models/lexicon/lexentity-relation-type.model';
+import { LexicalConceptsResponse } from '../models/lexicon/lexical-concept-list-item.model';
 import { LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { IndirectRelationModel, LexicalEntityRelationsResponseModel } from '../models/lexicon/lexical-sense-response.model';
@@ -43,7 +44,7 @@ export class LexiconService {
     return this.http.post<LexicalEntryCore>(
       `${this.lexoUrl}/lexicon/create/entry?author=${author}&prefix=${environment.lexoPrefix}&baseIRI=${this.encodedBaseIRI}`,
       {
-        lang: language, 
+        lang: language,
         label: label,
         pos: pos,
         type: [type]
@@ -206,6 +207,14 @@ export class LexiconService {
    */
   getLanguages(): Observable<LexoLanguage[]> {
     return this.http.get<LexoLanguage[]>(`${this.lexoUrl}/data/languages`);
+  }
+
+  /**
+   * Retrieve the list of existing lexical concepts
+   * @returns {Observable<LexicalConceptsResponse>} observable containing the list of existing lexical concepts
+   */
+  getLexicalConcepts(): Observable<LexicalConceptsResponse> {
+    return this.http.get<LexicalConceptsResponse>(`${this.lexoUrl}/data/lexicalConcepts?id=root`);
   }
 
   /**
