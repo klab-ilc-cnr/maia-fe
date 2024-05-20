@@ -463,6 +463,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Metodo che intercetta il cambio di layer selezionato */ //TODO sembra avere unicamente funzioni di debugging, vedere se eliminare
   onChangeLayerSelection(event: any) {
     console.log('hello', this.selectedLayer, event)
+
+    if (this.selectedLayer && this.visibleLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
+      this.visibleLayers.push(this.selectedLayer!);
+    }
   }
 
   /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
