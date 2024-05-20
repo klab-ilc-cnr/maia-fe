@@ -928,6 +928,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
         //righe extra
         this.addExtraRowsUp();
+        this.ensureEnoughExtraRowsDown();
         break;
       case ScrollingDirectionType.Up: //scrolling UP
         this.textRange.start -= this.textRowsWideness;
@@ -1384,7 +1385,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       case ScrollingDirectionType.Down: {
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.precTextRange!.end - 1).reduce((acc, o) => acc + (o.height || 0), 0);
         const precTextRangeEnd = Math.trunc(this.precTextRange!.end); //remove decimals otherwise it doesn't find matching rowIndex
-        const scrollingRow = this.rows.filter(r => r.rowIndex === precTextRangeEnd)[0];
+        let scrollingRow = this.rows.filter(r => r.rowIndex === precTextRangeEnd)[0];
+
+        // if (!scrollingRow) { scrollingRow = this.lastRow(); }
+
         const scrollingRowHeight = scrollingRow?.height || 0;
         if (scrollingRow === undefined) {
           console.group('scrolling row undefined')
@@ -1408,10 +1412,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         break;
     }
 
+    let scrollTop = scrolledBlockSize - extraScrollPixels;
+    if (scrollTop <= 0) {
+      this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
+      this.updateTextRowsView();
+      return;
+    }
+
     //setTimeout it's used for UI synchronization, sometimes the UI is not rendered and we cannot set the right scrollTop
     setTimeout(() => {
+
       //Trigger OnScroll event
-      this.textContainer.nativeElement.scrollTop = scrolledBlockSize - extraScrollPixels;
+      this.textContainer.nativeElement.scrollTop = scrollTop;
     }, 0);
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
@@ -1420,6 +1432,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
+  }
+
+  private lastRow(): TextRow {
+    return this.rows.find(e => e.rowIndex === Math.max(...this.rows.map(o => o.rowIndex)))!;
   }
 
   /**
@@ -1461,9 +1477,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Calculates number of extra text rows to be loaded
    * @returns 
    */
-  private extraTextRowsWidenessPredictor(): number {
-    let arbitraryRowSizeInPixels = 50;
-    return Math.ceil(this.textContainer.nativeElement.offsetHeight / arbitraryRowSizeInPixels);
+  private extraTextRowsWidenessPredictor(estimatedSingleRowSizeInPixels: number = 50): number {
+    return Math.ceil(this.textContainer.nativeElement.offsetHeight / estimatedSingleRowSizeInPixels);
   }
 
   /**
@@ -1478,6 +1493,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     };
 
     this.textRange.extraRowsBeforeStart = this.textRange.start;
+  }
+
+  /**
+   * Ensures that there are enough rows when scrolling down
+   */
+  private ensureEnoughExtraRowsDown() {
+    let lastRow = this.textTotalRows + this.backendIndexCompensation;
+
+    if (!this.precTextRange?.end) { return; }
+
+    if (this.textRange.end <= this.precTextRange!.end) {
+      this.textRange.extraRowsAfterEnd = this.precTextRange.end - this.textRange.end + this.extraRowsWidenessUpOrDown;
+    }
+
+    if (this.textRange.end > lastRow) {
+      this.textRange.extraRowsAfterEnd -= (this.precTextRange!.end - this.textTotalRows);
+    };
   }
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {
