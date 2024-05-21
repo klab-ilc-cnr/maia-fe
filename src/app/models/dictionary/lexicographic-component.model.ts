@@ -8,7 +8,7 @@ export interface LexicographicComponent extends DictionaryBase {
     referredEntity: string;
     revisor: string;
     author: string;
-    note: string[];
+    note: string;
     completionDate: string;
     revisionDate: string;
 }
