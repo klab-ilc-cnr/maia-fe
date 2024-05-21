@@ -36,7 +36,7 @@
       <p-autoComplete [suggestions]="(suggestions$|async)||[]" [delay]="300" name="lexicalConcepts" [virtualScroll]="true" (completeMethod)="onFilter($event)"
         emptyMessage="No results" [multiple]="true" formControlName="lexicalConcepts" dataKey="lexicalConcept"
         inputStyleClass="w-full" inputId="lexicalConcepts" [forceSelection]="true" appendTo="body" field="defaultLabel"
-        styleClass="w-full"></p-autoComplete>
+        styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
       </div>
     <div class="field col-12" *ngIf="!demoHide"> <!--NOTE REMOVE DEMOHIDE WHEN FULLY DEVELOPED-->
       <p-fieldset>

@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject, Observable, Subject, catchError, debounceTime, distinctUntilChanged, map, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { LexicalConceptListItem } from 'src/app/models/lexicon/lexical-concept-list-item.model';
 import { PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
@@ -20,7 +21,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
   templateUrl: './sense-core-editor.component.html',
   styleUrls: ['./sense-core-editor.component.scss']
 })
-export class SenseCoreEditorComponent implements OnInit, OnDestroy {
+export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   demoHide = environment.demoHide;
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
@@ -39,7 +40,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
     definition: new FormGroup({}),
-    lexicalConcepts: new FormControl(),
+    lexicalConcepts: new FormControl<LexicalConceptListItem[]>([]),
     morphology: new FormArray<FormControl>([]),
   });
   /**Lista di controllo delle relazioni morfologiche */
@@ -67,13 +68,12 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }),
   );
 
+  lexicalConcepts: LexicalConceptListItem[] = [];
   currentFilter$ = new BehaviorSubject<string>('');
   suggestions$ = this.currentFilter$.pipe(
     debounceTime(500),
     takeUntil(this.unsubscribe$),
-    switchMap(text => this.globalState.lexicalConcepts$.pipe(
-      map(resp => resp.filter(lc => lc.defaultLabel.includes(text))),
-    )),
+    switchMap(text => of(this.lexicalConcepts.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
   );
   /**
    * Funzione di cancellazione di un senso
@@ -112,6 +112,12 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     private lexiconService: LexiconService,
     private globalState: GlobalStateService,
   ) {
+    this.globalState.lexicalConcepts$.pipe(
+      take(1),
+    ).subscribe(lcs => {
+      this.lexicalConcepts = lcs;
+    });
+
     this.userService.retrieveCurrentUser().pipe(
       take(1),
     ).subscribe(cu => {
@@ -146,6 +152,22 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         this.movePropertyToMenu(propertyID);
       }
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.lexiconService.getLexicalConceptsBySenseId(this.senseEntry.sense).pipe(
+      take(1),
+    ).subscribe(rels => {
+      const lc: LexicalConceptListItem[] = [];
+      rels.forEach(rel => {
+        const temp = this.lexicalConcepts.find(c => c.lexicalConcept === rel.entity);
+        if(temp !== undefined) {
+          lc.push(temp);
+        }
+      });
+      console.info(lc)
+      this.form.controls.lexicalConcepts.setValue(lc);
+    });
   }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per l'emissione e chiusura del subject di gestione delle subscribe */
@@ -188,11 +210,33 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...newMorph });
   }
 
+  onAssociateLexicalConcept(selectedConcept: LexicalConceptListItem) {
+    console.info(selectedConcept)
+    if(!selectedConcept) return
+    this.lexiconService.associateLexicalConceptToSense(this.senseEntry.sense, selectedConcept.lexicalConcept).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(() => {
+      console.info(selectedConcept)
+    });
+  }
+
   /**Metodo che gestisce la cancellazione del senso in lavorazione */
   onDeleteLexicalSense() {
     const confirmMsg = "You are about to delete a sense";
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
+  }
+
+  onDissociateLexicalConcept(removedConcept: LexicalConceptListItem) {
+    console.info(removedConcept)
+    if(!removedConcept) return;
+    this.lexiconService.dissociateLexicalConceptFromSense(this.senseEntry.sense, removedConcept.lexicalConcept).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(() => {
+      console.info(removedConcept)
+    });
   }
 
   onFilter(event: { originalEvent: { isTrusted: boolean }, query: string }) {

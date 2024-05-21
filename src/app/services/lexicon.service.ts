@@ -40,6 +40,16 @@ export class LexiconService {
     this.encodedBaseIRI = this.commonService.encodeUrl(environment.lexoBaseIRI);
   }
 
+  associateLexicalConceptToSense(senseId: string, lexicalConceptId: string) {
+    return this.http.post(
+      `${this.lexoUrl}/associate/lexicalConcept`,
+      {
+        senseId: senseId,
+        conceptId: lexicalConceptId
+      }
+    );
+  }
+
   createNewLexicalEntry(author: string, language: string, label: string, pos: string, type: string): Observable<LexicalEntryCore> {
     return this.http.post<LexicalEntryCore>(
       `${this.lexoUrl}/lexicon/create/entry?author=${author}&prefix=${environment.lexoPrefix}&baseIRI=${this.encodedBaseIRI}`,
@@ -116,6 +126,16 @@ export class LexiconService {
     return this.http.get(
       `${this.lexoUrl}/delete/lexicoSemanticRelation?id=${encodedLexEntry}`,
       { responseType: "text" }
+    );
+  }
+
+  dissociateLexicalConceptFromSense(senseId: string, lexicalConceptId: string) {
+    return this.http.post(
+      `${this.lexoUrl}/dissociate/lexicalConcept`,
+      {
+        senseId: senseId,
+        conceptId: lexicalConceptId
+      }
     );
   }
 
@@ -215,6 +235,10 @@ export class LexiconService {
    */
   getLexicalConcepts(): Observable<LexicalConceptsResponse> {
     return this.http.get<LexicalConceptsResponse>(`${this.lexoUrl}/data/lexicalConcepts?id=root`);
+  }
+
+  getLexicalConceptsBySenseId(senseId: string): Observable<LinguisticRelationModel[]> {
+    return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/data/sense/lexicalConcepts?id=${this.commonService.encodeUrl(senseId)}`);
   }
 
   /**
