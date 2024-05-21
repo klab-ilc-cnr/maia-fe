@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, debounceTime, distinctUntilChanged, map, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
@@ -67,7 +67,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }),
   );
 
-  lexicalConcepts$ = this.globalState.lexicalConcepts$;
+  currentFilter$ = new BehaviorSubject<string>('');
+  suggestions$ = this.currentFilter$.pipe(
+    debounceTime(500),
+    takeUntil(this.unsubscribe$),
+    switchMap(text => this.globalState.lexicalConcepts$.pipe(
+      map(resp => resp.filter(lc => lc.defaultLabel.includes(text))),
+    )),
+  );
   /**
    * Funzione di cancellazione di un senso
    * @param senseId {string} identificativo del senso
@@ -187,6 +194,11 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
+
+  onFilter(event: { originalEvent: { isTrusted: boolean }, query: string }) {
+    this.currentFilter$.next(event.query);
+  }
+
 
   /**
    * Metodo che salva un nuovo inserimento nei tratti morfologici
