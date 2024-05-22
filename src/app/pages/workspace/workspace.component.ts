@@ -147,9 +147,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event: { target: any; }) {
     //this.mainPanel.maximize();
-    console.log('Mappa panels');
+    // console.log('Mappa panels');
     //console.log(this.openPanels);
-    console.log(jsPanel.getPanels());
+    // console.log(jsPanel.getPanels());
 
     this.resizeContainerHeight()
   }
@@ -297,7 +297,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       //   return this;
       // },
       addToTileMap: function (tile: Tile<any>) {
-        console.log(tile)
         switch (tile.type as TileType) {
           case TileType.TEXT:
           case TileType.CORPUS:
@@ -307,7 +306,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
             this.tileMap.set(this.id, tile);
-            console.log('Added ', this.getTileMap())
             break;
 
           default:
@@ -325,7 +323,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
             this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
             break;
 
           default:
@@ -349,11 +346,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (type) {
           case TileType.TEXT:
             this.textTileMap.delete(panelId);
-            console.log('Deleted ', this.getTextTileMap());
             break;
           case TileType.LEXICON_EDIT:
             this.lexiconEditTileMap.delete(panelId);
-            console.log('Deleted ', this.getLexiconEditTileMap());
             break;
           default:
             console.error("type ${type} not implemented");
@@ -706,12 +701,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns {void}
    */
   async restoreTiles(workspaceStatus: Workspace) {
-    console.log('restore');
     this.loaderService.show();
 
     let storedData: any = workspaceStatus.layout;
     const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
-    console.log('restored layout', storedData, storedTiles, workspaceStatus);
+    // console.log('restored layout', storedData, storedTiles, workspaceStatus);
 
     if (storedTiles.length == 0) {
       return;
@@ -956,7 +950,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // for demo purpose only log stored data to the console
     // or use your browser's dev tools to inspect localStorage
-    console.log('stored data', storedData);
+    // console.log('stored data', storedData);
   }
 
   //TODO verificare perché non sembra sia utilizzato
@@ -1028,10 +1022,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
-        const panelIDs = jsPanel.getPanels(function () {
-          return panel.classList.contains('jsPanel-standard');
-        }).map((panel: any) => panel.id);
-        console.log(panelIDs)
+        // const panelIDs = jsPanel.getPanels(function () {
+        //   return panel.classList.contains('jsPanel-standard');
+        // }).map((panel: any) => panel.id);
+        // console.log(panelIDs)
       }
     };
 
@@ -1107,13 +1101,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         //this.deleteTileContent(panel.id, TileType.TEXT);
-        console.log(this, panel, closedByUser)
+        // console.log(this, panel, closedByUser)
         this.removeFromTileMap(panel.id, TileType.TEXT);
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
-        console.log('panel', this, panel, status)
+        // console.log('panel', this, panel, status)
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
@@ -1195,10 +1189,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
-        const panelIDs = jsPanel.getPanels(function () {
-          return panel.classList.contains('jsPanel-standard');
-        }).map((panel: any) => panel.id);
-        console.log(panelIDs)
+        // const panelIDs = jsPanel.getPanels(function () {
+        //   return panel.classList.contains('jsPanel-standard');
+        // }).map((panel: any) => panel.id);
+        // console.log(panelIDs)
       }
     };
 
@@ -1403,10 +1397,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
-        const panelIDs = jsPanel.getPanels(function () {
-          return panel.classList.contains('jsPanel-standard');
-        }).map((panel: any) => panel.id);
-        console.log(panelIDs)
+        // const panelIDs = jsPanel.getPanels(function () {
+        //   return panel.classList.contains('jsPanel-standard');
+        // }).map((panel: any) => panel.id);
+        // console.log(panelIDs)
       }
     };
 
