@@ -956,7 +956,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         break;
 
       case ScrollingDirectionType.InRange: //scrolling IN RANGE
-
         this.textRange.start -= this.textRowsWideness % 2 === 0 ? this.textRowsWideness / 2 : (this.textRowsWideness / 2) + 1;
         this.textRange.end += this.textRowsWideness / 2;
 
@@ -1393,7 +1392,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingRowIndex = this.getScrollingRowIndex(this.scrollingDirection);
     const scrollTop = this.calculateScrollTop(this.scrollingRowIndex);
 
-    if (scrollTop <= 0) {
+    if (scrollTop <= 0 && this.scrollingRowIndex != 0) {
       this.setCustomScrollingRowIndex(this.scrollingRowIndex);
       this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
       this.updateTextRowsView();
