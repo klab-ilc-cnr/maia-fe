@@ -29,7 +29,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
-enum ScrollingDirectionType { Up, Down, InRange }
+enum ScrollingDirectionType { Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown }
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -165,7 +165,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public scrollingSubject = new Subject<number>();
   public currentVisibleRowIndex?: number;
   public scrollingRowIndex!: number;
-  public isCustomScrollingRowIndex!: boolean;
+  // public isCustomScrollingRowIndex!: boolean;
   // public renderedScrollingTopIsNegative: boolean = false;
 
   /**Document section navigation tree */
@@ -919,45 +919,42 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //#region calcolo start e end
     switch (this.scrollingDirection) {
       case ScrollingDirectionType.Down: //scolling DOWN
-        if (!this.isCustomScrollingRowIndex) {
-          this.textRange.start += this.textRowsWideness;
-          this.textRange.end += this.textRowsWideness;
+        this.textRange.start += this.textRowsWideness;
+        this.textRange.end += this.textRowsWideness;
 
-          if (this.textRange.start > this.textTotalRows - this.textRowsWideness) {
-            this.textRange.start = this.textTotalRows - this.textRowsWideness;
-          }
-
-          if (this.textRange.end > this.textTotalRows) {
-            this.textRange.end = this.textTotalRows;
-          }
+        if (this.textRange.start > this.textTotalRows - this.textRowsWideness) {
+          this.textRange.start = this.textTotalRows - this.textRowsWideness;
         }
 
-        //righe extra
-        this.addExtraRowsUp();
-        this.addExtraRowsDown();
-        this.ensureEnoughRowsDown(ScrollingDirectionType.Down);
-        this.ensureEnoughRowsUp(ScrollingDirectionType.Down);
+        if (this.textRange.end > this.textTotalRows) {
+          this.textRange.end = this.textTotalRows;
+        }
+
+        this.checkAndAddExtraRows(ScrollingDirectionType.Down);
         break;
+
       case ScrollingDirectionType.Up: //scrolling UP
-        if (!this.isCustomScrollingRowIndex) {
-          this.textRange.start -= this.textRowsWideness;
-          this.textRange.end -= this.textRowsWideness;
+        this.textRange.start -= this.textRowsWideness;
+        this.textRange.end -= this.textRowsWideness;
 
-          if (this.textRange.start < 0) {
-            this.textRange.start = 0;
-          }
-
-          if (this.textRange.end < this.textRowsWideness) {
-            this.textRange.end = this.textRowsWideness;
-          }
+        if (this.textRange.start < 0) {
+          this.textRange.start = 0;
         }
 
-        //righe extra
-        this.addExtraRowsUp();
-        this.addExtraRowsDown();
-        this.ensureEnoughRowsUp(ScrollingDirectionType.Up);
-        this.ensureEnoughRowsDown(ScrollingDirectionType.Up);
+        if (this.textRange.end < this.textRowsWideness) {
+          this.textRange.end = this.textRowsWideness;
+        }
+        this.checkAndAddExtraRows(ScrollingDirectionType.Up);
         break;
+
+      case ScrollingDirectionType.IncreaseWidenessDown:
+        this.checkAndAddExtraRows(ScrollingDirectionType.IncreaseWidenessDown);
+        break;
+
+      case ScrollingDirectionType.IncreaseWidenessUp: //scrolling UP
+        this.checkAndAddExtraRows(ScrollingDirectionType.IncreaseWidenessUp);
+        break;
+
       case ScrollingDirectionType.InRange: //scrolling IN RANGE
 
         this.textRange.start -= this.textRowsWideness % 2 === 0 ? this.textRowsWideness / 2 : (this.textRowsWideness / 2) + 1;
@@ -981,6 +978,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     //#endregion
     this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+  }
+
+  private checkAndAddExtraRows(scrollingDirection: ScrollingDirectionType) {
+    this.addExtraRowsUp();
+    this.addExtraRowsDown();
+    this.ensureEnoughRowsDown(scrollingDirection);
+    this.ensureEnoughRowsUp(scrollingDirection);
   }
 
   /**
@@ -1386,14 +1390,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const scrollTop = this.calculateScrollTopAndSetScrollingRowIndex();
-    // this.renderedScrollingTopIsNegative = false;
+    this.scrollingRowIndex = this.getScrollingRowIndex(this.scrollingDirection);
+    const scrollTop = this.calculateScrollTop(this.scrollingRowIndex);
+
     if (scrollTop <= 0) {
       this.setCustomScrollingRowIndex(this.scrollingRowIndex);
-      // this.renderedScrollingTopIsNegative = true;
       this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
       this.updateTextRowsView();
       return;
+    }
+
+    switch (this.scrollingDirection) {
+      case ScrollingDirectionType.IncreaseWidenessUp:
+        this.scrollingDirection = ScrollingDirectionType.Up;
+        break;
+      case ScrollingDirectionType.IncreaseWidenessDown:
+        this.scrollingDirection = ScrollingDirectionType.Down;
+        break;
     }
 
     //setTimeout it's used for UI synchronization, sometimes the UI is not rendered and we cannot set the right scrollTop
@@ -1411,25 +1424,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loaderService.hide();
   }
 
-  private calculateScrollTopAndSetScrollingRowIndex() {
+  private calculateScrollTop(scrollingRowIndex: number) {
     let scrolledBlockSize = 0;
     let extraScrollPixels = 0;
 
     switch (this.scrollingDirection) {
+      case ScrollingDirectionType.IncreaseWidenessDown:
       case ScrollingDirectionType.Down: {
-        this.scrollingRowIndex = this.getScrollingRowIndex(ScrollingDirectionType.Down);
 
-        if (this.scrollingRowIndex % 1 != 0) { //useful for debug
-          console.group('scrolling rowindex decimal');
-          console.warn('prec start index', this.precTextRange!.start);
-          console.warn('prec end index', this.precTextRange!.end);
-          console.info('rows', this.rows);
-          console.groupEnd();
-          this.scrollingRowIndex = Math.trunc(this.precTextRange!.end); //remove decimals otherwise it doesn't find matching rowIndex
-        }
-
-        scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= this.scrollingRowIndex - 1).reduce((acc, o) => acc + (o.height || 0), 0);
-        let scrollingRow = this.rows.filter(r => r.rowIndex === this.scrollingRowIndex)[0];
+        scrolledBlockSize = this.rows.filter(r => r.rowIndex! <= scrollingRowIndex - 1).reduce((acc, o) => acc + (o.height || 0), 0);
+        let scrollingRow = this.rows.filter(r => r.rowIndex === scrollingRowIndex)[0];
 
         const scrollingRowHeight = scrollingRow?.height || 0;
         if (scrollingRow === undefined) {
@@ -1444,9 +1448,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         extraScrollPixels = this.textContainer.nativeElement.clientHeight - scrollingRowHeight;
         break;
       }
+      case ScrollingDirectionType.IncreaseWidenessUp:
       case ScrollingDirectionType.Up:
-        this.scrollingRowIndex = this.getScrollingRowIndex(ScrollingDirectionType.Up);
-        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.scrollingRowIndex).reduce((acc, o) => acc + (o.height || 0), 0);
+        scrolledBlockSize = this.rows.filter(r => r.rowIndex! < scrollingRowIndex).reduce((acc, o) => acc + (o.height || 0), 0);
         break;
       case ScrollingDirectionType.InRange:
         if (!this.currentVisibleRowIndex) { break; }
@@ -1456,24 +1460,52 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     let scrollTop = scrolledBlockSize - extraScrollPixels;
-    this.isCustomScrollingRowIndex = false;
 
     return scrollTop;
   }
 
   getScrollingRowIndex(scrollingDirection: ScrollingDirectionType): number {
-    if (this.isCustomScrollingRowIndex) { return this.scrollingRowIndex; }
-
+    let scrollingRowIndex;
     switch (scrollingDirection) {
-      case ScrollingDirectionType.Up: return this.precTextRange!.start;
-      case ScrollingDirectionType.Down: return this.precTextRange!.end;
-      case ScrollingDirectionType.InRange: return this.scrollingRowIndex;
+      case ScrollingDirectionType.Up:
+        scrollingRowIndex = this.precTextRange!.start;
+        break;
+      case ScrollingDirectionType.Down:
+        scrollingRowIndex = this.precTextRange!.end;
+        break;
+      case ScrollingDirectionType.InRange:
+      case ScrollingDirectionType.IncreaseWidenessDown:
+      case ScrollingDirectionType.IncreaseWidenessUp:
+        scrollingRowIndex = this.scrollingRowIndex;
+        break;
     }
+
+    if (scrollingRowIndex % 1 != 0) { //useful for debug
+      console.group('scrolling rowindex decimal');
+      console.warn('prec start index', this.precTextRange!.start);
+      console.warn('prec end index', this.precTextRange!.end);
+      console.info('rows', this.rows);
+      console.groupEnd();
+      scrollingRowIndex = Math.trunc(this.precTextRange!.end); //remove decimals otherwise it doesn't find matching rowIndex
+    }
+
+    return scrollingRowIndex;
   }
 
   setCustomScrollingRowIndex(customScrollingRowIndex: number) {
-    this.isCustomScrollingRowIndex = true;
     this.scrollingRowIndex = customScrollingRowIndex;
+
+    switch (this.scrollingDirection) {
+      case ScrollingDirectionType.Up:
+      case ScrollingDirectionType.IncreaseWidenessUp:
+        this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessUp;
+        break;
+
+      case ScrollingDirectionType.Down:
+      case ScrollingDirectionType.IncreaseWidenessDown:
+        this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessDown;
+        break;
+    }
   }
 
   /**
