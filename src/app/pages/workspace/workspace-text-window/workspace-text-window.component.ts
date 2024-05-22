@@ -166,7 +166,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public currentVisibleRowIndex?: number;
   public scrollingRowIndex!: number;
   public isCustomScrollingRowIndex!: boolean;
-  public renderedScrollingTopIsNegative: boolean = false;
+  // public renderedScrollingTopIsNegative: boolean = false;
 
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
@@ -919,7 +919,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //#region calcolo start e end
     switch (this.scrollingDirection) {
       case ScrollingDirectionType.Down: //scolling DOWN
-        if (!this.renderedScrollingTopIsNegative) {
+        if (!this.isCustomScrollingRowIndex) {
           this.textRange.start += this.textRowsWideness;
           this.textRange.end += this.textRowsWideness;
 
@@ -939,21 +939,24 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.ensureEnoughRowsUp(ScrollingDirectionType.Down);
         break;
       case ScrollingDirectionType.Up: //scrolling UP
-        this.textRange.start -= this.textRowsWideness;
-        this.textRange.end -= this.textRowsWideness;
+        if (!this.isCustomScrollingRowIndex) {
+          this.textRange.start -= this.textRowsWideness;
+          this.textRange.end -= this.textRowsWideness;
 
-        if (this.textRange.start < 0) {
-          this.textRange.start = 0;
-        }
+          if (this.textRange.start < 0) {
+            this.textRange.start = 0;
+          }
 
-        if (this.textRange.end < this.textRowsWideness) {
-          this.textRange.end = this.textRowsWideness;
+          if (this.textRange.end < this.textRowsWideness) {
+            this.textRange.end = this.textRowsWideness;
+          }
         }
 
         //righe extra
         this.addExtraRowsUp();
         this.addExtraRowsDown();
         this.ensureEnoughRowsUp(ScrollingDirectionType.Up);
+        this.ensureEnoughRowsDown(ScrollingDirectionType.Up);
         break;
       case ScrollingDirectionType.InRange: //scrolling IN RANGE
 
@@ -975,13 +978,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.addExtraRowsDown();
         break;
     }
-
-    // if (this.calculateScrollTop() < 0) {
-    //   this.setCustomScrollingRowIndex(this.scrollingRowIndex);
-    //   this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
-    //   this.updateTextRowsView();
-    //   return;
-    // }
 
     //#endregion
     this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
@@ -1391,10 +1387,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     const scrollTop = this.calculateScrollTopAndSetScrollingRowIndex();
-    this.renderedScrollingTopIsNegative = false;
+    // this.renderedScrollingTopIsNegative = false;
     if (scrollTop <= 0) {
       this.setCustomScrollingRowIndex(this.scrollingRowIndex);
-      this.renderedScrollingTopIsNegative = true;
+      // this.renderedScrollingTopIsNegative = true;
       this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
       this.updateTextRowsView();
       return;
