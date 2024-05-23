@@ -165,8 +165,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public scrollingSubject = new Subject<number>();
   public currentVisibleRowIndex?: number;
   public scrollingRowIndex!: number;
-  // public isCustomScrollingRowIndex!: boolean;
-  // public renderedScrollingTopIsNegative: boolean = false;
 
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
@@ -1390,23 +1388,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.scrollingRowIndex = this.getScrollingRowIndex(this.scrollingDirection);
-    const scrollTop = this.calculateScrollTop(this.scrollingRowIndex);
+    const scrollTop = this.calculateScrollTop(this.scrollingDirection, this.scrollingRowIndex);
 
     if (scrollTop <= 0 && this.scrollingRowIndex != 0) {
-      this.setCustomScrollingRowIndex(this.scrollingRowIndex);
-      this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
+      this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();
       return;
     }
 
-    switch (this.scrollingDirection) {
-      case ScrollingDirectionType.IncreaseWidenessUp:
-        this.scrollingDirection = ScrollingDirectionType.Up;
-        break;
-      case ScrollingDirectionType.IncreaseWidenessDown:
-        this.scrollingDirection = ScrollingDirectionType.Down;
-        break;
-    }
+    this.disbaleIncreaseWidenessOperation();
 
     //setTimeout it's used for UI synchronization, sometimes the UI is not rendered and we cannot set the right scrollTop
     setTimeout(() => {
@@ -1423,11 +1413,24 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loaderService.hide();
   }
 
-  private calculateScrollTop(scrollingRowIndex: number) {
+  /** disbales the increase wideness operation */
+  private disbaleIncreaseWidenessOperation() {
+    switch (this.scrollingDirection) {
+      case ScrollingDirectionType.IncreaseWidenessUp:
+        this.scrollingDirection = ScrollingDirectionType.Up;
+        break;
+      case ScrollingDirectionType.IncreaseWidenessDown:
+        this.scrollingDirection = ScrollingDirectionType.Down;
+        break;
+    }
+  }
+
+  /**Calculates the scroll top heigth respect to the scrolling row index and the scroll direction */
+  private calculateScrollTop(scrollingDirection: ScrollingDirectionType, scrollingRowIndex: number) {
     let scrolledBlockSize = 0;
     let extraScrollPixels = 0;
 
-    switch (this.scrollingDirection) {
+    switch (scrollingDirection) {
       case ScrollingDirectionType.IncreaseWidenessDown:
       case ScrollingDirectionType.Down: {
 
@@ -1463,6 +1466,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return scrollTop;
   }
 
+  /** gets ther right scrolling row index, starting from a scrolling direction */
   getScrollingRowIndex(scrollingDirection: ScrollingDirectionType): number {
     let scrollingRowIndex;
     switch (scrollingDirection) {
@@ -1491,9 +1495,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return scrollingRowIndex;
   }
 
-  setCustomScrollingRowIndex(customScrollingRowIndex: number) {
-    this.scrollingRowIndex = customScrollingRowIndex;
-
+  /** sets the operations needed for the increasing wideness operation,
+   * this is useful when we need to increase the widness of the extra range, 
+   * during the next rendering cycle
+   */
+  enableIncreaseWidenessOperation() {
     switch (this.scrollingDirection) {
       case ScrollingDirectionType.Up:
       case ScrollingDirectionType.IncreaseWidenessUp:
@@ -1504,7 +1510,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       case ScrollingDirectionType.IncreaseWidenessDown:
         this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessDown;
         break;
+      case ScrollingDirectionType.InRange:
+        console.warn("Custom scroll row index has no effect when set in range");
     }
+
+    this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
   }
 
   /**
