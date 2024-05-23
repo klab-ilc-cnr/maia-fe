@@ -133,7 +133,7 @@
                 </g>
               </g>
               <g class="text">
-                <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
+                <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event, row)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
                   <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-index]="line.startIndex" [attr.end-index]="line.endIndex">
                     <tspan *ngFor="let w of line.words" 
                             [attr.y]="line.yText" 
@@ -184,7 +184,7 @@
                             [attr.fill]="a.bgColor" 
                             [attr.stroke]="a.borderColor" 
                             [attr.id]="a.id" 
-                            (click)="expandCollapseAnnotationDiv(a.id)" 
+                            (click)="expandCollapseAnnotationDiv(a.id, row)" 
                             stroke-width="0.5px" 
                             rx="3px" 
                             ry="3px" 

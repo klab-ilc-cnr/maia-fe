@@ -336,7 +336,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
    * @param event {any} evento di variazione dei layer visibili
    */
-  changeVisibleLayers(event: any) {
+  changeVisibleLayers(event?: any) {
     this.visibleLayers = this.selectedLayers || [];
     this.loadData(this.textRange.start, this.textRange.end);
   }
@@ -373,9 +373,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }, 200);
   }
 
-  public expandCollapseAnnotationDiv(annotationId?: number) {
-    this.currentVisibleRowIndex = this.findCurrentVisibleRow()?.rowIndex;
-    this.expandedEditorDiv = annotationId ? true : !this.expandedEditorDiv;
+  public expandCollapseAnnotationDiv(annotationId?: number, row?: TextRow) {
+    const isClickingAnnotation = annotationId != null && annotationId != undefined;
+    this.currentVisibleRowIndex = row?.rowIndex ?? this.findCurrentVisibleRow()?.rowIndex;
+    const wasAlreadyExpandedEditorDiv = this.expandedEditorDiv;
+    this.expandedEditorDiv = isClickingAnnotation ? true : !this.expandedEditorDiv;
 
     this.updateAnnotationsSplitSize();
 
@@ -385,8 +387,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.openAnnotation(this.visibleAnnotationId!);
       }
 
+      if (isClickingAnnotation && wasAlreadyExpandedEditorDiv) {
+        return;
+      }
+
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+
     }, 200);
   }
 
@@ -459,6 +466,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
+    this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadData(this.textRange.start, this.textRange.end);
   }
 
@@ -466,6 +474,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onChangeLayerSelection(event: any) {
     if (this.selectedLayer && this.visibleLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
       this.visibleLayers.push(this.selectedLayer!);
+      this.changeVisibleLayers();
     }
   }
 
@@ -588,7 +597,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * @param event {any} evento di mouse up
    * @returns {void}
    */
-  onSelectionChange(event: any): void {
+  onSelectionChange(event: any, row: TextRow): void {
+    this.currentVisibleRowIndex = row.rowIndex;
+
     const selection = this.getCurrentTextSelection();
 
     if (!selection) { //caso senza selezione, esco dal metodo
