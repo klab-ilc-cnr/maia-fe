@@ -29,7 +29,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
-enum ScrollingDirectionType { Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown }
+enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown }
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -160,7 +160,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public backendIndexCompensation: number = 1;
   public mostRecentRequestTime: number = 0;
   public preventOnScrollEvent: boolean = false;
-  public scrollingDirection: ScrollingDirectionType = ScrollingDirectionType.Down;
+  public scrollingDirection!: ScrollingDirectionType;
   public extraRowsWidenessUpOrDown!: number;
   public scrollingSubject = new Subject<number>();
   public currentVisibleRowIndex?: number;
@@ -280,7 +280,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.precTextRange = this.textRange.clone();
         this.addExtraRowsUp();
         let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
-        this.scrollingDirection = ScrollingDirectionType.InRange;
+        this.scrollingDirection = ScrollingDirectionType.Init;
         this.currentVisibleRowIndex = this.startingRowIndex;
         this.scrollingRowIndex = this.textRange.end;
         this.loadData(requestRange.start, requestRange.end);
@@ -336,7 +336,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
    * @param event {any} evento di variazione dei layer visibili
    */
-  changeVisibleLayers(event: any) {
+  changeVisibleLayers(event?: any) {
     this.visibleLayers = this.selectedLayers || [];
     this.loadData(this.textRange.start, this.textRange.end);
   }
@@ -373,9 +373,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }, 200);
   }
 
-  public expandCollapseAnnotationDiv(annotationId?: number) {
-    this.currentVisibleRowIndex = this.findCurrentVisibleRow()?.rowIndex;
-    this.expandedEditorDiv = annotationId ? true : !this.expandedEditorDiv;
+  public expandCollapseAnnotationDiv(annotationId?: number, row?: TextRow) {
+    const isClickingAnnotation = annotationId != null && annotationId != undefined;
+    this.currentVisibleRowIndex = row?.rowIndex ?? this.findCurrentVisibleRow()?.rowIndex;
+    const wasAlreadyExpandedEditorDiv = this.expandedEditorDiv;
+    this.expandedEditorDiv = isClickingAnnotation ? true : !this.expandedEditorDiv;
 
     this.updateAnnotationsSplitSize();
 
@@ -385,8 +387,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.openAnnotation(this.visibleAnnotationId!);
       }
 
+      if (isClickingAnnotation && wasAlreadyExpandedEditorDiv) {
+        return;
+      }
+
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadData(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+
     }, 200);
   }
 
@@ -459,6 +466,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved() {
+    this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadData(this.textRange.start, this.textRange.end);
   }
 
@@ -466,6 +474,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onChangeLayerSelection(event: any) {
     if (this.selectedLayer && this.visibleLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
       this.visibleLayers.push(this.selectedLayer!);
+      this.changeVisibleLayers();
     }
   }
 
@@ -588,7 +597,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * @param event {any} evento di mouse up
    * @returns {void}
    */
-  onSelectionChange(event: any): void {
+  onSelectionChange(event: any, row: TextRow): void {
+    this.currentVisibleRowIndex = row.rowIndex;
+
     const selection = this.getCurrentTextSelection();
 
     if (!selection) { //caso senza selezione, esco dal metodo
@@ -1379,9 +1390,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.textRange.start === this.precTextRange?.start &&
-      this.textRange.end === this.precTextRange?.end &&
-      !this.changingSection) {
+    if (this.scrollingDirection === ScrollingDirectionType.Init && !this.changingSection) {
       this.changingSection = false;
       this.loaderService.hide();
       return;
@@ -1390,7 +1399,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingRowIndex = this.getScrollingRowIndex(this.scrollingDirection);
     const scrollTop = this.calculateScrollTop(this.scrollingDirection, this.scrollingRowIndex);
 
-    if (scrollTop <= 0 && this.scrollingRowIndex != 0) {
+    if (scrollTop <= 0 && this.textRange.start != 0) {
+      this.enableIncreaseWidenessOperation();
+      this.updateTextRowsView();
+      return;
+    }
+
+    if (this.scrollBarReachesBottomOfTile(scrollTop) && this.textRange.end < this.textTotalRows) {
+      this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessDown;
       this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();
       return;
@@ -1411,6 +1427,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
+  }
+
+  /**this cover the case when we are resizing the lateral panels (navigation and annotation divs)
+   * and the bar reaches the bottom of the tile without generating the scroll event because we are scrolling in range
+   */
+  private scrollBarReachesBottomOfTile(scrollTop: number): boolean {
+    return this.svgHeight <= this.textContainer.nativeElement.clientHeight + scrollTop;
   }
 
   /** disbales the increase wideness operation */
@@ -1473,6 +1496,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       case ScrollingDirectionType.Up:
         scrollingRowIndex = this.precTextRange!.start;
         break;
+      case ScrollingDirectionType.Init:
       case ScrollingDirectionType.Down:
         scrollingRowIndex = this.precTextRange!.end;
         break;
@@ -1579,7 +1603,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  * Adds the number of text rows that needs to be loaded down the range
  */
   private addExtraRowsDown() {
-    if (this.textRange.end + this.extraRowsWidenessUpOrDown <= this.textTotalRows + this.backendIndexCompensation
+    if (this.textRange.end + this.extraRowsWidenessUpOrDown <= this.textTotalRows
       && !this.textRange.hasExtraRowsAfterEnd) {
       this.textRange.extraRowsAfterEnd = this.extraRowsWidenessUpOrDown;
     };
@@ -1589,16 +1613,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Ensures that there are enough rows when scrolling down
    */
   private ensureEnoughRowsDown(scrollingDirection: ScrollingDirectionType) {
-    let lastRow = this.textTotalRows + this.backendIndexCompensation;
-
     const scrollingRowIndex = this.getScrollingRowIndex(scrollingDirection);
 
     if (this.textRange.end <= scrollingRowIndex) {
       this.textRange.extraRowsAfterEnd = scrollingRowIndex - this.textRange.end + this.extraRowsWidenessUpOrDown;
     }
 
-    if (this.textRange.end > lastRow) {
-      this.textRange.extraRowsAfterEnd -= (scrollingRowIndex - this.textTotalRows);
+    if (this.textRange.end > this.textTotalRows) {
+      this.textRange.extraRowsAfterEnd -= (this.textRange.end - this.textTotalRows);
     };
   }
 
