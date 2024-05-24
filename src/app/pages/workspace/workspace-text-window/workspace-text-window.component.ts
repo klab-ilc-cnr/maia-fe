@@ -1493,12 +1493,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   getScrollingRowIndex(scrollingDirection: ScrollingDirectionType): number {
     let scrollingRowIndex;
     switch (scrollingDirection) {
-      case ScrollingDirectionType.Init:
-        scrollingRowIndex = 0;
-        break;
       case ScrollingDirectionType.Up:
         scrollingRowIndex = this.precTextRange!.start;
         break;
+      case ScrollingDirectionType.Init:
       case ScrollingDirectionType.Down:
         scrollingRowIndex = this.precTextRange!.end;
         break;
