@@ -1405,7 +1405,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.scrollBarReachesBottomOfTile(scrollTop) && this.textRange.end < this.textTotalRows) { //da verificare
+    if (this.scrollBarReachesBottomOfTile(scrollTop) && this.textRange.end < this.textTotalRows) {
       this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessDown;
       this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();
@@ -1413,12 +1413,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.disbaleIncreaseWidenessOperation();
-
-    // if (this.scrollingDirection === ScrollingDirectionType.InRange) {
-    //   this.changingSection = false;
-    //   this.loaderService.hide();
-    //   return;
-    // }
 
     //setTimeout it's used for UI synchronization, sometimes the UI is not rendered and we cannot set the right scrollTop
     setTimeout(() => {
