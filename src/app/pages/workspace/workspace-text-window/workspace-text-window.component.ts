@@ -175,14 +175,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Resizible panels settings */
   public widthPercentEditorDiv = 0;
   public widthPercentSectionsDiv = 0;
-  public expandedEditorDiv: boolean = false;
+  public expandedEditorDiv!: boolean;
   public expandedDocumentSectonsDiv: boolean = true;
 
   /**Resizible panels dynamic size settings */
   lateralSplitExpandedSize: number = 24;
   lateralSplitCollapsedSize: number = 3;
   documentSectionsSplit: number = this.lateralSplitExpandedSize;
-  annotationSplitSize: number = this.lateralSplitCollapsedSize;
+  annotationSplitSize!: number;
   get textSplitSize() {
     return 100 - this.documentSectionsSplit - this.annotationSplitSize;
   }
@@ -235,6 +235,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(([resource, sectionsResponse]) => {
         this.currentResource = resource;
+        this.initAnnotationPanelSettings(this.currentResource.expandedEditorDiv);
         this.documentSections = this.adaptToDocumentTree(sectionsResponse, resource.name ?? '');
 
       });
@@ -278,7 +279,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
         this.textRange = new TextRange(start, end);
         this.precTextRange = this.textRange.clone();
-        this.addExtraRowsUp();
         let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
         this.scrollingDirection = ScrollingDirectionType.Init;
         this.currentVisibleRowIndex = this.startingRowIndex;
@@ -915,6 +915,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateTextEditorSize() {
     // this.renderData();
     this.loadData(this.textRange.start, this.textRange.end);
+  }
+
+  /**inits the annotation panele */
+  private initAnnotationPanelSettings(expandedEditorDiv?: boolean) {
+    this.expandedEditorDiv = expandedEditorDiv ?? true;
+    this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
   }
 
   /**
