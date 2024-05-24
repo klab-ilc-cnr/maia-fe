@@ -19,6 +19,7 @@ export class CorpusElement {
 /**Class describing a corpus element of resource type, i.e., a file or document */
 export class ResourceElement extends CorpusElement {
   override type: ElementType = ElementType.RESOURCE;
+  expandedEditorDiv?: boolean;
 }
 
 /**Class describing a corpus element of folder type */
