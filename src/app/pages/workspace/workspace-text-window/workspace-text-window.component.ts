@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
+import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime, throwError } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
@@ -153,6 +154,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   @ViewChild('svg') public svg!: ElementRef;
   @ViewChild('textContainer') public textContainer!: ElementRef;
   @ViewChild('st') public documentSectionsTreeElement!: Tree;
+  @ViewChild('textTileSplitter') public textTileSplitter!: Splitter;
 
   /**Scroller*/
   public textRowsWideness!: number;
@@ -180,12 +182,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public widthPercentEditorDiv = 0;
   public widthPercentSectionsDiv = 0;
   public expandedEditorDiv!: boolean;
-  public expandedDocumentSectonsDiv: boolean = true;
+  public expandedDocumentSectonsDiv!: boolean;
 
   /**Resizible panels dynamic size settings */
   lateralSplitExpandedSize: number = 24;
   lateralSplitCollapsedSize: number = 3;
-  documentSectionsSplit: number = this.lateralSplitExpandedSize;
+  documentSectionsSplit!: number;
   annotationSplitSize!: number;
   get textSplitSize() {
     return 100 - this.documentSectionsSplit - this.annotationSplitSize;
@@ -230,6 +232,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.initTextTileSplitterSettings();
+
     this.startingRowIndex = this.startingRowIndex ?? 0;
 
     this.scrollingSubject.pipe(throttleTime(200)).subscribe(value => this.updateTextRowsView(value));
@@ -262,6 +266,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textRowsWideness = this.textRowsRangeWidenessPredictor();
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
     this.loadInitialData();
+
+    setTimeout(() => {
+      this.textTileSplitter.cd.detectChanges();
+      this.fixPrimeNgSplitterPanelInitialSize();
+    });
+  }
+
+  /**this is a workaround to fix a rendering problem with the primneg splitter component */
+  private fixPrimeNgSplitterPanelInitialSize() {
+    const panels: any = document.getElementsByClassName('p-splitter-panel');
+    const annotationPanel = panels[2];
+    annotationPanel.style.flexBasis = 'calc(' + this.textTileSplitter.panelSizes[2] + '% - ' + ((panels.length - 1) * 4) + 'px)';
   }
 
   /**initialize text range and load data */
@@ -542,6 +558,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  /** inits the text tile splitteer properties */
+  private initTextTileSplitterSettings() {
+    this.expandedEditorDiv = true;
+    this.expandedDocumentSectonsDiv = true;
+    this.documentSectionsSplit = this.expandedDocumentSectonsDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
+    this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
   }
 
   /**
