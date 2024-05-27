@@ -29,6 +29,10 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
+interface SelectionExtension extends Selection {
+  modify(s: string, t: string, u: string): void;
+}
+
 enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown }
 
 @Component({
@@ -592,6 +596,22 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
   }
 
+
+  /**this function override the normal window double click text selection
+   * that keeps the trailing whitespace at the end of the word and selects just the word
+   */
+  public onSelectionChangeDoubleClick() {
+    const selection = window.getSelection();
+
+    if (!selection) { return; }
+    
+    const text = selection.toString();
+
+    if (/\s+$/.test(text)) { // Check if there is a trailing whitespace
+      (selection as SelectionExtension).modify("extend", "left", "character");
+    }
+  }
+
   /**
    * Metodo che gestisce le variazioni di selezione sul testo
    * @param event {any} evento di mouse up
@@ -611,7 +631,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
     // let text = this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato //TODO OGGETTO RICEVUTO è SOLO TESTO, NON JSON
-    const text = this.textRes.join('').substring(startIndex, endIndex);
+    let text = this.textRes.join('').substring(startIndex, endIndex);
 
     if (!this.onlySpaces(text)) {
       const originalLength = text.length;
@@ -624,6 +644,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       newLength = newText.length;
 
       endIndex = endIndex - (originalLength - newLength);
+      text = newText;
     }
 
     const relations = new Relations();
