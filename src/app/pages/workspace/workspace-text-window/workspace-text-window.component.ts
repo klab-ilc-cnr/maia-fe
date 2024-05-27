@@ -631,7 +631,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
     // let text = this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato //TODO OGGETTO RICEVUTO è SOLO TESTO, NON JSON
-    const text = this.textRes.join('').substring(startIndex, endIndex);
+    let text = this.textRes.join('').substring(startIndex, endIndex);
 
     if (!this.onlySpaces(text)) {
       const originalLength = text.length;
@@ -644,6 +644,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       newLength = newText.length;
 
       endIndex = endIndex - (originalLength - newLength);
+      text = newText;
     }
 
     const relations = new Relations();
