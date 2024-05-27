@@ -476,8 +476,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che intercetta il cambio di layer selezionato */
   onChangeLayerSelection(event: any) {
-    if (this.selectedLayer && this.visibleLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
-      this.visibleLayers.push(this.selectedLayer!);
+    this.selectedLayers = this.selectedLayers ?? [];
+
+    if (this.selectedLayer && this.selectedLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
+      this.selectedLayers.push(this.selectedLayer!);
       this.changeVisibleLayers();
     }
   }
@@ -604,7 +606,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const selection = window.getSelection();
 
     if (!selection) { return; }
-    
+
     const text = selection.toString();
 
     if (/\s+$/.test(text)) { // Check if there is a trailing whitespace
@@ -1056,7 +1058,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
 * @returns {void}
 */
-  private loadData(start: number, end: number) {
+  private loadData(start: number, end: number): void {
     if (!this.textId) {
       return;
     }
