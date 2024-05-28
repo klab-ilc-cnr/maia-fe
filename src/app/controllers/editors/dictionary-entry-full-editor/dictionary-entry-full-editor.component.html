@@ -15,7 +15,37 @@
             </div>
             <div class="field col-6">
                 <label class="form-label w-full" for="firstAttestationB">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</label>
-                <p-dropdown inputId="firstAttestationB" styleClass="w-full"></p-dropdown>
+                <p-dropdown inputId="firstAttestationB" styleClass="w-full" [options]="(otherWorks$|async)||[]" optionLabel="title" optionValue="code" [filter]="true"></p-dropdown>
+            </div>
+            <div class="field col-12">
+                <p-fieldset>
+                    <ng-template pTemplate="header">
+                        Occ. altre opere <button pButton pRipple icon="pi pi-plus" type="button"
+                        class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+                    </ng-template>
+                    <ng-template pTemplate="content"></ng-template>
+                </p-fieldset>
+            </div>
+            <div class="field col-12">
+                <p-fieldset>
+                    <ng-template pTemplate="header">Etimologia</ng-template>
+                    <ng-template pTemplate="content">
+                        <div class="d-flex justify-content-between">
+                            <div class="field col-2">
+                                <label class="form-label w-full text-truncate">Lingua di provenienza</label>
+                                <p-dropdown styleClass="w-full" [options]="(etymologyLanguages$|async)||[]" optionLabel="code" optionValue="code" appendTo="body"></p-dropdown>
+                            </div>
+                            <div class="field col-3">
+                                <label class="form-label w-full">Etimo</label>
+                                <input class="w-full" pInputText type="text">
+                            </div>
+                            <div class="field col-7">
+                                <label class="form-label w-full">Dettagli</label>
+                                <p-editor></p-editor>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-fieldset>
             </div>
             <div class="field col-12">
                 <label class="form-label w-full" for="">{{'DICTIONARY_EDITOR.EDIT_TAB.dictCorporaEtAl'|translate}}:</label>

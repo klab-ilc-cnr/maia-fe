@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
+import { DictionaryService } from 'src/app/services/dictionary.service';
 
 @Component({
   selector: 'app-dictionary-entry-full-editor',
@@ -14,12 +15,18 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   statusForm: string[] = ['completed', 'reviewed', 'working'];
   @Input() dictionaryEntry!: DictionaryEntry; //TODO set required true on Angular update
   structuredNote!: DictionaryNoteVocabo;
+  etymologyLanguages$ = this.dictionaryService.retrieveEtymologyLanguages();
+  otherWorks$ = this.dictionaryService.retrieveOtherWorks();
   fullEntryForm = new FormGroup({
     status: new FormControl<string>(''),
     label: new FormControl<string>('', Validators.required)
   });
   get status() { return this.fullEntryForm.controls.status }
   get label() { return this.fullEntryForm.controls.label }
+
+  constructor(
+    private dictionaryService: DictionaryService,
+  ) {}
 
   ngOnInit(): void {
     this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);

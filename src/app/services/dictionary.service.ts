@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DictionaryEntry } from '../models/dictionary/dictionary-entry.model';
+import { EtymologyLanguage } from '../models/dictionary/etymology-language.model';
 import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-request.model';
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
 import { LexicographicComponent } from '../models/dictionary/lexicographic-component.model';
+import { TextualDocument } from '../models/dictionary/textual-document.model';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 import { CommonService } from './common.service';
 import { LoggedUserService } from './logged-user.service';
@@ -183,6 +185,10 @@ export class DictionaryService {
     return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/data/dictionaryEntry/seeAlso?id=${this.commonService.encodeUrl(dictionaryId)}`);
   }
 
+  retrieveEtymologyLanguages(): Observable<EtymologyLanguage[]> {
+    return this.http.get<EtymologyLanguage[]>(`${this.lexoUrl}/dictionary/etymology/languages`);
+  }
+
   /**
    * Requires the list of dictionary entries corresponding to a set of filters
    * @param request {LexicogEntriesRequest} set of indexes and filters 
@@ -193,5 +199,9 @@ export class DictionaryService {
       `${this.lexoUrl}/data/dictionaryEntries`,
       request
     );
+  }
+
+  retrieveOtherWorks(): Observable<TextualDocument[]> {
+    return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/otherDocuments`);
   }
 }
