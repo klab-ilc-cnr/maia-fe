@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 
 @Component({
@@ -12,6 +13,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   private readonly unsubscribe$ = new Subject();
   statusForm: string[] = ['completed', 'reviewed', 'working'];
   @Input() dictionaryEntry!: DictionaryEntry; //TODO set required true on Angular update
+  structuredNote!: DictionaryNoteVocabo;
   fullEntryForm = new FormGroup({
     status: new FormControl<string>(''),
     label: new FormControl<string>('', Validators.required)
@@ -20,6 +22,8 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   get label() { return this.fullEntryForm.controls.label }
 
   ngOnInit(): void {
+    this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
+    console.info(this.structuredNote)
     this.status?.setValue(this.dictionaryEntry.status);
     this.label?.setValue(this.dictionaryEntry.label);
     

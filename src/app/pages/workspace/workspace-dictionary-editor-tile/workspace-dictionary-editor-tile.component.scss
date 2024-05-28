@@ -1,3 +1,28 @@
 :host::ng-deep.p-tabview .p-tabview-panels {
     padding: 0.5rem;
 }
+
+
+// START MANAGE SCROLLABLE PANEL CONTENT
+:host::ng-deep.p-tabview,
+p-tabView {
+    display: block;
+    height: 100%;
+}
+
+:host::ng-deep.p-tabview-panels {
+    height: calc(100% - 41px);
+}
+
+:host::ng-deep p-tabPanel > div[aria-hidden="false"], 
+p-tabPanel {
+    height: 100%;
+}
+
+:host::ng-deep p-tabPanel > div[aria-hidden="false"]>* {
+    overflow-y: scroll;
+    display: block;
+    height: 100%;
+}
+
+// END
