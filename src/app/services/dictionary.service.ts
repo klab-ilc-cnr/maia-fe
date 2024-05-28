@@ -6,6 +6,7 @@ import { DictionaryEntry } from '../models/dictionary/dictionary-entry.model';
 import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-request.model';
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
 import { LexicographicComponent } from '../models/dictionary/lexicographic-component.model';
+import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 import { CommonService } from './common.service';
 import { LoggedUserService } from './logged-user.service';
 
@@ -115,6 +116,20 @@ export class DictionaryService {
   }
 
   /**
+   * HTTP request to create/update a dictionary entry note 
+   * @param dictionaryId {string} dictionary entry identifier
+   * @param author {string} username of the author  
+   * @param body {{notes: string}} text of the note
+   * @returns {Observable<Object>}
+   */
+  createAndUpdateDictionaryNote(dictionaryId: string, author: string, body: { notes: string }) {
+    return this.http.post(
+      `${this.lexoUrl}/update/dictionaryEntry/notes?id=${this.commonService.encodeUrl(dictionaryId)}&author=${author}`,
+      body
+    );
+  }
+
+  /**
    * Request http to delete a dictionary entry
    * @param dictionaryEntryId {string} dictionary entry identifier
    * @returns {Observable<string>} timestamp
@@ -157,6 +172,15 @@ export class DictionaryService {
    */
   retrieveDictionaryEntryById(dictEntryId: string): Observable<DictionaryEntry> {
     return this.http.get<DictionaryEntry>(`${this.lexoUrl}/data/dictionaryEntry?id=${this.commonService.encodeUrl(dictEntryId)}`)
+  }
+
+  /**
+   * Http request to retrieve the list of see also relations of a dictionary entry
+   * @param dictionaryId {string} dictionary entry identifier
+   * @returns {Observable<LinguisticRelationModel[]>} observable of the list of see also relations
+   */
+  retrieveDictionarySeeAlso(dictionaryId: string): Observable<LinguisticRelationModel[]> {
+    return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/data/dictionaryEntry/seeAlso?id=${this.commonService.encodeUrl(dictionaryId)}`);
   }
 
   /**
