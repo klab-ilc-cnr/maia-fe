@@ -31,11 +31,18 @@
         </ng-template>
       </p-fieldset>
     </div>
-    <div class="field col-12">
-      <label for="lexicalConcepts" class="w-full">Lexicalized sense of:</label>
-      <p-autoComplete [suggestions]="(suggestions$|async)||[]" [delay]="300" name="lexicalConcepts" [virtualScroll]="true" (completeMethod)="onFilter($event)"
-        emptyMessage="No results" [multiple]="true" formControlName="lexicalConcepts" dataKey="lexicalConcept"
-        inputStyleClass="w-full" inputId="lexicalConcepts" [forceSelection]="true" appendTo="body" field="defaultLabel"
+    <div class="field col-6">
+      <label for="marksOfUse" class="w-full">Marks of use:</label>
+      <p-autoComplete [suggestions]="(marksOfUse$|async)||[]" [delay]="300" name="marksOfUse" [virtualScroll]="true" (completeMethod)="onFilter('marksOfUse', $event)"
+        emptyMessage="No results" [multiple]="true" formControlName="marksOfUse" dataKey="lexicalConcept" 
+        inputStyleClass="w-full" inputId="marksOfUse" [forceSelection]="true" appendTo="body" field="defaultLabel"
+        styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
+      </div>
+    <div class="field col-6">
+      <label for="semanticMarks" class="w-full">Semantic marks:</label>
+      <p-autoComplete [suggestions]="(semanticMarks$|async)||[]" [delay]="300" name="semanticMarks" [virtualScroll]="true" (completeMethod)="onFilter('semanticMarks', $event)"
+        emptyMessage="No results" [multiple]="true" formControlName="semanticMarks" dataKey="lexicalConcept"
+        inputStyleClass="w-full" inputId="semanticMarks" [forceSelection]="true" appendTo="body" field="defaultLabel"
         styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
       </div>
     <div class="field col-12" *ngIf="!demoHide"> <!--NOTE REMOVE DEMOHIDE WHEN FULLY DEVELOPED-->

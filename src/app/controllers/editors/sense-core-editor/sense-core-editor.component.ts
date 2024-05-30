@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject, Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
@@ -21,7 +21,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
   templateUrl: './sense-core-editor.component.html',
   styleUrls: ['./sense-core-editor.component.scss']
 })
-export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   demoHide = environment.demoHide;
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
@@ -40,7 +40,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewIni
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
     definition: new FormGroup({}),
-    lexicalConcepts: new FormControl<LexicalConceptListItem[]>([]),
+    marksOfUse: new FormControl<LexicalConceptListItem[]>([]),
+    semanticMarks: new FormControl<LexicalConceptListItem[]>([]),
     morphology: new FormArray<FormControl>([]),
   });
   /**Lista di controllo delle relazioni morfologiche */
@@ -67,13 +68,19 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewIni
       return of(values);
     }),
   );
-
-  lexicalConcepts: LexicalConceptListItem[] = [];
-  currentFilter$ = new BehaviorSubject<string>('');
-  suggestions$ = this.currentFilter$.pipe(
+  marksOfUse: LexicalConceptListItem[] = [];
+  semanticMarks: LexicalConceptListItem[] = [];
+  currentFilterMoU$ = new BehaviorSubject<string>('');
+  currentFilterSM$ = new BehaviorSubject<string>('');
+  marksOfUse$ = this.currentFilterMoU$.pipe(
     debounceTime(500),
     takeUntil(this.unsubscribe$),
-    switchMap(text => of(this.lexicalConcepts.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
+    switchMap(text => of(this.marksOfUse.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
+  );
+  semanticMarks$ = this.currentFilterSM$.pipe(
+    debounceTime(500),
+    takeUntil(this.unsubscribe$),
+    switchMap(text => of(this.semanticMarks.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
   );
   /**
    * Funzione di cancellazione di un senso
@@ -112,12 +119,6 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewIni
     private lexiconService: LexiconService,
     private globalState: GlobalStateService,
   ) {
-    this.globalState.lexicalConcepts$.pipe(
-      take(1),
-    ).subscribe(lcs => {
-      this.lexicalConcepts = lcs;
-    });
-
     this.userService.retrieveCurrentUser().pipe(
       take(1),
     ).subscribe(cu => {
@@ -145,6 +146,17 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewIni
 
   /**Metodo dell'interfaccia OnInit, utilizzato per prevalorizzare il form */
   ngOnInit(): void {
+    this.globalState.marksOfUse$.pipe(
+      take(1),
+    ).subscribe(resp => {
+        this.marksOfUse = resp;
+      });
+    this.globalState.semanticMarks$.pipe(
+      take(1),
+    ).subscribe(resp => {
+      this.semanticMarks = resp;
+      this.initLexicalConcepts();
+    });
     //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
     for (const { propertyID, propertyValue } of this.senseEntry.definition) {
       this.movePropertyToForm(propertyID, propertyValue);
@@ -154,26 +166,30 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewIni
     }
   }
 
-  ngAfterViewInit(): void {
-    this.lexiconService.getLexicalConceptsBySenseId(this.senseEntry.sense).pipe(
-      take(1),
-    ).subscribe(rels => {
-      const lc: LexicalConceptListItem[] = [];
-      rels.forEach(rel => {
-        const temp = this.lexicalConcepts.find(c => c.lexicalConcept === rel.entity);
-        if(temp !== undefined) {
-          lc.push(temp);
-        }
-      });
-      console.info(lc)
-      this.form.controls.lexicalConcepts.setValue(lc);
-    });
-  }
-
   /**Metodo dell'interfaccia OnDestroy, utilizzato per l'emissione e chiusura del subject di gestione delle subscribe */
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  private initLexicalConcepts() {
+    this.lexiconService.getLexicalConceptsBySenseId(this.senseEntry.sense).pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(rels => {
+      const selectedMarksOfUse: LexicalConceptListItem[] = [];
+      const selectedSemanticMarks: LexicalConceptListItem[] = [];
+      rels.forEach(r => {
+        if(r?.entityType && r.entityType[0] === "Marche d'uso") {
+          const tempMoU = this.marksOfUse.find(mou => mou.lexicalConcept === r.entity);
+          if(tempMoU !== undefined) selectedMarksOfUse.push(tempMoU);
+        } else if(r?.entityType && r.entityType[0] === "Marche Semantiche") {
+          const tempSM = this.semanticMarks.find(sm => sm.lexicalConcept === r.entity);
+          if(tempSM !== undefined) selectedSemanticMarks.push(tempSM);
+        }
+      })
+      this.form.controls.marksOfUse.setValue(selectedMarksOfUse);
+      this.form.controls.semanticMarks.setValue(selectedSemanticMarks);
+    });
   }
 
   /**
@@ -217,7 +233,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewIni
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(() => {
-      console.info(selectedConcept)
+      console.info(`${selectedConcept.defaultLabel} associated`);
     });
   }
 
@@ -239,8 +255,12 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
-  onFilter(event: { originalEvent: { isTrusted: boolean }, query: string }) {
-    this.currentFilter$.next(event.query);
+  onFilter(type: string, event: { originalEvent: { isTrusted: boolean }, query: string }) {
+    if(type === 'marksOfUse') {
+      this.currentFilterMoU$.next(event.query);
+    } else if(type === 'semanticMarks') {
+      this.currentFilterSM$.next(event.query);
+    }
   }
 
 

@@ -23,10 +23,14 @@ export class GlobalStateService {
   ).pipe(
     shareReplay(1),
   );
-  lexicalConcepts$ = this.lexiconService.getLexicalConcepts().pipe(
+  marksOfUse$ = this.lexiconService.getLexicalConcepts('marcheDUso').pipe(
     map(resp => resp.list),
     shareReplay(1),
-  )
+  );
+  semanticMarks$ = this.lexiconService.getLexicalConcepts('marcheSemantiche').pipe(
+    map(resp => resp.list),
+    shareReplay(1),
+  );
   /**Observable of the list of lexical entry types */
   lexicalEntryTypes$ = this.lexiconService.getLexicalEntryTypes().pipe(
     shareReplay(1),

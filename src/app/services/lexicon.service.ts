@@ -233,8 +233,8 @@ export class LexiconService {
    * Retrieve the list of existing lexical concepts
    * @returns {Observable<LexicalConceptsResponse>} observable containing the list of existing lexical concepts
    */
-  getLexicalConcepts(): Observable<LexicalConceptsResponse> {
-    return this.http.get<LexicalConceptsResponse>(`${this.lexoUrl}/data/lexicalConcepts?id=root`);
+  getLexicalConcepts(type: string): Observable<LexicalConceptsResponse> {
+    return this.http.get<LexicalConceptsResponse>(`${this.lexoUrl}/data/lexicalConcepts?type=${type}`);
   }
 
   getLexicalConceptsBySenseId(senseId: string): Observable<LinguisticRelationModel[]> {
