@@ -121,10 +121,10 @@ export class DictionaryService {
    * HTTP request to create/update a dictionary entry note 
    * @param dictionaryId {string} dictionary entry identifier
    * @param author {string} username of the author  
-   * @param body {{notes: string}} text of the note
+   * @param body {string} text of the note
    * @returns {Observable<Object>}
    */
-  createAndUpdateDictionaryNote(dictionaryId: string, author: string, body: { notes: string }) {
+  createAndUpdateDictionaryNote(dictionaryId: string, author: string, body: string ) {
     return this.http.post(
       `${this.lexoUrl}/update/dictionaryEntry/notes?id=${this.commonService.encodeUrl(dictionaryId)}&author=${author}`,
       body

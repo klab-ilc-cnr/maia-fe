@@ -84,7 +84,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       debounceTime(500),
     ).subscribe(v => {
       const username = this.loggedUserService.currentUser?.username ?? 'unknown user';
-      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, {notes: JSON.stringify(v)}).pipe( //FIXME arriva un error 500 da BE
+      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, JSON.stringify(v)).pipe( //FIXME arriva un error 500 da BE
         take(1),
       ).subscribe(res => console.info(res));
     })
