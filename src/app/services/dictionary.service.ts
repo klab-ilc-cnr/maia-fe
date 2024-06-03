@@ -81,6 +81,16 @@ export class DictionaryService {
       }
     );
   }
+  
+  associateSeeAlsoToDictEntry(dictionaryId: string, seeAlsoId: string) {
+    return this.http.post(
+      `${this.lexoUrl}/associate/dictionaryEntry/seeAlso`,
+      {
+        dictionaryId: dictionaryId,
+        seeAlsoDictionaryId: seeAlsoId
+      }
+    );
+  }
 
   createAndAssociateLexicalEntry(lang: string, label: string, pos: string, type: string[], dictionaryId: string, position: number) {
     return this.http.post(
@@ -158,6 +168,17 @@ export class DictionaryService {
       }
     );
   }
+
+  dissociateSeeAlsoFromDictEntry(dictionaryId: string, seeAlsoId: string) {
+    return this.http.post(
+      `${this.lexoUrl}/delete/dictionaryEntry/seeAlso`,
+      {
+        dictionaryId: dictionaryId,
+        seeAlsoDictionaryId: seeAlsoId
+      }
+    );
+  }
+
 
   retrieveComponents(parentEntityId: string): Observable<LexicographicComponent[]> {
     return this.http.get<LexicographicComponent[]>(`${this.lexoUrl}/data/lexicographicComponents?id=${this.commonService.encodeUrl(parentEntityId)}`)

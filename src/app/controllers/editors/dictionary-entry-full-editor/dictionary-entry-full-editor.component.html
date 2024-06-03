@@ -83,8 +83,24 @@
                 <div class="field col-12">
                     <label class="form-label w-full" for="polyrhematics">{{'DICTIONARY_EDITOR.EDIT_TAB.misc'|translate}}:</label>
                     <p-editor id="polyrhematics" formControlName="polyrhematics" class="w-full"></p-editor>
-                </div>
+                </div>              
             </span>
+            <div class="field col-12">
+                <p-fieldset>
+                  <ng-template pTemplate="header">
+                    See also <button pButton pRipple icon="pi pi-plus" type="button"
+                      class="p-button-rounded p-button-success mx-2 fieldset-small" (click)="onAddSeeAlso()"></button>
+                  </ng-template>
+                  <ng-template pTemplate="content">
+                    <form formArrayName="seeAlso">
+                      <app-autocomplete-checkbox *ngFor="let sA of seeAlso.controls; index as index"
+                        [isChecked]="sA.value.external" [fieldValue]="sA.value" placeholderMsg="Search lexical entry"
+                        [filterFn]="dictEntryList" field="label" (selected)="onSelectDictEntry($event, index)"
+                        (remove)="onRemoveSeeAlso(index)"></app-autocomplete-checkbox>
+                    </form>
+                  </ng-template>
+                </p-fieldset>
+              </div>
         </form>
     </div>
 </ng-template>
