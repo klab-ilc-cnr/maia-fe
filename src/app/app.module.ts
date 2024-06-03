@@ -59,6 +59,7 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
 import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/workspace-dictionary-editor-tile/workspace-dictionary-editor-tile.component';
 import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
 import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
+import { DropdownPlusNumberComponent } from './forms/dropdown-plus-number/dropdown-plus-number.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictio
     NewDictionaryEntryComponent,
     WorkspaceDictionaryEditorTileComponent,
     DictionaryEntryReferralEditorComponent,
-    DictionaryEntryFullEditorComponent
+    DictionaryEntryFullEditorComponent,
+    DropdownPlusNumberComponent
   ],
   imports: [
     BrowserModule,

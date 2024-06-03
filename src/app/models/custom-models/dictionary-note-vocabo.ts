@@ -1,5 +1,5 @@
 export class DictionaryNoteVocabo {
-    etimology: {
+    etymology: {
         language: string;
         etymon: string;
         details: string;
@@ -16,7 +16,7 @@ export class DictionaryNoteVocabo {
     constructor(note: string) {
         try {
             const parsedNote = JSON.parse(note);
-            this.etimology = { ...parsedNote.etimology };
+            this.etymology = { ...parsedNote.etymology };
             this.frequencies = [...parsedNote.frequencies];
             this.firstAttestation = parsedNote.firstAttestation;
             this.linguisticsSemantics = parsedNote.linguisticsSemantics;
@@ -30,7 +30,7 @@ export class DictionaryNoteVocabo {
             console.error(error);
             console.warn('Note value: ', note);
             console.groupEnd();
-            this.etimology = {
+            this.etymology = {
                 language: '',
                 etymon: '',
                 details: '',

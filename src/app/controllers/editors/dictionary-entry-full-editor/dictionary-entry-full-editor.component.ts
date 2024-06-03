@@ -23,7 +23,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     label: new FormControl<string>('', Validators.required),
     entryNote: new FormGroup({
       firstAttestation: new FormControl<string>(''),
-      frequencies: new FormArray([]),
+      frequencies: new FormArray<FormControl>([]),
       etymology: new FormGroup({
         language: new FormControl<string>(''),
         etymon: new FormControl<string>(''),
@@ -41,6 +41,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   get status() { return this.fullEntryForm.controls.status }
   get label() { return this.fullEntryForm.controls.label }
   get entryNote() { return this.fullEntryForm.controls.entryNote }
+  get frequencies() { return this.entryNote.controls['frequencies'] as FormArray }
 
   constructor(
     private dictionaryService: DictionaryService,
@@ -54,9 +55,8 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.label?.setValue(this.dictionaryEntry.label);
     this.entryNote.setValue({
       firstAttestation: this.structuredNote.firstAbsAttestation,
-      // frequencies: this.structuredNote.frequencies,
       frequencies: [],
-      etymology: this.structuredNote.etimology,
+      etymology: this.structuredNote.etymology,
       linguisticsSemantics: this.structuredNote.linguisticsSemantics,
       decameron: this.structuredNote.decameron,
       firstAbsAttestation: this.structuredNote.firstAbsAttestation,
@@ -64,6 +64,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       crusche: this.structuredNote.crusche,
       polyrhematics: this.structuredNote.polyrhematics
     });
+    this.initFrequencies(this.structuredNote.frequencies);
     
     this.status.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
@@ -84,7 +85,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       debounceTime(500),
     ).subscribe(v => {
       const username = this.loggedUserService.currentUser?.username ?? 'unknown user';
-      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, JSON.stringify(v)).pipe( //FIXME arriva un error 500 da BE
+      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, JSON.stringify(v)).pipe(
         take(1),
       ).subscribe(res => console.info(res));
     })
@@ -93,5 +94,24 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  onAddFrequency() {
+    const newFrequency = { documentId: '', frequency: 0 };
+    this.frequencies.push(new FormControl(newFrequency));
+  }
+
+  onRemoveFrequencyAt(index: number) {
+    this.frequencies.removeAt(index);
+  }
+
+  onUpdateFrequency(frequencyValue: { documentId: string, frequency: number }, index: number) {
+    this.frequencies.at(index).setValue(frequencyValue)
+  }
+
+  private initFrequencies(frequencies: { documentId: string, frequency: number }[]) {
+    for(const freq of frequencies) {
+      this.frequencies.push(new FormControl(freq));
+    }
   }
 }
