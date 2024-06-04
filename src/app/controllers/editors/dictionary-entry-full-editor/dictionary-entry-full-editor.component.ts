@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { encode } from 'html-entities';
 import { Subject, catchError, debounceTime, map, take, takeUntil } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -116,9 +117,10 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
 
     this.label.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
+      debounceTime(500),
     ).subscribe(v => {
       if(!v) {
-        console.error('Missing label');
+        console.error('Missing label'); //TODO aggiungere validatore affinché non sia né vuoto né soli spazi e nel caso visualizzi il messaggio
         return;
       }
       // this.dictionaryService.updateDictionaryEntryLabel(this.dictionaryEntry.id, v).pipe( //TODO remove comment when service is ready
@@ -133,7 +135,20 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       debounceTime(500),
     ).subscribe(v => {
       const username = this.loggedUserService.currentUser?.username ?? 'unknown user';
-      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, JSON.stringify(v)).pipe(
+      const encodedValue = {
+        ...v,
+        etymology: {
+          ...v.etymology,
+          details: encode(v.etymology?.details)
+        },
+        linguisticsSemantics: encode(v.linguisticsSemantics),
+        decameron: encode(v.decameron),
+        firstAbsAttestation: encode(v.firstAbsAttestation),
+        boccaccioDante: encode(v.boccaccioDante),
+        crusche: encode(v.crusche),
+        polyrhematics: encode(v.polyrhematics)
+      }
+      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, JSON.stringify(encodedValue)).pipe(
         take(1),
       ).subscribe(res => console.info(res));
     })

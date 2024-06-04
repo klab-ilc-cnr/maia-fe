@@ -1,3 +1,5 @@
+import { decode } from 'html-entities';
+
 export class DictionaryNoteVocabo {
     etymology: {
         language: string;
@@ -16,15 +18,18 @@ export class DictionaryNoteVocabo {
     constructor(note: string) {
         try {
             const parsedNote = JSON.parse(note);
-            this.etymology = { ...parsedNote.etymology };
+            this.etymology = { 
+                ...parsedNote.etymology,
+                details: decode(parsedNote.etymology.details)
+             };
             this.frequencies = [...parsedNote.frequencies];
             this.firstAttestation = parsedNote.firstAttestation;
-            this.linguisticsSemantics = parsedNote.linguisticsSemantics;
-            this.decameron = parsedNote.decameron;
-            this.firstAbsAttestation = parsedNote.firstAbsAttestation;
-            this.boccaccioDante = parsedNote.boccaccioDante;
-            this.crusche = parsedNote.crusche;
-            this.polyrhematics = parsedNote.polyrhematics;
+            this.linguisticsSemantics = decode(parsedNote.linguisticsSemantics);
+            this.decameron = decode(parsedNote.decameron);
+            this.firstAbsAttestation = decode(parsedNote.firstAbsAttestation);
+            this.boccaccioDante = decode(parsedNote.boccaccioDante);
+            this.crusche = decode(parsedNote.crusche);
+            this.polyrhematics = decode(parsedNote.polyrhematics);
         } catch (error) {
             console.group('Error with note structure, note value will be ignored');
             console.error(error);
