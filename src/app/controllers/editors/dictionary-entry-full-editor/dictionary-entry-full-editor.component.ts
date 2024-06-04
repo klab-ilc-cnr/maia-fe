@@ -109,8 +109,15 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.label.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(v => {
+      if(!v) {
+        console.error('Missing label');
+        return;
+      }
+      // this.dictionaryService.updateDictionaryEntryLabel(this.dictionaryEntry.id, v).pipe( //TODO remove comment when service is ready
+      //   take(1),
+      //   catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error,error.error.message)),
+      // ).subscribe(r => console.info(r));
       console.info('salvo nuova label', v);
-      //TODO add update field
     });
 
     this.entryNote.valueChanges.pipe(
