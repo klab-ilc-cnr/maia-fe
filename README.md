@@ -26,3 +26,8 @@ The deployment package will then be available in the maia folder.
 To report any bugs or propose new features, you can open a new issue in the [dedicated section](https://github.com/klab-ilc-cnr/Maia/issues) of the main Maia repository.
 
 In case of a bug please indicate the version of the platform used and describe the steps to replicate the error. Where possible and useful, images should also be attached.
+
+## Versions and compatibility
+| maia-be  | maia-fe |
+| ------------- | ------------- |
+| v. 0.0.6  | v. 0.9.10  |
