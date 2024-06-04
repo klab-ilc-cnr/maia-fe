@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+declare const require: (path: string) => any;
 
 /**Componente del footer */
 @Component({
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
+  APP_VERSION = require('../../../../../package.json').version;
 }

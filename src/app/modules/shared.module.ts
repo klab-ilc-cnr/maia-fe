@@ -15,6 +15,7 @@ import { EditorModule } from 'primeng/editor';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextModule } from 'primeng/inputtext';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
@@ -27,6 +28,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SkeletonModule } from 'primeng/skeleton';
+import { SliderModule } from 'primeng/slider';
+import { SplitButtonModule } from 'primeng/splitbutton';
 import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
@@ -43,6 +46,7 @@ import { PopupDeleteItemComponent } from '../controllers/popup/popup-delete-item
 import { AutocompleteCheckboxComponent } from '../forms/autocomplete-checkbox/autocomplete-checkbox.component';
 import { DoubleAutocompleteComponent } from '../forms/double-autocomplete/double-autocomplete.component';
 import { GenericAutocompleteComponent } from '../forms/generic-autocomplete/generic-autocomplete.component';
+import { NewLemmaTrioComponent } from '../forms/new-lemma-trio/new-lemma-trio.component';
 import { ShouldBeEditablePipe } from '../pipes/should-be-editable.pipe';
 import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.directive';
 import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value-not-duplicate-name.directive';
@@ -87,6 +91,9 @@ const PRIMENG_MODULES = [
   InputNumberModule,
   PaginatorModule,
   PasswordModule,
+  InputTextModule,
+  SliderModule,
+  SplitButtonModule
 ];
 
 const DIRECTIVES = [
@@ -101,6 +108,7 @@ const COMPONENTS = [
   AutocompleteCheckboxComponent,
   DoubleAutocompleteComponent,
   GenericAutocompleteComponent,
+  NewLemmaTrioComponent,
 ];
 
 const PIPES = [

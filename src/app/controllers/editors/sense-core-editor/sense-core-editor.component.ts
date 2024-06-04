@@ -11,6 +11,7 @@ import { GlobalStateService } from 'src/app/services/global-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
 /**Componente dell'editor di lavorazione del core di un senso */
@@ -20,6 +21,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
   styleUrls: ['./sense-core-editor.component.scss']
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
+  demoHide = environment.demoHide;
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
   /**Senso in lavorazione */

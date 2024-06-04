@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, lastValueFrom, take, takeUntil } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -12,18 +12,24 @@ import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-
 import { HttpErrorResponse } from '@angular/common/http';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
+import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
+import { DictionaryExplorerTile } from 'src/app/models/tile/dictionary-explorer-tile.model';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
+import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
 import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { WorkspaceDictionaryTileComponent } from './workspace-dictionary-tile/workspace-dictionary-tile.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
+import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
@@ -141,9 +147,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event: { target: any; }) {
     //this.mainPanel.maximize();
-    console.log('Mappa panels');
+    // console.log('Mappa panels');
     //console.log(this.openPanels);
-    console.log(jsPanel.getPanels());
+    // console.log(jsPanel.getPanels());
 
     this.resizeContainerHeight()
   }
@@ -178,7 +184,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
     private commonService: CommonService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private lexiconService: LexiconService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
@@ -187,50 +194,49 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.commonService.notifyObservable$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
-      if ('option' in res && res.option === 'onLexiconTreeElementDoubleClickEvent') {
-        const selectedSubTree = structuredClone(res.value[0]);
-        const showLabelName = structuredClone(res.value[1]);
-        this.openLexiconEditTile(selectedSubTree, showLabelName);
+      if ('option' in res) {
+        switch (res.option) {
+          case 'onLexiconTreeElementDoubleClickEvent': {
+            const selectedSubTree = structuredClone(res.value[0]);
+            const showLabelName = structuredClone(res.value[1]);
+            this.openLexiconEditTile(selectedSubTree, showLabelName);
+            break;
+          }
+          case 'onSearchResultTableDoubleClickEvent': {
+            const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
+            this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex);
+            break;
+          }
+          default:
+            break;
+        }
       }
-    })
+    });
 
     this.items = [
       {
         label: 'Corpus',
         styleClass: 'p-button-raised p-button-text',
-        // items: [
-        // { label: 'Apri', id: 'OPEN', command: (event) => { this.openTextChoicePanel(event) } },
-        // { separator: true },
-        // { label: 'Esplora Corpus', id: 'CORPUS', command: (event) => { this.openExploreCorpusPanel(event) } }
-        // ]
         command: (event) => { this.openExploreCorpusPanel(event) }
       },
       {
         label: 'Lexicon',
-        // items: [
-        //   { label: 'Apri', id: 'LEXICON', command: (event) => { this.openLexiconPanel(event) } },
-        //   { label: 'Lessico 2' }
-        // ]
         command: (event) => { this.openLexiconPanel(event) }
       },
-      // {
-      //   label: 'Ontology',
-      //   // items: [
-      //   //   { label: 'Ontologia 1', id: 'ONTOLOGIA1' },
-      //   //   { label: 'Ontologia 2' },
-      //   //   { label: 'Ontologia 3' }
-      //   // ]
-      // },
-      // {
-      //   label: 'Salva modifiche', id: 'SAVE', command: (event) => { this.saveWork(event) }
-      // }
-      /*,
       {
-        label: 'Ripristina', id: 'RESTORE', command: (event) => { this.restoreTiles(event) }
-      } */
+        label: 'Ontology',
+      },
+      {
+        label: 'Search',
+        command: (event) => { this.openSearchPanel(event) }
+      },
+      {
+        label: 'Dictionary',
+        command: (event) => { this.openDictionaryPanel(event) }
+      }
     ];
-    if (!environment.demoHide) {
-      this.items.push({ label: 'Ontology' });
+    if (environment.demoHide) {
+      this.items.splice(2, 1); /**remove ontology from menu */
     }
 
     this.activeRoute.paramMap.pipe(
@@ -281,6 +287,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     jsPanel.extend({
       //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
+      lexiconEditTileMap: new Map<number, Tile<LexiconEditTileContent>>(),
       textTileMap: new Map<number, Tile<TextTileContent>>(),
       tileMap: new Map<number, Tile<any>>(),
       componentsList: new Array<any>(),
@@ -290,15 +297,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       //   return this;
       // },
       addToTileMap: function (tile: Tile<any>) {
-        console.log(tile)
         switch (tile.type as TileType) {
           case TileType.TEXT:
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.LEXICON:
-            // case TileType.LEXICON_EDIT: //TODO era una mia aggiunta ma il salvataggio su BE non pare gestito
+          case TileType.SEARCH:
+          case TileType.LEXICON_EDIT:
+          case TileType.DICTIONARY:
             this.tileMap.set(this.id, tile);
-            console.log('Added ', this.getTileMap())
             break;
 
           default:
@@ -310,18 +317,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       removeFromTileMap: function (panelId: number, type: TileType) {
         switch (type) {
           case TileType.TEXT:
-            this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
-            break;
-
           case TileType.CORPUS:
-            this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
-            break;
-
           case TileType.LAYERS_LIST:
+          case TileType.SEARCH:
+          case TileType.LEXICON_EDIT:
+          case TileType.DICTIONARY:
             this.tileMap.delete(panelId);
-            console.log('Deleted ', this.getTileMap());
             break;
 
           default:
@@ -345,13 +346,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (type) {
           case TileType.TEXT:
             this.textTileMap.delete(panelId);
-            console.log('Deleted ', this.getTextTileMap());
+            break;
+          case TileType.LEXICON_EDIT:
+            this.lexiconEditTileMap.delete(panelId);
             break;
           default:
             console.error("type ${type} not implemented");
         }
 
         return this;
+      },
+      getLexiconEditTileMap: function () {
+        return this.lexiconEditTileMap;
       },
       getTextTileMap: function () {
         return this.textTileMap;
@@ -433,7 +439,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param title {string} titolo del testo
    * @returns {void}
    */
-  openTextPanel(textId: number, title: string) {
+  openTextPanel(textId: number, title: string, startingRowIndex?: number) {
     const modalTextSelect = jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');
     })
@@ -450,11 +456,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (panelExist) { //caso di pannello già presente
-      panelExist.front()
+      if (startingRowIndex) {
+        const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
+        textTileComponent.component.instance.startingRowIndex = startingRowIndex;
+        textTileComponent.component.instance.loadInitialData();
+      }
+
+      panelExist.front();
       return;
     }
 
-    const res = this.generateTextTilePanelConfiguration(panelId, textId, title);
+    const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
     const textTileConfig = res.panelConfig;
 
@@ -577,10 +589,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const { content, ...text } = lexiconEditTileConfig;
 
+    lexiconEditTileConfig.content = undefined;
+    const lexiconEditTileContent: LexiconEditTileContent = { contentId: lexicalEntryTree?.data?.instanceName }  //NOTE For multiple panels, it is critical to pass the content id into the related content property (so that the data can be retrieved without display errors).
+
     const tileObject: Tile<LexiconEditTileContent> = {
       id: undefined,
       workspaceId: this.workspaceId,
-      content: undefined,
+      content: lexiconEditTileContent,
       tileConfig: lexiconEditTileConfig,
       type: TileType.LEXICON_EDIT
     };
@@ -590,17 +605,107 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+ * Opens the search tile
+ * @param event {any}
+ * @returns {void}
+ */
+  openSearchPanel(event: any) {
+    const searchPanelId = 'searchTile'
+
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === searchPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    const result = this.generateSearchPanelConfiguration(searchPanelId);
+
+    const searchTileConfig = result.panelConfig;
+
+    const searchTileElement = jsPanel.create(searchTileConfig);
+    searchTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    searchTileElement.titlebar.style.fontSize = '14px'
+
+    searchTileElement
+      .resize({
+        height: 500
+      })
+      .reposition();
+
+    const { content, ...text } = searchTileConfig;
+
+    searchTileConfig.content = undefined;
+
+    const tileObject: Tile<SearchTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: searchTileConfig,
+      type: TileType.SEARCH
+    };
+
+
+    searchTileElement.addToTileMap(tileObject);
+    searchTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
+  openDictionaryPanel(event: any) {
+    const dictionaryPanelId = 'dictionaryTile'
+
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === dictionaryPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    const result = this.generateDictionaryPanelConfiguration(dictionaryPanelId);
+
+    const dictionaryTileConfig = result.panelConfig;
+
+    const dictionaryTileElement = jsPanel.create(dictionaryTileConfig);
+    dictionaryTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    dictionaryTileElement.titlebar.style.fontSize = '14px'
+
+    dictionaryTileElement
+      .resize({
+        height: 500
+      })
+      .reposition();
+
+    const { content, ...text } = dictionaryTileConfig;
+
+    dictionaryTileConfig.content = undefined;
+
+    const tileObject: Tile<DictionaryExplorerTile> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: dictionaryTileConfig,
+      type: TileType.DICTIONARY
+    };
+
+
+    dictionaryTileElement.addToTileMap(tileObject);
+    dictionaryTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
+  /**
    * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
    * @param workspaceStatus {Workspace} status del workspace
    * @returns {void}
    */
-  restoreTiles(workspaceStatus: Workspace) {
-    console.log('restore');
+  async restoreTiles(workspaceStatus: Workspace) {
     this.loaderService.show();
 
     let storedData: any = workspaceStatus.layout;
     const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
-    console.log('restored layout', storedData, storedTiles, workspaceStatus);
+    // console.log('restored layout', storedData, storedTiles, workspaceStatus);
 
     if (storedTiles.length == 0) {
       return;
@@ -629,11 +734,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.setItem(this.storageName, storedData)
 
     let currPanelElement;
+    let componentRef;
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
     for (const [index, tile] of storedTiles.entries()) {
       switch (tile.type as TileType) {
         case TileType.TEXT:
-          var textTileComponent = this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle);
+          var textTileComponent = this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle, 0);
 
           //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
           //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
@@ -643,11 +749,62 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           currPanelElement = jsPanel.layout.restoreId({
             id: tile.tileConfig.id,
             config: mergedConfig,
-            storagename: this.storageName
+            storagename: this.storageName,
           });
-          //currPanelElement = jsPanel.create(mergedConfig);
+
+          componentRef = textTileComponent.component
 
           break;
+        case TileType.LEXICON_EDIT: {
+          const lexEntryId = environment.lexoBaseIRI + tile.tileConfig.id.replace(this.lexiconEditTilePrefix, '');
+          const lexicalEntry = await lastValueFrom(this.lexiconService.getLexicalEntry(tile.content.contentId));
+          console.info(lexicalEntry)
+          const lexEntryNode = <TreeNode<LexicalEntryOld>>{
+            data: {
+              name: lexicalEntry.label,
+              instanceName: lexicalEntry.lexicalEntry,
+              label: lexicalEntry.label,
+              note: lexicalEntry['note'],
+              creator: lexicalEntry['creator'],
+              creationDate: lexicalEntry['creationDate'] ? new Date(lexicalEntry['creationDate']).toLocaleString() : '',
+              lastUpdate: lexicalEntry['lastUpdate'] ? new Date(lexicalEntry['lastUpdate']).toLocaleString() : '',
+              status: lexicalEntry['status'],
+              uri: lexicalEntry['lexicalEntry'],
+              type: LexicalEntryTypeOld.LEXICAL_ENTRY,
+              sub: lexicalEntry.pos
+            },
+            children: [{
+              data: {
+                name: 'form (0)',
+                instanceName: '_form_' + lexicalEntry.lexicalEntry,
+                type: LexicalEntryTypeOld.FORMS_ROOT
+              }
+            },
+            {
+              data: {
+                name: 'sense (0)',
+                instanceName: '_sense_' + lexicalEntry.lexicalEntry,
+                type: LexicalEntryTypeOld.SENSES_ROOT
+              }
+            }]
+          };
+          const lexiconEditTileComponent = this.generateLexiconEditTileConfiguration(tile.id || lexEntryId, lexEntryNode, true);
+
+          //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
+          //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
+          const mergedConfig = { ...lexiconEditTileComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfig,
+            storagename: this.storageName,
+          });
+
+          componentRef = lexiconEditTileComponent.component
+
+          break;
+        }
 
         case TileType.CORPUS:
           const corupusComponent = this.generateCorpusExplorerPanelConfiguration(tile.tileConfig.id);
@@ -657,10 +814,25 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           currPanelElement = jsPanel.layout.restoreId({
             id: tile.tileConfig.id,
             config: mergedConfigCorpus,
-            storagename: this.storageName
+            storagename: this.storageName,
           });
 
-          //currPanelElement = jsPanel.create(mergedConfigCorpus);
+          componentRef = corupusComponent.component;
+
+          break;
+
+        case TileType.SEARCH:
+          const searchComponent = this.generateSearchPanelConfiguration(tile.tileConfig.id);
+          const mergedConfigSearch = { ...searchComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigSearch,
+            storagename: this.storageName,
+          });
+
+          componentRef = searchComponent.component;
 
           break;
 
@@ -672,8 +844,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           currPanelElement = jsPanel.layout.restoreId({
             id: tile.tileConfig.id,
             config: mergedConfigLexicon,
-            storagename: this.storageName
+            storagename: this.storageName,
           });
+
+          componentRef = lexiconComponent.component;
 
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
           // è necessario reinserirlo manualmente
@@ -686,13 +860,25 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           break;
 
+        case TileType.DICTIONARY: {
+          const dictionaryComponent = this.generateDictionaryPanelConfiguration(tile.tileConfig.id);
+          const mergedConfigDictionary = {...dictionaryComponent.panelConfig, ...tile.tileConfig};
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfigDictionary,
+            storagename: this.storageName
+          });
+          componentRef = dictionaryComponent.component;
+          break;
+        }
+
         default:
           console.error("type " + tile.type + " not implemented");
       }
       currPanelElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
       currPanelElement.titlebar.style.fontSize = '14px'
       currPanelElement.addToTileMap(tile);
-      currPanelElement.addComponentToList(tile.tileConfig.id, tile, tile.type);
+      currPanelElement.addComponentToList(tile.tileConfig.id, componentRef, tile.type);
 
     }
 
@@ -764,7 +950,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // for demo purpose only log stored data to the console
     // or use your browser's dev tools to inspect localStorage
-    console.log('stored data', storedData);
+    // console.log('stored data', storedData);
   }
 
   //TODO verificare perché non sembra sia utilizzato
@@ -821,11 +1007,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#CCE1F2',
         bgContent: '#fff',
         colorHeader: 'black',
         colorContent: `#${jsPanel.colorNames.gray700}`,
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #CCE1F2',
         borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
@@ -836,10 +1022,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
-        const panelIDs = jsPanel.getPanels(function () {
-          return panel.classList.contains('jsPanel-standard');
-        }).map((panel: any) => panel.id);
-        console.log(panelIDs)
+        // const panelIDs = jsPanel.getPanels(function () {
+        //   return panel.classList.contains('jsPanel-standard');
+        // }).map((panel: any) => panel.id);
+        // console.log(panelIDs)
       }
     };
 
@@ -859,9 +1045,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param title {string} titolo del testo
    * @returns configurazione del pannello di annotazione di un testo
    */
-  private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string) {
+  private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string, startingRowIndex: number) {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
+    componentRef.instance.startingRowIndex = startingRowIndex;
     componentRef.instance.height = window.innerHeight / 3 * 2;
     // componentRef.instance.visibleLayers = this.visibleLayers;
 
@@ -906,21 +1093,21 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#CCE1F2',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #CCE1F2',
         borderRadius: '.33rem',
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
         //this.deleteTileContent(panel.id, TileType.TEXT);
-        console.log(this, panel, closedByUser)
+        // console.log(this, panel, closedByUser)
         this.removeFromTileMap(panel.id, TileType.TEXT);
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
-        console.log('panel', this, panel, status)
+        // console.log('panel', this, panel, status)
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
@@ -976,9 +1163,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       contentOverflow: 'hidden',
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#C6F8E5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #C6F8E5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1002,10 +1189,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
-        const panelIDs = jsPanel.getPanels(function () {
-          return panel.classList.contains('jsPanel-standard');
-        }).map((panel: any) => panel.id);
-        console.log(panelIDs)
+        // const panelIDs = jsPanel.getPanels(function () {
+        //   return panel.classList.contains('jsPanel-standard');
+        // }).map((panel: any) => panel.id);
+        // console.log(panelIDs)
       }
     };
 
@@ -1056,9 +1243,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       dragit: { snap: false },
       syncMargins: true,
       theme: {
-        bgPanel: '#a8c0ce',
+        bgPanel: '#C6F8E5',
         colorHeader: 'black',
-        border: 'thin solid #a8c0ce',
+        border: 'thin solid #C6F8E5',
         borderRadius: '.33rem',
       },
       panelSize: {
@@ -1092,6 +1279,137 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       tileType: TileType.LEXICON_EDIT
     };
 
+  }
+
+  /**
+   * @private
+   * Generates search tile configurations
+   * @param searchPanelId {string} search tile identifier
+   * @returns search tile configurations
+   */
+  private generateSearchPanelConfiguration(searchPanelId: string) {
+    const componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent);
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: searchPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Search',
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
+      syncMargins: true,
+      theme: {
+        bgPanel: '#FBF7D5',
+        colorHeader: 'black',
+        border: 'thin solid #FBF7D5',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.6
+      },
+      resizeit: {
+        minWidth: 830,
+        minHeight: 500,
+        resize: (panel: any, paneldata: any, event: any) => {
+          componentRef.instance.updateHeight(paneldata.height, paneldata.width);
+        }
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);;
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
+        componentRef.instance.updateHeight(panelH, panelW);
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.SEARCH);
+        this.removeComponentFromList(panel.id);
+      }
+    };
+
+    return {
+      id: searchPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.SEARCH
+    };
+  }
+
+  private generateDictionaryPanelConfiguration(dictionaryPanelId: string) {
+    const componentRef = this.vcr.createComponent(WorkspaceDictionaryTileComponent);
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: dictionaryPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Dictionary Explorer',
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
+      syncMargins: true,
+      theme: {
+        bgPanel: '#F9DED7',
+        colorHeader: 'black',
+        border: 'thin solid #F9DED7',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.2,
+        height: '60vh'
+      },
+      resizeit: {
+        minWidth: 250
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+          }
+        }
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.DICTIONARY);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any, status: any) {
+        // const panelIDs = jsPanel.getPanels(function () {
+        //   return panel.classList.contains('jsPanel-standard');
+        // }).map((panel: any) => panel.id);
+        // console.log(panelIDs)
+      }
+    };
+
+    return {
+      id: dictionaryPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.DICTIONARY
+    };
   }
 }
 

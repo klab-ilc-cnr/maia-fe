@@ -1,7 +1,7 @@
 <div class="grid justify-content-center align-items-center" style="height: 95vh;">
     <p-toast></p-toast>
     <div>
-        <p-card header="MAIA">
+        <p-card [header]="'MAIA' + subTitle">
             <form class="formgrid grid" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="field col-12">
                     <label for="username">{{'LOGIN.username'|translate}} *</label>

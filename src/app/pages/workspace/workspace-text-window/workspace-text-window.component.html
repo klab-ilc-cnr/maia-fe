@@ -56,6 +56,7 @@
 
 <div class="container">
   <p-splitter
+      #textTileSplitter
       [panelSizes]="[documentSectionsSplit, textSplitSize, annotationSplitSize]"
       [minSizes]="[lateralSplitCollapsedSize, lateralSplitCollapsedSize, lateralSplitCollapsedSize]"
       styleClass="mb-5"
@@ -85,7 +86,10 @@
     </ng-template>
     <ng-template pTemplate>
           <div #textContainer class="text-container w-100" (scroll)="onScroll($event)" [ngStyle]="{'height.px': textContainerHeight}">
-          <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)" >
+          <div id="svg" [ngStyle]="{'height.px': svgHeight}" #svg 
+          >
+          <!-- #76 CPU usage in Text panel #169
+            (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)"  -->
             <svg class="text-editor" [attr.height]="svgHeight" (click)="onRowClick($event)">
               <defs>
                 <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
@@ -130,7 +134,7 @@
                 </g>
               </g>
               <g class="text">
-                <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (mouseup)="onSelectionChange($event)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
+                <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (dblclick)="onSelectionChangeDoubleClick()" (mouseup)="onSelectionChange($event, row)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
                   <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-index]="line.startIndex" [attr.end-index]="line.endIndex">
                     <tspan *ngFor="let w of line.words" 
                             [attr.y]="line.yText" 
@@ -181,13 +185,16 @@
                             [attr.fill]="a.bgColor" 
                             [attr.stroke]="a.borderColor" 
                             [attr.id]="a.id" 
-                            (click)="expandCollapseAnnotationDiv(a.id)" 
+                            (click)="expandCollapseAnnotationDiv(a.id, row)" 
                             stroke-width="0.5px" 
                             rx="3px" 
                             ry="3px" 
-                            (mousedown)="startDrawing($event, a)" 
-                            (mouseup)="endDrawingAndCreateRelation($event, a)"
-                            [attr.data-rowIndex]="row.rowIndex"></rect>
+                            [attr.data-rowIndex]="row.rowIndex"
+                            >
+                            <!-- #76 CPU usage in Text panel #169
+                              (mousedown)="startDrawing($event, a)" 
+                            (mouseup)="endDrawingAndCreateRelation($event, a)" -->
+                        </rect>
                       <text [attr.x]="a.textCoordinates.x" [attr.y]="a.textCoordinates.y" [ngStyle]="{'color': a.color}">{{a.text}}</text>
                     </g>
                     <path [attr.d]="anns.curlyPath" stroke-width="1px" stroke="gray" class="curly"></path>

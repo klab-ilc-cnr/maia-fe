@@ -43,10 +43,13 @@ import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-l
 import { SharedModule } from './modules/shared.module';
 import { LoginComponent } from './pages/login/login.component';
 import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { NewDictionaryEntryComponent } from './pages/workspace/workspace-dictionary-tile/new-dictionary-entry/new-dictionary-entry.component';
+import { WorkspaceDictionaryTileComponent } from './pages/workspace/workspace-dictionary-tile/workspace-dictionary-tile.component';
 import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceListComponent } from './pages/workspace/workspace-list/workspace-list.component';
 import { WorkspaceMenuComponent } from './pages/workspace/workspace-menu/workspace-menu.component';
+import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './pages/workspace/workspace-text-selector/workspace-text-selector.component';
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
 import { WorkspaceComponent } from './pages/workspace/workspace.component';
@@ -91,6 +94,9 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     TextAnnotationEditorComponent,
     LoginComponent,
     MatchNewPasswordDirective,
+    WorkspaceSearchTileComponent,
+    WorkspaceDictionaryTileComponent,
+    NewDictionaryEntryComponent
   ],
   imports: [
     BrowserModule,
@@ -122,5 +128,5 @@ export class AppModule {
  * @returns {TranslateHttpLoader}
  */
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient);
+  return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }

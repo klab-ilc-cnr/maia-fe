@@ -5,7 +5,9 @@
         "cancel": "Annulla",
         "confirm": "Conferma",
         "currentPageReportTemplate": "Elementi da {first} a {last} per un totale di elementi {totalRecords}.",
+        "noResult": "Nessun risultato",
         "save": "Salva",
+        "selectValue": "Seleziona valore",
         "update": "Aggiorna"
     },
     "CORPUS_EXPLORER": {
@@ -36,6 +38,68 @@
         "splitOnNewLine": "Dividere su a capo",
         "uploaderType": "Tipo di caricamento",
         "uploadFileTitle": "Carica file"
+    },
+    "DICTIONARY_EXPLORER": {
+        "addEntry": "Aggiungi nuova voce",
+        "addLemma": "Aggiungi lemma",
+        "CONTEXTMENU": {
+            "delete": "Elimina",
+            "dissociate": "Dissocia",
+            "move": "Sposta"
+        },
+        "CREATE_ENTRY": {
+            "addEntry": "Aggiungi",
+            "addFullEntry": "Aggiungi voce piena",
+            "defineLemmas": "Definisci lemmi",
+            "entryLabel": "Nome",
+            "fullEntry": "Voce piena",
+            "fullEntryMandatory": "L'etichetta della voce piena è obbligatoria",
+            "fullEntryNotBlanks": "L'etichetta della voce piena non può contenere solo spazi",
+            "language": "Lingua",
+            "lemmaMandatory": "L'etichetta del lemma è obbligatoria",
+            "lemmaNotBlanks": "L'etichetta del lemma non può contenere solo spazi",
+            "nameMandatory": "L'etichetta della voce di dizionario è obbligatoria",
+            "nameNotBlanks": "L'etichetta della voce di dizionario non può contenere solo spazi",
+            "noMatching": "Nessuna corrispondenza",
+            "referralEntry": "Voce di rinvio",
+            "seeFullEntry": "Vedi voce piena",
+            "type": "Tipo"
+        },
+        "deleteDictionaryEntries": "Vuoi cancellare le voci di dizionario selezionate?",
+        "deleteDictionaryEntry": "Vuoi cancellare la voce '${dictionaryEntryLabel}'?",
+        "editor": "Redattore",
+        "export": "Esporta",
+        "filtersPanel": "Filtri",
+        "firstRemoveLemmas": "Prima è necessario dissociare i lemmi",
+        "language": "Lingua",
+        "refresh": "Aggiorna i risultati",
+        "remove": "Elimina",
+        "SEARCH_GUIDE": {
+            "title": "Esempi di ricerca",
+            "multiCharWildcard": "Ricerca con carattere jolly che sostituisce più caratteri:",
+            "singleCharWildCard": "Ricerca con carattere jolly che sostituisce un carattere:",
+            "fuzzy": "Ricerca fuzzy:",
+            "weightedFuzzy": "Ricerca fuzzy pesata:"
+        },
+        "selection": "Selezione",
+        "showLemmas": "Mostra lemmi",
+        "status": "Status"
+    },
+    "LEXICON_EXPLORER": {
+        "addNewLE": "Nuova entrata lessicale",
+        "associatedToDictionary": "Collegato a voci di dizionario",
+        "linkedToDictionaries": "è collegato alle voci:",
+        "NEW_LEXICAL_ENTRY": {
+            "language": "Lingua",
+            "languageRequired": "La lingua è obbligatoria",
+            "label": "Etichetta",
+            "labelNotBlanks": "L'etichetta non può contenere solo spazi",
+            "labelRequired": "L'etichetta è obbligatoria",
+            "pos": "Parte del discorso",
+            "posRequired": "La POS è obbligatoria",
+            "type": "Tipo",
+            "typeRequired": "Il tipo è obbligatorio"
+        }
     },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",
@@ -109,5 +173,35 @@
         "usernameMandatory": "Il nome utente è obbligatorio",
         "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri",
         "userUpdated": "Utente aggiornato con successo"
+    },
+    "SEARCH": {
+        "insertForm": "inserisci forma",
+        "insertLemma": "inserisci lemma",
+        "form": "forma",
+        "lemma": "lemma",
+        "noResult": "Nessun risultato.",
+        "contextLength": "lunghezza contesto",
+        "validSearchValue": "inserisci un valore",
+        "numberOfResults": "Numero di risultati",
+        "selected": "Selezionati",
+        "selectFile": "Seleziona file",
+        "exportAll": "Esporta tutto",
+        "exportSelected": "Esporta selezionati",
+        "exportSelectedFileName": "export_selected",
+        "exportAllFileName": "export_all",
+        "columns": {
+            "index": "Indice",
+            "text": "Testo",
+            "ref": "Ref",
+            "leftContext": "Contesto sinistro",
+            "kwic": "KWIC",
+            "rightContext": "Contesto destro"
+        },
+        "buttons":{
+            "search":"Cerca",
+            "clear":"Reset",
+            "saveAs": "Salva",
+            "export": "Esporta"
+        }
     }
 }

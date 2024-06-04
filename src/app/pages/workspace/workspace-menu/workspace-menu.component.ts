@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { faHouseDamage } from '@fortawesome/free-solid-svg-icons';
+import { MenuItem } from 'primeng/api';
+import { environment } from 'src/environments/environment';
 
 /**Componente del menu del workspace */
 @Component({
@@ -17,6 +18,8 @@ export class WorkspaceMenuComponent {
 
   /**Icona fortawesome per uscire dal workspace */
   faHouseDamage = faHouseDamage;
+
+  projectName = ` - ${environment.applicationSubTitle} `;
 
   /**
    * Metodo che emette l'evento di click su una voce di menu

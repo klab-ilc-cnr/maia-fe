@@ -1,0 +1,82 @@
+<div class="modal-content">
+    <form [formGroup]="entryForm" (ngSubmit)="onSubmitNewEntry()">
+        <div class="formgrid grid">
+            <div class="field col-4">
+                <label for="dictLang"
+                    class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.language'|translate}} *</label>
+                <p-dropdown id="dictLang" styleClass="w-full" [options]="languages" optionLabel="label"
+                    optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel" placeholder="Select value"
+                    formControlName="language"></p-dropdown>
+            </div>
+            <div class="field col-4 form-group">
+                <label for="dictName"
+                    class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.entryLabel'|translate}} *</label>
+                <input pInputText type="text" class="w-full" id="dictName" formControlName="name">
+                <div class="invalid-feedback" *ngIf="name.invalid && (name.touched || name.dirty)">
+                    <div *ngIf="name.errors?.['required']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.nameMandatory'|translate}}
+                    </div>
+                    <div *ngIf="name.errors?.['isNotOnlyWhitespaces']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.nameNotBlanks'|translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="field col-4">
+                <!--NOTE placeholder for default lemma button-->
+            </div>
+            <div class="field col-6 d-flex">
+                <div class="field-checkbox">
+                    <p-radioButton inputId="full" value="fullEntry" formControlName="selectedCategory"></p-radioButton>
+                    <label for="full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.fullEntry'|translate}}</label>
+                </div>
+                <div class="field-checkbox ml-2">
+                    <p-radioButton inputId="referral" value="referralEntry"
+                        formControlName="selectedCategory"></p-radioButton>
+                    <label>{{'DICTIONARY_EXPLORER.CREATE_ENTRY.referralEntry'|translate}}</label>
+                </div>
+            </div>
+            <div class="field col-6 form-group" *ngIf="selectedCategory?.value === 'referralEntry'">
+                <label for="sameAsFullEntry">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.seeFullEntry'|translate}} *</label>
+                <div class="d-flex w-full">
+                    <p-autoComplete style="width: inherit;" inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
+                    (completeMethod)="onFilter($event)" [delay]="300" appendTo="body" [virtualScroll]="true"
+                    field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
+                    [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate"
+                    formControlName="fullEntry">
+                    <ng-template let-item pTemplate="item">
+                        {{item['label']}}<sub>{{item['pos'].join(' ')}}</sub>
+                    </ng-template>
+                </p-autoComplete>
+                <p-button type="button" aria-label="Selection" icon="pi pi-check" styleClass="p-button p-button-success"
+                    [pTooltip]="'DICTIONARY_EXPLORER.CREATE_ENTRY.addFullEntry'|translate"></p-button><!--NOTE Explicit selection in case of manual entry-->
+                </div>
+                <div class="invalid-feedback" *ngIf="fullEntry.invalid && (fullEntry.touched || fullEntry.dirty)">
+                    <div *ngIf="fullEntry.errors?.['required']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.fullEntryMandatory'|translate}}
+                    </div>
+                    <div *ngIf="fullEntry.errors?.['isNotOnlyWhitespaces']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.fullEntryNotBlanks'|translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="field col-12" *ngIf="selectedCategory?.value === 'fullEntry'">
+                <p-fieldset>
+                    <ng-template pTemplate="header">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.defineLemmas'|translate}}<button pButton pRipple
+                            icon="pi pi-plus" type="button" (click)="onAddLemma()"
+                            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                        <app-new-lemma-trio *ngFor="let lemma of lemmas.controls; index as index" [index]="index"
+                            (remove)="onRemoveLemma($event)"
+                            (changeValue)="onChangeLemmaValue($event, index)"></app-new-lemma-trio>
+                    </ng-template>
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="field col-12 d-flex justify-content-end mb-0">
+            <button [disabled]="entryForm.invalid" class="btn btn-primary float-right"
+                type="submit">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.addEntry'|translate}}</button>
+        </div>
+    </form>
+</div>

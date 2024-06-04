@@ -61,10 +61,10 @@ export class AnnotationService {
   /**
    * Retrieves the list of annotations associated with a portion of text.
    * @param resourceId {number} resource identifier
-   * @param slice {start: number, end: number|null} coordinates of the set of rows for which we want annotations
+   * @param slice {start: number, end: number|null} coordinates of the set of rows for which we want annotations and optional list of visible layer ids
    * @returns {Observable<TAnnotation[]>} observable of the annotation list
    */
-  public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number }): Observable<TAnnotation[]> {
+  public retrieveResourceAnnotations(resourceId: number, slice: { start: number, end: number, layers?: number[] }): Observable<TAnnotation[]> {
     const uuid = uuidv4();
     return this.http.post<TAnnotation[]>(
       `${this.textoUrl}/util/resource/${resourceId}/annotations`,
@@ -73,6 +73,15 @@ export class AnnotationService {
         headers: new HttpHeaders({ 'UUID': uuid }),
       }
     );
+  }
+
+  /**
+   * Retrieves the number of rows in a text
+   * @param textId {number} resource identifier
+   * @returns number of rows
+   */
+  retrieveTextTotalRows(textId: number) : Observable<number> {
+    return this.http.get<number>(`${this.textoUrl}/resource/${textId}/rowCount`);
   }
 
   /**

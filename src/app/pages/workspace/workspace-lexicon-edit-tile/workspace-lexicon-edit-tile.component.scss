@@ -32,10 +32,10 @@ td {
   }
 }
 
-::ng-deep.p-splitter-panel:first-of-type {
+:host::ng-deep.p-splitter-panel:first-of-type {
   min-width: 265px;
 }
 
-::ng-deep.p-splitter-panel:last-of-type {
+:host::ng-deep.p-splitter-panel:last-of-type {
   min-width: 400px;
 }
