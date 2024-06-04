@@ -16,13 +16,21 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
   styleUrls: ['./dictionary-entry-full-editor.component.scss', '../dictionary-entry-referral-editor/dictionary-entry-referral-editor.component.scss']
 })
 export class DictionaryEntryFullEditorComponent implements OnInit {
+  /**To manage subscription */
   private readonly unsubscribe$ = new Subject();
+  /**List of available statuses */
   statusForm: string[] = ['completed', 'reviewed', 'working'];
+  /**Dictionary entry of which we show the details */
   @Input() dictionaryEntry!: DictionaryEntry; //TODO set required true on Angular update
+  /**Object that makes explicit the non-standard fields stored in the note */
   structuredNote!: DictionaryNoteVocabo;
+  /**List of see also relations of a dictionary entry */
   dictionarySeeAlso: LinguisticRelationModel[] = []
+  /**List of source languages available for etymology */
   etymologyLanguages$ = this.dictionaryService.retrieveEtymologyLanguages();
+  /**List of other works by an author */
   otherWorks$ = this.dictionaryService.retrieveOtherWorks();
+  /**Filter function for dictionary entries in the autocomplete of see also */
   dictEntryList = (text: string) => this.dictionaryService.retrieveLexicogEntryList({
     text: text,
     searchMode: searchModeEnum.startsWith,
@@ -136,20 +144,30 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
+  /**Method that adds a new line for the ocurrence description of the item */
   onAddFrequency() {
     const newFrequency = { documentId: '', frequency: 0 };
     this.frequencies.push(new FormControl(newFrequency));
   }
 
+  /**Method that adds a new line for the description of the see also relationship of the dictionary entry */
   onAddSeeAlso() {
     const newSeeAlso = { label: '', value: '', external: false, inferred: false };
     this.seeAlso.push(new FormControl(newSeeAlso));
   }
 
+  /**
+   * Method that removes a row from the frequency list
+   * @param index {number} position in the list
+   */
   onRemoveFrequencyAt(index: number) {
     this.frequencies.removeAt(index);
   }
 
+  /**
+   * Method that eliminates a see also type relationship
+   * @param index {number} position in the FormArray
+   */
   onRemoveSeeAlso(index: number) {
     const currentValue = this.seeAlso.at(index).value['value'];
     if(currentValue !== '') {
@@ -161,6 +179,11 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.seeAlso.removeAt(index);
   }
 
+  /**
+   * Method that handles saving a new relationship of type see also
+   * @param selectedValue {{ label: string, value: string, external: boolean, inferred: boolean }}
+   * @param formIndex {number} position 
+   */
   onSelectDictEntry(selectedValue: { label: string, value: string, external: boolean, inferred: boolean }, formIndex: number) {
     this.dictionaryService.associateSeeAlsoToDictEntry(this.dictionaryEntry.id, selectedValue.value).pipe(
       take(1),
@@ -168,16 +191,29 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     ).subscribe(resp => { console.info(resp) });
   }
 
+  /**
+   * Method that handles the valorization of an element in the frequency array form
+   * @param frequencyValue {{ documentId: string, frequency: number }}
+   * @param index {number} position in the FormArray
+   */
   onUpdateFrequency(frequencyValue: { documentId: string, frequency: number }, index: number) {
     this.frequencies.at(index).setValue(frequencyValue)
   }
 
+  /**
+   * Initialize frequencies with data already saved
+   * @param frequencies {{ documentId: string, frequency: number }[]}
+   */
   private initFrequencies(frequencies: { documentId: string, frequency: number }[]) {
     for(const freq of frequencies) {
       this.frequencies.push(new FormControl(freq));
     }
   }
 
+  /**
+   * Initialize see also relationships with data already saved
+   * @param seeAlsoList {LinguisticRelationModel[]}
+   */
   private initSeeAlso(seeAlsoList: LinguisticRelationModel[]) {
     seeAlsoList.forEach(seeAlso => {
       this.seeAlso.push(new FormControl({ label: seeAlso.label, value: seeAlso.entity, external: false, inferred: seeAlso.inferred }))
