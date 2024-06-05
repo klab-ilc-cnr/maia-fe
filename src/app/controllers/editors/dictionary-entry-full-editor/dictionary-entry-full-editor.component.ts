@@ -58,6 +58,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     entryNote: new FormGroup({
       firstAttestation: new FormControl<string>(''),
       firstAttestationDetails: new FormControl<string>(''),
+      decameronOccurrences: new FormControl<number>(0),
       frequencies: new FormArray<FormControl>([]),
       etymology: new FormGroup({
         language: new FormControl<string>(''),
@@ -78,6 +79,14 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   get entryNote() { return this.fullEntryForm.controls.entryNote }
   get frequencies() { return this.entryNote.controls['frequencies'] as FormArray }
   get seeAlso() { return this.fullEntryForm.controls['seeAlso'] as FormArray; }
+  get decameronOccurrences() { return this.entryNote.controls['decameronOccurrences'] }
+  get otherOccurrences() { 
+    let temp = 0;
+    this.frequencies.controls.forEach(f => {
+      temp = temp + f.value.frequency;
+    });
+    return temp;
+   }
 
   constructor(
     private dictionaryService: DictionaryService,
@@ -101,6 +110,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.entryNote.setValue({
       firstAttestation: this.structuredNote.firstAttestation,
       firstAttestationDetails: this.structuredNote.firstAttestationDetails,
+      decameronOccurrences: this.structuredNote.decameronOccurrences,
       frequencies: [],
       etymology: this.structuredNote.etymology,
       linguisticsSemantics: this.structuredNote.linguisticsSemantics,

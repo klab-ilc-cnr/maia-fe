@@ -25,6 +25,14 @@
                     <label class="form-label w-full" for="firstAttestationBDetails">Riferimento topografico</label>
                     <input class="w-full" pInputText id="firstAttestationBDetails" formControlName="firstAttestationDetails">
                 </div>
+                <div class="field col-6">
+                    <label class="form-label w-full" for="decameronOccurrences">N. occorrenze nel Decameron</label>
+                    <p-inputNumber styleClass="w-full" class="w-full" formControlName="decameronOccurrences"></p-inputNumber>
+                </div>
+                <div class="field col-6">
+                    <label class="form-label w-full">N. totale occorrenze</label>
+                    {{(decameronOccurrences?.value ?? 0) + otherOccurrences}}
+                </div>
                 <div class="field col-12">
                     <p-fieldset>
                         <ng-template pTemplate="header">

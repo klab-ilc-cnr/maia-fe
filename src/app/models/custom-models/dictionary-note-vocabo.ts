@@ -6,6 +6,7 @@ export class DictionaryNoteVocabo {
         etymon: string;
         details: string;
     };
+    decameronOccurrences: number;
     frequencies: {documentId: string; frequency: number}[];
     firstAttestation: string;
     firstAttestationDetails: string;
@@ -23,6 +24,7 @@ export class DictionaryNoteVocabo {
                 ...parsedNote?.etymology,
                 details: decode(parsedNote.etymology?.details) ?? ''
              };
+            this.decameronOccurrences = parsedNote?.decameronOccurrences ?? 0;
             this.frequencies = parsedNote?.frequencies ? [...parsedNote.frequencies] : [];
             this.firstAttestation = parsedNote?.firstAttestation ?? '';
             this.firstAttestationDetails = parsedNote?.firstAttestationDetails ?? '';
@@ -42,6 +44,7 @@ export class DictionaryNoteVocabo {
                 etymon: '',
                 details: '',
             };
+            this.decameronOccurrences = 0;
             this.frequencies = [];
             this.firstAttestation = '';
             this.firstAttestationDetails = '';
