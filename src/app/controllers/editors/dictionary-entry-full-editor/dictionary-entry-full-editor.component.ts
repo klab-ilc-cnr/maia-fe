@@ -55,6 +55,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     label: new FormControl<string>('', Validators.required),
     entryNote: new FormGroup({
       firstAttestation: new FormControl<string>(''),
+      firstAttestationDetails: new FormControl<string>(''),
       frequencies: new FormArray<FormControl>([]),
       etymology: new FormGroup({
         language: new FormControl<string>(''),
@@ -97,6 +98,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.label?.setValue(this.dictionaryEntry.label);
     this.entryNote.setValue({
       firstAttestation: this.structuredNote.firstAttestation,
+      firstAttestationDetails: this.structuredNote.firstAttestationDetails,
       frequencies: [],
       etymology: this.structuredNote.etymology,
       linguisticsSemantics: this.structuredNote.linguisticsSemantics,

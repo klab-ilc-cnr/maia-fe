@@ -8,6 +8,7 @@ export class DictionaryNoteVocabo {
     };
     frequencies: {documentId: string; frequency: number}[];
     firstAttestation: string;
+    firstAttestationDetails: string;
     linguisticsSemantics: string;
     decameron: string;
     firstAbsAttestation: string;
@@ -19,17 +20,18 @@ export class DictionaryNoteVocabo {
         try {
             const parsedNote = JSON.parse(note);
             this.etymology = { 
-                ...parsedNote.etymology,
-                details: decode(parsedNote.etymology.details)
+                ...parsedNote?.etymology,
+                details: decode(parsedNote.etymology?.details) ?? ''
              };
-            this.frequencies = [...parsedNote.frequencies];
-            this.firstAttestation = parsedNote.firstAttestation;
-            this.linguisticsSemantics = decode(parsedNote.linguisticsSemantics);
-            this.decameron = decode(parsedNote.decameron);
-            this.firstAbsAttestation = decode(parsedNote.firstAbsAttestation);
-            this.boccaccioDante = decode(parsedNote.boccaccioDante);
-            this.crusche = decode(parsedNote.crusche);
-            this.polyrhematics = decode(parsedNote.polyrhematics);
+            this.frequencies = parsedNote?.frequencies ? [...parsedNote.frequencies] : [];
+            this.firstAttestation = parsedNote?.firstAttestation ?? '';
+            this.firstAttestationDetails = parsedNote?.firstAttestationDetails ?? '';
+            this.linguisticsSemantics = decode(parsedNote?.linguisticsSemantics) ?? '';
+            this.decameron = decode(parsedNote?.decameron) ?? '';
+            this.firstAbsAttestation = decode(parsedNote?.firstAbsAttestation) ?? '';
+            this.boccaccioDante = decode(parsedNote?.boccaccioDante) ?? '';
+            this.crusche = decode(parsedNote?.crusche) ?? '';
+            this.polyrhematics = decode(parsedNote?.polyrhematics) ?? '';
         } catch (error) {
             console.group('Error with note structure, note value will be ignored');
             console.error(error);
@@ -42,6 +44,7 @@ export class DictionaryNoteVocabo {
             };
             this.frequencies = [];
             this.firstAttestation = '';
+            this.firstAttestationDetails = '';
             this.linguisticsSemantics = '';
             this.decameron = '';
             this.firstAbsAttestation = '';

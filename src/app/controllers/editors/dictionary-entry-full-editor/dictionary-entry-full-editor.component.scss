@@ -9,3 +9,7 @@
     font-size: inherit;
     font-weight: 600;
 }
+
+span[formGroupName="entryNote"] {
+    display: contents;
+}
