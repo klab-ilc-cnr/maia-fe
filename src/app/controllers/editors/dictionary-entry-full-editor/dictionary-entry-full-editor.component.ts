@@ -29,8 +29,10 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   dictionarySeeAlso: LinguisticRelationModel[] = []
   /**List of source languages available for etymology */
   etymologyLanguages$ = this.dictionaryService.retrieveEtymologyLanguages();
-  /**List of other works by an author */
+  /**List of other works */
   otherWorks$ = this.dictionaryService.retrieveOtherWorks();
+  /**List of works by an author */
+  authorWorks$ = this.dictionaryService.retrieveAuthorDocuments();
   /**Filter function for dictionary entries in the autocomplete of see also */
   dictEntryList = (text: string) => this.dictionaryService.retrieveLexicogEntryList({
     text: text,

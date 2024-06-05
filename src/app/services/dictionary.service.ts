@@ -208,6 +208,15 @@ export class DictionaryService {
     );
   }
 
+    /**
+   * Request http to retrieve the list of works from an author
+   * @returns {Observable<TextualDocument[]>}
+   */
+    retrieveAuthorDocuments(): Observable<TextualDocument[]> {
+      return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/authorDocuments`);
+    }
+  
+
   /**
    * Http request to retrieve the list of components of an entity (for example, of a dictionary entry)
    * @param parentEntityId {string} parent entity (dictionary entry) identifier
@@ -265,7 +274,7 @@ export class DictionaryService {
   }
 
   /**
-   * Request http to retrieve the list of other works by an author
+   * Request http to retrieve the list of other works
    * @returns {Observable<TextualDocument[]>}
    */
   retrieveOtherWorks(): Observable<TextualDocument[]> {

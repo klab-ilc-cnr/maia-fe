@@ -17,7 +17,7 @@
                 <div class="field col-6">
                     <label class="form-label w-full"
                         for="firstAttestationB">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</label>
-                    <p-dropdown inputId="firstAttestationB" styleClass="w-full" [options]="(otherWorks$|async)||[]" [showClear]="true"
+                    <p-dropdown inputId="firstAttestationB" styleClass="w-full" [options]="(authorWorks$|async)||[]" [showClear]="true"
                         optionLabel="title" optionValue="code" [filter]="true" formControlName="firstAttestation"
                         [autoDisplayFirst]="false"></p-dropdown>
                 </div>
