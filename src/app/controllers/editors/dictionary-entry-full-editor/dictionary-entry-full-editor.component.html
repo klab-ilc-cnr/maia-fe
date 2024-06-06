@@ -22,21 +22,21 @@
                         [autoDisplayFirst]="false"></p-dropdown>
                 </div>
                 <div class="field col-6">
-                    <label class="form-label w-full" for="firstAttestationBDetails">Riferimento topografico</label>
+                    <label class="form-label w-full" for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.EDIT_TAB.topographicReference'|translate}}</label>
                     <input class="w-full" pInputText id="firstAttestationBDetails" formControlName="firstAttestationDetails">
                 </div>
                 <div class="field col-6">
-                    <label class="form-label w-full" for="decameronOccurrences">N. occorrenze nel Decameron</label>
+                    <label class="form-label w-full" for="decameronOccurrences">{{'DICTIONARY_EDITOR.EDIT_TAB.nOccurrencesDecameron'|translate}}</label>
                     <p-inputNumber styleClass="w-full" class="w-full" formControlName="decameronOccurrences"></p-inputNumber>
                 </div>
                 <div class="field col-6">
-                    <label class="form-label w-full">N. totale occorrenze</label>
-                    {{(decameronOccurrences?.value ?? 0) + otherOccurrences}}
+                    <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences'|translate}}</label>
+                    {{(decameronOccurrences.value ?? 0) + otherOccurrences}}
                 </div>
                 <div class="field col-12">
                     <p-fieldset>
                         <ng-template pTemplate="header">
-                            Occ. altre opere <button pButton pRipple icon="pi pi-plus" type="button"
+                            {{'DICTIONARY_EDITOR.EDIT_TAB.occOtherWorks'|translate}} <button pButton pRipple icon="pi pi-plus" type="button"
                                 class="p-button-rounded p-button-success mx-2 fieldset-small" (click)="onAddFrequency()"></button>
                         </ng-template>
                         <ng-template pTemplate="content">
@@ -48,21 +48,21 @@
                 </div>
                 <div class="field col-12">
                     <p-fieldset>
-                        <ng-template pTemplate="header">Etimologia</ng-template>
+                        <ng-template pTemplate="header">{{'DICTIONARY_EDITOR.EDIT_TAB.etymology'|translate}}</ng-template>
                         <ng-template pTemplate="content">
                             <div class="d-flex justify-content-between" formGroupName="etymology">
                                 <div class="field col-2">
-                                    <label class="form-label w-full text-truncate">Lingua di provenienza</label>
+                                    <label class="form-label w-full text-truncate">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}</label>
                                     <p-dropdown formControlName="language" styleClass="w-full" [showClear]="true"
                                         [options]="(etymologyLanguages$|async)||[]" optionLabel="code" optionValue="code"
                                         appendTo="body" [autoDisplayFirst]="false"></p-dropdown>
                                 </div>
                                 <div class="field col-3">
-                                    <label class="form-label w-full">Etimo</label>
+                                    <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.etymon'|translate}}</label>
                                     <input formControlName="etymon" class="w-full" pInputText type="text">
                                 </div>
                                 <div class="field col-7">
-                                    <label class="form-label w-full">Dettagli</label>
+                                    <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.details'|translate}}</label>
                                     <p-editor formControlName="details"></p-editor>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
             <div class="field col-12">
                 <p-fieldset>
                   <ng-template pTemplate="header">
-                    See also <button pButton pRipple icon="pi pi-plus" type="button"
+                    {{'DICTIONARY_EDITOR.EDIT_TAB.seeAlso'|translate}} <button pButton pRipple icon="pi pi-plus" type="button"
                       class="p-button-rounded p-button-success mx-2 fieldset-small" (click)="onAddSeeAlso()"></button>
                   </ng-template>
                   <ng-template pTemplate="content">
