@@ -7,3 +7,8 @@
     color: #dc3545;
   }
 }
+
+.corpus-tree-container {
+  height: calc(100% - 70px);
+  overflow-y: scroll;
+}

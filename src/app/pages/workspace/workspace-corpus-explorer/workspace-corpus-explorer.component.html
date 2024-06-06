@@ -32,9 +32,11 @@
   </button>
 </div>
 
-<p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
+<div class="corpus-tree-container">
+  <p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
   (onNodeSelect)="nodeSelect($event)" [contextMenu]="cm" (onNodeContextMenuSelect)="onOpenContextMenu($event)"
   [filter]="true"></p-tree>
+</div>
 
 <!-- <div class="d-flex justify-content-center m-3">
   <button class="btn btn-secondary" id="btnReload" (click)="reload()">
