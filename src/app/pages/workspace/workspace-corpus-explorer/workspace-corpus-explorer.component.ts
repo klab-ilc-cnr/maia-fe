@@ -126,6 +126,8 @@ export class WorkspaceCorpusExplorerComponent {
   get getSplitLine() { return this.uploaderForm.get('splitLine'); }
   /**Setter for splitLine in upload file form */
   set setSplitLine(split: boolean) { this.getSplitLine?.setValue(split) }
+  /**Getter for fileType in upload file form */
+  get getFileType() { return this.uploaderForm.get('fileType') }
 
   /**Reference to cancellation confirmation popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
