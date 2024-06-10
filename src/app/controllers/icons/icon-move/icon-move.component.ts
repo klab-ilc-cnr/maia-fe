@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { IconBaseComponent } from '../icon-base/icon-base.component';
 
@@ -9,7 +9,8 @@ import { IconBaseComponent } from '../icon-base/icon-base.component';
 @Component({
   selector: 'app-icon-move',
   templateUrl: '../icon-base/icon-base.component.html',
-  styleUrls: ['../icon-base/icon-base.component.scss']
+  styleUrls: ['../icon-base/icon-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconMoveComponent extends IconBaseComponent implements OnInit {
 

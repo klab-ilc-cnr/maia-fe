@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { IconDefinition, SizeProp } from '@fortawesome/fontawesome-svg-core';
 
 /**Classe del componente di base per le icone */
 @Component({
   selector: 'app-icon-base',
   templateUrl: './icon-base.component.html',
-  styleUrls: ['./icon-base.component.scss']
+  styleUrls: ['./icon-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconBaseComponent implements OnInit {
   /**Input per il componente base delle icone */
