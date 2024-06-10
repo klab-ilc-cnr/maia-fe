@@ -2,9 +2,17 @@
 <ng-template #dictionaryForm>
     <div class="card">
         <form class="grid formgrid" [formGroup]="fullEntryForm">
-            <div class="field col-6">
+            <div class="field col-6 form-group">
                 <label class="form-label w-full" for="entryLabel">{{'DICTIONARY_EDITOR.EDIT_TAB.label'|translate}} *</label>
                 <input class="w-full" pInputText type="text" name="label" id="entryLabel" formControlName="label">
+                <div class="invalid-feedback" *ngIf="label.invalid && (label.touched || label.dirty)">
+                    <div *ngIf="label.errors?.['required']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.nameMandatory'|translate}}
+                    </div>
+                    <div *ngIf="label.errors?.['isNotOnlyWhitespaces']">
+                        {{'DICTIONARY_EXPLORER.CREATE_ENTRY.nameNotBlanks'|translate}}
+                    </div>
+                </div>
             </div>
             <div class="field col-6">
                 <p-selectButton [options]="statusForm" formControlName="status" class="float-right">

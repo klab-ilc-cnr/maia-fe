@@ -281,10 +281,16 @@ export class DictionaryService {
     return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/otherDocuments`);
   }
 
+  /**
+   * HTTP request to update a dictionary entry label
+   * @param dictionaryId {string} dictionary entry identifier
+   * @param label {string} new value for the label
+   * @returns {Observable<Object>}
+   */
   updateDictionaryEntryLabel(dictionaryId: string, label: string) {
     return this.http.post(
       `${this.lexoUrl}/update/dictionaryEntry/label?id=${this.commonService.encodeUrl(dictionaryId)}&author=${this.currentUser.username}`,
-      label
+      {label: label}
     )
   }
 }

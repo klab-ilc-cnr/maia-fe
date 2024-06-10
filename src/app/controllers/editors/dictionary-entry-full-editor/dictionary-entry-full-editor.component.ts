@@ -10,6 +10,7 @@ import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relat
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
+import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 @Component({
   selector: 'app-dictionary-entry-full-editor',
@@ -54,7 +55,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   );
   fullEntryForm = new FormGroup({
     status: new FormControl<string>(''),
-    label: new FormControl<string>('', Validators.required),
+    label: new FormControl<string>('', [Validators.required, whitespacesValidator]),
     entryNote: new FormGroup({
       firstAttestation: new FormControl<string>(''),
       firstAttestationDetails: new FormControl<string>(''),
@@ -104,7 +105,6 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       this.initSeeAlso(this.dictionarySeeAlso);
     });
     this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
-    console.info(this.structuredNote)
     this.status?.setValue(this.dictionaryEntry.status);
     this.label?.setValue(this.dictionaryEntry.label);
     this.entryNote.setValue({
@@ -133,15 +133,11 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       takeUntil(this.unsubscribe$),
       debounceTime(500),
     ).subscribe(v => {
-      if(!v) {
-        console.error('Missing label'); //TODO aggiungere validatore affinché non sia né vuoto né soli spazi e nel caso visualizzi il messaggio
-        return;
-      }
-      // this.dictionaryService.updateDictionaryEntryLabel(this.dictionaryEntry.id, v).pipe( //TODO remove comment when service is ready
-      //   take(1),
-      //   catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error,error.error.message)),
-      // ).subscribe(r => console.info(r));
-      console.info('salvo nuova label', v);
+      if(this.label.invalid || !v) return; //avoid update if invalid
+      this.dictionaryService.updateDictionaryEntryLabel(this.dictionaryEntry.id, v).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+      ).subscribe(r => console.info(r));
     });
 
     this.entryNote.valueChanges.pipe(
