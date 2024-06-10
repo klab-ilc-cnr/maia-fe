@@ -137,6 +137,18 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.createFilters(false);
     });
 
+    this.commonService.notifyObservable$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(notify => {
+      console.info(notify)
+      switch(notify.option) {
+        case 'dictionary_entry_update':
+          this.updateDictionaryEntryField(notify.dictionaryId, notify.field, notify.value);
+          break;
+        default: break;
+      }
+    })
+
     this.loadNodes();
   }
 
@@ -488,5 +500,12 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     const confirmMessage = entriesIdList.length === 1 ? this.commonService.translateKey('DICTIONARY_EXPLORER.deleteDictionaryEntry').replace('${dictionaryEntryLabel}', entriesList[0].label) : this.commonService.translateKey('DICTIONARY_EXPLORER.deleteDictionaryEntries');
     this.popupDeleteItem.confirmMessage = confirmMessage;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteDictionaryEntries(entriesIdList), 'delete_dictionary_entries');
+  }
+
+  private updateDictionaryEntryField(dictionaryId: string, field: string, value: string) {
+    const updatedDictEntry = this.lexicogEntries.find(node => node.data?.id === dictionaryId);
+    if(!updatedDictEntry || !updatedDictEntry.data) return;
+    updatedDictEntry.data[field] = value;
+    console.info(updatedDictEntry);
   }
 }

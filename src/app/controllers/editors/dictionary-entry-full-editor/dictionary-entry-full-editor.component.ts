@@ -137,7 +137,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       this.dictionaryService.updateDictionaryEntryLabel(this.dictionaryEntry.id, v).pipe(
         take(1),
         catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-      ).subscribe(r => console.info(r));
+      ).subscribe(() => this.manageUpdateEmission('label', v));
     });
 
     this.entryNote.valueChanges.pipe(
@@ -242,6 +242,17 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   private initSeeAlso(seeAlsoList: LinguisticRelationModel[]) {
     seeAlsoList.forEach(seeAlso => {
       this.seeAlso.push(new FormControl({ label: seeAlso.label, value: seeAlso.entity, external: false, inferred: seeAlso.inferred }))
+    });
+  }
+
+  /**
+   * Manages the emission of an update dictionary field notify
+   * @param updatedField {string} name of the field to be updated
+   * @param newValue {string} new value of the field
+   */
+  private manageUpdateEmission(updatedField: string, newValue: string) {
+    this.commonService.notifyOther({
+      option: 'dictionary_entry_update', dictionaryId: this.dictionaryEntry.id, field: updatedField, value: newValue
     });
   }
 }
