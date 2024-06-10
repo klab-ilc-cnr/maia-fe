@@ -1,19 +1,27 @@
 <p-toolbar>
   <div class="p-toolbar-group-start">
     <p-toast></p-toast>
-    <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
-      (click)="isAddLexicalEntryVisible = true" [pTooltip]="'LEXICON_EXPLORER.addNewLE'|translate" tooltipPosition="bottom"></button>
-    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2"
+    <button class="btn btn-outline-success rounded-circle mx-2"
+      (click)="isAddLexicalEntryVisible = true" [pTooltip]="'LEXICON_EXPLORER.addNewLE'|translate" tooltipPosition="bottom">
+      <i class="pi pi-plus"></i>
+    </button>
+    <button class="btn btn-outline-danger rounded-circle mx-2"
       [disabled]="selectedNodes.length === 0" (click)="onRemoveNodes()" pTooltip="Remove"
-      tooltipPosition="bottom"></button>
+      tooltipPosition="bottom">
+      <i class="pi pi-trash"></i>
+    </button>
   </div>
   <div class="p-toolbar-group-end">
-    <button pButton pRipple icon="pi pi-file-import" class="p-button-rounded p-button-success mx-2"
+    <button class="btn btn-outline-success rounded-circle mx-2"
       pTooltip="Upload CoNLL" tooltipPosition="bottom"
-      (click)="isUploadLexiconVisible = !isUploadLexiconVisible"></button>
-    <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2" pTooltip="Export"
+      (click)="isUploadLexiconVisible = !isUploadLexiconVisible">
+      <i class="pi pi-file-import"></i>
+    </button>
+    <button class="btn btn-outline-primary rounded-circle mx-2" pTooltip="Export"
       tooltipPosition="bottom"
-      [disabled]="demoHide"></button><!--TODO: DISABLED IN THE DEMO, remove demoHide as soon as development is complete-->
+      [disabled]="demoHide">
+      <i class="pi pi-file-export"></i>
+    </button><!--TODO: DISABLED IN THE DEMO, remove demoHide as soon as development is complete-->
   </div>
 </p-toolbar>
 <div class="grid p-fluid input-search">
