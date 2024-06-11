@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DictionaryEntry } from '../models/dictionary/dictionary-entry.model';
+import { DictionarySortingItem } from '../models/dictionary/dictionary-sorting-item.model';
 import { EtymologyLanguage } from '../models/dictionary/etymology-language.model';
 import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-request.model';
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
@@ -251,6 +252,10 @@ export class DictionaryService {
    */
   retrieveDictionarySeeAlso(dictionaryId: string): Observable<LinguisticRelationModel[]> {
     return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/data/dictionaryEntry/seeAlso?id=${this.commonService.encodeUrl(dictionaryId)}`);
+  }
+
+  retrieveDictionarySortingItems(dictionaryId: string): Observable<DictionarySortingItem[]> {
+    return this.http.get<DictionarySortingItem[]>(`assets/mock/dictionary/sorting-elements.json`);
   }
 
   /**
