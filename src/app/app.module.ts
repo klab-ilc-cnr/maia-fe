@@ -60,6 +60,7 @@ import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/worksp
 import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
 import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
 import { DropdownPlusNumberComponent } from './forms/dropdown-plus-number/dropdown-plus-number.component';
+import { DictionarySortingEditorComponent } from './controllers/editors/dictionary-sorting-editor/dictionary-sorting-editor.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,8 @@ import { DropdownPlusNumberComponent } from './forms/dropdown-plus-number/dropdo
     WorkspaceDictionaryEditorTileComponent,
     DictionaryEntryReferralEditorComponent,
     DictionaryEntryFullEditorComponent,
-    DropdownPlusNumberComponent
+    DropdownPlusNumberComponent,
+    DictionarySortingEditorComponent
   ],
   imports: [
     BrowserModule,

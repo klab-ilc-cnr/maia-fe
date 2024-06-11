@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { encode } from 'html-entities';
 import { Subject, catchError, debounceTime, map, take, takeUntil } from 'rxjs';
@@ -15,7 +15,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
 @Component({
   selector: 'app-dictionary-entry-full-editor',
   templateUrl: './dictionary-entry-full-editor.component.html',
-  styleUrls: ['./dictionary-entry-full-editor.component.scss', '../dictionary-entry-referral-editor/dictionary-entry-referral-editor.component.scss']
+  styleUrls: ['./dictionary-entry-full-editor.component.scss', '../dictionary-entry-referral-editor/dictionary-entry-referral-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DictionaryEntryFullEditorComponent implements OnInit {
   /**To manage subscription */

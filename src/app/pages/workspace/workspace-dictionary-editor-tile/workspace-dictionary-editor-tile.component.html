@@ -3,8 +3,8 @@
         <app-dictionary-entry-referral-editor *ngIf="selectedTab === 0 && isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-referral-editor>
         <app-dictionary-entry-full-editor *ngIf="selectedTab === 0 && !isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-full-editor>
     </p-tabPanel>
-    <p-tabPanel [header]="'DICTIONARY_EDITOR.SORT_TAB.title'|translate" [disabled]="true"> <!--TODO manage disable when implemented-->
-        <!--TODO add implementation-->>
+    <p-tabPanel [header]="'DICTIONARY_EDITOR.SORT_TAB.title'|translate" [disabled]="isReferral"> 
+        <app-dictionary-sorting-editor *ngIf="selectedTab === 1" [dictionaryEntry]="dictionaryEntry"></app-dictionary-sorting-editor>
     </p-tabPanel>
     <p-tabPanel [header]="'DICTIONARY_EDITOR.PREVIEW_TAB.title'|translate" [disabled]="true"><!--TODO manage disable when implemented-->
         TEST Dictionary Preview
