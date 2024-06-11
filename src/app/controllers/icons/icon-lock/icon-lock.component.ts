@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import { IconBaseComponent } from '../icon-base/icon-base.component';
 
 @Component({
   selector: 'app-icon-lock',
   templateUrl: './icon-lock.component.html',
-  styleUrls: ['./icon-lock.component.scss']
+  styleUrls: ['./icon-lock.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconLockComponent extends IconBaseComponent implements OnInit {
 

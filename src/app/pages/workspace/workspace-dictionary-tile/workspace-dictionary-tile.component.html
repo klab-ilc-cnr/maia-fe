@@ -1,15 +1,21 @@
 <p-toolbar>
     <div class="p-toolbar-group-start">
-        <button aria-label="Add entry" type="button" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mx-2"
-            [pTooltip]="'DICTIONARY_EXPLORER.addEntry'|translate" tooltipPosition="bottom" (click)="isAddDictionaryEntryVisible=true"></button>
+        <button aria-label="Add entry" type="button" class="btn btn-outline-success rounded-circle mx-2"
+            [pTooltip]="'DICTIONARY_EXPLORER.addEntry'|translate" tooltipPosition="bottom" (click)="isAddDictionaryEntryVisible=true">
+            <i class="pi pi-plus"></i>
+        </button>
         <!--TODO Dynamically manage the button enablement once the management of selections from list is implemented-->
-        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" [disabled]="!selectedNodes || selectedNodes.length===0"
-            [pTooltip]="'DICTIONARY_EXPLORER.remove'|translate" tooltipPosition="bottom" (click)="onDeleteDictionaryEntries()"></button>
+        <button class="btn btn-outline-danger rounded-circle mx-2" [disabled]="!selectedNodes || selectedNodes.length===0"
+            [pTooltip]="'DICTIONARY_EXPLORER.remove'|translate" tooltipPosition="bottom" (click)="onDeleteDictionaryEntries()">
+            <i class="pi pi-trash"></i>
+        </button>
     </div>
     <div class="p-toolbar-group-end">
-        <button pButton pRipple icon="pi pi-file-export" class="p-button-rounded mx-2"
+        <button class="btn btn-outline-primary rounded-circle mx-2"
             [pTooltip]="'DICTIONARY_EXPLORER.export'|translate" tooltipPosition="bottom"
-            [disabled]="true"></button><!--TODO Dynamically manage the button enablement once the related services are implemented-->
+            [disabled]="true">
+            <i class="pi pi-file-export"></i>
+        </button><!--TODO Dynamically manage the button enablement once the related services are implemented-->
     </div>
 </p-toolbar>
 <div class="grid p-fluid input-search">
