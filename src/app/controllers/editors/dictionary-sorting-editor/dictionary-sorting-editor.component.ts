@@ -17,8 +17,17 @@ import { DictionaryService } from 'src/app/services/dictionary.service';
 export class DictionarySortingEditorComponent implements OnInit {
   /**Dictionary entry currently in edit */
   @Input() dictionaryEntry!: DictionaryEntry;
+  /**Keeps the last saved sort in memory */
+  private _originalOrder: TreeNode<DictionarySortingItem>[] = [];
+  /**Hierarchy of senses in process */
   sortingTrees: TreeNode<DictionarySortingItem>[] = [];
 
+  /**
+   * Constructor for DictionarySortingEditorComponent
+   * @param dictionaryService {DictionaryService}
+   * @param commonService {CommonService}
+   * @param changeDetRef {ChangeDetectorRef}
+   */
   constructor(
     private dictionaryService: DictionaryService,
     private commonService: CommonService,
@@ -26,24 +35,43 @@ export class DictionarySortingEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe(
+    this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe( //initial data retrieval
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(resp => {
       this.sortingTrees = this.mapSortingItemToTreeNode(resp);
-      this.changeDetRef.detectChanges();
+      this._originalOrder = structuredClone(this.sortingTrees);
+      this.changeDetRef.detectChanges(); //rendering update
     });
   }
 
+  /**
+   * Check whether a displacement is acceptable
+   * @param event {{originalEvent: any, dragNode: TreeNode<DictionarySortingItem>, dropNode: TreeNode<DictionarySortingItem>, index: number}}
+   * @returns {void}
+   */
   onDrop(event: any) {
     if(event.dropNode.parent === undefined) return;
     event.accept();
   }
 
-  onSaveUpdate() {
-    console.info(this.sortingTrees)
+  /**Restores the last saved sense ordering */
+  onRestore() {
+    this.sortingTrees = structuredClone(this._originalOrder);
   }
 
+  /**Save a new hierarchy of lemmas and senses */
+  onSaveUpdate() {
+    this._originalOrder = structuredClone(this.sortingTrees);
+    console.info(this.reverseTreeNodeMapping(this.sortingTrees));
+    //TODO add saving
+  }
+
+  /**
+   * Map the list of items to be sorted in a TreeNode list
+   * @param items {DictionarySortingItem[]}
+   * @returns {TreeNode<DictionarySortingItem>[]}
+   */
   private mapSortingItemToTreeNode(items: DictionarySortingItem[]): TreeNode<DictionarySortingItem>[] {
     return items.map(item => <TreeNode<DictionarySortingItem>>{
       key: item.id,
@@ -55,4 +83,15 @@ export class DictionarySortingEditorComponent implements OnInit {
     });
   }
 
+  /**
+   * Reconverts the TreeNode list to a list of items to be sorted
+   * @param treeNodes {TreeNode<DictionarySortingItem>[]}
+   * @returns {DictionarySortingItem[]}
+   */
+  private reverseTreeNodeMapping(treeNodes: TreeNode<DictionarySortingItem>[]): DictionarySortingItem[] {
+    return treeNodes.map(node => <DictionarySortingItem>{
+      ...node.data,
+      children: this.reverseTreeNodeMapping(node.children??[])
+    });
+  }
 }
