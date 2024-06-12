@@ -728,18 +728,19 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       tempStoredData.push(tempTile)
     }
     storedData = JSON.stringify(tempStoredData)
-
+    
     //IMPORTANTE Ripristino i dati nel localstorage PRIMA di fare restore,
     //il localstorage verrà letto dalla funzione jsPanel.layout.restore()
     localStorage.setItem(this.storageName, storedData)
-
+    
     let currPanelElement;
     let componentRef;
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
     for (const [index, tile] of storedTiles.entries()) {
       switch (tile.type as TileType) {
         case TileType.TEXT:
-          var textTileComponent = this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle, 0);
+          const currentTextTileStoredHeight = parseInt(tempStoredData.find(e => e.id === tile.tileConfig.id).height.replace('px', ''));
+          var textTileComponent = this.generateTextTilePanelConfiguration(tile.tileConfig.id, tile.content?.contentId!, tile.tileConfig.headerTitle, 0, currentTextTileStoredHeight);
 
           //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
           //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
@@ -1045,11 +1046,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param title {string} titolo del testo
    * @returns configurazione del pannello di annotazione di un testo
    */
-  private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string, startingRowIndex: number) {
+  private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string, startingRowIndex: number, textTileStoredHeight?: number) {
     const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
     componentRef.instance.textId = textId;
     componentRef.instance.startingRowIndex = startingRowIndex;
-    componentRef.instance.height = window.innerHeight / 3 * 2;
+    componentRef.instance.height = textTileStoredHeight ?? window.innerHeight / 3 * 2;
     // componentRef.instance.visibleLayers = this.visibleLayers;
 
     const element = componentRef.location.nativeElement;
@@ -1097,6 +1098,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         colorHeader: 'black',
         border: 'thin solid #CCE1F2',
         borderRadius: '.33rem',
+      },
+      css: {
+        content: 'overflowYHiddenTextTile',   // adds the classes to ".jsPanel-content"
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
