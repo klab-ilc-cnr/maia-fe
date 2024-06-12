@@ -172,7 +172,7 @@ path {
   padding: 0;
   width: 100%;
   max-width: none;
-  max-height: 80%;
+  overflow-y: hidden;
 }
 
 a.expansion-btn {
@@ -209,4 +209,9 @@ a.collapse-btn-right {
 
 :host::ng-deep.p-treenode-label {
   white-space: nowrap;
+}
+
+//we need ng-deep here without :host so it's foundamental to use a unique name and not share it in other components
+::ng-deep.overflowYHiddenTextTile {
+  overflow-y: hidden;
 }
