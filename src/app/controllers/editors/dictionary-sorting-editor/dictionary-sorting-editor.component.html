@@ -1,19 +1,19 @@
-    <div class="card">
-        <p-orderList [value]="sortingTrees" [listStyle]="{ height: '100%' }">
-            <ng-template let-sortingTree pTemplate="item">
-                <p-tree [value]="[sortingTree]" [draggableNodes]="true"
-                [droppableNodes]="true" [validateDrop]="true" (onNodeDrop)="onDrop($event)" [droppableScope]="sortingTree.key"
-                [draggableScope]="sortingTree.key">
+<div class="card">
+    <p-orderList [value]="sortingTrees" [listStyle]="{ height: '100%' }">
+        <ng-template let-sortingTree pTemplate="item">
+            <p-tree [value]="[sortingTree]" [draggableNodes]="true" [droppableNodes]="true" [validateDrop]="true"
+                (onNodeDrop)="onDrop($event)" [droppableScope]="sortingTree.key" [draggableScope]="sortingTree.key">
                 <ng-template let-item pTemplate="lexicalEntry" draggable="false">
                     <div><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
                 </ng-template>
                 <ng-template let-item pTemplate="sense">
-                    <div><em *ngIf="item.data.prefix.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label}}</div>
+                    <div><em *ngIf="item.data.prefix.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label}}
+                    </div>
                 </ng-template>
             </p-tree>
-                </ng-template>
-        </p-orderList>
-        <!-- <p-tree *ngFor="let sortingTree of sortingTrees; index as index" [value]="[sortingTree]" [draggableNodes]="true"
+        </ng-template>
+    </p-orderList>
+    <!-- <p-tree *ngFor="let sortingTree of sortingTrees; index as index" [value]="[sortingTree]" [draggableNodes]="true"
             [droppableNodes]="true" [validateDrop]="true" (onNodeDrop)="onDrop($event)" [droppableScope]="sortingTree.key"
             [draggableScope]="sortingTree.key">
             <ng-template let-item pTemplate="lexicalEntry" draggable="false">
@@ -23,5 +23,8 @@
                 <div><em *ngIf="item.data.prefix.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label}}</div>
             </ng-template>
         </p-tree> -->
-        <button type="button" (click)="onSaveUpdate()">Test</button>
+    <div class="w-full d-flex justify-content-around">
+        <button type="button" aria-label="Save" class="sorting-button" pButton pRipple icon="pi pi-save" (click)="onSaveUpdate()" label="Save"></button>
+        <button type="button" aria-label="Restore" class="sorting-button p-button-secondary" pButton pRipple icon="pi pi-times" (click)="onRestore()" label="Restore"></button>
     </div>
+</div>
