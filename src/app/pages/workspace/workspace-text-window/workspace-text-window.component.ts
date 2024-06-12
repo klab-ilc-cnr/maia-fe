@@ -1435,6 +1435,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   private checkScroll() {
     let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
+    
+    if (!scrollable && this.textTotalRows === this.textRange.end) {
+      this.loaderService.hide();
+      return;
+    }
+
     if (!scrollable) {
       this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
 
