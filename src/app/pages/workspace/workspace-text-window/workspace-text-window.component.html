@@ -9,23 +9,10 @@
       <p-inputSwitch (onChange)="sentumChanged()" [ngModel]="showSentum"></p-inputSwitch>
     </div>
   </div>
-  <div class="col-sm-5">
-    <label class="col-sm-2 col-form-label">Layer</label>
-    <div class="p-fluid">
-      <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
-        placeholder="Select a layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="true">
-      </p-dropdown>
-      <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">
-        <div *ngIf="layer.errors?.['required']">
-          Select a layer
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="col-sm-6">
     <label class="col-sm-1 col-form-label">Visibility</label>
     <div class="p-fluid">
-      <p-multiSelect [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Select the layers to be displayed" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
+      <p-multiSelect [style]="{'height': layerVisibilityHeight + 'px'}" [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" defaultLabel="Select the layers to be displayed" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
         <ng-template let-value pTemplate="selectedItems">
           <div class="layer-item-value" *ngFor="let option of selectedLayers" [ngStyle]="{'border-color': option.color}">
             <span class="pe-2">
@@ -50,6 +37,20 @@
           </div>
         </ng-template>
       </p-multiSelect>
+    </div>
+  </div>
+  <div class="col-sm-5">
+    <label class="col-sm-2 col-form-label">Layer</label>
+    <div class="p-fluid">
+      <p-dropdown #layer="ngModel" [style]="{'height': layerVisibilityHeight + 'px'}"
+        name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
+        placeholder="Select a layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
+      </p-dropdown>
+      <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">
+        <div *ngIf="layer.errors?.['required']">
+          Select a layer
+        </div>
+      </div>
     </div>
   </div>
 </div>
