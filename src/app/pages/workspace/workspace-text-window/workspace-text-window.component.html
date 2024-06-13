@@ -44,7 +44,7 @@
     <div class="p-fluid">
       <p-dropdown #layer="ngModel" [style]="{'height': layerVisibilityHeight + 'px'}"
         name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
-        placeholder="Select a layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
+        placeholder="Select a layer to start annotating" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
       </p-dropdown>
       <div *ngIf="layer.invalid && (layer.touched || layer.dirty)" class="invalid-feedback">
         <div *ngIf="layer.errors?.['required']">
