@@ -158,17 +158,17 @@
                           stroke-width="0.5px" 
                           rx="3px" 
                           ry="3px" 
-                          (click)="openRelation(arc.relationId)" 
-                          (mouseenter)="overEnterRelation(arc.relationId)" 
-                          (mouseleave)="overLeaveRelation(arc.relationId)"
                           [attr.data-rowIndex]="row.rowIndex"></rect>
+                            <!-- (click)="openRelation(arc.relationId)" 
+                            (mouseenter)="overEnterRelation(arc.relationId)" 
+                            (mouseleave)="overLeaveRelation(arc.relationId)" -->
                     <ng-template #elseBlock>
                       <text [attr.x]="arc.label.startXText" 
                             [attr.y]="arc.label.yArcLabel" 
-                            (click)="openRelation(arc.relationId)" 
-                            (mouseenter)="overEnterRelation(arc.relationId)" 
-                            (mouseleave)="overLeaveRelation(arc.relationId)"
                             [attr.data-rowIndex]="row.rowIndex">{{arc.label.text}}</text>
+                          <!-- (click)="openRelation(arc.relationId)" 
+                          (mouseenter)="overEnterRelation(arc.relationId)" 
+                          (mouseleave)="overLeaveRelation(arc.relationId)" -->
                     </ng-template>
                     <path [attr.d]="arc.firstSegmentPath" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
                     <path [attr.d]="arc.secondSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
@@ -225,21 +225,16 @@
         <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right pi pi-chevron-circle-right"></a>
         <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
           (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
-          <!-- <app-annotation-editor *ngIf="showAnnotationEditor" [textoAnnotationModel]="textoAnnotation" [annotationModel]="annotation" [fileId]="textId"
-            (onSave)="onAnnotationSaved()"
-            (onDelete)="onAnnotationDeleted()"
-            (onCancel)="onAnnotationCancel()">
-          </app-annotation-editor> -->
-          <app-relation-editor *ngIf="showRelationEditor"
+          <!-- <app-relation-editor *ngIf="showRelationEditor"
           [relationModel]="relation"
           [sourceAnn]="sourceAnn"
           [targetAnn]="targetAnn"
-          [sourceLayer]="sourceLayer"
           [targetLayer]="targetLayer"
+          [sourceLayer]="sourceLayer"
           (onSave)="onRelationSaved()"
           (onDelete)="onRelationDeleted()"
           (onCancel)="onRelationCancel()">
-        </app-relation-editor>
+        </app-relation-editor> -->
       </div>
     </ng-template>
   </p-splitter>
