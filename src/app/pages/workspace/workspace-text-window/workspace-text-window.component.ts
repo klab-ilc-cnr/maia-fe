@@ -171,6 +171,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public scrollingSubject = new Subject<number>();
   public currentVisibleRowIndex?: number;
   public scrollingRowIndex!: number;
+  public layerVisibilityHeight: number = 36.5;
 
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
