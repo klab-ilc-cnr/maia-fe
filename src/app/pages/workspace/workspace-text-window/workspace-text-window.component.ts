@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
@@ -66,7 +66,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     spaceAfterVerticalLine: 2,
     textFont: "13px monospace",
     jsPanelHeaderBarHeight: 29.5,
-    layerSelectHeightAndMargin: 69.75 + 16,
+    layerSelectHeightAndMargin: 65.35 + 16,
     paddingAfterTextEditor: 10,
     annotationHeight: 12,
     curlyHeight: 4,
@@ -171,6 +171,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public scrollingSubject = new Subject<number>();
   public currentVisibleRowIndex?: number;
   public scrollingRowIndex!: number;
+  public layerVisibilityHeight: number = 36.5;
 
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
@@ -271,13 +272,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.textTileSplitter.cd.detectChanges();
       this.fixPrimeNgSplitterPanelInitialSize();
     });
-  }
-
-  /**this is a workaround to fix a rendering problem with the primneg splitter component */
-  private fixPrimeNgSplitterPanelInitialSize() {
-    const panels: any = document.getElementsByClassName('p-splitter-panel');
-    const annotationPanel = panels[2];
-    annotationPanel.style.flexBasis = 'calc(' + this.textTileSplitter.panelSizes[2] + '% - ' + ((panels.length - 1) * 4) + 'px)';
   }
 
   /**initialize text range and load data */
@@ -558,6 +552,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  /**this is a workaround to fix a rendering problem with the primneg splitter component */
+  private fixPrimeNgSplitterPanelInitialSize() {
+    const panels: any = document.getElementsByClassName('p-splitter-panel');
+    const annotationPanel = panels[2];
+    annotationPanel.style.flexBasis = 'calc(' + this.textTileSplitter.panelSizes[2] + '% - ' + ((panels.length - 1) * 4) + 'px)';
   }
 
   /** inits the text tile splitteer properties */
@@ -954,6 +955,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * @param newHeight {any} nuova altezza
    */
   updateHeight(newHeight: any) {
+    if (isNaN(newHeight)) { return; }
+
     this.height = newHeight - Math.ceil(this.visualConfig.jsPanelHeaderBarHeight);
     this.textContainerHeight = this.height - Math.ceil(this.visualConfig.layerSelectHeightAndMargin + this.visualConfig.paddingAfterTextEditor);
   }
@@ -1433,6 +1436,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   private checkScroll() {
     let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
+    
+    if (!scrollable && this.textTotalRows === this.textRange.end) {
+      this.loaderService.hide();
+      return;
+    }
+
     if (!scrollable) {
       this.textRowsWideness = this.textRowsRangeWidenessPredictor(10);
 

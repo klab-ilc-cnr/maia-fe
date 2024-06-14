@@ -32,9 +32,11 @@
   </button>
 </div>
 
-<p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
+<div class="corpus-tree-container">
+  <p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
   (onNodeSelect)="nodeSelect($event)" [contextMenu]="cm" (onNodeContextMenuSelect)="onOpenContextMenu($event)"
   [filter]="true"></p-tree>
+</div>
 
 <!-- <div class="d-flex justify-content-center m-3">
   <button class="btn btn-secondary" id="btnReload" (click)="reload()">
@@ -69,7 +71,7 @@
               <label class="form-label w-100">{{'CORPUS_EXPLORER.uploaderType'|translate}}</label>
               <p-dropdown formControlName="fileType" styleClass="w-100" [options]="fileUploadTypes"></p-dropdown>
             </span>
-            <span class="col-6">
+            <span class="col-6" *ngIf="getFileType?.value === fileUploadTypes[1]">
               <label class="form-label w-100">{{'CORPUS_EXPLORER.splitOnNewLine'|translate}}</label>
               <p-inputSwitch formControlName="splitLine"></p-inputSwitch>
             </span>
