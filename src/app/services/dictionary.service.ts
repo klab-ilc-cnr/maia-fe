@@ -293,4 +293,19 @@ export class DictionaryService {
       {label: label}
     )
   }
+
+  /**
+   * HTTP request to update a dictionary entry status
+   * @param dictEntryId {string} dictionary entry identifier
+   * @param status {string} new working status
+   * @returns {Observable<Object>}
+   */
+  updateDictionaryEntryStatus(dictEntryId: string, status: string) {
+    return this.http.post(
+      `${this.lexoUrl}/update/dictionaryEntry/status?id=${this.commonService.encodeUrl(dictEntryId)}&author=${this.currentUser.username}`,
+      {
+        status: status
+      }
+    );
+  }
 }

@@ -506,6 +506,5 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     const updatedDictEntry = this.lexicogEntries.find(node => node.data?.id === dictionaryId);
     if(!updatedDictEntry || !updatedDictEntry.data) return;
     updatedDictEntry.data[field] = value;
-    console.info(updatedDictEntry);
   }
 }

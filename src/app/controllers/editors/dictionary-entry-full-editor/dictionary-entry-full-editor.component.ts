@@ -125,8 +125,11 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.status.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(value => {
-      console.info('salvo nuovo status', value)
-      //TODO add update field
+      if(!value) return;
+      this.dictionaryService.updateDictionaryEntryStatus(this.dictionaryEntry.id, value).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+      ).subscribe(() => this.manageUpdateEmission('status', value));
     });
 
     this.label.valueChanges.pipe(

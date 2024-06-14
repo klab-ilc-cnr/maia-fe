@@ -1,7 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, catchError, take, takeUntil } from 'rxjs';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
+import { CommonService } from 'src/app/services/common.service';
+import { DictionaryService } from 'src/app/services/dictionary.service';
+import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 @Component({
   selector: 'app-dictionary-entry-referral-editor',
@@ -14,10 +18,15 @@ export class DictionaryEntryReferralEditorComponent implements OnInit, OnDestroy
   @Input() dictionaryEntry!: DictionaryEntry; //TODO set required true on Angular update
   referralEntryForm = new FormGroup({
     status: new FormControl<string>(''),
-    label: new FormControl<string>('', Validators.required)
+    label: new FormControl<string>('', [Validators.required, whitespacesValidator])
   });
   get status() { return this.referralEntryForm.controls.status }
   get label() { return this.referralEntryForm.controls.label }
+
+  constructor(
+    private dictionaryService: DictionaryService,
+    private commonService: CommonService,
+  ) {}
 
   ngOnInit(): void {
     this.status?.setValue(this.dictionaryEntry.status);
@@ -26,15 +35,25 @@ export class DictionaryEntryReferralEditorComponent implements OnInit, OnDestroy
     this.status.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(value => {
-      console.info('salvo nuovo status', value)
-      //TODO add update field
+      if(!value) return;
+      this.dictionaryService.updateDictionaryEntryStatus(this.dictionaryEntry.id, value).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+      ).subscribe(() => this.commonService.notifyOther({
+        option: 'dictionary_entry_update', dictionaryId: this.dictionaryEntry.id, field: 'status', value: value
+      }));
     });
 
     this.label.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(v => {
-      console.info('salvo nuova label', v);
-      //TODO add update field
+      if(this.label.invalid || !v) return; //avoid update if invalid
+      this.dictionaryService.updateDictionaryEntryLabel(this.dictionaryEntry.id, v).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+      ).subscribe(() => this.commonService.notifyOther({
+        option: 'dictionary_entry_update', dictionaryId: this.dictionaryEntry.id, field: 'label', value: v
+      }));
     })
   }
 
