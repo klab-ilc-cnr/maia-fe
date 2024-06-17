@@ -153,7 +153,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   @ViewChild('textContainer') public textContainer!: ElementRef;
   @ViewChild('st') public documentSectionsTreeElement!: Tree;
   @ViewChild('textTileSplitter') public textTileSplitter!: Splitter;
-  @ViewChild('annotationEditor', {read: ElementRef}) public annotationEditor!: ElementRef;
+  @ViewChild('annotationEditor', { read: ElementRef }) public annotationEditor!: ElementRef;
 
   /**Scroller*/
   public textRowsWideness!: number;
@@ -340,7 +340,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(() => {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-      this.onAnnotationSaved();
+      this.onAnnotationSaved(workingAnnotation);
     })
   }
 
@@ -470,18 +470,41 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
     this.textoAnnotation = new TAnnotation();
+    this.visibleAnnotationId = undefined;
   }
 
   /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationDeleted() {
+    this.removeFromAnnotationsResult(this.textoAnnotation.id);
     this.textoAnnotation = new TAnnotation();
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
-  onAnnotationSaved() {
+  onAnnotationSaved(annotation: TAnnotation) {
     this.scrollingDirection = ScrollingDirectionType.InRange;
+    this.updateAnnotationsResult(annotation);
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+  }
+
+  private updateAnnotationsResult(annotation: TAnnotation) {
+    const annotationIndex = this.textoAnnotationsRes.findIndex(a => a.id === annotation.id);
+
+    if (annotationIndex !== -1) {
+      this.textoAnnotationsRes.splice(annotationIndex, 1);
+    }
+
+    this.textoAnnotationsRes.push(annotation);
+  }
+
+  private removeFromAnnotationsResult(annotationId?: number) {
+    if (!annotationId) { return; }
+
+    const annotationIndex = this.textoAnnotationsRes.findIndex(a => a.id === annotationId);
+
+    if (annotationIndex !== -1) {
+      this.textoAnnotationsRes.splice(annotationIndex, 1);
+    }
   }
 
   /**Metodo che intercetta il cambio di layer selezionato */
@@ -892,10 +915,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.loaderService.show();
 
-    // if (!this.visibleAnnotationId) {
-    //   this.textoAnnotation = new TAnnotation();
-    // }
-
     this.relation = new Relation();
 
     const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
@@ -918,68 +937,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.offset = textResponse.data![0].start;
       this.textoAnnotationsRes = tAnnotationsResponse;
 
-      // if (!this.textoAnnotationsRes.find(t => t.id === this.textoAnnotation.id)) {
-      //   this.textoAnnotationsRes.push(this.textoAnnotation); //Questo è sbagliato
-      // }
-
-      this.simplifiedAnns = [];
-      // this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
-
-      const layersIndex = new Array<number>();
-
-      this.visibleLayers.forEach(l => {
-        if (l.id) {
-          layersIndex.push(l.id)
-        }
-      });
-
-      tAnnotationsResponse.forEach(async (a: TAnnotation) => {
-        if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer?.id!)) {
-          const annFeat = a.features ?? [];
-          let dictFeat = {};
-          annFeat.forEach(f => {
-            dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
-          });
-          const sAnn = {
-            span: <SpanCoordinates>{
-              start: a.start - (this.offset ?? 0),
-              end: a.end - (this.offset ?? 0)
-            },
-            layer: a.layer?.id,
-            layerName: a.layer?.name,
-            value: undefined, //TODO non chiaro quale sia il valore
-            imported: undefined,
-            attributes: <Record<string, any>>{ ...dictFeat },
-            id: a.id,
-          };
-          this.simplifiedAnns.push(sAnn);
-        }
-      });
-
-      // this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
-      //   if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
-      //     const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
-      //       let { spans, ...newAnn } = a;
-      //       return {
-      //         ...newAnn,
-      //         span: sc
-      //       }
-      //     })
-
-      //     this.simplifiedAnns.push(...sAnn);
-      //   }
-
-      //   /*           if (a.attributes && a.attributes["relations"]) {
-      //               let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
-      //                 if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
-      //                   this.simplifiedArcs.push(r);
-      //                 }
-      //               })
-      //             } */
-      // })
-
-      this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
-
       this.renderData();
     });
   }
@@ -989,6 +946,63 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  * Metodo che gestisce la renderizzazione del testo annotato
  */
   private renderData() {
+    this.simplifiedAnns = [];
+    // this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
+    const layersIndex = new Array<number>();
+
+    this.visibleLayers.forEach(l => {
+      if (l.id) {
+        layersIndex.push(l.id)
+      }
+    });
+
+    this.textoAnnotationsRes.forEach(async (a: TAnnotation) => {
+      if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer?.id!)) {
+        const annFeat = a.features ?? [];
+        let dictFeat = {};
+        annFeat.forEach(f => {
+          dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
+        });
+        const sAnn = {
+          span: <SpanCoordinates>{
+            start: a.start - (this.offset ?? 0),
+            end: a.end - (this.offset ?? 0)
+          },
+          layer: a.layer?.id,
+          layerName: a.layer?.name,
+          value: undefined, //TODO non chiaro quale sia il valore
+          imported: undefined,
+          attributes: <Record<string, any>>{ ...dictFeat },
+          id: a.id,
+        };
+        this.simplifiedAnns.push(sAnn);
+      }
+    });
+
+    // this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
+    //   if (a.spans && layersIndex.includes(a.layer)) { //se sono presenti span e il layer è nella lista di quelli visibili
+    //     const sAnn = a.spans.map((sc: SpanCoordinates) => { //layer è un id //attributes sono le feature, quindi dovrebbe essere un dizionario con chiave il nome della feature e valore il valore associato, viene usato per elaborare la label
+    //       let { spans, ...newAnn } = a;
+    //       return {
+    //         ...newAnn,
+    //         span: sc
+    //       }
+    //     })
+
+    //     this.simplifiedAnns.push(...sAnn);
+    //   }
+
+    //   /*           if (a.attributes && a.attributes["relations"]) {
+    //               let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
+    //                 if (!this.simplifiedArcs.includes(r) && r.srcLayerId && layersIndex.includes(r.srcLayerId.toString()) && r.targetLayerId && layersIndex.includes(r.targetLayerId.toString())) {
+    //                   this.simplifiedArcs.push(r);
+    //                 }
+    //               })
+    //             } */
+    // })
+
+    this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
+
     this.rows = [];
     const sentences = this.textSplittedRows;
     const row_id = 0;
