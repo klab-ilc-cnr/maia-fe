@@ -291,11 +291,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
         this.textRange = new TextRange(start, end);
         this.precTextRange = this.textRange.clone();
-        let requestRange = new TextRange(this.textRange.start, this.textRange.end + this.backendIndexCompensation)
         this.scrollingDirection = ScrollingDirectionType.Init;
         this.currentVisibleRowIndex = this.startingRowIndex;
         this.scrollingRowIndex = this.textRange.end;
-        this.loadData(requestRange.start, requestRange.end);
+        this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
       });
   }
 
@@ -381,7 +380,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.scrollingDirection = ScrollingDirectionType.InRange;
-      this.loadDataOrchestrator(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+      this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
     }, 200);
   }
 
@@ -404,7 +403,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
 
       this.scrollingDirection = ScrollingDirectionType.InRange;
-      this.loadDataOrchestrator(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+      this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
 
     }, 200);
   }
@@ -412,7 +411,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public sentumChanged() {
     setTimeout(() => {
       this.showSentum = !this.showSentum;
-      this.loadDataOrchestrator(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+      this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
     }, 500);
   }
 
@@ -426,7 +425,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness);
     this.precTextRange = this.textRange.clone();
     this.addExtraRowsUp();
-    this.loadDataOrchestrator(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
   expandAll() {
@@ -844,7 +843,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     //#endregion
-    this.loadDataOrchestrator(this.textRange.start, this.textRange.end + this.backendIndexCompensation);
+    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
   private checkAndAddExtraRows(scrollingDirection: ScrollingDirectionType) {
@@ -865,115 +864,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   //orchestrator that choose to load data with a new request to the backend or use cached data
   private loadDataOrchestrator(start: number, end: number): void {
-    const isSameRows = this.precTextRange?.start === start && this.precTextRange.end === end;
-
-    if (!isSameRows) {
-      this.loadData(start, end);
-      return;
-    }
-
-    this.loadDataCached(start, end);
-  }
-
-  loadDataCached(start: number, end: number) {
-    if (!this.textId) {
-      return;
-    }
-
-    this.loaderService.show();
-
-    if (!this.visibleAnnotationId) {
-      this.textoAnnotation = new TAnnotation();
-    }
-
-    this.relation = new Relation();
+    end += this.backendIndexCompensation; //backend use a mixed strategy on range, it's closed on start and open on end so we need to compensate the end index
 
     const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
     const isSameLayers = this.commonService.compareArrays(visibleLayersIds, this.lastRenderedLayers);//I check if the same layers are visible as in the previous call
 
-    let annotationsReq: Observable<TAnnotation[]>;
-
-    if (visibleLayersIds.length === 0) { //FIXME Questa condizione non è sufficiente se per esempio sto salvando o eliminando una nuova annotazione va ricaricata o fatto in modo che l'array sia aggiornato
-      annotationsReq = of(<TAnnotation[]>[]);
-    } else {
-      annotationsReq = isSameLayers ? of(this.textoAnnotationsRes) : this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds });
+    if (this.scrollingDirection === ScrollingDirectionType.InRange && isSameLayers) {
+      this.loaderService.show();
+      this.renderData();
+      return;
     }
 
-    // const paginatedResponse = <PaginatedResponse>{
-    //   data: this.textSplittedRows,
-    //   count: this.textTotalRows,
-    //   start: start,
-    //   end: end,
-    //   offset: this.offset
-    // }
-
-    annotationsReq.pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
-        this.loaderService.hide();
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe((tAnnotationsResponse) => {
-      this.lastRenderedLayers = visibleLayersIds;
-
-      // if (!this.selectedLayers) { //se non ci sono layer selezionati i layer selezionati e visibili sono uguali alla lista di layer
-      //   this.visibleLayers = this.selectedLayers = this.layersList;
-      // }
-      // else {
-      //   this.selectedLayer = undefined;
-      // }
-
-      // this.textoAnnotation.layer = this.selectedLayer ?? this.textoAnnotation.layer;
-
-      // this.textRes = paginatedResponse.data?.map(d => d.text) || [];
-      // this.textSplittedRows = paginatedResponse.data;
-      // this.offset = paginatedResponse.data![0].start;
-      // this.annotationsRes = null;
-      this.textoAnnotationsRes = tAnnotationsResponse;
-
-      if (!this.textoAnnotationsRes.find(t => t.id === this.textoAnnotation.id)) {
-        this.textoAnnotationsRes.push(this.textoAnnotation);
-      }
-
-      this.simplifiedAnns = [];
-      // this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
-
-      const layersIndex = new Array<number>();
-
-      this.visibleLayers.forEach(l => {
-        if (l.id) {
-          layersIndex.push(l.id)
-        }
-      });
-
-      tAnnotationsResponse.forEach(async (a: TAnnotation) => {
-        if ((a.start || a.start === 0) && a.end && layersIndex.includes(a.layer?.id!)) {
-          const annFeat = a.features ?? [];
-          let dictFeat = {};
-          annFeat.forEach(f => {
-            dictFeat = { ...dictFeat, [f.feature!.name!]: f.value };
-          });
-          const sAnn = {
-            span: <SpanCoordinates>{
-              start: a.start - (this.offset ?? 0),
-              end: a.end - (this.offset ?? 0)
-            },
-            layer: a.layer?.id,
-            layerName: a.layer?.name,
-            value: undefined, //TODO non chiaro quale sia il valore
-            imported: undefined,
-            attributes: <Record<string, any>>{ ...dictFeat },
-            id: a.id,
-          };
-          this.simplifiedAnns.push(sAnn);
-        }
-      });
-
-      this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
-
-      this.renderData();
-    });
+    this.loadData(start, end);
   }
 
   /**
@@ -987,9 +889,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.loaderService.show();
 
-    if (!this.visibleAnnotationId) {
-      this.textoAnnotation = new TAnnotation();
-    }
+    // if (!this.visibleAnnotationId) {
+    //   this.textoAnnotation = new TAnnotation();
+    // }
 
     this.relation = new Relation();
 
@@ -1008,18 +910,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     ).subscribe(([textResponse, tAnnotationsResponse]) => {
       this.lastRenderedLayers = visibleLayersIds;
       this.textTotalRows = textResponse.count!;
-
-      // this.textoAnnotation.layer = this.selectedLayer ?? this.textoAnnotation.layer;
-
       this.textRes = textResponse.data?.map(d => d.text) || [];
       this.textSplittedRows = textResponse.data;
       this.offset = textResponse.data![0].start;
-
       this.textoAnnotationsRes = tAnnotationsResponse;
 
-      if (!this.textoAnnotationsRes.find(t => t.id === this.textoAnnotation.id)) {
-        this.textoAnnotationsRes.push(this.textoAnnotation);
-      }
+      // if (!this.textoAnnotationsRes.find(t => t.id === this.textoAnnotation.id)) {
+      //   this.textoAnnotationsRes.push(this.textoAnnotation); //Questo è sbagliato
+      // }
 
       this.simplifiedAnns = [];
       // this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
@@ -1529,7 +1427,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const scrollingRowIndex = this.getScrollingRowIndex(scrollingDirection);
 
     if (this.textRange.start >= scrollingRowIndex) {
-      this.textRange.extraRowsBeforeStart = this.textRange.start - scrollingRowIndex + this.extraRowsWidenessUpOrDown;
+      this.textRange.extraRowsBeforeStart = this.textRange.start - scrollingRowIndex - this.extraRowsWidenessUpOrDown;
     }
 
     if (this.textRange.start < 0) {
