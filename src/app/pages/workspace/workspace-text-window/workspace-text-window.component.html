@@ -223,7 +223,7 @@
       <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn pi pi-file-edit"></a>
       <div *ngIf="expandedEditorDiv" class="w-100" [ngStyle]="{'height.px': textContainerHeight}">
         <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right pi pi-chevron-circle-right"></a>
-        <app-text-annotation-editor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
+        <app-text-annotation-editor #annotationEditor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
           (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
           <!-- <app-relation-editor *ngIf="showRelationEditor"
           [relationModel]="relation"

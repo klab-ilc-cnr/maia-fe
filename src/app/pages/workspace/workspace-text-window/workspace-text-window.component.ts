@@ -4,8 +4,8 @@ import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime, throwError } from 'rxjs';
+import { TextAnnotationEditorComponent } from 'src/app/controllers/editors/text-annotation-editor/text-annotation-editor.component';
 import { Annotation } from 'src/app/models/annotation/annotation';
-import { AnnotationMetadata } from 'src/app/models/annotation/annotation-metadata';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
@@ -153,6 +153,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   @ViewChild('textContainer') public textContainer!: ElementRef;
   @ViewChild('st') public documentSectionsTreeElement!: Tree;
   @ViewChild('textTileSplitter') public textTileSplitter!: Splitter;
+  @ViewChild('annotationEditor', {read: ElementRef}) public annotationEditor!: ElementRef;
 
   /**Scroller*/
   public textRowsWideness!: number;
@@ -399,6 +400,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       }
 
       if (isClickingAnnotation && wasAlreadyExpandedEditorDiv) {
+        const annotationArea = this.annotationEditor.nativeElement.querySelector('.annotation-area');
+        annotationArea.scrollTop = 0;
         return;
       }
 
