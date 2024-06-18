@@ -1213,6 +1213,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const scrollTop = this.calculateScrollTop(this.scrollingDirection, this.scrollingRowIndex);
 
     if (scrollTop <= 0 && this.textRange.start != 0) {
+      this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessUp;
       this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();
       return;
@@ -1426,30 +1427,52 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Ensures that there are enough rows when scrolling down
    */
   private ensureEnoughRowsDown(scrollingDirection: ScrollingDirectionType) {
-    const scrollingRowIndex = this.getScrollingRowIndex(scrollingDirection);
+    switch (scrollingDirection) {
+      case ScrollingDirectionType.IncreaseWidenessDown:
+      case ScrollingDirectionType.Down:
+        const scrollingRowIndex = this.getScrollingRowIndex(scrollingDirection);
 
-    if (this.textRange.end <= scrollingRowIndex) {
-      this.textRange.extraRowsAfterEnd = scrollingRowIndex - this.textRange.end + this.extraRowsWidenessUpOrDown;
+        if (this.textRange.end < scrollingRowIndex) {
+          this.textRange.extraRowsAfterEnd = scrollingRowIndex - this.textRange.end + this.extraRowsWidenessUpOrDown;
+        }
+
+        if (this.textRange.end === scrollingRowIndex) {
+          this.textRange.extraRowsAfterEnd += 5;
+        }
+
+        if (this.textRange.end > this.textTotalRows) {
+          this.textRange.extraRowsAfterEnd -= (this.textRange.end - this.textTotalRows);
+        };
+        return;
+      default:
+        return;
     }
-
-    if (this.textRange.end > this.textTotalRows) {
-      this.textRange.extraRowsAfterEnd -= (this.textRange.end - this.textTotalRows);
-    };
   }
 
   /**
  * Ensures that there are enough rows when scrolling up
  */
   private ensureEnoughRowsUp(scrollingDirection: ScrollingDirectionType) {
-    const scrollingRowIndex = this.getScrollingRowIndex(scrollingDirection);
+    switch (scrollingDirection) {
+      case ScrollingDirectionType.IncreaseWidenessUp:
+      case ScrollingDirectionType.Up:
+        const scrollingRowIndex = this.getScrollingRowIndex(scrollingDirection);
 
-    if (this.textRange.start >= scrollingRowIndex) {
-      this.textRange.extraRowsBeforeStart = this.textRange.start - scrollingRowIndex - this.extraRowsWidenessUpOrDown;
+        if (this.textRange.start > scrollingRowIndex) {
+          this.textRange.extraRowsBeforeStart = this.textRange.start - scrollingRowIndex + this.extraRowsWidenessUpOrDown;
+        }
+
+        if (this.textRange.start === scrollingRowIndex) {
+          this.textRange.extraRowsBeforeStart += 5;
+        }
+
+        if (this.textRange.start < 0) {
+          this.textRange.extraRowsBeforeStart += this.textRange.start;
+        };
+        return;
+      default:
+        return;
     }
-
-    if (this.textRange.start < 0) {
-      this.textRange.extraRowsBeforeStart += this.textRange.start;
-    };
   }
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {
