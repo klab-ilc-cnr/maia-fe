@@ -92,18 +92,15 @@
           <!-- #76 CPU usage in Text panel #169
             (mousemove)="mouseMoved($event)" (mouseup)="endDrawing($event)"  -->
             <svg class="text-editor" [attr.height]="svgHeight" (click)="onRowClick($event)">
-              <defs>
+              <!-- <defs>
                 <marker id="drag_arrow" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
                   <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>
                 </marker>
                 <marker id="arrow_triangle_5_black" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="black">
                   <polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"/>
                 </marker>
-                <!-- <marker id="drag_arrow" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth" class="drag_fill">
-                  <polyline points="0,0 5,2.5 0,5 0.2,2.5"/>
-                </marker> -->
                 <marker></marker>
-              </defs>
+              </defs> -->
               <g class="background">
                 <rect *ngFor="let row of rows; index as i" class="background" 
                       [ngClass]="{'background0': i%2, 'background1 bordered': !(i%2)}" 
@@ -146,7 +143,7 @@
                 <!-- <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="37" [attr.height]="row.height" (mouseup)="selectionchange($event)">{{row.text}}</text> -->
               </g>
               <!-- Generare n gruppi per archi e annotazioni -->
-              <g *ngFor="let row of rows">
+              <!-- <g *ngFor="let row of rows">
                 <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="arc">
                   <g *ngFor="let arc of line.arcs">
                     <rect *ngIf="arc.circleVisible; else elseBlock" 
@@ -158,23 +155,23 @@
                           stroke-width="0.5px" 
                           rx="3px" 
                           ry="3px" 
-                          [attr.data-rowIndex]="row.rowIndex"></rect>
-                            <!-- (click)="openRelation(arc.relationId)" 
+                          [attr.data-rowIndex]="row.rowIndex"
+                            (click)="openRelation(arc.relationId)" 
                             (mouseenter)="overEnterRelation(arc.relationId)" 
-                            (mouseleave)="overLeaveRelation(arc.relationId)" -->
+                            (mouseleave)="overLeaveRelation(arc.relationId)"></rect>
                     <ng-template #elseBlock>
                       <text [attr.x]="arc.label.startXText" 
                             [attr.y]="arc.label.yArcLabel" 
-                            [attr.data-rowIndex]="row.rowIndex">{{arc.label.text}}</text>
-                          <!-- (click)="openRelation(arc.relationId)" 
+                            [attr.data-rowIndex]="row.rowIndex"
+                          (click)="openRelation(arc.relationId)" 
                           (mouseenter)="overEnterRelation(arc.relationId)" 
-                          (mouseleave)="overLeaveRelation(arc.relationId)" -->
+                          (mouseleave)="overLeaveRelation(arc.relationId)">{{arc.label.text}}</text>
                     </ng-template>
                     <path [attr.d]="arc.firstSegmentPath" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
                     <path [attr.d]="arc.secondSegmentPath" marker-end="url(#arrow_triangle_5_black)" style="stroke: black" stroke-dasharray="," [attr.data-relation-id]="arc.relationId" />
                   </g>
                 </g>
-              </g>
+              </g> -->
               <g *ngFor="let row of rows">
                 <g *ngFor="let line of row.lines;" [attr.y]="line.yAnnotation" [attr.x]="line.x" class="span">
                   <g *ngFor="let anns of line.annotationsTowers">

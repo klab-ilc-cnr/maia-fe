@@ -1,10 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime, throwError } from 'rxjs';
-import { TextAnnotationEditorComponent } from 'src/app/controllers/editors/text-annotation-editor/text-annotation-editor.component';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
@@ -140,6 +139,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   get sectionsTreeHeight() {
     return this.textContainerHeight - this.sectionsHeaderHeight;
   }
+  forceRefreshDocumentTree: boolean = true;
   /**Identificativo numerico del testo */
   textId: number | undefined;
   /**Text response */
@@ -252,9 +252,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
     ).subscribe(list => {
       this.layersList = list;
-      // if (!this.selectedLayers) {
-      //   this.selectedLayers = this.visibleLayers = list;
-      // }
     });
 
     this.showAnnotationEditor = true;
@@ -447,26 +444,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.documentSections = [...this.documentSections];
   }
 
-  /**
-   * Metodo che gestisce il movimento del mouse nel trascinamento
-   * @param event {any} evento di trascinamento del mouse
-   * @returns {void}
-   */
-  mouseMoved(event: any) {
-    if (this.dragArrow.isDrawing) { //traccia solo il caso di freccia di trascinamento che sta disegnando
-      this.dragArrow.visibility = "visible";
-      this.svg.nativeElement.classList.add('unselectable');
-
-      const x1 = this.dragArrow.x1
-      const y1 = Math.min(...[this.dragArrow.y1, event.offsetY]) - this.visualConfig.draggedArcHeight;
-      const x2 = event.offsetX
-      const y2 = y1
-
-      this.dragArrow.c = "C " + x1 + " " + y1 + ", " + x2 + " " + y2 + ", " + event.offsetX + " " + event.offsetY
-      return;
-    }
-  }
-
   /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
     this.textoAnnotation = new TAnnotation();
@@ -485,26 +462,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingDirection = ScrollingDirectionType.InRange;
     this.updateAnnotationsResult(annotation);
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
-  }
-
-  private updateAnnotationsResult(annotation: TAnnotation) {
-    const annotationIndex = this.textoAnnotationsRes.findIndex(a => a.id === annotation.id);
-
-    if (annotationIndex !== -1) {
-      this.textoAnnotationsRes.splice(annotationIndex, 1);
-    }
-
-    this.textoAnnotationsRes.push(annotation);
-  }
-
-  private removeFromAnnotationsResult(annotationId?: number) {
-    if (!annotationId) { return; }
-
-    const annotationIndex = this.textoAnnotationsRes.findIndex(a => a.id === annotationId);
-
-    if (annotationIndex !== -1) {
-      this.textoAnnotationsRes.splice(annotationIndex, 1);
-    }
   }
 
   /**Metodo che intercetta il cambio di layer selezionato */
@@ -538,7 +495,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
-  forceRefreshDocumentTree: boolean = true;
   /**
    * This method selects the node of the tree related to the selected text row.
    * @param event 
@@ -574,47 +530,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  /**this is a workaround to fix a rendering problem with the primneg splitter component */
-  private fixPrimeNgSplitterPanelInitialSize() {
-    const panels: any = document.getElementsByClassName('p-splitter-panel');
-    const annotationPanel = panels[2];
-    annotationPanel.style.flexBasis = 'calc(' + this.textTileSplitter.panelSizes[2] + '% - ' + ((panels.length - 1) * 4) + 'px)';
-  }
-
-  /** inits the text tile splitteer properties */
-  private initTextTileSplitterSettings() {
-    this.expandedEditorDiv = true;
-    this.expandedDocumentSectonsDiv = true;
-    this.documentSectionsSplit = this.expandedDocumentSectonsDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
-    this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
-  }
-
-  /**
-   * Function that traverse tree in depth-first (pre-order) manner to find node's index.
-   * @returns if found, the index of the the tree that is selected
-   */
-  private CalculateSectionsTreeIndex(tree: TreeNode[], selectedSection: TreeNode,
-    startIndex: number = 0): { found: boolean; index: number } {
-    let index: number = startIndex;
-    let found = false;
-    for (const node of tree) {
-      found = node === selectedSection;
-      if (found) {
-        break;
-      }
-
-      index++;
-      if (node.expanded) {
-        ({ found, index } = this.CalculateSectionsTreeIndex(node.children!, selectedSection, index));
-        if (found) {
-          break;
-        }
-      }
-    }
-
-    return { found, index };
   }
 
   expandAnchestors(section: TreeNode) {
@@ -793,6 +708,67 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateTextEditorSize() {
     // this.renderData();
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+  }
+
+  private updateAnnotationsResult(annotation: TAnnotation) {
+    const annotationIndex = this.textoAnnotationsRes.findIndex(a => a.id === annotation.id);
+
+    if (annotationIndex !== -1) {
+      this.textoAnnotationsRes.splice(annotationIndex, 1);
+    }
+
+    this.textoAnnotationsRes.push(annotation);
+  }
+
+  private removeFromAnnotationsResult(annotationId?: number) {
+    if (!annotationId) { return; }
+
+    const annotationIndex = this.textoAnnotationsRes.findIndex(a => a.id === annotationId);
+
+    if (annotationIndex !== -1) {
+      this.textoAnnotationsRes.splice(annotationIndex, 1);
+    }
+  }
+
+  /**this is a workaround to fix a rendering problem with the primneg splitter component */
+  private fixPrimeNgSplitterPanelInitialSize() {
+    const panels: any = document.getElementsByClassName('p-splitter-panel');
+    const annotationPanel = panels[2];
+    annotationPanel.style.flexBasis = 'calc(' + this.textTileSplitter.panelSizes[2] + '% - ' + ((panels.length - 1) * 4) + 'px)';
+  }
+
+  /** inits the text tile splitteer properties */
+  private initTextTileSplitterSettings() {
+    this.expandedEditorDiv = true;
+    this.expandedDocumentSectonsDiv = true;
+    this.documentSectionsSplit = this.expandedDocumentSectonsDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
+    this.annotationSplitSize = this.expandedEditorDiv ? this.lateralSplitExpandedSize : this.lateralSplitCollapsedSize;
+  }
+
+  /**
+   * Function that traverse tree in depth-first (pre-order) manner to find node's index.
+   * @returns if found, the index of the the tree that is selected
+   */
+  private CalculateSectionsTreeIndex(tree: TreeNode[], selectedSection: TreeNode,
+    startIndex: number = 0): { found: boolean; index: number } {
+    let index: number = startIndex;
+    let found = false;
+    for (const node of tree) {
+      found = node === selectedSection;
+      if (found) {
+        break;
+      }
+
+      index++;
+      if (node.expanded) {
+        ({ found, index } = this.CalculateSectionsTreeIndex(node.children!, selectedSection, index));
+        if (found) {
+          break;
+        }
+      }
+    }
+
+    return { found, index };
   }
 
   /**inits the annotation panele */
@@ -1612,41 +1588,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return promise;
   }
 
-  private computeArcOffset(lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, lineArcs: Array<any>, startArcX: number, endArcX: number, arcType: string) {
-    let spaceFactor = 1;
-    if (arcType == "includedArc") {
-      spaceFactor = 2;
-    }
-
-    const towerH = this.getMaxTowerAroundAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
-    const yBaseOffset = this.visualConfig.arcSpacing * spaceFactor;
-    let yOffset = yBaseOffset;
-
-    if (towerH > 0) {
-      yOffset += towerH;
-    }
-
-    const maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
-    const adjustOffset = yOffset == yBaseOffset ? yOffset : 0;
-    const newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2 / spaceFactor;
-
-    if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
-      yOffset = newPossibleOffset;
-    }
-
-    return yOffset;
-  }
-
-  private computeStartAndEndXPosition(sourceSpanLimit: number, targetSpanLimit: number, startIndex: number) {
-    const startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-    const endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-
-    return {
-      startArcX: startArcX,
-      endArcX: endArcX
-    }
-  }
-
   private createLine(auxLineBuilder: any) {
     const startIndex = auxLineBuilder.startLine;
     const endIndex = auxLineBuilder.startLine + auxLineBuilder.line.text.length;
@@ -1834,508 +1775,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return labelText;
   }
 
-  /**
-   * @private
-   * Metodo che calcola la label da assegnare a un arco di relazione
-   * @param name {string} nome della relazione
-   * @returns {{labelText: string, textWidth: number, labelWidth: number}} dati per la label dell'arco
-   */
-  private elaborateArcLabel(name: string) {
-    let labelText = "";
-
-    if (name.trim().length > this.visualConfig.labelMaxLength) {
-      labelText = name.trim().substring(0, this.visualConfig.labelMaxLength - this.visualConfig.labelEllipsisText.length) + this.visualConfig.labelEllipsisText;
-    }
-    else {
-      labelText = name.trim().substring(0, this.visualConfig.labelMaxLength);
-    }
-
-    const textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
-    const labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
-
-    return {
-      labelText: labelText,
-      textWidth: textWidth,
-      labelWidth: labelWidth
-    };
-  }
-
-  private elaborateEndedArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
-    const arcType = "endedArc";
-
-    // ComputeStartAndEndXPosition
-    const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
-    let startArcX = xPositionRes.startArcX;
-    const endArcX = xPositionRes.endArcX;
-
-    // ElaborateArcLabel
-    const arcLabelRes = this.elaborateArcLabel(r.relation.name)
-    const labelText = arcLabelRes.labelText;
-    const textWidth = arcLabelRes.textWidth;
-    let labelWidth = arcLabelRes.labelWidth;
-
-    let endSecondSegment = endArcX;
-
-    if (isFromLeftToRight) {
-      // startFirstSegment += this.visualConfig.arcAngleOffset;
-      startArcX = this.visualConfig.stdTextOffsetX;
-      endSecondSegment -= this.visualConfig.arcAngleOffset;
-    }
-    else {
-      // startFirstSegment -= this.visualConfig.arcAngleOffset;
-      startArcX = this.svg.nativeElement.clientWidth;
-      endSecondSegment += this.visualConfig.arcAngleOffset;
-    }
-
-    const startFirstSegment = startArcX;
-
-    const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
-
-    const arcSize = Math.abs(endArcX - startArcX);
-    const circleVisible = labelWidth >= arcSize || textWidth == 0;
-
-    if (circleVisible) {
-      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
-    }
-
-    const signChange = isFromLeftToRight ? 1 : -1;
-    const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
-    const startSecondSegment = endFirstSegment + signChange * labelWidth;
-
-    const labelStartX = Math.min(startSecondSegment, endFirstSegment);
-    const labelEndX = Math.max(startSecondSegment, endFirstSegment);
-    const startXText = startFirstSegment + signChange * arcCenter
-
-    const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
-
-    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
-    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
-
-    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
-    // yOffset -= yAnnOffset;
-
-    const yLabel = yOffset;
-
-    const arc = {
-      start: {
-        x: startArcX,
-        y: 0,
-      },
-      end: {
-        x: endArcX,
-        y: r.targetTower.yTowerOffset,
-      },
-      yArcOffset: yOffset,
-      yAnnOffset: 0,
-      firstSegment: {
-        start: startFirstSegment,
-        end: endFirstSegment
-      },
-      secondSegment: {
-        start: startSecondSegment,
-        end: endSecondSegment
-      },
-      label: {
-        start: labelStartX,
-        end: labelEndX,
-        width: labelWidth,
-        text: labelText,
-        startXText: startXText,
-        yArcLabel: yLabel
-      },
-      relation: r,
-      relationId: r.relation.id,
-      type: arcType,
-      circleVisible: circleVisible
-    }
-
-    return arc;
-  }
-
-  private elaborateInLineArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
-    const arcType = "includedArc";
-
-    // ComputeStartAndEndXPosition
-    const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
-    const startArcX = xPositionRes.startArcX;
-    const endArcX = xPositionRes.endArcX;
-
-    // ElaborateArcLabel
-    const arcLabelRes = this.elaborateArcLabel(r.relation.name)
-    const labelText = arcLabelRes.labelText;
-    const textWidth = arcLabelRes.textWidth;
-    let labelWidth = arcLabelRes.labelWidth;
-
-    let startFirstSegment = startArcX;
-    let endSecondSegment = endArcX;
-
-    if (isFromLeftToRight) {
-      startFirstSegment += this.visualConfig.arcAngleOffset;
-      endSecondSegment -= this.visualConfig.arcAngleOffset;
-    }
-    else {
-      startFirstSegment -= this.visualConfig.arcAngleOffset;
-      endSecondSegment += this.visualConfig.arcAngleOffset;
-    }
-
-    const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
-
-    const arcSize = Math.abs(endArcX - startArcX);
-    const circleVisible = labelWidth >= arcSize || textWidth == 0;
-
-    if (circleVisible) {
-      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
-    }
-
-    const signChange = isFromLeftToRight ? 1 : -1;
-    const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
-    const startSecondSegment = endFirstSegment + signChange * labelWidth;
-
-    const labelStartX = Math.min(startSecondSegment, endFirstSegment);
-    const labelEndX = Math.max(startSecondSegment, endFirstSegment);
-    const startXText = startFirstSegment + signChange * arcCenter
-
-    const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
-
-    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
-    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
-
-    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
-    // yOffset -= yAnnOffset;
-
-    const yLabel = yOffset;
-
-    const arc = {
-      start: {
-        x: startArcX,
-        y: r.sourceTower.yTowerOffset,
-      },
-      end: {
-        x: endArcX,
-        y: r.targetTower.yTowerOffset,
-      },
-      yArcOffset: yOffset,
-      yAnnOffset: 0,
-      firstSegment: {
-        start: startFirstSegment,
-        end: endFirstSegment
-      },
-      secondSegment: {
-        start: startSecondSegment,
-        end: endSecondSegment
-      },
-      label: {
-        start: labelStartX,
-        end: labelEndX,
-        width: labelWidth,
-        text: labelText,
-        startXText: startXText,
-        yArcLabel: yLabel
-      },
-      relation: r,
-      relationId: r.relation.id,
-      type: arcType,
-      circleVisible: circleVisible
-    }
-
-    return arc;
-  }
-
-  private elaboratePassingArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
-    const arcType = "passingArc";
-
-    // ComputeStartAndEndXPosition
-    const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
-    let startArcX = xPositionRes.startArcX;
-    let endArcX = xPositionRes.endArcX;
-
-    // ElaborateArcLabel
-    const arcLabelRes = this.elaborateArcLabel(r.relation.name)
-    const labelText = arcLabelRes.labelText;
-    const textWidth = arcLabelRes.textWidth;
-    let labelWidth = arcLabelRes.labelWidth;
-
-    if (isFromLeftToRight) {
-      startArcX = this.visualConfig.stdTextOffsetX;
-      endArcX = this.svg.nativeElement.clientWidth;
-    }
-    else {
-      startArcX = this.svg.nativeElement.clientWidth;
-      endArcX = this.visualConfig.stdTextOffsetX;
-    }
-
-    const startFirstSegment = startArcX;
-    const endSecondSegment = endArcX;
-
-    const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
-
-    const arcSize = Math.abs(endArcX - startArcX);
-    const circleVisible = labelWidth >= arcSize || textWidth == 0;
-
-    if (circleVisible) {
-      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
-    }
-
-    const signChange = isFromLeftToRight ? 1 : -1;
-    const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
-    const startSecondSegment = endFirstSegment + signChange * labelWidth;
-
-    const labelStartX = Math.min(startSecondSegment, endFirstSegment);
-    const labelEndX = Math.max(startSecondSegment, endFirstSegment);
-    let startXText = startFirstSegment + signChange * arcCenter
-    startXText = startFirstSegment + signChange * arcCenter
-    const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
-
-    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
-    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
-
-    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
-    // yOffset -= yAnnOffset;
-
-    const yLabel = yOffset;
-
-    const arc = {
-      start: {
-        x: startArcX,
-        y: 0,
-      },
-      end: {
-        x: endArcX,
-        y: 0,
-      },
-      yArcOffset: yOffset,
-      yAnnOffset: 0,
-      firstSegment: {
-        start: startFirstSegment,
-        end: endFirstSegment
-      },
-      secondSegment: {
-        start: startSecondSegment,
-        end: endSecondSegment
-      },
-      label: {
-        start: labelStartX,
-        end: labelEndX,
-        width: labelWidth,
-        text: labelText,
-        startXText: startXText,
-        yArcLabel: yLabel
-      },
-      relation: r,
-      relationId: r.relation.id,
-      type: arcType,
-      circleVisible: circleVisible
-    }
-
-    return arc;
-  }
-
-  private elaborateStartedArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
-    const arcType = "startedArc";
-
-    // ComputeStartAndEndXPosition
-    const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
-    const startArcX = xPositionRes.startArcX;
-    let endArcX = xPositionRes.endArcX;
-
-    // ElaborateArcLabel
-    const arcLabelRes = this.elaborateArcLabel(r.relation.name)
-    const labelText = arcLabelRes.labelText;
-    const textWidth = arcLabelRes.textWidth;
-    let labelWidth = arcLabelRes.labelWidth;
-
-    let startFirstSegment = startArcX;
-
-    if (isFromLeftToRight) {
-      startFirstSegment += this.visualConfig.arcAngleOffset;
-      endArcX = this.svg.nativeElement.clientWidth;
-      // endSecondSegment -= this.visualConfig.arcAngleOffset;
-    }
-    else {
-      startFirstSegment -= this.visualConfig.arcAngleOffset;
-      endArcX = this.visualConfig.stdTextOffsetX;
-      // endSecondSegment += this.visualConfig.arcAngleOffset;
-    }
-
-    let endSecondSegment = endArcX;
-
-    const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
-
-    const arcSize = Math.abs(endArcX - startArcX);
-    const circleVisible = labelWidth >= arcSize || textWidth == 0;
-
-    if (circleVisible) {
-      labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
-    }
-
-    const signChange = isFromLeftToRight ? 1 : -1;
-    const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
-    let startSecondSegment = endFirstSegment + signChange * labelWidth;
-
-    if (startSecondSegment < this.visualConfig.stdTextOffsetX) {
-      startSecondSegment = this.visualConfig.stdTextOffsetX;
-      endSecondSegment = this.visualConfig.stdTextOffsetX - 1;
-    }
-
-    const labelStartX = Math.min(startSecondSegment, endFirstSegment);
-    const labelEndX = Math.max(startSecondSegment, endFirstSegment);
-    const startXText = startFirstSegment + signChange * arcCenter
-
-    const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
-
-    // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
-    // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
-
-    // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
-    // yOffset -= yAnnOffset;
-
-    const yLabel = yOffset;
-
-    const arc = {
-      start: {
-        x: startArcX,
-        y: r.sourceTower.yTowerOffset,
-      },
-      end: {
-        x: endArcX,
-        y: 0,
-      },
-      yArcOffset: yOffset,
-      yAnnOffset: 0,
-      firstSegment: {
-        start: startFirstSegment,
-        end: endFirstSegment
-      },
-      secondSegment: {
-        start: startSecondSegment,
-        end: endSecondSegment
-      },
-      label: {
-        start: labelStartX,
-        end: labelEndX,
-        width: labelWidth,
-        text: labelText,
-        startXText: startXText,
-        yArcLabel: yLabel
-      },
-      relation: r,
-      relationId: r.relation.id,
-      type: arcType,
-      circleVisible: circleVisible
-    }
-
-    return arc;
-  }
-
-  /**
-   * @private
-   * Metodo che recupera un'annotazione fra quelle semplificate sulla base dell'id
-   * @param id {number} identificativo dell'annotazione
-   * @returns {any} annotazione estratta dalle annotazioni semplificate
-   */
-  private findAnnotationById(id: number) {
-    return this.simplifiedAnns.find((an: any) => an.id == id);
-  }
-
-  /**
-   * @private
-   * Metodo che recupera un'annotazione dalle tower utilizzando l'id
-   * @param id {number} identificativo numerico dell'annotazione
-   * @param lineTowers {Array<any>} lista ?
-   * @returns {any} annotazione corrispondente nella tower ?
-   */
-  private findAnnotationInTowers(id: number, lineTowers: Array<any>) {
-    var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
-
-    var ann = undefined;
-
-    if (t && t.tower) {
-      ann = t.tower.find((ann: any) => ann.id == id);
-    }
-
-    return ann;
-  }
-
-  /**
-   * @private
-   * Metodo che recupera la tower contenente una data annotazione
-   * @param id {number} identificativo numerico dell'annotazione
-   * @param lineTowers {Array<any>} lista ?
-   * @returns {any} tower contenente l'annotazione
-   */
-  private findTowerByAnnotationId(id: number, lineTowers: Array<any>) {
-    var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
-    return t;
-  }
-
-  private generateArcPath(ar: any): { firstSegmentPath: string; secondSegmentPath: string; } {
-    let firstArcSegment = "";
-    let secondArcSegment = "";
-
-    switch (ar.type) {
-      case "includedArc": {
-        const moveToArcStart = "M " + ar.start.x + " " + ar.start.y;
-        const moveToFirstStart = "L " + ar.firstSegment.start + " " + ar.yArcOffset;
-        const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
-
-        const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
-        const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
-        const moveToArcEnd = "L " + ar.end.x + " " + ar.end.y;
-
-        firstArcSegment = moveToArcStart + " " + moveToFirstStart + " " + lineFirstSegment;
-        secondArcSegment = moveToSecondStart + " " + lineSecondSegment + " " + moveToArcEnd;
-        break;
-      }
-
-      case "startedArc": {
-        const moveToArcStart = "M " + ar.start.x + " " + ar.start.y;
-        const moveToFirstStart = "L " + ar.firstSegment.start + " " + ar.yArcOffset;
-        const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
-
-        const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
-        const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
-
-        firstArcSegment = moveToArcStart + " " + moveToFirstStart + " " + lineFirstSegment;
-        secondArcSegment = moveToSecondStart + " " + lineSecondSegment;
-        break;
-      }
-
-      case "endedArc": {
-        const moveToFirstStart = "M " + ar.firstSegment.start + " " + ar.yArcOffset;
-        const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
-
-        const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
-        const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
-        const moveToArcEnd = "L " + ar.end.x + " " + ar.end.y;
-
-        firstArcSegment = moveToFirstStart + " " + lineFirstSegment;
-        secondArcSegment = moveToSecondStart + " " + lineSecondSegment + " " + moveToArcEnd;
-        break;
-      }
-
-      case "passingArc": {
-        const moveToFirstStart = "M " + ar.firstSegment.start + " " + ar.yArcOffset;
-        const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
-
-        const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
-        const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
-
-        firstArcSegment = moveToFirstStart + " " + lineFirstSegment;
-        secondArcSegment = moveToSecondStart + " " + lineSecondSegment;
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-
-    return {
-      firstSegmentPath: firstArcSegment,
-      secondSegmentPath: secondArcSegment
-    };
-  }
-
   private generateCurlyPath(ann: any): string {
     const y = (ann.y + this.visualConfig.annotationHeight + 2)
     const move = "M " + ann.startX + " " + (y + this.visualConfig.curlyHeight);
@@ -2404,32 +1843,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     };
   }
 
-  private getMaxArcOffset(array: Array<any>) {
-    return Math.max(...array.map(o => (o.yArcOffset + o.yAnnOffset)));
-  }
-
-  private getMaxArcOffsetInRange(array: Array<any>, startX: number, endX: number) {
-    const min = Math.min(startX, endX);
-    const max = Math.max(startX, endX);
-
-    const filteredArcs = array.filter((ar: any) => (ar.start.x >= min && ar.end.x <= max) ||
-      (ar.start.x < min && ar.end.x >= min && ar.end.x <= max) ||
-      (ar.start.x > max && ar.end.x >= min && ar.end.x <= max) ||
-      (ar.start.x >= min && ar.start.x <= max && ar.end.x < min) ||
-      (ar.start.x >= min && ar.start.x <= max && ar.end.x > max) ||
-      (ar.start.x < min && ar.end.x > max));
-
-    return this.getMaxArcOffset(filteredArcs);
-  }
-
   private getMaxTowerPosition(array: any[]) {
     return Math.max(...array.map(o => (o.towerHeight + o.yTowerOffset)))
-  }
-
-  private getMaxTowerAroundAnns(lineTowers: Array<any>, start: number, end: number) {
-    const filteredTowers = lineTowers.filter((t: any) => (t.spanCoordinates.start >= start && t.spanCoordinates.end <= end) || (t.spanCoordinates.start < start && t.spanCoordinates.end > start) || (t.spanCoordinates.start < end && t.spanCoordinates.end > end));
-
-    return this.getMaxTowerPosition(filteredTowers);
   }
 
   private getStdLineHeight() {
@@ -2618,6 +2033,587 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     return Object.values(towers);
   }
+
+  // private computeArcOffset(lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, lineArcs: Array<any>, startArcX: number, endArcX: number, arcType: string) {
+  //   let spaceFactor = 1;
+  //   if (arcType == "includedArc") {
+  //     spaceFactor = 2;
+  //   }
+
+  //   const towerH = this.getMaxTowerAroundAnns(lineTowers, sourceSpanLimit, targetSpanLimit);
+  //   const yBaseOffset = this.visualConfig.arcSpacing * spaceFactor;
+  //   let yOffset = yBaseOffset;
+
+  //   if (towerH > 0) {
+  //     yOffset += towerH;
+  //   }
+
+  //   const maxRelationOffset = this.getMaxArcOffsetInRange(lineArcs, startArcX, endArcX);
+  //   const adjustOffset = yOffset == yBaseOffset ? yOffset : 0;
+  //   const newPossibleOffset = adjustOffset + maxRelationOffset + this.visualConfig.arcSpacing * 2 / spaceFactor;
+
+  //   if (maxRelationOffset >= 0 && newPossibleOffset > yOffset) {
+  //     yOffset = newPossibleOffset;
+  //   }
+
+  //   return yOffset;
+  // }
+
+  // private computeStartAndEndXPosition(sourceSpanLimit: number, targetSpanLimit: number, startIndex: number) {
+  //   const startArcX = this.getComputedTextLength(this.randomString(sourceSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+  //   const endArcX = this.getComputedTextLength(this.randomString(targetSpanLimit - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+
+  //   return {
+  //     startArcX: startArcX,
+  //     endArcX: endArcX
+  //   }
+  // }
+
+  /**
+* @private
+* Metodo che calcola la label da assegnare a un arco di relazione
+* @param name {string} nome della relazione
+* @returns {{labelText: string, textWidth: number, labelWidth: number}} dati per la label dell'arco
+*/
+  // private elaborateArcLabel(name: string) {
+  //   let labelText = "";
+
+  //   if (name.trim().length > this.visualConfig.labelMaxLength) {
+  //     labelText = name.trim().substring(0, this.visualConfig.labelMaxLength - this.visualConfig.labelEllipsisText.length) + this.visualConfig.labelEllipsisText;
+  //   }
+  //   else {
+  //     labelText = name.trim().substring(0, this.visualConfig.labelMaxLength);
+  //   }
+
+  //   const textWidth = this.getComputedTextLength(labelText, this.visualConfig.arcFont);
+  //   const labelWidth = textWidth + this.visualConfig.labelPaddingXAxis * 2;
+
+  //   return {
+  //     labelText: labelText,
+  //     textWidth: textWidth,
+  //     labelWidth: labelWidth
+  //   };
+  // }
+
+  // private elaborateEndedArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+  //   const arcType = "endedArc";
+
+  //   // ComputeStartAndEndXPosition
+  //   const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+  //   let startArcX = xPositionRes.startArcX;
+  //   const endArcX = xPositionRes.endArcX;
+
+  //   // ElaborateArcLabel
+  //   const arcLabelRes = this.elaborateArcLabel(r.relation.name)
+  //   const labelText = arcLabelRes.labelText;
+  //   const textWidth = arcLabelRes.textWidth;
+  //   let labelWidth = arcLabelRes.labelWidth;
+
+  //   let endSecondSegment = endArcX;
+
+  //   if (isFromLeftToRight) {
+  //     // startFirstSegment += this.visualConfig.arcAngleOffset;
+  //     startArcX = this.visualConfig.stdTextOffsetX;
+  //     endSecondSegment -= this.visualConfig.arcAngleOffset;
+  //   }
+  //   else {
+  //     // startFirstSegment -= this.visualConfig.arcAngleOffset;
+  //     startArcX = this.svg.nativeElement.clientWidth;
+  //     endSecondSegment += this.visualConfig.arcAngleOffset;
+  //   }
+
+  //   const startFirstSegment = startArcX;
+
+  //   const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
+
+  //   const arcSize = Math.abs(endArcX - startArcX);
+  //   const circleVisible = labelWidth >= arcSize || textWidth == 0;
+
+  //   if (circleVisible) {
+  //     labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
+  //   }
+
+  //   const signChange = isFromLeftToRight ? 1 : -1;
+  //   const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+  //   const startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+  //   const labelStartX = Math.min(startSecondSegment, endFirstSegment);
+  //   const labelEndX = Math.max(startSecondSegment, endFirstSegment);
+  //   const startXText = startFirstSegment + signChange * arcCenter
+
+  //   const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+
+  //   // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+  //   // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+  //   // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+  //   // yOffset -= yAnnOffset;
+
+  //   const yLabel = yOffset;
+
+  //   const arc = {
+  //     start: {
+  //       x: startArcX,
+  //       y: 0,
+  //     },
+  //     end: {
+  //       x: endArcX,
+  //       y: r.targetTower.yTowerOffset,
+  //     },
+  //     yArcOffset: yOffset,
+  //     yAnnOffset: 0,
+  //     firstSegment: {
+  //       start: startFirstSegment,
+  //       end: endFirstSegment
+  //     },
+  //     secondSegment: {
+  //       start: startSecondSegment,
+  //       end: endSecondSegment
+  //     },
+  //     label: {
+  //       start: labelStartX,
+  //       end: labelEndX,
+  //       width: labelWidth,
+  //       text: labelText,
+  //       startXText: startXText,
+  //       yArcLabel: yLabel
+  //     },
+  //     relation: r,
+  //     relationId: r.relation.id,
+  //     type: arcType,
+  //     circleVisible: circleVisible
+  //   }
+
+  //   return arc;
+  // }
+
+  // private elaborateInLineArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+  //   const arcType = "includedArc";
+
+  //   // ComputeStartAndEndXPosition
+  //   const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+  //   const startArcX = xPositionRes.startArcX;
+  //   const endArcX = xPositionRes.endArcX;
+
+  //   // ElaborateArcLabel
+  //   const arcLabelRes = this.elaborateArcLabel(r.relation.name)
+  //   const labelText = arcLabelRes.labelText;
+  //   const textWidth = arcLabelRes.textWidth;
+  //   let labelWidth = arcLabelRes.labelWidth;
+
+  //   let startFirstSegment = startArcX;
+  //   let endSecondSegment = endArcX;
+
+  //   if (isFromLeftToRight) {
+  //     startFirstSegment += this.visualConfig.arcAngleOffset;
+  //     endSecondSegment -= this.visualConfig.arcAngleOffset;
+  //   }
+  //   else {
+  //     startFirstSegment -= this.visualConfig.arcAngleOffset;
+  //     endSecondSegment += this.visualConfig.arcAngleOffset;
+  //   }
+
+  //   const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
+
+  //   const arcSize = Math.abs(endArcX - startArcX);
+  //   const circleVisible = labelWidth >= arcSize || textWidth == 0;
+
+  //   if (circleVisible) {
+  //     labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
+  //   }
+
+  //   const signChange = isFromLeftToRight ? 1 : -1;
+  //   const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+  //   const startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+  //   const labelStartX = Math.min(startSecondSegment, endFirstSegment);
+  //   const labelEndX = Math.max(startSecondSegment, endFirstSegment);
+  //   const startXText = startFirstSegment + signChange * arcCenter
+
+  //   const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+
+  //   // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+  //   // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+  //   // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+  //   // yOffset -= yAnnOffset;
+
+  //   const yLabel = yOffset;
+
+  //   const arc = {
+  //     start: {
+  //       x: startArcX,
+  //       y: r.sourceTower.yTowerOffset,
+  //     },
+  //     end: {
+  //       x: endArcX,
+  //       y: r.targetTower.yTowerOffset,
+  //     },
+  //     yArcOffset: yOffset,
+  //     yAnnOffset: 0,
+  //     firstSegment: {
+  //       start: startFirstSegment,
+  //       end: endFirstSegment
+  //     },
+  //     secondSegment: {
+  //       start: startSecondSegment,
+  //       end: endSecondSegment
+  //     },
+  //     label: {
+  //       start: labelStartX,
+  //       end: labelEndX,
+  //       width: labelWidth,
+  //       text: labelText,
+  //       startXText: startXText,
+  //       yArcLabel: yLabel
+  //     },
+  //     relation: r,
+  //     relationId: r.relation.id,
+  //     type: arcType,
+  //     circleVisible: circleVisible
+  //   }
+
+  //   return arc;
+  // }
+
+  // private elaboratePassingArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+  //   const arcType = "passingArc";
+
+  //   // ComputeStartAndEndXPosition
+  //   const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+  //   let startArcX = xPositionRes.startArcX;
+  //   let endArcX = xPositionRes.endArcX;
+
+  //   // ElaborateArcLabel
+  //   const arcLabelRes = this.elaborateArcLabel(r.relation.name)
+  //   const labelText = arcLabelRes.labelText;
+  //   const textWidth = arcLabelRes.textWidth;
+  //   let labelWidth = arcLabelRes.labelWidth;
+
+  //   if (isFromLeftToRight) {
+  //     startArcX = this.visualConfig.stdTextOffsetX;
+  //     endArcX = this.svg.nativeElement.clientWidth;
+  //   }
+  //   else {
+  //     startArcX = this.svg.nativeElement.clientWidth;
+  //     endArcX = this.visualConfig.stdTextOffsetX;
+  //   }
+
+  //   const startFirstSegment = startArcX;
+  //   const endSecondSegment = endArcX;
+
+  //   const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
+
+  //   const arcSize = Math.abs(endArcX - startArcX);
+  //   const circleVisible = labelWidth >= arcSize || textWidth == 0;
+
+  //   if (circleVisible) {
+  //     labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
+  //   }
+
+  //   const signChange = isFromLeftToRight ? 1 : -1;
+  //   const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+  //   const startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+  //   const labelStartX = Math.min(startSecondSegment, endFirstSegment);
+  //   const labelEndX = Math.max(startSecondSegment, endFirstSegment);
+  //   let startXText = startFirstSegment + signChange * arcCenter
+  //   startXText = startFirstSegment + signChange * arcCenter
+  //   const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+
+  //   // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+  //   // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+  //   // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+  //   // yOffset -= yAnnOffset;
+
+  //   const yLabel = yOffset;
+
+  //   const arc = {
+  //     start: {
+  //       x: startArcX,
+  //       y: 0,
+  //     },
+  //     end: {
+  //       x: endArcX,
+  //       y: 0,
+  //     },
+  //     yArcOffset: yOffset,
+  //     yAnnOffset: 0,
+  //     firstSegment: {
+  //       start: startFirstSegment,
+  //       end: endFirstSegment
+  //     },
+  //     secondSegment: {
+  //       start: startSecondSegment,
+  //       end: endSecondSegment
+  //     },
+  //     label: {
+  //       start: labelStartX,
+  //       end: labelEndX,
+  //       width: labelWidth,
+  //       text: labelText,
+  //       startXText: startXText,
+  //       yArcLabel: yLabel
+  //     },
+  //     relation: r,
+  //     relationId: r.relation.id,
+  //     type: arcType,
+  //     circleVisible: circleVisible
+  //   }
+
+  //   return arc;
+  // }
+
+  // private elaborateStartedArc(r: any, lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, startIndex: number, lineArcs: Array<any>, isFromLeftToRight: boolean) {
+  //   const arcType = "startedArc";
+
+  //   // ComputeStartAndEndXPosition
+  //   const xPositionRes = this.computeStartAndEndXPosition(sourceSpanLimit, targetSpanLimit, startIndex);
+  //   const startArcX = xPositionRes.startArcX;
+  //   let endArcX = xPositionRes.endArcX;
+
+  //   // ElaborateArcLabel
+  //   const arcLabelRes = this.elaborateArcLabel(r.relation.name)
+  //   const labelText = arcLabelRes.labelText;
+  //   const textWidth = arcLabelRes.textWidth;
+  //   let labelWidth = arcLabelRes.labelWidth;
+
+  //   let startFirstSegment = startArcX;
+
+  //   if (isFromLeftToRight) {
+  //     startFirstSegment += this.visualConfig.arcAngleOffset;
+  //     endArcX = this.svg.nativeElement.clientWidth;
+  //     // endSecondSegment -= this.visualConfig.arcAngleOffset;
+  //   }
+  //   else {
+  //     startFirstSegment -= this.visualConfig.arcAngleOffset;
+  //     endArcX = this.visualConfig.stdTextOffsetX;
+  //     // endSecondSegment += this.visualConfig.arcAngleOffset;
+  //   }
+
+  //   let endSecondSegment = endArcX;
+
+  //   const arcCenter = Math.abs(endSecondSegment - startFirstSegment) / 2;
+
+  //   const arcSize = Math.abs(endArcX - startArcX);
+  //   const circleVisible = labelWidth >= arcSize || textWidth == 0;
+
+  //   if (circleVisible) {
+  //     labelWidth = this.visualConfig.arcCircleLabelPlaceholderWidth;
+  //   }
+
+  //   const signChange = isFromLeftToRight ? 1 : -1;
+  //   const endFirstSegment = startFirstSegment + signChange * (arcCenter - labelWidth / 2);
+  //   let startSecondSegment = endFirstSegment + signChange * labelWidth;
+
+  //   if (startSecondSegment < this.visualConfig.stdTextOffsetX) {
+  //     startSecondSegment = this.visualConfig.stdTextOffsetX;
+  //     endSecondSegment = this.visualConfig.stdTextOffsetX - 1;
+  //   }
+
+  //   const labelStartX = Math.min(startSecondSegment, endFirstSegment);
+  //   const labelEndX = Math.max(startSecondSegment, endFirstSegment);
+  //   const startXText = startFirstSegment + signChange * arcCenter
+
+  //   const yOffset = this.computeArcOffset(lineTowers, sourceSpanLimit, targetSpanLimit, lineArcs, startArcX, endArcX, arcType);
+
+  //   // let sAnn = this.findAnnotationInTowers(r.sourceAnn.id, lineTowers);
+  //   // let tAnn = this.findAnnotationInTowers(r.targetAnn.id, lineTowers);
+
+  //   // let yAnnOffset = Math.max(sAnn.yOffset, tAnn.yOffset);
+  //   // yOffset -= yAnnOffset;
+
+  //   const yLabel = yOffset;
+
+  //   const arc = {
+  //     start: {
+  //       x: startArcX,
+  //       y: r.sourceTower.yTowerOffset,
+  //     },
+  //     end: {
+  //       x: endArcX,
+  //       y: 0,
+  //     },
+  //     yArcOffset: yOffset,
+  //     yAnnOffset: 0,
+  //     firstSegment: {
+  //       start: startFirstSegment,
+  //       end: endFirstSegment
+  //     },
+  //     secondSegment: {
+  //       start: startSecondSegment,
+  //       end: endSecondSegment
+  //     },
+  //     label: {
+  //       start: labelStartX,
+  //       end: labelEndX,
+  //       width: labelWidth,
+  //       text: labelText,
+  //       startXText: startXText,
+  //       yArcLabel: yLabel
+  //     },
+  //     relation: r,
+  //     relationId: r.relation.id,
+  //     type: arcType,
+  //     circleVisible: circleVisible
+  //   }
+
+  //   return arc;
+  // }
+
+  /**
+   * @private
+   * Metodo che recupera un'annotazione fra quelle semplificate sulla base dell'id
+   * @param id {number} identificativo dell'annotazione
+   * @returns {any} annotazione estratta dalle annotazioni semplificate
+   */
+  // private findAnnotationById(id: number) {
+  //   return this.simplifiedAnns.find((an: any) => an.id == id);
+  // }
+
+  /**
+   * @private
+   * Metodo che recupera un'annotazione dalle tower utilizzando l'id
+   * @param id {number} identificativo numerico dell'annotazione
+   * @param lineTowers {Array<any>} lista ?
+   * @returns {any} annotazione corrispondente nella tower ?
+   */
+  // private findAnnotationInTowers(id: number, lineTowers: Array<any>) {
+  //   var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
+
+  //   var ann = undefined;
+
+  //   if (t && t.tower) {
+  //     ann = t.tower.find((ann: any) => ann.id == id);
+  //   }
+
+  //   return ann;
+  // }
+
+  /**
+   * @private
+   * Metodo che recupera la tower contenente una data annotazione
+   * @param id {number} identificativo numerico dell'annotazione
+   * @param lineTowers {Array<any>} lista ?
+   * @returns {any} tower contenente l'annotazione
+   */
+  // private findTowerByAnnotationId(id: number, lineTowers: Array<any>) {
+  //   var t = lineTowers.find((t: any) => t.tower.some((ann: any) => ann.id == id));
+  //   return t;
+  // }
+
+  // private generateArcPath(ar: any): { firstSegmentPath: string; secondSegmentPath: string; } {
+  //   let firstArcSegment = "";
+  //   let secondArcSegment = "";
+
+  //   switch (ar.type) {
+  //     case "includedArc": {
+  //       const moveToArcStart = "M " + ar.start.x + " " + ar.start.y;
+  //       const moveToFirstStart = "L " + ar.firstSegment.start + " " + ar.yArcOffset;
+  //       const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
+
+  //       const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+  //       const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+  //       const moveToArcEnd = "L " + ar.end.x + " " + ar.end.y;
+
+  //       firstArcSegment = moveToArcStart + " " + moveToFirstStart + " " + lineFirstSegment;
+  //       secondArcSegment = moveToSecondStart + " " + lineSecondSegment + " " + moveToArcEnd;
+  //       break;
+  //     }
+
+  //     case "startedArc": {
+  //       const moveToArcStart = "M " + ar.start.x + " " + ar.start.y;
+  //       const moveToFirstStart = "L " + ar.firstSegment.start + " " + ar.yArcOffset;
+  //       const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
+
+  //       const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+  //       const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+
+  //       firstArcSegment = moveToArcStart + " " + moveToFirstStart + " " + lineFirstSegment;
+  //       secondArcSegment = moveToSecondStart + " " + lineSecondSegment;
+  //       break;
+  //     }
+
+  //     case "endedArc": {
+  //       const moveToFirstStart = "M " + ar.firstSegment.start + " " + ar.yArcOffset;
+  //       const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
+
+  //       const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+  //       const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+  //       const moveToArcEnd = "L " + ar.end.x + " " + ar.end.y;
+
+  //       firstArcSegment = moveToFirstStart + " " + lineFirstSegment;
+  //       secondArcSegment = moveToSecondStart + " " + lineSecondSegment + " " + moveToArcEnd;
+  //       break;
+  //     }
+
+  //     case "passingArc": {
+  //       const moveToFirstStart = "M " + ar.firstSegment.start + " " + ar.yArcOffset;
+  //       const lineFirstSegment = "L " + ar.firstSegment.end + " " + ar.yArcOffset;
+
+  //       const moveToSecondStart = "M " + ar.secondSegment.start + " " + ar.yArcOffset;
+  //       const lineSecondSegment = "L " + ar.secondSegment.end + " " + ar.yArcOffset;
+
+  //       firstArcSegment = moveToFirstStart + " " + lineFirstSegment;
+  //       secondArcSegment = moveToSecondStart + " " + lineSecondSegment;
+  //       break;
+  //     }
+
+  //     default: {
+  //       break;
+  //     }
+  //   }
+
+  //   return {
+  //     firstSegmentPath: firstArcSegment,
+  //     secondSegmentPath: secondArcSegment
+  //   };
+  // }
+
+  // private getMaxArcOffset(array: Array<any>) {
+  //   return Math.max(...array.map(o => (o.yArcOffset + o.yAnnOffset)));
+  // }
+
+  // private getMaxArcOffsetInRange(array: Array<any>, startX: number, endX: number) {
+  //   const min = Math.min(startX, endX);
+  //   const max = Math.max(startX, endX);
+
+  //   const filteredArcs = array.filter((ar: any) => (ar.start.x >= min && ar.end.x <= max) ||
+  //     (ar.start.x < min && ar.end.x >= min && ar.end.x <= max) ||
+  //     (ar.start.x > max && ar.end.x >= min && ar.end.x <= max) ||
+  //     (ar.start.x >= min && ar.start.x <= max && ar.end.x < min) ||
+  //     (ar.start.x >= min && ar.start.x <= max && ar.end.x > max) ||
+  //     (ar.start.x < min && ar.end.x > max));
+
+  //   return this.getMaxArcOffset(filteredArcs);
+  // }
+
+  // private getMaxTowerAroundAnns(lineTowers: Array<any>, start: number, end: number) {
+  //   const filteredTowers = lineTowers.filter((t: any) => (t.spanCoordinates.start >= start && t.spanCoordinates.end <= end) || (t.spanCoordinates.start < start && t.spanCoordinates.end > start) || (t.spanCoordinates.start < end && t.spanCoordinates.end > end));
+
+  //   return this.getMaxTowerPosition(filteredTowers);
+  // }
+
+  /**
+ * Metodo che gestisce il movimento del mouse nel trascinamento
+ * @param event {any} evento di trascinamento del mouse
+ * @returns {void}
+ */
+  // mouseMoved(event: any) {
+  //   if (this.dragArrow.isDrawing) { //traccia solo il caso di freccia di trascinamento che sta disegnando
+  //     this.dragArrow.visibility = "visible";
+  //     this.svg.nativeElement.classList.add('unselectable');
+
+  //     const x1 = this.dragArrow.x1
+  //     const y1 = Math.min(...[this.dragArrow.y1, event.offsetY]) - this.visualConfig.draggedArcHeight;
+  //     const x2 = event.offsetX
+  //     const y2 = y1
+
+  //     this.dragArrow.c = "C " + x1 + " " + y1 + ", " + x2 + " " + y2 + ", " + event.offsetX + " " + event.offsetY
+  //     return;
+  //   }
+  // }
 
   /**
 * Metodo che apre la relazione selezionata nell'editor
