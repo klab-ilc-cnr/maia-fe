@@ -411,6 +411,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public sentumChanged() {
     setTimeout(() => {
       this.showSentum = !this.showSentum;
+      this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
     }, 500);
   }
@@ -424,6 +425,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingDirection = ScrollingDirectionType.Up
     this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness);
     this.precTextRange = this.textRange.clone();
+    this.currentVisibleRowIndex = event.node.data.start;
     this.addExtraRowsUp();
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
@@ -706,7 +708,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che aggiorna le dimensioni dell'editor di testo */
   updateTextEditorSize() {
-    // this.renderData();
+    this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
@@ -1162,6 +1164,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * @returns 
    */
   private checkScroll() {
+    this.cdref.detectChanges();
     let scrollable = this.svgHeight > this.textContainer.nativeElement.clientHeight;
 
     if (!scrollable && this.textTotalRows === this.textRange.end) {
@@ -1174,7 +1177,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       //Triggers th OnScroll event
       // this.textContainer.nativeElement.scrollTop = this.lastScrollTop + 1;
-      this.scrollingDirection = ScrollingDirectionType.InRange;
+      this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessDown;
       this.updateTextRowsView();
       return;
     }
