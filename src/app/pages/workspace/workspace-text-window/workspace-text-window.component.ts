@@ -879,10 +879,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.relation = new Relation();
 
     const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
+    let annotationsRequest = this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds });
+
+    if (visibleLayersIds.length === 0) {
+      annotationsRequest = of(this.textoAnnotationsRes);
+    }
 
     forkJoin([
       this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
-      this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds })
+      annotationsRequest
     ]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
@@ -1078,8 +1083,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     });
 
     this.simplifiedAnns.sort((a: any, b: any) => a.span.start < b.span.start);
-    
-        // this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
+
+    // this.simplifiedArcs = []; //TODO inserire valorizzazione da richiesta elenco relazioni
     // this.annotationsRes.annotations.forEach((a: Annotation) => { //cicla sulle annotazioni nella risposta
     //   /*           if (a.attributes && a.attributes["relations"]) {
     //               let sArc = a.attributes["relations"].out.forEach((r: Relation) => {
