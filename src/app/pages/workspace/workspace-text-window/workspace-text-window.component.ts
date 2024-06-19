@@ -1196,7 +1196,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.executeScrollTopOperation(scrollTop);
     }, 0);
 
-    this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
+    this.lastScrollTop = scrollTop;
     this.lastscrollTopPercentage = Math.round((this.lastScrollTop / this.svgHeight) * 100) / 100;
 
     //Prevents infinite loop between onScroll and checkScroll
