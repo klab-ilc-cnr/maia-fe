@@ -303,7 +303,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  async onSaveAnnotationFeatures(featuresList: { feature: TFeature, value: string }[]) {
+  async onSaveAnnotationFeatures(featuresList: TAnnotationFeature[]) {
     let workingAnnotation = this.textoAnnotation;
     if (!this.textoAnnotation.id) {
       this.textoAnnotation.user = { id: this.currentTextoUserId };
@@ -313,12 +313,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const newFeaturesObs: Observable<TAnnotationFeature>[] = [];
     const updateFeaturesObs: Observable<TAnnotationFeature>[] = [];
     for (const fl of featuresList) {
-      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature.id);
+      const existingFeature = this.textoAnnotation.features?.find(f => f.feature?.id === fl.feature!.id);
       if (existingFeature && existingFeature.value === fl.value) {
         continue;
       }
       if (!existingFeature) {
-        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature, fl.value));
+        newFeaturesObs.push(this.saveFeatureAnnotation(workingAnnotation, fl.feature!, fl.value!));
         continue;
       }
       const updateAnnFeat = <TAnnotationFeature>{
@@ -337,8 +337,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
         return throwError(() => new Error(error.error));
       }),
-    ).subscribe(() => {
+    ).subscribe((newFeaturesList) => {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+      workingAnnotation.features = newFeaturesList;
       this.onAnnotationSaved(workingAnnotation);
     })
   }
@@ -464,6 +465,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved(annotation: TAnnotation) {
+    this.textoAnnotation = annotation;
     this.setScrollTopOperationInRange();
     this.updateAnnotationsResult(annotation);
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
@@ -477,27 +479,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.selectedLayers.push(this.selectedLayer!);
       this.changeVisibleLayers();
     }
-  }
-
-  /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
-  onRelationCancel() {
-    this.relation = new Relation();
-    this.textoAnnotation = new TAnnotation();
-    this.showEditorAndHideOthers(EditorType.Annotation);
-  }
-
-  /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
-  onRelationDeleted() {
-    this.relation = new Relation();
-    this.showEditorAndHideOthers(EditorType.Annotation);
-    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
-  }
-
-  /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
-  onRelationSaved() {
-    this.relation = new Relation();
-    this.showEditorAndHideOthers(EditorType.Annotation);
-    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
   /**
@@ -2060,6 +2041,27 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     return Object.values(towers);
   }
+
+  // /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
+  // onRelationCancel() {
+  //   this.relation = new Relation();
+  //   this.textoAnnotation = new TAnnotation();
+  //   this.showEditorAndHideOthers(EditorType.Annotation);
+  // }
+
+  // /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
+  // onRelationDeleted() {
+  //   this.relation = new Relation();
+  //   this.showEditorAndHideOthers(EditorType.Annotation);
+  //   this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+  // }
+
+  // /**Metodo che annulla una relazione (intercetta emissione del relation editor) */
+  // onRelationSaved() {
+  //   this.relation = new Relation();
+  //   this.showEditorAndHideOthers(EditorType.Annotation);
+  //   this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+  // }
 
   // private computeArcOffset(lineTowers: Array<any>, sourceSpanLimit: number, targetSpanLimit: number, lineArcs: Array<any>, startArcX: number, endArcX: number, arcType: string) {
   //   let spaceFactor = 1;
