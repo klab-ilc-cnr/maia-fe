@@ -79,6 +79,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     arcCircleLabelPlaceholderHeight: 7,
     arcCircleLabelPlaceholderWidth: 7
   }
+  private gotoSavedScrollTop: boolean = false;
+  private savedScrollTop : number = 0;
 
   /**Annotazione in lavorazione */
   // annotation = new Annotation();
@@ -455,6 +457,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationDeleted() {
     this.removeFromAnnotationsResult(this.textoAnnotation.id);
+    this.scrollingDirection = ScrollingDirectionType.InRange;
+    this.gotoSavedScrollTop = true;
+    this.savedScrollTop = this.textContainer.nativeElement.scrollTop;
     this.textoAnnotation = new TAnnotation();
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
@@ -462,6 +467,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Metodo che salva una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationSaved(annotation: TAnnotation) {
     this.scrollingDirection = ScrollingDirectionType.InRange;
+    this.gotoSavedScrollTop = true;
+    this.savedScrollTop = this.textContainer.nativeElement.scrollTop;
     this.updateAnnotationsResult(annotation);
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
@@ -1209,9 +1216,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     //setTimeout it's used for UI synchronization, sometimes the UI is not rendered and we cannot set the right scrollTop
     setTimeout(() => {
-
       //Trigger OnScroll event
+      if (this.gotoSavedScrollTop) {
+        this.textContainer.nativeElement.scrollTop = this.savedScrollTop;
+        this.gotoSavedScrollTop = false;
+        return;
+      }
+
       this.textContainer.nativeElement.scrollTop = scrollTop;
+
     }, 0);
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
