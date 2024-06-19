@@ -163,6 +163,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   public precTextRange?: TextRange;
   public textRange!: TextRange;
   public lastScrollTop: number = 0;
+  public lastscrollTopPercentage: number = 0;
   public scrolling: boolean = false;
   public backendIndexCompensation: number = 1;
   public mostRecentRequestTime: number = 0;
@@ -366,6 +367,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.scrollingDirection = this.lastScrollTop < event.target.scrollTop ? ScrollingDirectionType.Down : ScrollingDirectionType.Up;
     this.lastScrollTop = event.target.scrollTop;
+    this.lastscrollTopPercentage = Math.round((this.lastScrollTop / this.svgHeight) * 100) / 100;
 
     if (this.isScrollingInLoadedRange(scroll, event.target.scrollTop)) { return; }
 
@@ -373,8 +375,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public expandCollapseNavigationDiv() {
-
-    this.currentVisibleRowIndex = this.findCurrentVisibleRow()?.rowIndex;
     this.expandedDocumentSectonsDiv = !this.expandedDocumentSectonsDiv;
 
     this.updateDocumentSectionsSplitSize();
@@ -387,7 +387,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   public expandCollapseAnnotationDiv(annotationId?: number, row?: TextRow) {
     const isClickingAnnotation = annotationId != null && annotationId != undefined;
-    this.currentVisibleRowIndex = row?.rowIndex ?? this.findCurrentVisibleRow()?.rowIndex;
+    this.currentVisibleRowIndex = row?.rowIndex;
     const wasAlreadyExpandedEditorDiv = this.expandedEditorDiv;
     this.expandedEditorDiv = isClickingAnnotation ? true : !this.expandedEditorDiv;
 
@@ -407,7 +407,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       this.scrollingDirection = ScrollingDirectionType.InRange;
       this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
-
     }, 200);
   }
 
@@ -694,13 +693,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateTextEditorSize() {
     this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
-  }
-
-  //**sets data to perform a scroll top operation in the current position */
-  private setScrollTopOperationInRange() {
-    this.scrollingDirection = ScrollingDirectionType.InRange;
-    this.gotoSavedScrollTop = true;
-    this.savedScrollTop = this.textContainer.nativeElement.scrollTop;
   }
 
   private updateAnnotationsResult(annotation: TAnnotation) {
@@ -1205,26 +1197,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }, 0);
 
     this.lastScrollTop = this.textContainer.nativeElement.scrollTop;
+    this.lastscrollTopPercentage = Math.round((this.lastScrollTop / this.svgHeight) * 100) / 100;
 
     //Prevents infinite loop between onScroll and checkScroll
     this.preventOnScrollEvent = true;
 
     this.loaderService.hide();
-  }
-
-  /**
-   * Execute a scrolltop operation that is reflected in a movement of the lateral bar on the UI
-   * @param scrollTop 
-   * @returns 
-   */
-  private executeScrollTopOperation(scrollTop: number) {
-    if (this.gotoSavedScrollTop) {
-      this.textContainer.nativeElement.scrollTop = this.savedScrollTop;
-      this.gotoSavedScrollTop = false;
-      return;
-    }
-
-    this.textContainer.nativeElement.scrollTop = scrollTop;
   }
 
   /**this cover the case when we are resizing the lateral panels (navigation and annotation divs)
@@ -1244,6 +1222,28 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.scrollingDirection = ScrollingDirectionType.Down;
         break;
     }
+  }
+
+  /**
+ * Execute a scrolltop operation that is reflected in a movement of the lateral bar on the UI
+ * @param scrollTop 
+ * @returns 
+ */
+  private executeScrollTopOperation(scrollTop: number) {
+    if (this.gotoSavedScrollTop) {
+      this.textContainer.nativeElement.scrollTop = this.savedScrollTop;
+      this.gotoSavedScrollTop = false;
+      return;
+    }
+
+    this.textContainer.nativeElement.scrollTop = scrollTop;
+  }
+
+  //**sets data to perform a scroll top operation in the current position */
+  private setScrollTopOperationInRange() {
+    this.scrollingDirection = ScrollingDirectionType.InRange;
+    this.gotoSavedScrollTop = true;
+    this.savedScrollTop = this.textContainer.nativeElement.scrollTop;
   }
 
   /**Calculates the scroll top heigth respect to the scrolling row index and the scroll direction */
@@ -1276,10 +1276,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! < scrollingRowIndex).reduce((acc, o) => acc + (o.height || 0), 0);
         break;
       case ScrollingDirectionType.InRange:
-        if (!this.currentVisibleRowIndex) { break; }
+        if (!this.currentVisibleRowIndex) {
+          const scrollTop = this.svgHeight * this.lastscrollTopPercentage;
+          return scrollTop;
+        }
 
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.currentVisibleRowIndex!).reduce((acc, o) => acc + (o.height || 0), 0);
-        break;
+        this.currentVisibleRowIndex = undefined;
     }
 
     let scrollTop = scrolledBlockSize - extraScrollPixels;
@@ -1337,30 +1340,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor(25);
-  }
-
-  /**
- * Search and return the row that is visible in the UI
- * @returns the row that is visible in the UI
- */
-  private findCurrentVisibleRow(): TextRow | undefined {
-    const scrollHeightStart = this.textContainer.nativeElement.clientHeight + this.textContainer.nativeElement.scrollTop;
-    const scrollHeigthEnd = scrollHeightStart + this.textContainer.nativeElement.clientHeight;
-    let partialHeight = 0;
-
-    if (this.textContainer.nativeElement.scrollTop === 0) { return this.rows[0]; }
-
-    for (var fieldIndex = 0; fieldIndex < this.rows.length; fieldIndex++) {
-      let row = this.rows[fieldIndex];
-      partialHeight += row.height;
-
-      if (scrollHeightStart <= (row.height + partialHeight)
-        && (row.height + partialHeight) <= scrollHeigthEnd) {
-        return row;
-      }
-    }
-
-    return undefined;
   }
 
   /**
