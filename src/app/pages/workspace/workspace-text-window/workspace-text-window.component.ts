@@ -339,6 +339,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       };
       updateFeaturesObs.push(this.annotationService.updateAnnotationFeature(updateAnnFeat));
     }
+
+    if (newFeaturesObs.length === 0 && updateFeaturesObs.length === 0) {
+      this.annotationSavedOperations(workingAnnotation, []);
+      return;
+    }
+
     forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
@@ -346,9 +352,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         return throwError(() => new Error(error.error));
       }),
     ).subscribe((newFeaturesList) => {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-      workingAnnotation.features = newFeaturesList;
-      this.onAnnotationSaved(workingAnnotation);
+      this.annotationSavedOperations(workingAnnotation, newFeaturesList);
     })
   }
 
@@ -701,6 +705,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateTextEditorSize() {
     this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+  }
+
+  /**
+ * sets the operation that needs to be executed after an annotation is being created
+ * @param workingAnnotation 
+ * @param newFeaturesList 
+ */
+  private annotationSavedOperations(workingAnnotation: TAnnotation, newFeaturesList: TAnnotationFeature[]) {
+    this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
+    workingAnnotation.features = newFeaturesList;
+    this.onAnnotationSaved(workingAnnotation);
   }
 
   private updateAnnotationsResult(annotation: TAnnotation) {
