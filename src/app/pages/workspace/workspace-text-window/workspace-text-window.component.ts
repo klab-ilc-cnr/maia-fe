@@ -16,7 +16,7 @@ import { TextLine } from 'src/app/models/text/text-line';
 import { TextRange } from 'src/app/models/text/text-range';
 import { TextRow } from 'src/app/models/text/text-row';
 import { ResourceElement } from 'src/app/models/texto/corpus-element';
-import { TextSplittedRow } from 'src/app/models/texto/paginated-response';
+import { PaginatedResponse, TextSplittedRow } from 'src/app/models/texto/paginated-response';
 import { Section } from 'src/app/models/texto/section';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
@@ -32,6 +32,13 @@ import { WorkspaceService } from 'src/app/services/workspace.service';
 interface SelectionExtension extends Selection {
   modify(s: string, t: string, u: string): void;
 }
+
+export class LayerReload {
+  operation!: LayerReloadOperation;
+  layerIds?: Array<number>;
+}
+
+enum LayerReloadOperation { Add, Remove, Equal }
 
 enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown }
 
@@ -106,7 +113,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Lista dei layer */
   layersList: TLayer[] = [];
   /**Relazione in lavorazione */
-  relation = new Relation();
+  // relation = new Relation();
   /**Righe di testo */
   rows: TextRow[] = [];
   /**Layer selezionato */
@@ -351,6 +358,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   changeVisibleLayers(event?: any) {
     this.visibleLayers = this.selectedLayers || [];
+    this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
@@ -849,62 +857,168 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return sectionIndex ?? (rowIndex + 1).toString();
   }
 
-  //orchestrator that choose to load data with a new request to the backend or use cached data
+  /**
+   * orchestrator that choose to load data with a new request to the backend or use cached data
+   */
   private loadDataOrchestrator(start: number, end: number): void {
     end += this.backendIndexCompensation; //backend use a mixed strategy on range, it's closed on start and open on end so we need to compensate the end index
 
-    const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
-    const isSameLayers = this.commonService.compareArrays(visibleLayersIds, this.lastRenderedLayers);//I check if the same layers are visible as in the previous call
+    const currentVisibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
 
-    if (this.scrollingDirection === ScrollingDirectionType.InRange && isSameLayers) {
-      this.loaderService.show();
-      this.renderData();
+    let layersReload = new LayerReload();
+
+    if (this.scrollingDirection !== ScrollingDirectionType.InRange) {
+
+      if (currentVisibleLayersIds.length === 0) {
+        this.loadTextOnly(start, end);
+        return;
+      }
+
+      this.loadData(start, end, currentVisibleLayersIds);
       return;
     }
 
-    this.loadData(start, end);
+    if (this.lastRenderedLayers.length === currentVisibleLayersIds.length) {
+      layersReload.operation = LayerReloadOperation.Equal;
+      this.loadLayersOnly(start, end, layersReload, currentVisibleLayersIds);
+      return;
+    }
+
+    if (this.lastRenderedLayers.length < currentVisibleLayersIds.length) {
+      layersReload.operation = LayerReloadOperation.Add;
+      layersReload.layerIds = currentVisibleLayersIds.filter(visible => !this.lastRenderedLayers.includes(visible));
+      this.loadLayersOnly(start, end, layersReload, currentVisibleLayersIds);
+      return;
+    }
+
+    if (this.lastRenderedLayers.length > currentVisibleLayersIds.length) {
+      layersReload.operation = LayerReloadOperation.Remove;
+      layersReload.layerIds = this.lastRenderedLayers.filter(last => !currentVisibleLayersIds.includes(last));
+      this.loadLayersOnly(start, end, layersReload, currentVisibleLayersIds);
+      return;
+    }
+
+    console.error("No case found in loadDataOrchestrator");
   }
 
   /**
 * Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
 * @returns {void}
 */
-  private loadData(start: number, end: number): void {
+  private loadData(start: number, end: number, visibleLayersIds: Array<number>): void {
+    if (!this.textId) {
+      return;
+    }
+
+    this.loaderService.show();
+    // this.relation = new Relation();
+
+    forkJoin([
+      this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
+      this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds })]).pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
+          this.loaderService.hide();
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(([textResponse, tAnnotationsResponse]) => {
+        this.setLayersData(visibleLayersIds, tAnnotationsResponse);
+        this.setTextData(textResponse);
+
+        this.renderData();
+      });
+  }
+
+  /**
+* Metodo che recupera i dati iniziali relativi a opzioni, testo selezionato, con le sue annotazioni e relazioni
+* @returns {void}
+*/
+  private loadTextOnly(start: number, end: number): void {
     if (!this.textId) {
       return;
     }
 
     this.loaderService.show();
 
-    this.relation = new Relation();
-
-    const visibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
-    let annotationsRequest = this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds });
-
-    if (visibleLayersIds.length === 0) {
-      annotationsRequest = of(this.textoAnnotationsRes);
-    }
-
-    forkJoin([
-      this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }),
-      annotationsRequest
-    ]).pipe(
+    this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
         this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
         this.loaderService.hide();
         return throwError(() => new Error(error.error));
       }),
-    ).subscribe(([textResponse, tAnnotationsResponse]) => {
-      this.lastRenderedLayers = visibleLayersIds;
-      this.textTotalRows = textResponse.count!;
-      this.textRes = textResponse.data?.map(d => d.text) || [];
-      this.textSplittedRows = textResponse.data;
-      this.offset = textResponse.data![0].start;
-      this.textoAnnotationsRes = tAnnotationsResponse;
+    ).subscribe((textResponse) => {
+      this.setLayersData([], []);
+      this.setTextData(textResponse);
 
       this.renderData();
     });
+  }
+
+  /**
+* Manages the retrieve of the layers data
+* @returns {void}
+*/
+  private loadLayersOnly(start: number, end: number, layersReloadOperation: LayerReload, visibleLayersIds: Array<number>): void {
+    this.loaderService.show();
+
+    switch (layersReloadOperation.operation) {
+      case LayerReloadOperation.Add:
+        this.loadLayersOnlyAdd(start, end, visibleLayersIds, layersReloadOperation.layerIds!);
+        return;
+      case LayerReloadOperation.Remove:
+        this.lastRenderedLayers = visibleLayersIds;
+        this.textoAnnotationsRes = this.textoAnnotationsRes.filter(res => layersReloadOperation.layerIds?.findIndex(layerId => layerId === res.layer!.id) === -1);
+        this.renderData();
+        return;
+      case LayerReloadOperation.Equal:
+        this.renderData();
+        return;
+    }
+  }
+
+  /**
+* Manages the retrieve of the layers to add
+* @returns {void}
+*/
+  private loadLayersOnlyAdd(start: number, end: number, visibleLayersIds: Array<number>, layerIdsToAdd: Array<number>): void {
+    if (!this.textId) {
+      return;
+    }
+
+    this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: layerIdsToAdd }).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
+        this.loaderService.hide();
+        return throwError(() => new Error(error.error));
+      }),
+    ).subscribe((tAnnotationsResponse) => {
+      this.setLayersData(visibleLayersIds, this.textoAnnotationsRes.concat(tAnnotationsResponse));
+      this.renderData();
+    });
+  }
+
+  /**
+* set the data related to the text retrieved from the api
+* @param textResponse 
+*/
+  private setTextData(textResponse: PaginatedResponse) {
+    this.textTotalRows = textResponse.count!;
+    this.textRes = textResponse.data?.map(d => d.text) || [];
+    this.textSplittedRows = textResponse.data;
+    this.offset = textResponse.data![0].start;
+  }
+
+  /**
+ * set the data related to the layers retrieved from the api
+ * @param visibleLayersIds 
+ * @param tAnnotationsResponse 
+ */
+  private setLayersData(currentVisibleLayersIds: number[], tAnnotationsResponse: TAnnotation[]) {
+    this.lastRenderedLayers = currentVisibleLayersIds;
+    this.textoAnnotationsRes = tAnnotationsResponse;
   }
 
   /**
