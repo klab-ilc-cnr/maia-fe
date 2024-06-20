@@ -69,7 +69,13 @@ export class CommonService {
   }
 
   public throwHttpErrorAndMessage(error: HttpErrorResponse, message: string): Observable<never> {
-    this.messageService.add(this.msgConfService.generateWarningMessageConfig(message));
+    let errorMessage = '';
+    try {
+      errorMessage = JSON.parse(error.error).message;
+    } catch (error) {
+      errorMessage = message;
+    }
+    this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
     return throwError(() => new Error(error.error));
   }
 
