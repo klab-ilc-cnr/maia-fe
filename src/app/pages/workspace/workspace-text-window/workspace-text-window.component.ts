@@ -964,15 +964,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.loaderService.show();
 
     switch (layersReloadOperation.operation) {
-      case LayerReloadOperation.Add:
-        this.loadLayersOnlyAdd(start, end, visibleLayersIds, layersReloadOperation.layerIds!);
-        return;
-      case LayerReloadOperation.Remove:
-        this.lastRenderedLayers = visibleLayersIds;
-        this.textoAnnotationsRes = this.textoAnnotationsRes.filter(res => layersReloadOperation.layerIds?.findIndex(layerId => layerId === res.layer!.id) === -1);
+      case LayerReloadOperation.Equal:
         this.renderData();
         return;
-      case LayerReloadOperation.Equal:
+      case LayerReloadOperation.Add:
+        const addedLayerIds = layersReloadOperation.layerIds;
+        this.loadLayersOnlyAdd(start, end, visibleLayersIds, addedLayerIds!);
+        return;
+      case LayerReloadOperation.Remove:
+        const removedLayerIds = layersReloadOperation.layerIds!;
+        const lastAnnotationsExceptRemovedOnes = this.textoAnnotationsRes.filter(res => !removedLayerIds.includes(res.layer!.id!));
+        this.setLayersData(visibleLayersIds, lastAnnotationsExceptRemovedOnes);
         this.renderData();
         return;
     }
