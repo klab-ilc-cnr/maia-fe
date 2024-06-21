@@ -753,8 +753,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     forkJoin(httpDelete).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
-        return throwError(() => new Error(error.error));
+        return this.commonService.throwHttpErrorAndMessage(error, error.message)
       }),
     ).subscribe(() => {
       const successMsg = "Elementi rimossi";
