@@ -263,13 +263,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       catchError((error: HttpErrorResponse) => {
         return this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
       })
-    )
-      .subscribe(([resource, sectionsResponse]) => {
-        this.currentResource = resource;
-        this.initAnnotationPanelSettings(this.currentResource.expandedEditorDiv);
-        this.documentSections = this.adaptToDocumentTree(sectionsResponse, resource.name ?? '');
-
-      });
+    ).subscribe(([resource, sectionsResponse]) => {
+      this.currentResource = resource;
+      this.initAnnotationPanelSettings(this.currentResource.expandedEditorDiv);
+      this.documentSections = this.adaptToDocumentTree(sectionsResponse, resource.name ?? '');
+    });
 
     this.layers$.subscribe({
       next: (list) => {
