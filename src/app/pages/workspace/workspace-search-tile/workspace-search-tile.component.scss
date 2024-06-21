@@ -31,6 +31,11 @@ small {
   direction: rtl;
 }
 
+.leftContext span {
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+
 .rightContext {
   overflow: hidden;
   white-space: nowrap;
