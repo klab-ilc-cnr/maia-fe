@@ -8,7 +8,6 @@ import { Annotation } from 'src/app/models/annotation/annotation';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
-import { Relation } from 'src/app/models/relation/relation';
 import { Relations } from 'src/app/models/relation/relations';
 import { LineBuilder } from 'src/app/models/text/line-builder';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
@@ -229,10 +228,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private cdref: ChangeDetectorRef
   ) {
-    this.workspaceService.getTextoCurrentUserId().pipe(
-      take(1),
-    ).subscribe(textoUser => {
-      this.currentTextoUserId = textoUser.id;
+    this.workspaceService.getTextoCurrentUserId().subscribe({
+      next: (textoUser) => {
+        this.currentTextoUserId = textoUser.id;
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }
     });
   }
 
@@ -246,11 +248,22 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.startingRowIndex = this.startingRowIndex ?? 0;
 
-    this.scrollingSubject.pipe(throttleTime(200)).subscribe(value => this.updateTextRowsView(value));
+    this.scrollingSubject.pipe(throttleTime(200)).subscribe({
+      next: (value) => {
+        this.updateTextRowsView(value)
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, `Scrolling failed`);
+      }
+    });
 
     forkJoin([this.workspaceService.retrieveResourceElementById(this.textId),
-    this.workspaceService.retrieveSectionsByResourceId(this.textId)])
-      .pipe(take(1))
+    this.workspaceService.retrieveSectionsByResourceId(this.textId)]).pipe(
+      takeUntil(this.unsubscribe$),
+      catchError((error: HttpErrorResponse) => {
+        return this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
+      })
+    )
       .subscribe(([resource, sectionsResponse]) => {
         this.currentResource = resource;
         this.initAnnotationPanelSettings(this.currentResource.expandedEditorDiv);
@@ -258,10 +271,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       });
 
-    this.layers$.pipe(
-      takeUntil(this.unsubscribe$),
-    ).subscribe(list => {
-      this.layersList = list;
+    this.layers$.subscribe({
+      next: (list) => {
+        this.layersList = list;
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, `Loading layers failed: ${error.error.message}`);
+      }
     });
 
     this.showAnnotationEditor = true;
@@ -282,12 +298,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**initialize text range and load data */
   loadInitialData() {
-    this.annotationService.retrieveTextTotalRows(this.textId!)
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, 'Error retrieving text total rows')),
-      )
-      .subscribe((result) => {
+    this.annotationService.retrieveTextTotalRows(this.textId!).subscribe({
+      next: (result) => {
         this.textTotalRows = result!
 
         let start = this.startingRowIndex;
@@ -303,7 +315,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.currentVisibleRowIndex = this.startingRowIndex;
         this.scrollingRowIndex = this.textRange.end;
         this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
-      });
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, `Error retrieving text total rows: ${error.error.message}`);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -348,9 +364,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     forkJoin([...newFeaturesObs, ...updateFeaturesObs]).pipe(
       takeUntil(this.unsubscribe$),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving features failed: ${error.error.message}`));
-        return throwError(() => new Error(error.error));
-      }),
+        return this.commonService.throwHttpErrorAndMessage(error, `Saving features failed: ${error.error.message}`);
+      })
     ).subscribe((newFeaturesList) => {
       this.annotationSavedOperations(workingAnnotation, newFeaturesList);
     })
@@ -933,9 +948,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: visibleLayersIds })]).pipe(
         takeUntil(this.unsubscribe$),
         catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
           this.loaderService.hide();
-          return throwError(() => new Error(error.error));
+          return this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
         }),
       ).subscribe(([textResponse, tAnnotationsResponse]) => {
         this.setLayersData(visibleLayersIds, tAnnotationsResponse);
@@ -956,18 +970,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.loaderService.show();
 
-    this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
-        this.loaderService.hide();
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe((textResponse) => {
-      this.setLayersData([], []);
-      this.setTextData(textResponse);
+    this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }).subscribe({
+      next: (textResponse) => {
+        this.setLayersData([], []);
+        this.setTextData(textResponse);
 
-      this.renderData();
+        this.renderData();
+      },
+      error: (error) => {
+        this.loaderService.hide();
+        this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
+      }
     });
   }
 
@@ -1004,16 +1017,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: layerIdsToAdd }).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Loading data failed: ${error.error.message}`));
+    this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: layerIdsToAdd }).subscribe({
+      next: (tAnnotationsResponse) => {
+        this.setLayersData(visibleLayersIds, this.textoAnnotationsRes.concat(tAnnotationsResponse));
+        this.renderData();
+      },
+      error: (error) => {
         this.loaderService.hide();
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe((tAnnotationsResponse) => {
-      this.setLayersData(visibleLayersIds, this.textoAnnotationsRes.concat(tAnnotationsResponse));
-      this.renderData();
+        this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
+      }
     });
   }
 
@@ -1692,15 +1704,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   private createNewAnnotation(annotation: TAnnotation) {
     const promise = new Promise<TAnnotation>((resolve, reject) => {
-      this.annotationService.createAnnotation(annotation).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateErrorMessageConfig(`Saving annotation failed: ${error.error.message}`));
+      this.annotationService.createAnnotation(annotation).subscribe({
+        next: (newAnn) => {
+          resolve(newAnn);
+        },
+        error: (error) => {
           reject(error);
-          return throwError(() => new Error(error.error));
-        }),
-      ).subscribe(newAnn => {
-        resolve(newAnn);
+          this.commonService.throwHttpErrorAndMessage(error, `Saving annotation failed: ${error.error.message}`);
+        }
       });
     });
     return promise;
