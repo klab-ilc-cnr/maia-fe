@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild 
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
-import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
@@ -251,7 +251,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.startingRowIndex = this.startingRowIndex ?? 0;
 
     this.scrollingSubject.pipe(throttleTime(200)).pipe(
-      take(1),
+      takeUntil(this.unsubscribe$),
     ).subscribe({
       next: (value) => {
         this.updateTextRowsView(value)
@@ -274,7 +274,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     });
 
     this.layers$.pipe(
-      take(1),
+      takeUntil(this.unsubscribe$),
     ).subscribe({
       next: (list) => {
         this.layersList = list;
