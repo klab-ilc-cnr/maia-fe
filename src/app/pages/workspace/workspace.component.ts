@@ -10,22 +10,26 @@ import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
-import { DictionaryExplorerTile } from 'src/app/models/tile/dictionary-explorer-tile.model';
+import { DictionaryEditorTileContent } from 'src/app/models/tile/dictionary-editor-tile-content.model';
+import { DictionaryExplorerTileContent } from 'src/app/models/tile/dictionary-explorer-tile-content.model';
 import { LexiconEditTileContent } from 'src/app/models/tile/lexicon-edit-tile-content.model';
 import { LexiconTileContent } from 'src/app/models/tile/lexicon-tile-content.model';
 import { SearchTileContent } from 'src/app/models/tile/search-tile-content.model';
 import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
+import { DictionaryService } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceCorpusExplorerComponent } from './workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { WorkspaceDictionaryEditorTileComponent } from './workspace-dictionary-editor-tile/workspace-dictionary-editor-tile.component';
 import { WorkspaceDictionaryTileComponent } from './workspace-dictionary-tile/workspace-dictionary-tile.component';
 import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
@@ -72,6 +76,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * Prefisso dell'ID di un tile di modifica del lessico
    */
   private lexiconEditTilePrefix = 'lexiconEditTile_';
+
+  private dictionaryEditorTilePrefix = 'dictionaryEditTile_'
 
   /**
    * @private
@@ -186,6 +192,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private commonService: CommonService,
     private storageService: StorageService,
     private lexiconService: LexiconService,
+    private dictionaryService: DictionaryService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
@@ -205,6 +212,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case 'onSearchResultTableDoubleClickEvent': {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex);
+            break;
+          }
+          case 'onDictionaryEntryDblClickEvent': {
+            this.openDictionaryEditPanel(res.value);
             break;
           }
           default:
@@ -289,6 +300,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
       lexiconEditTileMap: new Map<number, Tile<LexiconEditTileContent>>(),
       textTileMap: new Map<number, Tile<TextTileContent>>(),
+      dictionaryEditTileMap: new Map<number, Tile<DictionaryEditorTileContent>>(),
       tileMap: new Map<number, Tile<any>>(),
       componentsList: new Array<any>(),
       // addToPanelsMap: function () {
@@ -305,6 +317,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.SEARCH:
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
+          case TileType.DICTIONARY_EDIT:
             this.tileMap.set(this.id, tile);
             break;
 
@@ -322,6 +335,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.SEARCH:
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
+          case TileType.DICTIONARY_EDIT:
             this.tileMap.delete(panelId);
             break;
 
@@ -350,6 +364,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON_EDIT:
             this.lexiconEditTileMap.delete(panelId);
             break;
+          case TileType.DICTIONARY_EDIT:
+            this.dictionaryEditTileMap.delete(panelId);
+            console.log('Deleted ', this.getLexiconEditTileMap());
+            break;
           default:
             console.error("type ${type} not implemented");
         }
@@ -361,6 +379,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       getTextTileMap: function () {
         return this.textTileMap;
+      },
+      getDictionaryEditTileMap: function () {
+        return this.dictionaryEditTileMap;
       },
       getTileMap: function () {
         return this.tileMap;
@@ -682,7 +703,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dictionaryTileConfig.content = undefined;
 
-    const tileObject: Tile<DictionaryExplorerTile> = {
+    const tileObject: Tile<DictionaryExplorerTileContent> = {
       id: undefined,
       workspaceId: this.workspaceId,
       content: undefined,
@@ -693,6 +714,53 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dictionaryTileElement.addToTileMap(tileObject);
     dictionaryTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
+  /**
+   * Method that handles retrieving data of a dictionary entry and opening the edit panel
+   * @param dictionaryEntryId {string} dictionary entry identifier
+   * @returns {Promise<void>}
+   */
+  async openDictionaryEditPanel(dictionaryEntryId: string) {
+    const dictionaryEntry = await lastValueFrom(this.dictionaryService.retrieveDictionaryEntryById(dictionaryEntryId));
+    const idAfterHash = dictionaryEntryId.split('#')[1];
+    const dictionaryEditTileId = this.dictionaryEditorTilePrefix + idAfterHash;
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === dictionaryEditTileId
+    );
+
+    if (panelExist) {
+      panelExist.front(); //metto il pannello in primo piano
+      return;
+    }
+
+    const result = this.generateDictionaryEditTileConfiguration(dictionaryEditTileId, dictionaryEntry);
+    const dictionaryEditTileConfig = result.panelConfig;
+    const dictionaryEditTileElement = jsPanel.create(dictionaryEditTileConfig);
+    dictionaryEditTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    dictionaryEditTileElement.titlebar.style.fontSize = '14px'
+
+    dictionaryEditTileElement
+      .resize({
+        height: window.innerHeight / 1.5
+      })
+      .reposition();
+
+    const { content, ...text } = dictionaryEditTileConfig;
+
+    dictionaryEditTileConfig.content = undefined;
+    const dictionaryEditTileContent: DictionaryEditorTileContent = { contentId: dictionaryEntry.id }  //NOTE For multiple panels, it is critical to pass the content id into the related content property (so that the data can be retrieved without display errors).
+
+    const tileObject: Tile<DictionaryEditorTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: dictionaryEditTileContent,
+      tileConfig: dictionaryEditTileConfig,
+      type: TileType.DICTIONARY_EDIT
+    };
+
+    dictionaryEditTileElement.addToTileMap(tileObject);
+    dictionaryEditTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
   /**
@@ -863,13 +931,28 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
         case TileType.DICTIONARY: {
           const dictionaryComponent = this.generateDictionaryPanelConfiguration(tile.tileConfig.id);
-          const mergedConfigDictionary = {...dictionaryComponent.panelConfig, ...tile.tileConfig};
+          const mergedConfigDictionary = { ...dictionaryComponent.panelConfig, ...tile.tileConfig };
           currPanelElement = jsPanel.layout.restoreId({
             id: tile.tileConfig.id,
             config: mergedConfigDictionary,
             storagename: this.storageName
           });
           componentRef = dictionaryComponent.component;
+          break;
+        }
+
+        case TileType.DICTIONARY_EDIT: {
+          const dictionaryEntry = await lastValueFrom(this.dictionaryService.retrieveDictionaryEntryById(tile.content.contentId).pipe(take(1)));
+          const dictionaryEditTileComponent = this.generateDictionaryEditTileConfiguration(tile.id!, dictionaryEntry);
+          const mergedConfig = { ...dictionaryEditTileComponent.panelConfig, ...tile.tileConfig };
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedConfig,
+            storagename: this.storageName,
+          });
+
+          componentRef = dictionaryEditTileComponent.component
+
           break;
         }
 
@@ -1413,6 +1496,65 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       component: componentRef,
       panelConfig: config,
       tileType: TileType.DICTIONARY
+    };
+  }
+
+  /**
+   * Generates the edit panel of a dictionary entry with the appropriate configurations
+   * @param dictionaryEditTileId {string} panel identifier
+   * @param dictionaryEntry {DictionaryEntry} 
+   * @returns panel configuration
+   */
+  private generateDictionaryEditTileConfiguration(dictionaryEditTileId: string, dictionaryEntry: DictionaryEntry) {
+    const componentRef = this.vcr.createComponent(WorkspaceDictionaryEditorTileComponent);
+    componentRef.instance.panelId = dictionaryEditTileId;
+    componentRef.instance.dictionaryEntry = dictionaryEntry;
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: dictionaryEditTileId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Dictionary Editor - ' + dictionaryEntry.label,
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      syncMargins: true,
+      theme: {
+        bgPanel: '#F9DED7',
+        colorHeader: 'black',
+        border: 'thin solid #F9DED7',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.5,
+        height: '60vh'
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: () => {
+            this.commonService.notifyOther({ option: 'tag_clicked_edit_tile', value: 'clicked' });
+          }
+        }
+      },
+      onclosed: function (this: any, panel: any) {
+        this.removeFromTileMap(panel.id, TileType.DICTIONARY_EDIT);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any) {
+        const panelIDs = jsPanel.getPanels(function () {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+      }
+    };
+
+    return {
+      id: dictionaryEditTileId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.DICTIONARY_EDIT
     };
   }
 }

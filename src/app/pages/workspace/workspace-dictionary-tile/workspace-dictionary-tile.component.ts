@@ -137,6 +137,18 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.createFilters(false);
     });
 
+    this.commonService.notifyObservable$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(notify => {
+      console.info(notify)
+      switch(notify.option) {
+        case 'dictionary_entry_update':
+          this.updateDictionaryEntryField(notify.dictionaryId, notify.field, notify.value);
+          break;
+        default: break;
+      }
+    })
+
     this.loadNodes();
   }
 
@@ -228,11 +240,11 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.showDeleteModal(entries);
   }
 
-/**
- * Method that retrieves the components associated with a dictionary entry
- * @param event {{originalEvent: PointerEvent, node: TreeNode<any>}} event emitted on the expansion of a node
- * @returns {void}
- */
+  /**
+   * Method that retrieves the components associated with a dictionary entry
+   * @param event {{originalEvent: PointerEvent, node: TreeNode<any>}} event emitted on the expansion of a node
+   * @returns {void}
+   */
   onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
     this.loading = true;
     const dictionaryId = event.node.data?.id;
@@ -264,8 +276,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   onOpenTreeNode(event: any, node: any) {
     switch (node.node.type) {
       case DICTIONARY_NODE.entry:
-        //TODO open Dictionary Editor
-        console.info('dovrebbe aprire dictionary editor');
+        this.commonService.notifyOther({ option: "onDictionaryEntryDblClickEvent", value: node.node.data.id });
         break;
       case DICTIONARY_NODE.lemma:
         this.openLemmaInLexiconEditor(node.node);
@@ -489,5 +500,11 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     const confirmMessage = entriesIdList.length === 1 ? this.commonService.translateKey('DICTIONARY_EXPLORER.deleteDictionaryEntry').replace('${dictionaryEntryLabel}', entriesList[0].label) : this.commonService.translateKey('DICTIONARY_EXPLORER.deleteDictionaryEntries');
     this.popupDeleteItem.confirmMessage = confirmMessage;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteDictionaryEntries(entriesIdList), 'delete_dictionary_entries');
+  }
+
+  private updateDictionaryEntryField(dictionaryId: string, field: string, value: string) {
+    const updatedDictEntry = this.lexicogEntries.find(node => node.data?.id === dictionaryId);
+    if(!updatedDictEntry || !updatedDictEntry.data) return;
+    updatedDictEntry.data[field] = value;
   }
 }

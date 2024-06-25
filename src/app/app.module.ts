@@ -56,6 +56,10 @@ import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
+import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/workspace-dictionary-editor-tile/workspace-dictionary-editor-tile.component';
+import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
+import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
+import { DropdownPlusNumberComponent } from './forms/dropdown-plus-number/dropdown-plus-number.component';
 import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 
 @NgModule({
@@ -98,6 +102,10 @@ import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
     WorkspaceSearchTileComponent,
     WorkspaceDictionaryTileComponent,
     NewDictionaryEntryComponent,
+    WorkspaceDictionaryEditorTileComponent,
+    DictionaryEntryReferralEditorComponent,
+    DictionaryEntryFullEditorComponent,
+    DropdownPlusNumberComponent
     ReplaceLineFeedPipe
   ],
   imports: [

@@ -39,6 +39,35 @@
         "uploaderType": "Uploader type",
         "uploadFileTitle": "Upload file"
     },
+    "DICTIONARY_EDITOR": {
+        "EDIT_TAB": {
+            "aroundDecameron": "Around the Decameron",
+            "details": "Details",
+            "dictCorporaEtAl": "Dictionaries, corpora, and other resources",
+            "etymology": "Etymology",
+            "etymon": "Etymon",
+            "firstAttestAbs": "I absolute attestation",
+            "firstAttestBocc": "I attestation in Boccaccio",
+            "fullEntry": "Full entry",
+            "label": "Dictionary entry",
+            "linguisticSemanticComm": "Linguistic and semantic commentary",
+            "misc": "Polyrematics / locutions / phraseology / collocations",
+            "nOccurrencesDecameron": "No. occurrences in the Decameron",
+            "nTotalOccurrences": "No. of total occurrences",
+            "occOtherWorks": "Occ. other works",
+            "title": "Entry",
+            "topographicReference": "Topographic reference",
+            "seeAlso": "See also",
+            "sourceLanguage": "Source language",
+            "vocs": "The Decameron, the Crusche and other vocabularies"
+        },
+        "PREVIEW_TAB": {
+            "title": "Preview"
+        },
+        "SORT_TAB": {
+            "title": "Sorting"
+        }
+    },
     "DICTIONARY_EXPLORER": {
         "addEntry": "Add new entry",
         "addLemma": "Add lemma",

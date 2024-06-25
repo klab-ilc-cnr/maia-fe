@@ -1,0 +1,8 @@
+<div class="field d-flex justify-content-between">
+    <p-dropdown class="w-full mr-4" styleClass="col-6 w-full" [options]="(optionList|async)||[]"
+        [optionLabel]="optionLabel" [optionValue]="optionValue" appendTo="body" [autoDisplayFirst]="false"
+        [(ngModel)]="dropdownFieldValue" (onChange)="onChangeValue()"></p-dropdown>
+    <p-inputNumber class=" mr-4" [(ngModel)]="numberFieldValue" (focusout)="onChangeValue()"></p-inputNumber>
+    <button pButton pRipple type="button" icon="pi pi-times" class=" p-button-rounded p-button-danger p-button-text"
+        (click)="onRemove()"></button>
+</div>
