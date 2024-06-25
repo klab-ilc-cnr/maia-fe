@@ -228,7 +228,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private cdref: ChangeDetectorRef
   ) {
-    this.workspaceService.getTextoCurrentUserId().subscribe({
+    this.workspaceService.getTextoCurrentUserId().pipe(
+      take(1),
+    ).subscribe({
       next: (textoUser) => {
         this.currentTextoUserId = textoUser.id;
       },
@@ -248,7 +250,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.startingRowIndex = this.startingRowIndex ?? 0;
 
-    this.scrollingSubject.pipe(throttleTime(200)).subscribe({
+    this.scrollingSubject.pipe(throttleTime(200)).pipe(
+      take(1),
+    ).subscribe({
       next: (value) => {
         this.updateTextRowsView(value)
       },
@@ -269,7 +273,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.documentSections = this.adaptToDocumentTree(sectionsResponse, resource.name ?? '');
     });
 
-    this.layers$.subscribe({
+    this.layers$.pipe(
+      take(1),
+    ).subscribe({
       next: (list) => {
         this.layersList = list;
       },
@@ -296,7 +302,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**initialize text range and load data */
   loadInitialData() {
-    this.annotationService.retrieveTextTotalRows(this.textId!).subscribe({
+    this.annotationService.retrieveTextTotalRows(this.textId!).pipe(
+      take(1),
+    ).subscribe({
       next: (result) => {
         this.textTotalRows = result!
 
@@ -968,7 +976,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     this.loaderService.show();
 
-    this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }).subscribe({
+    this.annotationService.retrieveTextSplitted(this.textId, { start: start, end: end }).pipe(
+      take(1),
+    ).subscribe({
       next: (textResponse) => {
         this.setLayersData([], []);
         this.setTextData(textResponse);
@@ -1015,7 +1025,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: layerIdsToAdd }).subscribe({
+    this.annotationService.retrieveResourceAnnotations(this.textId, { start: start, end: end, layers: layerIdsToAdd }).pipe(
+      take(1),
+    ).subscribe({
       next: (tAnnotationsResponse) => {
         this.setLayersData(visibleLayersIds, this.textoAnnotationsRes.concat(tAnnotationsResponse));
         this.renderData();
@@ -1702,7 +1714,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   private createNewAnnotation(annotation: TAnnotation) {
     const promise = new Promise<TAnnotation>((resolve, reject) => {
-      this.annotationService.createAnnotation(annotation).subscribe({
+      this.annotationService.createAnnotation(annotation).pipe(
+        take(1),
+      ).subscribe({
         next: (newAnn) => {
           resolve(newAnn);
         },
