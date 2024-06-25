@@ -14,8 +14,8 @@ export class ShouldBeEditablePipe implements PipeTransform {
    * @param currentUser {User} current logged user
    * @returns {boolean} whether the element should be editable
    */
-  transform(elementOwnerId: number, currentUser: User): boolean {
-    if(!currentUser.id) {
+  transform(elementOwnerId: number, currentUser?: User): boolean {
+    if(!currentUser || !currentUser.id) {
       return false;
     }
     return currentUser.role === "ADMINISTRATOR" || elementOwnerId === +currentUser.id;

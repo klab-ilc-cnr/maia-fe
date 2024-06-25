@@ -4,7 +4,7 @@ import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap, throttleTime } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
-import { SearchResult, SearchResultRow } from 'src/app/models/search/search-result';
+import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
@@ -60,7 +60,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   colDefaultWidths = [4, 6, 15, 15, 25, 10, 25];
 
   /** object used to memorize primeng table data */
-  pTabelColumnWidthStates : any;
+  pTabelColumnWidthStates: any;
 
 
   /** Delta for correct resizing internal search result table */
@@ -82,15 +82,20 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.initSearchMode();
 
     this.filtersSubject.pipe(debounceTime(1000))
-      .subscribe((event) =>
-        this.lazyLoadSearchResultsDebounced(event)
-      );
+      .subscribe({
+        next: (event) => {
+          this.lazyLoadSearchResultsDebounced(event);
+        },
+        error: (error) => {
+          this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+        }
+      });
 
     this.setExportMenuItems();
   }
 
-  ngAfterViewInit() : void{
-    this.pTabelColumnWidthStates = {columnWidths : ''}
+  ngAfterViewInit(): void {
+    this.pTabelColumnWidthStates = { columnWidths: '' }
     this.searchResultsTable.saveColumnWidths(this.pTabelColumnWidthStates);
   }
 
@@ -134,6 +139,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
       },
       error: (error) => {
         this.loaderService.hide();
+        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
       },
     });
   }
@@ -152,6 +158,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
       },
       error: (error) => {
         this.loaderService.hide();
+        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
       },
     });
   }
@@ -239,19 +246,25 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
     this.loading = true;
 
-    this.searchService.search(this.searchRequest).subscribe(result => {
-      this.searchResults = result.data;
-      this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
-      this.loading = false;
-      this.totalRecords = result.count;
-      this.updateTableHeight();
+    this.searchService.search(this.searchRequest).subscribe({
+      next: (result) => {
+        this.searchResults = result.data;
+        this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
+        this.loading = false;
+        this.totalRecords = result.count;
+        this.updateTableHeight();
+      },
+      error: (error) => {
+        this.loading = false;
+        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      }
     });
   }
 
   setResizeTableWidth(width: string) {
     (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.width = width;
     (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
-}
+  }
 
   /**clears table and prevent triggering lazy loading multiple times */
   clearTable() {
@@ -268,7 +281,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchResultsTable.restoreColumnWidths();
   }
 
-  onColResize(event : any){
+  onColResize(event: any) {
     (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
   }
 
