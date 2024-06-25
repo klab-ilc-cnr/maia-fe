@@ -30,6 +30,8 @@ import { LexEntryRelationsEditorComponent } from './controllers/editors/lex-entr
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
+import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -37,12 +39,14 @@ import { IconsModule } from './controllers/icons/icons.module';
 import { TabsFormComponent } from './controllers/tab-controllers/tabs-form/tabs-form.component';
 import { TabsLexicalEntryComponent } from './controllers/tab-controllers/tabs-lexical-entry/tabs-lexical-entry.component';
 import { TabsSenseComponent } from './controllers/tab-controllers/tabs-sense/tabs-sense.component';
+import { DropdownPlusNumberComponent } from './forms/dropdown-plus-number/dropdown-plus-number.component';
 import { httpInterceptorProviders } from './interceptors/authentication.interceptor';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { WorkspaceLayoutComponent } from './layouts/workspace-layout/workspace-layout.component';
 import { SharedModule } from './modules/shared.module';
 import { LoginComponent } from './pages/login/login.component';
 import { WorkspaceCorpusExplorerComponent } from './pages/workspace/workspace-corpus-explorer/workspace-corpus-explorer.component';
+import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/workspace-dictionary-editor-tile/workspace-dictionary-editor-tile.component';
 import { NewDictionaryEntryComponent } from './pages/workspace/workspace-dictionary-tile/new-dictionary-entry/new-dictionary-entry.component';
 import { WorkspaceDictionaryTileComponent } from './pages/workspace/workspace-dictionary-tile/workspace-dictionary-tile.component';
 import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-lexicon-edit-tile/workspace-lexicon-edit-tile.component';
@@ -54,13 +58,9 @@ import { WorkspaceTextSelectorComponent } from './pages/workspace/workspace-text
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
 import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { PendingChangesGuard } from './pending-changes-guard';
+import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
-import { WorkspaceDictionaryEditorTileComponent } from './pages/workspace/workspace-dictionary-editor-tile/workspace-dictionary-editor-tile.component';
-import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
-import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
-import { DropdownPlusNumberComponent } from './forms/dropdown-plus-number/dropdown-plus-number.component';
-import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 
 @NgModule({
   declarations: [
@@ -105,7 +105,7 @@ import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
     WorkspaceDictionaryEditorTileComponent,
     DictionaryEntryReferralEditorComponent,
     DictionaryEntryFullEditorComponent,
-    DropdownPlusNumberComponent
+    DropdownPlusNumberComponent,
     ReplaceLineFeedPipe
   ],
   imports: [
