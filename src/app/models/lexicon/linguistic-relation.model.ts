@@ -1,9 +1,9 @@
-import { LexicalEntryType } from "./lexical-entry.model";
 
 export class LinguisticRelationModel {
   entity: string | undefined;
   label: string | undefined;
-  entityType: LexicalEntryType[] | undefined;
+  entityType: string[] | undefined; //NOTE test di modifica
+  // entityType: LexicalEntryType[] | undefined;
   inferred: boolean | undefined;
   linkType: string | undefined;
   link: string | undefined;

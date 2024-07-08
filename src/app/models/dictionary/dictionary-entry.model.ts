@@ -8,7 +8,7 @@ export interface DictionaryEntry extends DictionaryBase, DictionaryListItem {
     completionDate: string;
     revisionDate: string;
     images: string[];
-    note: string[];
+    note: string;
     /**List of entities (dictionary entries) to which it is linked by a type relationship see also */
     seeAlso: any[]; //TODO sostituire con il modello dati corretto
 }

@@ -1,0 +1,22 @@
+<p-skeleton *ngIf="!dictionaryEntry; else dictionaryForm"></p-skeleton>
+<ng-template #dictionaryForm>
+    <div class="card">
+        <form class="grid formgrid" [formGroup]="referralEntryForm">
+            <div class="field col-12">
+                <p-selectButton [options]="statusForm" formControlName="status" class="float-right">
+                    <ng-template let-item>
+                      <app-icon-lock [status]="item"></app-icon-lock>
+                    </ng-template>
+                  </p-selectButton>
+            </div>
+            <div class="field col-6">
+                <label class="form-label w-full" for="referralEntryLabel">{{'DICTIONARY_EDITOR.EDIT_TAB.label'|translate}} *</label>
+                <input class="w-full" pInputText type="text" name="label" id="referralEntryLabel" formControlName="label">
+            </div>
+            <div class="field col-6">
+                <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.fullEntry'|translate}}</label>
+                <em>{{dictionaryEntry.sameDictionaryEntryAs[0].label}}</em>
+            </div>
+        </form>
+    </div>
+</ng-template>

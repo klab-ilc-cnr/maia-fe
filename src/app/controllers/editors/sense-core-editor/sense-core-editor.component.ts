@@ -2,7 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { LexicalConceptListItem } from 'src/app/models/lexicon/lexical-concept-list-item.model';
 import { PropertyElement, SenseCore } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexicalSenseUpdater } from 'src/app/models/lexicon/lexicon-updater';
 import { User } from 'src/app/models/user';
@@ -39,6 +40,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
     definition: new FormGroup({}),
+    marksOfUse: new FormControl<LexicalConceptListItem[]>([]),
+    semanticMarks: new FormControl<LexicalConceptListItem[]>([]),
     morphology: new FormArray<FormControl>([]),
   });
   /**Lista di controllo delle relazioni morfologiche */
@@ -64,6 +67,20 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
       return of(values);
     }),
+  );
+  marksOfUse: LexicalConceptListItem[] = [];
+  semanticMarks: LexicalConceptListItem[] = [];
+  currentFilterMoU$ = new BehaviorSubject<string>('');
+  currentFilterSM$ = new BehaviorSubject<string>('');
+  marksOfUse$ = this.currentFilterMoU$.pipe(
+    debounceTime(500),
+    takeUntil(this.unsubscribe$),
+    switchMap(text => of(this.marksOfUse.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
+  );
+  semanticMarks$ = this.currentFilterSM$.pipe(
+    debounceTime(500),
+    takeUntil(this.unsubscribe$),
+    switchMap(text => of(this.semanticMarks.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
   );
   /**
    * Funzione di cancellazione di un senso
@@ -129,6 +146,17 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per prevalorizzare il form */
   ngOnInit(): void {
+    this.globalState.marksOfUse$.pipe(
+      take(1),
+    ).subscribe(resp => {
+        this.marksOfUse = resp;
+      });
+    this.globalState.semanticMarks$.pipe(
+      take(1),
+    ).subscribe(resp => {
+      this.semanticMarks = resp;
+      this.initLexicalConcepts();
+    });
     //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
     for (const { propertyID, propertyValue } of this.senseEntry.definition) {
       this.movePropertyToForm(propertyID, propertyValue);
@@ -142,6 +170,26 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  private initLexicalConcepts() {
+    this.lexiconService.getLexicalConceptsBySenseId(this.senseEntry.sense).pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe(rels => {
+      const selectedMarksOfUse: LexicalConceptListItem[] = [];
+      const selectedSemanticMarks: LexicalConceptListItem[] = [];
+      rels.forEach(r => {
+        if(r?.entityType && r.entityType[0] === "Marche d'uso") {
+          const tempMoU = this.marksOfUse.find(mou => mou.lexicalConcept === r.entity);
+          if(tempMoU !== undefined) selectedMarksOfUse.push(tempMoU);
+        } else if(r?.entityType && r.entityType[0] === "Marche Semantiche") {
+          const tempSM = this.semanticMarks.find(sm => sm.lexicalConcept === r.entity);
+          if(tempSM !== undefined) selectedSemanticMarks.push(tempSM);
+        }
+      })
+      this.form.controls.marksOfUse.setValue(selectedMarksOfUse);
+      this.form.controls.semanticMarks.setValue(selectedSemanticMarks);
+    });
   }
 
   /**
@@ -178,12 +226,43 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...newMorph });
   }
 
+  onAssociateLexicalConcept(selectedConcept: LexicalConceptListItem) {
+    console.info(selectedConcept)
+    if(!selectedConcept) return
+    this.lexiconService.associateLexicalConceptToSense(this.senseEntry.sense, selectedConcept.lexicalConcept).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(() => {
+      console.info(`${selectedConcept.defaultLabel} associated`);
+    });
+  }
+
   /**Metodo che gestisce la cancellazione del senso in lavorazione */
   onDeleteLexicalSense() {
     const confirmMsg = "You are about to delete a sense";
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
+
+  onDissociateLexicalConcept(removedConcept: LexicalConceptListItem) {
+    console.info(removedConcept)
+    if(!removedConcept) return;
+    this.lexiconService.dissociateLexicalConceptFromSense(this.senseEntry.sense, removedConcept.lexicalConcept).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(() => {
+      console.info(removedConcept)
+    });
+  }
+
+  onFilter(type: string, event: { originalEvent: { isTrusted: boolean }, query: string }) {
+    if(type === 'marksOfUse') {
+      this.currentFilterMoU$.next(event.query);
+    } else if(type === 'semanticMarks') {
+      this.currentFilterSM$.next(event.query);
+    }
+  }
+
 
   /**
    * Metodo che salva un nuovo inserimento nei tratti morfologici
