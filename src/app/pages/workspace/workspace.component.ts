@@ -366,7 +366,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             break;
           case TileType.DICTIONARY_EDIT:
             this.dictionaryEditTileMap.delete(panelId);
-            console.log('Deleted ', this.getLexiconEditTileMap());
             break;
           default:
             console.error("type ${type} not implemented");
