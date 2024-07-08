@@ -1469,15 +1469,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       resizeit: {
         minWidth: 250
       },
-      headerControls: {
-        add: {
-          html: '<span class="pi pi-tag"></span>',
-          name: 'tag',
-          handler: (panel: any, control: any) => {
-            this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
-          }
-        }
-      },
+      // headerControls: {
+      //   add: {
+      //     html: '<span class="pi pi-tag"></span>',
+      //     name: 'tag',
+      //     handler: (panel: any, control: any) => {
+      //       this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+      //     }
+      //   }
+      // },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.DICTIONARY);
         this.removeComponentFromList(panel.id);
@@ -1529,15 +1529,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         width: () => window.innerWidth * 0.5,
         height: '60vh'
       },
-      headerControls: {
-        add: {
-          html: '<span class="pi pi-tag"></span>',
-          name: 'tag',
-          handler: () => {
-            this.commonService.notifyOther({ option: 'tag_clicked_edit_tile', value: 'clicked' });
-          }
-        }
-      },
+      // headerControls: {
+      //   add: {
+      //     html: '<span class="pi pi-tag"></span>',
+      //     name: 'tag',
+      //     handler: () => {
+      //       this.commonService.notifyOther({ option: 'tag_clicked_edit_tile', value: 'clicked' });
+      //     }
+      //   }
+      // },
       onclosed: function (this: any, panel: any) {
         this.removeFromTileMap(panel.id, TileType.DICTIONARY_EDIT);
         this.removeComponentFromList(panel.id);
