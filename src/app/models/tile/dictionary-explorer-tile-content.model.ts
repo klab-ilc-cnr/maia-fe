@@ -1,3 +1,3 @@
 /** Dictionary explorer tile content model */
-export interface DictionaryExplorerTile {
+export class DictionaryExplorerTileContent {
 }

@@ -4,6 +4,7 @@ import { Observable, mergeMap, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
 import { LexEntityRelationTypeModel } from '../models/lexicon/lexentity-relation-type.model';
+import { LexicalConceptsResponse } from '../models/lexicon/lexical-concept-list-item.model';
 import { LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
 import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { IndirectRelationModel, LexicalEntityRelationsResponseModel } from '../models/lexicon/lexical-sense-response.model';
@@ -39,11 +40,21 @@ export class LexiconService {
     this.encodedBaseIRI = this.commonService.encodeUrl(environment.lexoBaseIRI);
   }
 
+  associateLexicalConceptToSense(senseId: string, lexicalConceptId: string) {
+    return this.http.post(
+      `${this.lexoUrl}/associate/lexicalConcept`,
+      {
+        senseId: senseId,
+        conceptId: lexicalConceptId
+      }
+    );
+  }
+
   createNewLexicalEntry(author: string, language: string, label: string, pos: string, type: string): Observable<LexicalEntryCore> {
     return this.http.post<LexicalEntryCore>(
       `${this.lexoUrl}/lexicon/create/entry?author=${author}&prefix=${environment.lexoPrefix}&baseIRI=${this.encodedBaseIRI}`,
       {
-        lang: language, 
+        lang: language,
         label: label,
         pos: pos,
         type: [type]
@@ -115,6 +126,16 @@ export class LexiconService {
     return this.http.get(
       `${this.lexoUrl}/delete/lexicoSemanticRelation?id=${encodedLexEntry}`,
       { responseType: "text" }
+    );
+  }
+
+  dissociateLexicalConceptFromSense(senseId: string, lexicalConceptId: string) {
+    return this.http.post(
+      `${this.lexoUrl}/dissociate/lexicalConcept`,
+      {
+        senseId: senseId,
+        conceptId: lexicalConceptId
+      }
     );
   }
 
@@ -206,6 +227,18 @@ export class LexiconService {
    */
   getLanguages(): Observable<LexoLanguage[]> {
     return this.http.get<LexoLanguage[]>(`${this.lexoUrl}/data/languages`);
+  }
+
+  /**
+   * Retrieve the list of existing lexical concepts
+   * @returns {Observable<LexicalConceptsResponse>} observable containing the list of existing lexical concepts
+   */
+  getLexicalConcepts(type: string): Observable<LexicalConceptsResponse> {
+    return this.http.get<LexicalConceptsResponse>(`${this.lexoUrl}/data/lexicalConcepts?type=${type}`);
+  }
+
+  getLexicalConceptsBySenseId(senseId: string): Observable<LinguisticRelationModel[]> {
+    return this.http.get<LinguisticRelationModel[]>(`${this.lexoUrl}/data/sense/lexicalConcepts?id=${this.commonService.encodeUrl(senseId)}`);
   }
 
   /**

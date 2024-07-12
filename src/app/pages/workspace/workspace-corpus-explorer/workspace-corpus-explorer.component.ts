@@ -126,6 +126,8 @@ export class WorkspaceCorpusExplorerComponent {
   get getSplitLine() { return this.uploaderForm.get('splitLine'); }
   /**Setter for splitLine in upload file form */
   set setSplitLine(split: boolean) { this.getSplitLine?.setValue(split) }
+  /**Getter for fileType in upload file form */
+  get getFileType() { return this.uploaderForm.get('fileType') }
 
   /**Reference to cancellation confirmation popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
@@ -239,7 +241,10 @@ export class WorkspaceCorpusExplorerComponent {
 
     if (this.fileUploaded && this.getParentFolder?.valid) {
       const parentId = this.getParentFolder.value?.data?.id;
-      this.corpusStateService.uploadFile.next({ parentId: (parentId ? parentId : -1), resourceName: this.fileUploaded.name.split('.')[0], file: this.fileUploaded, uploader: this.uploaderForm.get('fileType')?.value ?? FileUploadType.PLAIN, splitLine: this.getSplitLine?.value ?? true });
+      const fileNameSplitted = this.fileUploaded.name.split('.');
+      fileNameSplitted.splice(fileNameSplitted.length - 1, 1); //removing extension from title
+      const fileName = fileNameSplitted.join('.');
+      this.corpusStateService.uploadFile.next({ parentId: (parentId ? parentId : -1), resourceName: fileName, file: this.fileUploaded, uploader: this.uploaderForm.get('fileType')?.value ?? FileUploadType.PLAIN, splitLine: this.getSplitLine?.value ?? true });
     }
     else {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig(this.commonService.translateKey('CORPUS_EXPLORER.errorLoadingFile')));

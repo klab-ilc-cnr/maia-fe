@@ -20,6 +20,7 @@ import { uriValidator } from 'src/app/validators/uri-validator.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
+import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
 
 export interface FeatForAnn {
   feature: TFeature | undefined;
@@ -49,7 +50,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   get annotationModel(): TAnnotation { return this._annotation; }
   set annotationModel(annotation: TAnnotation) {
     this._annotation = annotation;
-    const layerId = annotation.layer?.id;
+
+    if (!annotation.layer) { return; }
+
+    const layerId = annotation.layer.id;
     if (!layerId) {
       throw Error('layer id undefined');
     }
@@ -64,11 +68,13 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     return false;
   }
 
-  public get noneAnnotationIsSelected(): boolean { return (!this.annotationModel 
-    || !this.annotationModel?.layer 
-    || !this.annotationModel?.layer.id 
-    || (!this.annotationModel.start && this.annotationModel.start !== 0) 
-    || !this.annotationModel.end) }
+  public get noneAnnotationIsSelected(): boolean {
+    return (!this.annotationModel
+      || !this.annotationModel?.layer
+      || !this.annotationModel?.layer.id
+      || (!this.annotationModel.start && this.annotationModel.start !== 0)
+      || !this.annotationModel.end)
+  }
 
   public get shouldBeDisabled(): boolean { //FIXME sostituire con una pipe
     if (!this.isEditing) {
@@ -165,7 +171,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   );
 
   @Output() onCancel = new EventEmitter<void>();
-  @Output() onSave = new EventEmitter<{ feature: TFeature, value: string }[]>();
+  @Output() onSave = new EventEmitter<TAnnotationFeature[]>();
   @Output() onDelete = new EventEmitter<void>();
 
   private deleteAnnotation = (id: number): void => {
@@ -234,14 +240,14 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteAnnotation(this.annotationModel.id!), this.annotationModel.id);
   }
 
-  private createFeatureValueList(): { feature: TFeature, value: string }[] {
-    const result: { feature: TFeature, value: string }[] = [];
+  private createFeatureValueList(): TAnnotationFeature[] {
+    const result: TAnnotationFeature[] = [];
     this.features.forEach(feature => {
       if (!feature.feature?.name) {
         throw Error('Feature missing name');
       }
       const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
-      result.push(<{ feature: TFeature, value: string }>{
+      result.push(<TAnnotationFeature>{
         feature: feature.feature,
         value: typeof (featValue) === 'string' ? featValue : featValue.name
       });
