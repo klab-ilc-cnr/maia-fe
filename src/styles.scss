@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+@import url('https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @import "../node_modules/primeng/resources/primeng.min.css";
 @import "../node_modules/primeicons/primeicons.css";
@@ -12,10 +13,15 @@
 @import "./assets/scss/mixins";
 @import "../node_modules/primeflex/primeflex.css";
 
+@font-face { //TODO opzione con font caricato negli asset
+  font-family: "Cousine";
+  src: url("assets/fonts/cousine/Cousine-Regular.ttf");
+}
+
 :root {
   --primary-color: #{$redPalette2};
   --focus-ring: 0 0 0 0.2rem #{$redPalette3};
-  --text-font-family:monospace;
+  --text-font-family: 'Cousine'; //TODO opzione diretta con import remoto
   --text-font-size:15px;
   --annotation-font-family:'PT Sans Caption';
   --annotation-font-size:11px;
