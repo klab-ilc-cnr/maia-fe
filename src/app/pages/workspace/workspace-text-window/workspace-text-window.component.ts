@@ -58,11 +58,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   layers$ = this.layerState.layers$.pipe(
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
-  /**Indice di inizio selezione */
-  private selectionStart?: number;
-  /**Indice di fine selezione */
-  private selectionEnd?: number;
   selectedText = '';
+  /**Oggetto di selezione */
   currentTextSelection: TextSelection | null = null;
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
@@ -2021,13 +2018,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const preSelectionRange = range.cloneRange();
     preSelectionRange.selectNodeContents(this.svg.nativeElement);
     preSelectionRange.setEnd(range.startContainer, range.startOffset);
-    this.selectionStart = [...preSelectionRange.toString()].length;
-    this.selectionEnd = this.selectionStart + [...range.toString()].length;
+    const selectionStart = [...preSelectionRange.toString()].length;
+    const selectionEnd = selectionStart + [...range.toString()].length;
 
     let textSelection = new TextSelection();
     textSelection.selection = selection!;
-    textSelection.startIndex = this.selectionStart;
-    textSelection.endIndex = this.selectionEnd;
+    textSelection.startIndex = selectionStart;
+    textSelection.endIndex = selectionEnd;
 
     return textSelection;
   }
