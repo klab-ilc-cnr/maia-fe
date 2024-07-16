@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { text } from '@fortawesome/fontawesome-svg-core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
@@ -8,7 +9,6 @@ import { Annotation } from 'src/app/models/annotation/annotation';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
-import { Relations } from 'src/app/models/relation/relations';
 import { LineBuilder } from 'src/app/models/text/line-builder';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { TextLine } from 'src/app/models/text/text-line';
@@ -37,6 +37,12 @@ export class LayerReload {
   layerIds?: Array<number>;
 }
 
+export class TextSelection {
+  selection!: Selection;
+  startIndex!: number;
+  endIndex!: number;
+}
+
 enum LayerReloadOperation { Add, Remove, Equal }
 
 enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown }
@@ -56,7 +62,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private selectionStart?: number;
   /**Indice di fine selezione */
   private selectionEnd?: number;
-  selectedTText = '';
+  selectedText = '';
+  currentTextSelection: TextSelection | null = null;
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -602,16 +609,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onSelectionChange(event: any, row: TextRow): void {
     this.currentVisibleRowIndex = row.rowIndex;
 
-    const selection = this.getCurrentTextSelection();
+    const textSelection = this.getCurrentTextSelection();
 
-    if (!selection) { //caso senza selezione, esco dal metodo
+    if (!textSelection) { //caso senza selezione, esco dal metodo
       return;
     }
     this.textoAnnotation = new TAnnotation();
 
-    let startIndex = selection.startIndex;
-    let endIndex = selection.endIndex;
-    // let text = this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato //TODO OGGETTO RICEVUTO è SOLO TESTO, NON JSON
+    let startIndex = textSelection.startIndex;
+    let endIndex = textSelection.endIndex;
     let text = this.textRes.join('').substring(startIndex, endIndex);
 
     if (!this.onlySpaces(text)) {
@@ -628,16 +634,55 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       text = newText;
     }
 
-    const relations = new Relations();
-
+    // const relations = new Relations();
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
-    this.selectedTText = text;
+    this.selectedText = text;
+    this.currentTextSelection = textSelection;
+    this.highlightSelection(textSelection);
 
     this.showEditorAndHideOthers(EditorType.Annotation);
+  }
+
+  currentHighlightenText: SVGRectElement | null = null;
+  highlightSelection(textSelection: TextSelection) {
+    if (/\s+$/.test(textSelection.selection.toString())) { // Check if there is a trailing whitespace
+      (textSelection.selection as SelectionExtension).modify("extend", "left", "character");
+    }
+
+    const highlight: any = textSelection.selection.focusNode?.parentElement!;
+    // const parentTextElement: any = textSelection.selection.focusNode?.parentElement?.closest("text");
+    let bb = highlight.getBBox();
+    let g: SVGGElement = document.querySelector("#highlightg")!;
+    let [x, y, width, height] = [bb.x, bb.y, bb.width, bb.height];
+    let highlightRect = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+    let range = textSelection.selection!.getRangeAt(0);
+    // const startX = this.getComputedTextLength(this.randomString(range. - textSelection.startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+
+    const wordOffset = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
+    highlightRect.setAttribute("x", x + wordOffset);
+    highlightRect.setAttribute("y", y);
+    const w = this.getComputedTextLength(this.selectedText, this.visualConfig.textFont);
+    highlightRect.setAttribute("width", w.toString());
+    highlightRect.setAttribute("height", height);
+    highlightRect.setAttribute("fill", "#0067D1");
+    highlightRect.setAttribute("stroke", "#0067D1");
+    // highlightRect.classList.add("highlightRect");
+    // if (parentTextElement.classList.contains('highlight-bg')) {
+    // highlightRect.classList.add("highlightRect-bg");
+    if (this.currentHighlightenText) { this.currentHighlightenText.remove(); }
+    this.currentHighlightenText = highlightRect;
+    g.insertAdjacentElement("beforebegin", highlightRect);
+    // } else {
+    //   highlightRect.classList.add("highlightRect-top");
+    //   svg.insertBefore(highlightRect, parentTextElement.nextElementSibling);
+    // }
   }
 
   /**
@@ -674,7 +719,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const computedStart = this.textoAnnotation.start! - (this.offset ?? 0);
     const computedEnd = this.textoAnnotation.end! - (this.offset ?? 0);
     const newSelectedText = this.textRes.join('').substring(computedStart, computedEnd);
-    this.selectedTText = newSelectedText != '' ? newSelectedText : this.selectedTText; // show old value if not selecting a new one
+    this.selectedText = newSelectedText != '' ? newSelectedText : this.selectedText; // show old value if not selecting a new one
     // this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
     // this.annotation.layerName = this.selectedLayer?.name;
 
@@ -1957,31 +2002,34 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**
    * @private
    * Metodo che recupera gli indici della selezione sul testo
-   * @returns {{startIndex: number, endIndex: number}|undefined} indici iniziale e finale della selezione se presente
+   * @returns {TextSelection|undefined} selection e indici iniziale e finale della selezione se presente
    */
-  private getCurrentTextSelection() {
+  private getCurrentTextSelection(): TextSelection | null {
     const selection = window.getSelection();
 
-    if (selection != null && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const preSelectionRange = range.cloneRange();
-      preSelectionRange.selectNodeContents(this.svg.nativeElement);
-      preSelectionRange.setEnd(range.startContainer, range.startOffset);
-      this.selectionStart = [...preSelectionRange.toString()].length;
-      this.selectionEnd = this.selectionStart + [...range.toString()].length;
-    } else {
-      this.selectionStart = undefined;
-      this.selectionEnd = undefined;
+    if (!selection || selection.rangeCount <= 0) {
+      return null;
     }
 
-    if (this.selectionStart === undefined || this.selectionEnd === undefined || this.selectionStart >= this.selectionEnd) {
-      return undefined;
+    const range = selection!.getRangeAt(0);
+
+    if (range.endOffset - range.startOffset === 0) //there is no selection just click
+    {
+      return null;
     }
 
-    return {
-      startIndex: this.selectionStart,
-      endIndex: this.selectionEnd,
-    };
+    const preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(this.svg.nativeElement);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    this.selectionStart = [...preSelectionRange.toString()].length;
+    this.selectionEnd = this.selectionStart + [...range.toString()].length;
+
+    let textSelection = new TextSelection();
+    textSelection.selection = selection!;
+    textSelection.startIndex = this.selectionStart;
+    textSelection.endIndex = this.selectionEnd;
+
+    return textSelection;
   }
 
   private getMaxTowerPosition(array: any[]) {

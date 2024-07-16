@@ -111,7 +111,7 @@
               <g class="glow">
     
               </g>
-              <g class="highlight">
+              <g id="highlightg" class="highlight">
                 <g *ngFor="let row of rows">
                   <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="line.x" [attr.height]="line.height! + 4" class="span">
                     <g *ngFor="let h of line.highlights">
@@ -199,7 +199,6 @@
                   </g>
                 </g>
               </g>
-              <!-- -->
               <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />
               <g class="sentnum unselectable">
                 <text *ngFor="let row of rows; index as i" 
@@ -220,7 +219,7 @@
       <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn pi pi-file-edit"></a>
       <div *ngIf="expandedEditorDiv" class="w-100" [ngStyle]="{'height.px': textContainerHeight}">
         <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right pi pi-chevron-circle-right"></a>
-        <app-text-annotation-editor #annotationEditor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
+        <app-text-annotation-editor #annotationEditor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedText"
           (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
           <!-- <app-relation-editor *ngIf="showRelationEditor"
           [relationModel]="relation"

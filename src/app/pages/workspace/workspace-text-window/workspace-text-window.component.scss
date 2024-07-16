@@ -215,3 +215,11 @@ a.collapse-btn-right {
 ::ng-deep.overflowYHiddenTextTile {
   overflow-y: hidden;
 }
+
+.highlightRect {
+  fill: cyan;
+}
+
+.highlightRect-top {
+  mix-blend-mode: screen;
+}
