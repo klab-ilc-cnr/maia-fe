@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, debounceTime, of, switchMap, throttleTime } from 'rxjs';
+import { Observable, Subject, debounceTime, of, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
@@ -330,7 +330,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
    *refresh documents data  
    */
   reloadSelectedDocuments(): void {
-    this.corpusStateService.refreshFileSystem.next(null);
+    this.corpusStateService.refreshFileSystem.next();
   }
 
   /**
