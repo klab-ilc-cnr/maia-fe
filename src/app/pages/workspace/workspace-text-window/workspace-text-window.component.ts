@@ -649,9 +649,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   currentHighlightenText: SVGRectElement | null = null;
   highlightSelection(textSelection: TextSelection) {
-    if (/\s+$/.test(textSelection.selection.toString())) { // Check if there is a trailing whitespace
-      (textSelection.selection as SelectionExtension).modify("extend", "left", "character");
-    }
+    // if (/\s+$/.test(textSelection.selection.toString())) { // Check if there is a trailing whitespace
+    //   (textSelection.selection as SelectionExtension).modify("extend", "left", "character");
+    // }
 
     const highlight: any = textSelection.selection.focusNode?.parentElement!;
     // const parentTextElement: any = textSelection.selection.focusNode?.parentElement?.closest("text");
