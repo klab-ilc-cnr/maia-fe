@@ -319,7 +319,7 @@ export class WorkspaceCorpusExplorerComponent {
 
   /**Method that reloads the file system */
   reload(): void {
-    this.corpusStateService.refreshFileSystem.next(null);
+    this.corpusStateService.refreshFileSystem.next();
     this.selectedNode = undefined;
   }
 
