@@ -634,6 +634,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     // const relations = new Relations();
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
+    textSelection.startIndex = (this.offset ?? 0) + startIndex;
+    textSelection.endIndex = (this.offset ?? 0) + endIndex;
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
@@ -650,7 +652,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //   (textSelection.selection as SelectionExtension).modify("extend", "left", "character");
     // }
 
-    const highlight: any = textSelection.selection.focusNode?.parentElement!;
+    const highlight: any = textSelection.selection.anchorNode?.parentElement!;
     // const parentTextElement: any = textSelection.selection.focusNode?.parentElement?.closest("text");
     let bb = highlight.getBBox();
     let g: SVGGElement = document.querySelector("#highlightg")!;
@@ -2010,7 +2012,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     const range = selection!.getRangeAt(0);
 
-    if (range.endOffset - range.startOffset === 0) //there is no selection just click
+    if (selection.isCollapsed) //there is no selection just click
     {
       return null;
     }
