@@ -8,7 +8,8 @@
         "noResult": "Nessun risultato",
         "save": "Salva",
         "selectValue": "Seleziona valore",
-        "update": "Aggiorna"
+        "update": "Aggiorna",
+        "browserWarning" : "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Aggiungi cartella",

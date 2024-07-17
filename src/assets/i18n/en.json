@@ -8,7 +8,8 @@
         "noResult": "No result",
         "save": "Save",
         "selectValue": "Select value",
-        "update": "Update"
+        "update": "Update",
+        "browserWarning" : "Your browser is not fully supported, please use chrome"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Add folder",
