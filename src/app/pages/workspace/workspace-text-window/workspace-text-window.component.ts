@@ -61,6 +61,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   selectedText = '';
   /**Oggetto di selezione */
   currentTextSelection: TextSelection | null = null;
+  /**Id used to simulate the text selection operation */
+  specialSelectionLayerId: number = -777
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -122,7 +124,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Layer selezionato */
   selectedLayer: TLayer | undefined;
   /**Lista di layer selezionati */
-  selectedLayers: TLayer[] | undefined = [];
+  selectedLayers: TLayer[] = [];
   lastRenderedLayers: number[] = [];
 
   sentnumVerticalLine = "M 0 0";
@@ -641,10 +643,29 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
     this.selectedText = text;
     this.currentTextSelection = textSelection;
-    this.highlightSelection(textSelection);
+
+    // const selectionAnnotation = new TAnnotation();
+    // selectionAnnotation.id = -776
+    // // selectionAnnotation.layer = this.specialSelectionLayer;
+    // selectionAnnotation.start = (this.offset ?? 0) + startIndex;
+    // selectionAnnotation.end = (this.offset ?? 0) + endIndex;
+
+    // if (this.selectedLayers?.findIndex(i => i.id === this.specialSelectionLayerId) < 0) {
+    //   this.selectedLayers?.push(this.specialSelectionLayer)
+    // }
+
+    this.specialSelectionAnnotation.active = this.visibleLayers.length > 0;
+    this.specialSelectionAnnotation.start = (this.offset ?? 0) + startIndex;
+    this.specialSelectionAnnotation.end = (this.offset ?? 0) + endIndex;
+    this.setScrollTopOperationInRange();
+    // this.updateAnnotationsResult(selectionAnnotation);
+    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+    // this.highlightSelection(textSelection);
 
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
+
+  specialSelectionAnnotation: any = { id: -777, color: "#0067D1", start: undefined, end: undefined, active: false };
 
   currentHighlightenText: SVGRectElement | null = null;
   highlightSelection(textSelection: TextSelection) {
@@ -2171,6 +2192,25 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         yTowerOffset: yOffset
       })
     })
+
+    if (this.specialSelectionAnnotation.active &&
+      (this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
+      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
+      (this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.start < (endIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
+      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0))) {
+      const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+      const w = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.end - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
+      lineHighlights.push({
+        bgColor: this.specialSelectionAnnotation.color,
+        coordinates: {
+          x: startX - 1,
+          y: 0
+        },
+        height: this.visualConfig.stdTextLineHeight - 2,
+        width: w + 2,
+        id: this.specialSelectionAnnotation.id
+      })
+    }
 
     return {
       lineTowers: lineTowers,
