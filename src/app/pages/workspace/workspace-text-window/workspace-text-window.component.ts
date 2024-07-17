@@ -667,6 +667,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   specialSelectionAnnotation: any = { id: -777, color: "#0067D1", start: undefined, end: undefined, active: false };
 
+  //TODO Eliminare usare l'altra tecnica che sfrutta il sistema di annotazione
   currentHighlightenText: SVGRectElement | null = null;
   highlightSelection(textSelection: TextSelection) {
     // if (/\s+$/.test(textSelection.selection.toString())) { // Check if there is a trailing whitespace
@@ -2024,6 +2025,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Metodo che recupera gli indici della selezione sul testo
    * @returns {TextSelection|undefined} selection e indici iniziale e finale della selezione se presente
    */
+  //TODO valutare se ripristinare la funzione al suo stato originale ed eliminare classe TextSelection
   private getCurrentTextSelection(): TextSelection | null {
     const selection = window.getSelection();
 
