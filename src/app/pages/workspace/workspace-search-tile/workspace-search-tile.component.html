@@ -1,4 +1,4 @@
-<div class="card h-100">
+<div class="card h-100" (keydown.enter)="onSearch()">
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
