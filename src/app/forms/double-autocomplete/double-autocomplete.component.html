@@ -1,5 +1,5 @@
 <div class="field d-flex justify-content-between">
-  <p-dropdown appendTo="body" [(ngModel)]="relationField" [autoDisplayFirst]="false" styleClass="w-full"
+  <p-dropdown appendTo="body" [(ngModel)]="relationField" [autoDisplayFirst]="false" styleClass="w-full" [disabled]="isValueSelected"
     [options]="(relations$|async)||[]" optionLabel="label" optionValue="id" (onChange)="onSelectRelation($event)" [filter]="true"></p-dropdown>
   <p-dropdown *ngIf="!isChecked; else uriInput" appendTo="body" [autoDisplayFirst]="false" styleClass="w-full" [(ngModel)]="valueField"
     [options]="(values|async) || []" [optionLabel]="valueLabel" [optionValue]="valueId" [filter]="true"
