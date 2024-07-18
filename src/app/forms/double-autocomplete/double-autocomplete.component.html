@@ -5,7 +5,7 @@
     [options]="(values|async) || []" [optionLabel]="valueLabel" [optionValue]="valueId" [filter]="true"
     [filterBy]="valueLabel" (onChange)="onSelectValue($event)"></p-dropdown>
   <ng-template #uriInput>
-    <input pInputText type="text" placeholder="Write URL" (focusout)="onFocusOut()" [(ngModel)]="valueField"
+    <input pInputText type="text" placeholder="Write URL" [(ngModel)]="valueField"
       class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
   </ng-template>
   <input type="checkbox" *ngIf="isCheckboxVisible" (change)="isChecked = !isChecked">
