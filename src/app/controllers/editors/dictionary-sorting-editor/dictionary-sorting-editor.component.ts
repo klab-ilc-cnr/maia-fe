@@ -75,7 +75,7 @@ export class DictionarySortingEditorComponent implements OnInit {
   private mapSortingItemToTreeNode(items: DictionarySortingItem[]): TreeNode<DictionarySortingItem>[] {
     return items.map(item => <TreeNode<DictionarySortingItem>>{
       key: item.id,
-      type: item.type,
+      type: item.type.includes('LexicalSense') ? 'sense' : 'lexicalEntry',
       label: item.label,
       data: item,
       expanded: true,

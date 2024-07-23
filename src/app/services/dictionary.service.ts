@@ -255,7 +255,8 @@ export class DictionaryService {
   }
 
   retrieveDictionarySortingItems(dictionaryId: string): Observable<DictionarySortingItem[]> {
-    return this.http.get<DictionarySortingItem[]>(`assets/mock/dictionary/sorting-elements.json`);
+    // return this.http.get<DictionarySortingItem[]>(`assets/mock/dictionary/sorting-elements.json`); //MOCKUP
+    return this.http.get<DictionarySortingItem[]>(`${this.lexoUrl}/dictionary/sortingTree?id=${this.commonService.encodeUrl(dictionaryId)}`);
   }
 
   /**
