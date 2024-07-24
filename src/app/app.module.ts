@@ -61,6 +61,7 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
+import { SearchTableComponent } from './controllers/search-table/search-table.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     DictionaryEntryReferralEditorComponent,
     DictionaryEntryFullEditorComponent,
     DropdownPlusNumberComponent,
-    ReplaceLineFeedPipe
+    ReplaceLineFeedPipe,
+    SearchTableComponent
   ],
   imports: [
     BrowserModule,

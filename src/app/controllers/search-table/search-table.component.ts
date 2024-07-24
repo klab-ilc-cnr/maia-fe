@@ -1,8 +1,7 @@
-import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, debounceTime, of, switchMap } from 'rxjs';
-import { SearchTableComponent } from 'src/app/controllers/search-table/search-table.component';
+import { debounceTime, Observable, of, Subject, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
@@ -12,7 +11,6 @@ import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { SearchService } from 'src/app/services/search.service';
 
-/**selectButton model for search mode*/
 interface SearchMode {
   name: string,
   code: string
@@ -20,85 +18,77 @@ interface SearchMode {
 }
 
 @Component({
-  selector: 'app-workspace-search-tile',
-  templateUrl: './workspace-search-tile.component.html',
-  styleUrls: ['./workspace-search-tile.component.scss'],
+  selector: 'app-search-table',
+  templateUrl: './search-table.component.html',
+  styleUrls: ['./search-table.component.scss'],
   providers: [CorpusStateService]
 })
-export class WorkspaceSearchTileComponent implements OnInit {
+export class SearchTableComponent implements OnInit {
 
   constructor(private corpusStateService: CorpusStateService,
     private searchService: SearchService,
     private commonService: CommonService,
     private loaderService: LoaderService) { }
-    
-    /**initial panel size */
-    currentPanelHeight: number = 500;
-    
-    /**search data parameters */
-    searchValue: string = '';
-    searchModes!: Array<SearchMode>;
-    selectedSearchMode!: SearchMode;
-    searchLabel: string = '';
-    contextLenghtDefaultValue = 5;
-    contextLength: number = this.contextLenghtDefaultValue;
-    contextMaxLenght: number = 10;
-    files$!: Observable<TreeNode<CorpusElement>[]>;
-    selectedDocuments: TreeNode<CorpusElement>[] = [];
-    
-    //**kwic table data */
-    get searchResults() : Array<SearchResultRow> {
-      return this.searchTable?.data ?? [];
-    }
-    set searchResults(newData : Array<SearchResultRow>) {
-      this.searchTable.changeData(newData);
-    }
-    searchRequest = new SearchRequest();
-    selectedSearchResults: Array<SearchResultRow> = [];
-    loading: boolean = false;
-    tableContainerHeight!: number;
-    tableHeaderHegith: number = 250;
-    totalRecords: number = 0;
-    visibleRows: number = 10;
-    tableCleared = false;
-    changingPage = false;
+
+
+  @Input() data: Array<SearchResultRow> = [];
+
+  /**initial panel size */
+  currentPanelHeight: number = 500;
+
+  /**search data parameters */
+  searchValue: string = '';
+  searchModes!: Array<SearchMode>;
+  selectedSearchMode!: SearchMode;
+  searchLabel: string = '';
+  contextLenghtDefaultValue = 5;
+  contextLength: number = this.contextLenghtDefaultValue;
+  contextMaxLenght: number = 10;
+  files$!: Observable<TreeNode<CorpusElement>[]>;
+  selectedDocuments: TreeNode<CorpusElement>[] = [];
+
+  //**kwic table data */
+  searchResults: Array<SearchResultRow> = [];
+  searchRequest = new SearchRequest();
+  selectedSearchResults: Array<SearchResultRow> = [];
+  loading: boolean = false;
+  tableContainerHeight!: number;
+  tableHeaderHegith: number = 250;
+  totalRecords: number = 0;
+  visibleRows: number = 10;
+  tableCleared = false;
+  changingPage = false;
   filtersChanged = false;
-  
+
   colDefaultWidths = [4, 6, 15, 15, 25, 10, 25];
-  
+
   /** object used to memorize primeng table data */
   pTabelColumnWidthStates: any;
-  
-  
+
+
   /** Delta for correct resizing internal search result table */
   nativeTableDelta = 57;
 
   /**export button items */
   exportItems!: MenuItem[];
-  
-  @ViewChild('searchInput') searchInput: any;
-  @ViewChild('searchTable') public searchTable!: SearchTableComponent;
-  
-  private filtersSubject: Subject<any> = new Subject();
-  
-  ngOnInit(): void {
-    this.files$ = this.corpusStateService.filesystem$.pipe(
-      switchMap(docs => of(this.mapToTreeNodes(docs))),
-    );
-    
-    this.initSearchMode();
-    
-    this.filtersSubject.pipe(debounceTime(1000))
-      .subscribe({
-        next: (event) => {
-          this.lazyLoadSearchResultsDebounced(event);
-        },
-        error: (error) => {
-          this.commonService.throwHttpErrorAndMessage(error, error.error.message);
-        }
-      });
 
-    this.setExportMenuItems();
+  @ViewChild('searchInput') searchInput: any;
+  @ViewChild('dt') searchResultsTable!: Table;
+
+  private filtersSubject: Subject<any> = new Subject();
+
+  ngOnInit(): void {
+    this.searchResults = [...this.data];
+  }
+
+  ngAfterViewInit(): void {
+    this.pTabelColumnWidthStates = { columnWidths: '' }
+    this.searchResultsTable.saveColumnWidths(this.pTabelColumnWidthStates);
+  }
+
+  changeData(newData : Array<SearchResultRow>)
+  {
+    this.searchResults = [...newData];
   }
 
   //**init for export menu button */
@@ -200,17 +190,17 @@ export class WorkspaceSearchTileComponent implements OnInit {
     const input = target as HTMLInputElement;
     this.filtersChanged = true;
     this.searchInput.control.markAsTouched();
-    this.searchInput.filter(input.value, fieldName, matchMode);
+    this.searchResultsTable.filter(input.value, fieldName, matchMode);
   }
 
   /**set the request filters based on the table ones */
   setColumnFilters() {
-    this.searchRequest.filters.index = (<FilterMetadata>(this.searchTable.searchResultsTable.filters['index']))?.value;
-    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchTable.searchResultsTable.filters['kwic']))?.value;
-    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchTable.searchResultsTable.filters['leftContext']))?.value;
-    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchTable.searchResultsTable.filters['rightContext']))?.value;
-    this.searchRequest.filters.text = (<FilterMetadata>(this.searchTable.searchResultsTable.filters['text']))?.value;
-    this.searchRequest.filters.reference = (<FilterMetadata>(this.searchTable.searchResultsTable.filters['textHeader']))?.value;
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
+    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
+    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
+    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
+    this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
+    this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
 
   /**
@@ -241,7 +231,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
-    this.searchTable.clearTable();
+    this.clearTable();
     this.setColumnFilters();
 
     this.search();
@@ -278,21 +268,27 @@ export class WorkspaceSearchTileComponent implements OnInit {
   }
 
   setResizeTableWidth(width: string) {
-    (<ElementRef>this.searchTable.searchResultsTable.tableViewChild).nativeElement.style.width = width;
-    (<ElementRef>this.searchTable.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
+    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.width = width;
+    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
+  }
+
+  /**clears table and prevent triggering lazy loading multiple times */
+  clearTable() {
+    this.searchResultsTable.clear();
+    this.tableCleared = true;
   }
 
   /**reset table and prevent triggering lazy loading */
   resetTable() {
-    this.searchTable.searchResultsTable.reset();
+    this.searchResultsTable.reset();
     this.tableCleared = true;
-    this.searchTable.searchResultsTable.columnWidthsState = this.pTabelColumnWidthStates.columnWidths;
+    this.searchResultsTable.columnWidthsState = this.pTabelColumnWidthStates.columnWidths;
     this.setResizeTableWidth(this.pTabelColumnWidthStates.tableWidth);
-    this.searchTable.searchResultsTable.restoreColumnWidths();
+    this.searchResultsTable.restoreColumnWidths();
   }
 
   onColResize(event: any) {
-    (<ElementRef>this.searchTable.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
+    (<ElementRef>this.searchResultsTable.tableViewChild).nativeElement.style.minWidth = '100%';
   }
 
   /**clear function results and data */
@@ -366,5 +362,4 @@ export class WorkspaceSearchTileComponent implements OnInit {
     node.data = element;
     return node;
   }
-
 }
