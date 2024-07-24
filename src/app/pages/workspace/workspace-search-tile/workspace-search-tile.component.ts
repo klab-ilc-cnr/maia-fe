@@ -31,8 +31,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
     private commonService: CommonService,
     private loaderService: LoaderService) { }
 
-  @ViewChild('dt') public dt!: Table;
-
   /**initial panel size */
   currentPanelHeight: number = 500;
 
@@ -201,7 +199,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     const input = target as HTMLInputElement;
     this.filtersChanged = true;
     this.searchInput.control.markAsTouched();
-    this.dt.filter(input.value, fieldName, matchMode);
+    this.searchResultsTable.filter(input.value, fieldName, matchMode);
   }
 
   /**set the request filters based on the table ones */

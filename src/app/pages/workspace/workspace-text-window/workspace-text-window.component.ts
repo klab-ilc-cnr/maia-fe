@@ -605,7 +605,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!selection) { //caso senza selezione, esco dal metodo
       return;
     }
+    
     this.textoAnnotation = new TAnnotation();
+    this.visibleAnnotationId = undefined;
 
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
