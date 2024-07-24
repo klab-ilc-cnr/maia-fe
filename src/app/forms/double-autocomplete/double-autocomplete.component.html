@@ -1,11 +1,11 @@
 <div class="field d-flex justify-content-between">
-  <p-dropdown appendTo="body" [(ngModel)]="relationField" [autoDisplayFirst]="false" styleClass="w-full"
+  <p-dropdown appendTo="body" [(ngModel)]="relationField" [autoDisplayFirst]="false" styleClass="w-full" [disabled]="isValueSelected"
     [options]="(relations$|async)||[]" optionLabel="label" optionValue="id" (onChange)="onSelectRelation($event)" [filter]="true"></p-dropdown>
   <p-dropdown *ngIf="!isChecked; else uriInput" appendTo="body" [autoDisplayFirst]="false" styleClass="w-full" [(ngModel)]="valueField"
     [options]="(values|async) || []" [optionLabel]="valueLabel" [optionValue]="valueId" [filter]="true"
     [filterBy]="valueLabel" (onChange)="onSelectValue($event)"></p-dropdown>
   <ng-template #uriInput>
-    <input pInputText type="text" placeholder="Write URL" (focusout)="onFocusOut()" [(ngModel)]="valueField"
+    <input pInputText type="text" placeholder="Write URL" [(ngModel)]="valueField"
       class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
   </ng-template>
   <input type="checkbox" *ngIf="isCheckboxVisible" (change)="isChecked = !isChecked">

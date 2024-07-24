@@ -7,7 +7,7 @@ import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
-import { WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
+import { ScrollingDirectionType, WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -478,7 +478,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     if (panelExist) { //caso di pannello già presente
       if (startingRowIndex) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
-        textTileComponent.component.instance.startingRowIndex = startingRowIndex;
+        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex);
         textTileComponent.component.instance.loadInitialData();
       }
 
@@ -487,6 +487,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
+
+    if (startingRowIndex) {
+      this.setChangeSectionOperationInTextTile(res.component, startingRowIndex);
+    }
 
     const textTileConfig = res.panelConfig;
 
@@ -795,11 +799,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       tempStoredData.push(tempTile)
     }
     storedData = JSON.stringify(tempStoredData)
-    
+
     //IMPORTANTE Ripristino i dati nel localstorage PRIMA di fare restore,
     //il localstorage verrà letto dalla funzione jsPanel.layout.restore()
     localStorage.setItem(this.storageName, storedData)
-    
+
     let currPanelElement;
     let componentRef;
     //Creazione dinamica oggetto, secondo la struttura richiesta da jsPanel
@@ -1059,6 +1063,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const element = componentRef.location.nativeElement;
     return element;
+  }
+
+  /**
+   * Sets the variables of the text tile component, needed for the changing section operation
+   * @param textTileComponent angular component
+   * @param startingRowIndex 
+   */
+  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number) {
+    textTileComponent.instance.startingRowIndex = startingRowIndex;
+    textTileComponent.instance.scrollingDirection = ScrollingDirectionType.ChangingSection;
   }
 
   /**
