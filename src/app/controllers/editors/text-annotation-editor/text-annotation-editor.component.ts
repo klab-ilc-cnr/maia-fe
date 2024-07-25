@@ -6,6 +6,7 @@ import { Observable, Subject, catchError, forkJoin, map, take, takeUntil, throwE
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
+import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
@@ -20,7 +21,6 @@ import { uriValidator } from 'src/app/validators/uri-validator.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import Swal from 'sweetalert2';
 import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-delete-item.component';
-import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
 
 export interface FeatForAnn {
   feature: TFeature | undefined;
@@ -249,7 +249,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
       result.push(<TAnnotationFeature>{
         feature: feature.feature,
-        value: typeof (featValue) === 'string' ? featValue : featValue.name
+        value: featValue !== null ? (typeof (featValue) === 'string' ? featValue : featValue.name) : '' //FIX empty string to manage reset of a feature
       });
     });
     return result;

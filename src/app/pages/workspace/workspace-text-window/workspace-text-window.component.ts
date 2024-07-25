@@ -605,7 +605,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!selection) { //caso senza selezione, esco dal metodo
       return;
     }
-    
+
     this.textoAnnotation = new TAnnotation();
     this.visibleAnnotationId = undefined;
 
@@ -735,7 +735,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  */
   private annotationSavedOperations(workingAnnotation: TAnnotation, newFeaturesList: TAnnotationFeature[]) {
     this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-    workingAnnotation.features = newFeaturesList;
+    if (!workingAnnotation.features) {
+      workingAnnotation.features = [];
+    }
+    // workingAnnotation.features = newFeaturesList; //BUG se la modifica coinvolge 1 feature su n la newFeaturesList conterrà quella singola feature invece di n
+    for (const feat of newFeaturesList) {
+      const featIndex = workingAnnotation.features.findIndex(f => f.id === feat.id);
+      if (featIndex !== -1) {
+        workingAnnotation.features[featIndex].value = feat.value;
+      } else {
+        workingAnnotation.features.push(feat);
+      }
+    }
     this.onAnnotationSaved(workingAnnotation);
   }
 
