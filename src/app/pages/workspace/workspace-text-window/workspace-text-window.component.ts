@@ -2201,7 +2201,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       })
     })
 
-    this.renderSelectionHighlight(startIndex, endIndex, lineHighlights);
+    this.renderSelectionHighlightForLine(startIndex, endIndex, lineHighlights);
 
     return {
       lineTowers: lineTowers,
@@ -2209,44 +2209,36 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     };
   }
 
-  private renderSelectionHighlight(startIndex: number, endIndex: number, lineHighlights: TextHighlight[]) {
-    if (this.specialSelectionAnnotation.active &&
-      ((this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
-        (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
-        (this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.start < (endIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
-        (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0)))) {
+  private renderSelectionHighlightForLine(startIndex: number, endIndex: number, lineHighlights: TextHighlight[]) {
+    if (!this.specialSelectionAnnotation.active) { return; }
 
+    if ((this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
+      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
+      (this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.start < (endIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
+      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0))) {
 
-      // const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-      // let w = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.end - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
-      // let startW = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont);
-      let startX = 0, w = 0;
-      // const temp = { ...this.specialSelectionAnnotation };
+      let width = 0;
+      let difference = 0;
+
       if (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end <= endIndex) {
-        const difference = startIndex - this.specialSelectionAnnotation.start;
-        // temp.span.end = this.specialSelectionAnnotation.end - difference;
-        startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        w = this.getComputedTextLength(this.randomString((this.specialSelectionAnnotation.end - difference) - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
+        difference = startIndex - this.specialSelectionAnnotation.start;
       }
-      else {
-        startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        w = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.end - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
-      }
-
-      // sWidth = this.getComputedTextLength(s.text.trim(), this.visualConfig.textFont);
+      
+      const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+      width = this.getComputedTextLength(this.randomString((this.specialSelectionAnnotation.end - difference) - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
       const maxComputedWidth = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-      const endX = startX + w;
-      w = endX > maxComputedWidth ? maxComputedWidth - startX : w;
+      const endX = startX + width;
+      width = endX > maxComputedWidth ? maxComputedWidth - startX : width;
 
       lineHighlights.push({
-        bgColor: this.specialSelectionAnnotation.color,
+        id: this.specialSelectionAnnotation.id,
+        width: width,
+        height: this.visualConfig.stdTextLineHeight - 2,
         coordinates: {
           x: startX - 1,
           y: 0
         },
-        height: this.visualConfig.stdTextLineHeight - 2,
-        width: w,
-        id: this.specialSelectionAnnotation.id
+        bgColor: this.specialSelectionAnnotation.color
       });
     }
   }
