@@ -611,7 +611,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!textSelection) { //caso senza selezione, esco dal metodo
       return;
     }
-    
+
     this.textoAnnotation = new TAnnotation();
     this.visibleAnnotationId = undefined;
 
@@ -655,8 +655,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     // }
 
     this.specialSelectionAnnotation.active = this.visibleLayers.length > 0;
-    this.specialSelectionAnnotation.start = (this.offset ?? 0) + startIndex;
-    this.specialSelectionAnnotation.end = (this.offset ?? 0) + endIndex;
+    this.specialSelectionAnnotation.start = startIndex;
+    this.specialSelectionAnnotation.end = endIndex;
     this.setScrollTopOperationInRange();
     // this.updateAnnotationsResult(selectionAnnotation);
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
@@ -1159,6 +1159,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     sentences?.forEach((s: TextSplittedRow) => {
       const sWidth = this.getComputedTextLength(s.text, this.visualConfig.textFont);
+      lineBuilder.sWidth = sWidth;
 
       const sLines = new Array<TextLine>();
 
@@ -1802,11 +1803,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return promise;
   }
 
-  private createLine(auxLineBuilder: any) {
+  private createLine(auxLineBuilder: LineBuilder) {
     const startIndex = auxLineBuilder.startLine;
-    const endIndex = auxLineBuilder.startLine + auxLineBuilder.line.text.length;
+    const endIndex = auxLineBuilder.startLine + auxLineBuilder.line.text!.length;
 
-    const resAnns = this.renderAnnotationsForLine(startIndex, endIndex);
+    const resAnns = this.renderAnnotationsForLine(startIndex, endIndex, auxLineBuilder.sWidth);
     const lineTowers = resAnns.lineTowers;
     const lineHighlights = resAnns.lineHighLights;
 
@@ -1922,7 +1923,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       yText: yText,
       x: this.visualConfig.stdTextOffsetX,
       startIndex: auxLineBuilder.startLine,
-      endIndex: auxLineBuilder.startLine + auxLineBuilder.line.text.length,
+      endIndex: auxLineBuilder.startLine + auxLineBuilder.line.text!.length,
       annotationsTowers: lineTowers,
       yAnnotation: yAnnotation,
       highlights: lineHighlights,
@@ -2095,7 +2096,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * @param endIndex {number} indice finale
    * @returns {{lineTowers: any[], lineHighLights:TextHighlight[]}} dati delle annotazioni per la line
    */
-  private renderAnnotationsForLine(startIndex: number, endIndex: number) {
+  private renderAnnotationsForLine(startIndex: number, endIndex: number, sWidth: number) {
     const lineTowers = new Array();
     const lineHighlights = new Array<TextHighlight>();
 
@@ -2203,12 +2204,33 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     })
 
     if (this.specialSelectionAnnotation.active &&
-      (this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
+      ((this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
       (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
       (this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.start < (endIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
-      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0))) {
-      const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-      const w = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.end - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
+      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0)))) {
+
+
+      // const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+      // let w = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.end - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
+      // let startW = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - startIndex), this.visualConfig.textFont);
+
+      let startX = 0, w = 0;
+      // const temp = { ...this.specialSelectionAnnotation };
+      if (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end <= endIndex) {
+        const difference = startIndex - this.specialSelectionAnnotation.start;
+        // temp.span.end = this.specialSelectionAnnotation.end - difference;
+
+        startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+        w = this.getComputedTextLength(this.randomString((this.specialSelectionAnnotation.end - difference) - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
+        // const endX = startX + w;
+      }
+      else {
+        startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+        w = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.end - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
+        // const endX = startX + w;
+      }
+
+      // w = startW + w > sWidth ? sWidth - startW : w;
       lineHighlights.push({
         bgColor: this.specialSelectionAnnotation.color,
         coordinates: {
