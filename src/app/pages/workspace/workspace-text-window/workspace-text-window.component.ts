@@ -734,12 +734,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
             let bb = (tSpanWord as any).getBBox();
             x = bb.x;
             startOffsetPx = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
+            widthPx += this.getComputedTextLength(tSpanWord.textContent!.substring(range.startOffset, tSpanWord.textContent!.length), this.visualConfig.textFont);
             selecting = true;
+            continue;
           }
 
           if (tSpanWord.getAttribute("selectionHighlight") === "end") {
             selecting = false;
-            widthPx += this.getComputedTextLength(tSpanWord.textContent ?? '', this.visualConfig.textFont);
+            widthPx += this.getComputedTextLength(tSpanWord.textContent!.substring(0, range.endOffset), this.visualConfig.textFont);
             break;
           }
 
