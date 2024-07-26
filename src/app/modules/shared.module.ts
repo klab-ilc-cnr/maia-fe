@@ -20,6 +20,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { OrderListModule } from 'primeng/orderlist';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
@@ -93,7 +94,8 @@ const PRIMENG_MODULES = [
   PasswordModule,
   InputTextModule,
   SliderModule,
-  SplitButtonModule
+  SplitButtonModule,
+  OrderListModule,
 ];
 
 const DIRECTIVES = [

@@ -1,0 +1,61 @@
+[
+    {
+        "id": "http://rut/somali/ferrandi#LexO_2024-05-0612_37_22_594",
+        "type": "lexicalEntry",
+        "prefix": [],
+        "label": "bello",
+        "suffix": ["noun"],
+        "children": [
+            {
+                "id": "http://rut/somali/ferrandi#LexO_2024-05-0612_37_22_595",
+                "type": "sense",
+                "prefix": [],
+                "label": "senso n.1",
+                "suffix": [],
+                "children": [
+                    {
+                        "id": "http://rut/somali/ferrandi#LexO_2024-05-0612_37_22_599",
+                        "type": "sense",
+                        "prefix": ["Fig."],
+                        "label": "senso n.2",
+                        "suffix": [],
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "http://rut/somali/ferrandi#LexO_2024-05-0612_37_44_813",
+        "type": "lexicalEntry",
+        "prefix": [],
+        "label": "bello",
+        "suffix": ["adjective"],
+        "children": [
+            {
+                "id": "http://rut/somali/ferrandi#LexO_2024-05-0612_37_22_596",
+                "type": "sense",
+                "prefix": [],
+                "label": "senso n.1",
+                "suffix": [],
+                "children": []
+            },
+            {
+                "id": "http://rut/somali/ferrandi#LexO_2024-05-0612_37_22_597",
+                "type": "sense",
+                "prefix": ["Agr.", "Fig."],
+                "label": "senso n.2",
+                "suffix": [],
+                "children": []
+            },
+            {
+                "id": "http://rut/somali/ferrandi#LexO_2024-05-0612_37_22_598",
+                "type": "sense",
+                "prefix": [],
+                "label": "senso n.3",
+                "suffix": [],
+                "children": []
+            }
+        ]
+    }
+]
