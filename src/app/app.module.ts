@@ -32,6 +32,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
 import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
+import { DictionarySortingEditorComponent } from './controllers/editors/dictionary-sorting-editor/dictionary-sorting-editor.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
@@ -106,7 +107,8 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     DictionaryEntryReferralEditorComponent,
     DictionaryEntryFullEditorComponent,
     DropdownPlusNumberComponent,
-    ReplaceLineFeedPipe
+    ReplaceLineFeedPipe,
+    DictionarySortingEditorComponent
   ],
   imports: [
     BrowserModule,
