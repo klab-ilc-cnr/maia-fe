@@ -26,4 +26,6 @@ export class SearchResultRow {
     rightContext: string = '';
     /**keyword */
     kwic!: string;
+    /**absolute text offset */
+    kwicOffset!: number;
 }

@@ -656,10 +656,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.specialSelectionAnnotation.active = this.visibleLayers.length > 0;
     this.specialSelectionAnnotation.start = startIndex;
     this.specialSelectionAnnotation.end = endIndex;
-    this.setScrollTopOperationInRange();
     // this.updateAnnotationsResult(selectionAnnotation);
-    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
-    // this.highlightSelection(textSelection);
+    // this.setScrollTopOperationInRange();
+    // this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+
+    this.highlightSelection(textSelection);
 
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
@@ -667,38 +668,114 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   specialSelectionAnnotation: any = { id: -777, color: "#0067D1", start: undefined, end: undefined, active: false };
 
   //TODO Eliminare usare l'altra tecnica che sfrutta il sistema di annotazione
-  currentHighlightenText: SVGRectElement | null = null;
+  highlightRectList : Array<SVGRectElement> = [];
   highlightSelection(textSelection: TextSelection) {
     // if (/\s+$/.test(textSelection.selection.toString())) { // Check if there is a trailing whitespace
     //   (textSelection.selection as SelectionExtension).modify("extend", "left", "character");
     // }
 
-    const highlight: any = textSelection.selection.anchorNode?.parentElement!;
-    // const parentTextElement: any = textSelection.selection.focusNode?.parentElement?.closest("text");
-    let bb = highlight.getBBox();
-    let g: SVGGElement = document.querySelector("#highlightg")!;
-    let [x, y, width, height] = [bb.x, bb.y, bb.width, bb.height];
-    let highlightRect = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "rect"
-    );
+    // const highlight: any = textSelection.selection.anchorNode?.parentElement!;
+    // // const parentTextElement: any = textSelection.selection.focusNode?.parentElement?.closest("text");
+    // let bb = highlight.getBBox();
+    // let g: SVGGElement = document.querySelector("#highlightg")!;
+    // let [x, y, width, height] = [bb.x, bb.y, bb.width, bb.height];
+    // let highlightRect = document.createElementNS(
+    //   "http://www.w3.org/2000/svg",
+    //   "rect"
+    // );
     let range = textSelection.selection!.getRangeAt(0);
+    // let startIndex = range.startContainer!.parentElement!.parentElement!.getAttribute("start-index")! as unknown as number;
+    // let endIndex = range.endContainer.parentElement!.parentElement!.getAttribute("end-index") as unknown as number;
+    // let textElement = range.endContainer!.parentElement!.parentElement!.parentElement!;
+
+    this.highlightRectList.forEach(el => el.remove());
+    this.highlightRectList = [];
+
+    range.startContainer.parentElement!.setAttribute("selectionHighlight", "start");
+    if (range.endContainer.parentElement!.getAttribute("selectionHighlight") === "start") {
+      range.endContainer.parentElement!.setAttribute("selectionHighlight", "startEnd");
+    }
+    else {
+      range.endContainer.parentElement!.setAttribute("selectionHighlight", "end");
+    }
+
+    const gTextElement = document.getElementById("gText");
+
+    if (!gTextElement) { return; }
+
+    let selecting = false;
+    Array.from(gTextElement.children).forEach((textElement) => {
+      Array.from(textElement.children).forEach((tSpanSentence) => {
+        const highlight: any = tSpanSentence;
+        // const parentTextElement: any = textSelection.selection.focusNode?.parentElement?.closest("text");
+        let bb = highlight.getBBox();
+        let g: SVGGElement = document.querySelector("#highlightg")!;
+        let [x, y, maxSentenceWidth, height] = [bb.x, bb.y, bb.width, bb.height];
+        let highlightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        this.highlightRectList.push(highlightRect);
+
+        let startIndex = parseInt(tSpanSentence.getAttribute("start-index")!);
+        let endIndex = parseInt(tSpanSentence.getAttribute("end-index")!);
+
+        let widthPx = 0;
+        let startOffsetPx = 0;
+        
+        for (const tSpanWord of Array.from(tSpanSentence.children)) {
+          if (tSpanWord.getAttribute("selectionHighlight") === "startEnd") {
+            let bb = (tSpanWord as any).getBBox();
+            x = bb.x;
+            startOffsetPx = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
+            widthPx = this.getComputedTextLength(this.randomString(textSelection.endIndex - textSelection.startIndex), this.visualConfig.textFont);
+            break;
+          }
+          
+          if (tSpanWord.getAttribute("selectionHighlight") === "start") {
+            // const highlight: any = textSelection.selection.anchorNode?.parentElement!;
+            let bb = (tSpanWord as any).getBBox();
+            x = bb.x;
+            startOffsetPx = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
+            selecting = true;
+          }
+
+          if (tSpanWord.getAttribute("selectionHighlight") === "end") {
+            selecting = false;
+            widthPx += this.getComputedTextLength(tSpanWord.textContent ?? '', this.visualConfig.textFont);
+            break;
+          }
+
+          if (selecting) {
+            widthPx += this.getComputedTextLength(tSpanWord.textContent ?? '', this.visualConfig.textFont);
+          }
+        };
+
+        if (widthPx > 0) {
+          highlightRect.setAttribute("x", x + startOffsetPx);
+          highlightRect.setAttribute("y", y);
+          // const maxWidthForLine = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+          // let endOffsetPx = startOffsetPx + width;
+          // width = endOffsetPx > maxWidthForLine ? maxWidthForLine - startOffsetPx : width;
+          highlightRect.setAttribute("height", height);
+          highlightRect.setAttribute("fill", "#0067D1");
+          highlightRect.setAttribute("stroke", "#0067D1");
+          highlightRect.setAttribute("width", widthPx.toString());
+          // if (this.currentHighlightenText) { this.currentHighlightenText.remove(); }
+          g.insertAdjacentElement("beforebegin", highlightRect);
+        }
+
+      });
+    });
+
+
+    range.startContainer.parentElement!.removeAttribute("selectionHighlight");
+    range.endContainer.parentElement!.removeAttribute("selectionHighlight");
+
     // const startX = this.getComputedTextLength(this.randomString(range. - textSelection.startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
 
-    const wordOffset = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
-    highlightRect.setAttribute("x", x + wordOffset);
-    highlightRect.setAttribute("y", y);
-    const w = this.getComputedTextLength(this.selectedText, this.visualConfig.textFont);
-    highlightRect.setAttribute("width", w.toString());
-    highlightRect.setAttribute("height", height);
-    highlightRect.setAttribute("fill", "#0067D1");
-    highlightRect.setAttribute("stroke", "#0067D1");
+
     // highlightRect.classList.add("highlightRect");
     // if (parentTextElement.classList.contains('highlight-bg')) {
     // highlightRect.classList.add("highlightRect-bg");
-    if (this.currentHighlightenText) { this.currentHighlightenText.remove(); }
-    this.currentHighlightenText = highlightRect;
-    g.insertAdjacentElement("beforebegin", highlightRect);
+
     // } else {
     //   highlightRect.classList.add("highlightRect-top");
     //   svg.insertBefore(highlightRect, parentTextElement.nextElementSibling);
@@ -2223,7 +2300,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     };
   }
 
-  private renderSelectionHighlightForLine(startIndex: number, endIndex: number, maxWidthForLine : number, lineHighlights: TextHighlight[]) {
+  private renderSelectionHighlightForLine(startIndex: number, endIndex: number, maxWidthForLine: number, lineHighlights: TextHighlight[]) {
     if (!this.specialSelectionAnnotation.active) { return; }
 
     if ((this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
@@ -2237,7 +2314,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       if (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end <= endIndex) {
         difference = startIndex - this.specialSelectionAnnotation.start;
       }
-      
+
       const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
       width = this.getComputedTextLength(this.randomString((this.specialSelectionAnnotation.end - difference) - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
       const endX = startX + width;
