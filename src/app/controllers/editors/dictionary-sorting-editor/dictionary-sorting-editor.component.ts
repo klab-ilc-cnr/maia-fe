@@ -82,14 +82,18 @@ export class DictionarySortingEditorComponent implements OnInit {
    * @param items {DictionarySortingItem[]}
    * @returns {TreeNode<DictionarySortingItem>[]}
    */
-  private mapSortingItemToTreeNode(items: DictionarySortingItem[]): TreeNode<DictionarySortingItem>[] {
-    return items.map(item => <TreeNode<DictionarySortingItem>>{
-      key: item.id,
-      type: item.type.includes('LexicalSense') ? 'sense' : 'lexicalEntry',
-      label: item.label,
-      data: item,
-      expanded: true,
-      children: this.mapSortingItemToTreeNode(item.children ?? [])
+  private mapSortingItemToTreeNode(items: DictionarySortingItem[], parentIndex?: string): TreeNode<DictionarySortingItem>[] {
+    return items.map((item, i) => {
+      const itemIndex = parentIndex ? `${parentIndex}.${i + 1}` : `${i + 1}`
+      return <TreeNode<DictionarySortingItem>>{
+        key: item.id,
+        type: item.type.includes('LexicalSense') ? 'sense' : 'lexicalEntry',
+        label: item.label,
+        data: item,
+        index: itemIndex,
+        expanded: true,
+        children: this.mapSortingItemToTreeNode(item.children ?? [], itemIndex)
+      }
     });
   }
 
