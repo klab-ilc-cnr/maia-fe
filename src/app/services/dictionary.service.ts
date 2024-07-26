@@ -89,7 +89,7 @@ export class DictionaryService {
       }
     );
   }
-  
+
   /**
    * HTTP request that associates a dictionary entry of type see also with another dictionary entry
    * @param dictionaryId {string}
@@ -158,7 +158,7 @@ export class DictionaryService {
    * @param body {string} text of the note
    * @returns {Observable<Object>}
    */
-  createAndUpdateDictionaryNote(dictionaryId: string, author: string, body: string ) {
+  createAndUpdateDictionaryNote(dictionaryId: string, author: string, body: string) {
     return this.http.post(
       `${this.lexoUrl}/update/dictionaryEntry/notes?id=${this.commonService.encodeUrl(dictionaryId)}&author=${author}`,
       body
@@ -209,14 +209,14 @@ export class DictionaryService {
     );
   }
 
-    /**
-   * Request http to retrieve the list of works from an author
-   * @returns {Observable<TextualDocument[]>}
-   */
-    retrieveAuthorDocuments(): Observable<TextualDocument[]> {
-      return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/authorDocuments`);
-    }
-  
+  /**
+ * Request http to retrieve the list of works from an author
+ * @returns {Observable<TextualDocument[]>}
+ */
+  retrieveAuthorDocuments(): Observable<TextualDocument[]> {
+    return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/authorDocuments`);
+  }
+
 
   /**
    * Http request to retrieve the list of components of an entity (for example, of a dictionary entry)
@@ -296,7 +296,7 @@ export class DictionaryService {
   updateDictionaryEntryLabel(dictionaryId: string, label: string) {
     return this.http.post(
       `${this.lexoUrl}/update/dictionaryEntry/label?id=${this.commonService.encodeUrl(dictionaryId)}&author=${this.currentUser.username}`,
-      {label: label}
+      { label: label }
     )
   }
 
@@ -312,6 +312,13 @@ export class DictionaryService {
       {
         status: status
       }
+    );
+  }
+
+  updateDictionarySorting(dictionaryId: string, body: DictionarySortingItem[]) {
+    return this.http.post(
+      `${this.lexoUrl}/update/lemmaSenseTree?author=${this.currentUser.username}&prefix=${this.prefix}&baseIRI=${this.encodedBaseIRI}&id=${this.commonService.encodeUrl(dictionaryId)}`,
+      body
     );
   }
 }

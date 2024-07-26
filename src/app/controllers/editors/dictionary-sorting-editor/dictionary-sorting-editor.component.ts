@@ -35,6 +35,11 @@ export class DictionarySortingEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onLoadData();
+  }
+
+  /**Retrieve the tree data and refresh rendering */
+  onLoadData() {
     this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe( //initial data retrieval
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
@@ -51,7 +56,7 @@ export class DictionarySortingEditorComponent implements OnInit {
    * @returns {void}
    */
   onDrop(event: any) {
-    if(event.dropNode.parent === undefined) return;
+    if (event.dropNode.parent === undefined) return;
     event.accept();
   }
 
@@ -63,8 +68,13 @@ export class DictionarySortingEditorComponent implements OnInit {
   /**Save a new hierarchy of lemmas and senses */
   onSaveUpdate() {
     this._originalOrder = structuredClone(this.sortingTrees);
-    console.info(this.reverseTreeNodeMapping(this.sortingTrees));
-    //TODO add saving
+    const sortedTree = this.reverseTreeNodeMapping(this.sortingTrees);
+    this.dictionaryService.updateDictionarySorting(this.dictionaryEntry.id, sortedTree).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(() => {
+      this.onLoadData();
+    });
   }
 
   /**
@@ -79,7 +89,7 @@ export class DictionarySortingEditorComponent implements OnInit {
       label: item.label,
       data: item,
       expanded: true,
-      children: this.mapSortingItemToTreeNode(item.children??[])
+      children: this.mapSortingItemToTreeNode(item.children ?? [])
     });
   }
 
@@ -91,7 +101,7 @@ export class DictionarySortingEditorComponent implements OnInit {
   private reverseTreeNodeMapping(treeNodes: TreeNode<DictionarySortingItem>[]): DictionarySortingItem[] {
     return treeNodes.map(node => <DictionarySortingItem>{
       ...node.data,
-      children: this.reverseTreeNodeMapping(node.children??[])
+      children: this.reverseTreeNodeMapping(node.children ?? [])
     });
   }
 }
