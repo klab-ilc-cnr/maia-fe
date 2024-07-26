@@ -1,6 +1,6 @@
 {
   "name": "maia-fe",
-  "version": "0.11.10",
+  "version": "0.12.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
