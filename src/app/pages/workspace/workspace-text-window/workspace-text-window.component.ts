@@ -2131,11 +2131,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       t.anns.forEach((ann: any) => {
         const layer = this.layersList.find(l => l.id == Number.parseInt(ann.layer));
         const startX = this.getComputedTextLength(this.randomString(t.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        let w = this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
-        let endX = startX + w;
-        w = endX > maxWidthForLine ? maxWidthForLine - startX : w;
-        endX = startX + w;
-        const text = this.elaborateAnnotationLabel(layer, ann, w);
+        let width = this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
+        let endX = startX + width;
+        width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
+        endX = startX + width;
+        const text = this.elaborateAnnotationLabel(layer, ann, width);
         const textAnnLenght = this.getComputedTextLength(text, this.visualConfig.annotationFont);
 
         // console.log(w, startX + (w/2) - (textAnnLenght/2), this.randomString(t.span.end - t.span.start))
@@ -2146,11 +2146,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           borderColor: '#808080',
           text: text,
           textCoordinates: {
-            x: Math.ceil(startX + w / 2),
+            x: Math.ceil(startX + width / 2),
             y: 0
           },
           startX: startX,
-          width: w,
+          width: width,
           endX: endX,
           height: this.visualConfig.annotationHeight,
           yOffset: yAnnOffset, //permette di distribuire in verticale le annotazioni
@@ -2166,7 +2166,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
             y: 0
           },
           height: this.visualConfig.stdTextLineHeight - 2,
-          width: w + 2,
+          width: width + 2,
           id: this.generateHighlightId(ann.id) //serve successivamente per riaprire annotazione //TODO verificare come gestire con nuovo BE
         })
       })
