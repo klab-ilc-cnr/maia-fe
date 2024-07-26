@@ -1,11 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { TreeDragDropService, TreeNode } from 'primeng/api';
+import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { catchError, take } from 'rxjs';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 
 @Component({
   selector: 'app-dictionary-sorting-editor',
@@ -32,6 +33,8 @@ export class DictionarySortingEditorComponent implements OnInit {
     private dictionaryService: DictionaryService,
     private commonService: CommonService,
     private changeDetRef: ChangeDetectorRef,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
   ) { }
 
   ngOnInit(): void {
@@ -73,6 +76,8 @@ export class DictionarySortingEditorComponent implements OnInit {
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(() => {
+      const successMsg = this.commonService.translateKey('DICTIONARY_EDITOR.SORT_TAB.sortingSuccess');
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
       this.onLoadData();
     });
   }
