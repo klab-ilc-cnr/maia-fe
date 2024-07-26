@@ -2097,6 +2097,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private renderAnnotationsForLine(startIndex: number, endIndex: number) {
     const lineTowers = new Array();
     const lineHighlights = new Array<TextHighlight>();
+    const maxWidthForLine = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
 
     // const localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
 
@@ -2130,8 +2131,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       t.anns.forEach((ann: any) => {
         const layer = this.layersList.find(l => l.id == Number.parseInt(ann.layer));
         const startX = this.getComputedTextLength(this.randomString(t.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        const w = this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
-        const endX = startX + w;
+        let w = this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
+        let endX = startX + w;
+        w = endX > maxWidthForLine ? maxWidthForLine - startX : w;
+        endX = startX + w;
         const text = this.elaborateAnnotationLabel(layer, ann, w);
         const textAnnLenght = this.getComputedTextLength(text, this.visualConfig.annotationFont);
 
@@ -2201,7 +2204,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       })
     })
 
-    this.renderSelectionHighlightForLine(startIndex, endIndex, lineHighlights);
+    this.renderSelectionHighlightForLine(startIndex, endIndex, maxWidthForLine, lineHighlights);
 
     return {
       lineTowers: lineTowers,
@@ -2209,7 +2212,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     };
   }
 
-  private renderSelectionHighlightForLine(startIndex: number, endIndex: number, lineHighlights: TextHighlight[]) {
+  private renderSelectionHighlightForLine(startIndex: number, endIndex: number, maxWidthForLine : number, lineHighlights: TextHighlight[]) {
     if (!this.specialSelectionAnnotation.active) { return; }
 
     if ((this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
@@ -2226,9 +2229,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       
       const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
       width = this.getComputedTextLength(this.randomString((this.specialSelectionAnnotation.end - difference) - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
-      const maxComputedWidth = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
       const endX = startX + width;
-      width = endX > maxComputedWidth ? maxComputedWidth - startX : width;
+      width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
 
       lineHighlights.push({
         id: this.specialSelectionAnnotation.id,
