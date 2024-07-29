@@ -60,8 +60,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   selectedText = '';
   /**Oggetto di selezione */
   currentTextSelection: TextSelection | null = null;
-  /**Id used to simulate the text selection operation */
-  specialSelectionLayerId: number = -777
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -654,20 +652,20 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     // }
 
     this.specialSelectionAnnotation.active = this.visibleLayers.length > 0;
-    this.specialSelectionAnnotation.start = startIndex;
-    this.specialSelectionAnnotation.end = endIndex;
+    this.specialSelectionAnnotation.start = (this.offset ?? 0) + startIndex;
+    this.specialSelectionAnnotation.end = (this.offset ?? 0) + endIndex;
     // this.updateAnnotationsResult(selectionAnnotation);
-    // this.setScrollTopOperationInRange();
-    // this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+    this.setScrollTopOperationInRange();
+    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
 
-    this.highlightSelection(textSelection);
+    // this.highlightSelection(textSelection);
 
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
 
   specialSelectionAnnotation: any = { id: -777, color: "#0067D1", start: undefined, end: undefined, active: false };
 
-  //TODO Eliminare usare l'altra tecnica che sfrutta il sistema di annotazione
+  //TODO Integrare con l'altra tecnica che sfrutta il sistema di annotazione
   highlightRectList : Array<SVGRectElement> = [];
   highlightSelection(textSelection: TextSelection) {
     // if (/\s+$/.test(textSelection.selection.toString())) { // Check if there is a trailing whitespace
@@ -1055,6 +1053,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     end += this.backendIndexCompensation; //backend use a mixed strategy on range, it's closed on start and open on end so we need to compensate the end index
 
     const currentVisibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
+    this.highlightRectList.forEach(el => el.remove()); //removes the highlight if any, it will be rendered in next steps if any
 
     let layersReload = new LayerReload();
 
@@ -2305,20 +2304,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private renderSelectionHighlightForLine(startIndex: number, endIndex: number, maxWidthForLine: number, lineHighlights: TextHighlight[]) {
     if (!this.specialSelectionAnnotation.active) { return; }
 
-    if ((this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
-      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end >= (startIndex || 0) && this.specialSelectionAnnotation.end <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
-      (this.specialSelectionAnnotation.start >= (startIndex || 0) && this.specialSelectionAnnotation.start < (endIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
-      (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end > (endIndex || 0))) {
+    const selectionStart = this.specialSelectionAnnotation.start - (this.offset ?? 0);
+    const selectionEnd = this.specialSelectionAnnotation.end - (this.offset ?? 0);
+
+    if ((selectionStart >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
+      (selectionStart < (startIndex || 0) && selectionEnd >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
+      (selectionStart >= (startIndex || 0) && selectionStart < (endIndex || 0) && selectionEnd > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
+      (selectionStart < (startIndex || 0) && selectionEnd > (endIndex || 0))) {
 
       let width = 0;
       let difference = 0;
 
-      if (this.specialSelectionAnnotation.start < (startIndex || 0) && this.specialSelectionAnnotation.end <= endIndex) {
-        difference = startIndex - this.specialSelectionAnnotation.start;
+      if (selectionStart < (startIndex || 0) && selectionEnd <= endIndex) {
+        difference = startIndex - selectionStart;
       }
 
-      const startX = this.getComputedTextLength(this.randomString(this.specialSelectionAnnotation.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-      width = this.getComputedTextLength(this.randomString((this.specialSelectionAnnotation.end - difference) - this.specialSelectionAnnotation.start), this.visualConfig.textFont);
+      const startX = this.getComputedTextLength(this.randomString(selectionStart - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+      width = this.getComputedTextLength(this.randomString((selectionEnd - difference) - selectionStart), this.visualConfig.textFont);
       const endX = startX + width;
       width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
 
