@@ -4,7 +4,7 @@
             <p-tree [value]="[sortingTree]" [draggableNodes]="true" [droppableNodes]="true" [validateDrop]="true"
                 (onNodeDrop)="onDrop($event)" [droppableScope]="sortingTree.key" [draggableScope]="sortingTree.key">
                 <ng-template let-item pTemplate="lexicalEntry" draggable="false">
-                    <div><span class="mr-2">{{item.index}}</span><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
+                    <div><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
                 </ng-template>
                 <ng-template let-item pTemplate="sense">
                     <div><span class="mr-2">{{item.index}}</span><em *ngIf="item.data.prefix.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label}}
