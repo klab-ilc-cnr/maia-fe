@@ -37,9 +37,16 @@ export class LayerReload {
 }
 
 export class TextSelection {
-  selection!: Selection;
-  startIndex!: number;
-  endIndex!: number;
+  selection?: Selection;
+  startIndex?: number;
+  endIndex?: number;
+}
+
+export class TextSelectionAnnotation {
+  id!: Number;
+  textSelection?: TextSelection;
+  color!: string;
+  active!: boolean;
 }
 
 enum LayerReloadOperation { Add, Remove, Equal }
@@ -58,8 +65,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
   selectedText = '';
-  /**Oggetto di selezione */
-  currentTextSelection: TextSelection | null = null;
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -90,6 +95,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
   private gotoSavedScrollTop: boolean = false;
   private savedScrollTop: number = 0;
+
+  /** property used to simulate the text selection in the text svg */
+  specialSelectionAnnotation: TextSelectionAnnotation = {
+    id: -777,
+    color: "#0067D1",
+    active: false
+  };
 
   /**Annotazione in lavorazione */
   // annotation = new Annotation();
@@ -612,8 +624,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textoAnnotation = new TAnnotation();
     this.visibleAnnotationId = undefined;
 
-    let startIndex = textSelection.startIndex;
-    let endIndex = textSelection.endIndex;
+    let startIndex = textSelection.startIndex!;
+    let endIndex = textSelection.endIndex!;
     let text = this.textRes.join('').substring(startIndex, endIndex);
 
     if (!this.onlySpaces(text)) {
@@ -633,14 +645,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     // const relations = new Relations();
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
-    textSelection.startIndex = (this.offset ?? 0) + startIndex;
-    textSelection.endIndex = (this.offset ?? 0) + endIndex;
+    this.selectedText = text;
+    
+    textSelection.startIndex = (this.offset ?? 0) + startIndex; //from current to absolute value respect to text
+    textSelection.endIndex = (this.offset ?? 0) + endIndex; //from current to absolute value respect to text
+    this.specialSelectionAnnotation.textSelection = textSelection;
+    this.specialSelectionAnnotation.active = this.visibleLayers.length > 0;
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
-    this.selectedText = text;
-    this.currentTextSelection = textSelection;
-
     // const selectionAnnotation = new TAnnotation();
     // selectionAnnotation.id = -776
     // // selectionAnnotation.layer = this.specialSelectionLayer;
@@ -651,23 +664,21 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     //   this.selectedLayers?.push(this.specialSelectionLayer)
     // }
 
-    this.specialSelectionAnnotation.active = this.visibleLayers.length > 0;
-    this.specialSelectionAnnotation.start = (this.offset ?? 0) + startIndex;
-    this.specialSelectionAnnotation.end = (this.offset ?? 0) + endIndex;
     // this.updateAnnotationsResult(selectionAnnotation);
-    this.setScrollTopOperationInRange();
-    this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+    // this.setScrollTopOperationInRange();
+    // this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
 
-    // this.highlightSelection(textSelection);
+    this.highlightSelection();
 
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
 
-  specialSelectionAnnotation: any = { id: -777, color: "#0067D1", start: undefined, end: undefined, active: false };
-
   //TODO Integrare con l'altra tecnica che sfrutta il sistema di annotazione
-  highlightRectList : Array<SVGRectElement> = [];
-  highlightSelection(textSelection: TextSelection) {
+  highlightRectList: Array<SVGRectElement> = [];
+  highlightSelection() {
+    if (!this.specialSelectionAnnotation.active) { return; }
+
+    const textSelection: TextSelection = this.specialSelectionAnnotation.textSelection!;
     // if (/\s+$/.test(textSelection.selection.toString())) { // Check if there is a trailing whitespace
     //   (textSelection.selection as SelectionExtension).modify("extend", "left", "character");
     // }
@@ -717,16 +728,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
         let widthPx = 0;
         let startOffsetPx = 0;
-        
+
         for (const tSpanWord of Array.from(tSpanSentence.children)) {
           if (tSpanWord.getAttribute("selectionHighlight") === "startEnd") {
             let bb = (tSpanWord as any).getBBox();
             x = bb.x;
             startOffsetPx = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
-            widthPx = this.getComputedTextLength(this.randomString(textSelection.endIndex - textSelection.startIndex), this.visualConfig.textFont);
+            widthPx = this.getComputedTextLength(this.randomString(textSelection.endIndex! - textSelection.startIndex!), this.visualConfig.textFont);
             break;
           }
-          
+
           if (tSpanWord.getAttribute("selectionHighlight") === "start") {
             // const highlight: any = textSelection.selection.anchorNode?.parentElement!;
             let bb = (tSpanWord as any).getBBox();
@@ -2304,8 +2315,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private renderSelectionHighlightForLine(startIndex: number, endIndex: number, maxWidthForLine: number, lineHighlights: TextHighlight[]) {
     if (!this.specialSelectionAnnotation.active) { return; }
 
-    const selectionStart = this.specialSelectionAnnotation.start - (this.offset ?? 0);
-    const selectionEnd = this.specialSelectionAnnotation.end - (this.offset ?? 0);
+    const selectionStart = this.specialSelectionAnnotation.textSelection!.startIndex! - (this.offset ?? 0);
+    const selectionEnd = this.specialSelectionAnnotation.textSelection!.endIndex! - (this.offset ?? 0);
 
     if ((selectionStart >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
       (selectionStart < (startIndex || 0) && selectionEnd >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
@@ -2325,7 +2336,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
 
       lineHighlights.push({
-        id: this.specialSelectionAnnotation.id,
+        id: this.specialSelectionAnnotation.id.toString(),
         width: width,
         height: this.visualConfig.stdTextLineHeight - 2,
         coordinates: {
