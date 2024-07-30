@@ -66,6 +66,7 @@
             "title": "Anteprima"
         },
         "SORT_TAB": {
+            "noDefinition": "Nessuna definizione fornita",
             "title": "Ordinamento",
             "sortingSuccess": "Ordine dei lemmi e dei sensi aggiornato"
         }
