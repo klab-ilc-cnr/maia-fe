@@ -522,6 +522,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (this.selectedLayer && this.selectedLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
       this.selectedLayers.push(this.selectedLayer!);
+      this.textoAnnotation.layer = this.selectedLayer;
+      this.textoAnnotation = {...this.textoAnnotation};
       this.changeVisibleLayers();
     }
   }
