@@ -13,6 +13,4 @@ export class TextHighlight {
   height: number | undefined
   /**Identificativo dell'evidenziazione */
   id: string | undefined
-  /**true if it's part of the special text selection */
-  isSelection!: boolean
 }

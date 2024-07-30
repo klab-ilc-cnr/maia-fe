@@ -54,7 +54,7 @@
   filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .8));
 }
 
-.highlight rect:not([isSelection=true]) {
+.highlight rect {
   opacity: 0.3;
 
   &.over {

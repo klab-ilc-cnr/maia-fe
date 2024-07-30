@@ -523,7 +523,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (this.selectedLayer && this.selectedLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
       this.selectedLayers.push(this.selectedLayer!);
       this.textoAnnotation.layer = this.selectedLayer;
-      this.textoAnnotation = {...this.textoAnnotation};
+      this.textoAnnotation = { ...this.textoAnnotation };
       this.changeVisibleLayers();
     }
   }
@@ -652,7 +652,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     textSelection.startIndex = (this.offset ?? 0) + startIndex; //from current to absolute value respect to text
     textSelection.endIndex = (this.offset ?? 0) + endIndex; //from current to absolute value respect to text
     this.specialSelectionAnnotation.textSelection = textSelection;
-    this.specialSelectionAnnotation.active = this.visibleLayers.length > 0;
+    this.specialSelectionAnnotation.active = this.selectedLayer != null && this.selectedLayer != undefined;
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
@@ -688,10 +688,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       Array.from(textElement.children).forEach((tSpanSentence) => {
         const highlight: any = tSpanSentence;
         let bb = highlight.getBBox();
-        let g: SVGGElement = document.querySelector("#highlightg")!;
+        let g: SVGGElement = document.querySelector("#selectionHighlightg")!;
         let [x, y, maxSentenceWidth, height] = [bb.x, bb.y, bb.width, bb.height];
         let highlightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        highlightRect.setAttribute("isSelection", "true");
 
         let widthPx = 0;
         let startOffsetPx = 0;
@@ -833,8 +832,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  * removes text highligh elements from the dom to directly manipulate the svg
  */
   private removeTextSelection() {
-    let rectToDelete = document.querySelectorAll("#highlightg [isSelection=true]");
-    rectToDelete.forEach(el => el.remove());
+    document.getElementById("selectionHighlightg")?.replaceChildren(); // deletes children
   }
 
   /**
@@ -1864,6 +1862,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const resAnns = this.renderAnnotationsForLine(startIndex, endIndex);
     const lineTowers = resAnns.lineTowers;
     const lineHighlights = resAnns.lineHighLights;
+    const selectionHighlights = resAnns.selectionHighlights;
 
     // const resArcs = this.renderArcsForLine(startIndex, endIndex, lineTowers);
 
@@ -1970,6 +1969,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       h.coordinates.y = yHighlight;
     })
 
+    selectionHighlights.forEach((h) => {
+      h.coordinates.y = yHighlight;
+    })
+
     const line = {
       text: auxLineBuilder.line.text,
       words: auxLineBuilder.line.words,
@@ -1981,6 +1984,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       annotationsTowers: lineTowers,
       yAnnotation: yAnnotation,
       highlights: lineHighlights,
+      selectionHighlights: selectionHighlights,
       yHighlight: yHighlight,
       // arcs: resArcs
     }
@@ -2223,7 +2227,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           height: this.visualConfig.stdTextLineHeight - 2,
           width: width + 2,
           id: this.generateHighlightId(ann.id), //serve successivamente per riaprire annotazione //TODO verificare come gestire con nuovo BE
-          isSelection: false
         })
       })
 
@@ -2260,16 +2263,19 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       })
     })
 
-    this.renderSelectionHighlightForLine(startIndex, endIndex, maxWidthForLine, lineHighlights);
+    const selectionHighlights = this.renderSelectionHighlightForLine(startIndex, endIndex, maxWidthForLine);
 
     return {
       lineTowers: lineTowers,
-      lineHighLights: lineHighlights
+      lineHighLights: lineHighlights,
+      selectionHighlights : selectionHighlights
     };
   }
 
-  private renderSelectionHighlightForLine(startIndex: number, endIndex: number, maxWidthForLine: number, lineHighlights: TextHighlight[]) {
-    if (!this.specialSelectionAnnotation.active) { return; }
+  private renderSelectionHighlightForLine(startIndex: number, endIndex: number, maxWidthForLine: number): Array<TextHighlight> {
+    if (!this.specialSelectionAnnotation.active) { return []; }
+
+    let lineHighlights: Array<TextHighlight> = [];
 
     const selectionStart = this.specialSelectionAnnotation.textSelection!.startIndex! - (this.offset ?? 0);
     const selectionEnd = this.specialSelectionAnnotation.textSelection!.endIndex! - (this.offset ?? 0);
@@ -2299,10 +2305,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           x: startX - 1,
           y: 0
         },
-        bgColor: this.specialSelectionAnnotation.color,
-        isSelection: true
+        bgColor: this.specialSelectionAnnotation.color
       });
     }
+
+    return lineHighlights;
   }
 
   /**
