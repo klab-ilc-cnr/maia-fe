@@ -66,6 +66,7 @@
             "title": "Preview"
         },
         "SORT_TAB": {
+            "noDefinition": "No definition provided",
             "title": "Sorting",
             "sortingSuccess": "Order of lemmas and senses updated"
         }
