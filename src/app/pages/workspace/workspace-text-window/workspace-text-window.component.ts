@@ -43,7 +43,6 @@ export class TextSelection {
 }
 
 export class TextSelectionAnnotation {
-  id!: Number;
   textSelection?: TextSelection;
   color!: string;
   active!: boolean;
@@ -98,7 +97,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /** property used to simulate the text selection in the text svg */
   specialSelectionAnnotation: TextSelectionAnnotation = {
-    id: -777,
     color: "#0067D1",
     active: false
   };
@@ -690,9 +688,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       Array.from(textElement.children).forEach((tSpanSentence) => {
         const highlight: any = tSpanSentence;
         let bb = highlight.getBBox();
-        let g: SVGGElement = document.querySelector("#selectionHighlightg")!;
         let [x, y, maxSentenceWidth, height] = [bb.x, bb.y, bb.width, bb.height];
-        let highlightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 
         let widthPx = 0;
         let startOffsetPx = 0;
@@ -727,13 +723,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         };
 
         if (widthPx > 0) {
-          highlightRect.setAttribute("x", x + startOffsetPx);
-          highlightRect.setAttribute("y", y);
-          highlightRect.setAttribute("height", height);
-          highlightRect.setAttribute("fill", "#0067D1");
-          highlightRect.setAttribute("stroke", "#0067D1");
-          highlightRect.setAttribute("width", widthPx.toString());
-          g.appendChild(highlightRect);
+          this.selectionHighlights.push({
+            id: undefined,
+            width: widthPx,
+            height: height,
+            coordinates: {
+              x: x + startOffsetPx,
+              y: y
+            },
+            bgColor: this.specialSelectionAnnotation.color
+          });
         }
       });
     });
@@ -834,9 +833,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  * removes text highligh elements from the dom to directly manipulate the svg
  */
   private removeTextSelection() {
-    // document.getElementById("selectionHighlightg")?.replaceChildren(); // deletes children
-    const rectToDelete = document.querySelectorAll("#selectionHighlightg rect")
-    rectToDelete.forEach(el => el.remove());
     this.selectionHighlights = [];
   }
 
@@ -2309,7 +2305,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
 
       lineHighlights.push({
-        id: this.specialSelectionAnnotation.id.toString(),
+        id: undefined,
         width: width,
         height: this.visualConfig.stdTextLineHeight - 2,
         coordinates: {
