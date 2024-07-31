@@ -95,12 +95,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private gotoSavedScrollTop: boolean = false;
   private savedScrollTop: number = 0;
 
-  /** property used to simulate the text selection in the text svg */
-  specialSelectionAnnotation: TextSelectionAnnotation = {
-    color: "#0067D1",
-    active: false
-  };
-
   /**Annotazione in lavorazione */
   // annotation = new Annotation();
   textoAnnotation = new TAnnotation();
@@ -168,9 +162,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   textSplittedRows: TextSplittedRow[] | undefined;
   /**Lista dei layer visibili */
   visibleLayers: TLayer[] = [];
-  /** manages the manual selection highlight */
+  /** list of the selection highlight rect used in the svg */
   selectionHighlights: TextHighlight[] = [];
-  
+  /** property used to support the build of the selection highlight rect for the svg */
+  specialTextSelectionHighlight: TextSelectionAnnotation = {
+    color: "#0067D1",
+    active: false,
+    textSelection: undefined
+  };
+
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
   @ViewChild('textContainer') public textContainer!: ElementRef;
@@ -498,6 +498,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onAnnotationCancel() {
     this.textoAnnotation = new TAnnotation();
     this.visibleAnnotationId = undefined;
+
+    this.disableTextSelection();
   }
 
   /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
@@ -525,6 +527,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.textoAnnotation.layer = this.selectedLayer;
       this.textoAnnotation = { ...this.textoAnnotation };
       this.changeVisibleLayers();
+    }
+
+    if (!this.selectedLayer) {
+      this.onAnnotationCancel();
     }
   }
 
@@ -651,8 +657,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     textSelection.startIndex = (this.offset ?? 0) + startIndex; //from current to absolute value respect to text
     textSelection.endIndex = (this.offset ?? 0) + endIndex; //from current to absolute value respect to text
-    this.specialSelectionAnnotation.textSelection = textSelection;
-    this.specialSelectionAnnotation.active = this.selectedLayer != null && this.selectedLayer != undefined;
+    this.specialTextSelectionHighlight.textSelection = textSelection;
+    this.specialTextSelectionHighlight.active = this.selectedLayer != null && this.selectedLayer != undefined;
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
@@ -665,9 +671,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   highlightSelection() {
-    if (!this.specialSelectionAnnotation.active) { return; }
+    if (!this.specialTextSelectionHighlight.active) { return; }
 
-    const textSelection: TextSelection = this.specialSelectionAnnotation.textSelection!;
+    const textSelection: TextSelection = this.specialTextSelectionHighlight.textSelection!;
     let range = textSelection.selection!.getRangeAt(0);
     this.removeTextSelection();
 
@@ -731,7 +737,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
               x: x + startOffsetPx,
               y: y
             },
-            bgColor: this.specialSelectionAnnotation.color
+            bgColor: this.specialTextSelectionHighlight.color
           });
         }
       });
@@ -830,10 +836,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
- * removes text highligh elements from the dom to directly manipulate the svg
+ * removes text selection elements
  */
   private removeTextSelection() {
     this.selectionHighlights = [];
+  }
+
+  /**
+ * disables the text selection on the text
+ */
+  private disableTextSelection() {
+    this.specialTextSelectionHighlight.active = false;
+    this.removeTextSelection();
   }
 
   /**
@@ -2279,13 +2293,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   private renderSelectionHighlightForLine(startIndex: number, endIndex: number): Array<TextHighlight> {
-    if (!this.specialSelectionAnnotation.active) { return []; }
+    if (!this.specialTextSelectionHighlight.active) { return []; }
 
     const maxWidthForLine = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
     let lineHighlights: Array<TextHighlight> = [];
 
-    const selectionStart = this.specialSelectionAnnotation.textSelection!.startIndex! - (this.offset ?? 0);
-    const selectionEnd = this.specialSelectionAnnotation.textSelection!.endIndex! - (this.offset ?? 0);
+    const selectionStart = this.specialTextSelectionHighlight.textSelection!.startIndex! - (this.offset ?? 0);
+    const selectionEnd = this.specialTextSelectionHighlight.textSelection!.endIndex! - (this.offset ?? 0);
 
     if ((selectionStart >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
       (selectionStart < (startIndex || 0) && selectionEnd >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
@@ -2312,7 +2326,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           x: startX - 1,
           y: 0
         },
-        bgColor: this.specialSelectionAnnotation.color
+        bgColor: this.specialTextSelectionHighlight.color
       });
     }
 
