@@ -678,7 +678,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   highlightSelection() {
     this.removeTextSelection();
-    
+
     if (!this.specialTextSelectionHighlight.active) { return; }
 
     const textSelection: TextSelection = this.specialTextSelectionHighlight.textSelection!;
@@ -759,7 +759,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   highlightSelectedAnnotation(selectedAnnotation: TAnnotation) {
     this.removeTextSelection();
-    const annotationHighlights = document.querySelectorAll(`#h-${selectedAnnotation.id}`);
+    const annotationHighlights = document.querySelectorAll(`#h-${selectedAnnotation.id}`); //warning id is repeated on different lines
 
     if (annotationHighlights.length === 0) { throw new Error("annotationHighlights shouldn't be empty here"); }
 
