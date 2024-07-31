@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { Expansion } from '@angular/compiler';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
@@ -43,7 +44,7 @@ export class TextSelection {
 }
 
 export class TextSelectionAnnotation {
-  textSelection?: TextSelection;
+  textSelection!: TextSelection;
   color!: string;
   active!: boolean;
 }
@@ -168,7 +169,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   specialTextSelectionHighlight: TextSelectionAnnotation = {
     color: "#0067D1",
     active: false,
-    textSelection: undefined
+    textSelection: new TextSelection()
   };
 
   /**Riferimento all'elemento svg */
@@ -525,9 +526,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (this.selectedLayer && this.selectedLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
       this.selectedLayers.push(this.selectedLayer!);
       this.textoAnnotation.layer = this.selectedLayer;
-      this.textoAnnotation = { ...this.textoAnnotation };
       this.changeVisibleLayers();
     }
+
+    this.textoAnnotation = { ...this.textoAnnotation }; //refresh the annatation panel
 
     if (!this.selectedLayer) {
       this.onAnnotationCancel();
@@ -670,12 +672,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.showEditorAndHideOthers(EditorType.Annotation);
   }
 
+  /**
+   * highlights the manual selected text
+   * @returns 
+   */
   highlightSelection() {
+    this.removeTextSelection();
+    
     if (!this.specialTextSelectionHighlight.active) { return; }
 
     const textSelection: TextSelection = this.specialTextSelectionHighlight.textSelection!;
     let range = textSelection.selection!.getRangeAt(0);
-    this.removeTextSelection();
 
     range.startContainer.parentElement!.setAttribute("selectionHighlight", "start");
     if (range.endContainer.parentElement!.getAttribute("selectionHighlight") === "start") {
@@ -748,6 +755,36 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * hihglights the current selected annotation
+   */
+  highlightSelectedAnnotation(selectedAnnotation: TAnnotation) {
+    this.removeTextSelection();
+    const annotationHighlights = document.querySelectorAll(`#h-${selectedAnnotation.id}`);
+
+    if (annotationHighlights.length === 0) { throw new Error("annotationHighlights shouldn't be empty here"); }
+
+    this.specialTextSelectionHighlight.active = true;
+    this.specialTextSelectionHighlight.textSelection.startIndex = selectedAnnotation.start;
+    this.specialTextSelectionHighlight.textSelection.endIndex = selectedAnnotation.end;
+    Array.from(annotationHighlights).forEach((highlight) => {
+      const width = Number(highlight.getAttribute("width"));
+      const height = Number(highlight.getAttribute("height"));
+      const x = Number(highlight.getAttribute("x"));
+      const y = Number(highlight.getAttribute("y"));
+      this.selectionHighlights.push({
+        id: undefined,
+        width: width,
+        height: height,
+        coordinates: {
+          x: x,
+          y: y
+        },
+        bgColor: this.specialTextSelectionHighlight.color
+      });
+    });
+  }
+
+  /**
    * Metodo che apre l'annotazione selezionata nell'editor
    * @param id {number} identificativo numerico di un'annotazione
    * @returns {void}
@@ -771,6 +808,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       this.messageService.add(this.msgConfService.generateErrorMessageConfig('Annotazione non trovata'));
       return;
     }
+
+    this.highlightSelectedAnnotation(ann);
 
     // if (this._editIsLocked) { //TODO implementare gestione se edit non permesso
 
@@ -2298,8 +2337,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const maxWidthForLine = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
     let lineHighlights: Array<TextHighlight> = [];
 
-    const selectionStart = this.specialTextSelectionHighlight.textSelection!.startIndex! - (this.offset ?? 0);
-    const selectionEnd = this.specialTextSelectionHighlight.textSelection!.endIndex! - (this.offset ?? 0);
+    const selectionStart = this.specialTextSelectionHighlight.textSelection.startIndex! - (this.offset ?? 0);
+    const selectionEnd = this.specialTextSelectionHighlight.textSelection.endIndex! - (this.offset ?? 0);
 
     if ((selectionStart >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
       (selectionStart < (startIndex || 0) && selectionEnd >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
