@@ -132,10 +132,8 @@
                 </g>
               </g>
               <g id="selectionHighlightg">
-                <g *ngFor="let row of rows">
-                  <g *ngFor="let line of row.lines;" [attr.y]="line.yHighlight" [attr.x]="line.x" [attr.height]="line.height! + 4" class="span">
-                    <g *ngFor="let h of line.selectionHighlights">
-                      <rect [attr.id]="h.id" 
+                    <rect *ngFor="let h of selectionHighlights"
+                            [attr.id]="h.id" 
                             [attr.x]="h.coordinates.x" 
                             [attr.y]="h.coordinates.y" 
                             [attr.height]="h.height" 
@@ -145,11 +143,7 @@
                             stroke-width="0px" 
                             rx="3px" 
                             ry="3px" 
-                            stroke-linejoin="round"
-                            [attr.data-rowIndex]="row.rowIndex"></rect>
-                    </g>
-                  </g>
-                </g>
+                            stroke-linejoin="round"></rect>
               </g>
               <g id="gText" class="text">
                 <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (dblclick)="onSelectionChangeDoubleClick()" (mouseup)="onSelectionChange($event, row)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
