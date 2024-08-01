@@ -1,5 +1,4 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Expansion } from '@angular/compiler';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
@@ -497,9 +496,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
-    this.textoAnnotation = new TAnnotation();
-    this.visibleAnnotationId = undefined;
-
+    this.resetAnnotation();
     this.disableTextSelection();
   }
 
@@ -525,11 +522,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (this.selectedLayer && this.selectedLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
       this.selectedLayers.push(this.selectedLayer!);
-      this.textoAnnotation.layer = this.selectedLayer;
       this.changeVisibleLayers();
     }
 
-    this.textoAnnotation = { ...this.textoAnnotation }; //refresh the annatation panel
+    this.resetAnnotation();
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex!, this.specialTextSelectionHighlight.textSelection.endIndex!);
 
     if (!this.selectedLayer) {
       this.onAnnotationCancel();
@@ -618,6 +615,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
+ * Method that intercept mouse click on the background
+ * @param event {any} evento di mouse up
+ * @returns {void}
+ */
+  onTextAreaClick(event: any): void {
+    this.disableTextSelection();
+  }
+
+  /**
    * Metodo che gestisce le variazioni di selezione sul testo
    * @param event {any} evento di mouse up
    * @returns {void}
@@ -628,11 +634,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const textSelection = this.getCurrentTextSelection();
 
     if (!textSelection) { //in case of no selection
+      this.disableTextSelection();
       return;
     }
 
-    this.textoAnnotation = new TAnnotation();
-    this.visibleAnnotationId = undefined;
+    this.resetAnnotation();
 
     let startIndex = textSelection.startIndex!;
     let endIndex = textSelection.endIndex!;
@@ -661,9 +667,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     textSelection.endIndex = (this.offset ?? 0) + endIndex; //from current to absolute value respect to text
     this.specialTextSelectionHighlight.textSelection = textSelection;
     this.specialTextSelectionHighlight.active = this.selectedLayer != null && this.selectedLayer != undefined;
-    this.textoAnnotation.layer = this.selectedLayer;
-    this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
-    this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
+    this.initAnnotationData(startIndex, endIndex);
     // this.setScrollTopOperationInRange();
     // this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
 
@@ -785,6 +789,21 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
+ * prepare data for the highlight operation from the search kwic
+ */
+  setHighlightSelectionFromSearch(start: number, end: number) {
+    this.onAnnotationCancel();
+    this.specialTextSelectionHighlight.textSelection.startIndex = start;
+    this.specialTextSelectionHighlight.textSelection.endIndex = end;
+    this.specialTextSelectionHighlight.active = true;
+
+    this.textoAnnotation.layer = this.selectedLayer;
+    this.textoAnnotation.start = (this.offset ?? 0) + start;
+    this.textoAnnotation.end = (this.offset ?? 0) + end;
+    this.textoAnnotation.features = [];
+  }
+
+  /**
    * Metodo che apre l'annotazione selezionata nell'editor
    * @param id {number} identificativo numerico di un'annotazione
    * @returns {void}
@@ -872,6 +891,19 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateTextEditorSize() {
     this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+  }
+
+  /**sets annotation initial data */
+  private initAnnotationData(startIndex: number, endIndex: number) {
+    this.textoAnnotation.layer = this.selectedLayer;
+    this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
+    this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
+  }
+
+  /** resets annotation data */
+  private resetAnnotation() {
+    this.textoAnnotation = new TAnnotation();
+    this.visibleAnnotationId = undefined;
   }
 
   /**
@@ -1221,6 +1253,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textRes = textResponse.data?.map(d => d.text) || [];
     this.textSplittedRows = textResponse.data;
     this.offset = textResponse.data![0].start;
+
+    if (this.specialTextSelectionHighlight.active) {
+      let text = this.textRes.join('').substring(this.specialTextSelectionHighlight.textSelection.startIndex! - this.offset, this.specialTextSelectionHighlight.textSelection.endIndex! - this.offset);
+      this.selectedText = text;
+      this.textoAnnotation = { ...this.textoAnnotation }; //refresh annotation panel
+    }
   }
 
   /**

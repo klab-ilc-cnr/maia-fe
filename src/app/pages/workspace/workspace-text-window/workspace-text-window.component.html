@@ -101,7 +101,7 @@
                 </marker>
                 <marker></marker>
               </defs> -->
-              <g class="background">
+              <g class="background" (mouseup)="onTextAreaClick($event)">
                 <rect *ngFor="let row of rows; index as i" class="background" 
                       [ngClass]="{'background0': i%2, 'background1 bordered': !(i%2)}" 
                       [attr.height]="row.height" 
