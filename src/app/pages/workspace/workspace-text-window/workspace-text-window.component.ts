@@ -504,7 +504,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onAnnotationDeleted() {
     this.removeFromAnnotationsResult(this.textoAnnotation.id);
     this.setScrollTopOperationInRange();
-    this.textoAnnotation = new TAnnotation();
+    this.resetAnnotation();
+    this.disableTextSelection();
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
@@ -526,7 +527,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.resetAnnotation();
-    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex!, this.specialTextSelectionHighlight.textSelection.endIndex!);
+    const start = this.specialTextSelectionHighlight.textSelection.startIndex! - this.offset!;
+    const end = this.specialTextSelectionHighlight.textSelection.endIndex! - this.offset!;
+    this.initAnnotationData(start, end, this.selectedText);
 
     if (!this.selectedLayer) {
       this.onAnnotationCancel();
@@ -661,13 +664,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     // const relations = new Relations();
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
-    this.selectedText = text;
 
     textSelection.startIndex = (this.offset ?? 0) + startIndex; //from current to absolute value respect to text
     textSelection.endIndex = (this.offset ?? 0) + endIndex; //from current to absolute value respect to text
     this.specialTextSelectionHighlight.textSelection = textSelection;
     this.specialTextSelectionHighlight.active = this.selectedLayer != null && this.selectedLayer != undefined;
-    this.initAnnotationData(startIndex, endIndex);
+    this.initAnnotationData(startIndex, endIndex, text);
     // this.setScrollTopOperationInRange();
     // this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
 
@@ -791,16 +793,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**
  * prepare data for the highlight operation from the search kwic
  */
-  setHighlightSelectionFromSearch(start: number, end: number) {
+  setHighlightSelectionFromSearch(start: number, end: number, text: string) {
     this.onAnnotationCancel();
     this.specialTextSelectionHighlight.textSelection.startIndex = start;
     this.specialTextSelectionHighlight.textSelection.endIndex = end;
     this.specialTextSelectionHighlight.active = true;
 
-    this.textoAnnotation.layer = this.selectedLayer;
-    this.textoAnnotation.start = (this.offset ?? 0) + start;
-    this.textoAnnotation.end = (this.offset ?? 0) + end;
-    this.textoAnnotation.features = [];
+    this.initAnnotationData(start, end, text);
   }
 
   /**
@@ -894,10 +893,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**sets annotation initial data */
-  private initAnnotationData(startIndex: number, endIndex: number) {
+  private initAnnotationData(startIndex: number, endIndex: number, text: string) {
     this.textoAnnotation.layer = this.selectedLayer;
     this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
     this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
+    this.selectedText = text;
   }
 
   /** resets annotation data */
