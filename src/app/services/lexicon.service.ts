@@ -15,6 +15,7 @@ import { Morphology } from '../models/lexicon/morphology.model';
 import { Namespace } from '../models/lexicon/namespace.model';
 import { OntolexType } from '../models/lexicon/ontolex-type.model';
 import { CommonService } from './common.service';
+import { LoggedUserService } from './logged-user.service';
 
 /**Lexicon-related services class */
 @Injectable({
@@ -26,6 +27,7 @@ export class LexiconService {
   private lexoUrl: string;
   /**Basic coded IRI for creating new lexicon elements */
   private encodedBaseIRI: string;
+  private loggedUserName: string;
 
   /**
    * Constructor for LexiconService
@@ -34,10 +36,12 @@ export class LexiconService {
    */
   constructor(
     private http: HttpClient,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private userService: LoggedUserService,
   ) {
     this.lexoUrl = environment.maiaBeLexoUrl;
     this.encodedBaseIRI = this.commonService.encodeUrl(environment.lexoBaseIRI);
+    this.loggedUserName = this.userService.currentUser?.username || 'unknown';
   }
 
   associateLexicalConceptToSense(senseId: string, lexicalConceptId: string) {
@@ -536,9 +540,9 @@ export class LexiconService {
       createRelationshipUrl.search = new URLSearchParams({
         id: sourceURI,
         type: typeURI,
-        prefix: 'ferrandi',
-        baseIRI: "http://rut/somali/ferrandi#",
-        author: "ziopino", // FIXME: replace builtin name with real author
+        prefix: environment.lexoPrefix,
+        baseIRI: environment.lexoBaseIRI,
+        author: this.loggedUserName, // FIXME: replace builtin name with real author
       }).toString();
 
       return <Observable<IndirectRelationModel>>this.http.get(createRelationshipUrl.href, { responseType: 'json' });
