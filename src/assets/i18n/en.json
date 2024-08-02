@@ -206,6 +206,11 @@
         "usernameMinLenght": "Username must be at least 4 characters long",
         "userUpdated": "User successfully updated"
     },
+    "ONTOLOGY_CLASS_VIEWER":
+    {
+        "addChild": "Add class",
+        "addSibling": "Add subclass"
+    },
     "SEARCH":{
         "insertForm" : "insert form",
         "insertLemma": "insert lemma",

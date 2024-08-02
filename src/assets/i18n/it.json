@@ -206,6 +206,11 @@
         "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri",
         "userUpdated": "Utente aggiornato con successo"
     },
+    "ONTOLOGY_CLASS_VIEWER":
+    {
+        "addChild": "Aggiungi classe",
+        "addSibling": "Aggiungi sottoclasse"
+    },
     "SEARCH": {
         "insertForm": "inserisci forma",
         "insertLemma": "inserisci lemma",
