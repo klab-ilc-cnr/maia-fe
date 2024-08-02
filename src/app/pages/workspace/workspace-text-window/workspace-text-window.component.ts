@@ -527,9 +527,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     }
 
     this.resetAnnotation();
-    const start = this.specialTextSelectionHighlight.textSelection.startIndex! - this.offset!;
-    const end = this.specialTextSelectionHighlight.textSelection.endIndex! - this.offset!;
-    this.initAnnotationData(start, end, this.selectedText);
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex!, this.specialTextSelectionHighlight.textSelection.endIndex!, this.selectedText);
 
     if (!this.selectedLayer) {
       this.onAnnotationCancel();
@@ -669,7 +667,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     textSelection.endIndex = (this.offset ?? 0) + endIndex; //from current to absolute value respect to text
     this.specialTextSelectionHighlight.textSelection = textSelection;
     this.specialTextSelectionHighlight.active = this.selectedLayer != null && this.selectedLayer != undefined;
-    this.initAnnotationData(startIndex, endIndex, text);
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex!, this.specialTextSelectionHighlight.textSelection.endIndex!, text);
     // this.setScrollTopOperationInRange();
     // this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
 
@@ -799,7 +797,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.specialTextSelectionHighlight.textSelection.endIndex = end;
     this.specialTextSelectionHighlight.active = true;
 
-    this.initAnnotationData(start, end, text);
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex, this.specialTextSelectionHighlight.textSelection.endIndex , text);
   }
 
   /**
@@ -895,8 +893,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**sets annotation initial data */
   private initAnnotationData(startIndex: number, endIndex: number, text: string) {
     this.textoAnnotation.layer = this.selectedLayer;
-    this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
-    this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
+    this.textoAnnotation.start = startIndex;
+    this.textoAnnotation.end = endIndex;
     this.selectedText = text;
   }
 
