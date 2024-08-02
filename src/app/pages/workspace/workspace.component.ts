@@ -1334,7 +1334,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
-        this.removeFromTileMap(panel.id, TileType.CORPUS);
+        this.removeFromTileMap(panel.id, TileType.LEXICON);
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
@@ -1349,7 +1349,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconPanelId,
       component: componentRef,
       panelConfig: config,
-      tileType: TileType.CORPUS
+      tileType: TileType.LEXICON
     };
   }
 
@@ -1647,7 +1647,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           borderRadius: '.33rem',
         },
         panelSize: {
-          width: () => window.innerWidth * 0.2,
+          width: () => window.innerWidth * 0.25,
           height: '60vh'
         },
         resizeit: {
@@ -1663,7 +1663,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         },
         onclosed: function (this: any, panel: any, closedByUser: boolean) {
-          this.removeFromTileMap(panel.id, TileType.CORPUS);
+          this.removeFromTileMap(panel.id, TileType.ONTOLOGY);
           this.removeComponentFromList(panel.id);
         }
       };
@@ -1672,7 +1672,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         id: ontologyPanelId,
         component: componentRef,
         panelConfig: config,
-        tileType: TileType.CORPUS
+        tileType: TileType.ONTOLOGY
       };
     }
 }

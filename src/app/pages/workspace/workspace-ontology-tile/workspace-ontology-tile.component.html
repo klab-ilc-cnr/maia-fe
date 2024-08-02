@@ -1,1 +1,14 @@
-<p>workspace-ontology-tile works!</p>
+<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel header="Class">
+        <app-ontology-class-viewer></app-ontology-class-viewer>
+    </p-tabPanel>
+    <p-tabPanel header="Object Property">
+        <app-ontology-object-property-viewer></app-ontology-object-property-viewer>
+    </p-tabPanel>
+    <p-tabPanel header="Data Property">
+        <app-ontology-data-property-viewer></app-ontology-data-property-viewer>
+    </p-tabPanel>
+    <p-tabPanel header="Individuals">
+        <app-ontology-individuals-viewer></app-ontology-individuals-viewer>
+    </p-tabPanel>
+  </p-tabView>

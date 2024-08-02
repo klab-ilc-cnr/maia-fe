@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WorkspaceOntologyTileComponent implements OnInit {
 
+  /**Initial tab */
+  selectedTab = 0;
+
   constructor() { }
 
   ngOnInit(): void {
