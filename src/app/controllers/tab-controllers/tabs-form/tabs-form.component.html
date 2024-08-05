@@ -1,4 +1,4 @@
-<p-tabView [scrollable]="true" [(activeIndex)]="selectedTab">
+<p-tabView [scrollable]="true" [(activeIndex)]="selectedTab" (onChange)="onChangeTab()">
   <p-tabPanel header="Form">
     <p-skeleton *ngIf="!formEntry" width="30rem" height="40rem"></p-skeleton>
     <app-form-core-editor *ngIf="formEntry && selectedTab === 0" [formEntry]="formEntry"></app-form-core-editor>

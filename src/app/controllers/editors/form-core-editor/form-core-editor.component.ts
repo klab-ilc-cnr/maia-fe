@@ -138,7 +138,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
         if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== resp[key]) {
           this.updateForm(key, resp[key]).then(() => {
             if (resp[key] === '') {
-              this.movePropertyToMenu(key);
+              // this.movePropertyToMenu(key);
               return;
             }
             this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
