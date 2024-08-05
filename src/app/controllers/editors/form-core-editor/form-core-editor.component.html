@@ -32,10 +32,10 @@
               <label [for]="control.propertyID">{{control.propertyID}}</label>
               <span class="justify-content-between">
                 <input pInputText [formControlName]="control.propertyID" type="text" [name]="control.propertyID"
-                  class="col-10 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
-                <button pButton pRipple type="button" icon="pi pi-times" *ngIf="control.propertyID!=='writtenRep'"
+                  class="col-12 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
+                <!-- <button pButton pRipple type="button" icon="pi pi-times" *ngIf="control.propertyID!=='writtenRep'"
                   class=" col-1 p-button-rounded p-button-danger p-button-text"
-                  (click)="onRemoveLabelElement(control.propertyID)"></button>
+                  (click)="onRemoveLabelElement(control.propertyID)"></button> -->
               </span>
             </div>
           </form>

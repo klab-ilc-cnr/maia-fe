@@ -64,6 +64,10 @@ export class TabsFormComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  onChangeTab() {
+    this.loadData();
+  }
+
   /**
    * @private
    * Metodo che richiama il servizio di recupero della forma

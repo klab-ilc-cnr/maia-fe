@@ -19,13 +19,13 @@
           <form [formGroup]="form.controls.definition">
             <div class="field col-12" *ngFor="let control of definitionFormItems; let i=index; trackBy:trackByIndexFn">
               <label [for]="control.propertyID">{{control.propertyID}}</label>
-              <div class="d-flex justify-content-between" style="align-items: center;">
+              <!-- <div class="d-flex justify-content-between" style="align-items: center;"> -->
                 <textarea pInputTextarea [formControlName]="control.propertyID" [name]="control.propertyID"
-                  class="col-11"></textarea>
-                <button *ngIf="control.propertyID !== 'definition'" pButton pRipple type="button" icon="pi pi-times"
+                  class="col-12"></textarea>
+                <!-- <button *ngIf="control.propertyID !== 'definition'" pButton pRipple type="button" icon="pi pi-times"
                   class=" col-1 p-button-rounded p-button-danger p-button-text"
                   (click)="onRemoveDefinitionElement(control.propertyID)"></button>
-              </div>
+              </div> -->
             </div>
           </form>
         </ng-template>

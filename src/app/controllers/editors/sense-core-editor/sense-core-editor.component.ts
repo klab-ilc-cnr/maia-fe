@@ -135,7 +135,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
         this.updateSense(key, resp[key]).then(() => {
           if (resp[key] === '') {
-            this.movePropertyToMenu(key);
+            // this.movePropertyToMenu(key);
             return;
           }
           this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
