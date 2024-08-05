@@ -321,6 +321,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
+          case TileType.ONTOLOGY:
             this.tileMap.set(this.id, tile);
             break;
 
@@ -722,49 +723,49 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     dictionaryTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
-    openOntologyPanel(event: any) {
-      const ontologyPanelId = 'ontologyTile'
-  
-      const panelExist = jsPanel.getPanels().find(
-        (x: { id: string; }) => x.id === ontologyPanelId
-      );
-  
-      if (panelExist) {
-        panelExist.front()
-        return;
-      }
-  
-      const result = this.generateOntologyPanelConfiguration(ontologyPanelId);
-  
-      const ontologyTileConfig = result.panelConfig;
-  
-      const ontologyTileElement = jsPanel.create(ontologyTileConfig);
-      ontologyTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
-      ontologyTileElement.titlebar.style.fontSize = '14px'
-  
-  
-      ontologyTileElement
-        .resize({
-          height: window.innerHeight / 2
-        })
-        .reposition();
-  
-      const { content, ...text } = ontologyTileConfig;
-  
-      ontologyTileConfig.content = undefined;
-  
-      const tileObject: Tile<OntologyTileContent> = {
-        id: undefined,
-        workspaceId: this.workspaceId,
-        content: undefined,
-        tileConfig: ontologyTileConfig,
-        type: TileType.ONTOLOGY
-      };
-  
-  
-      ontologyTileElement.addToTileMap(tileObject);
-      ontologyTileElement.addComponentToList(result.id, result.component, result.tileType);
+  openOntologyPanel(event: any) {
+    const ontologyPanelId = 'ontologyTile'
+
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === ontologyPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
     }
+
+    const result = this.generateOntologyPanelConfiguration(ontologyPanelId);
+
+    const ontologyTileConfig = result.panelConfig;
+
+    const ontologyTileElement = jsPanel.create(ontologyTileConfig);
+    ontologyTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    ontologyTileElement.titlebar.style.fontSize = '14px'
+
+
+    ontologyTileElement
+      .resize({
+        height: window.innerHeight / 2
+      })
+      .reposition();
+
+    const { content, ...text } = ontologyTileConfig;
+
+    ontologyTileConfig.content = undefined;
+
+    const tileObject: Tile<OntologyTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: ontologyTileConfig,
+      type: TileType.ONTOLOGY
+    };
+
+
+    ontologyTileElement.addToTileMap(tileObject);
+    ontologyTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
 
   /**
    * Method that handles retrieving data of a dictionary entry and opening the edit panel
@@ -1620,60 +1621,60 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-    /**
-   * @private
-   * Generate the configurations for the ontology panel
-   * @param ontologyPanelId {string} panel identifier
-   * panel configuration
-   */
-    private generateOntologyPanelConfiguration(ontologyPanelId: string) {
-      const componentRef = this.vcr.createComponent(WorkspaceOntologyTileComponent);
-  
-      const element = componentRef.location.nativeElement;
-  
-      const config = {
-        id: ontologyPanelId,
-        container: this.workspaceContainer,
-        content: element,
-        headerTitle: 'Ontology Explorer',
-        maximizedMargin: 5,
-        dragit: { snap: false },
-        contentOverflow: 'hidden',
-        syncMargins: true,
-        theme: {
-          bgPanel: '#eceae4',
-          colorHeader: 'black',
-          border: 'thin solid #eceae4',
-          borderRadius: '.33rem',
-        },
-        panelSize: {
-          width: () => window.innerWidth * 0.25,
-          height: '60vh'
-        },
-        resizeit: {
-          minWidth: 250
-        },
-        headerControls: {
-          add: {
-            html: '<span class="pi pi-tag"></span>',
-            name: 'tag',
-            handler: (panel: any, control: any) => {
-              this.commonService.notifyOther({ option: 'ontology_tag_clicked', value: 'clicked' });
-            }
+  /**
+ * @private
+ * Generate the configurations for the ontology panel
+ * @param ontologyPanelId {string} panel identifier
+ * panel configuration
+ */
+  private generateOntologyPanelConfiguration(ontologyPanelId: string) {
+    const componentRef = this.vcr.createComponent(WorkspaceOntologyTileComponent);
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: ontologyPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Ontology Explorer',
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
+      syncMargins: true,
+      theme: {
+        bgPanel: '#eceae4',
+        colorHeader: 'black',
+        border: 'thin solid #eceae4',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.25,
+        height: '60vh'
+      },
+      resizeit: {
+        minWidth: 250
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            this.commonService.notifyOther({ option: 'ontology_tag_clicked', value: 'clicked' });
           }
-        },
-        onclosed: function (this: any, panel: any, closedByUser: boolean) {
-          this.removeFromTileMap(panel.id, TileType.ONTOLOGY);
-          this.removeComponentFromList(panel.id);
         }
-      };
-  
-      return {
-        id: ontologyPanelId,
-        component: componentRef,
-        panelConfig: config,
-        tileType: TileType.ONTOLOGY
-      };
-    }
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.ONTOLOGY);
+        this.removeComponentFromList(panel.id);
+      }
+    };
+
+    return {
+      id: ontologyPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.ONTOLOGY
+    };
+  }
 }
 

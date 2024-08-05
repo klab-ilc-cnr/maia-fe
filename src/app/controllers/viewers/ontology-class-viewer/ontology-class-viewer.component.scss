@@ -1,4 +1,64 @@
-.ontology-tree-container {
-    height: calc(100% - 70px);
-    overflow-y: scroll;
+.tableScrollHeight {
+  height: calc(100% - 60px);
+}
+
+#lexExpCounter {
+  min-width: min-content;
+}
+
+#newLexEntryDialog {
+  ::ng-deep.p-dialog {
+    width: 25vw;
   }
+}
+
+#searchInput {
+  width: auto;
+  min-width: 50px;
+}
+
+div.grid.p-fluid.input-search {
+  padding: 13px;
+}
+
+td:has(sub) {
+  overflow-x: clip;
+}
+
+#lexiconUploaderForm {
+
+  label,
+  input[type="text"],
+  ::ng-deep p-autocomplete .p-component,
+  ::ng-deep p-dropdown .p-component {
+    width: 100%;
+  }
+}
+
+.tableScrollHeight {
+  height: calc(100% - 200px);
+}
+
+td:has(> span),
+td:has(> span) div:has(> span){
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+div:has(> label) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td {
+  padding: 0.5rem 0.5rem !important;
+  span {
+    display: inline;
+  }
+}
+
+.pi-link.link-pointer {
+  cursor: pointer;
+}

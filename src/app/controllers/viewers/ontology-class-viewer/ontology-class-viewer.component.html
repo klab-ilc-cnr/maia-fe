@@ -14,10 +14,50 @@
       </button>
     </div>
   </p-toolbar>
-  <div class="ontology-tree-container">
-    <p-tree 
-            class="w-full md:w-30rem" 
-            [value]="nodes" 
-            (onNodeExpand)="onNodeExpand($event)" 
-            [loading]="loading" ></p-tree>
+  <div class="tableScrollHeight">
+    <p-treeTable [value]="files" 
+                 [columns]="cols" 
+                 [lazy]="true" 
+                 [scrollHeight]="220 + 'px'"
+                 [scrollable]="true" 
+                 [paginator]="true" [rows]="10" 
+                 (onLazyLoad)="loadNodes($event)" 
+                 [totalRecords]="1000" 
+                 [loading]="loading" 
+                 selectionMode="checkbox"
+                 dataKey="instanceName" 
+                 [(selection)]="selectedNodes" 
+                 [value]="results"
+                 (onNodeExpand)="onNodeExpand($event)">
+      <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
+          </colgroup>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+        <tr (dblclick)="classDoubleClickHandler($event, rowNode)">
+          <td *ngFor="let col of cols; let i = index">
+            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+            <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
+              [status]="rowData[col.field]"></app-icon-lock>
+            <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
+            <i class="pi pi-link link-pointer"
+              [pTooltip]="'LEXICON_EXPLORER.associatedToDictionary'|translate"></i>
+            <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
+              [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
+            <span>{{
+              rowData[col.field] }}</span>
+            <span
+              [pTooltip]="rowData['sub']" tooltipPosition="bottom"
+              [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
+            <sub>{{rowData['sub']}}</sub>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="cols.length">No result</td>
+        </tr>
+      </ng-template>
+    </p-treeTable>
   </div>
