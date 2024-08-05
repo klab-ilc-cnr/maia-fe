@@ -211,7 +211,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           case 'onSearchResultTableDoubleClickEvent': {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
-            this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex);
+            this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset);
             break;
           }
           case 'onDictionaryEntryDblClickEvent': {
@@ -459,7 +459,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param title {string} titolo del testo
    * @returns {void}
    */
-  openTextPanel(textId: number, title: string, startingRowIndex?: number) {
+  openTextPanel(textId: number, title: string, startingRowIndex?: number, kwic?: string, kwicOffsetStart?: number) {
     const modalTextSelect = jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');
     })
@@ -478,7 +478,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     if (panelExist) { //caso di pannello già presente
       if (startingRowIndex) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
-        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex);
+        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!);
         textTileComponent.component.instance.loadInitialData();
       }
 
@@ -489,7 +489,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
     if (startingRowIndex) {
-      this.setChangeSectionOperationInTextTile(res.component, startingRowIndex);
+      this.setChangeSectionOperationInTextTile(res.component, startingRowIndex, kwic!, kwicOffsetStart!);
     }
 
     const textTileConfig = res.panelConfig;
@@ -1070,9 +1070,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param textTileComponent angular component
    * @param startingRowIndex 
    */
-  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number) {
+  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number, kwic: string, kwicOffsetStart: number) {
+    const kwicOffsetEnd = kwicOffsetStart + kwic.length;
     textTileComponent.instance.startingRowIndex = startingRowIndex;
     textTileComponent.instance.scrollingDirection = ScrollingDirectionType.ChangingSection;
+    textTileComponent.instance.setHighlightSelectionFromSearch(kwicOffsetStart, kwicOffsetEnd, kwic);
   }
 
   /**

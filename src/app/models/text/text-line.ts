@@ -10,6 +10,7 @@ export class TextLine {
   annotationsTowers: Array<any> | undefined
   yAnnotation: number | undefined
   highlights: Array<TextHighlight> | undefined
+  selectionHighlights: Array<TextHighlight> | undefined
   yHighlight: number | undefined
   x: number | undefined
   arcs: Array<any> | undefined
