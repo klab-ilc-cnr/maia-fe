@@ -131,7 +131,8 @@
             "posRequired": "POS is mandatory",
             "type": "Type",
             "typeRequired": "Type is mandatory"
-        }
+        },
+        "noDefinition": "No definition provided"
     },
     "LOGIN": {
         "authFailed": "Authentication failed",

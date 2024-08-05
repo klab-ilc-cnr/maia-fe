@@ -131,7 +131,8 @@
             "posRequired": "La POS è obbligatoria",
             "type": "Tipo",
             "typeRequired": "Il tipo è obbligatorio"
-        }
+        },
+        "noDefinition": "Nessuna definizione fornita"
     },
     "LOGIN": {
         "authFailed": "Autenticazione fallita",
