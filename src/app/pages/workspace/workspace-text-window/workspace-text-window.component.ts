@@ -621,6 +621,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  * @returns {void}
  */
   onTextAreaClick(event: any): void {
+    this.resetAnnotation();
     this.disableTextSelection();
   }
 
