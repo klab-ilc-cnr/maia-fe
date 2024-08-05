@@ -17,6 +17,7 @@ export class DoubleAutocompleteComponent implements OnInit {
   @Input() valuesFilterFn!: (relation: string) => Observable<any[]>;
   @Output() remove = new EventEmitter();
   @Output() selected = new EventEmitter<{ relation: string, value: string, external: boolean }>();
+  isValueSelected = false; //NOTE see https://github.com/klab-ilc-cnr/Maia/issues/78
 
   currentRelation$ = new BehaviorSubject<string>('');
 
@@ -27,11 +28,10 @@ export class DoubleAutocompleteComponent implements OnInit {
   ngOnInit(): void {
     if(this.relationField) {
       this.currentRelation$.next(this.relationField);
+      if(this.valueField) { //NOTE see https://github.com/klab-ilc-cnr/Maia/issues/78
+        this.isValueSelected = true;
+      }
     }
-  }
-
-  onFocusOut() {
-    //TODO implementare gestione del salvataggio
   }
 
   onRemove() {
@@ -47,6 +47,7 @@ export class DoubleAutocompleteComponent implements OnInit {
       console.error('manca la relazione');
       return;
     }
+    this.isValueSelected = true; //NOTE see https://github.com/klab-ilc-cnr/Maia/issues/78
     const selection = { relation: this.relationField, value: event.value, external: this.isChecked };
     this.selected.emit(selection);
   }

@@ -32,3 +32,6 @@ In case of a bug please indicate the version of the platform used and describe t
 | ------------- | ------------- | ------------- |
 | v. 0.9.10 | v. 0.0.6 | |
 | v. 0.11.0 | v. 0.0.6 | v. 0.0.8 |
+| v. 0.12.4 | v. 0.0.7 | v. 0.1.0* | 
+
+*02/08/2024 version

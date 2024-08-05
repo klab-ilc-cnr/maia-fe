@@ -6,6 +6,8 @@ import { catchError, take, throwError } from 'rxjs';
 import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
 import { AuthenticationService } from './services/authentication.service';
 import { StorageService } from './services/storage.service';
+import Swal from 'sweetalert2';
+import { CommonService } from './services/common.service';
 
 /**Basic component of the application */
 @Component({
@@ -30,6 +32,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authService: AuthenticationService,
     public translate: TranslateService,
+    public commonService: CommonService
   ) {
     translate.addLangs(['en', 'it']);
     translate.setDefaultLang('en');
@@ -44,12 +47,33 @@ export class AppComponent implements OnInit {
         () => {
           console.info('call renew');
           this.refreshToken();
-      },
-      () => {
-        this.storageService.cleanStorage();
-        this.router.navigate(['/login']);    
-      });
-    })
+        },
+        () => {
+          this.storageService.cleanStorage();
+          this.router.navigate(['/login']);
+        });
+    });
+
+    this.checkBroser();
+  }
+
+  private checkBroser() {
+    var isChromium = !!(navigator as any).userAgentData && (navigator as any).userAgentData.brands.some((data: { brand: string; }) => data.brand == 'Chromium');
+
+    setTimeout(() => {
+      if (!isChromium) {
+        const warningMessage = this.commonService.translateKey('GENERAL.browserWarning');
+        Swal.fire({
+          icon: 'warning',
+          titleText: warningMessage,
+          showConfirmButton: true,
+          customClass: {
+            confirmButton: "swalDangerButton"
+          },
+          confirmButtonText: "Ok"
+        });
+      };
+    }, 500);
   }
 
   /**Private method that invokes jwt token refresh */
@@ -58,7 +82,7 @@ export class AppComponent implements OnInit {
       take(1),
       catchError((error: HttpErrorResponse) => {
         this.storageService.cleanStorage();
-        this.router.navigate(['/login']);    
+        this.router.navigate(['/login']);
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(resp => {

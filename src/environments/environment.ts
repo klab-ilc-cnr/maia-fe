@@ -18,8 +18,8 @@ export const environment = {
   relationUrl: `${serverUrl}/api/relations`,
   maiaBeLexoUrl: `${serverUrl}/lexo`,
   maiaBeTextoUrl: `${serverUrl}/texto`,
-  lexoPrefix: "ferrandi",
-  lexoBaseIRI: "http://rut/somali/ferrandi#",
+  lexoPrefix: "lex",
+  lexoBaseIRI: "http://lexica/mylexicon#",
   applicationSubTitle: "develop",
   demoHide: false,
 };

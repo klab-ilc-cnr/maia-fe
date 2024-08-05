@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, debounceTime, of, switchMap, throttleTime } from 'rxjs';
+import { Observable, Subject, debounceTime, of, switchMap } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
@@ -56,6 +56,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   visibleRows: number = 10;
   tableCleared = false;
   changingPage = false;
+  filtersChanged = false;
 
   colDefaultWidths = [4, 6, 15, 15, 25, 10, 25];
 
@@ -192,6 +193,15 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.search();
   }
 
+  filterInputColumn(target: EventTarget | null, fieldName: string, matchMode: string) {
+    if (target == null) { return; }
+
+    const input = target as HTMLInputElement;
+    this.filtersChanged = true;
+    this.searchInput.control.markAsTouched();
+    this.searchResultsTable.filter(input.value, fieldName, matchMode);
+  }
+
   /**set the request filters based on the table ones */
   setColumnFilters() {
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
@@ -245,6 +255,11 @@ export class WorkspaceSearchTileComponent implements OnInit {
     }
 
     this.loading = true;
+
+    if (this.filtersChanged) {
+      this.searchRequest.start = 0;
+      this.searchRequest.end = this.visibleRows;
+    }
 
     this.searchService.search(this.searchRequest).subscribe({
       next: (result) => {
@@ -304,12 +319,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith;
   }
 
-  /**used for casting table filters of type input */
-  toHtmlInputElement(target: EventTarget | null): HTMLInputElement {
-    this.searchInput.control.markAsTouched();
-    return target as HTMLInputElement;
-  }
-
   /**init searchMode data */
   private initSearchMode() {
     this.searchModes = [
@@ -330,7 +339,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
    *refresh documents data  
    */
   reloadSelectedDocuments(): void {
-    this.corpusStateService.refreshFileSystem.next(null);
+    this.corpusStateService.refreshFileSystem.next();
   }
 
   /**

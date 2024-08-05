@@ -39,7 +39,7 @@ export class LayerReload {
 
 enum LayerReloadOperation { Add, Remove, Equal }
 
-enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown }
+export enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown, ChangingSection }
 
 @Component({
   selector: 'app-workspace-text-window',
@@ -184,7 +184,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Document section navigation tree */
   documentSections: TreeNode[] = new Array<TreeNode>;
   selectedSection?: TreeNode;
-  changingSection?: boolean = false;
   rootNodeKey: string = '405092b3-7110-4e48-a524-21a20d0448ab'
 
   /**Resizible panels settings */
@@ -317,7 +316,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
         this.textRange = new TextRange(start, end);
         this.precTextRange = this.textRange.clone();
-        this.scrollingDirection = ScrollingDirectionType.Init;
+        this.scrollingDirection = this.scrollingDirection ?? ScrollingDirectionType.Init; // if we are changin section we already have a value in this.scrollingDirection
         this.currentVisibleRowIndex = this.startingRowIndex;
         this.scrollingRowIndex = this.textRange.end;
         this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
@@ -456,8 +455,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (event.node.data.start === this.textRange.start) { return; }
 
-    this.changingSection = true;
-    this.scrollingDirection = ScrollingDirectionType.Up
+    this.scrollingDirection = ScrollingDirectionType.ChangingSection
     this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness);
     this.precTextRange = this.textRange.clone();
     this.currentVisibleRowIndex = event.node.data.start;
@@ -607,7 +605,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (!selection) { //caso senza selezione, esco dal metodo
       return;
     }
+
     this.textoAnnotation = new TAnnotation();
+    this.visibleAnnotationId = undefined;
 
     let startIndex = selection.startIndex;
     let endIndex = selection.endIndex;
@@ -735,7 +735,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  */
   private annotationSavedOperations(workingAnnotation: TAnnotation, newFeaturesList: TAnnotationFeature[]) {
     this.messageService.add(this.msgConfService.generateSuccessMessageConfig('Annotation saved'));
-    workingAnnotation.features = newFeaturesList;
+    if (!workingAnnotation.features) {
+      workingAnnotation.features = [];
+    }
+    // workingAnnotation.features = newFeaturesList; //BUG se la modifica coinvolge 1 feature su n la newFeaturesList conterrà quella singola feature invece di n
+    for (const feat of newFeaturesList) {
+      const featIndex = workingAnnotation.features.findIndex(f => f.id === feat.id);
+      if (featIndex !== -1) {
+        workingAnnotation.features[featIndex].value = feat.value;
+      } else {
+        workingAnnotation.features.push(feat);
+      }
+    }
     this.onAnnotationSaved(workingAnnotation);
   }
 
@@ -1318,8 +1329,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.scrollingDirection === ScrollingDirectionType.Init && !this.changingSection) {
-      this.changingSection = false;
+    if (this.scrollingDirection === ScrollingDirectionType.Init) {
       this.loaderService.hide();
       return;
     }
@@ -1436,6 +1446,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
         scrolledBlockSize = this.rows.filter(r => r.rowIndex! < this.currentVisibleRowIndex!).reduce((acc, o) => acc + (o.height || 0), 0);
         this.currentVisibleRowIndex = undefined;
+        break;
+      case ScrollingDirectionType.Init:
+      case ScrollingDirectionType.ChangingSection:
+        break;
     }
 
     let scrollTop = scrolledBlockSize - extraScrollPixels;
@@ -1446,6 +1460,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /** gets ther right scrolling row index, starting from a scrolling direction */
   getScrollingRowIndex(scrollingDirection: ScrollingDirectionType): number {
     let scrollingRowIndex;
+
     switch (scrollingDirection) {
       case ScrollingDirectionType.Up:
         scrollingRowIndex = this.precTextRange!.start;
@@ -1458,6 +1473,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       case ScrollingDirectionType.IncreaseWidenessDown:
       case ScrollingDirectionType.IncreaseWidenessUp:
         scrollingRowIndex = this.scrollingRowIndex;
+        break;
+      case ScrollingDirectionType.ChangingSection:
+        scrollingRowIndex = this.currentVisibleRowIndex ?? this.scrollingRowIndex;
         break;
     }
 

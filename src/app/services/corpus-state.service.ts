@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Subject, catchError, merge, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
+import { EMPTY, Subject, catchError, merge, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 import { ElementType } from '../models/corpus/element-type';
 import { FolderElement } from '../models/texto/corpus-element';
 import { FileUploadType } from '../models/texto/file-upload-type.enum';
@@ -16,7 +16,7 @@ export class CorpusStateService {
   /**TextO user's root folder */
   private textoUserRootFolder!: FolderElement;
   /**Subject to refresh the file system */
-  refreshFileSystem = new Subject();
+  refreshFileSystem = new Subject<void>();
   /**Subject to add an element to the file system */
   addElement = new Subject<{ elementType: ElementType, parentFolderId: number, elementName: string }>();
   /**Subject to rename an element of the file system */
@@ -31,7 +31,11 @@ export class CorpusStateService {
   filesystem$ = merge(
     this.workspaceService.retrieveCorpus(),
     this.refreshFileSystem.pipe(
-      switchMap(() => this.workspaceService.retrieveCorpus())
+      switchMap(() => this.workspaceService.retrieveCorpus()),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`Refreshing corpus content failed`));
+        return throwError(() => new Error(error.error));
+      }),
     ),
     this.addElement.pipe(
       switchMap(req => this.workspaceService.addElement(req.elementType, (req.parentFolderId < 0 ? this.textoUserRootFolder.id : req.parentFolderId), req.elementName, this.textoCurrentUserId).pipe(
@@ -84,7 +88,8 @@ export class CorpusStateService {
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${req.elementType} removed`))),
         catchError((error: HttpErrorResponse) => {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${req.elementType} removing failed: ${error.error.message}`));
-          return throwError(() => new Error(error.error));
+          // return throwError(() => new Error(error.error));
+          return EMPTY;
         }),
       )),
       switchMap(() => this.workspaceService.retrieveCorpus()),
