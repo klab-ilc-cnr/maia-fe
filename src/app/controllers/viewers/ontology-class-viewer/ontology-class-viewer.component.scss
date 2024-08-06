@@ -1,34 +1,9 @@
-#lexExpCounter {
-  min-width: min-content;
-}
-
-#newLexEntryDialog {
-  ::ng-deep.p-dialog {
-    width: 25vw;
-  }
-}
-
-#searchInput {
-  width: auto;
-  min-width: 50px;
-}
-
 div.grid.p-fluid.input-search {
   padding: 13px;
 }
 
 td:has(sub) {
   overflow-x: clip;
-}
-
-#lexiconUploaderForm {
-
-  label,
-  input[type="text"],
-  ::ng-deep p-autocomplete .p-component,
-  ::ng-deep p-dropdown .p-component {
-    width: 100%;
-  }
 }
 
 td:has(> span),

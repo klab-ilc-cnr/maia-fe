@@ -9,7 +9,7 @@ export class WorkspaceOntologyTileComponent implements OnInit {
 
   /**Initial tab */
   public selectedTab = 0;
-
+  /**jsPanel ontology explorer height */
   public ontologyPanelHeight: number = 0;
 
   constructor() { }

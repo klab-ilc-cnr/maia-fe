@@ -11,6 +11,7 @@ export class OntologyClassViewerComponent implements OnInit {
   @Input()
   public panelHeight! : number;
 
+  /**offset point for the item tree */
   public treeHeightOffset : number = 160;
   public loading: boolean = false;
   public files!: TreeNode[];
