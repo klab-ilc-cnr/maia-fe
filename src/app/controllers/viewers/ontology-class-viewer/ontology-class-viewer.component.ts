@@ -9,10 +9,10 @@ import { PrimeNGConfig, TreeNode } from 'primeng/api';
 export class OntologyClassViewerComponent implements OnInit {
 
   @Input()
-  public panelHeight! : number;
+  public panelHeight!: number;
 
   /**offset point for the item tree */
-  public treeHeightOffset : number = 160;
+  public treeHeightOffset: number = 160;
   public loading: boolean = false;
   public files!: TreeNode[];
   public cols!: any[];
@@ -27,9 +27,9 @@ export class OntologyClassViewerComponent implements OnInit {
   ngOnInit(): void {
     this.primengConfig.ripple = true;
     this.cols = [
-      { field: 'name', header: 'Name' },
-      { field: 'size', header: 'Size' },
-      { field: 'type', header: 'Type' }
+      { field: 'label', header: '', width: '60%', display: 'true' },
+      { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
+      { field: 'status', header: 'Stato', width: '10%', display: 'true' },
     ];
 
     //in a production application, retrieve the logical number of rows from a remote datasource
@@ -70,9 +70,9 @@ export class OntologyClassViewerComponent implements OnInit {
       for (let i = 0; i < 20; i++) {
         let node = {
           data: {
-            name: 'Item ' + i,
-            size: Math.floor(Math.random() * 1000) + 1 + 'kb',
-            type: 'Type ' + i
+            label: Math.floor(Math.random() * 1000) + 1 + 'kb',
+            creator: 'a',
+            status: 'b'
           },
           leaf: false
         };
@@ -92,16 +92,16 @@ export class OntologyClassViewerComponent implements OnInit {
       node.children = [
         {
           data: {
-            name: node.data.name + ' - 0',
-            size: Math.floor(Math.random() * 1000) + 1 + 'kb',
-            type: 'File'
+            label: Math.floor(Math.random() * 1000) + 1 + 'kb',
+            creator: 'File',
+            status: node.data.name + ' - 0',
           },
         },
         {
           data: {
-            name: node.data.name + ' - 1',
-            size: Math.floor(Math.random() * 1000) + 1 + 'kb',
-            type: 'File'
+            label: Math.floor(Math.random() * 1000) + 1 + 'kb',
+            creator: 'File',
+            status: node.data.name + ' - 1',
           }
         }
       ];

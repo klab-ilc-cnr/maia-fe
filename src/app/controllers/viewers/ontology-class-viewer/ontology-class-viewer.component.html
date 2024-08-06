@@ -37,19 +37,16 @@
         <tr (dblclick)="classDoubleClickHandler($event, rowNode)">
           <td *ngFor="let col of cols; let i = index">
             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+            <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
+            [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
-            <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
-            <i class="pi pi-link link-pointer"
-              [pTooltip]="'LEXICON_EXPLORER.associatedToDictionary'|translate"></i>
-            <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
-              [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
-            <span>{{
+            <span *ngIf="col.field === 'label'">{{
               rowData[col.field] }}</span>
-            <span
+            <span *ngIf="col.field === 'label'"
               [pTooltip]="rowData['sub']" tooltipPosition="bottom"
               [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
-            <sub>{{rowData['sub']}}</sub>
+            <sub *ngIf="col.field === 'label'">{{rowData['sub']}}</sub>
           </td>
         </tr>
       </ng-template>
