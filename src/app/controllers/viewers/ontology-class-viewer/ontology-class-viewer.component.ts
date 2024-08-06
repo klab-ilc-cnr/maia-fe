@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { PrimeNGConfig, TreeNode } from 'primeng/api';
 
 @Component({
@@ -8,13 +8,16 @@ import { PrimeNGConfig, TreeNode } from 'primeng/api';
 })
 export class OntologyClassViewerComponent implements OnInit {
 
-  loading: boolean = false;
-  files!: TreeNode[];
-  cols!: any[];
-  totalRecords!: number;
-   /**Nodo dell'albero selezionato */
-   public selectedNodes: TreeNode[] = [];
-   /**Lista dei nodi entrata lessicale */
+  @Input()
+  public panelHeight! : number;
+
+  public loading: boolean = false;
+  public files!: TreeNode[];
+  public cols!: any[];
+  public totalRecords!: number;
+  /**Nodo dell'albero selezionato */
+  public selectedNodes: TreeNode[] = [];
+  /**Lista dei nodi entrata lessicale */
   public results: TreeNode<unknown>[] = [];
 
   constructor(private primengConfig: PrimeNGConfig) { }
@@ -33,21 +36,21 @@ export class OntologyClassViewerComponent implements OnInit {
     this.loading = true;
   }
 
-    /**
-   * Metodo che gestisce il doppio click dell'albero con apertura del pannello di edit
-   * @param event {any} evento di doppio click sull'albero
-   */
-    classDoubleClickHandler(event: any, rowNode: any) {
-      alert("dobleClick demo");
-      // const node = rowNode?.node;
-      // if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
-      //   return;
-      // }
-      // this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
-      // // }
-    }
+  /**
+ * Metodo che gestisce il doppio click dell'albero con apertura del pannello di edit
+ * @param event {any} evento di doppio click sull'albero
+ */
+  classDoubleClickHandler(event: any, rowNode: any) {
+    alert("dobleClick demo");
+    // const node = rowNode?.node;
+    // if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
+    //   return;
+    // }
+    // this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
+    // // }
+  }
 
-  loadNodes(event: { rows: number; first: number; }) {
+  loadNodes(event: unknown) {
     this.loading = true;
 
     //in a production application, make a remote request to load data using state metadata from event
@@ -62,12 +65,12 @@ export class OntologyClassViewerComponent implements OnInit {
       this.loading = false;
       this.files = [];
 
-      for (let i = 0; i < event.rows; i++) {
+      for (let i = 0; i < 20; i++) {
         let node = {
           data: {
-            name: 'Item ' + (event.first + i),
+            name: 'Item ' + i,
             size: Math.floor(Math.random() * 1000) + 1 + 'kb',
-            type: 'Type ' + (event.first + i)
+            type: 'Type ' + i
           },
           leaf: false
         };

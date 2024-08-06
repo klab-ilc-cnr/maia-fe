@@ -340,6 +340,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
+          case TileType.ONTOLOGY:
             this.tileMap.delete(panelId);
             break;
 
@@ -1007,6 +1008,26 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           break;
         }
 
+        case TileType.ONTOLOGY:
+          const ontologyComponent = this.generateOntologyPanelConfiguration(tile.tileConfig.id);
+          const mergedOntologyConfigLexicon = { ...ontologyComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedOntologyConfigLexicon,
+            storagename: this.storageName,
+          });
+
+          componentRef = ontologyComponent.component;
+
+          //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // è necessario reinserirlo manualmente
+          currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
+            currentWorkspaceInstance.commonService.notifyOther({ option: 'ontology_tag_clicked', value: 'clicked' });
+          }
+          break;
+
         default:
           console.error("type " + tile.type + " not implemented");
       }
@@ -1649,10 +1670,33 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       panelSize: {
         width: () => window.innerWidth * 0.25,
-        height: '60vh'
+        height: '60vh',
+        resize: (panel: any, paneldata: any, event: any) => {
+          componentRef.instance.updateHeight(paneldata.height);
+        }
       },
       resizeit: {
         minWidth: 250
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);;
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
       },
       headerControls: {
         add: {
@@ -1666,7 +1710,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.ONTOLOGY);
         this.removeComponentFromList(panel.id);
-      }
+      },
     };
 
     return {

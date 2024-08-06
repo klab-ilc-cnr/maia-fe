@@ -1,7 +1,3 @@
-.tableScrollHeight {
-  height: calc(100% - 60px);
-}
-
 #lexExpCounter {
   min-width: min-content;
 }
@@ -33,10 +29,6 @@ td:has(sub) {
   ::ng-deep p-dropdown .p-component {
     width: 100%;
   }
-}
-
-.tableScrollHeight {
-  height: calc(100% - 200px);
 }
 
 td:has(> span),

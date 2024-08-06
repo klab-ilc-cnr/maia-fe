@@ -8,11 +8,21 @@ import { Component, OnInit } from '@angular/core';
 export class WorkspaceOntologyTileComponent implements OnInit {
 
   /**Initial tab */
-  selectedTab = 0;
+  public selectedTab = 0;
+
+  public ontologyPanelHeight: number = 0;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  /**
+* Updates the height of the content of the panel
+* @param newHeight {any} newHeight
+*/
+  updateHeight(newHeight: number) {
+    this.ontologyPanelHeight = newHeight - 40;
   }
 
 }

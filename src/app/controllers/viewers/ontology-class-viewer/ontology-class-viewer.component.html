@@ -14,13 +14,13 @@
       </button>
     </div>
   </p-toolbar>
-  <div class="tableScrollHeight">
+  <div [ngStyle]="{'height': (panelHeight - 120)+'px'}">
     <p-treeTable [value]="files" 
                  [columns]="cols" 
                  [lazy]="true" 
-                 [scrollHeight]="220 + 'px'"
+                 scrollHeight="flex"
                  [scrollable]="true" 
-                 [paginator]="true" [rows]="10" 
+                 
                  (onLazyLoad)="loadNodes($event)" 
                  [totalRecords]="1000" 
                  [loading]="loading" 
