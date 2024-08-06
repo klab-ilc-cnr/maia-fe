@@ -17,12 +17,16 @@ export class WorkspaceOntologyTileComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngAfterViewInit(): void{
+    this.ontologyPanelHeight = document.getElementById("ontologyTile")!.clientHeight;
+  }
+
   /**
 * Updates the height of the content of the panel
 * @param newHeight {any} newHeight
 */
   updateHeight(newHeight: number) {
-    this.ontologyPanelHeight = newHeight - 40;
+    this.ontologyPanelHeight = newHeight;
   }
 
 }

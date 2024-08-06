@@ -1671,12 +1671,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       panelSize: {
         width: () => window.innerWidth * 0.25,
         height: '60vh',
+      },
+      resizeit: {
+        minWidth: 250,
         resize: (panel: any, paneldata: any, event: any) => {
           componentRef.instance.updateHeight(paneldata.height);
         }
-      },
-      resizeit: {
-        minWidth: 250
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
