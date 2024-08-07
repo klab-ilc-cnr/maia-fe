@@ -12,6 +12,7 @@ import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { User } from 'src/app/models/user';
 import { AnnotationService } from 'src/app/services/annotation.service';
+import { CommonService } from 'src/app/services/common.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -193,7 +194,6 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   /**Riferimento al popup di conferma cancellazione */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
-
   constructor(
     private layerService: LayerService,
     private tagsetService: TagsetService,
@@ -202,6 +202,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private lexiconService: LexiconService,
+    private commonService: CommonService,
   ) {
     this.userService.retrieveCurrentUser().pipe(
       take(1),
@@ -221,6 +222,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
 
   onClearBtn() {
     this.featureForm.reset(); //Svuoto solamente la parte relativa alle feature, perché layer e testo selezionato sono indipendenti
+    this.commonService.notifyOther({ option: 'clear_feature_fields' });
   }
 
   setIndirectValue(value: any, featureFieldName: string) {
