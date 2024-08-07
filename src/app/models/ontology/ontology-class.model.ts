@@ -18,10 +18,14 @@ export class OntologyClass {
     /**class creator */
     creator!: string;
 
+    creationDate!: string;
+    
+    lastUpdate!: string;
+
     /**class status */
     status: ClassStatus = ClassStatus.unknown;
 }
 
 export enum ClassStatus {
-    unknown = 'unknown', complete = "complete", reviewed = "reviewed", working = "working"
+    unknown = 'unknown', completed = "completed", reviewed = "reviewed", working = "working"
 }

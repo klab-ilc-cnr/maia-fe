@@ -118,7 +118,9 @@ export class OntologyClassViewerComponent implements OnInit {
           id: id,
           name: name,
           creator: 'a',
-          status: ClassStatus.reviewed,
+          creationDate: new Date().toLocaleString(),
+          lastUpdate: new Date().toLocaleString(),
+          status: ClassStatus.working,
           label: label,
           shortId: shortId,
           children: 2
@@ -150,16 +152,20 @@ export class OntologyClassViewerComponent implements OnInit {
         id: id,
         name: name,
         creator: 'b',
-        status: ClassStatus.reviewed,
+        creationDate: new Date().toLocaleString(),
+        lastUpdate: new Date().toLocaleString(),
+        status: ClassStatus.completed,
         label: label,
         shortId: shortId,
-        children: 0
+        children: 2
       };
 
       let data2 : OntologyClass = {
         id: id,
         name: name,
         creator: 'c',
+        creationDate: new Date().toLocaleString(),
+        lastUpdate: new Date().toLocaleString(),
         status: ClassStatus.reviewed,
         label: label,
         shortId: shortId,

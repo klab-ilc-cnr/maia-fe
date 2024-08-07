@@ -21,11 +21,19 @@ div:has(> label) {
 
 td {
   padding: 0.5rem 0.5rem !important;
-  span {
+  span :not(.dot) {
     display: inline;
   }
 }
 
 .pi-link.link-pointer {
   cursor: pointer;
+}
+
+.dot {
+  height: 13px;
+  width: 13px;
+  background-color: #cfa630;
+  border-radius: 50%;
+  display: inline-block;
 }

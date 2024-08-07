@@ -41,14 +41,15 @@
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
-            <span *ngIf="col.field === 'name'">{{
+            <span *ngIf="col.field === 'name'" class="dot mr-2"></span>
+            <span *ngIf="col.field === 'name'" [pTooltip]="rowData['id']">{{
               rowData[col.field] }}</span>
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td [attr.colspan]="cols.length">No result</td>
+          <td [attr.colspan]="cols.length">{{('GENERAL.noResult'|translate)}}</td>
         </tr>
       </ng-template>
     </p-treeTable>
