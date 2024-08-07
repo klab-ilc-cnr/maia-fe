@@ -15,7 +15,7 @@
     </div>
   </p-toolbar>
   <div [ngStyle]="{'height': (panelHeight - treeHeightOffset)+'px'}">
-    <p-treeTable [value]="files" 
+    <p-treeTable [value]="results" 
                  [columns]="cols" 
                  [lazy]="true" 
                  scrollHeight="flex"
@@ -41,12 +41,8 @@
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
-            <span *ngIf="col.field === 'label'">{{
+            <span *ngIf="col.field === 'name'">{{
               rowData[col.field] }}</span>
-            <span *ngIf="col.field === 'label'"
-              [pTooltip]="rowData['sub']" tooltipPosition="bottom"
-              [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
-            <sub *ngIf="col.field === 'label'">{{rowData['sub']}}</sub>
           </td>
         </tr>
       </ng-template>

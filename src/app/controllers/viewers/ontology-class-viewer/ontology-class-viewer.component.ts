@@ -1,5 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { PrimeNGConfig, TreeNode } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
+import { ClassStatus, OntologyClass } from 'src/app/models/ontology/ontology-class.model';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-ontology-class-viewer',
@@ -11,31 +14,76 @@ export class OntologyClassViewerComponent implements OnInit {
   @Input()
   public panelHeight!: number;
 
+  private readonly unsubscribe$ = new Subject();
+
   /**offset point for the item tree */
   public treeHeightOffset: number = 160;
   public loading: boolean = false;
-  public files!: TreeNode[];
   public cols!: any[];
-  public totalRecords!: number;
   /**Nodo dell'albero selezionato */
   public selectedNodes: TreeNode[] = [];
-  /**Lista dei nodi entrata lessicale */
-  public results: TreeNode<unknown>[] = [];
+  /**Ontology list to show */
+  public results: TreeNode<OntologyClass>[] = [];
+  /**Show label or instance name */
+  public showLabelName?: boolean;
 
-  constructor(private primengConfig: PrimeNGConfig) { }
+  constructor(private commonService: CommonService
+  ) { }
 
   ngOnInit(): void {
-    this.primengConfig.ripple = true;
     this.cols = [
-      { field: 'label', header: '', width: '60%', display: 'true' },
+      { field: 'name', header: '', width: '60%', display: 'true' },
       { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
       { field: 'status', header: 'Stato', width: '10%', display: 'true' },
     ];
 
-    //in a production application, retrieve the logical number of rows from a remote datasource
-    this.totalRecords = 1000;
-
     this.loading = true;
+    this.showLabelName = true;
+
+    this.commonService.notifyObservable$.pipe(
+      takeUntil(this.unsubscribe$),
+    ).subscribe((res) => {
+      switch (res.option) {
+        case 'ontology_tag_clicked':
+          this.alternateLabelInstanceName();
+          this.showLabelName = !this.showLabelName;
+          break;
+        default:
+          break;
+      }
+    });
+
+  }
+
+  /**Metodo dell'interfaccia OnDestroy, utilizzato per cancellare la sottoscrizione */
+  ngOnDestroy() {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
+  }
+
+  /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
+  alternateLabelInstanceName() {
+    this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
+  }
+
+  /**
+ * @private
+ * Metodo che modifica il valore del name di un modo passando da label a instanceName o viceversa
+ * @param node {TreeNode} nodo dell'albero delle entrate lessicali
+ */
+  private treeTraversalAlternateLabelInstanceName(node: TreeNode<OntologyClass>): void {
+    if (node.data?.name === node.data?.label) {
+      node.data!.name = node.data!.shortId!;
+    }
+    else if (node.data?.name === node.data?.shortId) {
+      node.data!.name = node.data!.label;
+    }
+
+    if (node.children) {
+      node.children.forEach(childNode => {
+        this.treeTraversalAlternateLabelInstanceName(childNode);
+      });
+    }
   }
 
   /**
@@ -55,58 +103,81 @@ export class OntologyClassViewerComponent implements OnInit {
   loadNodes(event: unknown) {
     this.loading = true;
 
-    //in a production application, make a remote request to load data using state metadata from event
-    //event.first = First row offset
-    //event.rows = Number of rows per page
-    //event.sortField = Field name to sort with
-    //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
-    //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
-
     //imitate db connection over a network
     setTimeout(() => {
       this.loading = false;
-      this.files = [];
+      this.results = [];
 
       for (let i = 0; i < 20; i++) {
-        let node = {
-          data: {
-            label: Math.floor(Math.random() * 1000) + 1 + 'kb',
-            creator: 'a',
-            status: 'b'
-          },
-          leaf: false
+        let shortId = 'testLabel'+Math.floor(Math.random() * 1000) + 1;
+        let id = 'http://test.it/#'+shortId;
+        let label = 'label'+shortId;
+        let name = this.showLabelName ? shortId : label;
+
+        let data : OntologyClass = {
+          id: id,
+          name: name,
+          creator: 'a',
+          status: ClassStatus.reviewed,
+          label: label,
+          shortId: shortId,
+          children: 2
         };
 
-        this.files.push(node);
+        let node : TreeNode<OntologyClass> = {
+          data: data,
+          leaf: data.children === 0
+        };
+
+        this.results.push(node);
       }
     }, 1000);
   }
 
-  onNodeExpand(event: { node: any; }) {
+  onNodeExpand(event: { node: TreeNode<OntologyClass>; }) {
     this.loading = true;
 
     setTimeout(() => {
       this.loading = false;
       const node = event.node;
 
+      let shortId = 'testLabel'+Math.floor(Math.random() * 1000) + 1;
+      let id = 'http://test.it/#'+shortId;
+      let label = 'label'+shortId;
+      let name = this.showLabelName ? shortId : label;
+
+      let data1 : OntologyClass = {
+        id: id,
+        name: name,
+        creator: 'b',
+        status: ClassStatus.reviewed,
+        label: label,
+        shortId: shortId,
+        children: 0
+      };
+
+      let data2 : OntologyClass = {
+        id: id,
+        name: name,
+        creator: 'c',
+        status: ClassStatus.reviewed,
+        label: label,
+        shortId: shortId,
+        children: 0
+      };
+
       node.children = [
         {
-          data: {
-            label: Math.floor(Math.random() * 1000) + 1 + 'kb',
-            creator: 'File',
-            status: node.data.name + ' - 0',
-          },
+          data: data1,
+          leaf: data1.children === 0
         },
         {
-          data: {
-            label: Math.floor(Math.random() * 1000) + 1 + 'kb',
-            creator: 'File',
-            status: node.data.name + ' - 1',
-          }
+          data: data2,
+          leaf: data2.children === 0
         }
       ];
 
-      this.files = [...this.files];
+      this.results = [...this.results];
     }, 250);
 
   }

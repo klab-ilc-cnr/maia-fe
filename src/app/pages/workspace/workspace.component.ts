@@ -337,6 +337,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.SEARCH:
+          case TileType.LEXICON:
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
