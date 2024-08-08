@@ -7,7 +7,7 @@ td:has(sub) {
 }
 
 td:has(> span),
-td:has(> span) div:has(> span){
+td:has(> span) div:has(> span) {
   width: 100px;
   white-space: nowrap;
   overflow: hidden;
@@ -21,6 +21,7 @@ div:has(> label) {
 
 td {
   padding: 0.5rem 0.5rem !important;
+
   span :not(.dot) {
     display: inline;
   }
@@ -36,4 +37,6 @@ td {
   background-color: #cfa630;
   border-radius: 50%;
   display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
 }
