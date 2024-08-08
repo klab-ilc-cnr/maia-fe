@@ -1,14 +1,14 @@
 <p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
-    <p-tabPanel header="Class">
+    <p-tabPanel header="{{('ONTOLOGY.classes'|translate)}}">
         <app-ontology-class-viewer [panelHeight]="ontologyPanelHeight"></app-ontology-class-viewer>
     </p-tabPanel>
-    <p-tabPanel header="Object Property">
+    <p-tabPanel header="{{('ONTOLOGY.objectProperties'|translate)}}">
         <app-ontology-object-property-viewer></app-ontology-object-property-viewer>
     </p-tabPanel>
-    <p-tabPanel header="Data Property">
+    <p-tabPanel header="{{('ONTOLOGY.dataProperties'|translate)}}">
         <app-ontology-data-property-viewer></app-ontology-data-property-viewer>
     </p-tabPanel>
-    <p-tabPanel header="Individuals">
+    <p-tabPanel header="{{('ONTOLOGY.individuals'|translate)}}">
         <app-ontology-individuals-viewer></app-ontology-individuals-viewer>
     </p-tabPanel>
   </p-tabView>

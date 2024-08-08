@@ -207,6 +207,12 @@
         "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri",
         "userUpdated": "Utente aggiornato con successo"
     },
+    "ONTOLOGY":{
+        "classes" : "Class",
+        "objectProperties": "Object Property",
+        "dataProperties": "Data Property",
+        "individuals" : "Individual"
+    },
     "ONTOLOGY_CLASS_VIEWER":
     {
         "addChild": "Aggiungi classe",
