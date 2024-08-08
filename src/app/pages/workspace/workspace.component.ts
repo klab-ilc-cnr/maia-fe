@@ -1670,7 +1670,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.3,
+        width: () => window.innerWidth * 0.25,
         height: '60vh',
       },
       resizeit: {
