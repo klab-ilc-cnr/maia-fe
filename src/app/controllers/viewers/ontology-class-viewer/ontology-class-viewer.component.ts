@@ -16,6 +16,7 @@ export class OntologyClassViewerComponent implements OnInit {
 
   private readonly unsubscribe$ = new Subject();
 
+  public static rootClassId = "http://www.w3.org/2002/07/owl#Thing";
   /**offset point for the item tree */
   public treeHeightOffset: number = 160;
   public loading: boolean = false;
@@ -126,7 +127,7 @@ export class OntologyClassViewerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simulateServiceGetClasses().then((dataResults) => {
+      this.simulateServiceGetClasses(OntologyClassViewerComponent.rootClassId).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
           let nodeData: OntologyClass = {
             id: dataResults[i].id,
@@ -193,8 +194,8 @@ export class OntologyClassViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  simulateServiceGetClasses(nodeId?: string) {
-    if (nodeId) {
+  simulateServiceGetClasses(nodeId: string) {
+    if (nodeId != OntologyClassViewerComponent.rootClassId) {
       return Promise.resolve(this.getTreeNodesChildrenDate());
     }
 
