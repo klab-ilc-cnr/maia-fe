@@ -37,7 +37,6 @@ export class OntologyClassViewerComponent implements OnInit {
       { field: 'status', header: 'Stato', width: '10%', display: 'true' },
     ];
 
-    this.loading = true;
     this.showLabelName = true;
 
     this.commonService.notifyObservable$.pipe(
@@ -45,7 +44,7 @@ export class OntologyClassViewerComponent implements OnInit {
     ).subscribe((res) => {
       switch (res.option) {
         case 'ontology_tag_clicked':
-          this.alternateLabelInstanceName();
+          this.alternateLabelShortId();
           this.showLabelName = !this.showLabelName;
           break;
         default:
@@ -61,17 +60,17 @@ export class OntologyClassViewerComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
-  /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
-  alternateLabelInstanceName() {
-    this.results.forEach(node => this.treeTraversalAlternateLabelInstanceName(node))
+  /**Traverse tree function that switch label with shortId and vice versa */
+  alternateLabelShortId() {
+    this.results.forEach(node => this.treeTraversalAlternateLabelShortId(node))
   }
 
   /**
  * @private
- * Metodo che modifica il valore del name di un modo passando da label a instanceName o viceversa
- * @param node {TreeNode} nodo dell'albero delle entrate lessicali
+ * Traverse tree function that switch label with shortId and vice versa
+ * @param node
  */
-  private treeTraversalAlternateLabelInstanceName(node: TreeNode<OntologyClass>): void {
+  private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyClass>): void {
     if (node.data?.name === node.data?.label) {
       node.data!.name = node.data!.shortId!;
     }
@@ -81,7 +80,7 @@ export class OntologyClassViewerComponent implements OnInit {
 
     if (node.children) {
       node.children.forEach(childNode => {
-        this.treeTraversalAlternateLabelInstanceName(childNode);
+        this.treeTraversalAlternateLabelShortId(childNode);
       });
     }
   }
@@ -100,92 +99,153 @@ export class OntologyClassViewerComponent implements OnInit {
     // // }
   }
 
+  /**
+   * load treetable nodes
+   * @param event 
+   */
   loadNodes(event: unknown) {
     this.loading = true;
 
+    //TODO ELIMINARE TIMEOUT APPENA SARà CREATO IL VERO SERVIZIO BACKEND
     //imitate db connection over a network
     setTimeout(() => {
       this.loading = false;
       this.results = [];
 
-      for (let i = 0; i < 20; i++) {
-        let shortId = 'testLabel'+Math.floor(Math.random() * 1000) + 1;
-        let id = 'http://test.it/#'+shortId;
-        let label = 'label'+shortId;
-        let name = this.showLabelName ? shortId : label;
+      //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
+      this.simulateServiceGetClasses().then((dataResults) => {
+        for (let i = 0; i < dataResults.length; i++) {
+          let nodeData: OntologyClass = {
+            id: dataResults[i].id,
+            name: dataResults[i].name,
+            creator: dataResults[i].creator,
+            creationDate: dataResults[i].creationDate,
+            lastUpdate: dataResults[i].lastUpdate,
+            status: dataResults[i].status,
+            label: dataResults[i].label,
+            shortId: dataResults[i].shortId,
+            children: dataResults[i].children
+          };
 
-        let data : OntologyClass = {
-          id: id,
-          name: name,
-          creator: 'a',
-          creationDate: new Date().toLocaleString(),
-          lastUpdate: new Date().toLocaleString(),
-          status: ClassStatus.working,
-          label: label,
-          shortId: shortId,
-          children: 2
-        };
+          let node: TreeNode<OntologyClass> = {
+            data: nodeData,
+            leaf: nodeData.children === 0
+          };
 
-        let node : TreeNode<OntologyClass> = {
-          data: data,
-          leaf: data.children === 0
-        };
-
-        this.results.push(node);
-      }
+          this.results.push(node);
+        }
+      });
     }, 1000);
   }
 
+  /**
+   * lazy load of treetable nodes on father expand
+   * @param event 
+   */
   onNodeExpand(event: { node: TreeNode<OntologyClass>; }) {
     this.loading = true;
 
+    //TODO ELIMINARE TIMEOUT APPENA SARà CREATO IL VERO SERVIZIO BACKEND
     setTimeout(() => {
       this.loading = false;
       const node = event.node;
 
-      let shortId = 'testLabel'+Math.floor(Math.random() * 1000) + 1;
-      let id = 'http://test.it/#'+shortId;
-      let label = 'label'+shortId;
+      //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
+      this.simulateServiceGetClasses(node.data!.id).then((dataResults) => {
+        for (let i = 0; i < dataResults.length; i++) {
+          let nodeData: OntologyClass = {
+            id: dataResults[i].id,
+            name: dataResults[i].name,
+            creator: dataResults[i].creator,
+            creationDate: dataResults[i].creationDate,
+            lastUpdate: dataResults[i].lastUpdate,
+            status: dataResults[i].status,
+            label: dataResults[i].label,
+            shortId: dataResults[i].shortId,
+            children: dataResults[i].children
+          };
+
+          if (!node.children) { node.children = []; }
+
+          node.children.push({
+            data: nodeData,
+            leaf: nodeData.children === 0
+          })
+        }
+      });
+
+      this.results = [...this.results];
+    }, 250);
+
+  }
+
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  simulateServiceGetClasses(nodeId?: string) {
+    if (nodeId) {
+      return Promise.resolve(this.getTreeNodesChildrenDate());
+    }
+
+    return Promise.resolve(this.getTreeNodesRootData());
+  }
+
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  getTreeNodesRootData() {
+    let classesResult = [];
+    for (let i = 0; i < 20; i++) {
+      let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
+      let id = 'http://test.it/#' + shortId;
+      let label = 'label' + shortId;
       let name = this.showLabelName ? shortId : label;
 
-      let data1 : OntologyClass = {
+      let data = {
         id: id,
         name: name,
-        creator: 'b',
+        creator: 'a',
         creationDate: new Date().toLocaleString(),
         lastUpdate: new Date().toLocaleString(),
-        status: ClassStatus.completed,
+        status: ClassStatus.working,
         label: label,
         shortId: shortId,
         children: 2
       };
 
-      let data2 : OntologyClass = {
-        id: id,
-        name: name,
-        creator: 'c',
-        creationDate: new Date().toLocaleString(),
-        lastUpdate: new Date().toLocaleString(),
-        status: ClassStatus.reviewed,
-        label: label,
-        shortId: shortId,
-        children: 0
-      };
+      classesResult.push(data);
+    }
+    return classesResult;
+  }
 
-      node.children = [
-        {
-          data: data1,
-          leaf: data1.children === 0
-        },
-        {
-          data: data2,
-          leaf: data2.children === 0
-        }
-      ];
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  getTreeNodesChildrenDate() {
+    let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
+    let id = 'http://test.it/#' + shortId;
+    let label = 'label' + shortId;
+    let name = this.showLabelName ? shortId : label;
 
-      this.results = [...this.results];
-    }, 250);
+    let data1 = {
+      id: id,
+      name: name,
+      creator: 'b',
+      creationDate: new Date().toLocaleString(),
+      lastUpdate: new Date().toLocaleString(),
+      status: ClassStatus.completed,
+      label: label,
+      shortId: shortId,
+      children: 2
+    };
 
+    let data2 = {
+      id: id,
+      name: name,
+      creator: 'c',
+      creationDate: new Date().toLocaleString(),
+      lastUpdate: new Date().toLocaleString(),
+      status: ClassStatus.reviewed,
+      label: label,
+      shortId: shortId,
+      children: 0
+    };
+
+    return [data1, data2];
   }
 
 }
