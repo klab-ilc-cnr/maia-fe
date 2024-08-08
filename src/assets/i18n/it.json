@@ -216,7 +216,8 @@
     "ONTOLOGY_CLASS_VIEWER":
     {
         "addChild": "Aggiungi classe",
-        "addSibling": "Aggiungi sottoclasse"
+        "addSibling": "Aggiungi sottoclasse",
+        "remove": "Rimuovi"
     },
     "SEARCH": {
         "insertForm": "inserisci forma",

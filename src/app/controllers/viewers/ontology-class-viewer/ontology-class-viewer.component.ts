@@ -26,6 +26,8 @@ export class OntologyClassViewerComponent implements OnInit {
   public results: TreeNode<OntologyClass>[] = [];
   /**Show label or instance name */
   public showLabelName?: boolean;
+  /**Show/hide checkbox in tree table */
+  public isVisibleCheckbox = false;
 
   constructor(private commonService: CommonService
   ) { }
@@ -97,6 +99,17 @@ export class OntologyClassViewerComponent implements OnInit {
     // }
     // this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
     // // }
+  }
+
+  /**remove selected nodes */
+  //TODO to be implemented
+  removeNodes(){
+    // console.log(this.selectedNodes);
+  }
+
+  /**Metodo che gestisce la visualizzazione delle checkbox di selezione */
+  onChangeSelectionView() {
+    this.isVisibleCheckbox = !this.isVisibleCheckbox;
   }
 
   /**

@@ -8,12 +8,17 @@
         <i class="fa-solid fa-circle-plus"></i>
       </button>
       <button class="btn btn-outline-danger rounded-circle mx-2"
-        [disabled]="true" pTooltip="Remove"
+        (click)="removeNodes()"
+        [disabled]="true" [pTooltip]="'ONTOLOGY_CLASS_VIEWER.addSibling'|translate"
         tooltipPosition="bottom">
         <i class="pi pi-trash"></i>
       </button>
     </div>
   </p-toolbar>
+  <div class="flex justify-content-start">
+    <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"
+      pTooltip="Selection" (click)="onChangeSelectionView()"></button>
+  </div>
   <div [ngStyle]="{'height': (panelHeight - treeHeightOffset)+'px'}">
     <p-treeTable [value]="results" 
                  [columns]="cols" 
@@ -24,7 +29,7 @@
                  [totalRecords]="1000" 
                  [loading]="loading" 
                  selectionMode="checkbox"
-                 dataKey="instanceName" 
+                 dataKey="id" 
                  [(selection)]="selectedNodes" 
                  [value]="results"
                  (onNodeExpand)="onNodeExpand($event)">
@@ -37,6 +42,7 @@
         <tr (dblclick)="classDoubleClickHandler($event, rowNode)">
           <td *ngFor="let col of cols; let i = index">
             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+            <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
             <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
