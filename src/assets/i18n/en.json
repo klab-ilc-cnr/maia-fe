@@ -219,6 +219,12 @@
         "addSibling": "Add subclass",
         "remove": "Remove"
     },
+    "ONTOLOGY_DATA_PROPERTY_VIEWER":
+    {
+        "addChild": "Add class",
+        "addSibling": "Add subclass",
+        "remove": "Remove"
+    },
     "SEARCH":{
         "insertForm" : "insert form",
         "insertLemma": "insert lemma",

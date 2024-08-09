@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { PrimeNGConfig, TreeNode } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
-import { ClassStatus, OntologyClass } from 'src/app/models/ontology/ontology-class.model';
+import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
+import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -127,7 +128,7 @@ export class OntologyClassViewerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simulateServiceGetClasses(OntologyClassViewerComponent.rootClassId).then((dataResults) => {
+      this.simuleGetDirectSubClasses(OntologyClassViewerComponent.rootClassId).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
           let nodeData: OntologyClass = {
             id: dataResults[i].id,
@@ -165,7 +166,7 @@ export class OntologyClassViewerComponent implements OnInit {
       const node = event.node;
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simulateServiceGetClasses(node.data!.id).then((dataResults) => {
+      this.simuleGetDirectSubClasses(node.data!.id).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
           let nodeData: OntologyClass = {
             id: dataResults[i].id,
@@ -194,7 +195,7 @@ export class OntologyClassViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  simulateServiceGetClasses(nodeId: string) {
+  simuleGetDirectSubClasses(nodeId: string) {
     if (nodeId != OntologyClassViewerComponent.rootClassId) {
       return Promise.resolve(this.getTreeNodesChildrenDate());
     }
@@ -217,7 +218,7 @@ export class OntologyClassViewerComponent implements OnInit {
         creator: 'a',
         creationDate: new Date().toLocaleString(),
         lastUpdate: new Date().toLocaleString(),
-        status: ClassStatus.working,
+        status: OntologyStatuses.working,
         label: label,
         shortId: shortId,
         children: 2
@@ -241,7 +242,7 @@ export class OntologyClassViewerComponent implements OnInit {
       creator: 'b',
       creationDate: new Date().toLocaleString(),
       lastUpdate: new Date().toLocaleString(),
-      status: ClassStatus.completed,
+      status: OntologyStatuses.completed,
       label: label,
       shortId: shortId,
       children: 2
@@ -253,7 +254,7 @@ export class OntologyClassViewerComponent implements OnInit {
       creator: 'c',
       creationDate: new Date().toLocaleString(),
       lastUpdate: new Date().toLocaleString(),
-      status: ClassStatus.reviewed,
+      status: OntologyStatuses.reviewed,
       label: label,
       shortId: shortId,
       children: 0

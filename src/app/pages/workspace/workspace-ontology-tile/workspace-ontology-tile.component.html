@@ -6,7 +6,7 @@
         <app-ontology-object-property-viewer></app-ontology-object-property-viewer>
     </p-tabPanel>
     <p-tabPanel header="{{('ONTOLOGY.dataProperties'|translate)}}">
-        <app-ontology-data-property-viewer></app-ontology-data-property-viewer>
+        <app-ontology-data-property-viewer [panelHeight]="ontologyPanelHeight"></app-ontology-data-property-viewer>
     </p-tabPanel>
     <p-tabPanel header="{{('ONTOLOGY.individuals'|translate)}}">
         <app-ontology-individuals-viewer></app-ontology-individuals-viewer>
