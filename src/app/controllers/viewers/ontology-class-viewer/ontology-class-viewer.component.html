@@ -38,7 +38,7 @@
           </colgroup>
       </ng-template>
       <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-        <tr (dblclick)="classDoubleClickHandler($event, rowNode)">
+        <tr (dblclick)="doubleClickHandler($event, rowNode)">
           <td *ngFor="let col of cols; let i = index">
             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
             <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>

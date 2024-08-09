@@ -128,7 +128,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubNodes(OntologyDataPropertyViewerComponent.rootDataId).then((dataResults) => {
+      this.simuleGetDirectSubProperties(OntologyDataPropertyViewerComponent.rootDataId).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
           let nodeData: OntologyDataProperty = {
             id: dataResults[i].id,
@@ -166,7 +166,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
       const node = event.node;
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubNodes(node.data!.id).then((dataResults) => {
+      this.simuleGetDirectSubProperties(node.data!.id).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
           let nodeData: OntologyDataProperty = {
             id: dataResults[i].id,
@@ -195,7 +195,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  simuleGetDirectSubNodes(nodeId: string) {
+  simuleGetDirectSubProperties(nodeId: string) {
     if (nodeId != OntologyDataPropertyViewerComponent.rootDataId) {
       return Promise.resolve(this.getTreeNodesChildrenDate());
     }

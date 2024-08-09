@@ -93,7 +93,7 @@ export class OntologyClassViewerComponent implements OnInit {
  * Metodo che gestisce il doppio click dell'albero con apertura del pannello di edit
  * @param event {any} evento di doppio click sull'albero
  */
-  classDoubleClickHandler(event: any, rowNode: any) {
+  doubleClickHandler(event: any, rowNode: any) {
     alert("dobleClick demo");
     // const node = rowNode?.node;
     // if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
