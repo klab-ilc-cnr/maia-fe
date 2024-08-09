@@ -137,12 +137,12 @@ export class OntologyIndividualsViewerComponent implements OnInit {
             status: dataResults[i].status,
             label: dataResults[i].label,
             shortId: dataResults[i].shortId,
-            children: dataResults[i].children
+            children: 0
           };
 
           let node: TreeNode<OntologyIndividual> = {
             data: nodeData,
-            leaf: nodeData.children === 0
+            leaf: true
           };
 
           this.results.push(node);
@@ -178,7 +178,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
         status: OntologyStatuses.working,
         label: label,
         shortId: shortId,
-        children: 2
+        children: 0
       };
 
       nodesResult.push(data);
@@ -202,7 +202,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
       status: OntologyStatuses.completed,
       label: label,
       shortId: shortId,
-      children: 2
+      children: 0
     };
 
     let data2 = {
