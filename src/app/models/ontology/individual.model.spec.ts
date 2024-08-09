@@ -1,7 +1,7 @@
-import { Individual } from './individual.model';
+import { OntologyIndividual } from './ontology-individual.model';
 
 describe('Individual', () => {
   it('should create an instance', () => {
-    expect(new Individual()).toBeTruthy();
+    expect(new OntologyIndividual()).toBeTruthy();
   });
 });

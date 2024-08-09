@@ -47,7 +47,7 @@
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
             <span *ngIf="col.field === 'name'" class="dot"></span>
-            <span *ngIf="col.field === 'name'" [pTooltip]="rowData['id']">{{
+            <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
               rowData[col.field] }}</span>
           </td>
         </tr>

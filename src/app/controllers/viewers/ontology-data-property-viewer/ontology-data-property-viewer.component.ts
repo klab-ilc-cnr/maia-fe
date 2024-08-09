@@ -17,7 +17,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
 
   private readonly unsubscribe$ = new Subject();
 
-  public static rootDataId = "http://www.w3.org/2002/07/owl#topDataProperty.";
+  public static rootDataId = "http://www.w3.org/2002/07/owl#topDataProperty";
   /**offset point for the item tree */
   public treeHeightOffset: number = 160;
   public loading: boolean = false;
