@@ -31,13 +31,14 @@ td {
     cursor: pointer;
 }
 
-.rectangle {
-    height: 10px;
-    width: 18px;
-    background-color: #1179ba;
+.rhombus {
+    height: 12px;
+    width: 12px;
+    background-color: #884b82;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 0.25rem;
+    margin-right: 0.5rem;
+    transform: rotate(45deg);
 }
 
 .name {

@@ -4,9 +4,6 @@
       <button [disabled]="true" class="btn btn-outline-success rounded-circle mx-2" [pTooltip]="'ONTOLOGY_INDIVIDUAL_VIEWER.addChild'|translate" tooltipPosition="bottom">
         <i class="pi pi-plus"></i>
       </button>
-      <button [disabled]="true" class="btn btn-outline-primary rounded-circle mx-2" [pTooltip]="'ONTOLOGY_INDIVIDUAL_VIEWER.addSibling'|translate" tooltipPosition="bottom">
-        <i class="fa-solid fa-circle-plus"></i>
-      </button>
       <button class="btn btn-outline-danger rounded-circle mx-2"
         (click)="removeNodes()"
         [disabled]="true" [pTooltip]="'ONTOLOGY_INDIVIDUAL_VIEWER.addSibling'|translate"
@@ -39,13 +36,12 @@
       <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
         <tr (dblclick)="doubleClickHandler($event, rowNode)">
           <td *ngFor="let col of cols; let i = index">
-            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
             <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
             <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
-            <span *ngIf="col.field === 'name'" class="rectangle"></span>
+            <span *ngIf="col.field === 'name'" class="rhombus"></span>
             <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
               rowData[col.field] }}</span>
           </td>
