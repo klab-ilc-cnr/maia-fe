@@ -16,8 +16,6 @@ export class IconAuthorComponent extends IconBaseComponent implements OnInit {
   public text: string = '';
   private tooltipText!: HTMLDivElement;
 
-  // @ViewChild(Tooltip) authorTooltip!: Tooltip;
-
   constructor(private viewContainer: ViewContainerRef
   ) {
     super();
@@ -28,6 +26,14 @@ export class IconAuthorComponent extends IconBaseComponent implements OnInit {
   }
 
   ngOnChanges(): void {
+    this.extendsPrimeng14TooltipToNgTemplate();
+  }
+
+  /**This function extends the primeng tooltip functionality,
+   * allowing to pass templates to it, as it works in newer version 17,
+   * warning: the escape parameter functionality is ignored
+   */
+  private extendsPrimeng14TooltipToNgTemplate() {
     this.tooltipText = document.createElement('div');
     const content = this.tooltip;
     if (content instanceof TemplateRef) {
@@ -41,25 +47,4 @@ export class IconAuthorComponent extends IconBaseComponent implements OnInit {
 
     this.text = this.tooltipText.innerHTML;
   }
-
-  // ngAfterViewInit(): void {
-  //   this.tooltipText = document.createElement('div');
-  //   this.tooltipText.className = 'p-tooltip-text';
-  //   const content = this.tooltip;
-  //   if (content instanceof TemplateRef) {
-  //     const embeddedViewRef = this.viewContainer.createEmbeddedView(content);
-  //     embeddedViewRef.detectChanges();
-  //     embeddedViewRef.rootNodes.forEach((node) => this.tooltipText.appendChild(node));
-  //   } else if (this.authorTooltip.getOption('escape')) {
-  //     this.tooltipText.innerHTML = '';
-  //     this.tooltipText.appendChild(document.createTextNode(content ?? ''));
-  //   } else {
-  //     this.tooltipText.innerHTML = content ?? '';
-  //   }
-
-  //   this.authorTooltip.setOption({ tooltipLabel: this.tooltipText.innerHTML });
-  //   this.authorTooltip.tooltipText = this.tooltipText;
-  //   this.authorTooltip.updateText();
-  // }
-
 }
