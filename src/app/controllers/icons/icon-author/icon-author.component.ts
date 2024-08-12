@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { faRobot, faUser } from '@fortawesome/free-solid-svg-icons';
 import { IconBaseComponent } from '../icon-base/icon-base.component';
-import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-icon-author',
