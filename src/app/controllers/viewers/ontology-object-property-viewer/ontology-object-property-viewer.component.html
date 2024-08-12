@@ -43,7 +43,13 @@
             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
             <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
             <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
-            [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author>
+              [tooltip]="authorTooltip">
+              <ng-template #authorTooltip>
+                <em>Author</em>: {{rowData?.creator}}<br>
+                <em>Creation date</em>: {{rowData?.creationDate}}<br>
+                <em>Last update</em>: {{rowData?.lastUpdate}}
+              </ng-template>
+            </app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
             <span *ngIf="col.field === 'name'" class="rectangle"></span>
