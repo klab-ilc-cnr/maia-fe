@@ -134,6 +134,20 @@
         },
         "noDefinition": "No definition provided"
     },
+    "LEXICON_EDITOR": {
+        "FORM": {
+            "confirmDelForm": "You are about to delete a lexical form",
+            "deleteLexForm": "Delete lexical form",
+            "deletionInProg": "Deletion in progress",
+            "invalidWrittenRep": "The written representation cannot be blank or with only white space",
+            "lastUpdate": "Last update",
+            "morphTraits": "Morphological traits",
+            "pos": "Part-of-Speech",
+            "removeFormSuccess": "Successfully removed form",
+            "representation": "Representation",
+            "type": "Type"
+        }
+    },
     "LOGIN": {
         "authFailed": "Authentication failed",
         "errorRetrievingUser": "Retrieve current user failed",

@@ -20,10 +20,11 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
   styleUrls: ['./form-core-editor.component.scss']
 })
 export class FormCoreEditorComponent implements OnInit, OnDestroy {
+  readonly translatePrefix = 'LEXICON_EDITOR.FORM';
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
   /**Stringa per il campo vuoto */
-  emptyField = '-- Select --'
+  emptyField = this.commonService.translateKey('GENERAL.selectValue');
   /**Utente loggato */
   currentUser!: User;
   /**Forma in lavorazione */
@@ -77,13 +78,14 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param formId {string} identificativo della forma
    */
   private deleteForm = (formId: string) => {
-    this.showOperationInProgress("Deletion in progress");
-    const successMsg = "Successfully removed form";
+    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix+'.deletionInProg'));
+    const successMsg = this.commonService.translateKey(this.translatePrefix+'.removeFormSuccess');
     this.lexiconService.deleteForm(formId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.showOperationFailed("Deletion failed: " + error.message);
-        return throwError(() => new Error(error.error));
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+        // this.showOperationFailed("Deletion failed: " + error.message);
+        // return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
@@ -140,12 +142,8 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
         if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== respValue) {
           const isWhiteSpaceOnly = typeof(respValue)==='string' && !respValue.trim();
           if(key === 'writtenRep' && (respValue === '' || isWhiteSpaceOnly)) {
-            const msg = this.msgConfService.generateWarningMessageConfig(`Written rep cannot be empty or only white space`);
+            const msg = this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey(this.translatePrefix+'.invalidWrittenRep'));
             this.messageService.add(msg);
-            this.label.setValue({
-              ...this.label.value,
-              writtenRep: currentPropValue
-            });
             return;
           }
           if(respValue === '') {
@@ -226,7 +224,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo per la cancellazione della forma */
   onDeleteLexicalForm() {
-    const confirmMsg = "You are about to delete a form";
+    const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmDelForm');
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteForm(this.formEntry.form), this.formEntry.form);
   }
