@@ -132,12 +132,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe((resp: { [key: string]: any }) => {
       for (const key in resp) {
         const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
+        const currentPropValue = this.definitionFormItems[currentPropertyId].propertyValue;
         if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
+        if(resp[key] === '') {
+          const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { relation: key, value: currentPropValue });
+          this.manageUpdateObservable(deleteRelObs, key, resp[key]);
+          return;
+        }
         this.updateSense(key, resp[key]).then(() => {
-          if (resp[key] === '') {
-            // this.movePropertyToMenu(key);
-            return;
-          }
           this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
         });
       }

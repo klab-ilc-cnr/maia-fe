@@ -135,13 +135,26 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe((resp: { [key: string]: any }) => {
       for (const key in resp) {
         const currentPropertyId = this.labelFormItems.findIndex(e => e.propertyID === key);
-        if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== resp[key]) {
-          this.updateForm(key, resp[key]).then(() => {
-            if (resp[key] === '') {
-              // this.movePropertyToMenu(key);
-              return;
+        const currentPropValue = this.labelFormItems[currentPropertyId].propertyValue;
+        const respValue = resp[key];
+        if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== respValue) {
+          const isWhiteSpaceOnly = typeof(respValue)==='string' && !respValue.trim();
+          if(key === 'writtenRep' && (respValue === '' || isWhiteSpaceOnly)) {
+            const msg = this.msgConfService.generateWarningMessageConfig(`Written rep cannot be empty or only white space`);
+            this.messageService.add(msg);
+            this.label.setValue({
+              ...this.label.value,
+              writtenRep: currentPropValue
+            });
+            return;
+          }
+          if(respValue === '') {
+            const deleteRelObs = this.lexiconService.deleteRelation(this.formEntry.form, { relation: key, value: currentPropValue });
+            this.manageUpdateObservable(deleteRelObs, key, respValue);
+            return;
             }
-            this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
+          this.updateForm(key, respValue).then(() => {
+            this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: respValue };
           });
         }
       }
