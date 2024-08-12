@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { PrimeNGConfig, TreeNode } from 'primeng/api';
+import { Component, Input, OnInit } from '@angular/core';
+import { TreeNode } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
@@ -31,9 +31,8 @@ export class OntologyClassViewerComponent implements OnInit {
   /**Show/hide checkbox in tree table */
   public isVisibleCheckbox = false;
 
-  constructor(private commonService: CommonService
-  ) { }
-
+  constructor(private commonService: CommonService) { }
+  
   ngOnInit(): void {
     this.cols = [
       { field: 'name', header: '', width: '60%', display: 'true' },
