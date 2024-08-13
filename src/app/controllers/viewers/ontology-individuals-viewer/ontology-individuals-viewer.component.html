@@ -40,9 +40,9 @@
             <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
               [tooltip]="authorTooltip">
               <ng-template #authorTooltip>
-                <em>Author</em>: {{rowData?.creator}}<br>
-                <em>Creation date</em>: {{rowData?.creationDate}}<br>
-                <em>Last update</em>: {{rowData?.lastUpdate}}
+                <em>{{('ICON_AUTHOR.creator'|translate)}}</em>: {{rowData?.creator}}<br>
+                <em>{{('ICON_AUTHOR.creationDate'|translate)}}</em>: {{rowData?.creationDate}}<br>
+                <em>{{('ICON_AUTHOR.lastUpdate'|translate)}}</em>: {{rowData?.lastUpdate}}
               </ng-template>
             </app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"

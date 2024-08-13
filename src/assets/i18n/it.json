@@ -207,6 +207,11 @@
         "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri",
         "userUpdated": "Utente aggiornato con successo"
     },
+    "ICON_AUTHOR":{
+        "creator":"Creatore",
+        "creationDate":"Data creazione",
+        "lastUpdate":"Ultimo aggiornamento"
+    },
     "ONTOLOGY":{
         "classes" : "Class",
         "objectProperties": "Object Property",
