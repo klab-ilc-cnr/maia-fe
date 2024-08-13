@@ -22,6 +22,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
   styleUrls: ['./sense-core-editor.component.scss']
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
+  readonly translatePrefix = 'LEXICON_EDITOR.SENSE';
   demoHide = environment.demoHide;
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
@@ -87,8 +88,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @param senseId {string} identificativo del senso
    */
   private deleteSense = (senseId: string) => {
-    this.showOperationInProgress("Deletion in progress");
-    const successMsg = "Successfully removed sense";
+    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix+'.deletionInProg'));
+    const successMsg = this.commonService.translateKey(this.translatePrefix+'.removeSenseSuccess');
     this.lexiconService.deleteLexicalSense(senseId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -241,7 +242,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo che gestisce la cancellazione del senso in lavorazione */
   onDeleteLexicalSense() {
-    const confirmMsg = "You are about to delete a sense";
+    const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmDelSense');
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
@@ -310,7 +311,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       return;
     }
     if (currentValue && currentValue !== '') {
-      const confirmMsg = `Are you sure to remove "${currentValue}"?`;
+      const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmRemoveMorph').replace('#VALUE#',currentValue);
       this.popupDeleteItem.confirmMessage = confirmMsg;
       this.popupDeleteItem.showDeleteConfirmSimple(() => {
         //TODO implementa rimozione della morfologia
@@ -340,8 +341,9 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`"${relation}" update failed `));
-        return throwError(() => new Error(error.error));
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+        // this.messageService.add(this.msgConfService.generateWarningMessageConfig(`"${relation}" update failed `));
+        // return throwError(() => new Error(error.error));
       }),
     ).subscribe(resp => {
       this.senseEntry = <SenseCore>{ ...this.senseEntry, lastUpdate: resp };
