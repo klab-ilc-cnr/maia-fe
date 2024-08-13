@@ -146,6 +146,18 @@
             "removeFormSuccess": "Successfully removed form",
             "representation": "Representation",
             "type": "Type"
+        },
+        "SENSE": {
+            "confirmDelSense": "You are about to delete a sense",
+            "confirmRemoveMorph": "Are you sure to remove #VALUE#?",
+            "definitions": "Definitions",
+            "deleteLexSense": "Delete lexical sense",
+            "deletionInProg": "Deletion in progress",
+            "lastUpdate": "Last update",
+            "marksOfUse": "Marks of use",
+            "morphRestriction": "Morphological Restriction",
+            "removeSenseSuccess": "Successfully removed sense",
+            "semanticMarks": "Semantic marks"
         }
     },
     "LOGIN": {
