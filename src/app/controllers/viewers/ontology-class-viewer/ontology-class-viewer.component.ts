@@ -32,7 +32,7 @@ export class OntologyClassViewerComponent implements OnInit {
   public isVisibleCheckbox = false;
 
   constructor(private commonService: CommonService) { }
-  
+
   ngOnInit(): void {
     this.cols = [
       { field: 'name', header: '', width: '60%', display: 'true' },
@@ -89,22 +89,21 @@ export class OntologyClassViewerComponent implements OnInit {
   }
 
   /**
- * Metodo che gestisce il doppio click dell'albero con apertura del pannello di edit
- * @param event {any} evento di doppio click sull'albero
+ * Mananges double click on a node tree
+ * @param event {any} double click event
  */
   doubleClickHandler(event: any, rowNode: any) {
-    alert("dobleClick demo");
-    // const node = rowNode?.node;
-    // if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
-    //   return;
-    // }
-    // this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
-    // // }
+    const node = rowNode?.node;
+    if (node?.data?.id === undefined || node?.data?.id === null) {
+      return;
+    }
+
+    this.commonService.notifyOther({ option: 'onOntologyClassElementDoubleClickEvent', value: [node, this.showLabelName] });
   }
 
   /**remove selected nodes */
   //TODO to be implemented
-  removeNodes(){
+  removeNodes() {
     // console.log(this.selectedNodes);
   }
 

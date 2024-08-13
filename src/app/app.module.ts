@@ -67,6 +67,7 @@ import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ont
 import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontology-data-property-viewer/ontology-data-property-viewer.component';
 import { OntologyIndividualsViewerComponent } from './controllers/viewers/ontology-individuals-viewer/ontology-individuals-viewer.component';
 import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
+import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-ontology-viewer/workspace-ontology-viewer.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { OntologyClassViewerComponent } from './controllers/viewers/ontology-cla
     OntologyClassViewerComponent,
     OntologyObjectPropertyViewerComponent,
     OntologyDataPropertyViewerComponent,
-    OntologyIndividualsViewerComponent
+    OntologyIndividualsViewerComponent,
+    WorkspaceOntologyViewerComponent
   ],
   imports: [
     BrowserModule,
