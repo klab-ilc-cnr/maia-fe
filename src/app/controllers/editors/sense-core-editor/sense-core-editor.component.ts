@@ -134,7 +134,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       for (const key in resp) {
         const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
         const currentPropValue = this.definitionFormItems[currentPropertyId].propertyValue;
-        if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
+        if (currentPropertyId === -1 || this.senseEntry.definition.find(x => x.propertyID===key)?.propertyValue === resp[key]) continue;
         if(resp[key] === '') {
           const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { relation: key, value: currentPropValue });
           this.manageUpdateObservable(deleteRelObs, key, resp[key]);
@@ -346,7 +346,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         // return throwError(() => new Error(error.error));
       }),
     ).subscribe(resp => {
-      this.senseEntry = <SenseCore>{ ...this.senseEntry, lastUpdate: resp };
+      const updatedDefinitions: PropertyElement[] = [...this.senseEntry.definition];
+      const relIndex = updatedDefinitions.findIndex(x => x.propertyID === relation);
+      updatedDefinitions[relIndex].propertyValue = newValue;
+      this.senseEntry = <SenseCore>{ 
+        ...this.senseEntry, 
+        definition: updatedDefinitions,
+        lastUpdate: resp 
+      };
       // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
 
       if (relation === 'definition') {
