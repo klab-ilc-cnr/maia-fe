@@ -139,7 +139,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
         const currentPropertyId = this.labelFormItems.findIndex(e => e.propertyID === key);
         const currentPropValue = this.labelFormItems[currentPropertyId].propertyValue;
         const respValue = resp[key];
-        if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== respValue) {
+        if (currentPropertyId !== -1 && this.formEntry.label.find(x => x.propertyID === key)?.propertyValue !== respValue) {
           const isWhiteSpaceOnly = typeof(respValue)==='string' && !respValue.trim();
           if(key === 'writtenRep' && (respValue === '' || isWhiteSpaceOnly)) {
             const msg = this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey(this.translatePrefix+'.invalidWrittenRep'));
@@ -304,7 +304,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, newValue: string) {
+  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, newValue: string, isLabelEdit?: boolean) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -314,6 +314,15 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(resp => {
       this.formEntry = { ...this.formEntry, lastUpdate: resp };
+      if(isLabelEdit) {
+        const updatedDefinitions: PropertyElement[] = [...this.formEntry.label];
+        const relIndex = updatedDefinitions.findIndex(x => x.propertyID === relation);
+        updatedDefinitions[relIndex].propertyValue = newValue;
+        this.formEntry = <FormCore>{ 
+          ...this.formEntry, 
+          definition: updatedDefinitions
+        };
+        }
       // const msg = this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success`);
       // this.messageService.add(msg);
 
