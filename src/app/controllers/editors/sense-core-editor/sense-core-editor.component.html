@@ -2,17 +2,17 @@
 <div *ngIf="senseEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
   <form class="formgrid grid" [formGroup]="form">
     <div class="field col-6" style="align-self: center;">
-      <em>Last update: {{senseEntry.lastUpdate | date: 'medium'}}</em>
+      <em>{{translatePrefix+'.lastUpdate'|translate}}: {{senseEntry.lastUpdate | date: 'medium'}}</em>
     </div>
     <div class="field col-6">
       <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"
-        pTooltip="Delete lexical form" (click)="onDeleteLexicalSense()"></button>
+        [pTooltip]="translatePrefix+'.deleteLexSense'|translate" (click)="onDeleteLexicalSense()"></button>
     </div>
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
           <p-menu #menuDefinitions [model]="definitionsMenuItems" [popup]="true" appendTo="body"></p-menu>
-          Definitions <button pButton pRipple icon="pi pi-plus" type="button" (click)="menuDefinitions.toggle($event)"
+          {{translatePrefix+'.definitions'|translate}} <button pButton pRipple icon="pi pi-plus" type="button" (click)="menuDefinitions.toggle($event)"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
@@ -32,14 +32,14 @@
       </p-fieldset>
     </div>
     <div class="field col-6">
-      <label for="marksOfUse" class="w-full">Marks of use:</label>
+      <label for="marksOfUse" class="w-full">{{translatePrefix+'.marksOfUse'|translate}}:</label>
       <p-autoComplete [suggestions]="(marksOfUse$|async)||[]" [delay]="300" name="marksOfUse" [virtualScroll]="true" (completeMethod)="onFilter('marksOfUse', $event)"
         emptyMessage="No results" [multiple]="true" formControlName="marksOfUse" dataKey="lexicalConcept" 
         inputStyleClass="w-full" inputId="marksOfUse" [forceSelection]="true" appendTo="body" field="defaultLabel"
         styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
       </div>
     <div class="field col-6">
-      <label for="semanticMarks" class="w-full">Semantic marks:</label>
+      <label for="semanticMarks" class="w-full">{{translatePrefix+'.semanticMarks'|translate}}:</label>
       <p-autoComplete [suggestions]="(semanticMarks$|async)||[]" [delay]="300" name="semanticMarks" [virtualScroll]="true" (completeMethod)="onFilter('semanticMarks', $event)"
         emptyMessage="No results" [multiple]="true" formControlName="semanticMarks" dataKey="lexicalConcept"
         inputStyleClass="w-full" inputId="semanticMarks" [forceSelection]="true" appendTo="body" field="defaultLabel"
@@ -48,7 +48,7 @@
     <div class="field col-12" *ngIf="!demoHide"> <!--NOTE REMOVE DEMOHIDE WHEN FULLY DEVELOPED-->
       <p-fieldset>
         <ng-template pTemplate="header">
-          Morphological Restriction <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
+          {{translatePrefix+'.morphRestriction'|translate}} <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
