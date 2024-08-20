@@ -220,29 +220,33 @@
         "annotations": "Annotations",
         "usage": "Usage"
     },
+    "ONTOLOGY_CLASS_EXPLORER":
+    {
+        "addChild": "Aggiungi classe",
+        "addSibling": "Aggiungi sottoclasse",
+        "remove": "Rimuovi"
+    },
+    "ONTOLOGY_DATA_PROPERTY_EXPLORER":
+    {
+        "addChild": "Aggiungi classe",
+        "addSibling": "Aggiungi sottoclasse",
+        "remove": "Rimuovi"
+    },
+    "ONTOLOGY_OBJECT_PROPERTY_EXPLORER":
+    {
+        "addChild": "Aggiungi classe",
+        "addSibling": "Aggiungi sottoclasse",
+        "remove": "Rimuovi"
+    },
+    "ONTOLOGY_INDIVIDUAL_EXPLORER":
+    {
+        "addChild": "Aggiungi classe",
+        "remove": "Rimuovi"
+    },
     "ONTOLOGY_CLASS_VIEWER":
     {
-        "addChild": "Aggiungi classe",
-        "addSibling": "Aggiungi sottoclasse",
-        "remove": "Rimuovi"
-    },
-    "ONTOLOGY_DATA_PROPERTY_VIEWER":
-    {
-        "addChild": "Aggiungi classe",
-        "addSibling": "Aggiungi sottoclasse",
-        "remove": "Rimuovi"
-    },
-    "ONTOLOGY_OBJECT_PROPERTY_VIEWER":
-    {
-        "addChild": "Aggiungi classe",
-        "addSibling": "Aggiungi sottoclasse",
-        "remove": "Rimuovi"
-    },
-    "ONTOLOGY_INDIVIDUAL_VIEWER":
-    {
-        "addChild": "Aggiungi classe",
-        "addSibling": "Aggiungi sottoclasse",
-        "remove": "Rimuovi"
+        "annotations": "Annotations",
+        "description": "Description"
     },
     "SEARCH": {
         "insertForm": "inserisci forma",

@@ -1,1 +1,34 @@
-<p>ontology-class-viewer works!</p>
+<p-fieldset>
+    <ng-template pTemplate="header">{{'ONTOLOGY_CLASS_VIEWER.annotations'|translate}}</ng-template>
+    <ng-template pTemplate="content">
+        <ng-container *ngFor="let element of dataResults; let index = index">
+            <div class="flex">
+                <div class="flex-initial flex align-items-center justify-content-center prefix">
+                    {{element.prefix}}:{{element.shortId}}
+                </div>
+                <div *ngIf="element.language" class="flex-initial flex align-items-center justify-content-center ml-4 language">[language: {{element.language}}]</div>
+            </div>
+            <div class="flex">
+                <div class="flex-initial flex align-items-center justify-content-center target">{{element.target}}</div>
+            </div>
+            <p-divider *ngIf="index != dataResults.length - 1"></p-divider>
+        </ng-container>
+    </ng-template>
+</p-fieldset>
+<div class="field col-12">
+    <p-fieldset>
+        <ng-template pTemplate="header">{{'ONTOLOGY_CLASS_VIEWER.description'|translate}}</ng-template>
+        <ng-template pTemplate="content">
+            <div class="d-flex justify-content-between">
+                <div class="field col-2">
+                </div>
+                <div class="field col-3">
+                    <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.etymon'|translate}}</label>
+                    <input formControlName="etymon" class="w-full" pInputText type="text">
+                </div>
+                <div class="field col-7">
+                </div>
+            </div>
+        </ng-template>
+    </p-fieldset>
+</div>

@@ -1,12 +1,12 @@
 <p-toolbar>
     <div class="p-toolbar-group-left">
       <p-toast></p-toast>
-      <button [disabled]="true" class="btn btn-outline-success rounded-circle mx-2" [pTooltip]="'ONTOLOGY_INDIVIDUAL_VIEWER.addChild'|translate" tooltipPosition="bottom">
+      <button [disabled]="true" class="btn btn-outline-success rounded-circle mx-2" [pTooltip]="'ONTOLOGY_INDIVIDUAL_EXPLORER.addChild'|translate" tooltipPosition="bottom">
         <i class="pi pi-plus"></i>
       </button>
       <button class="btn btn-outline-danger rounded-circle mx-2"
         (click)="removeNodes()"
-        [disabled]="true" [pTooltip]="'ONTOLOGY_INDIVIDUAL_VIEWER.addSibling'|translate"
+        [disabled]="true" [pTooltip]="'ONTOLOGY_INDIVIDUAL_EXPLORER.addSibling'|translate"
         tooltipPosition="bottom">
         <i class="pi pi-trash"></i>
       </button>
