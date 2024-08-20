@@ -1823,14 +1823,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         id: OntologyViewerTileId,
         container: this.workspaceContainer,
         content: element,
-        headerTitle: 'Ontology Viewer - ' + selectedNode?.data?.label,
+        headerTitle: 'Ontology Viewer - <span class="ontology-dot"></span>' + selectedNode?.data?.label,
         maximizedMargin: 5,
         dragit: { snap: false },
         syncMargins: true,
         theme: {
-          bgPanel: '#C6F8E5',
+          bgPanel: '#ECEAE4',
           colorHeader: 'black',
-          border: 'thin solid #C6F8E5',
+          border: 'thin solid #ECEAE4',
           borderRadius: '.33rem',
         },
         panelSize: {
@@ -1842,7 +1842,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             html: '<span class="pi pi-tag"></span>',
             name: 'tag',
             handler: () => {
-              this.commonService.notifyOther({ option: 'tag_clicked_edit_tile', value: 'clicked' });
+              this.commonService.notifyOther({ option: 'tag_clicked_ontology_class_viewer_tile', value: 'clicked' });
             }
           }
         },
