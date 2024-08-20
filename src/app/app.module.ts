@@ -62,6 +62,11 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
+import { WorkspaceOntologyTileComponent } from './pages/workspace/workspace-ontology-tile/workspace-ontology-tile.component';
+import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
+import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontology-data-property-viewer/ontology-data-property-viewer.component';
+import { OntologyIndividualsViewerComponent } from './controllers/viewers/ontology-individuals-viewer/ontology-individuals-viewer.component';
+import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +113,12 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     DictionaryEntryFullEditorComponent,
     DropdownPlusNumberComponent,
     ReplaceLineFeedPipe,
-    DictionarySortingEditorComponent
+    DictionarySortingEditorComponent,
+    WorkspaceOntologyTileComponent,
+    OntologyClassViewerComponent,
+    OntologyObjectPropertyViewerComponent,
+    OntologyDataPropertyViewerComponent,
+    OntologyIndividualsViewerComponent
   ],
   imports: [
     BrowserModule,

@@ -207,6 +207,41 @@
         "usernameMinLenght": "Username must be at least 4 characters long",
         "userUpdated": "User successfully updated"
     },
+    "ICON_AUTHOR":{
+        "creator":"Creator",
+        "creationDate":"Creation date",
+        "lastUpdate":"Last update"
+    },
+    "ONTOLOGY":{
+        "classes" : "Classes",
+        "objectProperties": "Object Properties",
+        "dataProperties": "Data Properties",
+        "individuals" : "Individuals"
+    },
+    "ONTOLOGY_CLASS_VIEWER":
+    {
+        "addChild": "Add class",
+        "addSibling": "Add subclass",
+        "remove": "Remove"
+    },
+    "ONTOLOGY_DATA_PROPERTY_VIEWER":
+    {
+        "addChild": "Add class",
+        "addSibling": "Add subclass",
+        "remove": "Remove"
+    },
+    "ONTOLOGY_OBJECT_PROPERTY_VIEWER":
+    {
+        "addChild": "Add class",
+        "addSibling": "Add subclass",
+        "remove": "Remove"
+    },
+    "ONTOLOGY_INDIVIDUAL_VIEWER":
+    {
+        "addChild": "Add class",
+        "addSibling": "Add subclass",
+        "remove": "Remove"
+    },
     "SEARCH":{
         "insertForm" : "insert form",
         "insertLemma": "insert lemma",

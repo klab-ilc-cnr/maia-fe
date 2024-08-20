@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, lastValueFrom, take, takeUntil } from 'rxjs';
@@ -35,6 +35,8 @@ import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
+import { WorkspaceOntologyTileComponent } from './workspace-ontology-tile/workspace-ontology-tile.component';
+import { OntologyTileContent } from 'src/app/models/tile/ontology-tile-content.model';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -236,6 +238,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         label: 'Ontology',
+        command: (event) => { this.openOntologyPanel(event) }
       },
       {
         label: 'Search',
@@ -318,6 +321,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
+          case TileType.ONTOLOGY:
             this.tileMap.set(this.id, tile);
             break;
 
@@ -333,9 +337,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.SEARCH:
+          case TileType.LEXICON:
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
+          case TileType.ONTOLOGY:
             this.tileMap.delete(panelId);
             break;
 
@@ -719,6 +725,50 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     dictionaryTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
+  openOntologyPanel(event: any) {
+    const ontologyPanelId = 'ontologyTile'
+
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === ontologyPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    const result = this.generateOntologyPanelConfiguration(ontologyPanelId);
+
+    const ontologyTileConfig = result.panelConfig;
+
+    const ontologyTileElement = jsPanel.create(ontologyTileConfig);
+    ontologyTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    ontologyTileElement.titlebar.style.fontSize = '14px'
+
+
+    ontologyTileElement
+      .resize({
+        height: window.innerHeight / 2
+      })
+      .reposition();
+
+    const { content, ...text } = ontologyTileConfig;
+
+    ontologyTileConfig.content = undefined;
+
+    const tileObject: Tile<OntologyTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: ontologyTileConfig,
+      type: TileType.ONTOLOGY
+    };
+
+
+    ontologyTileElement.addToTileMap(tileObject);
+    ontologyTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
   /**
    * Method that handles retrieving data of a dictionary entry and opening the edit panel
    * @param dictionaryEntryId {string} dictionary entry identifier
@@ -958,6 +1008,26 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           break;
         }
+
+        case TileType.ONTOLOGY:
+          const ontologyComponent = this.generateOntologyPanelConfiguration(tile.tileConfig.id);
+          const mergedOntologyConfigLexicon = { ...ontologyComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedOntologyConfigLexicon,
+            storagename: this.storageName,
+          });
+
+          componentRef = ontologyComponent.component;
+
+          //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // è necessario reinserirlo manualmente
+          currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
+            currentWorkspaceInstance.commonService.notifyOther({ option: 'ontology_tag_clicked', value: 'clicked' });
+          }
+          break;
 
         default:
           console.error("type " + tile.type + " not implemented");
@@ -1287,7 +1357,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
-        this.removeFromTileMap(panel.id, TileType.CORPUS);
+        this.removeFromTileMap(panel.id, TileType.LEXICON);
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any, status: any) {
@@ -1302,7 +1372,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconPanelId,
       component: componentRef,
       panelConfig: config,
-      tileType: TileType.CORPUS
+      tileType: TileType.LEXICON
     };
   }
 
@@ -1570,6 +1640,85 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       component: componentRef,
       panelConfig: config,
       tileType: TileType.DICTIONARY_EDIT
+    };
+  }
+
+  /**
+ * @private
+ * Generate the configurations for the ontology panel
+ * @param ontologyPanelId {string} panel identifier
+ * panel configuration
+ */
+  private generateOntologyPanelConfiguration(ontologyPanelId: string) {
+    const componentRef = this.vcr.createComponent(WorkspaceOntologyTileComponent);
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: ontologyPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Ontology Explorer',
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
+      syncMargins: true,
+      theme: {
+        bgPanel: '#eceae4',
+        colorHeader: 'black',
+        border: 'thin solid #eceae4',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.25,
+        height: '60vh',
+      },
+      resizeit: {
+        minWidth: 250,
+        resize: (panel: any, paneldata: any, event: any) => {
+          componentRef.instance.updateHeight(paneldata.height);
+        }
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);;
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef.instance.updateHeight(panelH);
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            this.commonService.notifyOther({ option: 'ontology_tag_clicked', value: 'clicked' });
+          }
+        }
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.ONTOLOGY);
+        this.removeComponentFromList(panel.id);
+      },
+    };
+
+    return {
+      id: ontologyPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.ONTOLOGY
     };
   }
 }

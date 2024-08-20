@@ -1,0 +1,67 @@
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+      <p-toast></p-toast>
+      <button [disabled]="true" class="btn btn-outline-success rounded-circle mx-2" [pTooltip]="'ONTOLOGY_DATA_PROPERTY_VIEWER.addChild'|translate" tooltipPosition="bottom">
+        <i class="pi pi-plus"></i>
+      </button>
+      <button [disabled]="true" class="btn btn-outline-primary rounded-circle mx-2" [pTooltip]="'ONTOLOGY_DATA_PROPERTY_VIEWER.addSibling'|translate" tooltipPosition="bottom">
+        <i class="fa-solid fa-circle-plus"></i>
+      </button>
+      <button class="btn btn-outline-danger rounded-circle mx-2"
+        (click)="removeNodes()"
+        [disabled]="true" [pTooltip]="'ONTOLOGY_DATA_PROPERTY_VIEWER.addSibling'|translate"
+        tooltipPosition="bottom">
+        <i class="pi pi-trash"></i>
+      </button>
+    </div>
+  </p-toolbar>
+  <div class="flex justify-content-start">
+    <button pButton pRipple type="button" icon="pi pi-check-square" class="p-button-rounded p-button-text m-2"
+      pTooltip="Selection" (click)="onChangeSelectionView()"></button>
+  </div>
+  <div [ngStyle]="{'height': (panelHeight - treeHeightOffset)+'px'}">
+    <p-treeTable [value]="results" 
+                 [columns]="cols" 
+                 [lazy]="true" 
+                 scrollHeight="flex"
+                 [scrollable]="true"
+                 (onLazyLoad)="loadNodes($event)" 
+                 [loading]="loading" 
+                 selectionMode="checkbox"
+                 dataKey="id" 
+                 [(selection)]="selectedNodes" 
+                 [value]="results"
+                 (onNodeExpand)="onNodeExpand($event)">
+      <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col *ngFor="let col of columns" [style.width]="col.width" [style.display]="col.display">
+          </colgroup>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+        <tr (dblclick)="doubleClickHandler($event, rowNode)">
+          <td *ngFor="let col of cols; let i = index">
+            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+            <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
+            <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
+              [tooltip]="authorTooltip">
+              <ng-template #authorTooltip>
+                <em>{{('ICON_AUTHOR.creator'|translate)}}</em>: {{rowData?.creator}}<br>
+                <em>{{('ICON_AUTHOR.creationDate'|translate)}}</em>: {{rowData?.creationDate}}<br>
+                <em>{{('ICON_AUTHOR.lastUpdate'|translate)}}</em>: {{rowData?.lastUpdate}}
+              </ng-template>
+            </app-icon-author>
+            <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
+              [status]="rowData[col.field]"></app-icon-lock>
+            <span *ngIf="col.field === 'name'" class="ontology-data-rectangle"></span>
+            <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
+              rowData[col.field] }}</span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="cols.length">{{('GENERAL.noResult'|translate)}}</td>
+        </tr>
+      </ng-template>
+    </p-treeTable>
+  </div>

@@ -724,3 +724,41 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
+
+.ontology-dot {
+  height: 13px;
+  width: 13px;
+  background-color: #cfa630;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+.ontology-data-rectangle {
+  height: 10px;
+  width: 18px;
+  background-color: #37a14a;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+.ontology-object-rectangle {
+  height: 10px;
+  width: 18px;
+  background-color: #1179ba;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+.ontology-individual-rhombus {
+  height: 12px;
+  width: 12px;
+  background-color: #884b82;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  transform: rotate(45deg);
+}
