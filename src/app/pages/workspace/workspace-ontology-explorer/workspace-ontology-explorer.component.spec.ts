@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkspaceOntologyTileComponent } from './workspace-ontology-tile.component';
+import { WorkspaceOntologyExplorerComponent } from './workspace-ontology-explorer.component';
 
 describe('WorkspaceOntologyTileComponent', () => {
-  let component: WorkspaceOntologyTileComponent;
-  let fixture: ComponentFixture<WorkspaceOntologyTileComponent>;
+  let component: WorkspaceOntologyExplorerComponent;
+  let fixture: ComponentFixture<WorkspaceOntologyExplorerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WorkspaceOntologyTileComponent ]
+      declarations: [ WorkspaceOntologyExplorerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(WorkspaceOntologyTileComponent);
+    fixture = TestBed.createComponent(WorkspaceOntologyExplorerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

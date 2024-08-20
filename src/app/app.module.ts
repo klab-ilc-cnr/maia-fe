@@ -62,11 +62,11 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
-import { WorkspaceOntologyTileComponent } from './pages/workspace/workspace-ontology-tile/workspace-ontology-tile.component';
-import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
-import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontology-data-property-viewer/ontology-data-property-viewer.component';
-import { OntologyIndividualsViewerComponent } from './controllers/viewers/ontology-individuals-viewer/ontology-individuals-viewer.component';
-import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
+import { WorkspaceOntologyExplorerComponent } from './pages/workspace/workspace-ontology-explorer/workspace-ontology-explorer.component';
+import { OntologyObjectPropertyExplorerComponent } from './controllers/explorers/ontology-object-property-explorer/ontology-object-property-explorer.component';
+import { OntologyDataPropertyExplorerComponent } from './controllers/explorers/ontology-data-property-explorer/ontology-data-property-explorer.component';
+import { OntologyIndividualsExplorerComponent } from './controllers/explorers/ontology-individuals-explorer/ontology-individuals-explorer.component';
+import { OntologyClassExplorerComponent } from './controllers/explorers/ontology-class-explorer/ontology-class-explorer.component';
 import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-ontology-viewer/workspace-ontology-viewer.component';
 
 @NgModule({
@@ -115,11 +115,11 @@ import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-on
     DropdownPlusNumberComponent,
     ReplaceLineFeedPipe,
     DictionarySortingEditorComponent,
-    WorkspaceOntologyTileComponent,
-    OntologyClassViewerComponent,
-    OntologyObjectPropertyViewerComponent,
-    OntologyDataPropertyViewerComponent,
-    OntologyIndividualsViewerComponent,
+    WorkspaceOntologyExplorerComponent,
+    OntologyClassExplorerComponent,
+    OntologyObjectPropertyExplorerComponent,
+    OntologyDataPropertyExplorerComponent,
+    OntologyIndividualsExplorerComponent,
     WorkspaceOntologyViewerComponent
   ],
   imports: [

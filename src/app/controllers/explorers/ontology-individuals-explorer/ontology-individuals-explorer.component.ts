@@ -1,23 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
-import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
+import { OntologyIndividual } from 'src/app/models/ontology/ontology-individual.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
-  selector: 'app-ontology-class-viewer',
-  templateUrl: './ontology-class-viewer.component.html',
-  styleUrls: ['./ontology-class-viewer.component.scss', "../shared.scss"]
+  selector: 'app-ontology-individuals-explorer',
+  templateUrl: './ontology-individuals-explorer.component.html',
+  styleUrls: ['./ontology-individuals-explorer.component.scss', "../shared.scss"]
 })
-export class OntologyClassViewerComponent implements OnInit {
-
+export class OntologyIndividualsExplorerComponent implements OnInit {
   @Input()
   public panelHeight!: number;
 
   private readonly unsubscribe$ = new Subject();
 
-  public static rootClassId = "http://www.w3.org/2002/07/owl#Thing";
   /**offset point for the item tree */
   public treeHeightOffset: number = 193;
   public loading: boolean = false;
@@ -25,13 +23,14 @@ export class OntologyClassViewerComponent implements OnInit {
   /**Nodo dell'albero selezionato */
   public selectedNodes: TreeNode[] = [];
   /**Ontology list to show */
-  public results: TreeNode<OntologyClass>[] = [];
+  public results: TreeNode<OntologyIndividual>[] = [];
   /**Show label or instance name */
   public showLabelName?: boolean;
   /**Show/hide checkbox in tree table */
   public isVisibleCheckbox = false;
 
-  constructor(private commonService: CommonService) { }
+  constructor(private commonService: CommonService
+  ) { }
 
   ngOnInit(): void {
     this.cols = [
@@ -73,7 +72,7 @@ export class OntologyClassViewerComponent implements OnInit {
  * Traverse tree function that switch label with shortId and vice versa
  * @param node
  */
-  private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyClass>): void {
+  private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyIndividual>): void {
     if (node.data?.name === node.data?.label) {
       node.data!.name = node.data!.shortId!;
     }
@@ -89,21 +88,22 @@ export class OntologyClassViewerComponent implements OnInit {
   }
 
   /**
- * Mananges double click on a node tree
- * @param event {any} double click event
+ * Manges double click on the tree nodes
+ * @param event
  */
   doubleClickHandler(event: any, rowNode: any) {
-    const node = rowNode?.node;
-    if (node?.data?.id === undefined || node?.data?.id === null) {
-      return;
-    }
-
-    this.commonService.notifyOther({ option: 'onOntologyClassElementDoubleClickEvent', value: [node, this.showLabelName] });
+    alert("dobleClick demo");
+    // const node = rowNode?.node;
+    // if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
+    //   return;
+    // }
+    // this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
+    // // }
   }
 
   /**remove selected nodes */
   //TODO to be implemented
-  removeNodes() {
+  removeNodes(){
     // console.log(this.selectedNodes);
   }
 
@@ -126,9 +126,9 @@ export class OntologyClassViewerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubClasses(OntologyClassViewerComponent.rootClassId).then((dataResults) => {
+      this.simuleGetDirectSubProperties(null).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyClass = {
+          let nodeData: OntologyIndividual = {
             id: dataResults[i].id,
             name: dataResults[i].name,
             creator: dataResults[i].creator,
@@ -137,12 +137,12 @@ export class OntologyClassViewerComponent implements OnInit {
             status: dataResults[i].status,
             label: dataResults[i].label,
             shortId: dataResults[i].shortId,
-            children: dataResults[i].children
+            children: 0
           };
 
-          let node: TreeNode<OntologyClass> = {
+          let node: TreeNode<OntologyIndividual> = {
             data: nodeData,
-            leaf: nodeData.children === 0
+            leaf: true
           };
 
           this.results.push(node);
@@ -151,51 +151,10 @@ export class OntologyClassViewerComponent implements OnInit {
     }, 1000);
   }
 
-  /**
-   * lazy load of treetable nodes on father expand
-   * @param event 
-   */
-  onNodeExpand(event: { node: TreeNode<OntologyClass>; }) {
-    this.loading = true;
-
-    //TODO ELIMINARE TIMEOUT APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-    setTimeout(() => {
-      this.loading = false;
-      const node = event.node;
-
-      //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubClasses(node.data!.id).then((dataResults) => {
-        for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyClass = {
-            id: dataResults[i].id,
-            name: dataResults[i].name,
-            creator: dataResults[i].creator,
-            creationDate: dataResults[i].creationDate,
-            lastUpdate: dataResults[i].lastUpdate,
-            status: dataResults[i].status,
-            label: dataResults[i].label,
-            shortId: dataResults[i].shortId,
-            children: dataResults[i].children
-          };
-
-          if (!node.children) { node.children = []; }
-
-          node.children.push({
-            data: nodeData,
-            leaf: nodeData.children === 0
-          })
-        }
-      });
-
-      this.results = [...this.results];
-    }, 250);
-
-  }
-
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  simuleGetDirectSubClasses(nodeId: string) {
-    if (nodeId != OntologyClassViewerComponent.rootClassId) {
-      return Promise.resolve(this.getTreeNodesChildrenDate());
+  simuleGetDirectSubProperties(nodeId?: string | null) {
+    if (nodeId != undefined && nodeId !== null) {
+      return Promise.resolve(this.getTreeNodesDataOrObjectProperty(nodeId));
     }
 
     return Promise.resolve(this.getTreeNodesRootData());
@@ -203,7 +162,7 @@ export class OntologyClassViewerComponent implements OnInit {
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
   getTreeNodesRootData() {
-    let classesResult = [];
+    let nodesResult = [];
     for (let i = 0; i < 20; i++) {
       let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
       let id = 'http://test.it/#' + shortId;
@@ -219,17 +178,17 @@ export class OntologyClassViewerComponent implements OnInit {
         status: OntologyStatuses.working,
         label: label,
         shortId: shortId,
-        children: 2
+        children: 0
       };
 
-      classesResult.push(data);
+      nodesResult.push(data);
     }
-    return classesResult;
+    return nodesResult;
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  getTreeNodesChildrenDate() {
-    let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
+  getTreeNodesDataOrObjectProperty(nodeId: string) {
+  let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
     let id = 'http://test.it/#' + shortId;
     let label = 'label' + shortId;
     let name = this.showLabelName ? shortId : label;
@@ -243,7 +202,7 @@ export class OntologyClassViewerComponent implements OnInit {
       status: OntologyStatuses.completed,
       label: label,
       shortId: shortId,
-      children: 2
+      children: 0
     };
 
     let data2 = {

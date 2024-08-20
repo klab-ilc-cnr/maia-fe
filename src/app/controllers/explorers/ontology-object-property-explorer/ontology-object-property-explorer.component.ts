@@ -1,23 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
-import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
+import { OntologyObjectProperty } from 'src/app/models/ontology/ontology-object-property.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
-  selector: 'app-ontology-data-property-viewer',
-  templateUrl: './ontology-data-property-viewer.component.html',
-  styleUrls: ['./ontology-data-property-viewer.component.scss', "../shared.scss"]
+  selector: 'app-ontology-object-property-explorer',
+  templateUrl: './ontology-object-property-explorer.component.html',
+  styleUrls: ['./ontology-object-property-explorer.component.scss', "../shared.scss"]
 })
-export class OntologyDataPropertyViewerComponent implements OnInit {
-
+export class OntologyObjectPropertyExplorerComponent implements OnInit {
   @Input()
   public panelHeight!: number;
 
   private readonly unsubscribe$ = new Subject();
 
-  public static rootDataId = "http://www.w3.org/2002/07/owl#topDataProperty";
+  public static rootDataId = "http://www.w3.org/2002/07/owl#topObjectProperty";
   /**offset point for the item tree */
   public treeHeightOffset: number = 193;
   public loading: boolean = false;
@@ -25,7 +24,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
   /**Nodo dell'albero selezionato */
   public selectedNodes: TreeNode[] = [];
   /**Ontology list to show */
-  public results: TreeNode<OntologyDataProperty>[] = [];
+  public results: TreeNode<OntologyObjectProperty>[] = [];
   /**Show label or instance name */
   public showLabelName?: boolean;
   /**Show/hide checkbox in tree table */
@@ -74,7 +73,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
  * Traverse tree function that switch label with shortId and vice versa
  * @param node
  */
-  private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyDataProperty>): void {
+  private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyObjectProperty>): void {
     if (node.data?.name === node.data?.label) {
       node.data!.name = node.data!.shortId!;
     }
@@ -105,7 +104,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
 
   /**remove selected nodes */
   //TODO to be implemented
-  removeNodes(){
+  removeNodes() {
     // console.log(this.selectedNodes);
   }
 
@@ -128,9 +127,9 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubProperties(OntologyDataPropertyViewerComponent.rootDataId).then((dataResults) => {
+      this.simuleGetDirectSubProperties(OntologyObjectPropertyExplorerComponent.rootDataId).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyDataProperty = {
+          let nodeData: OntologyObjectProperty = {
             id: dataResults[i].id,
             name: dataResults[i].name,
             creator: dataResults[i].creator,
@@ -142,7 +141,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
             children: dataResults[i].children
           };
 
-          let node: TreeNode<OntologyDataProperty> = {
+          let node: TreeNode<OntologyObjectProperty> = {
             data: nodeData,
             leaf: nodeData.children === 0
           };
@@ -157,7 +156,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
    * lazy load of treetable nodes on father expand
    * @param event 
    */
-  onNodeExpand(event: { node: TreeNode<OntologyDataProperty>; }) {
+  onNodeExpand(event: { node: TreeNode<OntologyObjectProperty>; }) {
     this.loading = true;
 
     //TODO ELIMINARE TIMEOUT APPENA SARà CREATO IL VERO SERVIZIO BACKEND
@@ -168,7 +167,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
       this.simuleGetDirectSubProperties(node.data!.id).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyDataProperty = {
+          let nodeData: OntologyObjectProperty = {
             id: dataResults[i].id,
             name: dataResults[i].name,
             creator: dataResults[i].creator,
@@ -196,7 +195,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
   simuleGetDirectSubProperties(nodeId: string) {
-    if (nodeId != OntologyDataPropertyViewerComponent.rootDataId) {
+    if (nodeId != OntologyObjectPropertyExplorerComponent.rootDataId) {
       return Promise.resolve(this.getTreeNodesChildrenDate());
     }
 

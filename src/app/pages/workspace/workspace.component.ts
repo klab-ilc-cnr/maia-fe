@@ -35,7 +35,7 @@ import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
-import { WorkspaceOntologyTileComponent } from './workspace-ontology-tile/workspace-ontology-tile.component';
+import { WorkspaceOntologyExplorerComponent } from './workspace-ontology-explorer/workspace-ontology-explorer.component';
 import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
 import { OntologyViewerTileContent } from 'src/app/models/tile/ontology-viewer-tile-content.model';
 import { OntologyExplorerTileContent } from 'src/app/models/tile/ontology-explorer-tile-content.model';
@@ -249,7 +249,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         label: 'Ontology',
-        command: (event) => { this.openOntologyPanel(event) }
+        command: (event) => { this.openOntologyExplorerPanel(event) }
       },
       {
         label: 'Search',
@@ -736,11 +736,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     dictionaryTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
-  openOntologyPanel(event: any) {
-    const ontologyPanelId = 'ontologyTile'
+  openOntologyExplorerPanel(event: any) {
+    const ontologyExplorerPanelId = 'ontologyExplorerTile'
 
     const panelExist = jsPanel.getPanels().find(
-      (x: { id: string; }) => x.id === ontologyPanelId
+      (x: { id: string; }) => x.id === ontologyExplorerPanelId
     );
 
     if (panelExist) {
@@ -748,11 +748,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const result = this.generateOntologyExplorerPanelConfiguration(ontologyPanelId);
+    const result = this.generateOntologyExplorerPanelConfiguration(ontologyExplorerPanelId);
 
-    const ontologyTileConfig = result.panelConfig;
+    const ontologyExplorerTileConfig = result.panelConfig;
 
-    const ontologyTileElement = jsPanel.create(ontologyTileConfig);
+    const ontologyTileElement = jsPanel.create(ontologyExplorerTileConfig);
     ontologyTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     ontologyTileElement.titlebar.style.fontSize = '14px'
 
@@ -763,15 +763,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .reposition();
 
-    const { content, ...text } = ontologyTileConfig;
+    const { content, ...text } = ontologyExplorerTileConfig;
 
-    ontologyTileConfig.content = undefined;
+    ontologyExplorerTileConfig.content = undefined;
 
     const tileObject: Tile<OntologyExplorerTileContent> = {
       id: undefined,
       workspaceId: this.workspaceId,
       content: undefined,
-      tileConfig: ontologyTileConfig,
+      tileConfig: ontologyExplorerTileConfig,
       type: TileType.ONTOLOGY_EXPLORER
     };
 
@@ -1731,7 +1731,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
  * panel configuration
  */
   private generateOntologyExplorerPanelConfiguration(ontologyPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceOntologyTileComponent);
+    const componentRef = this.vcr.createComponent(WorkspaceOntologyExplorerComponent);
 
     const element = componentRef.location.nativeElement;
 

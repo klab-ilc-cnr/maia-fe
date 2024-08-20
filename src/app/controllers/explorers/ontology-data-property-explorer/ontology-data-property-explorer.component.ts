@@ -1,21 +1,23 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
-import { OntologyIndividual } from 'src/app/models/ontology/ontology-individual.model';
+import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
-  selector: 'app-ontology-individuals-viewer',
-  templateUrl: './ontology-individuals-viewer.component.html',
-  styleUrls: ['./ontology-individuals-viewer.component.scss', "../shared.scss"]
+  selector: 'app-ontology-data-property-explorer',
+  templateUrl: './ontology-data-property-explorer.component.html',
+  styleUrls: ['./ontology-data-property-explorer.component.scss', "../shared.scss"]
 })
-export class OntologyIndividualsViewerComponent implements OnInit {
+export class OntologyDataPropertyExplorerComponent implements OnInit {
+
   @Input()
   public panelHeight!: number;
 
   private readonly unsubscribe$ = new Subject();
 
+  public static rootDataId = "http://www.w3.org/2002/07/owl#topDataProperty";
   /**offset point for the item tree */
   public treeHeightOffset: number = 193;
   public loading: boolean = false;
@@ -23,7 +25,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
   /**Nodo dell'albero selezionato */
   public selectedNodes: TreeNode[] = [];
   /**Ontology list to show */
-  public results: TreeNode<OntologyIndividual>[] = [];
+  public results: TreeNode<OntologyDataProperty>[] = [];
   /**Show label or instance name */
   public showLabelName?: boolean;
   /**Show/hide checkbox in tree table */
@@ -72,7 +74,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
  * Traverse tree function that switch label with shortId and vice versa
  * @param node
  */
-  private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyIndividual>): void {
+  private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyDataProperty>): void {
     if (node.data?.name === node.data?.label) {
       node.data!.name = node.data!.shortId!;
     }
@@ -126,9 +128,9 @@ export class OntologyIndividualsViewerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubProperties(null).then((dataResults) => {
+      this.simuleGetDirectSubProperties(OntologyDataPropertyExplorerComponent.rootDataId).then((dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyIndividual = {
+          let nodeData: OntologyDataProperty = {
             id: dataResults[i].id,
             name: dataResults[i].name,
             creator: dataResults[i].creator,
@@ -137,12 +139,12 @@ export class OntologyIndividualsViewerComponent implements OnInit {
             status: dataResults[i].status,
             label: dataResults[i].label,
             shortId: dataResults[i].shortId,
-            children: 0
+            children: dataResults[i].children
           };
 
-          let node: TreeNode<OntologyIndividual> = {
+          let node: TreeNode<OntologyDataProperty> = {
             data: nodeData,
-            leaf: true
+            leaf: nodeData.children === 0
           };
 
           this.results.push(node);
@@ -151,10 +153,51 @@ export class OntologyIndividualsViewerComponent implements OnInit {
     }, 1000);
   }
 
+  /**
+   * lazy load of treetable nodes on father expand
+   * @param event 
+   */
+  onNodeExpand(event: { node: TreeNode<OntologyDataProperty>; }) {
+    this.loading = true;
+
+    //TODO ELIMINARE TIMEOUT APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+    setTimeout(() => {
+      this.loading = false;
+      const node = event.node;
+
+      //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
+      this.simuleGetDirectSubProperties(node.data!.id).then((dataResults) => {
+        for (let i = 0; i < dataResults.length; i++) {
+          let nodeData: OntologyDataProperty = {
+            id: dataResults[i].id,
+            name: dataResults[i].name,
+            creator: dataResults[i].creator,
+            creationDate: dataResults[i].creationDate,
+            lastUpdate: dataResults[i].lastUpdate,
+            status: dataResults[i].status,
+            label: dataResults[i].label,
+            shortId: dataResults[i].shortId,
+            children: dataResults[i].children
+          };
+
+          if (!node.children) { node.children = []; }
+
+          node.children.push({
+            data: nodeData,
+            leaf: nodeData.children === 0
+          })
+        }
+      });
+
+      this.results = [...this.results];
+    }, 250);
+
+  }
+
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  simuleGetDirectSubProperties(nodeId?: string | null) {
-    if (nodeId != undefined && nodeId !== null) {
-      return Promise.resolve(this.getTreeNodesDataOrObjectProperty(nodeId));
+  simuleGetDirectSubProperties(nodeId: string) {
+    if (nodeId != OntologyDataPropertyExplorerComponent.rootDataId) {
+      return Promise.resolve(this.getTreeNodesChildrenDate());
     }
 
     return Promise.resolve(this.getTreeNodesRootData());
@@ -178,7 +221,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
         status: OntologyStatuses.working,
         label: label,
         shortId: shortId,
-        children: 0
+        children: 2
       };
 
       nodesResult.push(data);
@@ -187,8 +230,8 @@ export class OntologyIndividualsViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  getTreeNodesDataOrObjectProperty(nodeId: string) {
-  let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
+  getTreeNodesChildrenDate() {
+    let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
     let id = 'http://test.it/#' + shortId;
     let label = 'label' + shortId;
     let name = this.showLabelName ? shortId : label;
@@ -202,7 +245,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
       status: OntologyStatuses.completed,
       label: label,
       shortId: shortId,
-      children: 0
+      children: 2
     };
 
     let data2 = {

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-workspace-ontology-tile',
-  templateUrl: './workspace-ontology-tile.component.html',
-  styleUrls: ['./workspace-ontology-tile.component.scss']
+  selector: 'app-workspace-ontology-explorer',
+  templateUrl: './workspace-ontology-explorer.component.html',
+  styleUrls: ['./workspace-ontology-explorer.component.scss']
 })
-export class WorkspaceOntologyTileComponent implements OnInit {
+export class WorkspaceOntologyExplorerComponent implements OnInit {
 
   /**Initial tab */
   public selectedTab = 0;
@@ -18,7 +18,7 @@ export class WorkspaceOntologyTileComponent implements OnInit {
   }
 
   ngAfterViewInit(): void{
-    this.ontologyPanelHeight = document.getElementById("ontologyTile")!.clientHeight;
+    this.ontologyPanelHeight = document.getElementById("ontologyExplorerTile")!.clientHeight;
   }
 
   /**

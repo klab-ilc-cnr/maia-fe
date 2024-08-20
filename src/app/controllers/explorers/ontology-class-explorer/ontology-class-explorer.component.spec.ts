@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OntologyClassViewerComponent } from './ontology-class-viewer.component';
+import { OntologyClassExplorerComponent } from './ontology-class-explorer.component';
 
 describe('OntologyClassViewerComponent', () => {
-  let component: OntologyClassViewerComponent;
-  let fixture: ComponentFixture<OntologyClassViewerComponent>;
+  let component: OntologyClassExplorerComponent;
+  let fixture: ComponentFixture<OntologyClassExplorerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OntologyClassViewerComponent ]
+      declarations: [ OntologyClassExplorerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OntologyClassViewerComponent);
+    fixture = TestBed.createComponent(OntologyClassExplorerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
