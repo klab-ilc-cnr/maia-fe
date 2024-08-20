@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TileType } from 'src/app/models/tile/tile-type.model';
 
 @Component({
   selector: 'app-workspace-ontology-viewer',
@@ -6,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./workspace-ontology-viewer.component.scss']
 })
 export class WorkspaceOntologyViewerComponent implements OnInit {
+
+  public readonly TileType = TileType;
+  /**Initial tab */
+  public selectedTab = 0;
+  public visibleTileType!: TileType;
 
   constructor() { }
 

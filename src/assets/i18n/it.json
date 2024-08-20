@@ -216,7 +216,9 @@
         "classes" : "Class",
         "objectProperties": "Object Property",
         "dataProperties": "Data Property",
-        "individuals" : "Individual"
+        "individuals" : "Individual",
+        "annotations": "Annotations",
+        "usage": "Usage"
     },
     "ONTOLOGY_CLASS_VIEWER":
     {

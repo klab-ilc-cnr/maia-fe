@@ -68,6 +68,11 @@ import { OntologyDataPropertyExplorerComponent } from './controllers/explorers/o
 import { OntologyIndividualsExplorerComponent } from './controllers/explorers/ontology-individuals-explorer/ontology-individuals-explorer.component';
 import { OntologyClassExplorerComponent } from './controllers/explorers/ontology-class-explorer/ontology-class-explorer.component';
 import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-ontology-viewer/workspace-ontology-viewer.component';
+import { OntologyIndividualViewerComponent } from './controllers/viewers/ontology-individual-viewer/ontology-individual-viewer.component';
+import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontology-data-property-viewer/ontology-data-property-viewer.component';
+import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
+import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
+import { OntologyTabUsageComponent } from './controllers/viewers/ontology-tab-usage/ontology-tab-usage.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +125,16 @@ import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-on
     OntologyObjectPropertyExplorerComponent,
     OntologyDataPropertyExplorerComponent,
     OntologyIndividualsExplorerComponent,
-    WorkspaceOntologyViewerComponent
+    WorkspaceOntologyViewerComponent,
+    WorkspaceOntologyViewerComponent,
+    OntologyObjectPropertyViewerComponent,
+    OntologyDataPropertyViewerComponent,
+    OntologyIndividualViewerComponent,
+    OntologyTabUsageComponent,
+    OntologyIndividualViewerComponent,
+    OntologyDataPropertyViewerComponent,
+    OntologyObjectPropertyViewerComponent,
+    OntologyClassViewerComponent
   ],
   imports: [
     BrowserModule,

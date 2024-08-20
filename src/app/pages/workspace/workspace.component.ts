@@ -333,6 +333,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
           case TileType.ONTOLOGY_EXPLORER:
+          case TileType.ONTOLOGY_CLASS_VIEWER:
             this.tileMap.set(this.id, tile);
             break;
 
@@ -353,6 +354,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
           case TileType.ONTOLOGY_EXPLORER:
+          case TileType.ONTOLOGY_CLASS_VIEWER:
             this.tileMap.delete(panelId);
             break;
 
@@ -786,47 +788,47 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param showLabelName 
    * @returns 
    */
-    openOntologyClassViewerTile(ontologyNode: TreeNode<OntologyClass>, showLabelName: boolean) {
-      const ontologyViewTileId = this.ontologyViewTilePrefix + ontologyNode?.data?.shortId;
-      const panelExist = jsPanel.getPanels().find(
-        (x: { id: string; }) => x.id === ontologyViewTileId
-      );
-  
-      if (panelExist) {
-        panelExist.front(); //metto il pannello in primo piano
-        return;
-      }
-  
-      const result = this.generateOntologyClassViewerTileConfiguration(ontologyViewTileId, ontologyNode, showLabelName);
-  
-      const ontologyViewTileConfig = result.panelConfig;
-  
-      const ontologyViewTileElement = jsPanel.create(ontologyViewTileConfig);
-      ontologyViewTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
-      ontologyViewTileElement.titlebar.style.fontSize = '14px'
-  
-      ontologyViewTileElement
-        .resize({
-          height: window.innerHeight / 1.5
-        })
-        .reposition();
-  
-      const { content, ...text } = ontologyViewTileConfig;
-  
-      ontologyViewTileConfig.content = undefined;
-      const ontologyClassViewTileContent: OntologyViewerTileContent = { contentId: ontologyNode.data?.id }  //NOTE For multiple panels, it is critical to pass the content id into the related content property (so that the data can be retrieved without display errors).
-  
-      const tileObject: Tile<OntologyViewerTileContent> = {
-        id: undefined,
-        workspaceId: this.workspaceId,
-        content: ontologyClassViewTileContent,
-        tileConfig: ontologyViewTileConfig,
-        type: TileType.ONTOLOGY_CLASS_VIEWER
-      };
-  
-      ontologyViewTileElement.addToTileMap(tileObject);
-      ontologyViewTileElement.addComponentToList(result.id, result.component, result.tileType);
+  openOntologyClassViewerTile(ontologyNode: TreeNode<OntologyClass>, showLabelName: boolean) {
+    const ontologyViewTileId = this.ontologyViewTilePrefix + ontologyNode?.data?.shortId;
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === ontologyViewTileId
+    );
+
+    if (panelExist) {
+      panelExist.front(); //metto il pannello in primo piano
+      return;
     }
+
+    const result = this.generateOntologyClassViewerTileConfiguration(ontologyViewTileId, ontologyNode, showLabelName);
+
+    const ontologyViewTileConfig = result.panelConfig;
+
+    const ontologyViewTileElement = jsPanel.create(ontologyViewTileConfig);
+    ontologyViewTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    ontologyViewTileElement.titlebar.style.fontSize = '14px'
+
+    ontologyViewTileElement
+      .resize({
+        height: window.innerHeight / 1.5
+      })
+      .reposition();
+
+    const { content, ...text } = ontologyViewTileConfig;
+
+    ontologyViewTileConfig.content = undefined;
+    const ontologyClassViewTileContent: OntologyViewerTileContent = { contentId: ontologyNode.data?.id }  //NOTE For multiple panels, it is critical to pass the content id into the related content property (so that the data can be retrieved without display errors).
+
+    const tileObject: Tile<OntologyViewerTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: ontologyClassViewTileContent,
+      tileConfig: ontologyViewTileConfig,
+      type: TileType.ONTOLOGY_CLASS_VIEWER
+    };
+
+    ontologyViewTileElement.addToTileMap(tileObject);
+    ontologyViewTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
 
   /**
    * Method that handles retrieving data of a dictionary entry and opening the edit panel
@@ -1088,27 +1090,27 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           break;
 
-          case TileType.ONTOLOGY_CLASS_VIEWER:
-            //FIXME RICHIAMARE IL SERVIZIO CORRETTO
-            const ontologyEntry : TreeNode<OntologyClass> = {data:undefined};
-            const ontologyClassComponent = this.generateOntologyClassViewerTileConfiguration(tile.tileConfig.id, ontologyEntry, true);
-            const mergedOntologyClassConfig = { ...ontologyClassComponent.panelConfig, ...tile.tileConfig };
-  
-            //Ripristino il layout della tile
-            currPanelElement = jsPanel.layout.restoreId({
-              id: tile.tileConfig.id,
-              config: mergedOntologyClassConfig,
-              storagename: this.storageName,
-            });
-  
-            componentRef = ontologyClassComponent.component;
-  
-            //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
-            // è necessario reinserirlo manualmente
-            currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
-              currentWorkspaceInstance.commonService.notifyOther({ option: 'ontology_viewer_tag_clicked', value: 'clicked' });
-            }
-            break;
+        case TileType.ONTOLOGY_CLASS_VIEWER:
+          //FIXME RICHIAMARE IL SERVIZIO CORRETTO
+          const ontologyEntry: TreeNode<OntologyClass> = { data: undefined };
+          const ontologyClassComponent = this.generateOntologyClassViewerTileConfiguration(tile.tileConfig.id, ontologyEntry, true);
+          const mergedOntologyClassConfig = { ...ontologyClassComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedOntologyClassConfig,
+            storagename: this.storageName,
+          });
+
+          componentRef = ontologyClassComponent.component;
+
+          //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // è necessario reinserirlo manualmente
+          currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
+            currentWorkspaceInstance.commonService.notifyOther({ option: 'ontology_viewer_tag_clicked', value: 'clicked' });
+          }
+          break;
 
         default:
           console.error("type " + tile.type + " not implemented");
@@ -1810,60 +1812,61 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param showLabelName 
    * @returns 
    */
-    private generateOntologyClassViewerTileConfiguration(OntologyViewerTileId: string, selectedNode: TreeNode<OntologyClass>, showLabelName: boolean) {
-      const componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent);
-  
-      // componentRef.instance.selectedNode = selectedNode;
-      // componentRef.instance.panelId = OntologyViewerTileId;
-      // componentRef.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
-  
-      const element = componentRef.location.nativeElement;
-  
-      const config = {
-        id: OntologyViewerTileId,
-        container: this.workspaceContainer,
-        content: element,
-        headerTitle: 'Ontology Viewer - <span class="ontology-dot"></span>' + selectedNode?.data?.label,
-        maximizedMargin: 5,
-        dragit: { snap: false },
-        syncMargins: true,
-        theme: {
-          bgPanel: '#ECEAE4',
-          colorHeader: 'black',
-          border: 'thin solid #ECEAE4',
-          borderRadius: '.33rem',
-        },
-        panelSize: {
-          width: () => window.innerWidth * 0.5,
-          height: '60vh'
-        },
-        headerControls: {
-          add: {
-            html: '<span class="pi pi-tag"></span>',
-            name: 'tag',
-            handler: () => {
-              this.commonService.notifyOther({ option: 'tag_clicked_ontology_class_viewer_tile', value: 'clicked' });
-            }
+  private generateOntologyClassViewerTileConfiguration(OntologyViewerTileId: string, selectedNode: TreeNode<OntologyClass>, showLabelName: boolean) {
+    const componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent);
+
+    componentRef.instance.visibleTileType = TileType.ONTOLOGY_CLASS_VIEWER;
+    // componentRef.instance.selectedNode = selectedNode;
+    // componentRef.instance.panelId = OntologyViewerTileId;
+    // componentRef.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
+
+    const element = componentRef.location.nativeElement;
+
+    const config = {
+      id: OntologyViewerTileId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Ontology Viewer - <span class="ontology-dot"></span>' + selectedNode?.data?.label,
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      syncMargins: true,
+      theme: {
+        bgPanel: '#ECEAE4',
+        colorHeader: 'black',
+        border: 'thin solid #ECEAE4',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.5,
+        height: '60vh'
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: () => {
+            this.commonService.notifyOther({ option: 'tag_clicked_ontology_class_viewer_tile', value: 'clicked' });
           }
-        },
-        onclosed: function (this: any, panel: any) {
-          this.removeFromTileMap(panel.id, TileType.LEXICON_EDIT);
-          this.removeComponentFromList(panel.id);
-        },
-        onfronted: function (this: any, panel: any) {
-          const panelIDs = jsPanel.getPanels(function () {
-            return panel.classList.contains('jsPanel-standard');
-          }).map((panel: any) => panel.id);
         }
-      };
-  
-      return {
-        id: OntologyViewerTileId,
-        component: componentRef,
-        panelConfig: config,
-        tileType: TileType.ONTOLOGY_CLASS_VIEWER
-      };
-  
-    }
+      },
+      onclosed: function (this: any, panel: any) {
+        this.removeFromTileMap(panel.id, TileType.LEXICON_EDIT);
+        this.removeComponentFromList(panel.id);
+      },
+      onfronted: function (this: any, panel: any) {
+        const panelIDs = jsPanel.getPanels(function () {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+      }
+    };
+
+    return {
+      id: OntologyViewerTileId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.ONTOLOGY_CLASS_VIEWER
+    };
+
+  }
 }
 
