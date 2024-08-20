@@ -17,7 +17,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
   private readonly unsubscribe$ = new Subject();
 
   /**offset point for the item tree */
-  public treeHeightOffset: number = 160;
+  public treeHeightOffset: number = 193;
   public loading: boolean = false;
   public cols!: any[];
   /**Nodo dell'albero selezionato */

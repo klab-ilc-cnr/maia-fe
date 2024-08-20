@@ -19,7 +19,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
 
   public static rootDataId = "http://www.w3.org/2002/07/owl#topDataProperty";
   /**offset point for the item tree */
-  public treeHeightOffset: number = 160;
+  public treeHeightOffset: number = 193;
   public loading: boolean = false;
   public cols!: any[];
   /**Nodo dell'albero selezionato */
