@@ -8,7 +8,7 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-object-property-viewer',
   templateUrl: './ontology-object-property-viewer.component.html',
-  styleUrls: ['./ontology-object-property-viewer.component.scss']
+  styleUrls: ['./ontology-object-property-viewer.component.scss', "../shared.scss"]
 })
 export class OntologyObjectPropertyViewerComponent implements OnInit {
   @Input()
@@ -104,7 +104,7 @@ export class OntologyObjectPropertyViewerComponent implements OnInit {
 
   /**remove selected nodes */
   //TODO to be implemented
-  removeNodes(){
+  removeNodes() {
     // console.log(this.selectedNodes);
   }
 

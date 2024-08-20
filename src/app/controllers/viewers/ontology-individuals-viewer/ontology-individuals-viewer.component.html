@@ -47,7 +47,7 @@
             </app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
-            <span *ngIf="col.field === 'name'" class="rhombus"></span>
+            <span *ngIf="col.field === 'name'" class="ontology-individual-rhombus"></span>
             <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
               rowData[col.field] }}</span>
           </td>
