@@ -22,6 +22,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
   styleUrls: ['./sense-core-editor.component.scss']
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
+  readonly translatePrefix = 'LEXICON_EDITOR.SENSE';
   demoHide = environment.demoHide;
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
@@ -87,8 +88,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @param senseId {string} identificativo del senso
    */
   private deleteSense = (senseId: string) => {
-    this.showOperationInProgress("Deletion in progress");
-    const successMsg = "Successfully removed sense";
+    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix+'.deletionInProg'));
+    const successMsg = this.commonService.translateKey(this.translatePrefix+'.removeSenseSuccess');
     this.lexiconService.deleteLexicalSense(senseId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -132,12 +133,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe((resp: { [key: string]: any }) => {
       for (const key in resp) {
         const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
-        if (currentPropertyId === -1 || this.definitionFormItems[currentPropertyId].propertyValue === resp[key]) continue;
+        const currentPropValue = this.definitionFormItems[currentPropertyId].propertyValue;
+        if (currentPropertyId === -1 || this.senseEntry.definition.find(x => x.propertyID===key)?.propertyValue === resp[key]) continue;
+        if(resp[key] === '') {
+          const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { relation: key, value: currentPropValue });
+          this.manageUpdateObservable(deleteRelObs, key, resp[key]);
+          return;
+        }
         this.updateSense(key, resp[key]).then(() => {
-          if (resp[key] === '') {
-            this.movePropertyToMenu(key);
-            return;
-          }
           this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
         });
       }
@@ -239,7 +242,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo che gestisce la cancellazione del senso in lavorazione */
   onDeleteLexicalSense() {
-    const confirmMsg = "You are about to delete a sense";
+    const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmDelSense');
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
@@ -308,7 +311,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       return;
     }
     if (currentValue && currentValue !== '') {
-      const confirmMsg = `Are you sure to remove "${currentValue}"?`;
+      const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmRemoveMorph').replace('#VALUE#',currentValue);
       this.popupDeleteItem.confirmMessage = confirmMsg;
       this.popupDeleteItem.showDeleteConfirmSimple(() => {
         //TODO implementa rimozione della morfologia
@@ -338,11 +341,19 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`"${relation}" update failed `));
-        return throwError(() => new Error(error.error));
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+        // this.messageService.add(this.msgConfService.generateWarningMessageConfig(`"${relation}" update failed `));
+        // return throwError(() => new Error(error.error));
       }),
     ).subscribe(resp => {
-      this.senseEntry = <SenseCore>{ ...this.senseEntry, lastUpdate: resp };
+      const updatedDefinitions: PropertyElement[] = [...this.senseEntry.definition];
+      const relIndex = updatedDefinitions.findIndex(x => x.propertyID === relation);
+      updatedDefinitions[relIndex].propertyValue = newValue;
+      this.senseEntry = <SenseCore>{ 
+        ...this.senseEntry, 
+        definition: updatedDefinitions,
+        lastUpdate: resp 
+      };
       // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
 
       if (relation === 'definition') {

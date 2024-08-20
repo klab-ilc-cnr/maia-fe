@@ -101,7 +101,7 @@
                 </marker>
                 <marker></marker>
               </defs> -->
-              <g class="background">
+              <g class="background" (mouseup)="onTextAreaClick($event)">
                 <rect *ngFor="let row of rows; index as i" class="background" 
                       [ngClass]="{'background0': i%2, 'background1 bordered': !(i%2)}" 
                       [attr.height]="row.height" 
@@ -121,7 +121,7 @@
                             [attr.height]="h.height" 
                             [attr.width]="h.width" 
                             [attr.fill]="h.bgColor" 
-                            [attr.stroke]="h.bgColor" 
+                            [attr.stroke]="h.bgColor"
                             stroke-width="0px" 
                             rx="3px" 
                             ry="3px" 
@@ -131,7 +131,21 @@
                   </g>
                 </g>
               </g>
-              <g class="text">
+              <g id="selectionHighlightg">
+                    <rect *ngFor="let h of selectionHighlights"
+                            [attr.id]="h.id" 
+                            [attr.x]="h.coordinates.x" 
+                            [attr.y]="h.coordinates.y" 
+                            [attr.height]="h.height" 
+                            [attr.width]="h.width" 
+                            [attr.fill]="h.bgColor" 
+                            [attr.stroke]="h.bgColor"
+                            stroke-width="0px" 
+                            rx="3px" 
+                            ry="3px" 
+                            stroke-linejoin="round"></rect>
+              </g>
+              <g id="gText" class="text">
                 <text *ngFor="let row of rows; index as i" [attr.y]="row.yText" [attr.x]="row.xText" [attr.height]="row.height" (dblclick)="onSelectionChangeDoubleClick()" (mouseup)="onSelectionChange($event, row)" style="white-space: pre;" [attr.start-index]="row.startIndex" [attr.end-index]="row.endIndex">
                   <tspan *ngFor="let line of row.lines;" [attr.y]="line.yText" [attr.x]="line.x" [attr.height]="line.height" style="white-space: pre;" [attr.start-index]="line.startIndex" [attr.end-index]="line.endIndex">
                     <tspan *ngFor="let w of line.words" 
@@ -199,7 +213,6 @@
                   </g>
                 </g>
               </g>
-              <!-- -->
               <path marker-end="url(#drag_arrow)" class="drag_stroke" fill="none" [attr.visibility]="dragArrow.visibility" [attr.d]="dragArrow.m + dragArrow.c" />
               <g class="sentnum unselectable">
                 <text *ngFor="let row of rows; index as i" 
@@ -220,7 +233,7 @@
       <a *ngIf="!expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="expansion-btn pi pi-file-edit"></a>
       <div *ngIf="expandedEditorDiv" class="w-100" [ngStyle]="{'height.px': textContainerHeight}">
         <a *ngIf="expandedEditorDiv" (click)="expandCollapseAnnotationDiv()" class="collapse-btn-right pi pi-chevron-circle-right"></a>
-        <app-text-annotation-editor #annotationEditor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedTText"
+        <app-text-annotation-editor #annotationEditor *ngIf="showAnnotationEditor" [annotationModel]="textoAnnotation" [annotationFragment]="selectedText"
           (onSave)="onSaveAnnotationFeatures($event)" (onCancel)="onAnnotationCancel()" (onDelete)="onAnnotationDeleted()"></app-text-annotation-editor>
           <!-- <app-relation-editor *ngIf="showRelationEditor"
           [relationModel]="relation"

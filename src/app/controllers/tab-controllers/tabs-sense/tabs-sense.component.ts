@@ -20,7 +20,7 @@ export class TabsSenseComponent implements OnInit, OnDestroy {
   @Input() lexEntryId!: string;
   /**Senso in lavorazione */
   senseEntry: SenseCore | undefined;
-
+  selectedTab = 0;
   entry$!: Observable<SenseCore>;
 
   /**
@@ -59,6 +59,10 @@ export class TabsSenseComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  }
+
+  onChangeTab() {
+    this.loadData();
   }
 
   /**

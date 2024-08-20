@@ -20,10 +20,11 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
   styleUrls: ['./form-core-editor.component.scss']
 })
 export class FormCoreEditorComponent implements OnInit, OnDestroy {
+  readonly translatePrefix = 'LEXICON_EDITOR.FORM';
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
   /**Stringa per il campo vuoto */
-  emptyField = '-- Select --'
+  emptyField = this.commonService.translateKey('GENERAL.selectValue');
   /**Utente loggato */
   currentUser!: User;
   /**Forma in lavorazione */
@@ -77,13 +78,14 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param formId {string} identificativo della forma
    */
   private deleteForm = (formId: string) => {
-    this.showOperationInProgress("Deletion in progress");
-    const successMsg = "Successfully removed form";
+    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix+'.deletionInProg'));
+    const successMsg = this.commonService.translateKey(this.translatePrefix+'.removeFormSuccess');
     this.lexiconService.deleteForm(formId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.showOperationFailed("Deletion failed: " + error.message);
-        return throwError(() => new Error(error.error));
+        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+        // this.showOperationFailed("Deletion failed: " + error.message);
+        // return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));
@@ -135,13 +137,22 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe((resp: { [key: string]: any }) => {
       for (const key in resp) {
         const currentPropertyId = this.labelFormItems.findIndex(e => e.propertyID === key);
-        if (currentPropertyId !== -1 && this.labelFormItems[currentPropertyId].propertyValue !== resp[key]) {
-          this.updateForm(key, resp[key]).then(() => {
-            if (resp[key] === '') {
-              this.movePropertyToMenu(key);
-              return;
+        const currentPropValue = this.labelFormItems[currentPropertyId].propertyValue;
+        const respValue = resp[key];
+        if (currentPropertyId !== -1 && this.formEntry.label.find(x => x.propertyID === key)?.propertyValue !== respValue) {
+          const isWhiteSpaceOnly = typeof(respValue)==='string' && !respValue.trim();
+          if(key === 'writtenRep' && (respValue === '' || isWhiteSpaceOnly)) {
+            const msg = this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey(this.translatePrefix+'.invalidWrittenRep'));
+            this.messageService.add(msg);
+            return;
+          }
+          if(respValue === '') {
+            const deleteRelObs = this.lexiconService.deleteRelation(this.formEntry.form, { relation: key, value: currentPropValue });
+            this.manageUpdateObservable(deleteRelObs, key, respValue);
+            return;
             }
-            this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: resp[key] };
+          this.updateForm(key, respValue).then(() => {
+            this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: respValue };
           });
         }
       }
@@ -213,7 +224,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo per la cancellazione della forma */
   onDeleteLexicalForm() {
-    const confirmMsg = "You are about to delete a form";
+    const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmDelForm');
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteForm(this.formEntry.form), this.formEntry.form);
   }
@@ -293,7 +304,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param updateObs {Observable<string>} observable del timestamp di ultimo aggiornamento
    * @param relation {string} relazione aggiornata
    */
-  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, newValue: string) {
+  private async manageUpdateObservable(updateObs: Observable<string>, relation: string, newValue: string, isLabelEdit?: boolean) {
     updateObs.pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -303,6 +314,15 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(resp => {
       this.formEntry = { ...this.formEntry, lastUpdate: resp };
+      if(isLabelEdit) {
+        const updatedDefinitions: PropertyElement[] = [...this.formEntry.label];
+        const relIndex = updatedDefinitions.findIndex(x => x.propertyID === relation);
+        updatedDefinitions[relIndex].propertyValue = newValue;
+        this.formEntry = <FormCore>{ 
+          ...this.formEntry, 
+          definition: updatedDefinitions
+        };
+        }
       // const msg = this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success`);
       // this.messageService.add(msg);
 

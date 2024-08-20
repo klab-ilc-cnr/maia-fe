@@ -131,6 +131,33 @@
             "posRequired": "La POS è obbligatoria",
             "type": "Tipo",
             "typeRequired": "Il tipo è obbligatorio"
+        },
+        "noDefinition": "Nessuna definizione fornita"
+    },
+    "LEXICON_EDITOR": {
+        "FORM": {
+            "confirmDelForm": "Si sta per cancellare una forma",
+            "deleteLexForm": "Cancellare forma lessicale",
+            "deletionInProg": "Cancellazione in corso",
+            "invalidWrittenRep": "La rappresentazione scritta non può essere vuota o con solo spazi bianchi",
+            "lastUpdate": "Ultimo aggiornamento",
+            "morphTraits": "Tratti morfologici",
+            "pos": "Parte del discorso",
+            "removeFormSuccess": "Forma rimossa con successo",
+            "representation": "Rappresentazione",
+            "type": "Tipo"
+        },
+        "SENSE": {
+            "confirmDelSense": "Si sta per cancellare un senso",
+            "confirmRemoveMorph": "Sei sicuro di rimuovere #VALUE#?",
+            "definitions": "Definizioni",
+            "deleteLexSense": "Cancellare senso",
+            "deletionInProg": "Cancellazione in corso",
+            "lastUpdate": "Ultimo aggiornamento",
+            "marksOfUse": "Marche d'uso",
+            "morphRestriction": "Restrizioni morfologiche",
+            "removeSenseSuccess": "Senso rimosso con successo",
+            "semanticMarks": "Marche semantiche"
         }
     },
     "LOGIN": {

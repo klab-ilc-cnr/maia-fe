@@ -8,7 +8,6 @@ import { Annotation } from 'src/app/models/annotation/annotation';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
 import { Layer } from 'src/app/models/layer/layer.model';
-import { Relations } from 'src/app/models/relation/relations';
 import { LineBuilder } from 'src/app/models/text/line-builder';
 import { TextHighlight } from 'src/app/models/text/text-highlight';
 import { TextLine } from 'src/app/models/text/text-line';
@@ -37,6 +36,18 @@ export class LayerReload {
   layerIds?: Array<number>;
 }
 
+export class TextSelection {
+  selection?: Selection;
+  startIndex?: number;
+  endIndex?: number;
+}
+
+export class TextSelectionAnnotation {
+  textSelection!: TextSelection;
+  color!: string;
+  active!: boolean;
+}
+
 enum LayerReloadOperation { Add, Remove, Equal }
 
 export enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp, IncreaseWidenessDown, ChangingSection }
@@ -52,11 +63,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   layers$ = this.layerState.layers$.pipe(
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
-  /**Indice di inizio selezione */
-  private selectionStart?: number;
-  /**Indice di fine selezione */
-  private selectionEnd?: number;
-  selectedTText = '';
+  selectedText = '';
   /**Configurazione di visualizzazione iniziale */
   private visualConfig = {
     draggedArcHeight: 30,
@@ -118,7 +125,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**Layer selezionato */
   selectedLayer: TLayer | undefined;
   /**Lista di layer selezionati */
-  selectedLayers: TLayer[] | undefined = [];
+  selectedLayers: TLayer[] = [];
   lastRenderedLayers: number[] = [];
 
   sentnumVerticalLine = "M 0 0";
@@ -155,6 +162,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   textSplittedRows: TextSplittedRow[] | undefined;
   /**Lista dei layer visibili */
   visibleLayers: TLayer[] = [];
+  /** list of the selection highlight rect used in the svg */
+  selectionHighlights: TextHighlight[] = [];
+  /** property used to support the build of the selection highlight rect for the svg */
+  specialTextSelectionHighlight: TextSelectionAnnotation = {
+    color: "#0067D1",
+    active: false,
+    textSelection: new TextSelection()
+  };
 
   /**Riferimento all'elemento svg */
   @ViewChild('svg') public svg!: ElementRef;
@@ -481,15 +496,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**Metodo che annulla una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationCancel() {
-    this.textoAnnotation = new TAnnotation();
-    this.visibleAnnotationId = undefined;
+    this.resetAnnotation();
+    this.disableTextSelection();
   }
 
   /**Metodo che cancella una annotazione (intercetta emissione dell'annotation editor) */
   onAnnotationDeleted() {
     this.removeFromAnnotationsResult(this.textoAnnotation.id);
     this.setScrollTopOperationInRange();
-    this.textoAnnotation = new TAnnotation();
+    this.resetAnnotation();
+    this.disableTextSelection();
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
   }
 
@@ -508,6 +524,13 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (this.selectedLayer && this.selectedLayers.findIndex(l => l.id == this.selectedLayer?.id) == -1) {
       this.selectedLayers.push(this.selectedLayer!);
       this.changeVisibleLayers();
+    }
+
+    this.resetAnnotation();
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex!, this.specialTextSelectionHighlight.textSelection.endIndex!, this.selectedText);
+
+    if (!this.selectedLayer) {
+      this.onAnnotationCancel();
     }
   }
 
@@ -593,6 +616,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   /**
+ * Method that intercept mouse click on the background
+ * @param event {any} evento di mouse up
+ * @returns {void}
+ */
+  onTextAreaClick(event: any): void {
+    this.resetAnnotation();
+    this.disableTextSelection();
+  }
+
+  /**
    * Metodo che gestisce le variazioni di selezione sul testo
    * @param event {any} evento di mouse up
    * @returns {void}
@@ -600,18 +633,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   onSelectionChange(event: any, row: TextRow): void {
     this.currentVisibleRowIndex = row.rowIndex;
 
-    const selection = this.getCurrentTextSelection();
+    const textSelection = this.getCurrentTextSelection();
 
-    if (!selection) { //caso senza selezione, esco dal metodo
+    if (!textSelection) { //in case of no selection
+      this.disableTextSelection();
       return;
     }
 
-    this.textoAnnotation = new TAnnotation();
-    this.visibleAnnotationId = undefined;
+    this.resetAnnotation();
 
-    let startIndex = selection.startIndex;
-    let endIndex = selection.endIndex;
-    // let text = this.textRes.text.substring(startIndex, endIndex); //estrapola il testo selezionato //TODO OGGETTO RICEVUTO è SOLO TESTO, NON JSON
+    let startIndex = textSelection.startIndex!;
+    let endIndex = textSelection.endIndex!;
     let text = this.textRes.join('').substring(startIndex, endIndex);
 
     if (!this.onlySpaces(text)) {
@@ -628,16 +660,145 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       text = newText;
     }
 
-    const relations = new Relations();
-
+    // const relations = new Relations();
     // this.annotation.layer = this.selectedLayer;
     // this.annotation.layerName = this.layerOptions.find(l => l.value == this.selectedLayer)?.label;
-    this.textoAnnotation.layer = this.selectedLayer;
-    this.textoAnnotation.start = (this.offset ?? 0) + startIndex;
-    this.textoAnnotation.end = (this.offset ?? 0) + endIndex;
-    this.selectedTText = text;
+
+    textSelection.startIndex = (this.offset ?? 0) + startIndex; //from current to absolute value respect to text
+    textSelection.endIndex = (this.offset ?? 0) + endIndex; //from current to absolute value respect to text
+    this.specialTextSelectionHighlight.textSelection = textSelection;
+    this.specialTextSelectionHighlight.active = this.selectedLayer != null && this.selectedLayer != undefined;
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex!, this.specialTextSelectionHighlight.textSelection.endIndex!, text);
+    // this.setScrollTopOperationInRange();
+    // this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+
+    this.highlightSelection();
 
     this.showEditorAndHideOthers(EditorType.Annotation);
+  }
+
+  /**
+   * highlights the manual selected text
+   * @returns 
+   */
+  highlightSelection() {
+    this.removeTextSelection();
+
+    if (!this.specialTextSelectionHighlight.active) { return; }
+
+    const textSelection: TextSelection = this.specialTextSelectionHighlight.textSelection!;
+    let range = textSelection.selection!.getRangeAt(0);
+
+    range.startContainer.parentElement!.setAttribute("selectionHighlight", "start");
+    if (range.endContainer.parentElement!.getAttribute("selectionHighlight") === "start") {
+      range.endContainer.parentElement!.setAttribute("selectionHighlight", "startEnd");
+    }
+    else {
+      range.endContainer.parentElement!.setAttribute("selectionHighlight", "end");
+    }
+
+    const gTextElement = document.getElementById("gText");
+
+    if (!gTextElement) { return; }
+
+    let selecting = false;
+    Array.from(gTextElement.children).forEach((textElement) => {
+      Array.from(textElement.children).forEach((tSpanSentence) => {
+        const highlight: any = tSpanSentence;
+        let bb = highlight.getBBox();
+        let [x, y, maxSentenceWidth, height] = [bb.x, bb.y, bb.width, bb.height];
+
+        let widthPx = 0;
+        let startOffsetPx = 0;
+
+        for (const tSpanWord of Array.from(tSpanSentence.children)) {
+          if (tSpanWord.getAttribute("selectionHighlight") === "startEnd") {
+            let bb = (tSpanWord as any).getBBox();
+            x = bb.x;
+            startOffsetPx = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
+            widthPx = this.getComputedTextLength(this.randomString(textSelection.endIndex! - textSelection.startIndex!), this.visualConfig.textFont);
+            break;
+          }
+
+          if (tSpanWord.getAttribute("selectionHighlight") === "start") {
+            let bb = (tSpanWord as any).getBBox();
+            x = bb.x;
+            startOffsetPx = this.getComputedTextLength(this.randomString(range.startOffset), this.visualConfig.textFont);
+            widthPx += this.getComputedTextLength(tSpanWord.textContent!.substring(range.startOffset, tSpanWord.textContent!.length), this.visualConfig.textFont);
+            selecting = true;
+            continue;
+          }
+
+          if (tSpanWord.getAttribute("selectionHighlight") === "end") {
+            selecting = false;
+            widthPx += this.getComputedTextLength(tSpanWord.textContent!.substring(0, range.endOffset), this.visualConfig.textFont);
+            break;
+          }
+
+          if (selecting) {
+            widthPx += this.getComputedTextLength(tSpanWord.textContent ?? '', this.visualConfig.textFont);
+          }
+        };
+
+        if (widthPx > 0) {
+          this.selectionHighlights.push({
+            id: undefined,
+            width: widthPx,
+            height: height,
+            coordinates: {
+              x: x + startOffsetPx,
+              y: y
+            },
+            bgColor: this.specialTextSelectionHighlight.color
+          });
+        }
+      });
+    });
+
+    range.startContainer.parentElement!.removeAttribute("selectionHighlight");
+    range.endContainer.parentElement!.removeAttribute("selectionHighlight");
+  }
+
+  /**
+   * hihglights the current selected annotation
+   */
+  highlightSelectedAnnotation(selectedAnnotation: TAnnotation) {
+    this.removeTextSelection();
+    const annotationHighlights = document.querySelectorAll(`#h-${selectedAnnotation.id}`); //warning id is repeated on different lines
+
+    if (annotationHighlights.length === 0) { throw new Error("annotationHighlights shouldn't be empty here"); }
+
+    this.specialTextSelectionHighlight.active = true;
+    this.specialTextSelectionHighlight.textSelection.startIndex = selectedAnnotation.start;
+    this.specialTextSelectionHighlight.textSelection.endIndex = selectedAnnotation.end;
+    Array.from(annotationHighlights).forEach((highlight) => {
+      const width = Number(highlight.getAttribute("width"));
+      const height = Number(highlight.getAttribute("height"));
+      const x = Number(highlight.getAttribute("x"));
+      const y = Number(highlight.getAttribute("y"));
+      this.selectionHighlights.push({
+        id: undefined,
+        width: width,
+        height: height,
+        coordinates: {
+          x: x,
+          y: y
+        },
+        bgColor: this.specialTextSelectionHighlight.color
+      });
+    });
+  }
+
+  /**
+ * prepare data for the highlight operation from the search kwic
+ */
+  setHighlightSelectionFromSearch(start: number, end: number, text: string) {
+    this.onAnnotationCancel();
+    this.specialTextSelectionHighlight.textSelection.startIndex = start;
+    this.specialTextSelectionHighlight.textSelection.endIndex = end;
+    this.specialTextSelectionHighlight.active = true;
+
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex, this.specialTextSelectionHighlight.textSelection.endIndex , text);
   }
 
   /**
@@ -665,6 +826,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.highlightSelectedAnnotation(ann);
+
     // if (this._editIsLocked) { //TODO implementare gestione se edit non permesso
 
     // }
@@ -674,7 +837,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     const computedStart = this.textoAnnotation.start! - (this.offset ?? 0);
     const computedEnd = this.textoAnnotation.end! - (this.offset ?? 0);
     const newSelectedText = this.textRes.join('').substring(computedStart, computedEnd);
-    this.selectedTText = newSelectedText != '' ? newSelectedText : this.selectedTText; // show old value if not selecting a new one
+    this.selectedText = newSelectedText != '' ? newSelectedText : this.selectedText; // show old value if not selecting a new one
     // this.annotation.layerName = this.layerOptions.find(l => l.value == Number.parseInt(ann.layer))?.label;
     // this.annotation.layerName = this.selectedLayer?.name;
 
@@ -726,6 +889,35 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   updateTextEditorSize() {
     this.scrollingDirection = ScrollingDirectionType.InRange;
     this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
+  }
+
+  /**sets annotation initial data */
+  private initAnnotationData(startIndex: number, endIndex: number, text: string) {
+    this.textoAnnotation.layer = this.selectedLayer;
+    this.textoAnnotation.start = startIndex;
+    this.textoAnnotation.end = endIndex;
+    this.selectedText = text;
+  }
+
+  /** resets annotation data */
+  private resetAnnotation() {
+    this.textoAnnotation = new TAnnotation();
+    this.visibleAnnotationId = undefined;
+  }
+
+  /**
+ * removes text selection elements
+ */
+  private removeTextSelection() {
+    this.selectionHighlights = [];
+  }
+
+  /**
+ * disables the text selection on the text
+ */
+  private disableTextSelection() {
+    this.specialTextSelectionHighlight.active = false;
+    this.removeTextSelection();
   }
 
   /**
@@ -911,6 +1103,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     end += this.backendIndexCompensation; //backend use a mixed strategy on range, it's closed on start and open on end so we need to compensate the end index
 
     const currentVisibleLayersIds = this.selectedLayers?.map(l => l.id!) || [];
+    this.removeTextSelection(); //removes the highlight if any, it will be rendered in next steps if any
 
     let layersReload = new LayerReload();
 
@@ -1059,6 +1252,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.textRes = textResponse.data?.map(d => d.text) || [];
     this.textSplittedRows = textResponse.data;
     this.offset = textResponse.data![0].start;
+
+    if (this.specialTextSelectionHighlight.active) {
+      let text = this.textRes.join('').substring(this.specialTextSelectionHighlight.textSelection.startIndex! - this.offset, this.specialTextSelectionHighlight.textSelection.endIndex! - this.offset);
+      this.selectedText = text;
+      this.textoAnnotation = { ...this.textoAnnotation }; //refresh annotation panel
+    }
   }
 
   /**
@@ -1132,12 +1331,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
             lineBuilder.line.words.push(w);
           }
           else {
-            const line = this.createLine(lineBuilder);
-            lineBuilder.yStartLine += line.height;
+            const result = this.createLine(lineBuilder);
+            this.selectionHighlights = [...this.selectionHighlights, ...result.selectionHighlights];
 
-            sLines.push(JSON.parse(JSON.stringify(line)));
+            lineBuilder.yStartLine += result.line.height;
 
-            lineBuilder.startLine += (line.text?.length || 0);
+            sLines.push(JSON.parse(JSON.stringify(result.line)));
+
+            lineBuilder.startLine += (result.line.text?.length || 0);
             linesCounter++;
 
             if (wordAddedCounter != words.length) {
@@ -1154,12 +1355,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           }
 
           if (wordAddedCounter == words.length) {
-            const line = this.createLine(lineBuilder);
-            lineBuilder.yStartLine += line.height;
+            const result = this.createLine(lineBuilder);
+            this.selectionHighlights = [...this.selectionHighlights, ...result.selectionHighlights];
 
-            sLines.push(JSON.parse(JSON.stringify(line)));
+            lineBuilder.yStartLine += result.line.height;
 
-            lineBuilder.startLine += (line.text?.length || 0);
+            sLines.push(JSON.parse(JSON.stringify(result.line)));
+
+            lineBuilder.startLine += (result.line.text?.length || 0);
             linesCounter++;
           }
         })
@@ -1169,12 +1372,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         lineBuilder.line.text = s.text;
         lineBuilder.line.words = words;
 
-        const line = this.createLine(lineBuilder);
-        lineBuilder.yStartLine += line.height;
+        const result = this.createLine(lineBuilder);
+        this.selectionHighlights = [...this.selectionHighlights, ...result.selectionHighlights];
 
-        sLines.push(JSON.parse(JSON.stringify(line)));
+        lineBuilder.yStartLine += result.line.height;
 
-        lineBuilder.startLine += (line.text?.length || 0);
+        sLines.push(JSON.parse(JSON.stringify(result.line)));
+
+        lineBuilder.startLine += (result.line.text?.length || 0);
         linesCounter++;
       }
 
@@ -1190,7 +1395,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         xText: this.visualConfig.stdTextOffsetX,
         yText: sLinesCopy[0].yText - this.visualConfig.spaceAfterTextLine,
         xSentnum: this.visualConfig.stdSentnumOffsetX,
-        ySentnum: sLinesCopy[sLinesCopy.length - 1].yText,
+        ySentnum: sLinesCopy[0].yText,
         text: s.text,
         words: words,
         startIndex: start,
@@ -1747,9 +1952,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     return promise;
   }
 
-  private createLine(auxLineBuilder: any) {
+  private createLine(auxLineBuilder: LineBuilder) {
     const startIndex = auxLineBuilder.startLine;
-    const endIndex = auxLineBuilder.startLine + auxLineBuilder.line.text.length;
+    const endIndex = auxLineBuilder.startLine + auxLineBuilder.line.text!.length;
 
     const resAnns = this.renderAnnotationsForLine(startIndex, endIndex);
     const lineTowers = resAnns.lineTowers;
@@ -1867,7 +2072,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       yText: yText,
       x: this.visualConfig.stdTextOffsetX,
       startIndex: auxLineBuilder.startLine,
-      endIndex: auxLineBuilder.startLine + auxLineBuilder.line.text.length,
+      endIndex: auxLineBuilder.startLine + auxLineBuilder.line.text!.length,
       annotationsTowers: lineTowers,
       yAnnotation: yAnnotation,
       highlights: lineHighlights,
@@ -1875,7 +2080,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       // arcs: resArcs
     }
 
-    return line;
+    const selectionHighlights = this.renderSelectionHighlightForLine(startIndex, endIndex);
+    selectionHighlights.forEach((h) => {
+      h.coordinates.y = yHighlight;
+    })
+
+    return {
+      line,
+      selectionHighlights
+    };
   }
 
   /**
@@ -1916,7 +2129,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       labelText = stringsToJoin.join(" | ");
     }
 
-    labelText = labelText.trim();
+    labelText = labelText.toString().trim();
 
     let labelLength = this.getComputedTextLength(labelText, this.visualConfig.annotationFont);
     const oneCharW = this.getComputedTextLength('.', this.visualConfig.annotationFont);
@@ -1975,31 +2188,34 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   /**
    * @private
    * Metodo che recupera gli indici della selezione sul testo
-   * @returns {{startIndex: number, endIndex: number}|undefined} indici iniziale e finale della selezione se presente
+   * @returns {TextSelection|undefined} selection e indici iniziale e finale della selezione se presente
    */
-  private getCurrentTextSelection() {
+  private getCurrentTextSelection(): TextSelection | null {
     const selection = window.getSelection();
 
-    if (selection != null && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const preSelectionRange = range.cloneRange();
-      preSelectionRange.selectNodeContents(this.svg.nativeElement);
-      preSelectionRange.setEnd(range.startContainer, range.startOffset);
-      this.selectionStart = [...preSelectionRange.toString()].length;
-      this.selectionEnd = this.selectionStart + [...range.toString()].length;
-    } else {
-      this.selectionStart = undefined;
-      this.selectionEnd = undefined;
+    if (!selection || selection.rangeCount <= 0) {
+      return null;
     }
 
-    if (this.selectionStart === undefined || this.selectionEnd === undefined || this.selectionStart >= this.selectionEnd) {
-      return undefined;
+    const range = selection!.getRangeAt(0);
+
+    if (selection.isCollapsed) //there is no selection just click
+    {
+      return null;
     }
 
-    return {
-      startIndex: this.selectionStart,
-      endIndex: this.selectionEnd,
-    };
+    const preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(this.svg.nativeElement);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    const selectionStart = [...preSelectionRange.toString()].length;
+    const selectionEnd = selectionStart + [...range.toString()].length;
+
+    let textSelection = new TextSelection();
+    textSelection.selection = selection!;
+    textSelection.startIndex = selectionStart;
+    textSelection.endIndex = selectionEnd;
+
+    return textSelection;
   }
 
   private getMaxTowerPosition(array: any[]) {
@@ -2034,11 +2250,12 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Metodo che gestisce la renderizzazione delle annotazioni per una line
    * @param startIndex {number} indice iniziale
    * @param endIndex {number} indice finale
-   * @returns {{lineTowers: any[], lineHighLights:TextHighlight[]}} dati delle annotazioni per la line
+   * @returns {{lineTowers: any[], lineHighLights:TextHighlight[]} dati delle annotazioni per la line
    */
   private renderAnnotationsForLine(startIndex: number, endIndex: number) {
     const lineTowers = new Array();
     const lineHighlights = new Array<TextHighlight>();
+    const maxWidthForLine = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
 
     // const localAnns = this.simplifiedAnns.filter((a: any) => (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)));
 
@@ -2072,9 +2289,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       t.anns.forEach((ann: any) => {
         const layer = this.layersList.find(l => l.id == Number.parseInt(ann.layer));
         const startX = this.getComputedTextLength(this.randomString(t.span.start - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
-        const w = this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
-        const endX = startX + w;
-        const text = this.elaborateAnnotationLabel(layer, ann, w);
+        let width = this.getComputedTextLength(this.randomString(t.span.end - t.span.start), this.visualConfig.textFont);
+        let endX = startX + width;
+        width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
+        endX = startX + width;
+        const text = this.elaborateAnnotationLabel(layer, ann, width);
         const textAnnLenght = this.getComputedTextLength(text, this.visualConfig.annotationFont);
 
         // console.log(w, startX + (w/2) - (textAnnLenght/2), this.randomString(t.span.end - t.span.start))
@@ -2085,11 +2304,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
           borderColor: '#808080',
           text: text,
           textCoordinates: {
-            x: Math.ceil(startX + w / 2),
+            x: Math.ceil(startX + width / 2),
             y: 0
           },
           startX: startX,
-          width: w,
+          width: width,
           endX: endX,
           height: this.visualConfig.annotationHeight,
           yOffset: yAnnOffset, //permette di distribuire in verticale le annotazioni
@@ -2105,8 +2324,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
             y: 0
           },
           height: this.visualConfig.stdTextLineHeight - 2,
-          width: w + 2,
-          id: this.generateHighlightId(ann.id) //serve successivamente per riaprire annotazione //TODO verificare come gestire con nuovo BE
+          width: width + 2,
+          id: this.generateHighlightId(ann.id), //serve successivamente per riaprire annotazione //TODO verificare come gestire con nuovo BE
         })
       })
 
@@ -2147,6 +2366,47 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       lineTowers: lineTowers,
       lineHighLights: lineHighlights
     };
+  }
+
+  private renderSelectionHighlightForLine(startIndex: number, endIndex: number): Array<TextHighlight> {
+    if (!this.specialTextSelectionHighlight.active) { return []; }
+
+    const maxWidthForLine = this.getComputedTextLength(this.randomString(endIndex - startIndex), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+    let lineHighlights: Array<TextHighlight> = [];
+
+    const selectionStart = this.specialTextSelectionHighlight.textSelection.startIndex! - (this.offset ?? 0);
+    const selectionEnd = this.specialTextSelectionHighlight.textSelection.endIndex! - (this.offset ?? 0);
+
+    if ((selectionStart >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //caso standard, inizia e finisce sulla riga
+      (selectionStart < (startIndex || 0) && selectionEnd >= (startIndex || 0) && selectionEnd <= (endIndex || 0)) || //inizia prima della riga e finisce dentro la riga
+      (selectionStart >= (startIndex || 0) && selectionStart < (endIndex || 0) && selectionEnd > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
+      (selectionStart < (startIndex || 0) && selectionEnd > (endIndex || 0))) {
+
+      let width = 0;
+      let difference = 0;
+
+      if (selectionStart < (startIndex || 0) && selectionEnd <= endIndex) {
+        difference = startIndex - selectionStart;
+      }
+
+      const startX = this.getComputedTextLength(this.randomString(selectionStart - (startIndex || 0)), this.visualConfig.textFont) + this.visualConfig.stdTextOffsetX;
+      width = this.getComputedTextLength(this.randomString((selectionEnd - difference) - selectionStart), this.visualConfig.textFont);
+      const endX = startX + width;
+      width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
+
+      lineHighlights.push({
+        id: undefined,
+        width: width,
+        height: this.visualConfig.stdTextLineHeight - 2,
+        coordinates: {
+          x: startX - 1,
+          y: 0
+        },
+        bgColor: this.specialTextSelectionHighlight.color
+      });
+    }
+
+    return lineHighlights;
   }
 
   /**

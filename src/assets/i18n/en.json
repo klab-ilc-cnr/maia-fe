@@ -131,6 +131,33 @@
             "posRequired": "POS is mandatory",
             "type": "Type",
             "typeRequired": "Type is mandatory"
+        },
+        "noDefinition": "No definition provided"
+    },
+    "LEXICON_EDITOR": {
+        "FORM": {
+            "confirmDelForm": "You are about to delete a lexical form",
+            "deleteLexForm": "Delete lexical form",
+            "deletionInProg": "Deletion in progress",
+            "invalidWrittenRep": "The written representation cannot be blank or with only white space",
+            "lastUpdate": "Last update",
+            "morphTraits": "Morphological traits",
+            "pos": "Part-of-Speech",
+            "removeFormSuccess": "Successfully removed form",
+            "representation": "Representation",
+            "type": "Type"
+        },
+        "SENSE": {
+            "confirmDelSense": "You are about to delete a sense",
+            "confirmRemoveMorph": "Are you sure to remove #VALUE#?",
+            "definitions": "Definitions",
+            "deleteLexSense": "Delete lexical sense",
+            "deletionInProg": "Deletion in progress",
+            "lastUpdate": "Last update",
+            "marksOfUse": "Marks of use",
+            "morphRestriction": "Morphological Restriction",
+            "removeSenseSuccess": "Successfully removed sense",
+            "semanticMarks": "Semantic marks"
         }
     },
     "LOGIN": {

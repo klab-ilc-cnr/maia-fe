@@ -136,7 +136,7 @@
             rowData[col.field] }}</span>
           <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
             [pTooltip]="rowData['sub']" tooltipPosition="bottom"
-            [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] }}</span>
+            [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
           <sub
             *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
         </td>
