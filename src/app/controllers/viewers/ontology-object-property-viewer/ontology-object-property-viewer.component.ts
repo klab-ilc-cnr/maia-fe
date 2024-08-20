@@ -8,7 +8,7 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-object-property-viewer',
   templateUrl: './ontology-object-property-viewer.component.html',
-  styleUrls: ['./ontology-object-property-viewer.component.scss']
+  styleUrls: ['./ontology-object-property-viewer.component.scss', "../shared.scss"]
 })
 export class OntologyObjectPropertyViewerComponent implements OnInit {
   @Input()
@@ -18,7 +18,7 @@ export class OntologyObjectPropertyViewerComponent implements OnInit {
 
   public static rootDataId = "http://www.w3.org/2002/07/owl#topObjectProperty";
   /**offset point for the item tree */
-  public treeHeightOffset: number = 160;
+  public treeHeightOffset: number = 193;
   public loading: boolean = false;
   public cols!: any[];
   /**Nodo dell'albero selezionato */
@@ -104,7 +104,7 @@ export class OntologyObjectPropertyViewerComponent implements OnInit {
 
   /**remove selected nodes */
   //TODO to be implemented
-  removeNodes(){
+  removeNodes() {
     // console.log(this.selectedNodes);
   }
 

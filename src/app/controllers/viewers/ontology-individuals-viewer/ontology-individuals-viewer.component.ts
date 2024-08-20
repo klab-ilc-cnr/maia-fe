@@ -8,7 +8,7 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-individuals-viewer',
   templateUrl: './ontology-individuals-viewer.component.html',
-  styleUrls: ['./ontology-individuals-viewer.component.scss']
+  styleUrls: ['./ontology-individuals-viewer.component.scss', "../shared.scss"]
 })
 export class OntologyIndividualsViewerComponent implements OnInit {
   @Input()
@@ -17,7 +17,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
   private readonly unsubscribe$ = new Subject();
 
   /**offset point for the item tree */
-  public treeHeightOffset: number = 160;
+  public treeHeightOffset: number = 193;
   public loading: boolean = false;
   public cols!: any[];
   /**Nodo dell'albero selezionato */

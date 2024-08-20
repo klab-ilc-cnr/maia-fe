@@ -8,7 +8,7 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-class-viewer',
   templateUrl: './ontology-class-viewer.component.html',
-  styleUrls: ['./ontology-class-viewer.component.scss']
+  styleUrls: ['./ontology-class-viewer.component.scss', "../shared.scss"]
 })
 export class OntologyClassViewerComponent implements OnInit {
 
@@ -19,7 +19,7 @@ export class OntologyClassViewerComponent implements OnInit {
 
   public static rootClassId = "http://www.w3.org/2002/07/owl#Thing";
   /**offset point for the item tree */
-  public treeHeightOffset: number = 160;
+  public treeHeightOffset: number = 193;
   public loading: boolean = false;
   public cols!: any[];
   /**Nodo dell'albero selezionato */
