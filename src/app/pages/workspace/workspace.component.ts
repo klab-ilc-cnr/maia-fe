@@ -1104,7 +1104,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
           // è necessario reinserirlo manualmente
           currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
-            currentWorkspaceInstance.commonService.notifyOther({ option: EventsConstants.tag_clicked_ontology_class_viewer_tile, value: 'clicked' });
+            panel.options.data.showId = !panel.options.data.showId;
+            panel.setHeaderTitle(panel.options.data.headerPrefixToShow + (panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow));
           }
           break;
 
@@ -1782,7 +1783,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         add: {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
-          handler: (panel: any, control: any) => {
+          handler: () => {
             this.commonService.notifyOther({ option: EventsConstants.ontology_explorer_tag_clicked, value: 'clicked' });
           }
         }
@@ -1816,6 +1817,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     // componentRef.instance.panelId = OntologyViewerTileId;
     // componentRef.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
     const name = selectedNode.data?.label ?? selectedNode.data?.shortId
+    const headerPrefix = 'Ontology Viewer - <span class="ontology-dot"></span>';
 
     const element = componentRef.location.nativeElement;
 
@@ -1823,7 +1825,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: OntologyViewerTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Ontology Viewer - <span class="ontology-dot"></span>' + name,
+      headerTitle: headerPrefix + name,
       maximizedMargin: 5,
       dragit: { snap: false },
       syncMargins: true,
@@ -1837,17 +1839,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         width: () => window.innerWidth * 0.5,
         height: '60vh'
       },
+      data: {
+        showId: false,
+        headerPrefixToShow : headerPrefix,
+        headerNameToShow: name,
+        parentNodeIdToShow: selectedNode.data?.id
+      },
       headerControls: {
         add: {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
-          handler: () => {
-            this.commonService.notifyOther({ option: EventsConstants.tag_clicked_ontology_class_viewer_tile, value: 'clicked' });
+          handler: (panel: any, control: any) => {
+            panel.options.data.showId = !panel.options.data.showId;
+            panel.setHeaderTitle(panel.options.data.headerPrefixToShow + (panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow));
           }
         }
       },
       onclosed: function (this: any, panel: any) {
-        this.removeFromTileMap(panel.id, TileType.LEXICON_EDIT);
+        this.removeFromTileMap(panel.id, TileType.ONTOLOGY_CLASS_VIEWER);
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any) {

@@ -141,7 +141,6 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     this.commonService.notifyObservable$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(notify => {
-      console.info(notify)
       switch(notify.option) {
         case 'dictionary_entry_update':
           this.updateDictionaryEntryField(notify.dictionaryId, notify.field, notify.value);
