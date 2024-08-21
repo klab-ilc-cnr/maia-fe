@@ -222,7 +222,17 @@
         "VIEWER":{
             "annotations": "Annotations",
             "description": "Description",
-            "language": "language"
+            "language": "language",
+            "DESCRIPTION" :{
+                "equivalentTo": "Equivalent To",
+                "subclassOf" : "Subclass Of",
+                "generalClassAxioms": "General Class Axioms",
+                "subClassOfAnonymousAncestor": "SubClass Of (Anonymous Ancestor)",
+                "instances": "Instances",
+                "targetForKey":"Target For Key",
+                "disjointWith": "Disjoint With",
+                "disjointUnionOf": "Disjoint Union Of"
+            }
         }
     },
     "ONTOLOGY_CLASS_EXPLORER":
