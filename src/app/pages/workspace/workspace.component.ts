@@ -333,8 +333,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
           case TileType.ONTOLOGY_EXPLORER:
-          case TileType.ONTOLOGY_CLASS_VIEWER:
             this.tileMap.set(this.id, tile);
+            break;
+          case TileType.ONTOLOGY_CLASS_VIEWER:
+            //don't save in backend
             break;
 
           default:
@@ -1087,26 +1089,28 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           break;
 
         case TileType.ONTOLOGY_CLASS_VIEWER:
-          //FIXME RICHIAMARE IL SERVIZIO CORRETTO
-          const ontologyEntry: TreeNode<OntologyClass> = { data: undefined };
-          const ontologyClassComponent = this.generateOntologyClassViewerTileConfiguration(tile.tileConfig.id, ontologyEntry);
-          const mergedOntologyClassConfig = { ...ontologyClassComponent.panelConfig, ...tile.tileConfig };
+          // //FIXME RICHIAMARE IL SERVIZIO CORRETTO
+          // const ontologyEntry: TreeNode<OntologyClass> = { data: undefined };
+          // const ontologyClassComponent = this.generateOntologyClassViewerTileConfiguration(tile.tileConfig.id, ontologyEntry);
+          // const mergedOntologyClassConfig = { ...ontologyClassComponent.panelConfig, ...tile.tileConfig };
 
-          //Ripristino il layout della tile
-          currPanelElement = jsPanel.layout.restoreId({
-            id: tile.tileConfig.id,
-            config: mergedOntologyClassConfig,
-            storagename: this.storageName,
-          });
+          // //Ripristino il layout della tile
+          // currPanelElement = jsPanel.layout.restoreId({
+          //   id: tile.tileConfig.id,
+          //   config: mergedOntologyClassConfig,
+          //   storagename: this.storageName,
+          // });
 
-          componentRef = ontologyClassComponent.component;
+          // componentRef = ontologyClassComponent.component;
 
-          //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
-          // è necessario reinserirlo manualmente
-          currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
-            panel.options.data.showId = !panel.options.data.showId;
-            panel.setHeaderTitle(panel.options.data.headerPrefixToShow + (panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow));
-          }
+          // //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // // è necessario reinserirlo manualmente
+          // currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
+          //   panel.options.data.showId = !panel.options.data.showId;
+          //   const nameToShow = panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow;
+          //   panel.setHeaderTitle(panel.options.data.headerPrefixToShow + nameToShow);
+          // }
+          console.error("ONTOLOGY_CLASS_VIEWER shouldn't have been saved")
           break;
 
         default:
@@ -1841,7 +1845,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       data: {
         showId: false,
-        headerPrefixToShow : headerPrefix,
+        headerPrefixToShow: headerPrefix,
         headerNameToShow: name,
         parentNodeIdToShow: selectedNode.data?.id
       },
@@ -1851,7 +1855,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           name: 'tag',
           handler: (panel: any, control: any) => {
             panel.options.data.showId = !panel.options.data.showId;
-            panel.setHeaderTitle(panel.options.data.headerPrefixToShow + (panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow));
+            const nameToShow = panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow;
+            panel.setHeaderTitle(panel.options.data.headerPrefixToShow + nameToShow);
           }
         }
       },
