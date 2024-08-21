@@ -23,8 +23,8 @@ export class OntologyClassViewerComponent implements OnInit {
     this.simuleGetClassData(this.id).pipe(
       take(1),
     ).subscribe({
-      next: (dataResult) => {
-        this.dataResults = dataResult;
+      next: (dataResults) => {
+        this.dataResults = dataResults;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);

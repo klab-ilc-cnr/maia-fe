@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, take, takeUntil } from 'rxjs';
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionaryListItem } from 'src/app/models/dictionary/dictionary-list-item.model';
@@ -276,7 +277,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   onOpenTreeNode(event: any, node: any) {
     switch (node.node.type) {
       case DICTIONARY_NODE.entry:
-        this.commonService.notifyOther({ option: "onDictionaryEntryDblClickEvent", value: node.node.data.id });
+        this.commonService.notifyOther({ option: EventsConstants.onDictionaryEntryDblClickEvent, value: node.node.data.id });
         break;
       case DICTIONARY_NODE.lemma:
         this.openLemmaInLexiconEditor(node.node);
@@ -492,7 +493,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
         }
       }]
     };
-    this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [mappedLexicalEntry, true] });
+    this.commonService.notifyOther({ option: EventsConstants.onLexiconTreeElementDoubleClickEvent, value: [mappedLexicalEntry, true] });
   }
 
   private showDeleteModal(entriesList: DictionaryListItem[]): void {

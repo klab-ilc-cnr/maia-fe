@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { of, Subject, take, takeUntil } from 'rxjs';
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -47,7 +48,7 @@ export class OntologyClassExplorerComponent implements OnInit {
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
       switch (res.option) {
-        case 'ontology_tag_clicked':
+        case EventsConstants.ontology_explorer_tag_clicked:
           this.alternateLabelShortId();
           this.showLabelName = !this.showLabelName;
           break;
@@ -99,7 +100,7 @@ export class OntologyClassExplorerComponent implements OnInit {
       return;
     }
 
-    this.commonService.notifyOther({ option: 'onOntologyClassElementDoubleClickEvent', value: [node, this.showLabelName] });
+    this.commonService.notifyOther({ option: EventsConstants.onOntologyClassElementDoubleClickEvent, value: [node] });
   }
 
   /**remove selected nodes */

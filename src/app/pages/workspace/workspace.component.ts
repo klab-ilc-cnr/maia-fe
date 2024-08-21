@@ -40,6 +40,7 @@ import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
 import { OntologyViewerTileContent } from 'src/app/models/tile/ontology-viewer-tile-content.model';
 import { OntologyExplorerTileContent } from 'src/app/models/tile/ontology-explorer-tile-content.model';
 import { WorkspaceOntologyViewerComponent } from './workspace-ontology-viewer/workspace-ontology-viewer.component';
+import { EventsConstants } from 'src/app/constants/events-constants';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -210,25 +211,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe((res) => {
       if ('option' in res) {
         switch (res.option) {
-          case 'onLexiconTreeElementDoubleClickEvent': {
+          case EventsConstants.onLexiconTreeElementDoubleClickEvent: {
             const selectedSubTree = structuredClone(res.value[0]);
             const showLabelName = structuredClone(res.value[1]);
             this.openLexiconEditTile(selectedSubTree, showLabelName);
             break;
           }
-          case 'onSearchResultTableDoubleClickEvent': {
+          case EventsConstants.onSearchResultTableDoubleClickEvent: {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset);
             break;
           }
-          case 'onDictionaryEntryDblClickEvent': {
+          case EventsConstants.onDictionaryEntryDblClickEvent: {
             this.openDictionaryEditPanel(res.value);
             break;
           }
-          case 'onOntologyClassElementDoubleClickEvent': {
+          case EventsConstants.onOntologyClassElementDoubleClickEvent: {
             const selectedSubTree = structuredClone(res.value[0]);
-            const showLabelName = structuredClone(res.value[1]);
-            this.openOntologyClassViewerTile(selectedSubTree, showLabelName);
+            this.openOntologyClassViewerTile(selectedSubTree);
             break;
           }
           default:
@@ -788,7 +788,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param showLabelName 
    * @returns 
    */
-  openOntologyClassViewerTile(ontologyNode: TreeNode<OntologyClass>, showLabelName: boolean) {
+  openOntologyClassViewerTile(ontologyNode: TreeNode<OntologyClass>) {
     const ontologyViewTileId = this.ontologyViewTilePrefix + ontologyNode?.data?.shortId;
     const panelExist = jsPanel.getPanels().find(
       (x: { id: string; }) => x.id === ontologyViewTileId
@@ -799,7 +799,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const result = this.generateOntologyClassViewerTileConfiguration(ontologyViewTileId, ontologyNode, showLabelName);
+    const result = this.generateOntologyClassViewerTileConfiguration(ontologyViewTileId, ontologyNode);
 
     const ontologyViewTileConfig = result.panelConfig;
 
@@ -1035,12 +1035,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
           // è necessario reinserirlo manualmente
           currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
-            currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+            currentWorkspaceInstance.commonService.notifyOther({ option: EventsConstants.tag_clicked_lexicon, value: 'clicked' });
           }
-          /*           currPanelElement.setControlStatus('tag', undefined, function (panel: any, control: any) {
-                      currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
-                    }); */
-
           break;
 
         case TileType.DICTIONARY: {
@@ -1086,14 +1082,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
           // è necessario reinserirlo manualmente
           currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
-            currentWorkspaceInstance.commonService.notifyOther({ option: 'ontology_tag_clicked', value: 'clicked' });
+            currentWorkspaceInstance.commonService.notifyOther({ option: EventsConstants.ontology_explorer_tag_clicked, value: 'clicked' });
           }
           break;
 
         case TileType.ONTOLOGY_CLASS_VIEWER:
           //FIXME RICHIAMARE IL SERVIZIO CORRETTO
           const ontologyEntry: TreeNode<OntologyClass> = { data: undefined };
-          const ontologyClassComponent = this.generateOntologyClassViewerTileConfiguration(tile.tileConfig.id, ontologyEntry, true);
+          const ontologyClassComponent = this.generateOntologyClassViewerTileConfiguration(tile.tileConfig.id, ontologyEntry);
           const mergedOntologyClassConfig = { ...ontologyClassComponent.panelConfig, ...tile.tileConfig };
 
           //Ripristino il layout della tile
@@ -1108,7 +1104,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
           // è necessario reinserirlo manualmente
           currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
-            currentWorkspaceInstance.commonService.notifyOther({ option: 'ontology_viewer_tag_clicked', value: 'clicked' });
+            currentWorkspaceInstance.commonService.notifyOther({ option: EventsConstants.tag_clicked_ontology_class_viewer_tile, value: 'clicked' });
           }
           break;
 
@@ -1435,7 +1431,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
           handler: (panel: any, control: any) => {
-            this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+            this.commonService.notifyOther({ option: EventsConstants.tag_clicked_lexicon, value: 'clicked' });
           }
         }
       },
@@ -1512,7 +1508,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
           handler: () => {
-            this.commonService.notifyOther({ option: 'tag_clicked_edit_tile', value: 'clicked' });
+            this.commonService.notifyOther({ option: EventsConstants.tag_clicked_lexicon_edit, value: 'clicked' });
           }
         }
       },
@@ -1787,7 +1783,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
           handler: (panel: any, control: any) => {
-            this.commonService.notifyOther({ option: 'ontology_tag_clicked', value: 'clicked' });
+            this.commonService.notifyOther({ option: EventsConstants.ontology_explorer_tag_clicked, value: 'clicked' });
           }
         }
       },
@@ -1812,13 +1808,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param showLabelName 
    * @returns 
    */
-  private generateOntologyClassViewerTileConfiguration(OntologyViewerTileId: string, selectedNode: TreeNode<OntologyClass>, showLabelName: boolean) {
+  private generateOntologyClassViewerTileConfiguration(OntologyViewerTileId: string, selectedNode: TreeNode<OntologyClass>) {
     const componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent);
 
     componentRef.instance.visibleTileType = TileType.ONTOLOGY_CLASS_VIEWER;
     // componentRef.instance.selectedNode = selectedNode;
     // componentRef.instance.panelId = OntologyViewerTileId;
     // componentRef.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
+    const name = selectedNode.data?.label ?? selectedNode.data?.shortId
 
     const element = componentRef.location.nativeElement;
 
@@ -1826,7 +1823,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: OntologyViewerTileId,
       container: this.workspaceContainer,
       content: element,
-      headerTitle: 'Ontology Viewer - <span class="ontology-dot"></span>' + selectedNode?.data?.label,
+      headerTitle: 'Ontology Viewer - <span class="ontology-dot"></span>' + name,
       maximizedMargin: 5,
       dragit: { snap: false },
       syncMargins: true,
@@ -1845,7 +1842,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
           handler: () => {
-            this.commonService.notifyOther({ option: 'tag_clicked_ontology_class_viewer_tile', value: 'clicked' });
+            this.commonService.notifyOther({ option: EventsConstants.tag_clicked_ontology_class_viewer_tile, value: 'clicked' });
           }
         }
       },

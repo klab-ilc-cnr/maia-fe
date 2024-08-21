@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { of, Subject, take, takeUntil } from 'rxjs';
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -47,7 +48,7 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
       switch (res.option) {
-        case 'ontology_tag_clicked':
+        case EventsConstants.ontology_explorer_tag_clicked:
           this.alternateLabelShortId();
           this.showLabelName = !this.showLabelName;
           break;

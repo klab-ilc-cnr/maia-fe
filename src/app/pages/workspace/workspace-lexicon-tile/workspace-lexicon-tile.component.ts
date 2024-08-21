@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -317,7 +318,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
       switch (res.option) {
-        case 'tag_clicked':
+        case EventsConstants.tag_clicked_lexicon:
           this.alternateLabelInstanceName();
           this.showLabelName = !this.showLabelName;
           break;
@@ -575,7 +576,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
       return;
     }
-    this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
+    this.commonService.notifyOther({ option: EventsConstants.onLexiconTreeElementDoubleClickEvent, value: [node, this.showLabelName] });
     // }
   }
 

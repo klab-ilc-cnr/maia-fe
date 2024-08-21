@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular
 import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap } from 'rxjs';
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
@@ -123,7 +124,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   /**manages double click on a table row */
   tableRowDoubleClickHandler(event: any, rowNode: any) {
-    this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode] });
+    this.commonService.notifyOther({ option: EventsConstants.onSearchResultTableDoubleClickEvent, value: [rowNode] });
   }
 
   /** exports all the rows */
