@@ -5,6 +5,7 @@ import { of, Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
+import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -100,7 +101,7 @@ export class OntologyClassExplorerComponent implements OnInit {
       return;
     }
 
-    this.commonService.notifyOther({ option: EventsConstants.onOntologyClassElementDoubleClickEvent, value: [node] });
+    this.commonService.notifyOther({ option: EventsConstants.onOntologyElementDoubleClickEvent, value: [node, TileType.ONTOLOGY_CLASS_VIEWER] });
   }
 
   /**remove selected nodes */

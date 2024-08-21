@@ -4,6 +4,7 @@ import { of, Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
+import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -91,17 +92,16 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
   }
 
   /**
- * Manges double click on the tree nodes
- * @param event
+ * Mananges double click on a node tree
+ * @param event {any} double click event
  */
   doubleClickHandler(event: any, rowNode: any) {
-    alert("dobleClick demo");
-    // const node = rowNode?.node;
-    // if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
-    //   return;
-    // }
-    // this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
-    // // }
+    const node = rowNode?.node;
+    if (node?.data?.id === undefined || node?.data?.id === null) {
+      return;
+    }
+
+    this.commonService.notifyOther({ option: EventsConstants.onOntologyElementDoubleClickEvent, value: [node, TileType.ONTOLOGY_DATA_PROPERTY_VIEWER] });
   }
 
   /**remove selected nodes */

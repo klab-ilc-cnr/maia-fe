@@ -226,9 +226,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             this.openDictionaryEditPanel(res.value);
             break;
           }
-          case EventsConstants.onOntologyClassElementDoubleClickEvent: {
+          case EventsConstants.onOntologyElementDoubleClickEvent: {
             const selectedSubTree = structuredClone(res.value[0]);
-            this.openOntologyClassViewerTile(selectedSubTree);
+            const tileType = structuredClone(res.value[1]);
+            this.openOntologyViewerTile(selectedSubTree, tileType);
             break;
           }
           default:
@@ -790,7 +791,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param showLabelName 
    * @returns 
    */
-  openOntologyClassViewerTile(ontologyNode: TreeNode<OntologyClass>) {
+  openOntologyViewerTile(ontologyNode: TreeNode<OntologyClass>, tileType: TileType) {
     const ontologyViewTileId = this.ontologyViewTilePrefix + ontologyNode?.data?.shortId;
     const panelExist = jsPanel.getPanels().find(
       (x: { id: string; }) => x.id === ontologyViewTileId
@@ -801,7 +802,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const result = this.generateOntologyClassViewerTileConfiguration(ontologyViewTileId, ontologyNode);
+    const result = this.generateOntologyViewerTileConfiguration(ontologyViewTileId, ontologyNode, tileType);
 
     const ontologyViewTileConfig = result.panelConfig;
 
@@ -825,7 +826,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       workspaceId: this.workspaceId,
       content: ontologyClassViewTileContent,
       tileConfig: ontologyViewTileConfig,
-      type: TileType.ONTOLOGY_CLASS_VIEWER
+      type: tileType
     };
 
     ontologyViewTileElement.addToTileMap(tileObject);
@@ -1808,25 +1809,39 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * 
-   * @param OntologyViewerTileId 
+   * @param ontologyViewerTileId 
    * @param selectedSubTree 
    * @param showLabelName 
    * @returns 
    */
-  private generateOntologyClassViewerTileConfiguration(OntologyViewerTileId: string, selectedNode: TreeNode<OntologyClass>) {
+  private generateOntologyViewerTileConfiguration(ontologyViewerTileId: string, selectedNode: TreeNode<OntologyClass>, tileType: TileType) {
     const componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent);
 
-    componentRef.instance.visibleTileType = TileType.ONTOLOGY_CLASS_VIEWER;
-    // componentRef.instance.selectedNode = selectedNode;
-    // componentRef.instance.panelId = OntologyViewerTileId;
-    // componentRef.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
+    componentRef.instance.visibleTileType = tileType;
     const name = selectedNode.data?.label ?? selectedNode.data?.shortId
-    const headerPrefix = 'Ontology Viewer - <span class="ontology-dot"></span>';
+
+    let headerPrefix = "";
+    switch (tileType) {
+      case TileType.ONTOLOGY_CLASS_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-dot"></span>';
+        break;
+      case TileType.ONTOLOGY_OBJECT_PROPERTY_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-object-rectangle"></span>';
+        break;
+      case TileType.ONTOLOGY_DATA_PROPERTY_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-data-rectangle"></span>';
+        break;
+      case TileType.ONTOLOGY_INDIVIDUAL_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-individual-rhombus"></span>';
+        break;
+      default:
+        console.error("tileType of type" + tileType + " cannot be recognized");
+    }
 
     const element = componentRef.location.nativeElement;
 
     const config = {
-      id: OntologyViewerTileId,
+      id: ontologyViewerTileId,
       container: this.workspaceContainer,
       content: element,
       headerTitle: headerPrefix + name,
@@ -1861,7 +1876,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       },
       onclosed: function (this: any, panel: any) {
-        this.removeFromTileMap(panel.id, TileType.ONTOLOGY_CLASS_VIEWER);
+        this.removeFromTileMap(panel.id, tileType);
         this.removeComponentFromList(panel.id);
       },
       onfronted: function (this: any, panel: any) {
@@ -1872,10 +1887,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     return {
-      id: OntologyViewerTileId,
+      id: ontologyViewerTileId,
       component: componentRef,
       panelConfig: config,
-      tileType: TileType.ONTOLOGY_CLASS_VIEWER
+      tileType: tileType
     };
 
   }
