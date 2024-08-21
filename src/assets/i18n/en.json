@@ -218,7 +218,12 @@
         "dataProperties": "Data Properties",
         "individuals" : "Individuals",
         "annotations": "Annotations",
-        "usage": "Usage"
+        "usage": "Usage",
+        "VIEWER":{
+            "annotations": "Annotations",
+            "description": "Description",
+            "language": "language"
+        }
     },
     "ONTOLOGY_CLASS_EXPLORER":
     {
@@ -242,11 +247,6 @@
     {
         "addChild": "Add class",
         "remove": "Remove"
-    },
-    "ONTOLOGY_CLASS_VIEWER":
-    {
-        "annotations": "Annotations",
-        "description": "Description"
     },
     "SEARCH":{
         "insertForm" : "insert form",

@@ -1,12 +1,12 @@
 <p-fieldset>
-    <ng-template pTemplate="header">{{'ONTOLOGY_CLASS_VIEWER.annotations'|translate}}</ng-template>
+    <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.annotations'|translate}}</ng-template>
     <ng-template pTemplate="content">
         <ng-container *ngFor="let element of dataResults; let index = index">
             <div class="flex">
                 <div class="flex-initial flex align-items-center justify-content-center prefix">
                     {{element.prefix}}:{{element.shortId}}
                 </div>
-                <div *ngIf="element.language" class="flex-initial flex align-items-center justify-content-center ml-4 language">[language: {{element.language}}]</div>
+                <div *ngIf="element.language" class="flex-initial flex align-items-center justify-content-center ml-4 language">[{{'ONTOLOGY.VIEWER.language'|translate}}: {{element.language}}]</div>
             </div>
             <div class="flex">
                 <div class="flex-initial flex align-items-center justify-content-center target">{{element.target}}</div>
@@ -17,7 +17,7 @@
 </p-fieldset>
 <div class="field col-12">
     <p-fieldset>
-        <ng-template pTemplate="header">{{'ONTOLOGY_CLASS_VIEWER.description'|translate}}</ng-template>
+        <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.description'|translate}}</ng-template>
         <ng-template pTemplate="content">
             <div class="d-flex justify-content-between">
                 <div class="field col-2">
