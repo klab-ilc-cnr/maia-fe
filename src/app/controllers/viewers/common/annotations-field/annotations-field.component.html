@@ -1,7 +1,7 @@
 <p-fieldset>
     <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.annotations'|translate}}</ng-template>
     <ng-template pTemplate="content">
-        <ng-container *ngFor="let element of dataResults; let index = index">
+        <ng-container *ngFor="let element of annotations; let index = index">
             <div class="flex">
                 <div class="flex-initial flex align-items-center justify-content-center prefix">
                     {{element.prefix}}:{{element.shortId}}
@@ -11,7 +11,7 @@
             <div class="flex">
                 <div class="flex-initial flex align-items-center justify-content-center target">{{element.target}}</div>
             </div>
-            <p-divider *ngIf="index != dataResults.length - 1"></p-divider>
+            <p-divider *ngIf="index != annotations.length - 1"></p-divider>
         </ng-container>
     </ng-template>
 </p-fieldset>

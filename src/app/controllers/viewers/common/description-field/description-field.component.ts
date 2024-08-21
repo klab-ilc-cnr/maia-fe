@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { OntologyDescriptionField } from 'src/app/models/ontology/ontology-description-field.model';
 
 @Component({
   selector: 'app-description-field',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./description-field.component.scss']
 })
 export class DescriptionFieldComponent implements OnInit {
-
+  @Input()
+  public descriptions!: Array<OntologyDescriptionField>
   constructor() { }
 
   ngOnInit(): void {

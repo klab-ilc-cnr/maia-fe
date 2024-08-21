@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { of, take } from 'rxjs';
-import { OntologyBaseViewer } from 'src/app/models/ontology/ontology-base-viewer.model';
+import { OntologyAnnotationsField } from 'src/app/models/ontology/ontology-annotations-field.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class OntologyDataPropertyViewerComponent implements OnInit {
   /** onotology element data */
-  public dataResults!: Array<OntologyBaseViewer>
+  public annotationsData!: Array<OntologyAnnotationsField>
 
   /**ontology element id */
   private id!: string;
@@ -23,7 +23,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
       take(1),
     ).subscribe({
       next: (dataResults) => {
-        this.dataResults = dataResults;
+        this.annotationsData = dataResults;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
@@ -37,20 +37,20 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  retrieveData(classId: string): Array<OntologyBaseViewer> {
-    let data1 = new OntologyBaseViewer();
+  retrieveData(classId: string): Array<OntologyAnnotationsField> {
+    let data1 = new OntologyAnnotationsField();
     data1.id = classId;
     data1.prefix = "rdfs";
     data1.shortId = "label";
     data1.target = "viscose";
     data1.language = "fr";
-    let data2 = new OntologyBaseViewer();
+    let data2 = new OntologyAnnotationsField();
     data2.id = classId;
     data2.prefix = "rdfs";
     data2.shortId = "label";
     data2.target = "mia etichetta";
     data2.language = undefined;
-    let data3 = new OntologyBaseViewer();
+    let data3 = new OntologyAnnotationsField();
     data3.id = classId;
     data3.prefix = "skos";
     data3.shortId = "definition";

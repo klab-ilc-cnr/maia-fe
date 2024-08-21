@@ -1,4 +1,4 @@
-export class OntologyBaseViewer {
+export class OntologyAnnotationsField {
 id! : string;
 prefix!:string;
 shortId! : string;

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OntologyBaseViewer } from 'src/app/models/ontology/ontology-base-viewer.model';
+import { OntologyAnnotationsField } from 'src/app/models/ontology/ontology-annotations-field.model';
 
 @Component({
   selector: 'app-annotations-field',
@@ -8,7 +8,7 @@ import { OntologyBaseViewer } from 'src/app/models/ontology/ontology-base-viewer
 })
 export class AnnotationsFieldComponent implements OnInit {
   @Input()
-  public dataResults!: Array<OntologyBaseViewer>
+  public annotations!: Array<OntologyAnnotationsField>
 
   constructor() { }
 
