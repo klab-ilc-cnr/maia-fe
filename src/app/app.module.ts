@@ -73,6 +73,9 @@ import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontol
 import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
 import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
 import { OntologyTabUsageComponent } from './controllers/viewers/ontology-tab-usage/ontology-tab-usage.component';
+import { AnnotationsFieldComponent } from './controllers/viewers/common/annotations-field/annotations-field.component';
+import { DescriptionFieldComponent } from './controllers/viewers/common/description-field/description-field.component';
+import { CharacteristicsFieldComponent } from './controllers/viewers/common/characteristics-field/characteristics-field.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +137,10 @@ import { OntologyTabUsageComponent } from './controllers/viewers/ontology-tab-us
     OntologyIndividualViewerComponent,
     OntologyDataPropertyViewerComponent,
     OntologyObjectPropertyViewerComponent,
-    OntologyClassViewerComponent
+    OntologyClassViewerComponent,
+    AnnotationsFieldComponent,
+    DescriptionFieldComponent,
+    CharacteristicsFieldComponent
   ],
   imports: [
     BrowserModule,
