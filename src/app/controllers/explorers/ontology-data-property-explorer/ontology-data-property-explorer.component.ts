@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { Subject, takeUntil } from 'rxjs';
+import { of, Subject, take, takeUntil } from 'rxjs';
 import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -105,7 +105,7 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
 
   /**remove selected nodes */
   //TODO to be implemented
-  removeNodes(){
+  removeNodes() {
     // console.log(this.selectedNodes);
   }
 
@@ -128,26 +128,33 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubProperties(OntologyDataPropertyExplorerComponent.rootDataId).then((dataResults) => {
-        for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyDataProperty = {
-            id: dataResults[i].id,
-            name: dataResults[i].name,
-            creator: dataResults[i].creator,
-            creationDate: dataResults[i].creationDate,
-            lastUpdate: dataResults[i].lastUpdate,
-            status: dataResults[i].status,
-            label: dataResults[i].label,
-            shortId: dataResults[i].shortId,
-            children: dataResults[i].children
-          };
+      this.simuleGetDirectSubProperties(OntologyDataPropertyExplorerComponent.rootDataId).pipe(
+        take(1),
+      ).subscribe({
+        next: (dataResults) => {
+          for (let i = 0; i < dataResults.length; i++) {
+            let nodeData: OntologyDataProperty = {
+              id: dataResults[i].id,
+              name: dataResults[i].name,
+              creator: dataResults[i].creator,
+              creationDate: dataResults[i].creationDate,
+              lastUpdate: dataResults[i].lastUpdate,
+              status: dataResults[i].status,
+              label: dataResults[i].label,
+              shortId: dataResults[i].shortId,
+              children: dataResults[i].children
+            };
 
-          let node: TreeNode<OntologyDataProperty> = {
-            data: nodeData,
-            leaf: nodeData.children === 0
-          };
+            let node: TreeNode<OntologyDataProperty> = {
+              data: nodeData,
+              leaf: nodeData.children === 0
+            };
 
-          this.results.push(node);
+            this.results.push(node);
+          }
+        },
+        error: (error) => {
+          this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
         }
       });
     }, 1000);
@@ -166,26 +173,33 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
       const node = event.node;
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubProperties(node.data!.id).then((dataResults) => {
-        for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyDataProperty = {
-            id: dataResults[i].id,
-            name: dataResults[i].name,
-            creator: dataResults[i].creator,
-            creationDate: dataResults[i].creationDate,
-            lastUpdate: dataResults[i].lastUpdate,
-            status: dataResults[i].status,
-            label: dataResults[i].label,
-            shortId: dataResults[i].shortId,
-            children: dataResults[i].children
-          };
+      this.simuleGetDirectSubProperties(node.data!.id).pipe(
+        take(1),
+      ).subscribe({
+        next: (dataResults) => {
+          for (let i = 0; i < dataResults.length; i++) {
+            let nodeData: OntologyDataProperty = {
+              id: dataResults[i].id,
+              name: dataResults[i].name,
+              creator: dataResults[i].creator,
+              creationDate: dataResults[i].creationDate,
+              lastUpdate: dataResults[i].lastUpdate,
+              status: dataResults[i].status,
+              label: dataResults[i].label,
+              shortId: dataResults[i].shortId,
+              children: dataResults[i].children
+            };
 
-          if (!node.children) { node.children = []; }
+            if (!node.children) { node.children = []; }
 
-          node.children.push({
-            data: nodeData,
-            leaf: nodeData.children === 0
-          })
+            node.children.push({
+              data: nodeData,
+              leaf: nodeData.children === 0
+            })
+          }
+        },
+        error: (error) => {
+          this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
         }
       });
 
@@ -197,10 +211,10 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
   simuleGetDirectSubProperties(nodeId: string) {
     if (nodeId != OntologyDataPropertyExplorerComponent.rootDataId) {
-      return Promise.resolve(this.getTreeNodesChildrenDate());
+      return of(this.getTreeNodesChildrenDate());
     }
 
-    return Promise.resolve(this.getTreeNodesRootData());
+    return of(this.getTreeNodesRootData());
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND

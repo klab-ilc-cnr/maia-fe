@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { Subject, takeUntil } from 'rxjs';
+import { of, Subject, take, takeUntil } from 'rxjs';
 import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -126,26 +127,33 @@ export class OntologyClassExplorerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubClasses(OntologyClassExplorerComponent.rootClassId).then((dataResults) => {
-        for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyClass = {
-            id: dataResults[i].id,
-            name: dataResults[i].name,
-            creator: dataResults[i].creator,
-            creationDate: dataResults[i].creationDate,
-            lastUpdate: dataResults[i].lastUpdate,
-            status: dataResults[i].status,
-            label: dataResults[i].label,
-            shortId: dataResults[i].shortId,
-            children: dataResults[i].children
-          };
+      this.simuleGetDirectSubClasses(OntologyClassExplorerComponent.rootClassId).pipe(
+        take(1),
+      ).subscribe({
+        next: (dataResults: string | any[]) => {
+          for (let i = 0; i < dataResults.length; i++) {
+            let nodeData: OntologyClass = {
+              id: dataResults[i].id,
+              name: dataResults[i].name,
+              creator: dataResults[i].creator,
+              creationDate: dataResults[i].creationDate,
+              lastUpdate: dataResults[i].lastUpdate,
+              status: dataResults[i].status,
+              label: dataResults[i].label,
+              shortId: dataResults[i].shortId,
+              children: dataResults[i].children
+            };
 
-          let node: TreeNode<OntologyClass> = {
-            data: nodeData,
-            leaf: nodeData.children === 0
-          };
+            let node: TreeNode<OntologyClass> = {
+              data: nodeData,
+              leaf: nodeData.children === 0
+            };
 
-          this.results.push(node);
+            this.results.push(node);
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
         }
       });
     }, 1000);
@@ -164,41 +172,47 @@ export class OntologyClassExplorerComponent implements OnInit {
       const node = event.node;
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubClasses(node.data!.id).then((dataResults) => {
-        for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyClass = {
-            id: dataResults[i].id,
-            name: dataResults[i].name,
-            creator: dataResults[i].creator,
-            creationDate: dataResults[i].creationDate,
-            lastUpdate: dataResults[i].lastUpdate,
-            status: dataResults[i].status,
-            label: dataResults[i].label,
-            shortId: dataResults[i].shortId,
-            children: dataResults[i].children
-          };
+      this.simuleGetDirectSubClasses(node.data!.id).pipe(
+        take(1),
+      ).subscribe({
+        next: (dataResults) => {
+          for (let i = 0; i < dataResults.length; i++) {
+            let nodeData: OntologyClass = {
+              id: dataResults[i].id,
+              name: dataResults[i].name,
+              creator: dataResults[i].creator,
+              creationDate: dataResults[i].creationDate,
+              lastUpdate: dataResults[i].lastUpdate,
+              status: dataResults[i].status,
+              label: dataResults[i].label,
+              shortId: dataResults[i].shortId,
+              children: dataResults[i].children
+            };
 
-          if (!node.children) { node.children = []; }
+            if (!node.children) { node.children = []; }
 
-          node.children.push({
-            data: nodeData,
-            leaf: nodeData.children === 0
-          })
+            node.children.push({
+              data: nodeData,
+              leaf: nodeData.children === 0
+            })
+          }
+        },
+        error: (error) => {
+          this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
         }
       });
 
       this.results = [...this.results];
     }, 250);
-
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
   simuleGetDirectSubClasses(nodeId: string) {
     if (nodeId != OntologyClassExplorerComponent.rootClassId) {
-      return Promise.resolve(this.getTreeNodesChildrenDate());
+      return of(this.getTreeNodesChildrenDate());
     }
 
-    return Promise.resolve(this.getTreeNodesRootData());
+    return of(this.getTreeNodesRootData());
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
