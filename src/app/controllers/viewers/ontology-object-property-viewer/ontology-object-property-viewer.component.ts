@@ -6,7 +6,7 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-object-property-viewer',
   templateUrl: './ontology-object-property-viewer.component.html',
-  styleUrls: ['./ontology-object-property-viewer.component.scss']
+  styleUrls: ['./ontology-object-property-viewer.component.scss', '../common/shared.scss']
 })
 export class OntologyObjectPropertyViewerComponent implements OnInit {
   /** onotology element data */

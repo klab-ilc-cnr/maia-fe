@@ -6,7 +6,7 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-individual-viewer',
   templateUrl: './ontology-individual-viewer.component.html',
-  styleUrls: ['./ontology-individual-viewer.component.scss']
+  styleUrls: ['./ontology-individual-viewer.component.scss', '../common/shared.scss']
 })
 export class OntologyIndividualViewerComponent implements OnInit {
   /** onotology element data */

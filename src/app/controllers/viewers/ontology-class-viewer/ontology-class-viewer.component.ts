@@ -10,7 +10,7 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-class-viewer',
   templateUrl: './ontology-class-viewer.component.html',
-  styleUrls: ['./ontology-class-viewer.component.scss']
+  styleUrls: ['./ontology-class-viewer.component.scss', '../common/shared.scss']
 })
 export class OntologyClassViewerComponent implements OnInit {
 

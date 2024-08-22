@@ -73,7 +73,6 @@ import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontol
 import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
 import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
 import { OntologyTabUsageComponent } from './controllers/viewers/common/ontology-tab-usage/ontology-tab-usage.component';
-import { CharacteristicsFieldComponent } from './controllers/viewers/common/characteristics-field/characteristics-field.component';
 import { AnnotationsSectionComponent } from './controllers/viewers/common/annotations-section/annotations-section.component';
 import { DescriptionSectionComponent } from './controllers/viewers/common/description-section/description-section.component';
 
@@ -138,7 +137,6 @@ import { DescriptionSectionComponent } from './controllers/viewers/common/descri
     OntologyDataPropertyViewerComponent,
     OntologyObjectPropertyViewerComponent,
     OntologyClassViewerComponent,
-    CharacteristicsFieldComponent,
     AnnotationsSectionComponent,
     DescriptionSectionComponent
   ],
