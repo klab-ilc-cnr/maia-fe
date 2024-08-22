@@ -5,7 +5,7 @@
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.equivalentTo'|translate}}</div>
             <div class="ml-4" *ngFor="let el of descriptions.equivalentTo">
                 <ng-container *ngIf="el.axiom">
-                    <div class="ontology-dot"></div>
+                    <div [ngClass]="displayIcon()"></div>
                     <div class="inline-block text-center axiom">{{el.axiom}}</div>
                     <p-divider></p-divider>
                 </ng-container>

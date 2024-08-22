@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { of, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
 import { Axiom, Instance, OntologyDescription } from 'src/app/models/ontology/ontology-description.model';
+import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -11,9 +12,13 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class OntologyClassViewerComponent implements OnInit {
 
-  /** onotology element data */
+  /**ontology tile type */
+  public readonly tileType = TileType.ONTOLOGY_CLASS_VIEWER;
+  /** onotology annotations data */
   public annotationsData!: Array<OntologyAnnotations>
+  /** onotology description data */
   public descriptionData!: OntologyDescription
+
 
   /**ontology element id */
   private id!: string;
