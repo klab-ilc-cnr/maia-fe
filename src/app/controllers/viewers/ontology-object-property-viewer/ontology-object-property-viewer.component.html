@@ -1,1 +1,83 @@
-<app-annotations-section [annotations]="annotationsData"></app-annotations-section>
+<app-annotations-section [annotations]="annotations"></app-annotations-section>
+<div class="mt-5"></div>
+<p-fieldset>
+    <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.description'|translate}}</ng-template>
+    <ng-template pTemplate="content">
+        <div class="card-container">
+            <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.equivalentTo'|translate}}</div>
+            <div class="ml-4" *ngFor="let el of descriptions.equivalentTo">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-object-rectangle"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="card-container mt-6">
+            <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.subPropertyOf'|translate}}</div>
+            <div class="ml-4" *ngFor="let el of descriptions.subPropertyOf">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-object-rectangle"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+        
+        <div class="card-container mt-6">
+            <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.inverseOf'|translate}}</div>
+            <div class="ml-4" *ngFor="let el of descriptions.inverseOf">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-object-rectangle"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="card-container mt-6">
+            <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.domains'|translate}}</div>
+            <div class="ml-4" *ngFor="let el of descriptions.domains">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="card-container mt-6">
+            <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.ranges'|translate}}</div>
+            <div class="ml-4" *ngFor="let el of descriptions.ranges">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="card-container mt-6">
+            <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.disjointWith'|translate}}</div>
+            <div class="ml-4" *ngFor="let el of descriptions.disjointWith">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-object-rectangle"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="card-container mt-6">
+            <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.superPropertyOfChain'|translate}}</div>
+            <div class="ml-4" *ngFor="let el of descriptions.superPropertyOfChain">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-object-rectangle"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template>
+</p-fieldset>

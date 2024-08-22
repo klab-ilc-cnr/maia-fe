@@ -1,5 +1,4 @@
 import { OntologyDescriptionAxiom } from "./ontology-description-axiom.model";
-import { OntologyDescriptionInstance } from "./ontology-description-instance.model";
 
 export class OntologyDataPropertyDescription {
     equivalentTo! : Array<OntologyDescriptionAxiom>;
