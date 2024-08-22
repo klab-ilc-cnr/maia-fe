@@ -4,7 +4,6 @@ import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotation
 import { OntologyClassDescription } from 'src/app/models/ontology/ontology-class-description.model';
 import { OntologyDescriptionAxiom } from 'src/app/models/ontology/ontology-description-axiom.model';
 import { OntologyDescriptionInstance } from 'src/app/models/ontology/ontology-description-instance.model';
-import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -13,9 +12,6 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./ontology-class-viewer.component.scss', '../common/shared.scss']
 })
 export class OntologyClassViewerComponent implements OnInit {
-
-  /**ontology tile type */
-  public readonly tileType = TileType.ONTOLOGY_CLASS_VIEWER;
   /** onotology annotations data */
   public annotations!: Array<OntologyAnnotations>
   /** onotology description data */

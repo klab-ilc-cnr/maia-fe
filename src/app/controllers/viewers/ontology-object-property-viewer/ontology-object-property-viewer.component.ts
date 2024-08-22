@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { of, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
 import { OntologyDescriptionAxiom } from 'src/app/models/ontology/ontology-description-axiom.model';
+import { OntologyObjectPropertyCharacteristics } from 'src/app/models/ontology/ontology-object-property-characteristics.model';
 import { OntologyObjectPropertyDescription } from 'src/app/models/ontology/ontology-object-property-description.model';
 import { CommonService } from 'src/app/services/common.service';
 
@@ -15,6 +16,8 @@ export class OntologyObjectPropertyViewerComponent implements OnInit {
   public annotations!: Array<OntologyAnnotations>
   /** onotology description data */
   public descriptions!: OntologyObjectPropertyDescription
+  /** onotology characteristics data */
+  public characteristics!: OntologyObjectPropertyCharacteristics
 
   /**ontology element id */
   private id!: string;
@@ -40,6 +43,18 @@ export class OntologyObjectPropertyViewerComponent implements OnInit {
     ).subscribe({
       next: (descriptionResults) => {
         this.descriptions = descriptionResults;
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
+      }
+    });
+
+    //FIXME usare il servizio backend
+    this.simuleGetCharacteristicsData(this.id).pipe(
+      take(1),
+    ).subscribe({
+      next: (characteristics) => {
+        this.characteristics = characteristics;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
@@ -114,6 +129,26 @@ export class OntologyObjectPropertyViewerComponent implements OnInit {
     let superData = new OntologyDescriptionAxiom();
     superData.axiom = "data di super"
     result.superPropertyOfChain = [superData];
+
+    return result;
+  }
+
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  simuleGetCharacteristicsData(classId: string) {
+    return of(this.retrieveCharacteristicsData(classId));
+  }
+
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  retrieveCharacteristicsData(classId: string): OntologyObjectPropertyCharacteristics {
+    let result = new OntologyObjectPropertyCharacteristics();
+
+    result.functional = true;
+    result.inverseFunctional = false;
+    result.transitive = true;
+    result.symmetric = false;
+    result.asymmetric = true;
+    result.reflexive = false;
+    result.irreflexive = false;
 
     return result;
   }

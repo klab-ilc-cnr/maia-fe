@@ -222,6 +222,7 @@
         "VIEWER":{
             "annotations": "Annotations",
             "description": "Description",
+            "characteristics": "Characteristics",
             "language": "language",
             "DESCRIPTION" :{
                 "equivalentTo": "Equivalent To",
@@ -237,6 +238,15 @@
                 "domains": "Domains (intersection)",
                 "ranges": "Ranges (intersection)",
                 "superPropertyOfChain": "SuperProperty Of (Chain)"
+            },
+            "CHARACTERISTICS":{
+                "functional": "Functional",
+                "inverseFunctional": "Inverse functional",
+                "transitive": "Transitive",
+                "symmetric": "Symmetric",
+                "asymmetric": "Asymmetric",
+                "reflexive": "Reflexive",
+                "irreflexive": "Irreflexive"
             }
         }
     },
