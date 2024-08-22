@@ -3,73 +3,89 @@
     <ng-template pTemplate="content">
         <div class="card-container">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.equivalentTo'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.equivalentTo">
-                <div *ngIf="el.axiom" class="ontology-dot ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.axiom}}</div>
-                <p-divider></p-divider>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.equivalentTo">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
         </div>
 
-        <div class="card-container">
+        <div class="card-container mt-6">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.subclassOf'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.subClassOf">
-                <div *ngIf="el.axiom" class="ontology-dot ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.axiom}}</div>
-                <p-divider></p-divider>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.subClassOf">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
         </div>
         
-        <div class="card-container">
+        <div class="card-container mt-6">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.generalClassAxioms'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.generalClassAxioms">
-                <div *ngIf="el.axiom" class="ontology-dot ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.axiom}}</div>
-                <p-divider></p-divider>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.generalClassAxioms">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
         </div>
 
-        <div class="card-container">
+        <div class="card-container mt-6">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.subClassOfAnonymousAncestor'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.subClassOfAnonymousAncestor">
-                <div *ngIf="el.axiom" class="ontology-dot ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.axiom}}</div>
-                <p-divider></p-divider>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.subClassOfAnonymousAncestor">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
         </div>
 
-        <div class="card-container">
+        <div class="card-container mt-6">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.instances'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.instances">
-                <div *ngIf="el.shortId" class="ontology-individual-rhombus ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.shortId}}</div>
-                <p-divider></p-divider>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.instances">
+                <ng-container *ngIf="el.shortId">
+                    <div class="ontology-individual-rhombus"></div>
+                    <div class="inline-block text-center axiom">{{el.shortId}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
         </div>
 
-        <div class="card-container">
+        <div class="card-container mt-6">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.targetForKey'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.targetForKey">
-                <div *ngIf="el.axiom" class="ontology-dot ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.axiom}}</div>
-                <p-divider></p-divider>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.targetForKey">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
         </div>
 
-        <div class="card-container">
+        <div class="card-container mt-6">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.disjointWith'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.disjointWith">
-                <div *ngIf="el.axiom" class="ontology-dot ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.axiom}}</div>
-                <p-divider></p-divider>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.disjointWith">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
         </div>
 
-        <div class="card-container">
+        <div class="card-container mt-6">
             <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.disjointUnionOf'|translate}}</div>
-            <ng-container *ngFor="let el of descriptions.disjointUnionOf">
-                <div *ngIf="el.axiom" class="ontology-dot ml-4"></div>
-                <div class="inline-block text-center axiom">{{el.axiom}}</div>
-            </ng-container>
+            <div class="ml-4" *ngFor="let el of descriptions.disjointUnionOf">
+                <ng-container *ngIf="el.axiom">
+                    <div class="ontology-dot"></div>
+                    <div class="inline-block text-center axiom">{{el.axiom}}</div>
+                </ng-container>
+            </div>
         </div>
     </ng-template>
 </p-fieldset>
