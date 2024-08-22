@@ -100,7 +100,9 @@ export class OntologyClassViewerComponent implements OnInit {
 
     let data4Value = new Axiom();
     data4Value.axiom = "espressione logica";
-    result.subClassOfAnonymousAncestor = [data4Value];
+    let data4bisValue = new Axiom();
+    data4bisValue.axiom = "espressione logica2";
+    result.subClassOfAnonymousAncestor = [data4Value, data4bisValue];
 
     let data41Value = new Instance();
     data41Value.id = "http://test/ontology/v1#i1";

@@ -10,6 +10,10 @@
     font-weight: 500;
 }
 
-.axiom{
+.axiom {
     font-weight: 650;
+}
+
+:host::ng-deep .p-divider-horizontal {
+    margin-top: 4px;
 }
