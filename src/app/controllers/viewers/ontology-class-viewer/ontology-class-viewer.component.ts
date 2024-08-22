@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { of, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
-import { Axiom, Instance, OntologyDescription } from 'src/app/models/ontology/ontology-description.model';
+import { OntologyClassDescription } from 'src/app/models/ontology/ontology-class-description.model';
+import { OntologyDescriptionAxiom } from 'src/app/models/ontology/ontology-description-axiom.model';
+import { OntologyDescriptionInstance } from 'src/app/models/ontology/ontology-description-instance.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 
@@ -15,9 +17,9 @@ export class OntologyClassViewerComponent implements OnInit {
   /**ontology tile type */
   public readonly tileType = TileType.ONTOLOGY_CLASS_VIEWER;
   /** onotology annotations data */
-  public annotationsData!: Array<OntologyAnnotations>
+  public annotations!: Array<OntologyAnnotations>
   /** onotology description data */
-  public descriptionData!: OntologyDescription
+  public descriptions!: OntologyClassDescription
 
 
   /**ontology element id */
@@ -31,7 +33,7 @@ export class OntologyClassViewerComponent implements OnInit {
       take(1),
     ).subscribe({
       next: (dataResults) => {
-        this.annotationsData = dataResults;
+        this.annotations = dataResults;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
@@ -43,7 +45,7 @@ export class OntologyClassViewerComponent implements OnInit {
       take(1),
     ).subscribe({
       next: (descriptionResults) => {
-        this.descriptionData = descriptionResults;
+        this.descriptions = descriptionResults;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
@@ -88,34 +90,34 @@ export class OntologyClassViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  retrieveDescriptionData(classId: string): OntologyDescription {
-    let result = new OntologyDescription();
+  retrieveDescriptionData(classId: string): OntologyClassDescription {
+    let result = new OntologyClassDescription();
 
-    let data1Value = new Axiom();
+    let data1Value = new OntologyDescriptionAxiom();
     data1Value.axiom = "resultingFrom only PROCEDE_VISCOSE";
     result.equivalentTo = [data1Value];
 
-    let data2Value = new Axiom();
+    let data2Value = new OntologyDescriptionAxiom();
     data2Value.axiom = "ID4_FRIBRANNE_1";
     result.subClassOf = [data2Value];
 
-    let data3Value = new Axiom();
+    let data3Value = new OntologyDescriptionAxiom();
     data3Value.axiom = "";
     result.generalClassAxioms = [data3Value];
 
-    let data4Value = new Axiom();
+    let data4Value = new OntologyDescriptionAxiom();
     data4Value.axiom = "espressione logica";
-    let data4bisValue = new Axiom();
+    let data4bisValue = new OntologyDescriptionAxiom();
     data4bisValue.axiom = "espressione logica2";
     result.subClassOfAnonymousAncestor = [data4Value, data4bisValue];
 
-    let data41Value = new Instance();
+    let data41Value = new OntologyDescriptionInstance();
     data41Value.id = "http://test/ontology/v1#i1";
     data41Value.shortId = "i1";
-    let data42Value = new Instance();
+    let data42Value = new OntologyDescriptionInstance();
     data42Value.id = "http://test/ontology/v1#lo";
     data42Value.shortId = "lo";
-    let data43Value = new Instance();
+    let data43Value = new OntologyDescriptionInstance();
     data43Value.id = "http://test/ontology/v1#la";
     data43Value.shortId = "ia";
     result.instances = [data41Value, data42Value, data43Value];

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OntologyDescription } from 'src/app/models/ontology/ontology-description.model';
+import { OntologyClassDescription } from 'src/app/models/ontology/ontology-class-description.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 
 @Component({
@@ -7,9 +7,10 @@ import { TileType } from 'src/app/models/tile/tile-type.model';
   templateUrl: './description-section.component.html',
   styleUrls: ['./description-section.component.scss']
 })
+//TODO CLASSE DA ELIMINARE
 export class DescriptionSectionComponent implements OnInit {
   @Input()
-  public descriptions!: OntologyDescription
+  public descriptions!: OntologyClassDescription
 
   @Input()
   public ontologyObjectType!: TileType;

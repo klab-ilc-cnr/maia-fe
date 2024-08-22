@@ -231,7 +231,12 @@
                 "instances": "Instances",
                 "targetForKey":"Target For Key",
                 "disjointWith": "Disjoint With",
-                "disjointUnionOf": "Disjoint Union Of"
+                "disjointUnionOf": "Disjoint Union Of",
+                "subPropertyOf": "Sub Property Of",
+                "inverseOf": "Inverse Of",
+                "domains": "Domains (intersection)",
+                "ranges": "Ranges (intersection)",
+                "superPropertyOfChain": "SuperProperty Of (Chain)"
             }
         }
     },

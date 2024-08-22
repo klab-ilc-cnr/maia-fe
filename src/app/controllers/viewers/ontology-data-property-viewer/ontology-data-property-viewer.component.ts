@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { of, take } from 'rxjs';
+import { of, range, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
+import { OntologyDataPropertyDescription } from 'src/app/models/ontology/ontology-data-property-description.model';
+import { OntologyDescriptionAxiom } from 'src/app/models/ontology/ontology-description-axiom.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -10,7 +12,9 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class OntologyDataPropertyViewerComponent implements OnInit {
   /** onotology element data */
-  public annotationsData!: Array<OntologyAnnotations>
+  public annotations!: Array<OntologyAnnotations>
+  /** onotology description data */
+  public descriptions!: OntologyDataPropertyDescription
 
   /**ontology element id */
   private id!: string;
@@ -23,7 +27,19 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
       take(1),
     ).subscribe({
       next: (dataResults) => {
-        this.annotationsData = dataResults;
+        this.annotations = dataResults;
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
+      }
+    });
+
+    //FIXME usare il servizio backend
+    this.simuleGetDescriptionData(this.id).pipe(
+      take(1),
+    ).subscribe({
+      next: (descriptionResults) => {
+        this.descriptions = descriptionResults;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
@@ -58,6 +74,46 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
     data3.language = "it";
 
     const result = [data1, data2, data3];
+
+    return result;
+  }
+
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  simuleGetDescriptionData(classId: string) {
+    return of(this.retrieveDescriptionData(classId));
+  }
+
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  retrieveDescriptionData(classId: string): OntologyDataPropertyDescription {
+    let result = new OntologyDataPropertyDescription();
+
+    let data1Value = new OntologyDescriptionAxiom();
+    data1Value.axiom = "resultingFrom only PROCEDE_VISCOSE";
+    result.equivalentTo = [data1Value];
+
+    let data2Value = new OntologyDescriptionAxiom();
+    data2Value.axiom = "ID4_FRIBRANNE_1";
+    result.subPropertyOf = [data2Value];
+
+    let data3Value = new OntologyDescriptionAxiom();
+    data3Value.axiom = "";
+    result.inverseOf = [data3Value];
+
+    let data4Value = new OntologyDescriptionAxiom();
+    data4Value.axiom = "espressione logica";
+    let data4bisValue = new OntologyDescriptionAxiom();
+    data4bisValue.axiom = "espressione logica2";
+    result.domains = [data4Value, data4bisValue];
+
+    let rangeData = new OntologyDescriptionAxiom();
+    rangeData.axiom = "xsd:integer"
+    result.ranges = [rangeData];
+
+    result.disjointWith = [data3Value];
+
+    let superData = new OntologyDescriptionAxiom();
+    superData.axiom = "data di super"
+    result.superPropertyOfChain = [superData];
 
     return result;
   }
