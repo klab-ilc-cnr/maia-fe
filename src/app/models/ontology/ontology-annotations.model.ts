@@ -1,4 +1,4 @@
-export class OntologyAnnotationsField {
+export class OntologyAnnotations {
 id! : string;
 prefix!:string;
 shortId! : string;

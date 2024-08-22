@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { of, take } from 'rxjs';
-import { OntologyAnnotationsField } from 'src/app/models/ontology/ontology-annotations-field.model';
-import { Axiom, Instance, OntologyDescriptionField } from 'src/app/models/ontology/ontology-description-field.model';
+import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
+import { Axiom, Instance, OntologyDescription } from 'src/app/models/ontology/ontology-description.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -12,8 +12,8 @@ import { CommonService } from 'src/app/services/common.service';
 export class OntologyClassViewerComponent implements OnInit {
 
   /** onotology element data */
-  public annotationsData!: Array<OntologyAnnotationsField>
-  public descriptionData!: Array<OntologyDescriptionField>
+  public annotationsData!: Array<OntologyAnnotations>
+  public descriptionData!: OntologyDescription
 
   /**ontology element id */
   private id!: string;
@@ -57,20 +57,20 @@ export class OntologyClassViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  retrieveAnnotationsData(classId: string): Array<OntologyAnnotationsField> {
-    let data1 = new OntologyAnnotationsField();
+  retrieveAnnotationsData(classId: string): Array<OntologyAnnotations> {
+    let data1 = new OntologyAnnotations();
     data1.id = classId;
     data1.prefix = "rdfs";
     data1.shortId = "label";
     data1.target = "viscose";
     data1.language = "fr";
-    let data2 = new OntologyAnnotationsField();
+    let data2 = new OntologyAnnotations();
     data2.id = classId;
     data2.prefix = "rdfs";
     data2.shortId = "label";
     data2.target = "mia etichetta";
     data2.language = undefined;
-    let data3 = new OntologyAnnotationsField();
+    let data3 = new OntologyAnnotations();
     data3.id = classId;
     data3.prefix = "skos";
     data3.shortId = "definition";
@@ -83,27 +83,25 @@ export class OntologyClassViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  retrieveDescriptionData(classId: string): Array<OntologyDescriptionField> {
-    let data1 = new OntologyDescriptionField();
-    data1.key = "equivalentTo";
+  retrieveDescriptionData(classId: string): OntologyDescription {
+    let result = new OntologyDescription();
+
     let data1Value = new Axiom();
     data1Value.axiom = "resultingFrom only PROCEDE_VISCOSE";
-    data1.value = [data1Value];
+    result.equivalentTo = [data1Value];
 
-    let data2 = new OntologyDescriptionField();
-    data2.key = "subclassOf";
     let data2Value = new Axiom();
     data2Value.axiom = "ID4_FRIBRANNE_1";
-    data2.value = [data2Value];
+    result.subClassOf = [data2Value];
 
-    let data3 = new OntologyDescriptionField();
-    data3.key = "generalClassAxioms";
     let data3Value = new Axiom();
     data3Value.axiom = "";
-    data3.value = [data3Value];
+    result.generalClassAxioms = [data3Value];
 
-    let data4 = new OntologyDescriptionField();
-    data4.key = "subClassOfAnonymousAncestor";
+    let data4Value = new Axiom();
+    data4Value.axiom = "espressione logica";
+    result.subClassOfAnonymousAncestor = [data4Value];
+
     let data41Value = new Instance();
     data41Value.id = "http://test/ontology/v1#i1";
     data41Value.shortId = "i1";
@@ -113,33 +111,11 @@ export class OntologyClassViewerComponent implements OnInit {
     let data43Value = new Instance();
     data43Value.id = "http://test/ontology/v1#la";
     data43Value.shortId = "ia";
-    data4.value = [data41Value, data42Value, data43Value];
+    result.instances = [data41Value, data42Value, data43Value];
 
-    let data5 = new OntologyDescriptionField();
-    data5.key = "instances";
-    let data5Value = new Axiom();
-    data5Value.axiom = "id5";
-    data5.value = [data5Value];
-
-    let data6 = new OntologyDescriptionField();
-    data6.key = "targetForKey";
-    let data6Value = new Axiom();
-    data6Value.axiom = "";
-    data6.value = [data6Value];
-
-    let data7 = new OntologyDescriptionField();
-    data7.key = "disjointWith";
-    let data7Value = new Axiom();
-    data7Value.axiom = "";
-    data7.value = [data7Value];
-
-    let data8 = new OntologyDescriptionField();
-    data8.key = "disjointUnionOf";
-    let data8Value = new Axiom();
-    data8Value.axiom = "";
-    data8.value = [data3Value];
-    
-    const result = [data1, data2, data3, data4, data5, data6, data7, data8];
+    result.targetForKey = [data3Value];
+    result.disjointWith = [data3Value];
+    result.disjointUnionOf = [data3Value];
 
     return result;
   }
