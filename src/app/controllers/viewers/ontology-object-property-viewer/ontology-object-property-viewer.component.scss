@@ -1,3 +1,10 @@
-:host ::ng-deep label.p-checkbox-label-active.p-disabled{
+:host ::ng-deep label.p-checkbox-label.p-disabled {
     opacity: 1;
+    font-size: 1.2rem;
+    font-weight: 650;
+}
+
+:host ::ng-deep p-fieldset {
+    display: grid;
+    height: 100%;
 }

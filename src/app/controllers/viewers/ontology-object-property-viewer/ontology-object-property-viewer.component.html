@@ -5,25 +5,25 @@
         <p-fieldset>
             <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.characteristics'|translate}}</ng-template>
             <ng-template pTemplate="content">
-                <div class="block">
+                <div class="block mb-5">
                     <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.functional" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.functional'|translate"></p-checkbox>
                 </div>
-                <div class="block">
+                <div class="block mb-5">
                     <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.inverseFunctional" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.inverseFunctional'|translate"></p-checkbox>
                 </div>
-                <div class="block">
+                <div class="block mb-5">
                     <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.transitive" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.transitive'|translate"></p-checkbox>
                 </div>
-                <div class="block">
+                <div class="block mb-5">
                     <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.symmetric" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.symmetric'|translate"></p-checkbox>
                 </div>
-                <div class="block">
+                <div class="block mb-5">
                     <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.asymmetric" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.asymmetric'|translate"></p-checkbox>
                 </div>
-                <div class="block">
+                <div class="block mb-5">
                     <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.reflexive" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.reflexive'|translate"></p-checkbox>
                 </div>
-                <div class="block">
+                <div class="block mb-5">
                     <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.irreflexive" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.irreflexive'|translate"></p-checkbox>
                 </div>
             </ng-template>
@@ -33,7 +33,7 @@
         <p-fieldset>
             <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.description'|translate}}</ng-template>
             <ng-template pTemplate="content">
-                <div class="card-container">
+                <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.equivalentTo'|translate}}</div>
                     <div class="ml-4" *ngFor="let el of descriptions.equivalentTo">
                         <ng-container *ngIf="el.axiom">
@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 
-                <div class="card-container mt-6">
+                <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.subPropertyOf'|translate}}</div>
                     <div class="ml-4" *ngFor="let el of descriptions.subPropertyOf">
                         <ng-container *ngIf="el.axiom">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
             
-                <div class="card-container mt-6">
+                <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.inverseOf'|translate}}</div>
                     <div class="ml-4" *ngFor="let el of descriptions.inverseOf">
                         <ng-container *ngIf="el.axiom">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 
-                <div class="card-container mt-6">
+                <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.domains'|translate}}</div>
                     <div class="ml-4" *ngFor="let el of descriptions.domains">
                         <ng-container *ngIf="el.axiom">
@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 
-                <div class="card-container mt-6">
+                <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.ranges'|translate}}</div>
                     <div class="ml-4" *ngFor="let el of descriptions.ranges">
                         <ng-container *ngIf="el.axiom">
@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 
-                <div class="card-container mt-6">
+                <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.disjointWith'|translate}}</div>
                     <div class="ml-4" *ngFor="let el of descriptions.disjointWith">
                         <ng-container *ngIf="el.axiom">
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 
-                <div class="card-container mt-6">
+                <div class="card-container">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.superPropertyOfChain'|translate}}</div>
                     <div class="ml-4" *ngFor="let el of descriptions.superPropertyOfChain">
                         <ng-container *ngIf="el.axiom">
