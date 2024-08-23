@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { of, range, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
+import { OntologyDataPropertyCharacteristics } from 'src/app/models/ontology/ontology-data-property-characteristics.model';
 import { OntologyDataPropertyDescription } from 'src/app/models/ontology/ontology-data-property-description.model';
 import { OntologyDescriptionAxiom } from 'src/app/models/ontology/ontology-description-axiom.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -15,6 +16,8 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
   public annotations!: Array<OntologyAnnotations>
   /** onotology description data */
   public descriptions!: OntologyDataPropertyDescription
+  /** onotology characteristics data */
+  public characteristics!: OntologyDataPropertyCharacteristics
 
   /**ontology element id */
   private id!: string;
@@ -40,6 +43,18 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
     ).subscribe({
       next: (descriptionResults) => {
         this.descriptions = descriptionResults;
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
+      }
+    });
+
+    //FIXME usare il servizio backend
+    this.simuleGetCharacteristicsData(this.id).pipe(
+      take(1),
+    ).subscribe({
+      next: (characteristics) => {
+        this.characteristics = characteristics;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
@@ -117,4 +132,18 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
 
     return result;
   }
+
+    //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+    simuleGetCharacteristicsData(classId: string) {
+      return of(this.retrieveCharacteristicsData(classId));
+    }
+  
+    //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+    retrieveCharacteristicsData(classId: string): OntologyDataPropertyCharacteristics {
+      let result = new OntologyDataPropertyCharacteristics();
+  
+      result.functional = true;
+  
+      return result;
+    }
 }
