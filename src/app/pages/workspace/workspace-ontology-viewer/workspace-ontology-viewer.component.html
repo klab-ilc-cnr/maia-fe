@@ -1,9 +1,9 @@
 <p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
     <p-tabPanel header="{{('ONTOLOGY.annotations'|translate)}}">
-        <app-ontology-class-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_CLASS_VIEWER"></app-ontology-class-viewer>
-        <app-ontology-object-property-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_OBJECT_PROPERTY_VIEWER"></app-ontology-object-property-viewer>
-        <app-ontology-data-property-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_DATA_PROPERTY_VIEWER"></app-ontology-data-property-viewer>
-        <app-ontology-individual-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_INDIVIDUAL_VIEWER"></app-ontology-individual-viewer>
+        <app-ontology-class-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_CLASS_VIEWER" [classId]="id"></app-ontology-class-viewer>
+        <app-ontology-object-property-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_OBJECT_PROPERTY_VIEWER" [propertyId]="id"></app-ontology-object-property-viewer>
+        <app-ontology-data-property-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_DATA_PROPERTY_VIEWER" [propertyId]="id"></app-ontology-data-property-viewer>
+        <app-ontology-individual-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_INDIVIDUAL_VIEWER" [instanceId]="id" [propertyType]="propertyType!"></app-ontology-individual-viewer>
     </p-tabPanel>
     <p-tabPanel header="{{('ONTOLOGY.usage'|translate)}}">
         <app-ontology-tab-usage></app-ontology-tab-usage>

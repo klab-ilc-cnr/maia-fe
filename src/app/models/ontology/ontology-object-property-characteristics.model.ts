@@ -7,3 +7,8 @@ export class OntologyObjectPropertyCharacteristics {
     reflexive!: boolean;
     irreflexive!: boolean;
 }
+
+export enum CharacterisctType {
+    object = "object",
+    data = "data"
+}

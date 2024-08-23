@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { of, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
 import { OntologyClassDescription } from 'src/app/models/ontology/ontology-class-description.model';
@@ -12,20 +12,20 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./ontology-class-viewer.component.scss', '../common/shared.scss']
 })
 export class OntologyClassViewerComponent implements OnInit {
+  /**ontology element id */
+  @Input()
+  public classId!: string;
+
   /** onotology annotations data */
   public annotations!: Array<OntologyAnnotations>
   /** onotology description data */
   public descriptions!: OntologyClassDescription
 
-
-  /**ontology element id */
-  private id!: string;
-
   constructor(private commonService: CommonService) { }
 
   ngOnInit(): void {
     //FIXME usare il servizio backend
-    this.simuleGetAnnotationData(this.id).pipe(
+    this.simuleGetAnnotationData(this.classId).pipe(
       take(1),
     ).subscribe({
       next: (dataResults) => {
@@ -37,7 +37,7 @@ export class OntologyClassViewerComponent implements OnInit {
     });
 
     //FIXME usare il servizio backend
-    this.simuleGetDescriptionData(this.id).pipe(
+    this.simuleGetDescriptionData(this.classId).pipe(
       take(1),
     ).subscribe({
       next: (descriptionResults) => {

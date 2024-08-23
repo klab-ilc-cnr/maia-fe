@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { of, range, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
 import { OntologyDataPropertyCharacteristics } from 'src/app/models/ontology/ontology-data-property-characteristics.model';
 import { OntologyDataPropertyDescription } from 'src/app/models/ontology/ontology-data-property-description.model';
 import { OntologyDescriptionAxiom } from 'src/app/models/ontology/ontology-description-axiom.model';
+import { CharacterisctType } from 'src/app/models/ontology/ontology-object-property-characteristics.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -12,6 +13,10 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./ontology-data-property-viewer.component.scss', '../common/shared.scss']
 })
 export class OntologyDataPropertyViewerComponent implements OnInit {
+  /**ontology element id */
+  @Input()
+  public propertyId!: string;
+
   /** onotology element data */
   public annotations!: Array<OntologyAnnotations>
   /** onotology description data */
@@ -19,14 +24,11 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
   /** onotology characteristics data */
   public characteristics!: OntologyDataPropertyCharacteristics
 
-  /**ontology element id */
-  private id!: string;
-
   constructor(private commonService: CommonService) { }
 
   ngOnInit(): void {
     //FIXME usare il servizio backend
-    this.simuleGetClassData(this.id).pipe(
+    this.simuleGetClassData(this.propertyId).pipe(
       take(1),
     ).subscribe({
       next: (dataResults) => {
@@ -38,7 +40,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
     });
 
     //FIXME usare il servizio backend
-    this.simuleGetDescriptionData(this.id).pipe(
+    this.simuleGetDescriptionData(this.propertyId).pipe(
       take(1),
     ).subscribe({
       next: (descriptionResults) => {
@@ -50,7 +52,7 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
     });
 
     //FIXME usare il servizio backend
-    this.simuleGetCharacteristicsData(this.id).pipe(
+    this.simuleGetCharacteristicsData(this.propertyId, CharacterisctType.data).pipe(
       take(1),
     ).subscribe({
       next: (characteristics) => {
@@ -134,12 +136,12 @@ export class OntologyDataPropertyViewerComponent implements OnInit {
   }
 
     //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-    simuleGetCharacteristicsData(classId: string) {
-      return of(this.retrieveCharacteristicsData(classId));
+    simuleGetCharacteristicsData(classId: string, type: CharacterisctType) {
+      return of(this.retrieveCharacteristicsData(classId, type));
     }
   
     //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-    retrieveCharacteristicsData(classId: string): OntologyDataPropertyCharacteristics {
+    retrieveCharacteristicsData(classId: string, type: CharacterisctType): OntologyDataPropertyCharacteristics {
       let result = new OntologyDataPropertyCharacteristics();
   
       result.functional = true;

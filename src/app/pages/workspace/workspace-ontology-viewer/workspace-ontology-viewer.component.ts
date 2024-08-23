@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AssertionType } from 'src/app/models/ontology/ontology-property-assertions.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 
 @Component({
@@ -12,6 +13,8 @@ export class WorkspaceOntologyViewerComponent implements OnInit {
   /**Initial tab */
   public selectedTab = 0;
   public visibleTileType!: TileType;
+  public id!: string;
+  public propertyType?: AssertionType;
 
   constructor() { }
 
