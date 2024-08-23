@@ -237,7 +237,10 @@
                 "inverseOf": "Inverse Of",
                 "domains": "Domains (intersection)",
                 "ranges": "Ranges (intersection)",
-                "superPropertyOfChain": "SuperProperty Of (Chain)"
+                "superPropertyOfChain": "SuperProperty Of (Chain)",
+                "types":"Types",
+                "sameAs": "Same Individual As",
+                "differentFrom": "Different Individuals"
             },
             "CHARACTERISTICS":{
                 "functional": "Functional",
