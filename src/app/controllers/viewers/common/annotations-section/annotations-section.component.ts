@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ScrollPanel } from 'primeng/scrollpanel';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
 
