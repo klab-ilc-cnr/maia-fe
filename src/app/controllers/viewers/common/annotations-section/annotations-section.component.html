@@ -1,7 +1,7 @@
 <p-fieldset>
     <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.annotations'|translate}}</ng-template>
     <ng-template pTemplate="content">
-        <p-scrollPanel #scrollPanel [style]="{width: '100%', 'max-height': '200px'}">
+        <p-scrollPanel #scrollPanel [style]="{width: '100%', 'max-height': scrollPanelMaxSize+'px'}">
             <ng-container *ngFor="let element of annotations; let index = index">
                 <div class="flex">
                     <div class="flex-initial prefix">

@@ -13,6 +13,8 @@ export class AnnotationsSectionComponent implements OnInit {
 
   @ViewChild('scrollPanel') public scrollPanel!: ScrollPanel;
 
+  public scrollPanelMaxSize = window.innerHeight / 4;
+
   constructor() { }
 
   ngOnInit(): void {
