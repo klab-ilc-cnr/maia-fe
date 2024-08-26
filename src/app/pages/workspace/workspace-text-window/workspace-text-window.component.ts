@@ -1395,7 +1395,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         xText: this.visualConfig.stdTextOffsetX,
         yText: sLinesCopy[0].yText - this.visualConfig.spaceAfterTextLine,
         xSentnum: this.visualConfig.stdSentnumOffsetX,
-        ySentnum: sLinesCopy[sLinesCopy.length - 1].yText,
+        ySentnum: sLinesCopy[0].yText,
         text: s.text,
         words: words,
         startIndex: start,
