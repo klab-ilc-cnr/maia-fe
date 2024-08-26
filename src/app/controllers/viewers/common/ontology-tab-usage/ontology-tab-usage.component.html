@@ -1,1 +1,28 @@
-<p>ontology-tab-usage works!</p>
+<p-fieldset>
+    <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.references'|translate}}</ng-template>
+    <ng-template pTemplate="content">
+        <div class="card-container">
+            <div class="ml-4" *ngFor="let el of references">
+                <ng-container *ngIf="el.lexicalEntryLabel">
+                    <div class="block label">[{{el.lexicalEntryLabel+'@'+el.language+' : '+extractPosLabel(el.pos)}}]</div>
+                    <div class="block">{{el.definition}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template>
+</p-fieldset>
+<div class="mt-5"></div>
+<p-fieldset>
+    <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.denotes'|translate}}</ng-template>
+    <ng-template pTemplate="content">
+        <div class="card-container">
+            <div class="ml-4" *ngFor="let el of denotes">
+                <ng-container *ngIf="el.lexicalEntryLabel">
+                    <div class="inline-block label">{{el.lexicalEntryLabel+'@'+el.language+' : '+extractPosLabel(el.pos)}}</div>
+                    <p-divider></p-divider>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template>
+</p-fieldset>

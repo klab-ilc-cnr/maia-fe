@@ -224,6 +224,8 @@
             "description": "Description",
             "characteristics": "Characteristics",
             "propertyAssertions": "Property Assertions",
+            "references": "References - Lexical senses",
+            "denotes": "Denotes- Lexical entries",
             "language": "language",
             "DESCRIPTION" :{
                 "equivalentTo": "Equivalent To",
@@ -257,6 +259,10 @@
                 "dataPropertyAssertions":"Data property assertions",
                 "negativeObjectPropertyAssertions":"Negative object property assertions",
                 "negativeDataPropertyAssertions":"Negative data property assertions"
+            },
+            "USAGE": {
+                "references": "References - Lexical senses",
+                "denotes": "Denotes- Lexical entries"
             }
         }
     },

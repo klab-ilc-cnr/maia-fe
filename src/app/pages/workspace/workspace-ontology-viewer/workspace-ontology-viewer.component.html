@@ -6,6 +6,6 @@
         <app-ontology-individual-viewer *ngIf="visibleTileType === TileType.ONTOLOGY_INDIVIDUAL_VIEWER" [instanceId]="id" [propertyType]="propertyType!"></app-ontology-individual-viewer>
     </p-tabPanel>
     <p-tabPanel header="{{('ONTOLOGY.usage'|translate)}}">
-        <app-ontology-tab-usage></app-ontology-tab-usage>
+        <app-ontology-tab-usage [id]="id"></app-ontology-tab-usage>
     </p-tabPanel>
   </p-tabView>

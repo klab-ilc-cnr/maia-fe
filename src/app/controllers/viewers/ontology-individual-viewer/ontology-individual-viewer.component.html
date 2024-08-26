@@ -10,7 +10,7 @@
                     <div class="ml-4" *ngFor="let el of descriptions.types">
                         <ng-container *ngIf="el.shortId">
                             <div class="ontology-dot"></div>
-                            <div class="inline-block text-center axiom">{{el.shortId}}</div>
+                            <div class="inline-block axiom">{{el.shortId}}</div>
                             <p-divider></p-divider>
                         </ng-container>
                     </div>
@@ -21,7 +21,7 @@
                     <div class="ml-4" *ngFor="let el of descriptions.sameAs">
                         <ng-container *ngIf="el.shortId">
                             <div class="ontology-individual-rhombus"></div>
-                            <div class="inline-block text-center axiom">{{el.shortId}}</div>
+                            <div class="inline-block axiom">{{el.shortId}}</div>
                             <p-divider></p-divider>
                         </ng-container>
                     </div>
@@ -32,7 +32,7 @@
                     <div class="ml-4" *ngFor="let el of descriptions.differentFrom">
                         <ng-container *ngIf="el.shortId">
                             <div class="ontology-individual-rhombus"></div>
-                            <div class="inline-block text-center axiom">{{el.shortId}}</div>
+                            <div class="inline-block axiom">{{el.shortId}}</div>
                             <p-divider></p-divider>
                         </ng-container>
                     </div>
@@ -49,7 +49,7 @@
                     <div class="ml-4" *ngFor="let el of propertyAssertions.objectPropertyAssertions">
                         <ng-container *ngIf="el.shortIdTarget">
                             <div class="ontology-object-rectangle"></div>
-                            <div class="inline-block text-center axiom">{{el.shortIdTarget}}</div>
+                            <div class="inline-block axiom">{{el.shortIdTarget}}</div>
                             <p-divider></p-divider>
                         </ng-container>
                     </div>
@@ -60,7 +60,7 @@
                     <div class="ml-4" *ngFor="let el of propertyAssertions.dataPropertyAssertions">
                         <ng-container *ngIf="el.target">
                             <div class="ontology-data-rectangle"></div>
-                            <div class="inline-block text-center axiom">{{el.target}}</div>
+                            <div class="inline-block axiom">{{el.target}}</div>
                             <p-divider></p-divider>
                         </ng-container>
                     </div>
@@ -71,7 +71,7 @@
                     <div class="ml-4" *ngFor="let el of propertyAssertions.negativeObjectPropertyAssertions">
                         <ng-container *ngIf="el.shortIdTarget">
                             <div class="ontology-object-rectangle"></div>
-                            <div class="inline-block text-center axiom">{{el.shortIdTarget}}</div>
+                            <div class="inline-block axiom">{{el.shortIdTarget}}</div>
                             <p-divider></p-divider>
                         </ng-container>
                     </div>
@@ -82,7 +82,7 @@
                     <div class="ml-4" *ngFor="let el of propertyAssertions.negativeDataPropertyAssertions">
                         <ng-container *ngIf="el.target">
                             <div class="ontology-data-rectangle"></div>
-                            <div class="inline-block text-center axiom">{{el.target}}</div>
+                            <div class="inline-block axiom">{{el.target}}</div>
                             <p-divider></p-divider>
                         </ng-container>
                     </div>
