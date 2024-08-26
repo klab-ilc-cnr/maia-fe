@@ -46,7 +46,7 @@
             <ng-template pTemplate="content">
                 <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.objectPropertyAssertions'|translate}}</div>
-                    <div class="ml-4" *ngFor="let el of propertyAssertions.objectPropertyAssertions">
+                    <div class="ml-4" *ngFor="let el of objectPropertyAssertions.objectPropertyAssertions">
                         <ng-container *ngIf="el.shortIdTarget">
                             <div class="ontology-object-rectangle"></div>
                             <div class="inline-block axiom">{{el.shortIdTarget}}</div>
@@ -57,7 +57,7 @@
                 
                 <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.dataPropertyAssertions'|translate}}</div>
-                    <div class="ml-4" *ngFor="let el of propertyAssertions.dataPropertyAssertions">
+                    <div class="ml-4" *ngFor="let el of dataPropertyAssertions.dataPropertyAssertions">
                         <ng-container *ngIf="el.target">
                             <div class="ontology-data-rectangle"></div>
                             <div class="inline-block axiom">{{el.target}}</div>
@@ -68,7 +68,7 @@
                 
                 <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.negativeObjectPropertyAssertions'|translate}}</div>
-                    <div class="ml-4" *ngFor="let el of propertyAssertions.negativeObjectPropertyAssertions">
+                    <div class="ml-4" *ngFor="let el of objectPropertyAssertions.negativeObjectPropertyAssertions">
                         <ng-container *ngIf="el.shortIdTarget">
                             <div class="ontology-object-rectangle"></div>
                             <div class="inline-block axiom">{{el.shortIdTarget}}</div>
@@ -79,7 +79,7 @@
                 
                 <div class="card-container mb-6">
                     <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.negativeDataPropertyAssertions'|translate}}</div>
-                    <div class="ml-4" *ngFor="let el of propertyAssertions.negativeDataPropertyAssertions">
+                    <div class="ml-4" *ngFor="let el of dataPropertyAssertions.negativeDataPropertyAssertions">
                         <ng-container *ngIf="el.target">
                             <div class="ontology-data-rectangle"></div>
                             <div class="inline-block axiom">{{el.target}}</div>

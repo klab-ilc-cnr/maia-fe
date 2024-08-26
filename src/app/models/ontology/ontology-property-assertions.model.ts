@@ -1,10 +1,13 @@
 import { OntologyPropertyAssertionData } from "./ontology-property-assertion-data.model";
 import { OntologyPropertyAssertionObject } from "./ontology-property-assertion-object.model";
 
-export class OntologyPropertyAssertions {
+export class OntologyObjectPropertyAssertions {
     objectPropertyAssertions!: Array<OntologyPropertyAssertionObject>;
-    dataPropertyAssertions!: Array<OntologyPropertyAssertionData>;
     negativeObjectPropertyAssertions!: Array<OntologyPropertyAssertionObject>;
+}
+
+export class OntologyDataPropertyAssertions {
+    dataPropertyAssertions!: Array<OntologyPropertyAssertionData>;
     negativeDataPropertyAssertions!: Array<OntologyPropertyAssertionData>;
 }
 

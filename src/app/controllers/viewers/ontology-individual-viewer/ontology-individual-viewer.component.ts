@@ -5,7 +5,7 @@ import { OntologyDescriptionInstance } from 'src/app/models/ontology/ontology-de
 import { OntologyIndividualDescription } from 'src/app/models/ontology/ontology-individual-description.model';
 import { OntologyPropertyAssertionData } from 'src/app/models/ontology/ontology-property-assertion-data.model';
 import { OntologyPropertyAssertionObject } from 'src/app/models/ontology/ontology-property-assertion-object.model';
-import { AssertionType, OntologyPropertyAssertions } from 'src/app/models/ontology/ontology-property-assertions.model';
+import { AssertionType, OntologyDataPropertyAssertions, OntologyObjectPropertyAssertions } from 'src/app/models/ontology/ontology-property-assertions.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -17,16 +17,15 @@ export class OntologyIndividualViewerComponent implements OnInit {
   /**ontology element id */
   @Input()
   public instanceId!: string;
-  @Input()
-  /**assertion type */
-  public propertyType!: AssertionType;
 
   /** onotology element data */
   public annotationsData!: Array<OntologyAnnotations>
   /** onotology description data */
   public descriptions!: OntologyIndividualDescription
   /** onotology characteristics data */
-  public propertyAssertions!: OntologyPropertyAssertions
+  public objectPropertyAssertions!: OntologyObjectPropertyAssertions
+  /** onotology characteristics data */
+  public dataPropertyAssertions!: OntologyDataPropertyAssertions
 
   constructor(private commonService: CommonService) { }
 
@@ -56,11 +55,23 @@ export class OntologyIndividualViewerComponent implements OnInit {
     });
 
     //FIXME usare il servizio backend
-    this.simuleGetAssertions(this.instanceId, this.propertyType).pipe(
+    this.simuleGetObjectAssertions(this.instanceId, AssertionType.object).pipe(
       take(1),
     ).subscribe({
-      next: (assertions) => {
-        this.propertyAssertions = assertions;
+      next: (objectAssertions) => {
+        this.objectPropertyAssertions = objectAssertions;
+      },
+      error: (error) => {
+        this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
+      }
+    });
+
+    //FIXME usare il servizio backend
+    this.simuleGetDataAssertions(this.instanceId, AssertionType.data).pipe(
+      take(1),
+    ).subscribe({
+      next: (dataAssertions) => {
+        this.dataPropertyAssertions = dataAssertions;
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
@@ -129,31 +140,41 @@ export class OntologyIndividualViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  simuleGetAssertions(classId: string, type: AssertionType) {
-    return of(this.retrieveCharacteristicsData(classId, type));
+  simuleGetObjectAssertions(classId: string, type: AssertionType) {
+    return of(this.retrieveObjectCharacteristicsData(classId));
+
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  retrieveCharacteristicsData(classId: string, type: AssertionType): OntologyPropertyAssertions {
-    let result = new OntologyPropertyAssertions();
+  simuleGetDataAssertions(classId: string, type: AssertionType) {
+    return of(this.retrieveDataCharacteristicsData(classId));
+  }
 
-    if(type === AssertionType.data)
-    {
-      let data = new OntologyPropertyAssertionData();
-      data.shortId = "bo";
-      data.target = "test"
-      result.dataPropertyAssertions = [data];
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  retrieveObjectCharacteristicsData(classId: string): OntologyObjectPropertyAssertions {
+    let result = new OntologyObjectPropertyAssertions();
 
-      result.negativeDataPropertyAssertions = [data]
-    }
-    else{
-      let data2 = new OntologyPropertyAssertionObject();
-      data2.shortId = "test shortId";
-      data2.shortIdTarget = "test id target"
-      result.objectPropertyAssertions = [data2];
+    let data2 = new OntologyPropertyAssertionObject();
+    data2.shortId = "test shortId";
+    data2.shortIdTarget = "test id target"
+    result.objectPropertyAssertions = [data2];
 
-      result.negativeObjectPropertyAssertions = [data2]
-    }
+    result.negativeObjectPropertyAssertions = [data2]
+
+    return result;
+  }
+
+  //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
+  retrieveDataCharacteristicsData(classId: string): OntologyDataPropertyAssertions {
+    let result = new OntologyDataPropertyAssertions();
+
+    let data = new OntologyPropertyAssertionData();
+    data.shortId = "bo";
+    data.target = "test"
+    result.dataPropertyAssertions = [data];
+
+    result.negativeDataPropertyAssertions = [data]
+
 
     return result;
   }

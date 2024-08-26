@@ -42,7 +42,6 @@ import { OntologyExplorerTileContent } from 'src/app/models/tile/ontology-explor
 import { WorkspaceOntologyViewerComponent } from './workspace-ontology-viewer/workspace-ontology-viewer.component';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyBase } from 'src/app/models/ontology/ontology-base.model';
-import { AssertionType } from 'src/app/models/ontology/ontology-property-assertions.model';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -1820,8 +1819,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent);
 
     componentRef.instance.visibleTileType = tileType;
-    // componentRef.instance.propertyType = selectedNode.data.propertyType;//FIXME QUESTA PROPERTY TYPE VA INSERITA NELL'OGGETTO
-    componentRef.instance.propertyType = Math.floor(Math.random() * (2)) ? AssertionType.object:AssertionType.data;//FIXME
     componentRef.instance.id = selectedNode.data!.id!;
     const name = selectedNode.data?.label ?? selectedNode.data?.shortId
 

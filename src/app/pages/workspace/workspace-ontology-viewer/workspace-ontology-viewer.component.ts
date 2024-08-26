@@ -14,7 +14,6 @@ export class WorkspaceOntologyViewerComponent implements OnInit {
   public selectedTab = 0;
   public visibleTileType!: TileType;
   public id!: string;
-  public propertyType?: AssertionType;
 
   constructor() { }
 

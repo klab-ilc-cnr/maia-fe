@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { of, range, take } from 'rxjs';
+import { of, take } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
 import { OntologyDataPropertyCharacteristics } from 'src/app/models/ontology/ontology-data-property-characteristics.model';
 import { OntologyDataPropertyDescription } from 'src/app/models/ontology/ontology-data-property-description.model';
