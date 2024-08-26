@@ -80,7 +80,7 @@ export class OntologyClassViewerComponent implements OnInit {
     data3.target = "mia definizione";
     data3.language = "it";
 
-    const result = [data1, data2, data3];
+    const result = [data1, data2, data3, data1, data2, data3, data1, data2, data3, data1, data2, data3, data1, data2, data3];
 
     return result;
   }
