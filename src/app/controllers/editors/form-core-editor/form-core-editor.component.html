@@ -1,19 +1,19 @@
 <div *ngIf="formEntry" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
   <form [formGroup]="form" class="formgrid grid">
     <div class="field col-6" style="align-self: center;">
-      <em>Last update: {{formEntry.lastUpdate | date: 'medium'}}</em>
+      <em>{{translatePrefix+'.lastUpdate'|translate}}: {{formEntry.lastUpdate | date: 'medium'}}</em>
     </div>
     <div class="field col-6">
       <button pButton type="button" icon="pi pi-trash" class="p-button-danger" style="float: right;"
-        pTooltip="Delete lexical form" (click)="onDeleteLexicalForm()"></button>
+        [pTooltip]="translatePrefix+'.deleteLexForm'|translate" (click)="onDeleteLexicalForm()"></button>
     </div>
     <div class="field col-6">
-      <label for="pos">Part-of-Speech</label>
+      <label for="pos">{{translatePrefix+'.pos'|translate}}</label>
       <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId"
         [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>
     </div>
     <div class="field col-6">
-      <label for="type">Type</label>
+      <label for="type">{{translatePrefix+'.type'|translate}}</label>
       <p-dropdown [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" [filter]="true"
         filterBy="valueLabel" [placeholder]="emptyField" formControlName="type" name="type"
         styleClass="w-full"></p-dropdown>
@@ -22,7 +22,7 @@
       <p-fieldset>
         <ng-template pTemplate="header">
           <p-menu #menuRepresentation [model]="representationItems" [popup]="true" appendTo="body"></p-menu>
-          Representation <button pButton pRipple icon="pi pi-plus" type="button"
+          {{translatePrefix+'.representation'|translate}} <button pButton pRipple icon="pi pi-plus" type="button"
             (click)="menuRepresentation.toggle($event)"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
@@ -45,7 +45,7 @@
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          Morphological traits<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
+          {{translatePrefix+'.morphTraits'|translate}}<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
