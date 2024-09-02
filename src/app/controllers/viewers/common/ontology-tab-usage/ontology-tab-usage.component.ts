@@ -114,7 +114,7 @@ export class OntologyTabUsageComponent implements OnInit {
     data3Value.pos = "http://www.lexinfo.net/ontology/3.0/lexinfo#verb";
     data3Value.language = "it";
 
-    result = [data1Value, data2Value, data3Value];
+    result = [data1Value, data2Value, data3Value, data3Value, data3Value, data3Value, data3Value, data3Value, data3Value, data3Value, data3Value];
 
     return result;
   }

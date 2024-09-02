@@ -18,3 +18,18 @@
 :host::ng-deep .p-divider-horizontal {
     margin-top: 4px;
 }
+
+p-tabView,
+::ng-deep.p-tabview.p-component,
+::ng-deep div[role="tabpanel"] {
+    height: 100%;
+
+    .p-tabview-panels {
+        height: calc(100% - 41px);
+    }
+}
+
+.pinned-tab-panel {
+    height: 100%;
+    overflow-y: scroll;
+}
