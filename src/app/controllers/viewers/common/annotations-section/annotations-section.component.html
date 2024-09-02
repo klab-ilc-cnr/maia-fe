@@ -1,19 +1,17 @@
 <p-fieldset>
     <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.annotations'|translate}}</ng-template>
     <ng-template pTemplate="content">
-        <p-scrollPanel #scrollPanel [style]="{width: '100%', 'max-height': scrollPanelMaxSize+'px'}">
-            <ng-container *ngFor="let element of annotations; let index = index">
-                <div class="flex">
-                    <div class="flex-initial prefix">
-                        {{element.prefix}}:{{element.shortId}}
-                    </div>
-                    <div *ngIf="element.language" class="flex-initial ml-4 language">[{{'ONTOLOGY.VIEWER.language'|translate}}: {{element.language}}]</div>
+        <ng-container *ngFor="let element of annotations; let index = index">
+            <div class="flex">
+                <div class="flex-initial prefix">
+                    {{element.prefix}}:{{element.shortId}}
                 </div>
-                <div class="flex">
-                    <div class="flex-initial target">{{element.target}}</div>
-                </div>
-                <p-divider *ngIf="index !== annotations.length - 1"></p-divider>
-            </ng-container>
-        </p-scrollPanel>
+                <div *ngIf="element.language" class="flex-initial ml-4 language">[{{'ONTOLOGY.VIEWER.language'|translate}}: {{element.language}}]</div>
+            </div>
+            <div class="flex">
+                <div class="flex-initial target">{{element.target}}</div>
+            </div>
+            <p-divider *ngIf="index !== annotations.length - 1"></p-divider>
+        </ng-container>
     </ng-template>
 </p-fieldset>
