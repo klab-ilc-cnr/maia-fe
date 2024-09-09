@@ -6,7 +6,8 @@
     [suggestions]="suggestions"
     field="relationshipLabel"
     (completeMethod)="onSearchForSuggestions($event)"
-    (onSelect)="onSelectSuggestionUpdateRelationship($event, control)" [virtualScroll]="true" [virtualScrollItemSize]="34">
+    (onSelect)="onSelectSuggestionUpdateRelationship($event, control)" [virtualScroll]="true" [virtualScrollItemSize]="34"
+    appendTo="body">
   </p-autoComplete>
 
   <button *ngIf="control.inferred===undefined || !control.inferred" pButton pRipple type="button" icon="pi pi-times"
