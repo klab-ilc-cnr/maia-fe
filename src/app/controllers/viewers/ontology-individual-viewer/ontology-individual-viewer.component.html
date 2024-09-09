@@ -1,0 +1,95 @@
+<div class="card pinned-tab-panel">
+    <app-annotations-section [annotations]="annotationsData"></app-annotations-section>
+    <div class="mt-5"></div>
+    <div class="grid">
+        <div class="col-3">
+            <p-fieldset>
+                <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.description'|translate}}</ng-template>
+                <ng-template pTemplate="content">
+                    <div class="card-container">
+                        <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.types'|translate}}</div>
+                        <div class="ml-4" *ngFor="let el of descriptions.types">
+                            <ng-container *ngIf="el.shortId">
+                                <div class="ontology-dot"></div>
+                                <div class="inline-block axiom">{{el.shortId}}</div>
+                                <p-divider></p-divider>
+                            </ng-container>
+                        </div>
+                    </div>
+                    
+                    <div class="card-container mt-6">
+                        <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.sameAs'|translate}}</div>
+                        <div class="ml-4" *ngFor="let el of descriptions.sameAs">
+                            <ng-container *ngIf="el.shortId">
+                                <div class="ontology-individual-rhombus"></div>
+                                <div class="inline-block axiom">{{el.shortId}}</div>
+                                <p-divider></p-divider>
+                            </ng-container>
+                        </div>
+                    </div>
+                    
+                    <div class="card-container mt-6">
+                        <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.DESCRIPTION.differentFrom'|translate}}</div>
+                        <div class="ml-4" *ngFor="let el of descriptions.differentFrom">
+                            <ng-container *ngIf="el.shortId">
+                                <div class="ontology-individual-rhombus"></div>
+                                <div class="inline-block axiom">{{el.shortId}}</div>
+                                <p-divider></p-divider>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-fieldset>
+        </div>
+        <div class="col-9">
+            <p-fieldset>
+                <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.propertyAssertions'|translate}}</ng-template>
+                <ng-template pTemplate="content">
+                    <div class="card-container mb-6">
+                        <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.objectPropertyAssertions'|translate}}</div>
+                        <div class="ml-4" *ngFor="let el of objectPropertyAssertions.objectPropertyAssertions">
+                            <ng-container *ngIf="el.shortIdTarget">
+                                <div class="ontology-object-rectangle"></div>
+                                <div class="inline-block axiom">{{el.shortIdTarget}}</div>
+                                <p-divider></p-divider>
+                            </ng-container>
+                        </div>
+                    </div>
+                    
+                    <div class="card-container mb-6">
+                        <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.dataPropertyAssertions'|translate}}</div>
+                        <div class="ml-4" *ngFor="let el of dataPropertyAssertions.dataPropertyAssertions">
+                            <ng-container *ngIf="el.target">
+                                <div class="ontology-data-rectangle"></div>
+                                <div class="inline-block axiom">{{el.target}}</div>
+                                <p-divider></p-divider>
+                            </ng-container>
+                        </div>
+                    </div>
+                    
+                    <div class="card-container mb-6">
+                        <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.negativeObjectPropertyAssertions'|translate}}</div>
+                        <div class="ml-4" *ngFor="let el of objectPropertyAssertions.negativeObjectPropertyAssertions">
+                            <ng-container *ngIf="el.shortIdTarget">
+                                <div class="ontology-object-rectangle"></div>
+                                <div class="inline-block axiom">{{el.shortIdTarget}}</div>
+                                <p-divider></p-divider>
+                            </ng-container>
+                        </div>
+                    </div>
+                    
+                    <div class="card-container mb-6">
+                        <div class="block fieldTitle">{{'ONTOLOGY.VIEWER.PROPERTY_ASSERTIONS.negativeDataPropertyAssertions'|translate}}</div>
+                        <div class="ml-4" *ngFor="let el of dataPropertyAssertions.negativeDataPropertyAssertions">
+                            <ng-container *ngIf="el.target">
+                                <div class="ontology-data-rectangle"></div>
+                                <div class="inline-block axiom">{{el.target}}</div>
+                                <p-divider></p-divider>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-fieldset>
+        </div>
+    </div>
+</div>

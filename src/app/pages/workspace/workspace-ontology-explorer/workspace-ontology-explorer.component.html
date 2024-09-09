@@ -1,0 +1,14 @@
+<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+    <p-tabPanel header="{{('ONTOLOGY.classes'|translate)}}">
+        <app-ontology-class-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-class-explorer>
+    </p-tabPanel>
+    <p-tabPanel header="{{('ONTOLOGY.objectProperties'|translate)}}">
+        <app-ontology-object-property-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-object-property-explorer>
+    </p-tabPanel>
+    <p-tabPanel header="{{('ONTOLOGY.dataProperties'|translate)}}">
+        <app-ontology-data-property-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-data-property-explorer>
+    </p-tabPanel>
+    <p-tabPanel header="{{('ONTOLOGY.individuals'|translate)}}">
+        <app-ontology-individuals-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-individuals-explorer>
+    </p-tabPanel>
+  </p-tabView>

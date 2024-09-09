@@ -9,7 +9,7 @@
         "save": "Save",
         "selectValue": "Select value",
         "update": "Update",
-        "browserWarning" : "Your browser is not fully supported, please use chrome"
+        "browserWarning": "Your browser is not fully supported, please use chrome"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Add folder",
@@ -233,43 +233,83 @@
         "usernameMinLenght": "Username must be at least 4 characters long",
         "userUpdated": "User successfully updated"
     },
-    "ICON_AUTHOR":{
-        "creator":"Creator",
-        "creationDate":"Creation date",
-        "lastUpdate":"Last update"
+    "ICON_AUTHOR": {
+        "creator": "Creator",
+        "creationDate": "Creation date",
+        "lastUpdate": "Last update"
     },
-    "ONTOLOGY":{
-        "classes" : "Classes",
+    "ONTOLOGY": {
+        "classes": "Classes",
         "objectProperties": "Object Properties",
         "dataProperties": "Data Properties",
-        "individuals" : "Individuals"
+        "individuals": "Individuals",
+        "annotations": "Annotations",
+        "usage": "Usage",
+        "VIEWER": {
+            "annotations": "Annotations",
+            "description": "Description",
+            "characteristics": "Characteristics",
+            "propertyAssertions": "Property Assertions",
+            "references": "References - Lexical senses",
+            "denotes": "Denotes- Lexical entries",
+            "language": "language",
+            "DESCRIPTION": {
+                "equivalentTo": "Equivalent To",
+                "subclassOf": "Subclass Of",
+                "generalClassAxioms": "General Class Axioms",
+                "subClassOfAnonymousAncestor": "SubClass Of (Anonymous Ancestor)",
+                "instances": "Instances",
+                "targetForKey": "Target For Key",
+                "disjointWith": "Disjoint With",
+                "disjointUnionOf": "Disjoint Union Of",
+                "subPropertyOf": "Sub Property Of",
+                "inverseOf": "Inverse Of",
+                "domains": "Domains (intersection)",
+                "ranges": "Ranges (intersection)",
+                "superPropertyOfChain": "SuperProperty Of (Chain)",
+                "types": "Types",
+                "sameAs": "Same Individual As",
+                "differentFrom": "Different Individuals"
+            },
+            "CHARACTERISTICS": {
+                "functional": "Functional",
+                "inverseFunctional": "Inverse functional",
+                "transitive": "Transitive",
+                "symmetric": "Symmetric",
+                "asymmetric": "Asymmetric",
+                "reflexive": "Reflexive",
+                "irreflexive": "Irreflexive"
+            },
+            "PROPERTY_ASSERTIONS": {
+                "objectPropertyAssertions": "Object property assertions",
+                "dataPropertyAssertions": "Data property assertions",
+                "negativeObjectPropertyAssertions": "Negative object property assertions",
+                "negativeDataPropertyAssertions": "Negative data property assertions"
+            },
+            "USAGE": {}
+        }
     },
-    "ONTOLOGY_CLASS_VIEWER":
-    {
+    "ONTOLOGY_CLASS_EXPLORER": {
         "addChild": "Add class",
         "addSibling": "Add subclass",
         "remove": "Remove"
     },
-    "ONTOLOGY_DATA_PROPERTY_VIEWER":
-    {
+    "ONTOLOGY_DATA_PROPERTY_EXPLORER": {
         "addChild": "Add class",
         "addSibling": "Add subclass",
         "remove": "Remove"
     },
-    "ONTOLOGY_OBJECT_PROPERTY_VIEWER":
-    {
+    "ONTOLOGY_OBJECT_PROPERTY_EXPLORER": {
         "addChild": "Add class",
         "addSibling": "Add subclass",
         "remove": "Remove"
     },
-    "ONTOLOGY_INDIVIDUAL_VIEWER":
-    {
+    "ONTOLOGY_INDIVIDUAL_EXPLORER": {
         "addChild": "Add class",
-        "addSibling": "Add subclass",
         "remove": "Remove"
     },
-    "SEARCH":{
-        "insertForm" : "insert form",
+    "SEARCH": {
+        "insertForm": "insert form",
         "insertLemma": "insert lemma",
         "form": "form",
         "lemma": "lemma",
@@ -291,9 +331,9 @@
             "kwic": "KWIC",
             "rightContext": "Right context"
         },
-        "buttons":{
-            "search":"Search",
-            "clear":"Clear",
+        "buttons": {
+            "search": "Search",
+            "clear": "Clear",
             "saveAs": "Save As",
             "export": "Export"
         }

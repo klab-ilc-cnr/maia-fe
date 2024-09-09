@@ -1,16 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, take, takeUntil } from 'rxjs';
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyIndividual } from 'src/app/models/ontology/ontology-individual.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
+import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
-  selector: 'app-ontology-individuals-viewer',
-  templateUrl: './ontology-individuals-viewer.component.html',
-  styleUrls: ['./ontology-individuals-viewer.component.scss', "../shared.scss"]
+  selector: 'app-ontology-individuals-explorer',
+  templateUrl: './ontology-individuals-explorer.component.html',
+  styleUrls: ['./ontology-individuals-explorer.component.scss', "../shared.scss"]
 })
-export class OntologyIndividualsViewerComponent implements OnInit {
+export class OntologyIndividualsExplorerComponent implements OnInit {
   @Input()
   public panelHeight!: number;
 
@@ -45,7 +47,7 @@ export class OntologyIndividualsViewerComponent implements OnInit {
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
       switch (res.option) {
-        case 'ontology_tag_clicked':
+        case EventsConstants.ontology_explorer_tag_clicked:
           this.alternateLabelShortId();
           this.showLabelName = !this.showLabelName;
           break;
@@ -88,22 +90,21 @@ export class OntologyIndividualsViewerComponent implements OnInit {
   }
 
   /**
- * Manges double click on the tree nodes
- * @param event
+ * Mananges double click on a node tree
+ * @param event {any} double click event
  */
   doubleClickHandler(event: any, rowNode: any) {
-    alert("dobleClick demo");
-    // const node = rowNode?.node;
-    // if (node?.data?.type === undefined || (node?.data?.type == LexicalEntryTypeOld.FORMS_ROOT || node?.data?.type == LexicalEntryTypeOld.SENSES_ROOT)) {
-    //   return;
-    // }
-    // this.commonService.notifyOther({ option: 'onLexiconTreeElementDoubleClickEvent', value: [node, this.showLabelName] });
-    // // }
+    const node = rowNode?.node;
+    if (node?.data?.id === undefined || node?.data?.id === null) {
+      return;
+    }
+
+    this.commonService.notifyOther({ option: EventsConstants.onOntologyElementDoubleClickEvent, value: [node, TileType.ONTOLOGY_INDIVIDUAL_VIEWER] });
   }
 
   /**remove selected nodes */
   //TODO to be implemented
-  removeNodes(){
+  removeNodes() {
     // console.log(this.selectedNodes);
   }
 
@@ -126,42 +127,49 @@ export class OntologyIndividualsViewerComponent implements OnInit {
       this.results = [];
 
       //FIXME USARE IL VERSO SERVIZIO QUANDO DISPONIBILE
-      this.simuleGetDirectSubProperties(null).then((dataResults) => {
-        for (let i = 0; i < dataResults.length; i++) {
-          let nodeData: OntologyIndividual = {
-            id: dataResults[i].id,
-            name: dataResults[i].name,
-            creator: dataResults[i].creator,
-            creationDate: dataResults[i].creationDate,
-            lastUpdate: dataResults[i].lastUpdate,
-            status: dataResults[i].status,
-            label: dataResults[i].label,
-            shortId: dataResults[i].shortId,
-            children: 0
-          };
+      this.simuleGetDirectSubProperties(null).pipe(
+        take(1),
+      ).subscribe({
+        next: (dataResults) => {
+          for (let i = 0; i < dataResults.length; i++) {
+            let nodeData: OntologyIndividual = {
+              id: dataResults[i].id,
+              name: dataResults[i].name,
+              creator: dataResults[i].creator,
+              creationDate: dataResults[i].creationDate,
+              lastUpdate: dataResults[i].lastUpdate,
+              status: dataResults[i].status,
+              label: dataResults[i].label,
+              shortId: dataResults[i].shortId,
+              children: 0
+            };
 
-          let node: TreeNode<OntologyIndividual> = {
-            data: nodeData,
-            leaf: true
-          };
+            let node: TreeNode<OntologyIndividual> = {
+              data: nodeData,
+              leaf: true
+            };
 
-          this.results.push(node);
+            this.results.push(node);
+          }
+        },
+        error: (error) => {
+          this.commonService.throwHttpErrorAndMessage(error, `Loading data failed: ${error.error.message}`);
         }
       });
     }, 1000);
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  simuleGetDirectSubProperties(nodeId?: string | null) {
+  simuleGetDirectSubProperties(nodeId?: string | null) : Observable<OntologyIndividual[]> {
     if (nodeId != undefined && nodeId !== null) {
-      return Promise.resolve(this.getTreeNodesDataOrObjectProperty(nodeId));
+      return of(this.getTreeNodesDataOrObjectProperty(nodeId));
     }
 
-    return Promise.resolve(this.getTreeNodesRootData());
+    return of(this.getTreeNodesRootData());
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  getTreeNodesRootData() {
+  getTreeNodesRootData(): Array<OntologyIndividual> {
     let nodesResult = [];
     for (let i = 0; i < 20; i++) {
       let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
@@ -169,17 +177,16 @@ export class OntologyIndividualsViewerComponent implements OnInit {
       let label = 'label' + shortId;
       let name = this.showLabelName ? shortId : label;
 
-      let data = {
-        id: id,
-        name: name,
-        creator: 'a',
-        creationDate: new Date().toLocaleString(),
-        lastUpdate: new Date().toLocaleString(),
-        status: OntologyStatuses.working,
-        label: label,
-        shortId: shortId,
-        children: 0
-      };
+      let data = new OntologyIndividual();
+      data.id = id;
+      data.name = name;
+      data.creator = 'a';
+      data.creationDate = new Date().toLocaleString();
+      data.lastUpdate = new Date().toLocaleString();
+      data.status = OntologyStatuses.working;
+      data.label = label;
+      data.shortId = shortId;
+      data.children = 0;
 
       nodesResult.push(data);
     }
@@ -187,35 +194,33 @@ export class OntologyIndividualsViewerComponent implements OnInit {
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND
-  getTreeNodesDataOrObjectProperty(nodeId: string) {
-  let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
+  getTreeNodesDataOrObjectProperty(nodeId: string): Array<OntologyIndividual> {
+    let shortId = 'testLabel' + Math.floor(Math.random() * 1000) + 1;
     let id = 'http://test.it/#' + shortId;
     let label = 'label' + shortId;
     let name = this.showLabelName ? shortId : label;
 
-    let data1 = {
-      id: id,
-      name: name,
-      creator: 'b',
-      creationDate: new Date().toLocaleString(),
-      lastUpdate: new Date().toLocaleString(),
-      status: OntologyStatuses.completed,
-      label: label,
-      shortId: shortId,
-      children: 0
-    };
+    let data1 = new OntologyIndividual();
+    data1.id = id;
+    data1.name = name;
+    data1.creator = 'b';
+    data1.creationDate = new Date().toLocaleString();
+    data1.lastUpdate = new Date().toLocaleString();
+    data1.status = OntologyStatuses.completed;
+    data1.label = label;
+    data1.shortId = shortId;
+    data1.children = 0;
 
-    let data2 = {
-      id: id,
-      name: name,
-      creator: 'c',
-      creationDate: new Date().toLocaleString(),
-      lastUpdate: new Date().toLocaleString(),
-      status: OntologyStatuses.reviewed,
-      label: label,
-      shortId: shortId,
-      children: 0
-    };
+    let data2 = new OntologyIndividual();
+    data2.id = id;
+    data2.name = name;
+    data2.creator = 'c';
+    data2.creationDate = new Date().toLocaleString();
+    data2.lastUpdate = new Date().toLocaleString();
+    data2.status = OntologyStatuses.reviewed;
+    data2.label = label;
+    data2.shortId = shortId;
+    data2.children = 0;
 
     return [data1, data2];
   }

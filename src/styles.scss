@@ -735,6 +735,16 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   margin-right: 0.25rem;
 }
 
+.ontology-red-dot {
+  height: 13px;
+  width: 13px;
+  background-color: #AD3B45;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
 .ontology-data-rectangle {
   height: 10px;
   width: 18px;
@@ -754,8 +764,8 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
 }
 
 .ontology-individual-rhombus {
-  height: 12px;
-  width: 12px;
+  height: 11px;
+  width: 11px;
   background-color: #884b82;
   display: inline-block;
   vertical-align: middle;
