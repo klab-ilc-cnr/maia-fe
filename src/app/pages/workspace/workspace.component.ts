@@ -120,9 +120,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   workspaceName!: string;
 
   /**Riferimento al contenitore die pannelli */
-  @ViewChild('panelsContainer') public container!: ElementRef;
+  @ViewChild('panelsContainer') public container: ElementRef | undefined | null;
   /**Riferimento al contenitore del menu del workspace */
-  @ViewChild('workspaceMenuContainer') public wsMenuContainer!: ElementRef;
+  @ViewChild('workspaceMenuContainer') public wsMenuContainer: ElementRef | undefined | null;
 
   // @HostListener allows us to also guard against browser refresh, close, etc.
   /**
@@ -426,6 +426,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.subscription.unsubscribe();
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+
+    // Clean up jsPanel
+    jsPanel.getPanels().forEach((panel: any) => {
+      panel.close();
+    });
+
+    // Nullify DOM references
+    this.container = null;
+    this.wsMenuContainer = null;
   }
 
   /**
@@ -512,7 +521,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
     if (startingRowIndex) {
-      this.setChangeSectionOperationInTextTile(res.component, startingRowIndex, kwic!, kwicOffsetStart!);
+      this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!);
     }
 
     const textTileConfig = res.panelConfig;
@@ -1240,9 +1249,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns configurazione del pannello
    */
   private generateCorpusExplorerPanelConfiguration(ecPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceCorpusExplorerComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceCorpusExplorerComponent) as ComponentRef<WorkspaceCorpusExplorerComponent> | null;
 
-    const subs = componentRef.instance.onTextSelectEvent //mappa l'evento di selezione di un testo nell'ec
+    const subs = componentRef!.instance.onTextSelectEvent //mappa l'evento di selezione di un testo nell'ec
       .subscribe((resource: CorpusElement) => {
         console.info('onTextSelectEvent ricevuto', resource);
         const textId = resource.id;
@@ -1251,7 +1260,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       );
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: ecPanelId,
@@ -1271,9 +1280,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         //currentWorkspaceInstance.openPanels.delete(panel.id);
+
         this.removeFromTileMap(panel.id, TileType.CORPUS);
         this.removeComponentFromList(panel.id);
         subs.unsubscribe();
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
@@ -1301,13 +1315,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns configurazione del pannello di annotazione di un testo
    */
   private generateTextTilePanelConfiguration(panelId: string, textId: number, title: string, startingRowIndex: number, textTileStoredHeight?: number) {
-    const componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent);
-    componentRef.instance.textId = textId;
-    componentRef.instance.startingRowIndex = startingRowIndex;
-    componentRef.instance.height = textTileStoredHeight ?? window.innerHeight / 3 * 2;
+    let componentRef = this.vcr.createComponent(WorkspaceTextWindowComponent) as ComponentRef<WorkspaceTextWindowComponent> | null;
+    componentRef!.instance.textId = textId;
+    componentRef!.instance.startingRowIndex = startingRowIndex;
+    componentRef!.instance.height = textTileStoredHeight ?? window.innerHeight / 3 * 2;
     // componentRef.instance.visibleLayers = this.visibleLayers;
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = this.generateTextTileConfig(panelId, title, element, componentRef)
 
@@ -1324,8 +1338,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * Metodo che ridimensiona l'altezza del contenitore del workspace
    */
   private resizeContainerHeight() {
-    const height = window.innerHeight - (this.wsMenuContainer.nativeElement.offsetHeight + 1);
-    this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
+    const height = window.innerHeight - ((this.wsMenuContainer?.nativeElement?.offsetHeight ?? 0) + 1);
+    if (this.container) {
+      this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
+    }
   }
 
   /**
@@ -1337,7 +1353,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param componentRef {any} componentRef di WorkspaceTextWindowComponent
    * @returns configurazione del tile di testo
    */
-  private generateTextTileConfig(panelId: string, title: string, textWindowComponent: any, componentRef: any) {
+  private generateTextTileConfig(panelId: string, title: string, textWindowComponent: any, componentRef: ComponentRef<WorkspaceTextWindowComponent> | null) {
     const config =
     {
       id: panelId,
@@ -1362,6 +1378,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log(this, panel, closedByUser)
         this.removeFromTileMap(panel.id, TileType.TEXT);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any, status: any) {
         //componentRef.instance.reload()
@@ -1369,31 +1390,31 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateComponentSize(panelH);
+        componentRef!.instance.updateComponentSize(panelH);
       },
       onminimized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateComponentSize(panelH);
+        componentRef!.instance.updateComponentSize(panelH);
       },
       onnormalized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateComponentSize(panelH);
+        componentRef!.instance.updateComponentSize(panelH);
       },
       onsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateComponentSize(panelH);
+        componentRef!.instance.updateComponentSize(panelH);
       },
       onunsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateComponentSize(panelH);
+        componentRef!.instance.updateComponentSize(panelH);
       },
       resizeit: {
         minWidth: 600,
         resize: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateHeight(paneldata.height)
+          componentRef!.instance.updateHeight(paneldata.height)
         },
         stop: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateTextEditorSize();
+          componentRef!.instance.updateTextEditorSize();
         }
       }
     };
@@ -1407,9 +1428,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns configurazione del pannello di esplorazione del lessico
    */
   private generateLexiconPanelConfiguration(lexiconPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceLexiconTileComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceLexiconTileComponent) as ComponentRef<WorkspaceLexiconTileComponent> | null;
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: lexiconPanelId,
@@ -1445,6 +1466,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.LEXICON);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any, status: any) {
         // const panelIDs = jsPanel.getPanels(function () {
@@ -1470,27 +1496,27 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param showLabelName {boolean} definisce se visualizzare la label come nome
    */
   private generateLexiconEditTileConfiguration(lexiconEditTileId: string, selectedSubTree: TreeNode<LexicalEntryOld>, showLabelName: boolean) {
-    const componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceLexiconEditTileComponent) as ComponentRef<WorkspaceLexiconEditTileComponent> | null;
 
-    componentRef.instance.selectedType = selectedSubTree.data!.type!;
-    componentRef.instance.selectedNode = selectedSubTree;
-    componentRef.instance.panelId = lexiconEditTileId;
+    componentRef!.instance.selectedType = selectedSubTree.data!.type!;
+    componentRef!.instance.selectedNode = selectedSubTree;
+    componentRef!.instance.panelId = lexiconEditTileId;
 
     const lexicalEntryTree = selectedSubTree.data?.type === LexicalEntryTypeOld.LEXICAL_ENTRY ? selectedSubTree : selectedSubTree.parent?.parent;
 
     switch (selectedSubTree.data!.type) {
       case LexicalEntryTypeOld.LEXICAL_ENTRY:
         selectedSubTree.expanded = false;
-        componentRef.instance.lexicalEntryTree = [selectedSubTree];
+        componentRef!.instance.lexicalEntryTree = [selectedSubTree];
         break;
       case LexicalEntryTypeOld.FORM:
       case LexicalEntryTypeOld.SENSE:
-        componentRef.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
+        componentRef!.instance.lexicalEntryTree = [selectedSubTree.parent!.parent!];
         break;
     }
-    componentRef.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
+    componentRef!.instance.showLabelName = showLabelName; //tirato fuori dallo switch perché si ripeteva
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: lexiconEditTileId,
@@ -1522,6 +1548,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any) {
         this.removeFromTileMap(panel.id, TileType.LEXICON_EDIT);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any) {
         const panelIDs = jsPanel.getPanels(function () {
@@ -1546,9 +1577,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns search tile configurations
    */
   private generateSearchPanelConfiguration(searchPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent) as ComponentRef<WorkspaceSearchTileComponent> | null;
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: searchPanelId,
@@ -1572,37 +1603,42 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         minWidth: 830,
         minHeight: 500,
         resize: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateHeight(paneldata.height, paneldata.width);
+          componentRef!.instance.updateHeight(paneldata.height, paneldata.width);
         }
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
         const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
-        componentRef.instance.updateHeight(panelH, panelW);
+        componentRef!.instance.updateHeight(panelH, panelW);
       },
       onminimized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
         const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
-        componentRef.instance.updateHeight(panelH, panelW);;
+        componentRef!.instance.updateHeight(panelH, panelW);;
       },
       onnormalized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
         const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
-        componentRef.instance.updateHeight(panelH, panelW);
+        componentRef!.instance.updateHeight(panelH, panelW);
       },
       onsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
         const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
-        componentRef.instance.updateHeight(panelH, panelW);
+        componentRef!.instance.updateHeight(panelH, panelW);
       },
       onunsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
         const panelW = Number.parseFloat(panel.style.width.split('px')[0]);
-        componentRef.instance.updateHeight(panelH, panelW);
+        componentRef!.instance.updateHeight(panelH, panelW);
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.SEARCH);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       }
     };
 
@@ -1615,9 +1651,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private generateDictionaryPanelConfiguration(dictionaryPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceDictionaryTileComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceDictionaryTileComponent) as ComponentRef<WorkspaceDictionaryTileComponent> | null;;
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: dictionaryPanelId,
@@ -1653,6 +1689,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.DICTIONARY);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any, status: any) {
         // const panelIDs = jsPanel.getPanels(function () {
@@ -1677,11 +1718,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns panel configuration
    */
   private generateDictionaryEditTileConfiguration(dictionaryEditTileId: string, dictionaryEntry: DictionaryEntry) {
-    const componentRef = this.vcr.createComponent(WorkspaceDictionaryEditorTileComponent);
-    componentRef.instance.panelId = dictionaryEditTileId;
-    componentRef.instance.dictionaryEntry = dictionaryEntry;
+    let componentRef = this.vcr.createComponent(WorkspaceDictionaryEditorTileComponent) as ComponentRef<WorkspaceDictionaryEditorTileComponent> | null;
+    componentRef!.instance.panelId = dictionaryEditTileId;
+    componentRef!.instance.dictionaryEntry = dictionaryEntry;
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: dictionaryEditTileId,
@@ -1713,6 +1754,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any) {
         this.removeFromTileMap(panel.id, TileType.DICTIONARY_EDIT);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any) {
         const panelIDs = jsPanel.getPanels(function () {
@@ -1736,9 +1782,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
  * panel configuration
  */
   private generateOntologyExplorerPanelConfiguration(ontologyPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceOntologyExplorerComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceOntologyExplorerComponent) as ComponentRef<WorkspaceOntologyExplorerComponent> | null;
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: ontologyPanelId,
@@ -1762,28 +1808,28 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       resizeit: {
         minWidth: 250,
         resize: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateHeight(paneldata.height);
+          componentRef!.instance.updateHeight(paneldata.height);
         }
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       onminimized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);;
+        componentRef!.instance.updateHeight(panelH);;
       },
       onnormalized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       onsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       onunsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       headerControls: {
         add: {
@@ -1797,6 +1843,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.ONTOLOGY_EXPLORER);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
     };
 
@@ -1816,10 +1867,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns 
    */
   private generateOntologyViewerTileConfiguration(ontologyViewerTileId: string, selectedNode: TreeNode<OntologyBase>, tileType: TileType) {
-    const componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent) as ComponentRef<WorkspaceOntologyViewerComponent> | null;
 
-    componentRef.instance.visibleTileType = tileType;
-    componentRef.instance.id = selectedNode.data!.id!;
+    componentRef!.instance.visibleTileType = tileType;
+    componentRef!.instance.id = selectedNode.data!.id!;
     const name = selectedNode.data?.label ?? selectedNode.data?.shortId
 
     let headerPrefix = "";
@@ -1840,7 +1891,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error("tileType of type" + tileType + " cannot be recognized");
     }
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: ontologyViewerTileId,
@@ -1880,6 +1931,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any) {
         this.removeFromTileMap(panel.id, tileType);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any) {
         const panelIDs = jsPanel.getPanels(function () {
