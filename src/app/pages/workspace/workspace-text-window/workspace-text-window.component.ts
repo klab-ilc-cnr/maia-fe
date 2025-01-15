@@ -345,6 +345,11 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+  
+    // Distruggi componenti dinamici
+    this.textoAnnotation = null!;
+    this.textRes = null;
+    this.svg = null!;
   }
 
   async onSaveAnnotationFeatures(featuresList: TAnnotationFeature[]) {
