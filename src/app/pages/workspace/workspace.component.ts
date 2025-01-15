@@ -485,7 +485,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (panelExist) { //caso di pannello già presente
-      if (startingRowIndex) {
+      if (startingRowIndex !== undefined && startingRowIndex !== null) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
         this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!);
         textTileComponent.component.instance.loadInitialData();
@@ -497,7 +497,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
-    if (startingRowIndex) {
+    if (startingRowIndex !== undefined && startingRowIndex !== null) {
       this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!);
     }
 
