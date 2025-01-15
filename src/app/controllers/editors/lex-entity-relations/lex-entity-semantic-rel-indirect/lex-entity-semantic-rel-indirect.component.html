@@ -6,7 +6,8 @@
     [suggestions]="suggestions"
     field="relationshipLabel"
     (completeMethod)="onSearchForSuggestions($event)"
-    (onSelect)="onSelectSuggestionUpdateRelationship($event, control)">
+    (onSelect)="onSelectSuggestionUpdateRelationship($event, control)" [virtualScroll]="true" [virtualScrollItemSize]="34"
+    appendTo="body">
   </p-autoComplete>
 
   <p-tieredMenu #propertiesMenu [model]="menuItems" [popup]="true" appendTo="body"></p-tieredMenu>
