@@ -3,3 +3,41 @@
 </span>
 <div id="panelsContainer" #panelsContainer>
 </div>
+
+<p-dialog [header]="'ONTOLOGY.UPLOAD.uploadFileTitle'|translate" class="modal" [(visible)]="visibleUploadFile"
+  [modal]="true" [style]="{ minWidth: '20vw', maxWidth: '50vw' }" appendTo="body" *ngIf="visibleUploadFile">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmitFileUploaderModal()" [formGroup]="uploaderForm" id="ontologyUploaderForm" class="validated">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">{{'ONTOLOGY.UPLOAD.selectFile'|translate}} *</label>
+            <input type="file" class="form-control"
+              [ngClass]="{'is-invalid': !isFileUploaded && (isFileUploaderTouched || isFileSizeExceed)}"
+              aria-label="file example" id="fileUploader" accept=".owl,.rdf,.ttl" formControlName="file"
+              (change)="onFileUpload($event)" (click)="onFileUploaderTouch()" />
+            <div *ngIf="!isFileUploaded && isFileSizeExceed" class="invalid-feedback">
+              {{'ONTOLOGY.UPLOAD.fileExceedsSizeErrorMsg'|translate}}
+            </div>
+            <div *ngIf="!isFileUploaded && ontologyFileExtensionUnsupported" class="invalid-feedback">
+              {{'ONTOLOGY.UPLOAD.fileExtensionUnsupported'|translate}}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="w-full mb-4">
+            <em>{{'ONTOLOGY.UPLOAD.checkFileEncoding'|translate}}</em>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="visibleUploadFile = false;">
+              {{'GENERAL.cancel'|translate}}
+            </button>
+            <button type="submit" class="btn btn-primary"
+              [disabled]="uploaderForm.invalid || (!isFileUploaded && (isFileUploaderTouched || isFileSizeExceed || ontologyFileExtensionUnsupported))">{{'GENERAL.confirm'|translate}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-dialog>

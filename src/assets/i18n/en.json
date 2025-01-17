@@ -287,6 +287,16 @@
                 "negativeDataPropertyAssertions": "Negative data property assertions"
             },
             "USAGE": {}
+        },
+        "UPLOAD": {
+            "uploadFileTitle": "Upload Ontology",
+            "selectFile": "Select file",
+            "uploaderType": "Uploader type",
+            "errorLoadingFile": "Cannot upload the selected file",
+            "fileExceedsSizeErrorMsg": "File size exceeds the allowed 5MB",
+            "fileExtensionUnsupported": "File extension not supported",
+            "checkFileEncoding": "Check that the file uses UTF-8 encoding",
+            "loadSuccess": "Ontology loaded successfully"
         }
     },
     "ONTOLOGY_CLASS_EXPLORER": {
