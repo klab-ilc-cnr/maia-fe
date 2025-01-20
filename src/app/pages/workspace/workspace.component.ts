@@ -229,98 +229,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private dictionaryService: DictionaryService,
   ) { }
 
-  /**Method that handles the display of the loading modal of a new file */
-  showUploadFileModal(): void {
-    this.uploaderForm.reset();
-    this.visibleUploadFile = true;
-  }
-
-  /**
-* Method that handles the upload event of a file
-* @param event {any} upload event of a file
-* @returns {void}
-*/
-  onFileUpload(event: any): void {
-    const validExtensions = ['.owl', '.rdf', '.ttl'];
-    const file = event.target.files[0];
-
-    if (!file) {
-      this.fileUploaded = undefined;
-      return;
-    }
-
-    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
-
-    if (!validExtensions.includes(fileExtension)) {
-      this.fileUploaded = undefined;
-      this.isFileUploaded = false;
-      this.ontologyFileExtensionUnsupported = true;
-      return;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      this.fileUploaded = undefined;
-      this.isFileUploaded = false;
-      this.isFileSizeExceed = true;
-      return;
-    }
-
-    this.fileUploaded = file;
-
-    this.isFileUploaded = true;
-    this.isFileSizeExceed = false;
-    this.ontologyFileExtensionUnsupported = false;
-  }
-
-  /**Method that handles touch on the uploader */
-  onFileUploaderTouch(): void {
-    this.isFileUploaderTouched = true;
-  }
-  /**
- * Method that submits the upload of a file
- * @returns {void}
- */
-  onSubmitFileUploaderModal(): void {
-    if (this.uploaderForm.invalid || !this.fileUploaded) { //invalid form or file not uploaded
-      return this.saveUploadFileWithFormErrors();
-    }
-
-    if (this.fileUploaded) {
-      const fileData = new FormData();
-      fileData.append('file', this.fileUploaded);
-      this.ontologyService.upload(fileData).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
-          this.fileUploaded = undefined;
-          return throwError(() => new Error(error.error));
-        }),
-      ).subscribe(
-        () => {
-          this.fileUploaded = undefined;
-          this.messageService.add(this.msgConfService.generateSuccessMessageConfig('ONTOLOGY.UPLOAD.loadSuccess'));
-        });
-    }
-    else {
-      this.messageService.add(this.msgConfService.generateErrorMessageConfig(this.commonService.translateKey('ONTOLOGY.UPLOAD.errorLoadingFile')));
-    }
-
-    this.visibleUploadFile = false;
-  }
-
-  /**
-* @private
-* Method that marks form fields as touched and reports failure to load
-*/
-  private saveUploadFileWithFormErrors(): void {
-    this.uploaderForm.markAllAsTouched();
-
-    if (!this.fileUploaded) {
-      this.isFileUploaded = false;
-      this.isFileUploaderTouched = true;
-    }
-  }
-
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
 
@@ -1356,6 +1264,98 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const element = componentRef.location.nativeElement;
     return element;
+  }
+
+  /**Method that handles the display of the loading modal of a new file */
+  showUploadFileModal(): void {
+    this.uploaderForm.reset();
+    this.visibleUploadFile = true;
+  }
+
+  /**
+* Method that handles the upload event of a file
+* @param event {any} upload event of a file
+* @returns {void}
+*/
+  onFileUpload(event: any): void {
+    const validExtensions = ['.owl', '.rdf', '.ttl'];
+    const file = event.target.files[0];
+
+    if (!file) {
+      this.fileUploaded = undefined;
+      return;
+    }
+
+    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+
+    if (!validExtensions.includes(fileExtension)) {
+      this.fileUploaded = undefined;
+      this.isFileUploaded = false;
+      this.ontologyFileExtensionUnsupported = true;
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      this.fileUploaded = undefined;
+      this.isFileUploaded = false;
+      this.isFileSizeExceed = true;
+      return;
+    }
+
+    this.fileUploaded = file;
+
+    this.isFileUploaded = true;
+    this.isFileSizeExceed = false;
+    this.ontologyFileExtensionUnsupported = false;
+  }
+
+  /**Method that handles touch on the uploader */
+  onFileUploaderTouch(): void {
+    this.isFileUploaderTouched = true;
+  }
+  /**
+ * Method that submits the upload of a file
+ * @returns {void}
+ */
+  onSubmitFileUploaderModal(): void {
+    if (this.uploaderForm.invalid || !this.fileUploaded) { //invalid form or file not uploaded
+      return this.saveUploadFileWithFormErrors();
+    }
+
+    if (this.fileUploaded) {
+      const fileData = new FormData();
+      fileData.append('file', this.fileUploaded);
+      this.ontologyService.upload(fileData).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))
+          this.fileUploaded = undefined;
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(
+        () => {
+          this.fileUploaded = undefined;
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig('ONTOLOGY.UPLOAD.loadSuccess'));
+        });
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(this.commonService.translateKey('ONTOLOGY.UPLOAD.errorLoadingFile')));
+    }
+
+    this.visibleUploadFile = false;
+  }
+
+  /**
+* @private
+* Method that marks form fields as touched and reports failure to load
+*/
+  private saveUploadFileWithFormErrors(): void {
+    this.uploaderForm.markAllAsTouched();
+
+    if (!this.fileUploaded) {
+      this.isFileUploaded = false;
+      this.isFileUploaderTouched = true;
+    }
   }
 
   /**
