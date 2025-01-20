@@ -2,7 +2,7 @@
     appendTo="body" [virtualScroll]="true" (onSelect)="onSelectSuggestion($event)" [field]="field"
     [forceSelection]="forceSelection" [(ngModel)]="valueToShow"
     [showEmptyMessage]="true" emptyMessage="No matching"
-    [styleClass]="styleClass" [inputStyleClass]="inputStyleClass">
+    [styleClass]="styleClass" [inputStyleClass]="inputStyleClass" [virtualScroll]="true" [virtualScrollItemSize]="34">
     <ng-template *ngIf="showOptionPrefix" let-item pTemplate="item">
         <strong>{{item[prefixField]}}: </strong>{{item[field]}}
     </ng-template>
