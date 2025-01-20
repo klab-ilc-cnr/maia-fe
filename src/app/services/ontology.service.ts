@@ -20,14 +20,6 @@ export class OntologyService {
     this.lexoUrl = environment.maiaBeLexoUrl;
   }
 
-  getDirectSubClasses(classId?: string): Observable<any> {
-    if (classId) {
-      return this.http.get(`${this.lexoUrl}/ontology/data/classes?direct=true&classId=${classId}`);
-    }
-
-    return this.http.get(`${this.lexoUrl}/ontology/data/classes?direct=true`);
-  }
-
   /**
    * Upload an ontology file
    * @param fileInForm 
