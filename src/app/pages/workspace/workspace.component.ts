@@ -128,6 +128,19 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     file: new FormControl<File | null>(null, Validators.required),
   });
 
+  /**Defines whether a file has been uploaded */
+  isFileUploaded = false;
+  /**Defines panel visibility for loading a new file into the corpus */
+  visibleUploadFile = false;
+  /**Uploaded file */
+  fileUploaded: File | undefined;
+  /**Definisce se l'uploader dei file è stato toccato */
+  isFileUploaderTouched = false;
+  /**Defines whether the maximum size of a file has been exceeded */
+  isFileSizeExceed = false;
+  /**File extensions for ontology file upload */
+  ontologyFileExtensionUnsupported = false;
+
   /**Riferimento al contenitore die pannelli */
   @ViewChild('panelsContainer') public container: ElementRef | undefined | null;
   /**Riferimento al contenitore del menu del workspace */
@@ -215,18 +228,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private ontologyService: OntologyService,
     private dictionaryService: DictionaryService,
   ) { }
-
-  /**Defines whether a file has been uploaded */
-  isFileUploaded = false;
-  /**Defines panel visibility for loading a new file into the corpus */
-  visibleUploadFile = false;
-  /**Uploaded file */
-  fileUploaded: File | undefined;
-  /**Definisce se l'uploader dei file è stato toccato */
-  isFileUploaderTouched = false;
-  /**Defines whether the maximum size of a file has been exceeded */
-  isFileSizeExceed = false;
-  ontologyFileExtensionUnsupported = false;
 
   /**Method that handles the display of the loading modal of a new file */
   showUploadFileModal(): void {
