@@ -345,6 +345,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
+
+    this.textoAnnotation = null!;
+    this.textRes = null;
+    this.textoAnnotationsRes = [];
+    this.selectionHighlights = [];
+    this.svg = null!;
+    this.visibleLayers = [];
+    this.selectedLayers = [];
   }
 
   async onSaveAnnotationFeatures(featuresList: TAnnotationFeature[]) {
@@ -798,7 +806,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.specialTextSelectionHighlight.textSelection.endIndex = end;
     this.specialTextSelectionHighlight.active = true;
 
-    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex, this.specialTextSelectionHighlight.textSelection.endIndex , text);
+    this.initAnnotationData(this.specialTextSelectionHighlight.textSelection.startIndex, this.specialTextSelectionHighlight.textSelection.endIndex, text);
   }
 
   /**
