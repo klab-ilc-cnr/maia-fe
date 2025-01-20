@@ -285,7 +285,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.fileUploaded) {
-      this.ontologyService.upload(this.fileUploaded).pipe(
+      const fileData = new FormData();
+      fileData.append('file', this.fileUploaded);
+      this.ontologyService.upload(fileData).pipe(
         take(1),
         catchError((error: HttpErrorResponse) => {
           this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message))

@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class OntologyService {
 
   /**Url for texto-related requests */
-  private textoUrl: string;
+  private lexoUrl: string;
   commonService: any;
 
   /**
@@ -17,13 +17,26 @@ export class OntologyService {
    * @param http {HttpClient} Performs HTTP requests
    */
   constructor(private http: HttpClient) {
-    this.textoUrl = environment.maiaBeTextoUrl;
+    this.lexoUrl = environment.maiaBeLexoUrl;
   }
 
-  upload(file: File): Observable<any> {
+  getDirectSubClasses(classId?: string): Observable<any> {
+    if (classId) {
+      return this.http.get(`${this.lexoUrl}/ontology/data/classes?direct=true&classId=${classId}`);
+    }
+
+    return this.http.get(`${this.lexoUrl}/ontology/data/classes?direct=true`);
+  }
+
+  /**
+   * Upload an ontology file
+   * @param fileInForm 
+   * @returns 
+   */
+  upload(fileInForm: FormData): Observable<any> {
     return this.http.post(
-      `${this.textoUrl}/ontology/data/upload`,
-      file
+      `${this.lexoUrl}/ontology/data/upload`,
+      fileInForm
     )
   }
 }
