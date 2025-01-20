@@ -1782,9 +1782,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
  * panel configuration
  */
   private generateOntologyExplorerPanelConfiguration(ontologyPanelId: string) {
-    const componentRef = this.vcr.createComponent(WorkspaceOntologyExplorerComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceOntologyExplorerComponent) as ComponentRef<WorkspaceOntologyExplorerComponent> | null;
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: ontologyPanelId,
@@ -1808,28 +1808,28 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       resizeit: {
         minWidth: 250,
         resize: (panel: any, paneldata: any, event: any) => {
-          componentRef.instance.updateHeight(paneldata.height);
+          componentRef!.instance.updateHeight(paneldata.height);
         }
       },
       onmaximized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       onminimized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);;
+        componentRef!.instance.updateHeight(panelH);;
       },
       onnormalized: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       onsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       onunsmallified: function (this: any, panel: any, status: any) {
         const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
-        componentRef.instance.updateHeight(panelH);
+        componentRef!.instance.updateHeight(panelH);
       },
       headerControls: {
         add: {
@@ -1843,6 +1843,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
         this.removeFromTileMap(panel.id, TileType.ONTOLOGY_EXPLORER);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
     };
 
@@ -1862,10 +1867,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns 
    */
   private generateOntologyViewerTileConfiguration(ontologyViewerTileId: string, selectedNode: TreeNode<OntologyBase>, tileType: TileType) {
-    const componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent);
+    let componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent) as ComponentRef<WorkspaceOntologyViewerComponent> | null;
 
-    componentRef.instance.visibleTileType = tileType;
-    componentRef.instance.id = selectedNode.data!.id!;
+    componentRef!.instance.visibleTileType = tileType;
+    componentRef!.instance.id = selectedNode.data!.id!;
     const name = selectedNode.data?.label ?? selectedNode.data?.shortId
 
     let headerPrefix = "";
@@ -1886,7 +1891,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error("tileType of type" + tileType + " cannot be recognized");
     }
 
-    const element = componentRef.location.nativeElement;
+    const element = componentRef!.location.nativeElement;
 
     const config = {
       id: ontologyViewerTileId,
@@ -1926,6 +1931,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       onclosed: function (this: any, panel: any) {
         this.removeFromTileMap(panel.id, tileType);
         this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
       },
       onfronted: function (this: any, panel: any) {
         const panelIDs = jsPanel.getPanels(function () {
