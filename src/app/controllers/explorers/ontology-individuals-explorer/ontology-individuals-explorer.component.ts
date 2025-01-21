@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Observable, of, Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
+import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyIndividual } from 'src/app/models/ontology/ontology-individual.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
@@ -75,11 +76,11 @@ export class OntologyIndividualsExplorerComponent implements OnInit {
  * @param node
  */
   private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyIndividual>): void {
-    if (node.data?.name === node.data?.label) {
+    if (!node.data!.label || node.data!.label.length === 0 || node.data?.name === node.data?.label) {
       node.data!.name = node.data!.shortId!;
     }
     else if (node.data?.name === node.data?.shortId) {
-      node.data!.name = node.data!.label;
+      node.data!.name = node.data!.label[0].value; //FIXME per ora prendo il primo elemento di label se esiste, successivamente bisognerà gestire il multilanguage
     }
 
     if (node.children) {
@@ -141,7 +142,10 @@ export class OntologyIndividualsExplorerComponent implements OnInit {
               status: dataResults[i].status,
               label: dataResults[i].label,
               shortId: dataResults[i].shortId,
-              children: 0
+              children: 0,
+              confidence: 0,
+              type: OntologyType.individual,
+              comment: ''
             };
 
             let node: TreeNode<OntologyIndividual> = {
@@ -184,7 +188,7 @@ export class OntologyIndividualsExplorerComponent implements OnInit {
       data.creationDate = new Date().toLocaleString();
       data.lastUpdate = new Date().toLocaleString();
       data.status = OntologyStatuses.working;
-      data.label = label;
+      data.label = [];
       data.shortId = shortId;
       data.children = 0;
 
@@ -207,7 +211,7 @@ export class OntologyIndividualsExplorerComponent implements OnInit {
     data1.creationDate = new Date().toLocaleString();
     data1.lastUpdate = new Date().toLocaleString();
     data1.status = OntologyStatuses.completed;
-    data1.label = label;
+    data1.label = [];
     data1.shortId = shortId;
     data1.children = 0;
 
@@ -218,7 +222,7 @@ export class OntologyIndividualsExplorerComponent implements OnInit {
     data2.creationDate = new Date().toLocaleString();
     data2.lastUpdate = new Date().toLocaleString();
     data2.status = OntologyStatuses.reviewed;
-    data2.label = label;
+    data2.label = [];
     data2.shortId = shortId;
     data2.children = 0;
 

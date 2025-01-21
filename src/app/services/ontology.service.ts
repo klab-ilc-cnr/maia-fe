@@ -28,7 +28,7 @@ export class OntologyService {
    */
   getDirectSubClasses(classId?: string): Observable<OntologyClass[]> {
     if (classId) {
-      return this.http.get<OntologyClass[]>(`${this.lexoUrl}/ontology/data/classes?direct=true&classId=${classId}`);
+      return this.http.get<OntologyClass[]>(`${this.lexoUrl}/ontology/data/classes?id=${encodeURIComponent(classId)}&direct=true`);
     }
 
     return this.http.get<OntologyClass[]>(`${this.lexoUrl}/ontology/data/classes?direct=true`);

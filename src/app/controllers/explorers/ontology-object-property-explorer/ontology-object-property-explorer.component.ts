@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { of, Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
+import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyObjectProperty } from 'src/app/models/ontology/ontology-object-property.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
@@ -76,11 +77,11 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
  * @param node
  */
   private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyObjectProperty>): void {
-    if (node.data?.name === node.data?.label) {
+    if (!node.data!.label || node.data!.label.length === 0 || node.data?.name === node.data?.label) {
       node.data!.name = node.data!.shortId!;
     }
     else if (node.data?.name === node.data?.shortId) {
-      node.data!.name = node.data!.label;
+      node.data!.name = node.data!.label[0].value; //FIXME per ora prendo il primo elemento di label se esiste, successivamente bisognerà gestire il multilanguage
     }
 
     if (node.children) {
@@ -142,7 +143,10 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
               status: dataResults[i].status,
               label: dataResults[i].label,
               shortId: dataResults[i].shortId,
-              children: dataResults[i].children
+              children: dataResults[i].children,
+              confidence: 0,
+              type: OntologyType.object,
+              comment: ''
             };
 
             let node: TreeNode<OntologyObjectProperty> = {
@@ -187,7 +191,10 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
               status: dataResults[i].status,
               label: dataResults[i].label,
               shortId: dataResults[i].shortId,
-              children: dataResults[i].children
+              children: dataResults[i].children,
+              confidence: 0,
+              type: OntologyType.object,
+              comment: ''
             };
 
             if (!node.children) { node.children = []; }
@@ -233,7 +240,7 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
       data.creationDate = new Date().toLocaleString();
       data.lastUpdate = new Date().toLocaleString();
       data.status = OntologyStatuses.working;
-      data.label = label;
+      data.label = [];
       data.shortId = shortId;
       data.children = 2;
 
@@ -256,7 +263,7 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
     data1.creationDate = new Date().toLocaleString();
     data1.lastUpdate = new Date().toLocaleString();
     data1.status = OntologyStatuses.completed;
-    data1.label = label;
+    data1.label = [];
     data1.shortId = shortId;
     data1.children = 2;
 
@@ -267,7 +274,7 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
     data2.creationDate = new Date().toLocaleString();
     data2.lastUpdate = new Date().toLocaleString();
     data2.status = OntologyStatuses.reviewed;
-    data2.label = label;
+    data2.label = [];
     data2.shortId = shortId;
     data2.children = 2;
 

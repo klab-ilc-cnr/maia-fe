@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { of, Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
+import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
 import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
@@ -77,11 +78,11 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
  * @param node
  */
   private treeTraversalAlternateLabelShortId(node: TreeNode<OntologyDataProperty>): void {
-    if (node.data?.name === node.data?.label) {
+    if (!node.data!.label || node.data!.label.length === 0 || node.data?.name === node.data?.label) {
       node.data!.name = node.data!.shortId!;
     }
     else if (node.data?.name === node.data?.shortId) {
-      node.data!.name = node.data!.label;
+      node.data!.name = node.data!.label[0].value; //FIXME per ora prendo il primo elemento di label se esiste, successivamente bisognerà gestire il multilanguage
     }
 
     if (node.children) {
@@ -141,9 +142,12 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
               creationDate: dataResults[i].creationDate,
               lastUpdate: dataResults[i].lastUpdate,
               status: dataResults[i].status,
-              label: dataResults[i].label,
+              label: [],
               shortId: dataResults[i].shortId,
-              children: dataResults[i].children
+              children: dataResults[i].children,
+              confidence: 0,
+              type: OntologyType.data,
+              comment: ''
             };
 
             let node: TreeNode<OntologyDataProperty> = {
@@ -186,9 +190,12 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
               creationDate: dataResults[i].creationDate,
               lastUpdate: dataResults[i].lastUpdate,
               status: dataResults[i].status,
-              label: dataResults[i].label,
+              label: [],
               shortId: dataResults[i].shortId,
-              children: dataResults[i].children
+              children: dataResults[i].children,
+              confidence: 0,
+              type: OntologyType.data,
+              comment: ''
             };
 
             if (!node.children) { node.children = []; }
