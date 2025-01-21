@@ -34,6 +34,19 @@ export class OntologyService {
     return this.http.get<OntologyClass[]>(`${this.lexoUrl}/ontology/data/classes?direct=true`);
   }
 
+    /**
+   * Get subproperties in the ontology
+   * @param classId 
+   * @returns 
+   */
+    getSubProperties(type: string, propertyId?: string): Observable<OntologyClass[]> {
+      if (propertyId) {
+        return this.http.get<OntologyClass[]>(`${this.lexoUrl}/ontology/data/properties?id=${encodeURIComponent(propertyId)}&direct=true&type=${type}`);
+      }
+  
+      return this.http.get<OntologyClass[]>(`${this.lexoUrl}/ontology/data/properties?direct=true&type=${type}`);
+    }
+
   /**
    * Upload an ontology file
    * @param fileInForm 
