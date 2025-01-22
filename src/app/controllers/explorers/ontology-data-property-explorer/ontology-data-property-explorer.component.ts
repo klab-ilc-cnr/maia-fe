@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
-import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
