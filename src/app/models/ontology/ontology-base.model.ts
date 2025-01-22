@@ -47,9 +47,6 @@ export class OntologyBase {
 
         comment!: string;
 
-        /**name to be shown */
-        name!: string;//TODO: remove
-
         /**node status */
         status: OntologyStatuses = OntologyStatuses.unknown;
 }

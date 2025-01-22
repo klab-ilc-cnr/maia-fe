@@ -57,12 +57,12 @@ export class OntologyService {
 
   /**
 * Get individual in the ontology
-* @param individualId 
+* @param id 
 * @returns 
 */
-  getIndividuals(individualId?: string): Observable<OntologyIndividual[]> {
-    if (individualId) {
-      return this.http.get<OntologyIndividual[]>(`${this.lexoUrl}/ontology/data/individuals?id=${encodeURIComponent(individualId)}`);
+  getInstances(id?: string): Observable<OntologyIndividual[]> {
+    if (id) {
+      return this.http.get<OntologyIndividual[]>(`${this.lexoUrl}/ontology/data/individuals?id=${encodeURIComponent(id)}`);
     }
 
     return this.http.get<OntologyIndividual[]>(`${this.lexoUrl}/ontology/data/individuals`);

@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { Observable, of, Subject, take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
-import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyIndividual } from 'src/app/models/ontology/ontology-individual.model';
-import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { OntologyService } from 'src/app/services/ontology.service';
@@ -110,7 +108,7 @@ export class OntologyIndividualsExplorerComponent implements OnInit {
     this.loading = true;
     this.results = [];
 
-    this.ontologyService.getIndividuals().pipe(
+    this.ontologyService.getInstances().pipe(
       take(1),
     ).subscribe({
       next: (dataResults) => {
