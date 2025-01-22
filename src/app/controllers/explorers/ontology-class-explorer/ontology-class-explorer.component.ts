@@ -114,7 +114,6 @@ export class OntologyClassExplorerComponent implements OnInit {
     ).subscribe({
       next: (dataResults: OntologyClass[]) => {
         for (let i = 0; i < dataResults.length; i++) {
-
           let node: TreeNode<OntologyClass> = {
             data: dataResults[i],
             leaf: dataResults[i].children === 0
@@ -122,6 +121,7 @@ export class OntologyClassExplorerComponent implements OnInit {
 
           this.results.push(node);
         }
+        
         this.results = [...this.results];
         this.loading = false;
       },
@@ -147,14 +147,13 @@ export class OntologyClassExplorerComponent implements OnInit {
         node.children = [];
 
         for (let i = 0; i < dataResults.length; i++) {
-
           node.children.push({
             data: dataResults[i],
             leaf: dataResults[i].children === 0
           });
-          this.loading = false;
         }
 
+        this.loading = false;
         this.results = [...this.results];
       },
       error: (error) => {

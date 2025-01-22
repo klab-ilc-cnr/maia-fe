@@ -106,7 +106,6 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
    */
   loadNodes(event: unknown) {
     this.loading = true;
-
     this.results = [];
 
     this.ontologyService.getSubProperties('object').pipe(
@@ -114,7 +113,6 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
     ).subscribe({
       next: (dataResults) => {
         for (let i = 0; i < dataResults.length; i++) {
-
           let node: TreeNode<OntologyObjectProperty> = {
             data: dataResults[i],
             leaf: dataResults[i].children === 0
@@ -139,7 +137,6 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
    */
   onNodeExpand(event: { node: TreeNode<OntologyObjectProperty>; }) {
     this.loading = true;
-
     const node = event.node;
 
     this.ontologyService.getSubProperties('object', node.data!.id).pipe(
@@ -149,13 +146,10 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
         node.children = [];
 
         for (let i = 0; i < dataResults.length; i++) {
-
-          if (!node.children) { node.children = []; }
-
           node.children.push({
             data: dataResults[i],
             leaf: dataResults[i].children === 0
-          })
+          });
         }
 
         this.loading = false;
@@ -167,7 +161,6 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
       }
     });
 
-    this.results = [...this.results];
 
   }
 }
