@@ -6,7 +6,7 @@ import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyDataProperty } from 'src/app/models/ontology/ontology-data-property.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
-import { OntologyService } from 'src/app/services/ontology.service';
+import { OntologyService, SubPropertyType } from 'src/app/services/ontology.service';
 
 @Component({
   selector: 'app-ontology-data-property-explorer',
@@ -110,7 +110,7 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
     this.loading = true;
     this.results = [];
 
-    this.ontologyService.getSubProperties('data').pipe(
+    this.ontologyService.getSubProperties(SubPropertyType.data).pipe(
       take(1),
     ).subscribe({
       next: (dataResults) => {
@@ -141,7 +141,7 @@ export class OntologyDataPropertyExplorerComponent implements OnInit {
     this.loading = false;
     const node = event.node;
 
-    this.ontologyService.getSubProperties('data', node.data!.id).pipe(
+    this.ontologyService.getSubProperties(SubPropertyType.data, node.data!.id).pipe(
       take(1),
     ).subscribe({
       next: (dataResults) => {

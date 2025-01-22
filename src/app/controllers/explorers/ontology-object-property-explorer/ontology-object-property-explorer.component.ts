@@ -5,7 +5,7 @@ import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyObjectProperty } from 'src/app/models/ontology/ontology-object-property.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
-import { OntologyService } from 'src/app/services/ontology.service';
+import { OntologyService, SubPropertyType } from 'src/app/services/ontology.service';
 
 @Component({
   selector: 'app-ontology-object-property-explorer',
@@ -108,7 +108,7 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
     this.loading = true;
     this.results = [];
 
-    this.ontologyService.getSubProperties('object').pipe(
+    this.ontologyService.getSubProperties(SubPropertyType.object).pipe(
       take(1),
     ).subscribe({
       next: (dataResults) => {
@@ -139,7 +139,7 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
     this.loading = true;
     const node = event.node;
 
-    this.ontologyService.getSubProperties('object', node.data!.id).pipe(
+    this.ontologyService.getSubProperties(SubPropertyType.object, node.data!.id).pipe(
       take(1),
     ).subscribe({
       next: (dataResults) => {

@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { OntologyClass } from '../models/ontology/ontology-class.model';
 
+export enum SubPropertyType{
+  object = "object",
+  data = "data"
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -39,7 +44,7 @@ export class OntologyService {
    * @param classId 
    * @returns 
    */
-    getSubProperties(type: string, propertyId?: string): Observable<OntologyClass[]> {
+    getSubProperties(type: SubPropertyType, propertyId?: string): Observable<OntologyClass[]> {
       if (propertyId) {
         return this.http.get<OntologyClass[]>(`${this.lexoUrl}/ontology/data/properties?id=${encodeURIComponent(propertyId)}&direct=true&type=${type}`);
       }
