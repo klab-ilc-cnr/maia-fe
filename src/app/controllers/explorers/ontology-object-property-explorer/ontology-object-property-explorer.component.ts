@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { of, Subject, take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
-import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyObjectProperty } from 'src/app/models/ontology/ontology-object-property.model';
-import { OntologyStatuses } from 'src/app/models/ontology/ontology-statuses.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { OntologyService } from 'src/app/services/ontology.service';
@@ -20,7 +18,6 @@ export class OntologyObjectPropertyExplorerComponent implements OnInit {
 
   private readonly unsubscribe$ = new Subject();
 
-  public static rootDataId = "http://www.w3.org/2002/07/owl#topObjectProperty";
   /**offset point for the item tree */
   public treeHeightOffset: number = 193;
   public loading: boolean = false;
