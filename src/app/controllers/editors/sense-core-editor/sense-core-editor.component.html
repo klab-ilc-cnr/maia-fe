@@ -39,19 +39,19 @@
         styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
       </div>
     <div class="field col-6">
-      <label for="semanticMarks" class="w-full">{{translatePrefix+'.semanticMarks'|translate}}:</label>
-      <p-autoComplete [suggestions]="(semanticMarks$|async)||[]" [delay]="300" name="semanticMarks" [virtualScroll]="true" (completeMethod)="onFilter('semanticMarks', $event)"
-        emptyMessage="No results" [multiple]="true" formControlName="semanticMarks" dataKey="lexicalConcept"
-        inputStyleClass="w-full" inputId="semanticMarks" [forceSelection]="true" appendTo="body" field="defaultLabel"
-        styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
-      </div>
-    <div class="field col-6">
       <label for="grammaticalMarks" class="w-full">{{translatePrefix+'.grammaticalMarks'|translate}}:</label>
       <p-autoComplete [suggestions]="(grammaticalMarks$|async)||[]" [delay]="300" name="grammaticalMarks" [virtualScroll]="true" (completeMethod)="onFilter('grammaticalMarks', $event)"
         emptyMessage="No results" [multiple]="true" formControlName="grammaticalMarks" dataKey="lexicalConcept"
         inputStyleClass="w-full" inputId="grammaticalMarks" [forceSelection]="true" appendTo="body" field="defaultLabel"
         styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
       </div>
+      <div class="field col-6">
+        <label for="semanticMarks" class="w-full">{{translatePrefix+'.semanticMarks'|translate}}:</label>
+        <p-autoComplete [suggestions]="(semanticMarks$|async)||[]" [delay]="300" name="semanticMarks" [virtualScroll]="true" (completeMethod)="onFilter('semanticMarks', $event)"
+          emptyMessage="No results" [multiple]="true" formControlName="semanticMarks" dataKey="lexicalConcept"
+          inputStyleClass="w-full" inputId="semanticMarks" [forceSelection]="true" appendTo="body" field="defaultLabel"
+          styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event)" (onUnselect)="onDissociateLexicalConcept($event)"></p-autoComplete>
+        </div>  
     <div class="field col-12" *ngIf="!demoHide"> <!--NOTE REMOVE DEMOHIDE WHEN FULLY DEVELOPED-->
       <p-fieldset>
         <ng-template pTemplate="header">
