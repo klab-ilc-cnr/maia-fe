@@ -243,6 +243,7 @@
         "objectProperties": "Object Property",
         "dataProperties": "Data Property",
         "individuals": "Individual",
+        "ontology": "Ontology",
         "annotations": "Annotations",
         "usage": "Usage",
         "VIEWER": {
