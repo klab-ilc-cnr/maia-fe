@@ -78,6 +78,11 @@ export class OntologyClassExplorerComponent implements OnInit {
     return node.shortId!;
   }
 
+  /**
+   * get comment of a node
+   * @param node 
+   * @returns 
+   */
   getComment(node: OntologyClass) {
     if (node.comment && node.comment.length !== 0) {
       return node.comment[0].value; //FIXME per ora prendo il primo elemento di comment se esiste, successivamente bisognerà gestire il multilanguage
