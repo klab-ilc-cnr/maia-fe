@@ -4,7 +4,7 @@ import { IconBaseComponent } from '../icon-base/icon-base.component';
 
 @Component({
   selector: 'app-icon-author',
-  templateUrl: './icon-author.component.html',
+  templateUrl: '../icon-base/icon-base-tooltip.component.html',
   styleUrls: ['../icon-base/icon-base.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

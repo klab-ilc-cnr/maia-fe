@@ -11,6 +11,17 @@ export class LabelObject {
         type!: string;
 }
 
+export class CommentObject {
+        /**comment language */
+        language!: string;
+
+        /**comment value */
+        value!: string;
+
+        /**comment type */
+        type!: string;
+}
+
 export enum OntologyType {
         class = "class",
         equivalentClass = "equivalentClass",
@@ -45,7 +56,7 @@ export class OntologyBase {
 
         confidence!: number;
 
-        comment!: string;
+        comment!: CommentObject[];
 
         /**node status */
         status: OntologyStatuses = OntologyStatuses.unknown;
