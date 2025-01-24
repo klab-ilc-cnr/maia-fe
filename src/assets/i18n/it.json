@@ -321,6 +321,10 @@
         "addChild": "Aggiungi classe",
         "remove": "Rimuovi"
     },
+    "ONTOLOGY_DATA": {
+        "iri": "Ontology IRI",
+        "version": "Ontology Version IRI"
+    },
     "SEARCH": {
         "insertForm": "inserisci forma",
         "insertLemma": "inserisci lemma",

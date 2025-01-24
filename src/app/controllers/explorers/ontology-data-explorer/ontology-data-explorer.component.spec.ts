@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OntologyOntologyExplorerComponent } from './ontology-ontology-explorer.component';
+import { OntologyDataExplorerComponent } from './ontology-data-explorer.component';
 
 describe('OntologyOntologyExplorerComponent', () => {
-  let component: OntologyOntologyExplorerComponent;
-  let fixture: ComponentFixture<OntologyOntologyExplorerComponent>;
+  let component: OntologyDataExplorerComponent;
+  let fixture: ComponentFixture<OntologyDataExplorerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OntologyOntologyExplorerComponent ]
+      declarations: [ OntologyDataExplorerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OntologyOntologyExplorerComponent);
+    fixture = TestBed.createComponent(OntologyDataExplorerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
