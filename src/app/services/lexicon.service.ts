@@ -235,6 +235,7 @@ export class LexiconService {
 
   /**
    * Retrieve the list of existing lexical concepts
+   * @param type {string} keyword for the type of lexical concepts (ie marcheDUso|marcheSemantiche|marcheGrammaticali)
    * @returns {Observable<LexicalConceptsResponse>} observable containing the list of existing lexical concepts
    */
   getLexicalConcepts(type: string): Observable<LexicalConceptsResponse> {
