@@ -7,4 +7,9 @@
         <label>{{('ONTOLOGY_DATA.version'|translate)}}:</label>
         <input class="ml-2 flex-grow-1" type="text" disabled="true" pInputText [(ngModel)]="ontologyData.version" />
     </div>
+    <div class="mt-4">
+        <label>{{('ONTOLOGY_DATA.reasonerName'|translate)}}: {{ontologyData.reasonerName}}</label>
+        <label class="ml-5">{{('ONTOLOGY_DATA.reasonerVersion'|translate)}}: {{ontologyData.reasonerVersion}}</label>
+    </div>
+    <app-annotations-section #annotationsSection class="mt-5" [maxSize]="panelHeight/4" [annotations]="annotations"></app-annotations-section>
 </div>

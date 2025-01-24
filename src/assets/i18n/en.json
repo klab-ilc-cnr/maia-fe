@@ -321,7 +321,9 @@
     },
     "ONTOLOGY_DATA": {
         "iri": "Ontology IRI",
-        "version": "Ontology Version IRI"
+        "version": "Ontology Version IRI",
+        "reasonerName": "Reasoner Name",
+        "reasonerVersion": "Reasoner Version"
     },
     "SEARCH": {
         "insertForm": "insert form",
