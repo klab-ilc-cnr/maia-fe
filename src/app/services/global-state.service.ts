@@ -31,6 +31,10 @@ export class GlobalStateService {
     map(resp => resp.list),
     shareReplay(1),
   );
+  grammaticalMarks$ = this.lexiconService.getLexicalConcepts('marcheGrammaticali').pipe(
+    map(resp => resp.list),
+    shareReplay(1),
+  );
   /**Observable of the list of lexical entry types */
   lexicalEntryTypes$ = this.lexiconService.getLexicalEntryTypes().pipe(
     shareReplay(1),
