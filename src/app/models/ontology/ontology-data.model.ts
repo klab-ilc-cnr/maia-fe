@@ -17,4 +17,6 @@ export class OntologyData {
     reasonerName: string = '';
     reasonerVersion: string = '';
     annotations: OntologyDataAnnotations[] = [];
+    directImports: string[] = [];
+    indirectImports: string[] = [];
 }

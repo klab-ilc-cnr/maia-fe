@@ -6,6 +6,7 @@ import { OntologyData, OntologyDataAnnotations } from 'src/app/models/ontology/o
 import { CommonService } from 'src/app/services/common.service';
 import { OntologyService } from 'src/app/services/ontology.service';
 import { AnnotationsSectionComponent } from '../../viewers/common/annotations-section/annotations-section.component';
+import { ScrollPanel } from 'primeng/scrollpanel';
 
 @Component({
   selector: 'app-ontology-data-explorer',
@@ -18,6 +19,8 @@ export class OntologyDataExplorerComponent implements OnInit {
   public panelHeight!: number;
 
   @ViewChild(AnnotationsSectionComponent) public annotationSection: AnnotationsSectionComponent | undefined;
+  @ViewChild('scrollPanelDirectImports') public scrollPanelDirect!: ScrollPanel;
+  @ViewChild('scrollPanelIndirectImports') public scrollPanelIndirect!: ScrollPanel;
 
   public ontologyData!: OntologyData;
   public annotations!: Array<OntologyAnnotations>;
@@ -33,15 +36,15 @@ export class OntologyDataExplorerComponent implements OnInit {
       }),
     ).subscribe((data) => {
       this.ontologyData = data;
+      //FIXME eliminare test
+      this.ontologyData.directImports = [... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports];
       this.annotations = this.adaptAnnotation(this.ontologyData.annotations);
       this.annotationSection?.refreshScrollPanel();
     });
   }
 
   ngAfterViewInit(): void {
-    if (this.annotationSection) {
-      this.annotationSection.refreshScrollPanel();
-    }
+    this.refreshScrollPanels();
   }
 
   /**
@@ -62,9 +65,14 @@ export class OntologyDataExplorerComponent implements OnInit {
   }
 
   /**
-   * Refresh the height of the annotation section
-   */
-  refreshAnnotationHeigh() {
-    this.annotationSection?.refreshScrollPanel();
+   * Refresh the scroll panels
+  */
+  refreshScrollPanels() {
+    if (this.annotationSection) {
+      this.annotationSection.refreshScrollPanel();
+    }
+    
+    this.scrollPanelDirect.cd.detectChanges();
+    this.scrollPanelIndirect.calculateContainerHeight();
   }
 }

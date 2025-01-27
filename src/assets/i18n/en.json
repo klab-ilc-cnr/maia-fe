@@ -323,7 +323,10 @@
         "iri": "Ontology IRI",
         "version": "Ontology Version IRI",
         "reasonerName": "Reasoner Name",
-        "reasonerVersion": "Reasoner Version"
+        "reasonerVersion": "Reasoner Version",
+        "importedOntologies": "Imported Ontologies",
+        "directImports": "Direct Imports",
+        "indirectImports": "Indirect Imports"
     },
     "SEARCH": {
         "insertForm": "insert form",

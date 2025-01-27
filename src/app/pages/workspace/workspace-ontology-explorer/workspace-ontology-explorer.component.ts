@@ -42,7 +42,7 @@ export class WorkspaceOntologyExplorerComponent implements OnInit {
     // Verify open tab is Ontology-Data
     if (index === 4) {
       if (this.ontologyDataExplorerComponent) {
-        this.ontologyDataExplorerComponent.refreshAnnotationHeigh();
+        this.ontologyDataExplorerComponent.refreshScrollPanels();
       }
     }
   }
