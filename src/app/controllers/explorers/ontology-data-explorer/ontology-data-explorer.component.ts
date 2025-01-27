@@ -36,15 +36,9 @@ export class OntologyDataExplorerComponent implements OnInit {
       }),
     ).subscribe((data) => {
       this.ontologyData = data;
-      //FIXME eliminare test
-      this.ontologyData.directImports = [... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports, ... this.ontologyData.directImports];
       this.annotations = this.adaptAnnotation(this.ontologyData.annotations);
       this.annotationSection?.refreshScrollPanel();
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.refreshScrollPanels();
   }
 
   /**
@@ -73,6 +67,9 @@ export class OntologyDataExplorerComponent implements OnInit {
     }
     
     this.scrollPanelDirect.cd.detectChanges();
+    this.scrollPanelDirect.calculateContainerHeight();
+
+    this.scrollPanelIndirect.cd.detectChanges();
     this.scrollPanelIndirect.calculateContainerHeight();
   }
 }
