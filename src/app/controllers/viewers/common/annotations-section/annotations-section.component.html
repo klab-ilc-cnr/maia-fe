@@ -4,8 +4,11 @@
         <p-scrollPanel #scrollPanel [style]="{width: '100%', 'max-height': scrollPanelMaxSize+'px'}">
             <ng-container *ngFor="let element of annotations; let index = index">
                 <div class="flex">
-                    <div class="flex-initial prefix">
+                    <div *ngIf="element.prefix" class="flex-initial prefix">
                         {{element.prefix}}:{{element.shortId}}
+                    </div>
+                    <div *ngIf="!element.prefix" class="flex-initial prefix">
+                        {{element.shortId}}
                     </div>
                     <div *ngIf="element.language" class="flex-initial ml-4 language">[{{'ONTOLOGY.VIEWER.language'|translate}}: {{element.language}}]</div>
                 </div>

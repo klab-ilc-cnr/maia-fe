@@ -34,7 +34,6 @@ export class OntologyDataExplorerComponent implements OnInit {
     ).subscribe((data) => {
       this.ontologyData = data;
       this.annotations = this.adaptAnnotation(this.ontologyData.annotations);
-      this.annotations = [...this.annotations, ...this.annotations]; //TODO ELIMINARE
       this.annotationSection?.refreshScrollPanel();
     });
   }
@@ -54,10 +53,10 @@ export class OntologyDataExplorerComponent implements OnInit {
     return annotations.map((annotation: OntologyDataAnnotations) => {
       return {
         id: annotation.id,
-        prefix: '', //TODO: get prefix
+        prefix: undefined,
         shortId: annotation.shortId,
-        target: annotation.label[0].value, //FIXME: quale valore dell'array prendere?
-        language: annotation.label[0].language //FIXME: quale valore dell'array prendere?
+        target: annotation.label.length > 0 ? annotation.label[0].value : '', // Check if label is not empty
+        language: annotation.label.length > 0 ? annotation.label[0].language : '' // Check if label is not empty
       }
     });
   }
