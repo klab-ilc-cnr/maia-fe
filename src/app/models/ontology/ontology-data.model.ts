@@ -1,14 +1,9 @@
-import { OntologyAnnotations } from "./ontology-annotations.model";
+import { LabelObject } from "./ontology-base.model";
 
-export class OntologyDataAnnotationLabel {
-    value: string = '';
-    language: string = '';
-    type: string = '';
-}
 export class OntologyDataAnnotations {
     id: string = '';
     shortId: string = '';
-    label: OntologyDataAnnotationLabel[] = [];
+    label: LabelObject[] = [];
 }
 
 export class OntologyData {
