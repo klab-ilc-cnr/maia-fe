@@ -22,7 +22,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   /**To manage subscription */
   private readonly unsubscribe$ = new Subject();
   /**List of available statuses */
-  statusForm: string[] = ['completed', 'reviewed', 'working'];
+  statusForm: string[] = ['working','completed', 'reviewed' ];
   /**Dictionary entry of which we show the details */
   @Input() dictionaryEntry!: DictionaryEntry; //TODO set required true on Angular update
   /**Object that makes explicit the non-standard fields stored in the note */
