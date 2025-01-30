@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, lastValueFrom, take, takeUntil } from 'rxjs';
+import { MenuItem, MessageService, TreeNode } from 'primeng/api';
+import { Observable, Subject, catchError, lastValueFrom, take, takeUntil, throwError } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -42,6 +42,10 @@ import { OntologyExplorerTileContent } from 'src/app/models/tile/ontology-explor
 import { WorkspaceOntologyViewerComponent } from './workspace-ontology-viewer/workspace-ontology-viewer.component';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { OntologyBase } from 'src/app/models/ontology/ontology-base.model';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FileUploadType } from 'src/app/models/texto/file-upload-type.enum';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { OntologyService } from 'src/app/services/ontology.service';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -118,6 +122,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   public visibleLayers: Layer[] = [];
 
   workspaceName!: string;
+
+  /**Form to add a file to ontology */
+  uploaderForm = new FormGroup({
+    file: new FormControl<File | null>(null, Validators.required),
+  });
+
+  /**Defines whether a file has been uploaded */
+  isFileUploaded = false;
+  /**Defines panel visibility for loading a new file into the corpus */
+  visibleUploadFile = false;
+  /**Uploaded file */
+  fileUploaded: File | undefined;
+  /**Definisce se l'uploader dei file è stato toccato */
+  isFileUploaderTouched = false;
+  /**Defines whether the maximum size of a file has been exceeded */
+  isFileSizeExceed = false;
+  /**File extensions for ontology file upload */
+  ontologyFileExtensionUnsupported = false;
 
   /**Riferimento al contenitore die pannelli */
   @ViewChild('panelsContainer') public container: ElementRef | undefined | null;
@@ -198,9 +220,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private vcr: ViewContainerRef,
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
     private commonService: CommonService,
     private storageService: StorageService,
     private lexiconService: LexiconService,
+    private ontologyService: OntologyService,
     private dictionaryService: DictionaryService,
   ) { }
 
@@ -251,7 +276,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         label: 'Ontology',
-        command: (event) => { this.openOntologyExplorerPanel(event) }
+        items: [
+          {
+            label: 'Explorer',
+            icon: 'fa-brands fa-wpexplorer',
+            command: (event) => { this.openOntologyExplorerPanel(event) }
+          },
+          {
+            label: 'Upload',
+            icon: 'fa-solid fa-file-import',
+            command: (event) => { this.showUploadFileModal() }
+          }
+        ],
       },
       {
         label: 'Search',
@@ -508,7 +544,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (panelExist) { //caso di pannello già presente
-      if (startingRowIndex) {
+      if (startingRowIndex !== undefined && startingRowIndex !== null) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
         this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!);
         textTileComponent.component.instance.loadInitialData();
@@ -520,7 +556,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
-    if (startingRowIndex) {
+    if (startingRowIndex !== undefined && startingRowIndex !== null) {
       this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!);
     }
 
@@ -1228,6 +1264,98 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const element = componentRef.location.nativeElement;
     return element;
+  }
+
+  /**Method that handles the display of the loading modal of a new file */
+  showUploadFileModal(): void {
+    this.uploaderForm.reset();
+    this.visibleUploadFile = true;
+  }
+
+  /**
+* Method that handles the upload event of a file
+* @param event {any} upload event of a file
+* @returns {void}
+*/
+  onFileUpload(event: any): void {
+    const validExtensions = ['.owl', '.rdf', '.ttl'];
+    const file = event.target.files[0];
+
+    if (!file) {
+      this.fileUploaded = undefined;
+      return;
+    }
+
+    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+
+    if (!validExtensions.includes(fileExtension)) {
+      this.fileUploaded = undefined;
+      this.isFileUploaded = false;
+      this.ontologyFileExtensionUnsupported = true;
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      this.fileUploaded = undefined;
+      this.isFileUploaded = false;
+      this.isFileSizeExceed = true;
+      return;
+    }
+
+    this.fileUploaded = file;
+
+    this.isFileUploaded = true;
+    this.isFileSizeExceed = false;
+    this.ontologyFileExtensionUnsupported = false;
+  }
+
+  /**Method that handles touch on the uploader */
+  onFileUploaderTouch(): void {
+    this.isFileUploaderTouched = true;
+  }
+  /**
+ * Method that submits the upload of a file
+ * @returns {void}
+ */
+  onSubmitFileUploaderModal(): void {
+    if (this.uploaderForm.invalid || !this.fileUploaded) { //invalid form or file not uploaded
+      return this.saveUploadFileWithFormErrors();
+    }
+
+    if (this.fileUploaded) {
+      const fileData = new FormData();
+      fileData.append('file', this.fileUploaded);
+      this.ontologyService.upload(fileData).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.commonService.throwHttpErrorAndMessage(error, error.error.detail);
+          this.fileUploaded = undefined;
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(
+        () => {
+          this.fileUploaded = undefined;
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig('ONTOLOGY.UPLOAD.loadSuccess'));
+        });
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(this.commonService.translateKey('ONTOLOGY.UPLOAD.errorLoadingFile')));
+    }
+
+    this.visibleUploadFile = false;
+  }
+
+  /**
+* @private
+* Method that marks form fields as touched and reports failure to load
+*/
+  private saveUploadFileWithFormErrors(): void {
+    this.uploaderForm.markAllAsTouched();
+
+    if (!this.fileUploaded) {
+      this.isFileUploaded = false;
+      this.isFileUploaderTouched = true;
+    }
   }
 
   /**
