@@ -47,7 +47,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   /**Lista di controllo dei see also */
   _seeAlso: { label: string, value: string, external: boolean, inferred: boolean }[] = [];
   /**Lista delle option dello status */
-  statusForm: string[] = ['completed', 'reviewed', 'working'];
+  statusForm: string[] = ['working','completed', 'reviewed'];
   /**Observable delle lingue disponibili */
   languages$ = this.globalState.languages$;
   /**Observable delle pos disponibili */
