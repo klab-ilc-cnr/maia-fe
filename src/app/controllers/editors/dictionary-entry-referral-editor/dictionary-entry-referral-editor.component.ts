@@ -14,7 +14,7 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
 })
 export class DictionaryEntryReferralEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
-  statusForm: string[] = ['completed', 'reviewed', 'working'];
+  statusForm: string[] = ['working','completed', 'reviewed'];
   @Input() dictionaryEntry!: DictionaryEntry; //TODO set required true on Angular update
   referralEntryForm = new FormGroup({
     status: new FormControl<string>(''),
