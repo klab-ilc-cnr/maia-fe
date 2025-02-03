@@ -1,6 +1,5 @@
 <p-skeleton *ngIf="!lexicalEntryComponents" width="30rem" height="40rem"></p-skeleton>
 <div *ngIf="lexicalEntryComponents" class="card" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
-  TEST
     <form [formGroup]="form" class="formgrid grid">
         <div class="field col-12">
             <p-fieldset>
@@ -9,9 +8,9 @@
                   class="p-button-rounded p-button-success mx-2 fieldset-small" (click)="onAddComponent()"></button>
               </ng-template>
               <ng-template pTemplate="content">
-                <form formArrayName="seeAlso">
+                <form formArrayName="components">
                   <app-autocomplete-checkbox *ngFor="let component of components.controls; index as index"
-                    [isChecked]="sA.value.external" [fieldValue]="sA.value" placeholderMsg="Search lexical entry"
+                    [isCheckedDisabled]="true" [isCheckedHidden]="true" [fieldValue]="component.value" placeholderMsg="Search lexical entry"
                     [filterFn]="lexEntryList" field="label" (selected)="onSelectLexEntry($event, index)"
                     (remove)="onRemoveComponent(index)"></app-autocomplete-checkbox>
                 </form>
@@ -21,3 +20,4 @@
       
     </form>
 </div>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

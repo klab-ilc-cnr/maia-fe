@@ -7,7 +7,7 @@
       [(ngModel)]="fieldValue" (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event)"
       [virtualScroll]="true" [disabled]="fieldValue.inferred"></p-autoComplete>
   </ng-template>
-  <input type="checkbox" [checked]="isChecked" (change)="isChecked = !isChecked"
+  <input type="checkbox" [checked]="isChecked" (change)="isChecked = !isChecked" [hidden]="isCheckedHidden"
     [disabled]="isCheckedDisabled || fieldValue.inferred">
   <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"
     (click)="onRemove()" *ngIf="!fieldValue.inferred; else filler"></button>
