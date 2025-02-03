@@ -6,7 +6,7 @@ import { FilteredSenseModel } from '../models/lexicon/filtered-sense.model';
 import { LexEntityRelationTypeModel } from '../models/lexicon/lexentity-relation-type.model';
 import { LexicalConceptsResponse } from '../models/lexicon/lexical-concept-list-item.model';
 import { LexicalEntriesResponse, LexicalEntryRequest, searchModeEnum } from '../models/lexicon/lexical-entry-request.model';
-import { FormCore, FormListItem, LexicalEntryCore, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
+import { FormCore, FormListItem, LexicalEntryCore, LexicalEntryListItem, LexoLanguage, MorphologyProperty, SenseCore, SenseListItem } from '../models/lexicon/lexical-entry.model';
 import { IndirectRelationModel, LexicalEntityRelationsResponseModel } from '../models/lexicon/lexical-sense-response.model';
 import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { FormUpdater, GenericRelationUpdater, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LexicalSenseUpdater, LinguisticRelationUpdater } from '../models/lexicon/lexicon-updater';
@@ -567,5 +567,9 @@ export class LexiconService {
         (response: IndirectRelationModel) => addCategory(response.relation),
       )
     );
+  }
+
+  retrieveMultiwordComponents(lexicalEntryId: string): Observable<LexicalEntryListItem[]> {
+    return this.http.get<LexicalEntryListItem[]>(`${this.lexoUrl}/data/subTerms?id=${this.commonService.encodeUrl(lexicalEntryId)}`);
   }
 }

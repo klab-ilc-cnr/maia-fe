@@ -62,6 +62,7 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
+import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/lex-entry-decomp.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     DictionaryEntryFullEditorComponent,
     DropdownPlusNumberComponent,
     ReplaceLineFeedPipe,
-    DictionarySortingEditorComponent
+    DictionarySortingEditorComponent,
+    LexEntryDecompComponent
   ],
   imports: [
     BrowserModule,

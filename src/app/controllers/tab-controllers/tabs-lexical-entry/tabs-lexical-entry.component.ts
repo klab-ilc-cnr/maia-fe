@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { LexicalEntryCore, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { environment } from 'src/environments/environment';
 /**Componente dei tab per la lavorazione di un'entrata lessicale */
@@ -17,6 +17,7 @@ export class TabsLexicalEntryComponent implements OnInit {
   @Input() lexicalEntryInstanceName!: string;
   /**Tab iniziale selezionato */
   selectedTab = 0;
+  LEXICAL_ENTRY_TYPE = LexicalEntryType;
 
  /**
   * Costruttore per TabsLexicalEntryComponent
