@@ -16,6 +16,8 @@ export class AutocompleteCheckboxComponent {
   @Input() isChecked!: boolean;
   /**Definisce se la checkbox è disabilitata */
   @Input() isCheckedDisabled = false;
+  /**Definisce se la checkbox è disabilitata */
+  @Input() isCheckedHidden = false;
   /**Messaggio sostitutivo di un valore nell'autocomplete */
   @Input() placeholderMsg = '';
   /**Funzione di filtro dell'autocomplete */
