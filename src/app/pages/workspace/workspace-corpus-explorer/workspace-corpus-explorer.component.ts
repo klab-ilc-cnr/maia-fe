@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
@@ -20,9 +20,12 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   providers: [CorpusStateService]
 })
 export class WorkspaceCorpusExplorerComponent {
+  private readonly unsubscribe$ = new Subject<void>();
+
   /**Observable of the corpus element tree */
   files$ = this.corpusStateService.filesystem$.pipe(
     switchMap(docs => of(this.mapToTreeNodes(docs))),
+    takeUntil(this.unsubscribe$)
   );
 
   /**Observable of the list of folder nodes (possibly nested) in the corpus */
@@ -147,6 +150,21 @@ export class WorkspaceCorpusExplorerComponent {
     private corpusStateService: CorpusStateService,
     private commonService: CommonService
   ) { }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    this.selectedNode = undefined;
+    this.fileUploaded = undefined;
+  
+    this.addFolderRForm.reset();
+    this.renameElementForm.reset();
+    this.moveElementForm.reset();
+    this.uploaderForm.reset();
+
+    this.onTextSelectEvent.complete();
+  }
 
   /**
    * Method that handles the selection of a node in the document tree
@@ -333,6 +351,7 @@ export class WorkspaceCorpusExplorerComponent {
 
     this.folders$ = this.files$.pipe(
       switchMap(nodes => of(this.mapToOnlyFolders(nodes))),
+      takeUntil(this.unsubscribe$)
     );
 
     this.visibleAddFolder = true;

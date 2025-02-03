@@ -43,6 +43,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     definition: new FormGroup({}),
     marksOfUse: new FormControl<LexicalConceptListItem[]>([]),
     semanticMarks: new FormControl<LexicalConceptListItem[]>([]),
+    grammaticalMarks: new FormControl<LexicalConceptListItem[]>([]),
     morphology: new FormArray<FormControl>([]),
   });
   /**Lista di controllo delle relazioni morfologiche */
@@ -71,8 +72,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   );
   marksOfUse: LexicalConceptListItem[] = [];
   semanticMarks: LexicalConceptListItem[] = [];
+  grammaticalMarks: LexicalConceptListItem[] = [];
   currentFilterMoU$ = new BehaviorSubject<string>('');
   currentFilterSM$ = new BehaviorSubject<string>('');
+  currentFilterGM$ = new BehaviorSubject<string>('');
   marksOfUse$ = this.currentFilterMoU$.pipe(
     debounceTime(500),
     takeUntil(this.unsubscribe$),
@@ -82,6 +85,11 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     debounceTime(500),
     takeUntil(this.unsubscribe$),
     switchMap(text => of(this.semanticMarks.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
+  );
+  grammaticalMarks$ = this.currentFilterGM$.pipe(
+    debounceTime(500),
+    takeUntil(this.unsubscribe$),
+    switchMap(text => of(this.grammaticalMarks.filter(l => l.defaultLabel.toLowerCase().includes(text.toLowerCase())))),
   );
   /**
    * Funzione di cancellazione di un senso
@@ -158,6 +166,11 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       take(1),
     ).subscribe(resp => {
       this.semanticMarks = resp;
+    });
+    this.globalState.grammaticalMarks$.pipe(
+      take(1),
+    ).subscribe(resp => {
+      this.grammaticalMarks = resp;
       this.initLexicalConcepts();
     });
     //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
@@ -181,6 +194,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     ).subscribe(rels => {
       const selectedMarksOfUse: LexicalConceptListItem[] = [];
       const selectedSemanticMarks: LexicalConceptListItem[] = [];
+      const selectedGrammaticalMarks: LexicalConceptListItem[] = [];
       rels.forEach(r => {
         if(r?.entityType && r.entityType[0] === "Marche d'uso") {
           const tempMoU = this.marksOfUse.find(mou => mou.lexicalConcept === r.entity);
@@ -188,10 +202,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         } else if(r?.entityType && r.entityType[0] === "Marche Semantiche") {
           const tempSM = this.semanticMarks.find(sm => sm.lexicalConcept === r.entity);
           if(tempSM !== undefined) selectedSemanticMarks.push(tempSM);
+        } else if(r?.entityType && r?.entityType[0] === "Marche grammaticale") {
+          const tempGM = this.grammaticalMarks.find(gm => gm.lexicalConcept === r.entity);
+          if(tempGM !== undefined) selectedGrammaticalMarks.push(tempGM);
         }
       })
       this.form.controls.marksOfUse.setValue(selectedMarksOfUse);
       this.form.controls.semanticMarks.setValue(selectedSemanticMarks);
+      this.form.controls.grammaticalMarks.setValue(selectedGrammaticalMarks);
     });
   }
 
@@ -263,6 +281,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       this.currentFilterMoU$.next(event.query);
     } else if(type === 'semanticMarks') {
       this.currentFilterSM$.next(event.query);
+    } else if(type === 'grammaticalMarks') {
+      this.currentFilterGM$.next(event.query);
     }
   }
 
