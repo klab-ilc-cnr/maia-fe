@@ -38,6 +38,7 @@ export class OntologyClassExplorerComponent implements OnInit {
   ngOnInit(): void {
     this.cols = [
       { field: 'name', header: '', width: '60%', display: 'true' },
+      { field: 'comment', header: 'Commento', width: '10%', display: 'true' },
       { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
       { field: 'status', header: 'Stato', width: '10%', display: 'true' },
     ];
@@ -75,6 +76,19 @@ export class OntologyClassExplorerComponent implements OnInit {
     }
 
     return node.shortId!;
+  }
+
+  /**
+   * get comment of a node
+   * @param node 
+   * @returns 
+   */
+  getComment(node: OntologyClass) {
+    if (node.comment && node.comment.length !== 0) {
+      return node.comment[0].value; //FIXME per ora prendo il primo elemento di comment se esiste, successivamente bisognerà gestire il multilanguage
+    }
+
+    return "";
   }
 
   /**
@@ -121,7 +135,7 @@ export class OntologyClassExplorerComponent implements OnInit {
 
           this.results.push(node);
         }
-        
+
         this.results = [...this.results];
         this.loading = false;
       },

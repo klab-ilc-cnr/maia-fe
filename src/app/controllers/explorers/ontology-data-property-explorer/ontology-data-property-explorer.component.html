@@ -42,7 +42,13 @@
           <td *ngFor="let col of cols; let i = index">
             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
             <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox"></p-treeTableCheckbox>
-            <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
+            <app-icon-note *ngIf="col.field ==='comment' && rowData[col.field] && getComment(rowData)"
+              [tooltip]="commentTooltip">
+              <ng-template  #commentTooltip>
+                {{getComment(rowData)}}<br>
+              </ng-template>
+            </app-icon-note>
+            <app-icon-author *ngIf="col.field === 'creator'" [isBot]="false"
               [tooltip]="authorTooltip">
               <ng-template #authorTooltip>
                 <em>{{('ICON_AUTHOR.creator'|translate)}}</em>: {{rowData?.creator}}<br>
@@ -50,7 +56,7 @@
                 <em>{{('ICON_AUTHOR.lastUpdate'|translate)}}</em>: {{rowData?.lastUpdate}}
               </ng-template>
             </app-icon-author>
-            <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
+            <app-icon-lock *ngIf="col.field === 'status'"
               [status]="rowData[col.field]"></app-icon-lock>
             <span *ngIf="col.field === 'name'" class="ontology-data-rectangle"></span>
             <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
