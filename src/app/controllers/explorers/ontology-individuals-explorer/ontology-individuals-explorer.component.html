@@ -49,7 +49,7 @@
               [status]="rowData[col.field]"></app-icon-lock>
             <span *ngIf="col.field === 'name'" class="ontology-individual-rhombus"></span>
             <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
-              rowData[col.field] }}</span>
+              getName(rowData) }}</span>
           </td>
         </tr>
       </ng-template>
