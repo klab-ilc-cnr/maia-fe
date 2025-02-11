@@ -4,10 +4,10 @@
     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary col-9">
   <ng-template #autocomplete>
     <p-autoComplete [placeholder]="placeholderMsg" [field]="field" [suggestions]="(suggestions | async) || []"
-      [(ngModel)]="fieldValue" (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event)"
+      [(ngModel)]="fieldValue" (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event)" [showEmptyMessage]="true"
       [virtualScroll]="true" [disabled]="fieldValue.inferred"></p-autoComplete>
   </ng-template>
-  <input type="checkbox" [checked]="isChecked" (change)="isChecked = !isChecked"
+  <input type="checkbox" [checked]="isChecked" (change)="isChecked = !isChecked" [hidden]="isCheckedHidden"
     [disabled]="isCheckedDisabled || fieldValue.inferred">
   <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"
     (click)="onRemove()" *ngIf="!fieldValue.inferred; else filler"></button>
