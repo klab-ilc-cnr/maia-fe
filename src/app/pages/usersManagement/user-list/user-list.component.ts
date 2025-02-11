@@ -1,6 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { catchError, take } from 'rxjs';
+import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
+import { CommonService } from 'src/app/services/common.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
 
 /**Component of the user data table */
@@ -13,6 +19,8 @@ export class UserListComponent {
 
   /**Reference to the display table */
   @ViewChild('dt') public dt: Table | undefined
+  /**Reference to item deletion popup */
+  @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
   /**Observable of the user list */
   public users = this.userService.findAll();
@@ -26,7 +34,21 @@ export class UserListComponent {
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private userService: UserService) { }
+    private userService: UserService,
+    private utility: CommonService,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
+  ) { }
+
+  private delete = (id: number): void => {
+    this.userService.deleteUser(id).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.utility.throwHttpErrorAndMessage(error,error.message)),
+    ).subscribe(()=>{
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.utility.translateKey('USERS_MANAGER.userDeleted')));
+      this.users = this.userService.findAll();
+    });
+  }
 
   /**
    * Method associated with onRowSelect that allows changing a user's data by selecting any row in the table
@@ -49,5 +71,12 @@ export class UserListComponent {
   /**Method that allows you to invoke the form for creating a new user */
   public goToNewUser() {
     this.router.navigate(["../", "userDetails", "new"], { relativeTo: this.activeRoute });
+  }
+
+  public onRemoveUser(userName: string, userId: number) {
+    const confirmMsg = `You are about to delete the user "${userName}"`;
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirm(() => this.delete(userId!), userId, userName);
+
   }
 }
