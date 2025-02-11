@@ -74,6 +74,7 @@ import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ont
 import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
 import { OntologyTabUsageComponent } from './controllers/viewers/common/ontology-tab-usage/ontology-tab-usage.component';
 import { AnnotationsSectionComponent } from './controllers/viewers/common/annotations-section/annotations-section.component';
+import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-data-explorer/ontology-data-explorer.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { AnnotationsSectionComponent } from './controllers/viewers/common/annota
     OntologyDataPropertyViewerComponent,
     OntologyObjectPropertyViewerComponent,
     OntologyClassViewerComponent,
-    AnnotationsSectionComponent
+    AnnotationsSectionComponent,
+    OntologyDataExplorerComponent
   ],
   imports: [
     BrowserModule,

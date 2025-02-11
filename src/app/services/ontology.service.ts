@@ -6,6 +6,7 @@ import { OntologyClass } from '../models/ontology/ontology-class.model';
 import { OntologyIndividual } from '../models/ontology/ontology-individual.model';
 import { OntologyDataProperty } from '../models/ontology/ontology-data-property.model';
 import { OntologyObjectProperty } from '../models/ontology/ontology-object-property.model';
+import { OntologyData } from '../models/ontology/ontology-data.model';
 
 export enum SubPropertyType {
   object = "object",
@@ -66,6 +67,14 @@ export class OntologyService {
     }
 
     return this.http.get<OntologyIndividual[]>(`${this.lexoUrl}/ontology/data/individuals`);
+  }
+
+  /**
+   * Get ontology info
+   * @returns 
+   */
+  getOntologyData(): Observable<OntologyData> {
+    return this.http.get<OntologyData>(`${this.lexoUrl}/ontology/data/info`);
   }
 
   /**

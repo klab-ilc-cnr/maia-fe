@@ -1,4 +1,7 @@
-<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
+<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true" (onChange)="onTabChange($event)" [style]="{'height': '100%'}">
+    <p-tabPanel header="{{('ONTOLOGY.ontology'|translate)}}" >
+        <app-ontology-data-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-data-explorer>
+    </p-tabPanel>
     <p-tabPanel header="{{('ONTOLOGY.classes'|translate)}}">
         <app-ontology-class-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-class-explorer>
     </p-tabPanel>

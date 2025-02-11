@@ -810,7 +810,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ontologyTileElement
       .resize({
-        height: window.innerHeight / 2
+        height: window.innerHeight / 1.5
       })
       .reposition();
 

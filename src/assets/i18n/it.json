@@ -244,6 +244,7 @@
         "objectProperties": "Object Property",
         "dataProperties": "Data Property",
         "individuals": "Individual",
+        "ontology": "Ontology",
         "annotations": "Annotations",
         "usage": "Usage",
         "VIEWER": {
@@ -320,6 +321,15 @@
     "ONTOLOGY_INDIVIDUAL_EXPLORER": {
         "addChild": "Aggiungi classe",
         "remove": "Rimuovi"
+    },
+    "ONTOLOGY_DATA": {
+        "iri": "Ontology IRI",
+        "version": "Ontology Version IRI",
+        "reasonerName": "Reasoner Name",
+        "reasonerVersion": "Reasoner Version",
+        "importedOntologies": "Imported Ontologies",
+        "directImports": "Direct Imports",
+        "indirectImports": "Indirect Imports"
     },
     "SEARCH": {
         "insertForm": "inserisci forma",

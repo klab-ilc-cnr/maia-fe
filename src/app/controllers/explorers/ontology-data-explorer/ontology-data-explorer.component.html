@@ -1,0 +1,50 @@
+<div class="card pinned-tab-panel" [style]="{'height': '100%', 'overflow-y': 'scroll'}">
+    <div class="d-flex align-items-center">
+        <label>{{('ONTOLOGY_DATA.iri'|translate)}}:</label>
+        <input class="ml-2 flex-grow-1" type="text" disabled="true" pInputText [(ngModel)]="ontologyData.iri" />
+    </div>
+    <div class="mt-2 d-flex align-items-center">
+        <label>{{('ONTOLOGY_DATA.version'|translate)}}:</label>
+        <input class="ml-2 flex-grow-1" type="text" disabled="true" pInputText [(ngModel)]="ontologyData.version" />
+    </div>
+    <div class="mt-3">
+        <label>{{('ONTOLOGY_DATA.reasonerName'|translate)}}: {{ontologyData.reasonerName}}</label>
+        <label class="ml-5">{{('ONTOLOGY_DATA.reasonerVersion'|translate)}}: {{ontologyData.reasonerVersion}}</label>
+    </div>
+    <app-annotations-section #annotationsSection class="mt-4" [maxSize]="panelHeight/3" [annotations]="annotations"></app-annotations-section>
+    <h3 class="mt-7">{{('ONTOLOGY_DATA.importedOntologies'|translate)}}</h3>
+    <div class="mt-2">
+        <p-fieldset>
+            <ng-template pTemplate="header">{{'ONTOLOGY_DATA.directImports'|translate}}</ng-template>
+            <ng-template pTemplate="content">
+                <p-scrollPanel #scrollPanelDirectImports [style]="{width: '100%', 'max-height': panelHeight/3+'px'}">
+                    <ng-container *ngFor="let element of ontologyData.directImports; let index = index">
+                        <div class="flex">
+                            <div class="flex-initial prefix">
+                                {{element}}
+                            </div>
+                        </div>
+                        <p-divider *ngIf="index !== annotations.length - 1"></p-divider>
+                    </ng-container>
+                </p-scrollPanel>
+            </ng-template>
+        </p-fieldset>
+    </div>
+    <div class="mt-3">
+        <p-fieldset>
+            <ng-template pTemplate="header">{{'ONTOLOGY_DATA.indirectImports'|translate}}</ng-template>
+            <ng-template pTemplate="content">
+                <p-scrollPanel #scrollPanelIndirectImports [style]="{width: '100%', 'max-height': panelHeight/3+'px'}">
+                    <ng-container *ngFor="let element of ontologyData.indirectImports; let index = index">
+                        <div class="flex">
+                            <div class="flex-initial prefix">
+                                {{element}}
+                            </div>
+                        </div>
+                        <p-divider *ngIf="index !== annotations.length - 1"></p-divider>
+                    </ng-container>
+                </p-scrollPanel>
+            </ng-template>
+        </p-fieldset>
+    </div>
+</div>
