@@ -30,6 +30,7 @@ In case of a bug please indicate the version of the platform used and describe t
 ## Versions and compatibility
 | maia-fe | maia-be | TextO |
 | ------------- | ------------- | ------------- |
+| v. 0.13.10 | v. 0.0.8 | v. 0.1.1 |
 | v. 0.13.5 | v. 0.0.7 | v. 0.1.1 |
 | v. 0.12.4 | v. 0.0.7 | v. 0.1.0* | 
 | v. 0.11.0 | v. 0.0.6 | v. 0.0.8 |

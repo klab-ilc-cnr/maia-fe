@@ -75,6 +75,7 @@ import { OntologyClassViewerComponent } from './controllers/viewers/ontology-cla
 import { OntologyTabUsageComponent } from './controllers/viewers/common/ontology-tab-usage/ontology-tab-usage.component';
 import { AnnotationsSectionComponent } from './controllers/viewers/common/annotations-section/annotations-section.component';
 import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-data-explorer/ontology-data-explorer.component';
+import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/lex-entry-decomp.component';
 
 @NgModule({
   declarations: [
@@ -122,20 +123,17 @@ import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-
     DropdownPlusNumberComponent,
     ReplaceLineFeedPipe,
     DictionarySortingEditorComponent,
+    LexEntryDecompComponent,
     WorkspaceOntologyExplorerComponent,
     OntologyClassExplorerComponent,
     OntologyObjectPropertyExplorerComponent,
     OntologyDataPropertyExplorerComponent,
     OntologyIndividualsExplorerComponent,
     WorkspaceOntologyViewerComponent,
-    WorkspaceOntologyViewerComponent,
     OntologyObjectPropertyViewerComponent,
     OntologyDataPropertyViewerComponent,
     OntologyIndividualViewerComponent,
     OntologyTabUsageComponent,
-    OntologyIndividualViewerComponent,
-    OntologyDataPropertyViewerComponent,
-    OntologyObjectPropertyViewerComponent,
     OntologyClassViewerComponent,
     AnnotationsSectionComponent,
     OntologyDataExplorerComponent
