@@ -40,7 +40,7 @@ export class WorkspaceOntologyExplorerComponent implements OnInit {
   onTabChange(event: any) {
     const index = event.index;
     // Verify open tab is Ontology-Data
-    if (index === 4) {
+    if (index === 0) {
       if (this.ontologyDataExplorerComponent) {
         this.ontologyDataExplorerComponent.refreshScrollPanels();
       }

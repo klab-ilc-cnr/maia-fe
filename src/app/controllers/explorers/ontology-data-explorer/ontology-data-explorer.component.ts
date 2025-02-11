@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { catchError, take, throwError } from 'rxjs';
 import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotations.model';
 import { OntologyData, OntologyDataAnnotations } from 'src/app/models/ontology/ontology-data.model';
@@ -13,7 +13,7 @@ import { ScrollPanel } from 'primeng/scrollpanel';
   templateUrl: './ontology-data-explorer.component.html',
   styleUrls: ['./ontology-data-explorer.component.scss']
 })
-export class OntologyDataExplorerComponent implements OnInit {
+export class OntologyDataExplorerComponent implements OnInit, AfterViewInit {
 
   @Input()
   public panelHeight!: number;
@@ -37,7 +37,14 @@ export class OntologyDataExplorerComponent implements OnInit {
     ).subscribe((data) => {
       this.ontologyData = data;
       this.annotations = this.adaptAnnotation(this.ontologyData.annotations);
-      this.annotationSection?.refreshScrollPanel();
+    });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => { //FIX scrollpanel no scroller issue
+      if (this.annotationSection?.scrollPanel) {
+        this.annotationSection?.scrollPanel.refresh();
+      }
     });
   }
 
@@ -65,7 +72,7 @@ export class OntologyDataExplorerComponent implements OnInit {
     if (this.annotationSection) {
       this.annotationSection.refreshScrollPanel();
     }
-    
+
     this.scrollPanelDirect.cd.detectChanges();
     this.scrollPanelDirect.calculateContainerHeight();
 
