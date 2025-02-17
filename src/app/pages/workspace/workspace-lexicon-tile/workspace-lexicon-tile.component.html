@@ -74,28 +74,43 @@
   </div>
   <div class="flex flex-row w-100">
     <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectTypes$|async) || []" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true">
+      [options]="(selectTypes$|async) || []" optionValue="label" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true" appendTo="body">
+      <ng-template let-item pTemplate="item">
+        <div>{{item.label}} ({{item.count}})</div>
+      </ng-template>
     </p-dropdown>
     <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectPartOfSpeech$ |async)|| []" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos"
-      [showClear]="true" [filter]="true" filterBy="label">
+      [options]="(selectPartOfSpeech$ |async)|| []" optionValue="label" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos"
+      [showClear]="true" [filter]="true" filterBy="label" appendTo="body">
+      <ng-template let-item pTemplate="item">
+        <div>{{item.label}} ({{item.count}})</div>
+      </ng-template>
     </p-dropdown>
   </div>
   <div class="flex flex-row w-100">
     <p-dropdown class="flex  justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectLanguages$|async)||[]" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true">
+      [options]="(selectLanguages$|async)||[]" optionValue="label" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true" appendTo="body">
+      <ng-template let-item pTemplate="item">
+        <div>{{item.label}} ({{item.count}})</div>
+      </ng-template>
     </p-dropdown>
     <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectAuthors$|async) || []" [(ngModel)]="selectedAuthor" placeholder="Author" [showClear]="true"
-      [filter]="true" filterBy="label">
+      [options]="(selectAuthors$|async) || []" optionValue="label" [(ngModel)]="selectedAuthor" placeholder="Author" [showClear]="true"
+      [filter]="true" filterBy="label" appendTo="body">
+      <ng-template let-item pTemplate="item">
+        <div>{{item.label}} ({{item.count}})</div>
+      </ng-template>
     </p-dropdown>
   </div>
   <div class="flex flex-row">
     <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectStatuses$ | async) || []" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true">
+      [options]="(selectStatuses$ | async) || []" optionValue="label" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true" appendTo="body">
+      <ng-template let-item pTemplate="item">
+        <div>{{item.label}} ({{item.count}})</div>
+      </ng-template>
     </p-dropdown>
     <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true">
+      [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true" appendTo="body">
     </p-dropdown>
   </div>
 </p-panel>
@@ -133,7 +148,7 @@
           <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
           <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
-            rowData[col.field] }}</span>
+            rowData[col.field]+'@'+rowData['language'] }}</span>
           <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
             [pTooltip]="rowData['sub']" tooltipPosition="bottom"
             [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>

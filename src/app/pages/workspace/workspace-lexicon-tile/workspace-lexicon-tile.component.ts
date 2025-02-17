@@ -7,7 +7,6 @@ import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { Namespace } from 'src/app/models/lexicon/namespace.model';
-import { OntolexType } from 'src/app/models/lexicon/ontolex-type.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { GlobalStateService } from 'src/app/services/global-state.service';
@@ -41,51 +40,38 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Definisce se c'è lo spinner di ricerca in corso */
   public searchIconSpinner = false;
   /**Lista delle lingue selezionabili */
-  public selectLanguages!: SelectItem[];
+  // public selectLanguages!: SelectItem[];
   filteredLanguages$!: Observable<SelectItem[]>;
 
   /**Lista dei tipi selezionabili */
-  public selectTypes$ = this.globalState.lexicalEntryTypes$.pipe(
-    switchMap(types => {
-      types.sort((a: OntolexType, b: OntolexType) => a.valueLabel!.localeCompare(b.valueLabel!));
-      return of(types.map(t => <SelectItem>{ label: t.valueLabel, value: t.valueLabel === 'lexical entry' ? '' : t.valueLabel }));
-    }),
-  );
-  public selectLanguages$ = this.globalState.languages$.pipe(
-    switchMap(languages => {
-      languages.sort((a: LexoLanguage, b: LexoLanguage) => a.label!.localeCompare(b.label!));
-      this.languageItems[0].items = languages.map(l => {
-        return {
-          label: l.label,
-          command: () => {
-            // this.onAddNewLexicalEntry(l.label!);
-          }
-        }
-      });
-      return of(languages.map(l => <SelectItem>{ label: l.label, value: l.label }));
-    }),
-  );
+  public selectTypes$ = this.globalState.lexicalEntryStatTypes$;
+  public selectLanguages$ = this.globalState.statLanguages$;
+  // .pipe(
+  //   switchMap(languages => {
+  //     languages.sort((a: LexoLanguage, b: LexoLanguage) => a.label!.localeCompare(b.label!));
+  //     this.languageItems[0].items = languages.map(l => {
+  //       return {
+  //         label: l.label,
+  //         command: () => {
+  //           // this.onAddNewLexicalEntry(l.label!);
+  //         }
+  //       }
+  //     });
+  //     return of(languages.map(l => <SelectItem>{ label: l.label, value: l.label }));
+  //   }),
+  // );
   /**Lista degli autori selezionabili */
-  public selectAuthors$ = this.globalState.authors$.pipe(
-    switchMap(authors => {
-      authors.sort((a: any, b: any) => a.label.localeCompare(b.label));
-      return of(authors.map((a: any) => <SelectItem>{ label: a.label, value: a.label }));
-    }),
-  );
+  public selectAuthors$ = this.globalState.authors$;
+  // .pipe(
+  //   switchMap(authors => {
+  //     authors.sort((a: any, b: any) => a.label.localeCompare(b.label));
+  //     return of(authors.map((a: any) => <SelectItem>{ label: a.label, value: a.label }));
+  //   }),
+  // );
   /**Lista delle POS selezionabili */
-  public selectPartOfSpeech$ = this.globalState.statisticsPos$.pipe(
-    switchMap(partOfSpeech => {
-      partOfSpeech.sort((a: any, b: any) => a.label.localeCompare(b.label));
-      return of(partOfSpeech.map((pos: any) => <SelectItem>{ label: pos.label, value: pos.label }));
-    }),
-  );
+  public selectPartOfSpeech$ = this.globalState.statisticsPos$;
   /**Lista degli status di lavorazione selezionabili */
-  public selectStatuses$ = this.globalState.statisticStatuses$.pipe(
-    switchMap(statuses => {
-      statuses.sort((a: any, b: any) => a.label.localeCompare(b.label));
-      return of(statuses.map((s: any) => <SelectItem>{ label: s.label, value: s.label }));
-    }),
-  );
+  public selectStatuses$ = this.globalState.statisticStatuses$;
   /**Lista del tipo di entrate selezionabili */
   public selectEntries: SelectItem[] = [
     { label: formTypeEnum.entry, value: formTypeEnum.entry },
@@ -388,12 +374,22 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   filterLanguage(event: any) {
     const query = event.query;
-    this.filteredLanguages$ = this.selectLanguages$.pipe(
-      switchMap(si => {
-        const result = si.filter(s => s.label!.toLowerCase().includes(query.toLowerCase()));
-        return of(result);
-      }),
-    );
+    this.filteredLanguages$ = this.globalState.languages$.pipe(
+        switchMap(languages => {
+          languages.sort((a: LexoLanguage, b: LexoLanguage) => a.label!.localeCompare(b.label!));
+          this.languageItems[0].items = languages.map(l => {
+            return {
+              label: l.label,
+              command: () => {
+                // this.onAddNewLexicalEntry(l.label!);
+              }
+            }
+          });
+          const si = languages.map(l => <SelectItem>{ label: l.label, value: l.label });
+          const result = si.filter(s => s.label!.toLowerCase().includes(query.toLowerCase()));
+          return of(result);
+        }),
+      );
   }
 
   filterPrefix(event: any) {
@@ -773,6 +769,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       data: {
         name: this.showLabelName ? item.label : item.lexicalEntry,
         instanceName: item.lexicalEntry,
+        language: item.language,
         label: item.label,
         note: item['note'],
         creator: item['creator'],
