@@ -769,6 +769,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       data: {
         name: this.showLabelName ? item.label : item.lexicalEntry,
         instanceName: item.lexicalEntry,
+        language: item.language,
         label: item.label,
         note: item['note'],
         creator: item['creator'],
