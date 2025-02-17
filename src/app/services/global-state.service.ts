@@ -23,6 +23,9 @@ export class GlobalStateService {
   ).pipe(
     shareReplay(1),
   );
+  statLanguages$ = this.lexiconService.getLanguagesStatistics().pipe(
+    shareReplay(1),
+  );
   marksOfUse$ = this.lexiconService.getLexicalConcepts('marcheDUso').pipe(
     map(resp => resp.list),
     shareReplay(1),
@@ -38,6 +41,9 @@ export class GlobalStateService {
   /**Observable of the list of lexical entry types */
   lexicalEntryTypes$ = this.lexiconService.getLexicalEntryTypes().pipe(
     shareReplay(1),
+  );
+  lexicalEntryStatTypes$ = this.lexiconService.getStatTypes().pipe(
+    shareReplay(1)
   );
   /**Observable of the list of morphology elements. */
   morphologies$ = this.lexiconService.getMorphology();
