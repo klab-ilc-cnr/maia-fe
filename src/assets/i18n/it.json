@@ -199,8 +199,10 @@
     },
     "USERS_MANAGER": {
         "activeUser": "Utente attivo",
+        "confirmDeleteUser":"Stai per eliminare l'utente ${username}",
         "confirmPassword": "Conferma password",
         "confirmPwdMandatory": "La password di conferma è obbligatoria",
+        "delete": "Elimina",
         "details": "Dettagli",
         "emailMandatory": "L'e-mail è obbligatoria",
         "emptyUsers": "Nessun utente trovato",
@@ -228,6 +230,7 @@
         "selectRole": "Selezionare il ruolo",
         "surname": "Cognome",
         "surnameMandatory": "Il cognome è obbligatorio",
+        "userDeleted": "Utente eliminato",
         "userDetail": "Dettaglio utente",
         "username": "Nome utente",
         "usernameMandatory": "Il nome utente è obbligatorio",
