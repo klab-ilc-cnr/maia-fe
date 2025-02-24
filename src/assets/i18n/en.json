@@ -199,6 +199,7 @@
     },
     "USERS_MANAGER": {
         "activeUser": "Active user",
+        "confirmDeleteUser":"You are about to delete the user ${username}",
         "confirmPassword": "Confirm password",
         "confirmPwdMandatory": "Confirmation password is mandatory",
         "delete": "Delete",

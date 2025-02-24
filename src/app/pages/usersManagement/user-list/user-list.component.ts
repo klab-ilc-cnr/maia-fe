@@ -74,7 +74,7 @@ export class UserListComponent {
   }
 
   public onRemoveUser(userName: string, userId: number) {
-    const confirmMsg = `You are about to delete the user "${userName}"`;
+    const confirmMsg = this.utility.translateKey('USERS_MANAGER.confirmDeleteUser').replace('${username}',userName);
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.delete(userId!), userId, userName);
 
