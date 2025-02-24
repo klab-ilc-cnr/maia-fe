@@ -19,6 +19,7 @@
             <th pSortableColumn="role">{{'USERS_MANAGER.role'|translate}} <p-sortIcon field="role"></p-sortIcon></th>
             <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
             <th class="text-center">{{'USERS_MANAGER.details'|translate}}</th>
+            <th class="text-center">{{'USERS_MANAGER.delete'|translate}}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user columns="col" let-i="rowIndex">
@@ -35,6 +36,11 @@
                 class="p-button-rounded p-button-danger p-button-text" (click)="goToEditUserById(user.id)">
               </button>
             </td>
+            <td class="text-center">
+              <button pButton pRipple type="button" icon="pi pi-user-minus" aria-label="Remove user"
+                class="p-button-rounded p-button-danger p-button-text" (click)="onRemoveUser(user.username, user.id)">
+              </button>
+            </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -46,3 +52,4 @@
     </div>
   </div>
 </div>
+<app-popup-delete-item #popupDeleteItem></app-popup-delete-item>

@@ -199,8 +199,10 @@
     },
     "USERS_MANAGER": {
         "activeUser": "Active user",
+        "confirmDeleteUser":"You are about to delete the user ${username}",
         "confirmPassword": "Confirm password",
         "confirmPwdMandatory": "Confirmation password is mandatory",
+        "delete": "Delete",
         "details": "Details",
         "emailMandatory": "Email is mandatory",
         "emptyUsers": "No user found",
@@ -228,6 +230,7 @@
         "selectRole": "Select a role",
         "surname": "Surname",
         "surnameMandatory": "Surname is mandatory",
+        "userDeleted": "User deleted",
         "userDetail": "User detail",
         "username": "Username",
         "usernameMandatory": "Username is mandatory",

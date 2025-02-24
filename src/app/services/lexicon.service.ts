@@ -401,16 +401,24 @@ export class LexiconService {
    * GET to retrieve the list of authors available for selection
    * @returns {Observable<any>} observable of the author list
    */
-  getAuthors(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}/statistics/lexicon/authors`);
+  getStatTypes(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}/statistics/lexicon/types`);
+  }
+
+  /**
+   * GET to retrieve the list of types available for selection
+   * @returns {Observable<any>} observable of the author list
+   */
+  getAuthors(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}/statistics/lexicon/authors`);
   }
 
   /**
    * GET to retrieve the list of POS available for selection
    * @returns {Observable<any>} observable of the POS list
    */
-  getPos(): Observable<any> {
-    return this.http.get(`${this.lexoUrl}/statistics/lexicon/pos`);
+  getPos(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}/statistics/lexicon/pos`);
   }
 
   /**
