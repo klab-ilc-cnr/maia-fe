@@ -76,6 +76,7 @@ import { OntologyTabUsageComponent } from './controllers/viewers/common/ontology
 import { AnnotationsSectionComponent } from './controllers/viewers/common/annotations-section/annotations-section.component';
 import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-data-explorer/ontology-data-explorer.component';
 import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/lex-entry-decomp.component';
+import { DictionaryPreviewComponent } from './controllers/editors/dictionary-preview/dictionary-preview.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/
     OntologyTabUsageComponent,
     OntologyClassViewerComponent,
     AnnotationsSectionComponent,
-    OntologyDataExplorerComponent
+    OntologyDataExplorerComponent,
+    DictionaryPreviewComponent
   ],
   imports: [
     BrowserModule,

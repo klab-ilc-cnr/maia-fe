@@ -1,0 +1,13 @@
+<p-skeleton *ngIf="!dictionaryEntry; else previewContent"></p-skeleton>
+<ng-template #previewContent>
+  <div class="card pinned-tab-panel">
+    <div class="d-flex align-items-center">
+      <span class="fw-bold">{{ dictionaryEntry.label }}</span>
+      <sub class="ml-1">{{ dictionaryEntry["pos"].join(" ") }}</sub>
+    </div>
+    <div class="mt-3">
+        <label>FORMS: </label>
+        <label class="ml-5" *ngFor="let form of forms">{{form}}</label>
+    </div>
+  </div>
+</ng-template>
