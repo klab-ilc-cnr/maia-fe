@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService, TreeNode } from 'primeng/api';
 import { catchError, take, throwError } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -24,6 +24,7 @@ export class DictionaryPreviewComponent implements OnInit {
   public forms: string[] = [];
   public firstAttestationLabel: string = '';
   public frequencies: { documentLabel: string; frequency: number }[] = [];
+  public sortingTree: TreeNode<DictionarySortingItem>[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -74,6 +75,8 @@ export class DictionaryPreviewComponent implements OnInit {
         throw new Error('No lexical entry found');
       }
 
+      this.sortingTree = this.mapSortingItemToTreeNode(data);
+
       this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
         take(1),
         catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
@@ -84,4 +87,24 @@ export class DictionaryPreviewComponent implements OnInit {
     });
   }
 
+    /**
+   * Map the list of items to be sorted in a TreeNode list
+   * @param items {DictionarySortingItem[]}
+   * @returns {TreeNode<DictionarySortingItem>[]}
+   */
+    private mapSortingItemToTreeNode(items: DictionarySortingItem[], parentIndex?: string): TreeNode<DictionarySortingItem>[] {
+      return items.map((item, i) => {
+        const isSense = item.type.includes('LexicalSense');
+        const itemIndex = !parentIndex ? (isSense ? `${i + 1}` : '') : `${parentIndex}.${i + 1}`;
+        return <TreeNode<DictionarySortingItem>>{
+          key: item.id,
+          type: isSense ? 'sense' : 'lexicalEntry',
+          label: item.label,
+          data: item,
+          index: itemIndex,
+          expanded: true,
+          children: this.mapSortingItemToTreeNode(item.children ?? [], itemIndex)
+        }
+      });
+    }
 }
