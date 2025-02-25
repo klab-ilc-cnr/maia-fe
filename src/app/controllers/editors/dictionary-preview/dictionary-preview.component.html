@@ -6,8 +6,91 @@
       <sub class="ml-1">{{ dictionaryEntry["pos"].join(" ") }}</sub>
     </div>
     <div class="mt-3">
-        <label>FORMS: </label>
+        <label class="form-label w-full" for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.PREVIEW_TAB.forms'|translate}}</label>
         <label class="ml-5" *ngFor="let form of forms">{{form}}</label>
     </div>
   </div>
+  <div class="card">
+        <div class="field col-6">
+            <label class="form-label w-full" for="status">{{'DICTIONARY_EDITOR.EDIT_TAB.status'|translate}}</label>
+            <app-icon-lock [status]="dictionaryEntry.status"></app-icon-lock>
+        </div>
+        <span>
+            <div class="field col-6">
+                <label class="form-label w-full"
+                    for="firstAttestationB">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</label>
+                {{firstAttestationLabel}}
+            </div>
+            <div class="field col-6">
+                <label class="form-label w-full" for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.EDIT_TAB.topographicReference'|translate}}</label>
+                {{structuredNote.firstAttestationDetails}}
+            </div>
+            <div class="field col-6">
+                <label class="form-label w-full" for="decameronOccurrences">{{'DICTIONARY_EDITOR.EDIT_TAB.nOccurrencesDecameron'|translate}}</label>
+                {{structuredNote.decameronOccurrences}}            
+            </div>
+            <div class="field col-6">
+                <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences'|translate}}</label>
+                {{totalOccurrences}}
+            </div>
+            <div class="field col-12">
+                <p-fieldset>
+                    <ng-template pTemplate="header">
+                        {{'DICTIONARY_EDITOR.EDIT_TAB.occOtherWorks'|translate}}
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                        <label *ngFor="let frequency of frequencies" class="form-label w-full">
+                            {{frequency.documentLabel}}: {{frequency.frequency}}
+                        </label>
+                    </ng-template>
+                </p-fieldset>
+            </div>
+            <div class="field col-12">
+                <p-fieldset>
+                    <ng-template pTemplate="header">{{'DICTIONARY_EDITOR.EDIT_TAB.etymology'|translate}}</ng-template>
+                    <ng-template pTemplate="content">
+                       {{structuredNote.etymology.language}} - {{structuredNote.etymology.etymon}} - {{structuredNote.etymology.details}}
+                    </ng-template>
+                </p-fieldset>
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full"
+                    for="linguisticsSemantics">{{'DICTIONARY_EDITOR.EDIT_TAB.linguisticSemanticComm'|translate}}:</label>
+                    {{structuredNote.linguisticsSemantics}}
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full"
+                    for="decameron">{{'DICTIONARY_EDITOR.EDIT_TAB.aroundDecameron'|translate}}:</label>
+                {{structuredNote.decameron}}
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full"
+                    for="firstAbsAttestation">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestAbs'|translate}}:</label>
+                {{structuredNote.firstAbsAttestation}}
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="boccaccioDante">Boccaccio e Dante:</label>
+                {{structuredNote.boccaccioDante}}
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="crusche">{{'DICTIONARY_EDITOR.EDIT_TAB.vocs'|translate}}:</label>
+                {{structuredNote.crusche}}
+            </div>
+            <div class="field col-12">
+                <label class="form-label w-full" for="polyrhematics">{{'DICTIONARY_EDITOR.EDIT_TAB.misc'|translate}}:</label>
+                {{structuredNote.polyrhematics}}
+            </div>              
+        </span>
+        <div class="field col-12">
+            <p-fieldset>
+              <ng-template pTemplate="header">
+                {{'DICTIONARY_EDITOR.EDIT_TAB.seeAlso'|translate}}
+              </ng-template>
+              <ng-template pTemplate="content">
+                <label *ngFor="let seeAlso of dictionaryEntry.seeAlso" class="form-label
+                  w-full">{{seeAlso.label}}: {{seeAlso.entity}}</label>
+              </ng-template>
+            </p-fieldset>
+          </div>
+</div>
 </ng-template>

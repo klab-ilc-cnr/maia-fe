@@ -2,8 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { catchError, take, throwError } from 'rxjs';
+import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
+import { TextualDocument } from 'src/app/models/dictionary/textual-document.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -17,7 +19,11 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 export class DictionaryPreviewComponent implements OnInit {
 
   @Input() dictionaryEntry!: DictionaryEntry;
+
+  public structuredNote!: DictionaryNoteVocabo;
   public forms: string[] = [];
+  public firstAttestationLabel: string = '';
+  public frequencies: { documentLabel: string; frequency: number }[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -26,7 +32,36 @@ export class DictionaryPreviewComponent implements OnInit {
     private msgConfService: MessageConfigurationService
   ) { }
 
-  ngOnInit(): void {
+  get totalOccurrences() {
+    let count = 0;
+    if (this.structuredNote && this.structuredNote.frequencies) {
+      this.structuredNote.frequencies.forEach(f => {
+        count = count + f.frequency;
+      });
+    }
+    return this.structuredNote ? count + this.structuredNote.decameronOccurrences : count;
+  }
+
+  public ngOnInit(): void {
+    this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
+
+    this.structuredNote.frequencies.forEach((f) => {
+      this.dictionaryService.retrieveAuthorDocuments().pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+      ).subscribe((data: TextualDocument[]) => {
+        let document = data.filter((item: TextualDocument) => item.code === f.documentId)[0] || null;
+        this.frequencies.push({ documentLabel: document?.title || '', frequency: f.frequency });
+      });
+    });
+
+    this.dictionaryService.retrieveAuthorDocuments().pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe((data: TextualDocument[]) => {
+      this.firstAttestationLabel = data.filter((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)[0]?.title || '';
+    });
+
     this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),

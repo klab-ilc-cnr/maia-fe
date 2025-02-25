@@ -60,10 +60,12 @@
             "topographicReference": "Riferimento topografico",
             "seeAlso": "Vedi anche",
             "sourceLanguage": "Lingua di provenienza",
-            "vocs": "Il Decameron, le Crusche e altri vocabolari"
+            "vocs": "Il Decameron, le Crusche e altri vocabolari",
+            "status": "Status"
         },
         "PREVIEW_TAB": {
-            "title": "Anteprima"
+            "title": "Anteprima",
+            "forms": "Forme"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",

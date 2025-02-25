@@ -1,0 +1,11 @@
+.fieldset-small {
+    height: 1.5rem !important;
+    width: 1.5rem;
+}
+
+:host::ng-deep legend {
+    width: auto;
+    float: inherit;
+    font-size: inherit;
+    font-weight: 600;
+}

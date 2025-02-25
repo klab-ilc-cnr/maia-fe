@@ -60,10 +60,12 @@
             "topographicReference": "Topographic reference",
             "seeAlso": "See also",
             "sourceLanguage": "Source language",
-            "vocs": "The Decameron, the Crusche and other vocabularies"
+            "vocs": "The Decameron, the Crusche and other vocabularies",
+            "status": "Status"
         },
         "PREVIEW_TAB": {
-            "title": "Preview"
+            "title": "Preview",
+            "forms": "Forms"
         },
         "SORT_TAB": {
             "noDefinition": "No definition provided",
