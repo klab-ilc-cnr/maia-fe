@@ -93,7 +93,7 @@
             </p-fieldset>
           </div>
     </div>
-    <p-tree [value]="meaningsTree">
+    <p-tree [value]="senseLexicalEntriesTree">
         <ng-template let-item pTemplate="lexicalEntry" draggable="false">
             <div><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
         </ng-template>

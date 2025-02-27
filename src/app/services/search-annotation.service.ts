@@ -21,7 +21,7 @@ export class SearchAnnotationService {
     this.searchUrl = `${environment.maiaBeTextoUrl}/util/aic`;
   }
 
-  searchAnnotation(request: SearchAnnotationRequest): Observable<SearchAnnotationResult> {
+  searchAnnotationBySense(request: SearchAnnotationRequest): Observable<SearchAnnotationResult> {
     return this.http.post<SearchAnnotationResult>(`${this.searchUrl}`, request);
   }
 }

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
-import { catchError, forkJoin, Observable, Subject, take, takeUntil, throwError } from 'rxjs';
+import { catchError, concatMap, forkJoin, from, map, mergeMap, Observable, of, Subject, take, takeUntil, throwError, toArray, zip } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
@@ -13,6 +13,15 @@ import { DictionaryService } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
+
+export class Meaning {
+  id!: string;
+  sortedAnnotations!: SearchAnnotationResult;
+}
+export class SenseEntry {
+  id!: string;
+  meanings: Meaning[] = [];
+}
 
 @Component({
   selector: 'app-dictionary-preview',
@@ -28,8 +37,8 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   public forms: string[] = [];
   public firstAttestationLabel: string = '';
   public frequencies: { documentLabel: string; frequency: number }[] = [];
-  public meaningsTree: TreeNode<DictionarySortingItem>[] = [];
-  public meaningsPerSenseAnnotationMap: Map<string, SearchAnnotationResult> = new Map();
+  public senseLexicalEntriesTree: TreeNode<DictionarySortingItem>[] = [];
+  public meaningsPerSenseAnnotationMap: SenseEntry[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -55,24 +64,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
-
-    this.structuredNote.frequencies.forEach((f) => {
-      this.dictionaryService.retrieveAuthorDocuments().pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-      ).subscribe((data: TextualDocument[]) => {
-        let document = data.filter((item: TextualDocument) => item.code === f.documentId)[0] || null;
-        this.frequencies.push({ documentLabel: document?.title || '', frequency: f.frequency });
-      });
-    });
-
-    this.dictionaryService.retrieveAuthorDocuments().pipe(
-      take(1),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-    ).subscribe((data: TextualDocument[]) => {
-      this.firstAttestationLabel = data.filter((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)[0]?.title || '';
-    });
+    this.retrieveHeaderEntryData();
 
     this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe(
       take(1),
@@ -94,27 +86,74 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       }
       );
 
-      this.meaningsTree = this.mapSortingItemToTreeNode(sortedItems);
+      this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems);
+      this.senseLexicalEntriesTree.map(senseLexicalEntry => {
+        let senseEntry = new SenseEntry();
+        senseEntry.id = senseLexicalEntry.key!;
 
-      this.meaningsTree.forEach(meaning => {
-        const request = new SearchAnnotationRequest();
-        request.start = 0;
-        request.end = 100;
-        const filters = new SearchAnnotationFilters();
-        filters.searchMode = 'SEMANTICS';
-        filters.contextLength = 20;
-        filters.searchValue = meaning.key!;
-        request.filters = filters;
+        const requests$ = senseLexicalEntry.children?.map(senseChildMeaning => {
+          const meaning: Meaning = new Meaning();
+          meaning.id = senseChildMeaning.key!;
 
-        this.searchAnnotationService.searchAnnotation(request).pipe(
-          take(1),
-          catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-        ).subscribe((data: SearchAnnotationResult) => {
-          console.log(data);
-          this.meaningsPerSenseAnnotationMap.set(meaning.key!, data);
+          const request = new SearchAnnotationRequest();
+          request.start = 0;
+          request.end = 100;
+          const filters = new SearchAnnotationFilters();
+          filters.searchMode = 'SEMANTICS';
+          filters.contextLength = 20;
+          filters.searchValue = meaning.id;
+          request.filters = filters;
+
+          return {
+            meaning: meaning,
+            observable: this.searchAnnotationService.searchAnnotationBySense(request)
+          };
         }
-        );
+        ) || [];
+
+        // Utilizziamo from per creare un osservabile dall'array di richieste
+        from(requests$).pipe(
+          concatMap(request =>
+            zip(of(request.meaning), request.observable).pipe(
+              map(([meaning, result]) => ({ meaning: meaning, result }))
+            )
+          ),
+          toArray(),
+          takeUntil(this.unsubscribe$),
+          catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+        ).subscribe((results: { meaning: Meaning, result: SearchAnnotationResult | null }[]) => {
+          results.forEach(({ meaning, result }) => {
+            if (result) {
+              meaning.sortedAnnotations = result;
+              senseEntry.meanings.push(meaning);
+            }
+          });
+          console.log('Tutte le richieste sono terminate');
+          this.meaningsPerSenseAnnotationMap.push(senseEntry);
+        });
       });
+
+    });
+  }
+
+  private retrieveHeaderEntryData() {
+    this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
+
+    this.structuredNote.frequencies.forEach((f) => {
+      this.dictionaryService.retrieveAuthorDocuments().pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
+      ).subscribe((data: TextualDocument[]) => {
+        let document = data.filter((item: TextualDocument) => item.code === f.documentId)[0] || null;
+        this.frequencies.push({ documentLabel: document?.title || '', frequency: f.frequency });
+      });
+    });
+
+    this.dictionaryService.retrieveAuthorDocuments().pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
+    ).subscribe((data: TextualDocument[]) => {
+      this.firstAttestationLabel = data.filter((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)[0]?.title || '';
     });
   }
 
@@ -125,11 +164,11 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
  */
   private mapSortingItemToTreeNode(items: DictionarySortingItem[], parentIndex?: string): TreeNode<DictionarySortingItem>[] {
     return items.map((item, i) => {
-      const isSense = item.type.includes('LexicalSense');
-      const itemIndex = !parentIndex ? (isSense ? `${i + 1}` : '') : `${parentIndex}.${i + 1}`;
+      const isMeaning = item.type.includes('LexicalSense');
+      const itemIndex = !parentIndex ? (isMeaning ? `${i + 1}` : '') : `${parentIndex}.${i + 1}`;
       return <TreeNode<DictionarySortingItem>>{
         key: item.id,
-        type: isSense ? 'sense' : 'lexicalEntry',
+        type: isMeaning ? 'meaning' : 'senseLexicalEntry',
         label: item.label,
         data: item,
         index: itemIndex,
