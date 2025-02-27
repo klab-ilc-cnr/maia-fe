@@ -70,24 +70,13 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe((sortedItems: DictionarySortingItem[]) => {
-      let lexicalEntrySortingItem = sortedItems.filter(item => item.type.includes('LexicalEntry'))[0] || null;
-      let lexicalEntryId = lexicalEntrySortingItem ? lexicalEntrySortingItem.referredEntity : null;
+      let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
 
-      if (!lexicalEntryId) {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig('No lexical entry found'));
-        throw new Error('No lexical entry found');
-      }
-
-      this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-      ).subscribe((forms: any) => {
-        this.forms = forms.map((form: any) => form.label);
-      }
-      );
+      this.retrieveForms(lexicalEntryId);
 
       this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems);
-      this.senseLexicalEntriesTree.map(senseLexicalEntry => {
+
+      const senseEntries$ = this.senseLexicalEntriesTree.map(senseLexicalEntry => {
         let senseEntry = new SenseEntry();
         senseEntry.id = senseLexicalEntry.key!;
 
@@ -104,36 +93,53 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
           filters.searchValue = meaning.id;
           request.filters = filters;
 
-          return {
-            meaning: meaning,
-            observable: this.searchAnnotationService.searchAnnotationBySense(request)
-          };
-        }
-        ) || [];
-
-        // Utilizziamo from per creare un osservabile dall'array di richieste
-        from(requests$).pipe(
-          concatMap(request =>
-            zip(of(request.meaning), request.observable).pipe(
-              map(([meaning, result]) => ({ meaning: meaning, result }))
-            )
-          ),
-          toArray(),
-          takeUntil(this.unsubscribe$),
-          catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-        ).subscribe((results: { meaning: Meaning, result: SearchAnnotationResult | null }[]) => {
-          results.forEach(({ meaning, result }) => {
-            if (result) {
+          return this.searchAnnotationService.searchAnnotationBySense(request).pipe(
+            map(result => {
               meaning.sortedAnnotations = result;
-              senseEntry.meanings.push(meaning);
-            }
-          });
-          console.log('Tutte le richieste sono terminate');
-          this.meaningsPerSenseAnnotationMap.push(senseEntry);
-        });
+              return meaning;
+            })
+          );
+        }) || [];
+
+        return from(requests$).pipe(
+          concatMap(obs => obs),
+          toArray(),
+          map(meanings => {
+            senseEntry.meanings = meanings;
+            return senseEntry;
+          })
+        );
+      });
+
+      forkJoin(senseEntries$).pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
+      ).subscribe(senseEntries => {
+        this.meaningsPerSenseAnnotationMap = senseEntries;
+        console.log('All requests have completed');
       });
 
     });
+  }
+
+  private retrieveForms(lexicalEntryId: string) {
+    this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
+    ).subscribe((forms: any) => {
+      this.forms = forms.map((form: any) => form.label);
+    });
+  }
+
+  private retrieveLexicalEntryId(sortedItems: DictionarySortingItem[]) {
+    let lexicalEntrySortingItem = sortedItems.filter(item => item.type.includes('LexicalEntry'))[0] || null;
+    let lexicalEntryId = lexicalEntrySortingItem ? lexicalEntrySortingItem.referredEntity : null;
+
+    if (!lexicalEntryId) {
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig('No lexical entry found'));
+      throw new Error('No lexical entry found');
+    }
+    return lexicalEntryId;
   }
 
   private retrieveHeaderEntryData() {
