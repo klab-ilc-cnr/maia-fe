@@ -18,7 +18,7 @@ export class SearchAnnotationService {
    * @param http {HttpClient} HTTP Calls
    */
   constructor(private http: HttpClient) {
-    this.searchUrl = `${environment.maiaBeTextoUrl}/util/aic`;
+    this.searchUrl = `${environment.maiaBeTextoUrl}/util/ais`;
   }
 
   searchAnnotationBySense(request: SearchAnnotationRequest): Observable<SearchAnnotationResult> {

@@ -10,6 +10,10 @@ export class SearchAnnotationResult {
 export class SearchAnnotationResultRow {
     /**index of the search result */
     index!: number;
+    /**start index of the search result */
+    start!: number;
+    /**end index of the search result */
+    end!: number;
     /**the index of the row in the text body*/
     rowIndex!: number;
     /**text name */
@@ -18,10 +22,8 @@ export class SearchAnnotationResultRow {
     textId!: number;
     /**the corpus index */
     reference: string = '';
-    /**partial text to show before */
-    leftContext: string = '';
-    /**partial text to show after */
-    rightContext: string = '';
+    /**section text */
+    section: string = '';
     /**annotation label */
     annotation!: string;
     /**absolute annotation text offset */

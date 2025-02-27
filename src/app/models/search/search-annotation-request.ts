@@ -11,5 +11,4 @@ export class SearchAnnotationRequest {
     searchValue!: string;
     /**SEMANTICS */
     searchMode!: string;
-    contextLength!: number;
   }

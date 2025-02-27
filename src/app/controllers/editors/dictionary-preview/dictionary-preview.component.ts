@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MessageService, TreeNode } from 'primeng/api';
+import { TreeNode } from 'primeng/api';
 import { catchError, concatMap, forkJoin, from, map, mergeMap, Observable, of, Subject, take, takeUntil, throwError, toArray, zip } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -19,6 +19,7 @@ import { SearchAnnotationService } from 'src/app/services/search-annotation.serv
  */
 export class Meaning {
   id!: string;
+  referredEntity?: string;
   sortedAnnotations!: SearchAnnotationResult;
 }
 
@@ -51,8 +52,6 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     private dictionaryService: DictionaryService,
     private searchAnnotationService: SearchAnnotationService,
     private commonService: CommonService,
-    private messageService: MessageService,
-    private msgConfService: MessageConfigurationService
   ) { }
 
   ngOnDestroy(): void {
@@ -81,7 +80,6 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe((sortedItems: DictionarySortingItem[]) => {
-      let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
 
       this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems);
 
@@ -94,12 +92,9 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
           this.meaningsPerSenseAnnotations = senseEntries;
         });
 
-      if (!lexicalEntryId) {
-        return;
-      }
-
+      let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
+      if (!lexicalEntryId) { return; }
       this.retrieveAndSetForms(lexicalEntryId);
-
     });
   }
 
@@ -115,21 +110,22 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       const requests$ = senseLexicalEntry.children?.map(senseChildMeaning => {
         const meaning: Meaning = new Meaning();
         meaning.id = senseChildMeaning.key!;
+        meaning.referredEntity = senseChildMeaning.data?.referredEntity!;
 
         const request = new SearchAnnotationRequest();
         request.start = 0;
         request.end = 100;
         const filters = new SearchAnnotationFilters();
         filters.searchMode = 'SEMANTICS';
-        filters.contextLength = 20;
-        filters.searchValue = meaning.id;
+        filters.searchValue = meaning.referredEntity;
         request.filters = filters;
 
         return this.searchAnnotationService.searchAnnotationBySense(request).pipe(
           map(result => {
             meaning.sortedAnnotations = result;
             return meaning;
-          })
+          }),
+          catchError(() => of(meaning))
         );
       }) || [];
 
