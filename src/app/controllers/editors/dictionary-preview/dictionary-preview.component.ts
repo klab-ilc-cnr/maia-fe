@@ -14,10 +14,17 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
 
+/**
+ * classe che rappresenta una accezione (meaning) con le sue annotazioni
+ */
 export class Meaning {
   id!: string;
   sortedAnnotations!: SearchAnnotationResult;
 }
+
+/**
+ * classe che rappresenta le accezioni (meanings) di una singola voce (lexical entry del sense)
+ * */
 export class SenseEntry {
   id!: string;
   meanings: Meaning[] = [];
@@ -38,7 +45,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   public firstAttestationLabel: string = '';
   public frequencies: { documentLabel: string; frequency: number }[] = [];
   public senseLexicalEntriesTree: TreeNode<DictionarySortingItem>[] = [];
-  public meaningsPerSenseAnnotationMap: SenseEntry[] = [];
+  public meaningsPerSenseAnnotations: SenseEntry[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -53,6 +60,10 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  /**
+   * Calculate the total occurrences from the structured note frequencies.
+   * @returns {number}
+   */
   get totalOccurrences() {
     let count = 0;
     if (this.structuredNote && this.structuredNote.frequencies) {
@@ -72,57 +83,69 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     ).subscribe((sortedItems: DictionarySortingItem[]) => {
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
 
-      this.retrieveForms(lexicalEntryId);
+      this.retrieveAndSetForms(lexicalEntryId);
 
       this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems);
 
-      const senseEntries$ = this.senseLexicalEntriesTree.map(senseLexicalEntry => {
-        let senseEntry = new SenseEntry();
-        senseEntry.id = senseLexicalEntry.key!;
-
-        const requests$ = senseLexicalEntry.children?.map(senseChildMeaning => {
-          const meaning: Meaning = new Meaning();
-          meaning.id = senseChildMeaning.key!;
-
-          const request = new SearchAnnotationRequest();
-          request.start = 0;
-          request.end = 100;
-          const filters = new SearchAnnotationFilters();
-          filters.searchMode = 'SEMANTICS';
-          filters.contextLength = 20;
-          filters.searchValue = meaning.id;
-          request.filters = filters;
-
-          return this.searchAnnotationService.searchAnnotationBySense(request).pipe(
-            map(result => {
-              meaning.sortedAnnotations = result;
-              return meaning;
-            })
-          );
-        }) || [];
-
-        return from(requests$).pipe(
-          concatMap(obs => obs),
-          toArray(),
-          map(meanings => {
-            senseEntry.meanings = meanings;
-            return senseEntry;
-          })
-        );
-      });
-
-      forkJoin(senseEntries$).pipe(
-        takeUntil(this.unsubscribe$),
-        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
-      ).subscribe(senseEntries => {
-        this.meaningsPerSenseAnnotationMap = senseEntries;
-        console.log('All requests have completed');
-      });
-
+      this.retrieveMeaningsPerSenseAnnotations()
+        .pipe(
+          takeUntil(this.unsubscribe$),
+          catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
+        )
+        .subscribe(senseEntries => {
+          this.meaningsPerSenseAnnotations = senseEntries;
+        });
     });
   }
 
-  private retrieveForms(lexicalEntryId: string) {
+  /**
+   * Retrieve meanings per sense annotations.
+   * @returns {Observable<SenseEntry[]>}
+   */
+  private retrieveMeaningsPerSenseAnnotations(): Observable<SenseEntry[]> {
+    const senseEntries$ = this.senseLexicalEntriesTree.map(senseLexicalEntry => {
+      let senseEntry = new SenseEntry();
+      senseEntry.id = senseLexicalEntry.key!;
+
+      const requests$ = senseLexicalEntry.children?.map(senseChildMeaning => {
+        const meaning: Meaning = new Meaning();
+        meaning.id = senseChildMeaning.key!;
+
+        const request = new SearchAnnotationRequest();
+        request.start = 0;
+        request.end = 100;
+        const filters = new SearchAnnotationFilters();
+        filters.searchMode = 'SEMANTICS';
+        filters.contextLength = 20;
+        filters.searchValue = meaning.id;
+        request.filters = filters;
+
+        return this.searchAnnotationService.searchAnnotationBySense(request).pipe(
+          map(result => {
+            meaning.sortedAnnotations = result;
+            return meaning;
+          })
+        );
+      }) || [];
+
+      return from(requests$).pipe(
+        concatMap(obs => obs),
+        toArray(),
+        map(meanings => {
+          senseEntry.meanings = meanings;
+          return senseEntry;
+        })
+      );
+    });
+
+    return forkJoin(senseEntries$);
+  }
+
+  /**
+   * Retrieve forms for a given lexical entry ID.
+   * @param lexicalEntryId {string}
+   */
+  private retrieveAndSetForms(lexicalEntryId: string): void {
     this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
@@ -131,7 +154,12 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  private retrieveLexicalEntryId(sortedItems: DictionarySortingItem[]) {
+  /**
+   * Retrieve the lexical entry ID from sorted items.
+   * @param sortedItems {DictionarySortingItem[]}
+   * @returns {string}
+   */
+  private retrieveLexicalEntryId(sortedItems: DictionarySortingItem[]): string {
     let lexicalEntrySortingItem = sortedItems.filter(item => item.type.includes('LexicalEntry'))[0] || null;
     let lexicalEntryId = lexicalEntrySortingItem ? lexicalEntrySortingItem.referredEntity : null;
 
@@ -142,7 +170,10 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     return lexicalEntryId;
   }
 
-  private retrieveHeaderEntryData() {
+  /**
+   * Retrieve header entry data and populate structured note and frequencies.
+   */
+  private retrieveHeaderEntryData(): void {
     this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
 
     this.structuredNote.frequencies.forEach((f) => {
@@ -164,10 +195,11 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   }
 
   /**
- * Map the list of items to be sorted in a TreeNode list
- * @param items {DictionarySortingItem[]}
- * @returns {TreeNode<DictionarySortingItem>[]}
- */
+   * Map the list of items to be sorted in a TreeNode list.
+   * @param items {DictionarySortingItem[]}
+   * @param parentIndex {string}
+   * @returns {TreeNode<DictionarySortingItem>[]}
+   */
   private mapSortingItemToTreeNode(items: DictionarySortingItem[], parentIndex?: string): TreeNode<DictionarySortingItem>[] {
     return items.map((item, i) => {
       const isMeaning = item.type.includes('LexicalSense');
