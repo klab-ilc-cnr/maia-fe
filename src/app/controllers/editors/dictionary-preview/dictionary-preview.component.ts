@@ -83,8 +83,6 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     ).subscribe((sortedItems: DictionarySortingItem[]) => {
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
 
-      this.retrieveAndSetForms(lexicalEntryId);
-
       this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems);
 
       this.retrieveMeaningsPerSenseAnnotations()
@@ -95,6 +93,13 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
         .subscribe(senseEntries => {
           this.meaningsPerSenseAnnotations = senseEntries;
         });
+
+      if (!lexicalEntryId) {
+        return;
+      }
+
+      this.retrieveAndSetForms(lexicalEntryId);
+
     });
   }
 
@@ -159,14 +164,10 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
    * @param sortedItems {DictionarySortingItem[]}
    * @returns {string}
    */
-  private retrieveLexicalEntryId(sortedItems: DictionarySortingItem[]): string {
+  private retrieveLexicalEntryId(sortedItems: DictionarySortingItem[]): string | null {
     let lexicalEntrySortingItem = sortedItems.filter(item => item.type.includes('LexicalEntry'))[0] || null;
     let lexicalEntryId = lexicalEntrySortingItem ? lexicalEntrySortingItem.referredEntity : null;
 
-    if (!lexicalEntryId) {
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig('No lexical entry found'));
-      throw new Error('No lexical entry found');
-    }
     return lexicalEntryId;
   }
 
