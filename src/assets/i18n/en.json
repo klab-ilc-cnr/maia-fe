@@ -65,7 +65,8 @@
         },
         "PREVIEW_TAB": {
             "title": "Preview",
-            "forms": "Forms"
+            "forms": "Forms",
+            "senses": "Senses"
         },
         "SORT_TAB": {
             "noDefinition": "No definition provided",

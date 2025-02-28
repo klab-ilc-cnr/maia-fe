@@ -1,39 +1,41 @@
 <p-skeleton *ngIf="!dictionaryEntry; else previewContent"></p-skeleton>
 <ng-template #previewContent>
-  <div class="card pinned-tab-panel">
-    <div class="d-flex align-items-center">
-      <span class="fw-bold">{{ dictionaryEntry.label }}</span>
-      <sub class="ml-1">{{ dictionaryEntry["pos"].join(" ") }}</sub>
+    <div class="card pinned-tab-panel">
+    <label>{{'DICTIONARY_EDITOR.EDIT_TAB.title'|translate}}:</label>
+    <h2 class="d-flex align-items-center">
+        <span class="fw-bold">{{ dictionaryEntry.label }}</span>
+        <sub class="ml-1">{{ dictionaryEntry["pos"].join(" ") }}</sub>
+    </h2>
     </div>
-    <div class="mt-3">
-        <label class="form-label w-full" for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.PREVIEW_TAB.forms'|translate}}</label>
-        <label class="ml-5" *ngFor="let form of forms">{{form}}</label>
-    </div>
-  </div>
-  <div class="card">
-        <div class="field col-6">
-            <label class="form-label w-full" for="status">{{'DICTIONARY_EDITOR.EDIT_TAB.status'|translate}}</label>
-            <app-icon-lock [status]="dictionaryEntry.status"></app-icon-lock>
+    <div class="card pinned-tab-panel">
+        <label class="form-label w-full" for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.PREVIEW_TAB.forms'|translate}}: </label>
+        <div class="mt-3">
+            <p-chip class="mr-3" *ngFor="let form of forms" [label]="form"></p-chip>
         </div>
-        <span>
-            <div class="field col-6">
-                <label class="form-label w-full"
-                    for="firstAttestationB">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</label>
-                {{firstAttestationLabel}}
+    </div>
+    <div class="card">
+        <div class="d-flex flex-wrap">
+            <div class="flex-column w-100">
+                <label for="status">{{'DICTIONARY_EDITOR.EDIT_TAB.status'|translate}}</label>
+                <app-icon-lock class="d-block" [status]="dictionaryEntry.status"></app-icon-lock>
             </div>
-            <div class="field col-6">
-                <label class="form-label w-full" for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.EDIT_TAB.topographicReference'|translate}}</label>
-                {{structuredNote.firstAttestationDetails}}
+            <div class="flex-column w-50 mt-5">
+                <label for="firstAttestationB">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</label>
+                <span class="d-block">{{firstAttestationLabel}}</span>
             </div>
-            <div class="field col-6">
-                <label class="form-label w-full" for="decameronOccurrences">{{'DICTIONARY_EDITOR.EDIT_TAB.nOccurrencesDecameron'|translate}}</label>
-                {{structuredNote.decameronOccurrences}}            
+            <div class="flex-column w-50 mt-5">
+                <label for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.EDIT_TAB.topographicReference'|translate}}</label>
+                <span class="d-block">{{structuredNote.firstAttestationDetails}}</span>
             </div>
-            <div class="field col-6">
-                <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences'|translate}}</label>
-                {{totalOccurrences}}
+            <div class="flex-column w-50 mt-5">
+                <label for="decameronOccurrences">{{'DICTIONARY_EDITOR.EDIT_TAB.nOccurrencesDecameron'|translate}}</label>
+                <span class="d-block">{{structuredNote.decameronOccurrences}}</span>            
             </div>
-            <div class="field col-12">
+            <div class="flex-column w-50 mt-5">
+                <label>{{'DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences'|translate}}</label>
+                <span class="d-block">{{totalOccurrences}}</span>
+            </div>
+            <div class="flex-column w-100 mt-5">
                 <p-fieldset>
                     <ng-template pTemplate="header">
                         {{'DICTIONARY_EDITOR.EDIT_TAB.occOtherWorks'|translate}}
@@ -45,61 +47,64 @@
                     </ng-template>
                 </p-fieldset>
             </div>
-            <div class="field col-12">
+            <div class="flex-column w-100 mt-5">
                 <p-fieldset>
                     <ng-template pTemplate="header">{{'DICTIONARY_EDITOR.EDIT_TAB.etymology'|translate}}</ng-template>
                     <ng-template pTemplate="content">
-                       {{structuredNote.etymology.language}} - {{structuredNote.etymology.etymon}} - {{structuredNote.etymology.details}}
+                        {{structuredNote.etymology.language}} - {{structuredNote.etymology.etymon}} - {{structuredNote.etymology.details}}
                     </ng-template>
                 </p-fieldset>
             </div>
-            <div class="field col-12">
+            <div class="flex-column w-100 mt-5">
                 <label class="form-label w-full"
                     for="linguisticsSemantics">{{'DICTIONARY_EDITOR.EDIT_TAB.linguisticSemanticComm'|translate}}:</label>
                     {{structuredNote.linguisticsSemantics}}
             </div>
-            <div class="field col-12">
+            <div class="flex-column w-100 mt-5">
                 <label class="form-label w-full"
                     for="decameron">{{'DICTIONARY_EDITOR.EDIT_TAB.aroundDecameron'|translate}}:</label>
                 {{structuredNote.decameron}}
             </div>
-            <div class="field col-12">
+            <div class="flex-column w-100  mt-5">
                 <label class="form-label w-full"
                     for="firstAbsAttestation">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestAbs'|translate}}:</label>
                 {{structuredNote.firstAbsAttestation}}
             </div>
-            <div class="field col-12">
+            <div class="flex-column w-100 mt-5">
                 <label class="form-label w-full" for="boccaccioDante">Boccaccio e Dante:</label>
                 {{structuredNote.boccaccioDante}}
             </div>
-            <div class="field col-12">
-                <label class="form-label w-full" for="crusche">{{'DICTIONARY_EDITOR.EDIT_TAB.vocs'|translate}}:</label>
+            <div class="flex-column w-100 mt-5">
+                <label class="form-label w-full" for="crusche">{{'DICTIONARY_EDITOR.EDIT_TAB.vocs'|translate}}</label>
                 {{structuredNote.crusche}}
             </div>
-            <div class="field col-12">
-                <label class="form-label w-full" for="polyrhematics">{{'DICTIONARY_EDITOR.EDIT_TAB.misc'|translate}}:</label>
+            <div class="flex-column w-100 mt-5">
+                <label class="form-label w-full" for="polyrhematics">{{'DICTIONARY_EDITOR.EDIT_TAB.misc'|translate}}</label>
                 {{structuredNote.polyrhematics}}
-            </div>              
-        </span>
-        <div class="field col-12">
-            <p-fieldset>
-              <ng-template pTemplate="header">
-                {{'DICTIONARY_EDITOR.EDIT_TAB.seeAlso'|translate}}
-              </ng-template>
-              <ng-template pTemplate="content">
-                <label *ngFor="let seeAlso of dictionaryEntry.seeAlso" class="form-label
-                  w-full">{{seeAlso.label}}: {{seeAlso.entity}}</label>
-              </ng-template>
-            </p-fieldset>
-          </div>
-    </div>
-    <p-tree [value]="senseLexicalEntriesTree">
-        <ng-template let-item pTemplate="lexicalEntry" draggable="false">
-            <div><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
-        </ng-template>
-        <ng-template let-item pTemplate="sense">
-            <div><span class="mr-2">{{item.index}}</span><em *ngIf="item.data.prefix.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label !== '' ? item.label : ('DICTIONARY_EDITOR.SORT_TAB.noDefinition'|translate)}}
+            </div>        
+            <div class="flex-column w-100 mt-5">
+                <p-fieldset>
+                    <ng-template pTemplate="header">
+                    {{'DICTIONARY_EDITOR.EDIT_TAB.seeAlso'|translate}}
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                    <label *ngFor="let seeAlso of dictionaryEntry.seeAlso" class="form-label
+                        w-full">{{seeAlso.label}}: {{seeAlso.entity}}</label>
+                    </ng-template>
+                </p-fieldset>
             </div>
-        </ng-template>
-    </p-tree>
+        </div>
+    </div>
+    <div class="card">
+        <label>{{'DICTIONARY_EDITOR.PREVIEW_TAB.senses'|translate}}</label>
+        <p-tree [value]="senseLexicalEntriesTree" class="mt-2">
+            <ng-template let-item pTemplate="lexicalEntry" draggable="false">
+                <div><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
+            </ng-template>
+            <ng-template let-item pTemplate="sense">
+                <div><span class="mr-2">{{item.index}}</span><em *ngIf="item.data.prefix.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label !== '' ? item.label : ('DICTIONARY_EDITOR.SORT_TAB.noDefinition'|translate)}}
+                </div>
+            </ng-template>
+        </p-tree>
+    </div>
 </ng-template>

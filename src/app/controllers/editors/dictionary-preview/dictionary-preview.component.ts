@@ -81,7 +81,18 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe((sortedItems: DictionarySortingItem[]) => {
 
-      this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems);
+      this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems).map(node => {
+        if (node.children) {
+          const uniqueChildren = new Map<string, TreeNode<DictionarySortingItem>>();
+          node.children.forEach(child => {
+        if (child.data?.referredEntity && !uniqueChildren.has(child.data.referredEntity)) {
+          uniqueChildren.set(child.data.referredEntity, child);
+        }
+          });
+          node.children = Array.from(uniqueChildren.values());
+        }
+        return node;
+      });
 
       this.retrieveMeaningsPerSenseAnnotations()
         .pipe(
@@ -92,9 +103,50 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
           this.meaningsPerSenseAnnotations = senseEntries;
         });
 
+      this.test();
+
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
       if (!lexicalEntryId) { return; }
       this.retrieveAndSetForms(lexicalEntryId);
+    });
+  }
+
+  private test(): void {
+    this.senseLexicalEntriesTree.forEach(senseLexicalEntry => {
+      let senseEntry = new SenseEntry();
+      senseEntry.id = senseLexicalEntry.key!;
+
+      senseLexicalEntry.children?.forEach(senseChildMeaning => {
+        const meaning: Meaning = new Meaning();
+        meaning.id = senseChildMeaning.key!;
+        meaning.referredEntity = senseChildMeaning.data?.referredEntity!;
+
+        const request = new SearchAnnotationRequest();
+        request.start = 0;
+        request.end = 100;
+        const filters = new SearchAnnotationFilters();
+        filters.searchMode = 'SEMANTICS';
+        filters.searchValue = meaning.referredEntity;
+        request.filters = filters;
+
+        this.searchAnnotationService.searchAnnotationBySense(request).pipe(
+          take(1),
+          catchError(() => of(new SearchAnnotationResult()))
+        ).subscribe(result => {
+          senseChildMeaning.children = result.data.map((annotation, i) => {
+            return <TreeNode<DictionarySortingItem>><unknown>{
+              key: `${senseChildMeaning.key}-${i}`,
+              type: 'annotation',
+              label: annotation.reference + ' '+ annotation.section,
+              data: annotation,
+              index: `${senseChildMeaning.key}.${i + 1}`,
+              expanded: true
+            }
+          }
+          );
+        }
+        );
+      });
     });
   }
 

@@ -65,7 +65,8 @@
         },
         "PREVIEW_TAB": {
             "title": "Anteprima",
-            "forms": "Forme"
+            "forms": "Forme",
+            "senses": "Sensi"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",
@@ -201,7 +202,7 @@
     },
     "USERS_MANAGER": {
         "activeUser": "Utente attivo",
-        "confirmDeleteUser":"Stai per eliminare l'utente ${username}",
+        "confirmDeleteUser": "Stai per eliminare l'utente ${username}",
         "confirmPassword": "Conferma password",
         "confirmPwdMandatory": "La password di conferma è obbligatoria",
         "delete": "Elimina",
