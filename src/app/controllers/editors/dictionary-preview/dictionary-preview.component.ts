@@ -11,7 +11,6 @@ import { SearchAnnotationResult } from 'src/app/models/search/search-annotation-
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
-import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
 
 /**
@@ -134,12 +133,13 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
           catchError(() => of(new SearchAnnotationResult()))
         ).subscribe(result => {
           senseChildMeaning.children = result.data.map((annotation, i) => {
+            console.log(annotation, " " + i);
             return <TreeNode<DictionarySortingItem>><unknown>{
               key: `${senseChildMeaning.key}-${i}`,
               type: 'annotation',
-              label: annotation.reference + ' '+ annotation.section,
+              label: (i + 1) + ") " + annotation.reference + ' '+ annotation.section,
               data: annotation,
-              index: `${senseChildMeaning.key}.${i + 1}`,
+              index: i + 1,
               expanded: true
             }
           }
@@ -256,7 +256,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       return <TreeNode<DictionarySortingItem>>{
         key: item.id,
         type: isMeaning ? 'meaning' : 'senseLexicalEntry',
-        label: item.label,
+        label: itemIndex + '. '+ item.label,
         data: item,
         index: itemIndex,
         expanded: true,
