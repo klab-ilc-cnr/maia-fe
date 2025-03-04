@@ -137,11 +137,36 @@
             <label>{{'DICTIONARY_EDITOR.PREVIEW_TAB.senses'|translate}}</label>
         </h5>
         <p-tree [value]="senseLexicalEntriesTree" class="mt-2">
-            <ng-template let-item pTemplate="lexicalEntry" draggable="false">
+            <ng-template let-item pTemplate="senseLexicalEntry" draggable="false">
                 <div><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
             </ng-template>
-            <ng-template let-item pTemplate="sense">
-                <div><span class="mr-2">{{item.index}}</span><em *ngIf="item.data.prefix.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label !== '' ? item.label : ('DICTIONARY_EDITOR.SORT_TAB.noDefinition'|translate)}}
+            <ng-template let-item pTemplate="meaning">
+                <div><span class="mr-2"><b>{{item.data.index}}</b>.</span><em *ngIf="item.data.prefix?.length>0">[{{item.data.prefix.join(' ')}}]</em> {{item.label !== '' ? item.label : ('DICTIONARY_EDITOR.SORT_TAB.noDefinition'|translate)}}
+                </div>
+            </ng-template>
+            <ng-template let-item pTemplate="annotation">
+                <div class="custom-leaf">
+                    <p-table
+                    [value]="item.data.searchAnnotation.data"
+                    [paginator]="true"
+                    [rows]="5"
+                    [tableStyle]="{ 'min-width': '50rem' }"
+                    [rowsPerPageOptions]="[5,10,25,50,100,200]"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:10%">{{'DICTIONARY_EDITOR.PREVIEW_TAB.reference'|translate}}</th>
+                            <th style="width:90%">{{'DICTIONARY_EDITOR.PREVIEW_TAB.section'|translate}}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-annotation>
+                        <tr>
+                            {{test2(annotation)}}
+                                <td>{{ annotation.reference }}</td>
+                                <td>{{ annotation.section }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
             </ng-template>
         </p-tree>

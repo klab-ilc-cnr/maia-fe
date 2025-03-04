@@ -66,7 +66,9 @@
         "PREVIEW_TAB": {
             "title": "Preview",
             "forms": "Forms",
-            "senses": "Senses"
+            "senses": "Senses",
+            "reference": "Reference",
+            "section": "Section"
         },
         "SORT_TAB": {
             "noDefinition": "No definition provided",

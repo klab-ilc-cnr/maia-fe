@@ -4,6 +4,7 @@ import { TreeNode } from 'primeng/api';
 import { catchError, concatMap, forkJoin, from, map, mergeMap, Observable, of, Subject, take, takeUntil, throwError, toArray, zip } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
+import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-preview-item.model';
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
 import { TextualDocument } from 'src/app/models/dictionary/textual-document.model';
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
@@ -44,7 +45,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   public forms: string[] = [];
   public firstAttestationLabel: string = '';
   public frequencies: { documentLabel: string; frequency: number }[] = [];
-  public senseLexicalEntriesTree: TreeNode<DictionarySortingItem>[] = [];
+  public senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[] = [];
   public meaningsPerSenseAnnotations: SenseEntry[] = [];
 
   constructor(private lexiconService: LexiconService,
@@ -80,15 +81,18 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe((sortedItems: DictionarySortingItem[]) => {
 
-      this.senseLexicalEntriesTree = this.mapSortingItemToTreeNode(sortedItems).map(node => {
+      this.senseLexicalEntriesTree = this.mapSortingItemToPreviewTreeNode(sortedItems).map(node => {
         if (node.children) {
-          const uniqueChildren = new Map<string, TreeNode<DictionarySortingItem>>();
+          const uniqueChildren = new Map<string, TreeNode<DictionaryPreviewItem>>();
           node.children.forEach(child => {
-        if (child.data?.referredEntity && !uniqueChildren.has(child.data.referredEntity)) {
-          uniqueChildren.set(child.data.referredEntity, child);
-        }
+            if (child.data?.referredEntity && !uniqueChildren.has(child.data.referredEntity)) {
+              uniqueChildren.set(child.data.referredEntity, child);
+            }
           });
-          node.children = Array.from(uniqueChildren.values());
+          node.children = Array.from(uniqueChildren.values()).map((child, index) => {
+            child.data!.index = index + 1;
+            return child;
+          });
         }
         return node;
       });
@@ -102,7 +106,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
           this.meaningsPerSenseAnnotations = senseEntries;
         });
 
-      this.test();
+      this.addSearchAnnotations();
 
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
       if (!lexicalEntryId) { return; }
@@ -110,7 +114,11 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  private test(): void {
+  test2(sent: any) {
+    console.log(sent)
+  }
+
+  private addSearchAnnotations(): void {
     this.senseLexicalEntriesTree.forEach(senseLexicalEntry => {
       let senseEntry = new SenseEntry();
       senseEntry.id = senseLexicalEntry.key!;
@@ -132,18 +140,21 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
           take(1),
           catchError(() => of(new SearchAnnotationResult()))
         ).subscribe(result => {
-          senseChildMeaning.children = result.data.map((annotation, i) => {
-            console.log(annotation, " " + i);
-            return <TreeNode<DictionarySortingItem>><unknown>{
-              key: `${senseChildMeaning.key}-${i}`,
+          senseChildMeaning.children =
+            [{
               type: 'annotation',
-              label: (i + 1) + ") " + annotation.reference + ' '+ annotation.section,
-              data: annotation,
-              index: i + 1,
-              expanded: true
-            }
-          }
-          );
+              leaf: true,
+              data: {
+                searchAnnotation: result,
+                id: '',
+                referredEntity: '',
+                type: [],
+                prefix: [],
+                label: '',
+                suffix: [],
+                index: 0
+              },
+            }];
         }
         );
       });
@@ -245,22 +256,20 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
 
   /**
    * Map the list of items to be sorted in a TreeNode list.
-   * @param items {DictionarySortingItem[]}
+   * @param items {DictionaryPreviewItem[]}
    * @param parentIndex {string}
-   * @returns {TreeNode<DictionarySortingItem>[]}
+   * @returns {TreeNode<DictionaryPreviewItem>[]}
    */
-  private mapSortingItemToTreeNode(items: DictionarySortingItem[], parentIndex?: string): TreeNode<DictionarySortingItem>[] {
+  private mapSortingItemToPreviewTreeNode(items: DictionarySortingItem[]): TreeNode<DictionaryPreviewItem>[] {
     return items.map((item, i) => {
       const isMeaning = item.type.includes('LexicalSense');
-      const itemIndex = !parentIndex ? (isMeaning ? `${i + 1}` : '') : `${parentIndex}.${i + 1}`;
-      return <TreeNode<DictionarySortingItem>>{
+      return <TreeNode<DictionaryPreviewItem>>{
         key: item.id,
         type: isMeaning ? 'meaning' : 'senseLexicalEntry',
-        label: itemIndex + '. '+ item.label,
+        label: item.label,
         data: item,
-        index: itemIndex,
-        expanded: true,
-        children: this.mapSortingItemToTreeNode(item.children ?? [], itemIndex)
+        expanded: !isMeaning,
+        children: this.mapSortingItemToPreviewTreeNode(item.children ?? [])
       }
     });
   }

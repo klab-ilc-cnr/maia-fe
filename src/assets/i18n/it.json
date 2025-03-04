@@ -61,7 +61,9 @@
             "seeAlso": "Vedi anche",
             "sourceLanguage": "Lingua di provenienza",
             "vocs": "Il Decameron, le Crusche e altri vocabolari",
-            "status": "Status"
+            "status": "Status",
+            "reference": "Riferimento",
+            "section": "Sezione"
         },
         "PREVIEW_TAB": {
             "title": "Anteprima",
