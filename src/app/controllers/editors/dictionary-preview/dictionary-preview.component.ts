@@ -8,7 +8,7 @@ import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-prev
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
 import { TextualDocument } from 'src/app/models/dictionary/textual-document.model';
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
-import { SearchAnnotationResult } from 'src/app/models/search/search-annotation-result';
+import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/models/search/search-annotation-result';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -52,7 +52,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
     private searchAnnotationService: SearchAnnotationService,
-    private commonService: CommonService,
+    private commonService: CommonService
   ) { }
 
   ngOnDestroy(): void {
@@ -118,7 +118,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
    * @param event {any}
    * @param searchAnnotation {SearchAnnotationResult}
    */
-  public onPage(event: any, searchAnnotation: SearchAnnotationResult) {
+  public onPage(event: any, searchAnnotation: SearchAnnotationResult): void {
     searchAnnotation.first = event.first;
     searchAnnotation.rows = event.rows;
   }
@@ -131,6 +131,41 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   public lazyLoadSearchResults(event: any, senseChildMeaning: TreeNode<DictionaryPreviewItem>) {
     this.retrieveAndAddSearchAnnotationsForMeaning(senseChildMeaning);
   }
+
+  /**
+   * Highlight the text based on the annotation offsets.
+   * @param annotation {SearchAnnotationResultRow}
+   * @returns {string}
+   */
+  public highlightSection(annotation: SearchAnnotationResultRow): string {
+    let section: string = annotation.section;
+    let highlights = annotation.offsets;
+
+    if (!section || !highlights || highlights.length === 0) {
+      return section;
+    }
+
+    // Ordina gli intervalli per inizio (nel caso non siano ordinati)
+    highlights.sort((a: { start: number; }, b: { start: number; }) => a.start - b.start);
+
+    let result = '';
+    let lastIndex = 0;
+
+    for (const { start, end } of highlights) {
+      if (start >= end || start < lastIndex) {
+        continue;
+      }
+
+      result += section.substring(lastIndex, start);
+      result += `<span class="highlight">${section.substring(start, end)}</span>`;
+      lastIndex = end;
+    }
+
+    result += section.substring(lastIndex);
+
+    return result;
+  }
+
 
   /**
    * Retrieve and add search annotations for a given sense child meaning.

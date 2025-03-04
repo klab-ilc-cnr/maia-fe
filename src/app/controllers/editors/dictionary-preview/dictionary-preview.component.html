@@ -161,7 +161,7 @@
                     [first]="annotationTreeItem.data.searchAnnotation.first"
                     [(rows)]="annotationTreeItem.data.searchAnnotation.rows"
                     [paginator]="annotationTreeItem.data.searchAnnotation.count > 0"
-                    [tableStyle]="{ 'min-width': '50rem' }"
+                    [tableStyle]="{ 'width': '100%' }"
                     [rowsPerPageOptions]="[5,10,25,50,100,200]"
                     [showCurrentPageReport]="annotationTreeItem.data.searchAnnotation.count > 0"
                     [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate"
@@ -177,7 +177,7 @@
                             <tr>
                                     <td>{{ annotation.text }}</td>
                                     <td>{{ annotation.reference }}</td>
-                                    <td>{{ annotation.section }}</td>
+                                    <td [innerHTML]="highlightSection(annotation)"></td>
                                 </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
