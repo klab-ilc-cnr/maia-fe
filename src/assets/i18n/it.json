@@ -61,14 +61,15 @@
             "seeAlso": "Vedi anche",
             "sourceLanguage": "Lingua di provenienza",
             "vocs": "Il Decameron, le Crusche e altri vocabolari",
-            "status": "Status",
-            "reference": "Riferimento",
-            "section": "Sezione"
+            "status": "Status"
         },
         "PREVIEW_TAB": {
             "title": "Anteprima",
             "forms": "Forme",
-            "senses": "Sensi"
+            "senses": "Sensi",
+            "text": "Testo",
+            "reference": "Riferimento",
+            "section": "Sezione"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",

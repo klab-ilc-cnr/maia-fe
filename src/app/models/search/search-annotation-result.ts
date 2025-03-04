@@ -4,6 +4,8 @@ export class SearchAnnotationResult {
     count!: number;
     /**row results*/
     data!: Array<SearchAnnotationResultRow>;
+    first?: number;
+    rows?: number;
 }
 
 export class SearchAnnotationOffset {

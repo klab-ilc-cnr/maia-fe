@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { catchError, concatMap, forkJoin, from, map, mergeMap, Observable, of, Subject, take, takeUntil, throwError, toArray, zip } from 'rxjs';
+import { catchError, concatMap, forkJoin, from, map, Observable, of, Subject, take, takeUntil, toArray } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-preview-item.model';
@@ -47,6 +47,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   public frequencies: { documentLabel: string; frequency: number }[] = [];
   public senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[] = [];
   public meaningsPerSenseAnnotations: SenseEntry[] = [];
+  public defaultVisibleRows = 5;
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -97,16 +98,16 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
         return node;
       });
 
-      this.retrieveMeaningsPerSenseAnnotations()
-        .pipe(
-          takeUntil(this.unsubscribe$),
-          catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
-        )
-        .subscribe(senseEntries => {
-          this.meaningsPerSenseAnnotations = senseEntries;
-        });
+      // this.retrieveMeaningsPerSenseAnnotations()
+      //   .pipe(
+      //     takeUntil(this.unsubscribe$),
+      //     catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
+      //   )
+      //   .subscribe(senseEntries => {
+      //     this.meaningsPerSenseAnnotations = senseEntries;
+      //   });
 
-      this.addSearchAnnotations();
+      // this.addSearchAnnotations();
 
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
       if (!lexicalEntryId) { return; }
@@ -118,47 +119,92 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     console.log(sent)
   }
 
-  private addSearchAnnotations(): void {
-    this.senseLexicalEntriesTree.forEach(senseLexicalEntry => {
-      let senseEntry = new SenseEntry();
-      senseEntry.id = senseLexicalEntry.key!;
+  public onNodeExpand(event: any): void {
+    const node: TreeNode<DictionaryPreviewItem> = event.node;
+    this.retrieveAndAddSearchAnnotationsForMeaning(node);
+  }
 
-      senseLexicalEntry.children?.forEach(senseChildMeaning => {
-        const meaning: Meaning = new Meaning();
-        meaning.id = senseChildMeaning.key!;
-        meaning.referredEntity = senseChildMeaning.data?.referredEntity!;
+  /**handler for page change */
+  onPage(event: any, searchAnnotation: SearchAnnotationResult) {
+    searchAnnotation.first = event.first;
+    searchAnnotation.rows = event.rows;
+  }
 
-        const request = new SearchAnnotationRequest();
-        request.start = 0;
-        request.end = 100;
-        const filters = new SearchAnnotationFilters();
-        filters.searchMode = 'SEMANTICS';
-        filters.searchValue = meaning.referredEntity;
-        request.filters = filters;
+  public lazyLoadSearchResults(event: any, senseChildMeaning: TreeNode<DictionaryPreviewItem>) {
+    this.retrieveAndAddSearchAnnotationsForMeaning(senseChildMeaning);
+  }
 
-        this.searchAnnotationService.searchAnnotationBySense(request).pipe(
-          take(1),
-          catchError(() => of(new SearchAnnotationResult()))
-        ).subscribe(result => {
-          senseChildMeaning.children =
-            [{
-              type: 'annotation',
-              leaf: true,
-              data: {
-                searchAnnotation: result,
-                id: '',
-                referredEntity: '',
-                type: [],
-                prefix: [],
-                label: '',
-                suffix: [],
-                index: 0
-              },
-            }];
-        }
-        );
-      });
+  private retrieveAndAddSearchAnnotationsForMeaning(senseChildMeaning: TreeNode<DictionaryPreviewItem>): void {
+    const meaning: Meaning = new Meaning();
+    meaning.id = senseChildMeaning.key!;
+    meaning.referredEntity = senseChildMeaning.data?.referredEntity!;
+
+    const request = new SearchAnnotationRequest();
+    request.start = senseChildMeaning.children![0].data?.searchAnnotation?.first ?? 0;
+    request.end = request.start + (senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows);
+    const filters = new SearchAnnotationFilters();
+    filters.searchMode = 'SEMANTICS';
+    filters.searchValue = meaning.referredEntity;
+    request.filters = filters;
+
+    this.searchAnnotationService.searchAnnotationBySense(request).pipe(
+      take(1),
+      catchError(() => of(new SearchAnnotationResult()))
+    ).subscribe(result => {
+      result.first = request.start;
+      result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;
+      senseChildMeaning.children = this.buildAnnotationsLeaf(result);
     });
+  }
+
+  // private addSearchAnnotations(): void {
+  //   this.senseLexicalEntriesTree.forEach(senseLexicalEntry => {
+  //     let senseEntry = new SenseEntry();
+  //     senseEntry.id = senseLexicalEntry.key!;
+
+  //     senseLexicalEntry.children?.forEach(senseChildMeaning => {
+  //       const meaning: Meaning = new Meaning();
+  //       meaning.id = senseChildMeaning.key!;
+  //       meaning.referredEntity = senseChildMeaning.data?.referredEntity!;
+
+  //       const request = new SearchAnnotationRequest();
+  //       request.start = 0;
+  //       request.end = this.defaultVisibleRows;
+  //       const filters = new SearchAnnotationFilters();
+  //       filters.searchMode = 'SEMANTICS';
+  //       filters.searchValue = meaning.referredEntity;
+  //       request.filters = filters;
+
+  //       this.searchAnnotationService.searchAnnotationBySense(request).pipe(
+  //         take(1),
+  //         catchError(() => of(new SearchAnnotationResult()))
+  //       ).subscribe(result => {
+  //         result.rows = this.defaultVisibleRows;
+  //         senseChildMeaning.children = this.buildAnnotationsLeaf(result);
+  //       });
+  //     });
+  //   });
+  // }
+
+  private buildAnnotationsLeaf(result: SearchAnnotationResult): Array<TreeNode<DictionaryPreviewItem>> {
+    const annotationLeafData: DictionaryPreviewItem = {
+      searchAnnotation: result,
+      id: '',
+      referredEntity: '',
+      type: [],
+      prefix: [],
+      label: '',
+      suffix: [],
+      index: 0
+    };
+
+    const annotationLeaf: TreeNode<DictionaryPreviewItem> = {
+      type: 'annotation',
+      leaf: true,
+      data: annotationLeafData
+    };
+
+    return [annotationLeaf];
   }
 
   /**
@@ -261,6 +307,9 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
    * @returns {TreeNode<DictionaryPreviewItem>[]}
    */
   private mapSortingItemToPreviewTreeNode(items: DictionarySortingItem[]): TreeNode<DictionaryPreviewItem>[] {
+    if (items.length === 0) {
+      return [{}];
+    }
     return items.map((item, i) => {
       const isMeaning = item.type.includes('LexicalSense');
       return <TreeNode<DictionaryPreviewItem>>{
