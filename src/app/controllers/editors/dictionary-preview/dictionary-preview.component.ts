@@ -110,6 +110,9 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
    */
   public onNodeExpand(event: any): void {
     const node: TreeNode<DictionaryPreviewItem> = event.node;
+
+    if (node.type !== 'meaning') { return; }
+
     this.retrieveAndAddSearchAnnotationsForMeaning(node);
   }
 
@@ -186,7 +189,12 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
 
     this.searchAnnotationService.searchAnnotationBySense(request).pipe(
       take(1),
-      catchError(() => of(new SearchAnnotationResult()))
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 206) {
+          console.warn('Partial content received:', error.message);
+        }
+        return of(new SearchAnnotationResult());
+      })
     ).subscribe(result => {
       result.first = request.start;
       result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;

@@ -1,193 +1,300 @@
 <p-skeleton *ngIf="!dictionaryEntry; else previewContent"></p-skeleton>
 <ng-template #previewContent>
-    <div class="card">
-    <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.title'|translate}}:</p>
+  <div class="card">
+    <p class="form-label">
+      {{ "DICTIONARY_EDITOR.EDIT_TAB.title" | translate }}:
+    </p>
     <h2>
-        <span class="fw-bold">{{ dictionaryEntry.label }}</span>
-        <sub class="ml-1">{{ dictionaryEntry["pos"].join(" ") }}</sub>
+      <span class="fw-bold">{{ dictionaryEntry.label }}</span>
+      <sub class="ml-1">{{ dictionaryEntry["pos"].join(" ") }}</sub>
     </h2>
+  </div>
+  <div class="card">
+    <p class="form-label">
+      {{ "DICTIONARY_EDITOR.PREVIEW_TAB.forms" | translate }}:
+    </p>
+    <div class="mt-3 d-flex flex-wrap">
+      <p-chip
+        class="mr-3 mb-2"
+        *ngFor="let form of forms"
+        [label]="form"
+      ></p-chip>
     </div>
-    <div class="card">
-        <p class="form-label">{{'DICTIONARY_EDITOR.PREVIEW_TAB.forms'|translate}}: </p>
-        <div class="mt-3 d-flex flex-wrap">
-            <p-chip class="mr-3 mb-2" *ngFor="let form of forms" [label]="form"></p-chip>
+  </div>
+  <div class="card">
+    <div class="d-flex flex-wrap">
+      <div class="flex-column w-100">
+        <p class="form-label">
+          {{ "DICTIONARY_EDITOR.EDIT_TAB.status" | translate }}:
+        </p>
+        <div class="d-flex align-items-center mt-2">
+          <app-icon-lock
+            class="d-inline-block mr-2"
+            [status]="dictionaryEntry.status"
+          ></app-icon-lock>
+          <span class="badge badge-info">{{
+            dictionaryEntry.status | translate
+          }}</span>
         </div>
-    </div>
-    <div class="card">
-        <div class="d-flex flex-wrap">
-            <div class="flex-column w-100">
-                <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.status'|translate}}:</p>
-                <div class="d-flex align-items-center mt-2">
-                    <app-icon-lock class="d-inline-block mr-2" [status]="dictionaryEntry.status"></app-icon-lock>
-                    <span class="badge badge-info">{{ dictionaryEntry.status | translate }}</span>
-                </div>
-            </div>
-            <div class="flex-column w-50 mt-5">
-                <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</p>
-                <span class="d-inline bg-light p-2 rounded">{{firstAttestationLabel}}</span>
-            </div>
-            <div class="flex-column w-50 mt-5">
-                <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.topographicReference'|translate}}:</p>
-                    <span class="d-inline bg-light p-2 rounded">{{structuredNote.firstAttestationDetails}}</span>
-            </div>
-            <div class="flex-column w-50 mt-5">
-                <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.nOccurrencesDecameron'|translate}}:</p>
-                <span class="d-inline bg-light p-2 rounded">{{structuredNote.decameronOccurrences}}</span>            
-            </div>
-            <div class="flex-column w-50 mt-5">
-                <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences'|translate}}:</p>
-                <span class="d-inline bg-light p-2 rounded">{{totalOccurrences}}</span>
-            </div>
-            <div class="flex-column w-100 mt-5">
-                <p-fieldset>
-                    <ng-template pTemplate="header">
-                        {{'DICTIONARY_EDITOR.EDIT_TAB.occOtherWorks'|translate}}
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                        <p *ngFor="let frequency of frequencies" class="form-label w-full">
-                            <span class="form-label fw-bold"><em>{{frequency.documentLabel}}: </em> </span>
-                            <span class="d-inline bg-light p-2 rounded"><em>{{frequency.frequency}}</em></span>
-                        </p>
-                    </ng-template>
-                </p-fieldset>
-            </div>
-            <div class="flex-column w-100 mt-5">
-                <p-fieldset>
-                    <ng-template pTemplate="header">{{'DICTIONARY_EDITOR.EDIT_TAB.etymology'|translate}}</ng-template>
-                    <ng-template pTemplate="content">
-                        <div class="d-flex flex-wrap">
-                            <div class="flex-column w-3">
-                                <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}:</p>
-                                <span class="d-inline bg-light p-2 rounded">{{structuredNote.etymology.language}}</span>
-                            </div>
-                            <div class="flex-column w-3">
-                                <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.etymon'|translate}}:</p>
-                                <span class="d-inline bg-light p-2 rounded">{{structuredNote.etymology.etymon}}</span>
-                            </div>
-                            <div class="flex-column w-3">
-                                <p-editor [(ngModel)]="structuredNote.etymology.details" [readonly]="true">
-                                    <ng-template pTemplate="header">
-                                        <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.details'|translate}}:</p>
-                                    </ng-template>
-                                </p-editor>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-fieldset>
-            </div>
-            <div class="flex-column w-100 mt-5">
-                <p-editor [(ngModel)]="structuredNote.linguisticsSemantics" [readonly]="true">
-                    <ng-template pTemplate="header">
-                        <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.linguisticSemanticComm'|translate}}:</p>
-                    </ng-template>
-                </p-editor>
-            </div>
-            <div class="flex-column w-100 mt-5">
-                <p-editor [(ngModel)]="structuredNote.decameron" [readonly]="true">
-                    <ng-template pTemplate="header">
-                        <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.aroundDecameron'|translate}}:</p>
-                    </ng-template>
-                </p-editor>
-            </div>
-            <div class="flex-column w-100  mt-5">
-                <p-editor [(ngModel)]="structuredNote.firstAbsAttestation" [readonly]="true">
-                    <ng-template pTemplate="header">
-                        <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestAbs'|translate}}:</p>
-                    </ng-template>
-                </p-editor>
-            </div>
-            <div class="flex-column w-100 mt-5">
-                <p-editor [(ngModel)]="structuredNote.boccaccioDante" [readonly]="true">
-                    <ng-template pTemplate="header">
-                        <p class="form-label">Boccaccio e Dante:</p>
-                    </ng-template>
-                </p-editor>
-            </div>
-            <div class="flex-column w-100 mt-5">
-                <p-editor [(ngModel)]="structuredNote.crusche" [readonly]="true">
-                    <ng-template pTemplate="header">
-                        <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.vocs'|translate}}:</p>
-                    </ng-template>
-                </p-editor>
-            </div>
-            <div class="flex-column w-100 mt-5">
-                <p-editor [(ngModel)]="structuredNote.polyrhematics" [readonly]="true">
-                    <ng-template pTemplate="header">
-                        <p class="form-label">{{'DICTIONARY_EDITOR.EDIT_TAB.misc'|translate}}:</p>
-                    </ng-template>
-                </p-editor>
-            </div>        
-            <div class="flex-column w-100 mt-5">
-                <p-fieldset>
-                    <ng-template pTemplate="header">
-                    {{'DICTIONARY_EDITOR.EDIT_TAB.seeAlso'|translate}}
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                    <p *ngFor="let seeAlso of dictionaryEntry.seeAlso" class="form-label">
-                        <span *ngIf="seeAlso.label" class="form-label fw-bold">{{seeAlso.label}} - </span> 
-                        <span><em>{{seeAlso.entity}}</em></span>
+      </div>
+      <div class="flex-column w-50 mt-5">
+        <p class="form-label">
+          {{ "DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc" | translate }}:
+        </p>
+        <span class="d-inline bg-light p-2 rounded">{{
+          firstAttestationLabel
+        }}</span>
+      </div>
+      <div class="flex-column w-50 mt-5">
+        <p class="form-label">
+          {{ "DICTIONARY_EDITOR.EDIT_TAB.topographicReference" | translate }}:
+        </p>
+        <span class="d-inline bg-light p-2 rounded">{{
+          structuredNote.firstAttestationDetails
+        }}</span>
+      </div>
+      <div class="flex-column w-50 mt-5">
+        <p class="form-label">
+          {{ "DICTIONARY_EDITOR.EDIT_TAB.nOccurrencesDecameron" | translate }}:
+        </p>
+        <span class="d-inline bg-light p-2 rounded">{{
+          structuredNote.decameronOccurrences
+        }}</span>
+      </div>
+      <div class="flex-column w-50 mt-5">
+        <p class="form-label">
+          {{ "DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences" | translate }}:
+        </p>
+        <span class="d-inline bg-light p-2 rounded">{{
+          totalOccurrences
+        }}</span>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-fieldset>
+          <ng-template pTemplate="header">
+            {{ "DICTIONARY_EDITOR.EDIT_TAB.occOtherWorks" | translate }}
+          </ng-template>
+          <ng-template pTemplate="content">
+            <p *ngFor="let frequency of frequencies" class="form-label w-full">
+              <span class="form-label fw-bold"
+                ><em>{{ frequency.documentLabel }}: </em>
+              </span>
+              <span class="d-inline bg-light p-2 rounded"
+                ><em>{{ frequency.frequency }}</em></span
+              >
+            </p>
+          </ng-template>
+        </p-fieldset>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-fieldset>
+          <ng-template pTemplate="header">{{
+            "DICTIONARY_EDITOR.EDIT_TAB.etymology" | translate
+          }}</ng-template>
+          <ng-template pTemplate="content">
+            <div class="d-flex flex-wrap">
+              <div class="flex-column w-3">
+                <p class="form-label">
+                  {{ "DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage" | translate }}:
+                </p>
+                <span class="d-inline bg-light p-2 rounded">{{
+                  structuredNote.etymology.language
+                }}</span>
+              </div>
+              <div class="flex-column w-3">
+                <p class="form-label">
+                  {{ "DICTIONARY_EDITOR.EDIT_TAB.etymon" | translate }}:
+                </p>
+                <span class="d-inline bg-light p-2 rounded">{{
+                  structuredNote.etymology.etymon
+                }}</span>
+              </div>
+              <div class="flex-column w-3">
+                <p-editor
+                  [(ngModel)]="structuredNote.etymology.details"
+                  [readonly]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <p class="form-label">
+                      {{ "DICTIONARY_EDITOR.EDIT_TAB.details" | translate }}:
                     </p>
-                    </ng-template>
-                </p-fieldset>
+                  </ng-template>
+                </p-editor>
+              </div>
             </div>
+          </ng-template>
+        </p-fieldset>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-editor
+          [(ngModel)]="structuredNote.linguisticsSemantics"
+          [readonly]="true"
+        >
+          <ng-template pTemplate="header">
+            <p class="form-label">
+              {{
+                "DICTIONARY_EDITOR.EDIT_TAB.linguisticSemanticComm" | translate
+              }}:
+            </p>
+          </ng-template>
+        </p-editor>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-editor [(ngModel)]="structuredNote.decameron" [readonly]="true">
+          <ng-template pTemplate="header">
+            <p class="form-label">
+              {{ "DICTIONARY_EDITOR.EDIT_TAB.aroundDecameron" | translate }}:
+            </p>
+          </ng-template>
+        </p-editor>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-editor
+          [(ngModel)]="structuredNote.firstAbsAttestation"
+          [readonly]="true"
+        >
+          <ng-template pTemplate="header">
+            <p class="form-label">
+              {{ "DICTIONARY_EDITOR.EDIT_TAB.firstAttestAbs" | translate }}:
+            </p>
+          </ng-template>
+        </p-editor>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-editor [(ngModel)]="structuredNote.boccaccioDante" [readonly]="true">
+          <ng-template pTemplate="header">
+            <p class="form-label">Boccaccio e Dante:</p>
+          </ng-template>
+        </p-editor>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-editor [(ngModel)]="structuredNote.crusche" [readonly]="true">
+          <ng-template pTemplate="header">
+            <p class="form-label">
+              {{ "DICTIONARY_EDITOR.EDIT_TAB.vocs" | translate }}:
+            </p>
+          </ng-template>
+        </p-editor>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-editor [(ngModel)]="structuredNote.polyrhematics" [readonly]="true">
+          <ng-template pTemplate="header">
+            <p class="form-label">
+              {{ "DICTIONARY_EDITOR.EDIT_TAB.misc" | translate }}:
+            </p>
+          </ng-template>
+        </p-editor>
+      </div>
+      <div class="flex-column w-100 mt-5">
+        <p-fieldset>
+          <ng-template pTemplate="header">
+            {{ "DICTIONARY_EDITOR.EDIT_TAB.seeAlso" | translate }}
+          </ng-template>
+          <ng-template pTemplate="content">
+            <p
+              *ngFor="let seeAlso of dictionaryEntry.seeAlso"
+              class="form-label"
+            >
+              <span *ngIf="seeAlso.label" class="form-label fw-bold"
+                >{{ seeAlso.label }} -
+              </span>
+              <span
+                ><em>{{ seeAlso.entity }}</em></span
+              >
+            </p>
+          </ng-template>
+        </p-fieldset>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h5>
+      <label>{{ "DICTIONARY_EDITOR.PREVIEW_TAB.senses" | translate }}</label>
+    </h5>
+    <p-tree
+      [value]="senseLexicalEntriesTree"
+      (onNodeExpand)="onNodeExpand($event)"
+      class="mt-2"
+    >
+      <ng-template let-item pTemplate="senseLexicalEntry" draggable="false">
+        <div>
+          <strong
+            >{{ item.label
+            }}<sub class="ml-2">{{ item.data.suffix.join(" ") }}</sub></strong
+          >
         </div>
-    </div>
-    <div class="card">
-        <h5>
-            <label>{{'DICTIONARY_EDITOR.PREVIEW_TAB.senses'|translate}}</label>
-        </h5>
-        <p-tree [value]="senseLexicalEntriesTree" (onNodeExpand)="onNodeExpand($event)" class="mt-2">
-            <ng-template let-item pTemplate="senseLexicalEntry" draggable="false">
-                <div><strong>{{item.label}}<sub class="ml-2">{{item.data.suffix.join(' ')}}</sub></strong></div>
+      </ng-template>
+      <ng-template let-item pTemplate="meaning">
+        <div>
+          <span class="mr-2"
+            ><b>{{ item.data.index }}</b
+            >.</span
+          >
+          <em *ngIf="item.data.prefix?.length > 0"
+            >[{{ item.data.prefix.join(" ") }}]</em
+          >
+          {{
+            item.label !== ""
+              ? item.label
+              : ("DICTIONARY_EDITOR.SORT_TAB.noDefinition" | translate)
+          }}
+        </div>
+      </ng-template>
+      <ng-template let-annotationTreeItem pTemplate="annotation">
+        <div class="custom-leaf">
+          <p-table
+            [value]="annotationTreeItem.data.searchAnnotation.data"
+            [lazy]="true"
+            [lazyLoadOnInit]="false"
+            (onLazyLoad)="
+              lazyLoadSearchResults($event, annotationTreeItem.parent)
+            "
+            (onPage)="onPage($event, annotationTreeItem.data.searchAnnotation)"
+            [totalRecords]="annotationTreeItem.data.searchAnnotation.count"
+            [rowHover]="true"
+            [first]="annotationTreeItem.data.searchAnnotation.first"
+            [(rows)]="annotationTreeItem.data.searchAnnotation.rows"
+            [paginator]="annotationTreeItem.data.searchAnnotation.count > 0"
+            [tableStyle]="{ width: '100%' }"
+            [rowsPerPageOptions]="[5, 10, 25, 50, 100, 200]"
+            paginatorDropdownAppendTo="body"
+            [showCurrentPageReport]="
+              annotationTreeItem.data.searchAnnotation.count > 0
+            "
+            [currentPageReportTemplate]="
+              'GENERAL.currentPageReportTemplate' | translate
+            "
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 10%">
+                  {{ "DICTIONARY_EDITOR.PREVIEW_TAB.text" | translate }}
+                </th>
+                <th style="width: 10%">
+                  {{ "DICTIONARY_EDITOR.PREVIEW_TAB.reference" | translate }}
+                </th>
+                <th style="width: 80%">
+                  {{ "DICTIONARY_EDITOR.PREVIEW_TAB.section" | translate }}
+                </th>
+              </tr>
             </ng-template>
-            <ng-template let-item pTemplate="meaning">
-                <div>
-                    <span class="mr-2"><b>{{item.data.index}}</b>.</span>
-                    <em *ngIf="item.data.prefix?.length>0">[{{item.data.prefix.join(' ')}}]</em> 
-                    {{item.label !== '' ? item.label : ('DICTIONARY_EDITOR.SORT_TAB.noDefinition'|translate)}}
-                </div>
+            <ng-template pTemplate="body" let-annotation>
+              <tr>
+                <td>{{ annotation.text }}</td>
+                <td>{{ annotation.reference }}</td>
+                <td [innerHTML]="highlightSection(annotation)"></td>
+              </tr>
             </ng-template>
-            <ng-template let-annotationTreeItem pTemplate="annotation">
-                <div class="custom-leaf">
-                    <!-- {{test2(annotationTreeItem)}} -->
-                    <p-table
-                    [value]="annotationTreeItem.data.searchAnnotation.data"
-                    [lazy]="true"
-                    [lazyLoadOnInit]="false"
-                    (onLazyLoad)="lazyLoadSearchResults($event, annotationTreeItem.parent)"
-                    (onPage)="onPage($event, annotationTreeItem.data.searchAnnotation)"
-                    [totalRecords]="annotationTreeItem.data.searchAnnotation.count"
-                    [rowHover]="true"
-                    [first]="annotationTreeItem.data.searchAnnotation.first"
-                    [(rows)]="annotationTreeItem.data.searchAnnotation.rows"
-                    [paginator]="annotationTreeItem.data.searchAnnotation.count > 0"
-                    [tableStyle]="{ 'width': '100%' }"
-                    [rowsPerPageOptions]="[5,10,25,50,100,200]"
-                    [showCurrentPageReport]="annotationTreeItem.data.searchAnnotation.count > 0"
-                    [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate"
-                    >
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th style="width:10%">{{'DICTIONARY_EDITOR.PREVIEW_TAB.text'|translate}}</th>
-                                <th style="width:10%">{{'DICTIONARY_EDITOR.PREVIEW_TAB.reference'|translate}}</th>
-                                <th style="width:80%">{{'DICTIONARY_EDITOR.PREVIEW_TAB.section'|translate}}</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-annotation>
-                            <tr>
-                                    <td>{{ annotation.text }}</td>
-                                    <td>{{ annotation.reference }}</td>
-                                    <td [innerHTML]="highlightSection(annotation)"></td>
-                                </tr>
-                        </ng-template>
-                        <ng-template pTemplate="emptymessage">
-                            <tr>
-                                <td [colSpan]="3" class="w-100 text-center">{{'GENERAL.noResult'|translate}}</td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </div>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [colSpan]="3" class="w-100 text-center">
+                  {{ "GENERAL.noResult" | translate }}
+                </td>
+              </tr>
             </ng-template>
-        </p-tree>
-    </div>
+          </p-table>
+        </div>
+      </ng-template>
+    </p-tree>
+  </div>
 </ng-template>
