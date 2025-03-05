@@ -189,12 +189,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
 
     this.searchAnnotationService.searchAnnotationBySense(request).pipe(
       take(1),
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 206) {
-          console.warn('Partial content received:', error.message);
-        }
-        return of(new SearchAnnotationResult());
-      })
+      catchError(() => of(new SearchAnnotationResult()))
     ).subscribe(result => {
       result.first = request.start;
       result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;
