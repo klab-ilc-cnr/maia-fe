@@ -53,7 +53,7 @@
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc" | translate }}:
         </p>
-        <span class="d-inline bg-light p-2 rounded">{{
+        <span *ngIf="firstAttestationLabel" class="d-inline bg-light p-2 rounded">{{
           firstAttestationLabel
         }}</span>
       </div>
@@ -61,7 +61,7 @@
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.EDIT_TAB.topographicReference" | translate }}:
         </p>
-        <span class="d-inline bg-light p-2 rounded">{{
+        <span *ngIf="structuredNote.firstAttestationDetails" class="d-inline bg-light p-2 rounded">{{
           structuredNote.firstAttestationDetails
         }}</span>
       </div>
@@ -109,7 +109,7 @@
                 <p class="form-label">
                   {{ "DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage" | translate }}:
                 </p>
-                <span class="d-inline bg-light p-2 rounded">{{
+                <span *ngIf="structuredNote.etymology.language" class="d-inline bg-light p-2 rounded">{{
                   structuredNote.etymology.language
                 }}</span>
               </div>
@@ -117,7 +117,7 @@
                 <p class="form-label">
                   {{ "DICTIONARY_EDITOR.EDIT_TAB.etymon" | translate }}:
                 </p>
-                <span class="d-inline bg-light p-2 rounded">{{
+                <span *ngIf="structuredNote.etymology.etymon" class="d-inline bg-light p-2 rounded">{{
                   structuredNote.etymology.etymon
                 }}</span>
               </div>
