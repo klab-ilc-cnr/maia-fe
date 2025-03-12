@@ -62,7 +62,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  get ready(): boolean{
+  get ready(): boolean {
     return !!this.dictionaryEntry && !this.loading;
   }
 
@@ -88,23 +88,9 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe((sortedItems: DictionarySortingItem[]) => {
 
-      this.senseLexicalEntriesTree = this.mapSortingItemToPreviewTreeNode(sortedItems).map(node => {
-        if (node.children) {
-          const uniqueChildren = new Map<string, TreeNode<DictionaryPreviewItem>>();
-          node.children.forEach(child => {
-            if (child.data?.referredEntity && !uniqueChildren.has(child.data.referredEntity)) {
-              uniqueChildren.set(child.data.referredEntity, child);
-            }
-          });
-          node.children = Array.from(uniqueChildren.values()).map((child, index) => {
-            child.data!.index = index + 1;
-            return child;
-          });
-        }
-        return node;
-      });
+      this.senseLexicalEntriesTree = this.buildSenseLexicalEntriesTree(sortedItems);
 
-      this.expandSenseLexicalEntriesTree();
+      this.expandSenseLexicalEntriesTree(this.senseLexicalEntriesTree);
 
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
       if (!lexicalEntryId) { return; }
@@ -178,13 +164,41 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Expands all nodes in the senseLexicalEntriesTree by calling the onNodeExpand method
-   * on each child node recursively.
+   * Processes the sorted dictionary items and converts them into a tree structure.
+   * It ensures that each node's children are unique based on the `referredEntity` property.
+   * Additionally, it assigns an index to each child node.
    *
-   * @private
+   * @param sortedItems - An array of `DictionarySortingItem` representing the sorted dictionary items.
+   * @returns An array of `TreeNode<DictionaryPreviewItem>` representing the tree structure of the dictionary preview items.
    */
-  private expandSenseLexicalEntriesTree(): void {
-    this.senseLexicalEntriesTree.forEach(node => {
+  private buildSenseLexicalEntriesTree(sortedItems: DictionarySortingItem[]): TreeNode<DictionaryPreviewItem>[] {
+    return this.mapSortingItemToPreviewTreeNode(sortedItems).map(node => {
+      if (node.children) {
+        const uniqueChildren = new Map<string, TreeNode<DictionaryPreviewItem>>();
+        node.children.forEach(child => {
+          if (child.data?.referredEntity && !uniqueChildren.has(child.data.referredEntity)) {
+            uniqueChildren.set(child.data.referredEntity, child);
+          }
+        });
+        node.children = Array.from(uniqueChildren.values()).map((child, index) => {
+          child.data!.index = index + 1;
+          return child;
+        });
+      }
+      return node;
+    });
+  }
+
+  /**
+   * Expands all nodes in the given tree of sense lexical entries.
+   * 
+   * This method iterates through each node in the provided tree and sets the `expanded` property to `true`
+   * for both the node and its children. Additionally, it calls the `onNodeExpand` method for each child node.
+   * 
+   * @param senseLexicalEntriesTree - An array of `TreeNode` objects representing the tree of sense lexical entries.
+   */
+  private expandSenseLexicalEntriesTree(senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[]): void {
+    senseLexicalEntriesTree.forEach(node => {
       if (node.children) {
         node.expanded = true;
         node.children.forEach(child => {
@@ -194,7 +208,6 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
   /**
    * Retrieve and add search annotations for a given sense child meaning.
