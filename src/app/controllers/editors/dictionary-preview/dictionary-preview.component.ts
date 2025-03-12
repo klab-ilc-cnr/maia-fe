@@ -93,7 +93,12 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
       this.expandSenseLexicalEntriesTree(this.senseLexicalEntriesTree);
 
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
-      if (!lexicalEntryId) { return; }
+
+      if (!lexicalEntryId) {
+        this.loading = false;
+        return;
+      }
+
       this.retrieveAndSetForms(lexicalEntryId);
 
       this.loading = false;
