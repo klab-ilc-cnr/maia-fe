@@ -39,6 +39,7 @@ export class SenseEntry {
 export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   private readonly CONTEXT_LENGTH = 20;
+  private loading = true;
 
   @Input() dictionaryEntry!: DictionaryEntry;
 
@@ -61,11 +62,15 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  get ready(): boolean{
+    return !!this.dictionaryEntry && !this.loading;
+  }
+
   /**
    * Calculate the total occurrences from the structured note frequencies.
    * @returns {number}
    */
-  get totalOccurrences() {
+  get totalOccurrences(): number {
     let count = 0;
     if (this.structuredNote && this.structuredNote.frequencies) {
       this.structuredNote.frequencies.forEach(f => {
@@ -99,9 +104,13 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
         return node;
       });
 
+      this.expandSenseLexicalEntriesTree();
+
       let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
       if (!lexicalEntryId) { return; }
       this.retrieveAndSetForms(lexicalEntryId);
+
+      this.loading = false;
     });
   }
 
@@ -109,9 +118,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
    * Handler for node expand event.
    * @param event {any}
    */
-  public onNodeExpand(event: any): void {
-    const node: TreeNode<DictionaryPreviewItem> = event.node;
-
+  public onNodeExpand(node: TreeNode<DictionaryPreviewItem>): void {
     if (node.type !== 'meaning') { return; }
 
     this.retrieveAndAddSearchAnnotationsForMeaning(node);
@@ -168,6 +175,24 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     result += section.substring(lastIndex);
 
     return result;
+  }
+
+  /**
+   * Expands all nodes in the senseLexicalEntriesTree by calling the onNodeExpand method
+   * on each child node recursively.
+   *
+   * @private
+   */
+  private expandSenseLexicalEntriesTree(): void {
+    this.senseLexicalEntriesTree.forEach(node => {
+      if (node.children) {
+        node.expanded = true;
+        node.children.forEach(child => {
+          child.expanded = true;
+          this.onNodeExpand(child);
+        });
+      }
+    });
   }
 
 
