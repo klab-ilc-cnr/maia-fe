@@ -28,6 +28,10 @@
     margin-bottom: 0.25rem !important;
 }
 
-:host::ng-deep .ql-toolbar.ql-snow + .ql-container.ql-snow {
+:host::ng-deep .ql-toolbar.ql-snow+.ql-container.ql-snow {
     border-top: 1px solid #dee2e6;
+}
+
+.font-size-larger {
+    font-size: larger;
 }

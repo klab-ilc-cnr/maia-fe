@@ -38,6 +38,7 @@ export class SenseEntry {
 })
 export class DictionaryPreviewComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  private readonly CONTEXT_LENGTH = 20;
 
   @Input() dictionaryEntry!: DictionaryEntry;
 
@@ -185,6 +186,7 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     const filters = new SearchAnnotationFilters();
     filters.searchMode = 'SEMANTICS';
     filters.searchValue = meaning.referredEntity;
+    filters.contextLength = this.CONTEXT_LENGTH;
     request.filters = filters;
 
     this.searchAnnotationService.searchAnnotationBySense(request).pipe(
