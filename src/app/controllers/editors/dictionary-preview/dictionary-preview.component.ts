@@ -32,6 +32,15 @@ export class SenseEntry {
   meanings: Meaning[] = [];
 }
 
+interface PosLexicalEntriesGroups {
+  [key: string]: Set<string>;
+}
+
+interface FormItemPreview {
+  pos: string;
+  label: string;
+}
+
 @Component({
   selector: 'app-dictionary-preview',
   templateUrl: './dictionary-preview.component.html',
@@ -44,7 +53,7 @@ export class DictionaryPreviewComponent implements OnInit {
   @Input() dictionaryEntry!: DictionaryEntry;
 
   public structuredNote!: DictionaryNoteVocabo;
-  public forms: string[] = [];
+  public forms: FormItemPreview[] = [];
   public firstAttestationLabel: string = '';
   public frequencies: { documentLabel: string; frequency: number }[] = [];
   public senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[] = [];
@@ -87,14 +96,9 @@ export class DictionaryPreviewComponent implements OnInit {
 
       this.expandSenseLexicalEntriesTree(this.senseLexicalEntriesTree);
 
-      let lexicalEntryIds = this.retrieveLexicalEntryIds(sortedItems);
+      let lexicalEntryGroups = this.retrieveLexicalEntryPosGroups(sortedItems);
 
-      if (lexicalEntryIds.length === 0) {
-        this.loading = false;
-        return;
-      }
-
-      this.retrieveAndSetForms(lexicalEntryIds);
+      this.retrieveAndSetForms(lexicalEntryGroups);
 
       this.loading = false;
     });
@@ -263,52 +267,59 @@ export class DictionaryPreviewComponent implements OnInit {
     return [annotationLeaf];
   }
 
-
   /**
-   * Retrieves and sets forms for the given lexical entry IDs.
-   *
-   * This method iterates over the provided lexical entry IDs, retrieves the forms
-   * for each lexical entry using the `lexiconService`, and appends the form labels
-   * to the `forms` array. In case of an error during the retrieval of forms, it logs
-   * the error to the console and continues with an empty array.
-   *
-   * @param lexicalEntryIds - An array of lexical entry IDs for which to retrieve forms.
+   * Retrieves and sets forms for each lexical entry in the provided lexical entry groups.
+   * 
+   * @param lexicalEntryGroups - An object where the keys are parts of speech (POS) and the values are arrays of lexical entry IDs.
+   * 
+   * This method iterates over each part of speech and its corresponding lexical entry IDs, retrieves the forms for each lexical entry ID using the `lexiconService`, 
+   * and then maps and pushes the forms into the `forms` array with the associated part of speech.
+   * 
+   * In case of an error during the retrieval of forms, it logs the error to the console and continues with an empty array.
    */
-  private retrieveAndSetForms(lexicalEntryIds: string[]): void {
-    lexicalEntryIds.forEach(lexicalEntryId => {
-      this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => {
-          console.error(`Error retrieving forms for lexical entry ID ${lexicalEntryId}:`, error);
-          return of([]); // Continue with an empty array in case of error
-        })
-      ).subscribe((forms: FormListItem[]) => {
-        this.forms.push(...forms.map((form: FormListItem) => form.label));
+  private retrieveAndSetForms(lexicalEntryGroups: PosLexicalEntriesGroups): void {
+    Object.entries(lexicalEntryGroups).forEach(([pos, lexicalEntryIds]) => {
+      lexicalEntryIds.forEach(lexicalEntryId => {
+        this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
+          take(1),
+          catchError((error: HttpErrorResponse) => {
+            console.error(`Error retrieving forms for lexical entry ID ${lexicalEntryId}:`, error);
+            return of([]); // Continue with an empty array in case of error
+          })
+        ).subscribe((forms: FormListItem[]) => {
+          this.forms.push(...forms.map((form: FormListItem) => ({ pos, label: form.label })));
+        });
       });
     });
   }
 
-
   /**
-   * Retrieves an array of unique lexical entry IDs from the provided sorted items.
-   *
-   * This function filters the input array to include only items that have a type
-   * containing 'lexicalentry', 'word', or 'multiwordexpression' (case insensitive).
-   * It then extracts the `referredEntity` property from these filtered items and
-   * returns a unique array of these IDs.
-   *
-   * @param sortedItems - An array of `DictionarySortingItem` objects to be filtered and processed.
-   * @returns An array of unique lexical entry IDs.
+   * Retrieves groups of lexical entries based on their parts of speech (POS) from the sorted items.
+   * 
+   * @param sortedItems - An array of `DictionarySortingItem` objects to be processed.
+   * @returns An object where each key is a POS suffix and the value is a set of referred entities.
+   * 
+   * The function filters the sorted items to include only those with types that contain 'lexicalentry',
+   * 'word', or 'multiwordexpression'. It then groups these items by their suffixes and collects the
+   * referred entities into sets.
    */
-  private retrieveLexicalEntryIds(sortedItems: DictionarySortingItem[]): string[] {
+  private retrieveLexicalEntryPosGroups(sortedItems: DictionarySortingItem[]): PosLexicalEntriesGroups {
     let lexicalEntrySortingItems = sortedItems.filter(item =>
       item.type.some(type => type.toLowerCase().includes('lexicalentry')) ||
       item.type.some(type => type.toLowerCase().includes('word')) ||
       item.type.some(type => type.toLowerCase().includes('multiwordexpression')));
 
-    let lexicalEntryIds = Array.from(new Set(lexicalEntrySortingItems.map(item => item.referredEntity)));
+    let posGroups: PosLexicalEntriesGroups = {};
+    lexicalEntrySortingItems.forEach(item => {
+      item.suffix.forEach(suffix => {
+        if (!posGroups[suffix]) {
+          posGroups[suffix] = new Set<string>();
+        }
+        posGroups[suffix].add(item.referredEntity);
+      });
+    });
 
-    return lexicalEntryIds;
+    return posGroups;
   }
 
   /**
