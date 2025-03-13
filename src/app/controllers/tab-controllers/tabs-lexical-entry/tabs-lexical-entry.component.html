@@ -2,7 +2,7 @@
   <p-tabPanel header="Lex. entry">
     <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$" *ngIf="selectedTab === 0"></app-lex-entry-editor>
   </p-tabPanel>
-  <p-tabPanel header="Decomposition" [disabled]="demoHide" *ngIf="(lexicalEntry$|async)?.type?.includes(LEXICAL_ENTRY_TYPE.MULTI_WORD_EXPRESSION)">
+  <p-tabPanel header="Decomposition" [disabled]="demoHide || !isMultiword">
     <app-lex-entry-decomp *ngIf="selectedTab===1" [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-lex-entry-decomp>
   </p-tabPanel>
   <p-tabPanel header="Relations">
