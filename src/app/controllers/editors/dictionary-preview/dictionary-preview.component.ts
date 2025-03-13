@@ -7,6 +7,7 @@ import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.mode
 import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-preview-item.model';
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
 import { TextualDocument } from 'src/app/models/dictionary/textual-document.model';
+import { FormListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
 import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/models/search/search-annotation-result';
 import { CommonService } from 'src/app/services/common.service';
@@ -36,8 +37,7 @@ export class SenseEntry {
   templateUrl: './dictionary-preview.component.html',
   styleUrls: ['./dictionary-preview.component.scss']
 })
-export class DictionaryPreviewComponent implements OnInit, OnDestroy {
-  private readonly unsubscribe$ = new Subject();
+export class DictionaryPreviewComponent implements OnInit {
   private readonly CONTEXT_LENGTH = 20;
   private loading = true;
 
@@ -56,11 +56,6 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     private searchAnnotationService: SearchAnnotationService,
     private commonService: CommonService
   ) { }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next(null);
-    this.unsubscribe$.complete();
-  }
 
   get ready(): boolean {
     return !!this.dictionaryEntry && !this.loading;
@@ -92,14 +87,14 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
 
       this.expandSenseLexicalEntriesTree(this.senseLexicalEntriesTree);
 
-      let lexicalEntryId = this.retrieveLexicalEntryId(sortedItems);
+      let lexicalEntryIds = this.retrieveLexicalEntryIds(sortedItems);
 
-      if (!lexicalEntryId) {
+      if (lexicalEntryIds.length === 0) {
         this.loading = false;
         return;
       }
 
-      this.retrieveAndSetForms(lexicalEntryId);
+      this.retrieveAndSetForms(lexicalEntryIds);
 
       this.loading = false;
     });
@@ -268,29 +263,52 @@ export class DictionaryPreviewComponent implements OnInit, OnDestroy {
     return [annotationLeaf];
   }
 
+
   /**
-   * Retrieve forms for a given lexical entry ID.
-   * @param lexicalEntryId {string}
+   * Retrieves and sets forms for the given lexical entry IDs.
+   *
+   * This method iterates over the provided lexical entry IDs, retrieves the forms
+   * for each lexical entry using the `lexiconService`, and appends the form labels
+   * to the `forms` array. In case of an error during the retrieval of forms, it logs
+   * the error to the console and continues with an empty array.
+   *
+   * @param lexicalEntryIds - An array of lexical entry IDs for which to retrieve forms.
    */
-  private retrieveAndSetForms(lexicalEntryId: string): void {
-    this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
-      take(1),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
-    ).subscribe((forms: any) => {
-      this.forms = forms.map((form: any) => form.label);
+  private retrieveAndSetForms(lexicalEntryIds: string[]): void {
+    lexicalEntryIds.forEach(lexicalEntryId => {
+      this.lexiconService.getLexicalEntryForms(lexicalEntryId).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          console.error(`Error retrieving forms for lexical entry ID ${lexicalEntryId}:`, error);
+          return of([]); // Continue with an empty array in case of error
+        })
+      ).subscribe((forms: FormListItem[]) => {
+        this.forms.push(...forms.map((form: FormListItem) => form.label));
+      });
     });
   }
 
-  /**
-   * Retrieve the lexical entry ID from sorted items.
-   * @param sortedItems {DictionarySortingItem[]}
-   * @returns {string}
-   */
-  private retrieveLexicalEntryId(sortedItems: DictionarySortingItem[]): string | null {
-    let lexicalEntrySortingItem = sortedItems.filter(item => item.type.includes('LexicalEntry'))[0] || null;
-    let lexicalEntryId = lexicalEntrySortingItem ? lexicalEntrySortingItem.referredEntity : null;
 
-    return lexicalEntryId;
+  /**
+   * Retrieves an array of unique lexical entry IDs from the provided sorted items.
+   *
+   * This function filters the input array to include only items that have a type
+   * containing 'lexicalentry', 'word', or 'multiwordexpression' (case insensitive).
+   * It then extracts the `referredEntity` property from these filtered items and
+   * returns a unique array of these IDs.
+   *
+   * @param sortedItems - An array of `DictionarySortingItem` objects to be filtered and processed.
+   * @returns An array of unique lexical entry IDs.
+   */
+  private retrieveLexicalEntryIds(sortedItems: DictionarySortingItem[]): string[] {
+    let lexicalEntrySortingItems = sortedItems.filter(item =>
+      item.type.some(type => type.toLowerCase().includes('lexicalentry')) ||
+      item.type.some(type => type.toLowerCase().includes('word')) ||
+      item.type.some(type => type.toLowerCase().includes('multiwordexpression')));
+
+    let lexicalEntryIds = Array.from(new Set(lexicalEntrySortingItems.map(item => item.referredEntity)));
+
+    return lexicalEntryIds;
   }
 
   /**
