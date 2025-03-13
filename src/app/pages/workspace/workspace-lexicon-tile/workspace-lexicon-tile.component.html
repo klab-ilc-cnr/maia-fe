@@ -140,7 +140,7 @@
           <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && (rowData['type'] == LexicalEntryType.LEXICAL_ENTRY && !rowData['isDescribedByLexicographicComponent'])"></p-treeTableCheckbox>
           <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
             [status]="rowData[col.field]"></app-icon-lock>
-          <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
+          <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]" [pTooltip]="rowData[col.field]" [escape]="false"></app-icon-note>
           <!--TODO completare con tooltip e dialog con la label del dictionary associato-->
           <i class="pi pi-link link-pointer"
             *ngIf="col.field === 'isDescribedByLexicographicComponent'&& rowData['type'] == LexicalEntryType.LEXICAL_ENTRY && rowData['isDescribedByLexicographicComponent']"
