@@ -60,10 +60,16 @@
             "topographicReference": "Riferimento topografico",
             "seeAlso": "Vedi anche",
             "sourceLanguage": "Lingua di provenienza",
-            "vocs": "Il Decameron, le Crusche e altri vocabolari"
+            "vocs": "Il Decameron, le Crusche e altri vocabolari",
+            "status": "Status"
         },
         "PREVIEW_TAB": {
-            "title": "Anteprima"
+            "title": "Anteprima",
+            "forms": "Forme",
+            "senses": "Sensi",
+            "text": "Testo",
+            "reference": "Riferimento",
+            "section": "Sezione"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",
@@ -199,7 +205,7 @@
     },
     "USERS_MANAGER": {
         "activeUser": "Utente attivo",
-        "confirmDeleteUser":"Stai per eliminare l'utente ${username}",
+        "confirmDeleteUser": "Stai per eliminare l'utente ${username}",
         "confirmPassword": "Conferma password",
         "confirmPwdMandatory": "La password di conferma è obbligatoria",
         "delete": "Elimina",
