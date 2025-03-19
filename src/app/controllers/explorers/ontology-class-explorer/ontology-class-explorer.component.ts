@@ -14,6 +14,8 @@ import { OntologyService } from 'src/app/services/ontology.service';
   styleUrls: ['./ontology-class-explorer.component.scss', "../shared.scss"]
 })
 export class OntologyClassExplorerComponent implements OnInit {
+  /**Nascondi i componenti legati a questa variabile temporaneamente issue #161 */
+  public readonly hideTemporary: boolean = true;
 
   @Input()
   public panelHeight!: number;

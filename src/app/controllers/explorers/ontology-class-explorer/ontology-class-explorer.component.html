@@ -48,15 +48,15 @@
                 {{getComment(rowData)}}<br>
               </ng-template>
             </app-icon-note>
-            <app-icon-author *ngIf="col.field === 'creator'" [isBot]="false"
+            <app-icon-author *ngIf="col.field === 'creator' && !hideTemporary" [isBot]="false"
               [tooltip]="authorTooltip">
               <ng-template #authorTooltip>
-                <em>{{('ICON_AUTHOR.creator'|translate)}}</em>: {{rowData?.creator}}<br>
-                <em>{{('ICON_AUTHOR.creationDate'|translate)}}</em>: {{rowData?.creationDate}}<br>
-                <em>{{('ICON_AUTHOR.lastUpdate'|translate)}}</em>: {{rowData?.lastUpdate}}
+              <em>{{('ICON_AUTHOR.creator'|translate)}}</em>: {{rowData?.creator}}<br>
+              <em>{{('ICON_AUTHOR.creationDate'|translate)}}</em>: {{rowData?.creationDate}}<br>
+              <em>{{('ICON_AUTHOR.lastUpdate'|translate)}}</em>: {{rowData?.lastUpdate}}
               </ng-template>
             </app-icon-author>
-            <app-icon-lock *ngIf="col.field === 'status'"
+            <app-icon-lock *ngIf="col.field === 'status' && !hideTemporary"
               [status]="rowData[col.field]"></app-icon-lock>
             <span *ngIf="col.field === 'name'" class="ontology-dot"></span>
             <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
