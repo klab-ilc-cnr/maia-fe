@@ -5,7 +5,7 @@
   <ng-template #autocomplete>
     <p-autoComplete [placeholder]="placeholderMsg" [field]="field" [suggestions]="(suggestions | async) || []"
       [(ngModel)]="fieldValue" (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event)" [showEmptyMessage]="true"
-      [virtualScroll]="true" [disabled]="fieldValue.inferred"></p-autoComplete>
+      [virtualScroll]="true" [disabled]="fieldValue.inferred" appendTo="body"></p-autoComplete>
   </ng-template>
   <input type="checkbox" [checked]="isChecked" (change)="isChecked = !isChecked" [hidden]="isCheckedHidden"
     [disabled]="isCheckedDisabled || fieldValue.inferred">
