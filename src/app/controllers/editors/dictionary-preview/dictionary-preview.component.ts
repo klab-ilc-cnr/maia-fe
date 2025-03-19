@@ -8,6 +8,7 @@ import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-prev
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
 import { TextualDocument } from 'src/app/models/dictionary/textual-document.model';
 import { FormListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
 import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/models/search/search-annotation-result';
 import { CommonService } from 'src/app/services/common.service';
@@ -59,6 +60,7 @@ export class DictionaryPreviewComponent implements OnInit {
   public senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[] = [];
   public meaningsPerSenseAnnotations: SenseEntry[] = [];
   public defaultVisibleRows = 5;
+  public orderedSeeAlso: LinguisticRelationModel[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -86,6 +88,14 @@ export class DictionaryPreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveHeaderEntryData();
+
+    this.orderedSeeAlso = this.dictionaryEntry.seeAlso.sort((a, b) => (a.label ?? '').localeCompare(b.label ?? ''));
+    // this.dictionaryService.retrieveDictionarySeeAlso(this.dictionaryEntry.id).pipe(
+    //   take(1),
+    //   catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    // ).subscribe(resp => {
+    //   this.addSeeAlsoToDictionaryEntryIfNotAlreadyExists(resp);
+    // });
 
     this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe(
       take(1),
@@ -165,6 +175,22 @@ export class DictionaryPreviewComponent implements OnInit {
     result += section.substring(lastIndex);
 
     return result;
+  }
+
+  /**
+ * Adds the provided "see also" entries to the dictionary entry if they do not already exist.
+ *
+ * @param seeAlsoResponse - An array of `LinguisticRelationModel` objects representing the "see also" entries to be added.
+ *
+ * This method iterates over each entry in the `seeAlsoResponse` array and checks if it already exists in the `dictionaryEntry.seeAlso` array.
+ * If an entry does not already exist, it is added to the `dictionaryEntry.seeAlso` array.
+ */
+  private addSeeAlsoToDictionaryEntryIfNotAlreadyExists(seeAlsoResponse: LinguisticRelationModel[]): void {
+    seeAlsoResponse.forEach(seeAlso => {
+      if (!this.dictionaryEntry.seeAlso.some(existing => existing.label === seeAlso.label && existing.entity === seeAlso.entity)) {
+        this.dictionaryEntry.seeAlso.push(seeAlso);
+      }
+    });
   }
 
   /**

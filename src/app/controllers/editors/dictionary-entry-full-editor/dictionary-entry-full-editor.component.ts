@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { encode } from 'html-entities';
 import { Subject, catchError, debounceTime, map, take, takeUntil } from 'rxjs';
@@ -22,7 +22,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   /**To manage subscription */
   private readonly unsubscribe$ = new Subject();
   /**List of available statuses */
-  statusForm: string[] = ['working','completed', 'reviewed' ];
+  statusForm: string[] = ['working', 'completed', 'reviewed'];
   /**Dictionary entry of which we show the details */
   @Input() dictionaryEntry!: DictionaryEntry; //TODO set required true on Angular update
   /**Object that makes explicit the non-standard fields stored in the note */
@@ -82,13 +82,13 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   get frequencies() { return this.entryNote.controls['frequencies'] as FormArray }
   get seeAlso() { return this.fullEntryForm.controls['seeAlso'] as FormArray; }
   get decameronOccurrences() { return this.entryNote.controls['decameronOccurrences'] }
-  get otherOccurrences() { 
+  get otherOccurrences() {
     let temp = 0;
     this.frequencies.controls.forEach(f => {
       temp = temp + f.value.frequency;
     });
     return temp;
-   }
+  }
 
   constructor(
     private dictionaryService: DictionaryService,
@@ -100,7 +100,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   ngOnInit(): void {
     this.dictionaryService.retrieveDictionarySeeAlso(this.dictionaryEntry.id).pipe(
       take(1),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error,error.error.message)),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
     ).subscribe(resp => {
       this.dictionarySeeAlso = resp;
       this.initSeeAlso(this.dictionarySeeAlso);
@@ -122,26 +122,32 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
       polyrhematics: this.structuredNote.polyrhematics
     });
     this.initFrequencies(this.structuredNote.frequencies);
-    
+
     this.status.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(value => {
-      if(!value) return;
+      if (!value) return;
       this.dictionaryService.updateDictionaryEntryStatus(this.dictionaryEntry.id, value).pipe(
         take(1),
         catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-      ).subscribe(() => this.manageUpdateEmission('status', value));
+      ).subscribe(() => {
+        this.manageUpdateEmission('status', value);
+        this.dictionaryEntry.status = value;
+      });
     });
 
     this.label.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
     ).subscribe(v => {
-      if(this.label.invalid || !v) return; //avoid update if invalid
+      if (this.label.invalid || !v) return; //avoid update if invalid
       this.dictionaryService.updateDictionaryEntryLabel(this.dictionaryEntry.id, v).pipe(
         take(1),
         catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-      ).subscribe(() => this.manageUpdateEmission('label', v));
+      ).subscribe(() => {
+        this.manageUpdateEmission('label', v);
+        this.dictionaryEntry.label = v;
+      });
     });
 
     this.entryNote.valueChanges.pipe(
@@ -162,9 +168,13 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
         crusche: encode(v.crusche),
         polyrhematics: encode(v.polyrhematics)
       }
-      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, JSON.stringify(encodedValue)).pipe(
+      const updatedNote = JSON.stringify(encodedValue);
+      this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, updatedNote).pipe(
         take(1),
-      ).subscribe(res => console.info(res));
+      ).subscribe(res => {
+        console.info(res);
+        this.dictionaryEntry.note = updatedNote;
+      });
     })
   }
 
@@ -199,11 +209,14 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
    */
   onRemoveSeeAlso(index: number) {
     const currentValue = this.seeAlso.at(index).value['value'];
-    if(currentValue !== '') {
+    if (currentValue !== '') {
       this.dictionaryService.dissociateSeeAlsoFromDictEntry(this.dictionaryEntry.id, currentValue).pipe(
         take(1),
-        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error,error.error.message)),
-      ).subscribe(resp => console.info(resp));
+        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+      ).subscribe(resp => {
+        console.info(resp);
+        this.dictionaryEntry.seeAlso = this.dictionaryEntry.seeAlso.filter(seeAlso => seeAlso.entity !== currentValue);
+      });
     }
     this.seeAlso.removeAt(index);
   }
@@ -216,8 +229,15 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   onSelectDictEntry(selectedValue: { label: string, value: string, external: boolean, inferred: boolean }, formIndex: number) {
     this.dictionaryService.associateSeeAlsoToDictEntry(this.dictionaryEntry.id, selectedValue.value).pipe(
       take(1),
-      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error,error.error.message)),
-    ).subscribe(resp => { console.info(resp) });
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe(resp => { 
+      console.info(resp);
+      const newSeeAlso = new LinguisticRelationModel();
+      newSeeAlso.entity = selectedValue.value;
+      newSeeAlso.label = selectedValue.label;
+      newSeeAlso.inferred = selectedValue.inferred;
+      this.dictionaryEntry.seeAlso.push(newSeeAlso); 
+    });
   }
 
   /**
@@ -234,7 +254,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
    * @param frequencies {{ documentId: string, frequency: number }[]}
    */
   private initFrequencies(frequencies: { documentId: string, frequency: number }[]) {
-    for(const freq of frequencies) {
+    for (const freq of frequencies) {
       this.frequencies.push(new FormControl(freq));
     }
   }
@@ -246,7 +266,23 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
   private initSeeAlso(seeAlsoList: LinguisticRelationModel[]) {
     seeAlsoList.forEach(seeAlso => {
       this.seeAlso.push(new FormControl({ label: seeAlso.label, value: seeAlso.entity, external: false, inferred: seeAlso.inferred }))
+      this.addSeeAlsoToDictionaryEntryIfNotAlreadyExists(seeAlso);
     });
+  }
+
+  /**
+   * Adds a `seeAlso` relation to the `dictionaryEntry` if it does not already exist.
+   * 
+   * @param seeAlso - The `LinguisticRelationModel` object to be added to the `seeAlso` list.
+   * 
+   * This method checks if the `seeAlso` relation already exists in the `dictionaryEntry` by comparing
+   * the `label` and `entity` properties of each existing relation. If the relation does not exist, it
+   * is added to the `seeAlso` list.
+   */
+  private addSeeAlsoToDictionaryEntryIfNotAlreadyExists(seeAlso: LinguisticRelationModel) {
+    if (!this.dictionaryEntry.seeAlso.some(existing => existing.label === seeAlso.label && existing.entity === seeAlso.entity)) {
+      this.dictionaryEntry.seeAlso.push(seeAlso);
+    }
   }
 
   /**
