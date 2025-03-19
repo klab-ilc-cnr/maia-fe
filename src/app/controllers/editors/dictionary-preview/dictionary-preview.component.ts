@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { catchError, of, Subject, take } from 'rxjs';
+import { catchError, of, take } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-preview-item.model';
@@ -90,12 +90,6 @@ export class DictionaryPreviewComponent implements OnInit {
     this.retrieveHeaderEntryData();
 
     this.orderedSeeAlso = this.dictionaryEntry.seeAlso.sort((a, b) => (a.label ?? '').localeCompare(b.label ?? ''));
-    // this.dictionaryService.retrieveDictionarySeeAlso(this.dictionaryEntry.id).pipe(
-    //   take(1),
-    //   catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-    // ).subscribe(resp => {
-    //   this.addSeeAlsoToDictionaryEntryIfNotAlreadyExists(resp);
-    // });
 
     this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe(
       take(1),
@@ -175,22 +169,6 @@ export class DictionaryPreviewComponent implements OnInit {
     result += section.substring(lastIndex);
 
     return result;
-  }
-
-  /**
- * Adds the provided "see also" entries to the dictionary entry if they do not already exist.
- *
- * @param seeAlsoResponse - An array of `LinguisticRelationModel` objects representing the "see also" entries to be added.
- *
- * This method iterates over each entry in the `seeAlsoResponse` array and checks if it already exists in the `dictionaryEntry.seeAlso` array.
- * If an entry does not already exist, it is added to the `dictionaryEntry.seeAlso` array.
- */
-  private addSeeAlsoToDictionaryEntryIfNotAlreadyExists(seeAlsoResponse: LinguisticRelationModel[]): void {
-    seeAlsoResponse.forEach(seeAlso => {
-      if (!this.dictionaryEntry.seeAlso.some(existing => existing.label === seeAlso.label && existing.entity === seeAlso.entity)) {
-        this.dictionaryEntry.seeAlso.push(seeAlso);
-      }
-    });
   }
 
   /**

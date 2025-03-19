@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { encode } from 'html-entities';
 import { Subject, catchError, debounceTime, map, take, takeUntil } from 'rxjs';
@@ -18,7 +18,7 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   styleUrls: ['./dictionary-entry-full-editor.component.scss', '../dictionary-entry-referral-editor/dictionary-entry-referral-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DictionaryEntryFullEditorComponent implements OnInit {
+export class DictionaryEntryFullEditorComponent implements OnInit, AfterViewChecked {
   /**To manage subscription */
   private readonly unsubscribe$ = new Subject();
   /**List of available statuses */
@@ -94,7 +94,12 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     private dictionaryService: DictionaryService,
     private loggedUserService: LoggedUserService,
     private commonService: CommonService,
+    private cdref: ChangeDetectorRef
   ) {
+  }
+
+  ngAfterViewChecked(): void {
+    this.cdref.detectChanges();
   }
 
   ngOnInit(): void {
@@ -230,13 +235,13 @@ export class DictionaryEntryFullEditorComponent implements OnInit {
     this.dictionaryService.associateSeeAlsoToDictEntry(this.dictionaryEntry.id, selectedValue.value).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
-    ).subscribe(resp => { 
+    ).subscribe(resp => {
       console.info(resp);
       const newSeeAlso = new LinguisticRelationModel();
       newSeeAlso.entity = selectedValue.value;
       newSeeAlso.label = selectedValue.label;
       newSeeAlso.inferred = selectedValue.inferred;
-      this.dictionaryEntry.seeAlso.push(newSeeAlso); 
+      this.dictionaryEntry.seeAlso.push(newSeeAlso);
     });
   }
 
