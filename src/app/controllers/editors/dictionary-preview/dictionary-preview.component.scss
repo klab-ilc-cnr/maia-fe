@@ -35,3 +35,9 @@
 .font-size-larger {
     font-size: larger;
 }
+
+.ellips-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }

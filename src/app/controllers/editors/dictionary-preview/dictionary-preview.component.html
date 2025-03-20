@@ -46,10 +46,7 @@
         </p>
       </div>
       <div class="flex-column">
-        <p-chip
-          class="ml-3"
-          *ngFor="let form of forms"
-        >
+        <p-chip class="ml-3" *ngFor="let form of forms">
           <span>{{ form.label }}</span>
           <sub class="ml-1">{{ form.pos }}</sub>
         </p-chip>
@@ -220,10 +217,7 @@
             {{ "DICTIONARY_EDITOR.EDIT_TAB.seeAlso" | translate }}
           </ng-template>
           <ng-template pTemplate="content">
-            <p
-              *ngFor="let seeAlso of this.orderedSeeAlso"
-              class="form-label"
-            >
+            <p *ngFor="let seeAlso of this.orderedSeeAlso" class="form-label">
               <span *ngIf="seeAlso.label" class="form-label fw-bold"
                 >{{ seeAlso.label }} -
               </span>
@@ -298,10 +292,14 @@
             >
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 10%">
+                  <th class="ellips-text" style="width: 10%" pTooltip="{{
+                    'DICTIONARY_EDITOR.PREVIEW_TAB.text' | translate
+                  }}" tooltipPosition="top">
                     {{ "DICTIONARY_EDITOR.PREVIEW_TAB.text" | translate }}
                   </th>
-                  <th style="width: 10%">
+                  <th class="ellips-text" style="width: 10%" pTooltip="{{
+                    'DICTIONARY_EDITOR.PREVIEW_TAB.reference' | translate
+                  }}" tooltipPosition="top">
                     {{ "DICTIONARY_EDITOR.PREVIEW_TAB.reference" | translate }}
                   </th>
                   <th style="width: 80%">
@@ -311,8 +309,8 @@
               </ng-template>
               <ng-template pTemplate="body" let-annotation>
                 <tr>
-                  <td>{{ annotation.text }}</td>
-                  <td>{{ annotation.reference }}</td>
+                  <td class="ellips-text" [pTooltip]="annotation.text" tooltipPosition="top">{{ annotation.text }}</td>
+                  <td class="ellips-text" [pTooltip]="annotation.reference" tooltipPosition="top">{{ annotation.reference }}</td>
                   <td [innerHTML]="highlightSection(annotation)"></td>
                 </tr>
               </ng-template>
