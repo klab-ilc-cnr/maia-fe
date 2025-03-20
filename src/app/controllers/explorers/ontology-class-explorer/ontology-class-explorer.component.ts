@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { Subject, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
+import { OntologyType } from 'src/app/models/ontology/ontology-base.model';
 import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -177,5 +178,15 @@ export class OntologyClassExplorerComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  /**
+   * Checks if the given ontology class is of type 'equivalentClass'.
+   *
+   * @param {OntologyClass} rowData - The ontology class data to check.
+   * @returns {boolean} - Returns true if the ontology class is of type 'equivalentClass', otherwise false.
+   */
+  isTypeEquivalentClass(rowData: OntologyClass): any {
+    return rowData.type === OntologyType.equivalentClass;
   }
 }

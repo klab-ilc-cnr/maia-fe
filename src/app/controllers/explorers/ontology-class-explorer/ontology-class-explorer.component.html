@@ -58,7 +58,10 @@
             </app-icon-author>
             <app-icon-lock *ngIf="col.field === 'status' && !hideTemporary"
               [status]="rowData[col.field]"></app-icon-lock>
-            <span *ngIf="col.field === 'name'" class="ontology-dot"></span>
+            <span *ngIf="col.field === 'name' && !isTypeEquivalentClass(rowData)" class="ontology-dot"></span>
+            <div *ngIf="col.field === 'name' && isTypeEquivalentClass(rowData)" class="ontology-dot-bars">
+              <span></span>
+            </div>            
             <span *ngIf="col.field === 'name'" class="name" [pTooltip]="rowData['id']">{{
               getName(rowData) }}</span>
           </td>
