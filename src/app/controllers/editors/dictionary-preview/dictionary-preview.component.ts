@@ -1,13 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { catchError, of, Subject, take } from 'rxjs';
+import { catchError, of, take } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-preview-item.model';
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
 import { TextualDocument } from 'src/app/models/dictionary/textual-document.model';
 import { FormListItem } from 'src/app/models/lexicon/lexical-entry.model';
+import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relation.model';
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
 import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/models/search/search-annotation-result';
 import { CommonService } from 'src/app/services/common.service';
@@ -59,6 +60,7 @@ export class DictionaryPreviewComponent implements OnInit {
   public senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[] = [];
   public meaningsPerSenseAnnotations: SenseEntry[] = [];
   public defaultVisibleRows = 5;
+  public orderedSeeAlso: LinguisticRelationModel[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -86,6 +88,8 @@ export class DictionaryPreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveHeaderEntryData();
+
+    this.orderedSeeAlso = this.dictionaryEntry.seeAlso.sort((a, b) => (a.label ?? '').localeCompare(b.label ?? ''));
 
     this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe(
       take(1),

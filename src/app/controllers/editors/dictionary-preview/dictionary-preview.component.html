@@ -221,7 +221,7 @@
           </ng-template>
           <ng-template pTemplate="content">
             <p
-              *ngFor="let seeAlso of dictionaryEntry.seeAlso"
+              *ngFor="let seeAlso of this.orderedSeeAlso"
               class="form-label"
             >
               <span *ngIf="seeAlso.label" class="form-label fw-bold"
