@@ -17,7 +17,7 @@
   </div>
 </div>
 <ng-template #previewContent>
-  <div class="card">
+  <div class="card ml-1 mr-2">
     <div class="d-flex flex-wrap mt-2 mb-2">
       <div class="flex-column">
         <h2>
@@ -38,8 +38,11 @@
       </div>
     </div>
   </div>
-  <div class="card">
-    <div class="mt-2 mb-2 d-flex flex-wrap">
+  <h5 class="pl-2">
+    <label>{{ "DICTIONARY_EDITOR.PREVIEW_TAB.entryHeader" | translate }}</label>
+  </h5>
+  <div class="card ml-1 mr-2">
+    <div class="mb-2 d-flex flex-wrap">
       <div class="flex-column">
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.PREVIEW_TAB.forms" | translate }}:
@@ -52,8 +55,7 @@
         </p-chip>
       </div>
     </div>
-  </div>
-  <div class="card">
+    <p-divider></p-divider>
     <div class="mt-2 mb-2 d-flex flex-wrap">
       <div class="flex-column w-50">
         <p class="form-label">
@@ -230,11 +232,11 @@
       </div>
     </div>
   </div>
-  <div class="card">
-    <h5>
-      <label>{{ "DICTIONARY_EDITOR.PREVIEW_TAB.senses" | translate }}</label>
-    </h5>
-    <div class="mt-2 mb-2">
+  <h5 class="pl-2">
+    <label>{{ "DICTIONARY_EDITOR.PREVIEW_TAB.entryBody" | translate }}</label>
+  </h5>
+  <div class="card ml-1 mr-2">
+    <div class="mb-2">
       <p-tree
         [value]="senseLexicalEntriesTree"
         (onNodeExpand)="onNodeExpand($event.node)"
