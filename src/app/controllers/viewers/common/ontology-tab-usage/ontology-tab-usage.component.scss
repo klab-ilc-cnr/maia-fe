@@ -1,0 +1,13 @@
+.label {
+    font-weight: 650;
+}
+
+p-tabView,
+::ng-deep.p-tabview.p-component,
+::ng-deep div[role="tabpanel"] {
+  height: 100%;
+
+  .p-tabview-panels {
+    height: calc(100% - 41px);
+  }
+}

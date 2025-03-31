@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Subject, catchError, take, takeUntil } from 'rxjs';
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -195,7 +196,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
     ).subscribe((res) => {
       switch (res.option) {
-        case 'tag_clicked_edit_tile':
+        case EventsConstants.tag_clicked_lexicon_edit:
           this.alternateLabelInstanceName();
           this.showLabelName = !this.showLabelName;
           break;

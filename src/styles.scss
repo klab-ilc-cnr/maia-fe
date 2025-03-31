@@ -724,3 +724,92 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
+
+.ontology-dot {
+  height: 16px;
+  width: 16px;
+  background-color: #cfa630;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+.ontology-dot-bars {
+  height: 16px;
+  width: 16px !important;
+  background-color: #cfa630;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+  position: relative;
+}
+
+/* Creazione delle tre linee bianche */
+.ontology-dot-bars::before,
+.ontology-dot-bars::after,
+.ontology-dot-bars span {
+  content: "";
+  position: absolute;
+  width: 60%;
+  height: 1px;
+  background-color: white; /* Linee bianche */
+  border-radius: 1px;
+}
+
+/* Linea superiore */
+.ontology-dot-bars::before {
+  top: 30%;
+}
+
+/* Linea centrale */
+.ontology-dot-bars span {
+  top: 49%;
+}
+
+/* Linea inferiore */
+.ontology-dot-bars::after {
+  bottom: 30%;
+}
+
+
+.ontology-red-dot {
+  height: 13px;
+  width: 13px;
+  background-color: #AD3B45;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+.ontology-data-rectangle {
+  height: 10px;
+  width: 18px;
+  background-color: #37a14a;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+.ontology-object-rectangle {
+  height: 10px;
+  width: 18px;
+  background-color: #1179ba;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+.ontology-individual-rhombus {
+  height: 11px;
+  width: 11px;
+  background-color: #884b82;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  transform: rotate(45deg);
+}

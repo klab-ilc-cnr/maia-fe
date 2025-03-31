@@ -53,6 +53,8 @@ import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.dire
 import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value-not-duplicate-name.directive';
 import { UriValidator } from '../validators/uri-validator.directive';
 import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
+import { DividerModule } from "primeng/divider";
+import { ChipModule } from 'primeng/chip';
 
 const PRIMENG_MODULES = [
   ButtonModule,
@@ -96,6 +98,8 @@ const PRIMENG_MODULES = [
   SliderModule,
   SplitButtonModule,
   OrderListModule,
+  DividerModule,
+  ChipModule
 ];
 
 const DIRECTIVES = [

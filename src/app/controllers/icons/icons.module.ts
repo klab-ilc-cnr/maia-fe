@@ -11,6 +11,7 @@ import { IconAuthorComponent } from './icon-author/icon-author.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { IconNoteComponent } from './icon-note/icon-note.component';
 import { IconLockComponent } from './icon-lock/icon-lock.component';
+import { IconPlusCircleComponent } from './icon-circle-plus/icon-circle-plus.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { IconLockComponent } from './icon-lock/icon-lock.component';
     IconLayerGroupComponent,
     IconAuthorComponent,
     IconNoteComponent,
-    IconLockComponent
+    IconLockComponent,
+    IconPlusCircleComponent
   ],
   exports: [
     IconBaseComponent,
@@ -34,7 +36,8 @@ import { IconLockComponent } from './icon-lock/icon-lock.component';
     IconLayerGroupComponent,
     IconAuthorComponent,
     IconNoteComponent,
-    IconLockComponent
+    IconLockComponent,
+    IconPlusCircleComponent
   ],
   imports: [
     CommonModule,

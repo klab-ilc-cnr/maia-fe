@@ -1,0 +1,9 @@
+:host p-tabView,
+:host::ng-deep.p-tabview.p-component,
+:host::ng-deep div[role="tabpanel"] {
+  height: 100%;
+
+  .p-tabview-panels {
+    height: calc(100% - 41px);
+  }
+}

@@ -9,7 +9,7 @@
         "save": "Salva",
         "selectValue": "Seleziona valore",
         "update": "Aggiorna",
-        "browserWarning" : "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome"
+        "browserWarning": "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Aggiungi cartella",
@@ -60,10 +60,17 @@
             "topographicReference": "Riferimento topografico",
             "seeAlso": "Vedi anche",
             "sourceLanguage": "Lingua di provenienza",
-            "vocs": "Il Decameron, le Crusche e altri vocabolari"
+            "vocs": "Il Decameron, le Crusche e altri vocabolari",
+            "status": "Status"
         },
         "PREVIEW_TAB": {
-            "title": "Anteprima"
+            "title": "Anteprima",
+            "forms": "Forme",
+            "entryHeader": "Intestazione della voce",
+            "entryBody": "Corpo della voce",
+            "text": "Testo",
+            "reference": "Riferimento",
+            "section": "Occorrenza"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",
@@ -199,7 +206,7 @@
     },
     "USERS_MANAGER": {
         "activeUser": "Utente attivo",
-        "confirmDeleteUser":"Stai per eliminare l'utente ${username}",
+        "confirmDeleteUser": "Stai per eliminare l'utente ${username}",
         "confirmPassword": "Conferma password",
         "confirmPwdMandatory": "La password di conferma è obbligatoria",
         "delete": "Elimina",
@@ -237,6 +244,103 @@
         "usernameMinLenght": "Il nome utente deve essere lungo almeno 4 caratteri",
         "userUpdated": "Utente aggiornato con successo"
     },
+    "ICON_AUTHOR": {
+        "creator": "Creatore",
+        "creationDate": "Data creazione",
+        "lastUpdate": "Ultimo aggiornamento"
+    },
+    "ONTOLOGY": {
+        "classes": "Class",
+        "objectProperties": "Object Property",
+        "dataProperties": "Data Property",
+        "individuals": "Individual",
+        "ontology": "Ontology",
+        "annotations": "Annotations",
+        "usage": "Usage",
+        "VIEWER": {
+            "annotations": "Annotations",
+            "description": "Description",
+            "characteristics": "Characteristics",
+            "propertyAssertions": "Property Assertions",
+            "references": "References - Lexical senses",
+            "denotes": "Denotes- Lexical entries",
+            "language": "language",
+            "DESCRIPTION": {
+                "equivalentTo": "Equivalent To",
+                "subclassOf": "Subclass Of",
+                "generalClassAxioms": "General Class Axioms",
+                "subClassOfAnonymousAncestor": "SubClass Of (Anonymous Ancestor)",
+                "instances": "Instances",
+                "targetForKey": "Target For Key",
+                "disjointWith": "Disjoint With",
+                "disjointUnionOf": "Disjoint Union Of",
+                "subPropertyOf": "Sub Property Of",
+                "inverseOf": "Inverse Of",
+                "domains": "Domains (intersection)",
+                "ranges": "Ranges (intersection)",
+                "superPropertyOfChain": "SuperProperty Of (Chain)",
+                "types": "Types",
+                "sameAs": "Same Individual As",
+                "differentFrom": "Different Individuals"
+            },
+            "CHARACTERISTICS": {
+                "functional": "Functional",
+                "inverseFunctional": "Inverse functional",
+                "transitive": "Transitive",
+                "symmetric": "Symmetric",
+                "asymmetric": "Asymmetric",
+                "reflexive": "Reflexive",
+                "irreflexive": "Irreflexive"
+            },
+            "PROPERTY_ASSERTIONS": {
+                "objectPropertyAssertions": "Object property assertions",
+                "dataPropertyAssertions": "Data property assertions",
+                "negativeObjectPropertyAssertions": "Negative object property assertions",
+                "negativeDataPropertyAssertions": "Negative data property assertions"
+            },
+            "USAGE": {
+                "references": "References - Lexical senses",
+                "denotes": "Denotes- Lexical entries"
+            }
+        },
+        "UPLOAD": {
+            "uploadFileTitle": "Carica Ontologia",
+            "selectFile": "Seleziona file",
+            "uploaderType": "Tipo di caricamento",
+            "errorLoadingFile": "Errore nel caricamento del file",
+            "fileExceedsSizeErrorMsg": "Le dimensioni del file superano i 5MB consentiti",
+            "fileExtensionUnsupported": "Estensione del file non supportata",
+            "loadSuccess": "Ontologia caricata con successo"
+        }
+    },
+    "ONTOLOGY_CLASS_EXPLORER": {
+        "addChild": "Aggiungi classe",
+        "addSibling": "Aggiungi sottoclasse",
+        "remove": "Rimuovi"
+    },
+    "ONTOLOGY_DATA_PROPERTY_EXPLORER": {
+        "addChild": "Aggiungi classe",
+        "addSibling": "Aggiungi sottoclasse",
+        "remove": "Rimuovi"
+    },
+    "ONTOLOGY_OBJECT_PROPERTY_EXPLORER": {
+        "addChild": "Aggiungi classe",
+        "addSibling": "Aggiungi sottoclasse",
+        "remove": "Rimuovi"
+    },
+    "ONTOLOGY_INDIVIDUAL_EXPLORER": {
+        "addChild": "Aggiungi classe",
+        "remove": "Rimuovi"
+    },
+    "ONTOLOGY_DATA": {
+        "iri": "Ontology IRI",
+        "version": "Ontology Version IRI",
+        "reasonerName": "Reasoner Name",
+        "reasonerVersion": "Reasoner Version",
+        "importedOntologies": "Imported Ontologies",
+        "directImports": "Direct Imports",
+        "indirectImports": "Indirect Imports"
+    },
     "SEARCH": {
         "insertForm": "inserisci forma",
         "insertLemma": "inserisci lemma",
@@ -260,9 +364,9 @@
             "kwic": "KWIC",
             "rightContext": "Contesto destro"
         },
-        "buttons":{
-            "search":"Cerca",
-            "clear":"Reset",
+        "buttons": {
+            "search": "Cerca",
+            "clear": "Reset",
             "saveAs": "Salva",
             "export": "Esporta"
         }

@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, lastValueFrom, take, takeUntil } from 'rxjs';
+import { MenuItem, MessageService, TreeNode } from 'primeng/api';
+import { Observable, Subject, catchError, lastValueFrom, take, takeUntil, throwError } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -35,6 +35,17 @@ import { WorkspaceLexiconEditTileComponent } from './workspace-lexicon-edit-tile
 import { WorkspaceLexiconTileComponent } from './workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceSearchTileComponent } from './workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './workspace-text-selector/workspace-text-selector.component';
+import { WorkspaceOntologyExplorerComponent } from './workspace-ontology-explorer/workspace-ontology-explorer.component';
+import { OntologyClass } from 'src/app/models/ontology/ontology-class.model';
+import { OntologyViewerTileContent } from 'src/app/models/tile/ontology-viewer-tile-content.model';
+import { OntologyExplorerTileContent } from 'src/app/models/tile/ontology-explorer-tile-content.model';
+import { WorkspaceOntologyViewerComponent } from './workspace-ontology-viewer/workspace-ontology-viewer.component';
+import { EventsConstants } from 'src/app/constants/events-constants';
+import { OntologyBase } from 'src/app/models/ontology/ontology-base.model';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FileUploadType } from 'src/app/models/texto/file-upload-type.enum';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { OntologyService } from 'src/app/services/ontology.service';
 // import { CorpusTileContent } from '../models/tileContent/corpus-tile-content';
 
 /**Variabile dell'istanza corrente del workspace */
@@ -79,6 +90,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private dictionaryEditorTilePrefix = 'dictionaryEditTile_'
 
+  private ontologyViewTilePrefix = 'ontologyViewTile_';
+
   /**
    * @private
    * Definisce il lavoro è stato salvato
@@ -109,6 +122,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   public visibleLayers: Layer[] = [];
 
   workspaceName!: string;
+
+  /**Form to add a file to ontology */
+  uploaderForm = new FormGroup({
+    file: new FormControl<File | null>(null, Validators.required),
+  });
+
+  /**Defines whether a file has been uploaded */
+  isFileUploaded = false;
+  /**Defines panel visibility for loading a new file into the corpus */
+  visibleUploadFile = false;
+  /**Uploaded file */
+  fileUploaded: File | undefined;
+  /**Definisce se l'uploader dei file è stato toccato */
+  isFileUploaderTouched = false;
+  /**Defines whether the maximum size of a file has been exceeded */
+  isFileSizeExceed = false;
+  /**File extensions for ontology file upload */
+  ontologyFileExtensionUnsupported = false;
 
   /**Riferimento al contenitore die pannelli */
   @ViewChild('panelsContainer') public container: ElementRef | undefined | null;
@@ -189,9 +220,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private vcr: ViewContainerRef,
     private workspaceService: WorkspaceService,
     private renderer: Renderer2,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
     private commonService: CommonService,
     private storageService: StorageService,
     private lexiconService: LexiconService,
+    private ontologyService: OntologyService,
     private dictionaryService: DictionaryService,
   ) { }
 
@@ -203,19 +237,25 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe((res) => {
       if ('option' in res) {
         switch (res.option) {
-          case 'onLexiconTreeElementDoubleClickEvent': {
+          case EventsConstants.onLexiconTreeElementDoubleClickEvent: {
             const selectedSubTree = structuredClone(res.value[0]);
             const showLabelName = structuredClone(res.value[1]);
             this.openLexiconEditTile(selectedSubTree, showLabelName);
             break;
           }
-          case 'onSearchResultTableDoubleClickEvent': {
+          case EventsConstants.onSearchResultTableDoubleClickEvent: {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset);
             break;
           }
-          case 'onDictionaryEntryDblClickEvent': {
+          case EventsConstants.onDictionaryEntryDblClickEvent: {
             this.openDictionaryEditPanel(res.value);
+            break;
+          }
+          case EventsConstants.onOntologyElementDoubleClickEvent: {
+            const selectedSubTree = structuredClone(res.value[0]);
+            const tileType = structuredClone(res.value[1]);
+            this.openOntologyViewerTile(selectedSubTree, tileType);
             break;
           }
           default:
@@ -236,6 +276,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         label: 'Ontology',
+        items: [
+          {
+            label: 'Explorer',
+            icon: 'fa-brands fa-wpexplorer',
+            command: (event) => { this.openOntologyExplorerPanel(event) }
+          },
+          {
+            label: 'Upload',
+            icon: 'fa-solid fa-file-import',
+            command: (event) => { this.showUploadFileModal() }
+          }
+        ],
       },
       {
         label: 'Search',
@@ -318,7 +370,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
+          case TileType.ONTOLOGY_EXPLORER:
             this.tileMap.set(this.id, tile);
+            break;
+          case TileType.ONTOLOGY_CLASS_VIEWER:
+            //don't save in backend
             break;
 
           default:
@@ -333,9 +389,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           case TileType.CORPUS:
           case TileType.LAYERS_LIST:
           case TileType.SEARCH:
+          case TileType.LEXICON:
           case TileType.LEXICON_EDIT:
           case TileType.DICTIONARY:
           case TileType.DICTIONARY_EDIT:
+          case TileType.ONTOLOGY_EXPLORER:
+          case TileType.ONTOLOGY_CLASS_VIEWER:
             this.tileMap.delete(panelId);
             break;
 
@@ -485,7 +544,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (panelExist) { //caso di pannello già presente
-      if (startingRowIndex) {
+      if (startingRowIndex !== undefined && startingRowIndex !== null) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
         this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!);
         textTileComponent.component.instance.loadInitialData();
@@ -497,7 +556,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
-    if (startingRowIndex) {
+    if (startingRowIndex !== undefined && startingRowIndex !== null) {
       this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!);
     }
 
@@ -728,6 +787,98 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     dictionaryTileElement.addComponentToList(result.id, result.component, result.tileType);
   }
 
+  openOntologyExplorerPanel(event: any) {
+    const ontologyExplorerPanelId = 'ontologyExplorerTile'
+
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === ontologyExplorerPanelId
+    );
+
+    if (panelExist) {
+      panelExist.front()
+      return;
+    }
+
+    const result = this.generateOntologyExplorerPanelConfiguration(ontologyExplorerPanelId);
+
+    const ontologyExplorerTileConfig = result.panelConfig;
+
+    const ontologyTileElement = jsPanel.create(ontologyExplorerTileConfig);
+    ontologyTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    ontologyTileElement.titlebar.style.fontSize = '14px'
+
+
+    ontologyTileElement
+      .resize({
+        height: window.innerHeight / 1.5
+      })
+      .reposition();
+
+    const { content, ...text } = ontologyExplorerTileConfig;
+
+    ontologyExplorerTileConfig.content = undefined;
+
+    const tileObject: Tile<OntologyExplorerTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: undefined,
+      tileConfig: ontologyExplorerTileConfig,
+      type: TileType.ONTOLOGY_EXPLORER
+    };
+
+
+    ontologyTileElement.addToTileMap(tileObject);
+    ontologyTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
+  /**
+   * Opens an Ontology view panel
+   * @param selectedSubTree 
+   * @param showLabelName 
+   * @returns 
+   */
+  openOntologyViewerTile(ontologyNode: TreeNode<OntologyClass>, tileType: TileType) {
+    const ontologyViewTileId = this.ontologyViewTilePrefix + ontologyNode?.data?.shortId;
+    const panelExist = jsPanel.getPanels().find(
+      (x: { id: string; }) => x.id === ontologyViewTileId
+    );
+
+    if (panelExist) {
+      panelExist.front(); //metto il pannello in primo piano
+      return;
+    }
+
+    const result = this.generateOntologyViewerTileConfiguration(ontologyViewTileId, ontologyNode, tileType);
+
+    const ontologyViewTileConfig = result.panelConfig;
+
+    const ontologyViewTileElement = jsPanel.create(ontologyViewTileConfig);
+    ontologyViewTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    ontologyViewTileElement.titlebar.style.fontSize = '14px'
+
+    ontologyViewTileElement
+      .resize({
+        height: window.innerHeight / 1.5
+      })
+      .reposition();
+
+    const { content, ...text } = ontologyViewTileConfig;
+
+    ontologyViewTileConfig.content = undefined;
+    const ontologyClassViewTileContent: OntologyViewerTileContent = { contentId: ontologyNode.data?.id }  //NOTE For multiple panels, it is critical to pass the content id into the related content property (so that the data can be retrieved without display errors).
+
+    const tileObject: Tile<OntologyViewerTileContent> = {
+      id: undefined,
+      workspaceId: this.workspaceId,
+      content: ontologyClassViewTileContent,
+      tileConfig: ontologyViewTileConfig,
+      type: tileType
+    };
+
+    ontologyViewTileElement.addToTileMap(tileObject);
+    ontologyViewTileElement.addComponentToList(result.id, result.component, result.tileType);
+  }
+
   /**
    * Method that handles retrieving data of a dictionary entry and opening the edit panel
    * @param dictionaryEntryId {string} dictionary entry identifier
@@ -933,12 +1084,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
           // è necessario reinserirlo manualmente
           currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
-            currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+            currentWorkspaceInstance.commonService.notifyOther({ option: EventsConstants.tag_clicked_lexicon, value: 'clicked' });
           }
-          /*           currPanelElement.setControlStatus('tag', undefined, function (panel: any, control: any) {
-                      currentWorkspaceInstance.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
-                    }); */
-
           break;
 
         case TileType.DICTIONARY: {
@@ -967,6 +1114,51 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           break;
         }
+
+        case TileType.ONTOLOGY_EXPLORER:
+          const ontologyComponent = this.generateOntologyExplorerPanelConfiguration(tile.tileConfig.id);
+          const mergedOntologyConfig = { ...ontologyComponent.panelConfig, ...tile.tileConfig };
+
+          //Ripristino il layout della tile
+          currPanelElement = jsPanel.layout.restoreId({
+            id: tile.tileConfig.id,
+            config: mergedOntologyConfig,
+            storagename: this.storageName,
+          });
+
+          componentRef = ontologyComponent.component;
+
+          //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // è necessario reinserirlo manualmente
+          currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
+            currentWorkspaceInstance.commonService.notifyOther({ option: EventsConstants.ontology_explorer_tag_clicked, value: 'clicked' });
+          }
+          break;
+
+        case TileType.ONTOLOGY_CLASS_VIEWER:
+          // //FIXME RICHIAMARE IL SERVIZIO CORRETTO
+          // const ontologyEntry: TreeNode<OntologyClass> = { data: undefined };
+          // const ontologyClassComponent = this.generateOntologyClassViewerTileConfiguration(tile.tileConfig.id, ontologyEntry);
+          // const mergedOntologyClassConfig = { ...ontologyClassComponent.panelConfig, ...tile.tileConfig };
+
+          // //Ripristino il layout della tile
+          // currPanelElement = jsPanel.layout.restoreId({
+          //   id: tile.tileConfig.id,
+          //   config: mergedOntologyClassConfig,
+          //   storagename: this.storageName,
+          // });
+
+          // componentRef = ontologyClassComponent.component;
+
+          // //ATTENZIONE gli handler del componente jspanel headerControls non vengono ripristinati dalla funzione di restore,
+          // // è necessario reinserirlo manualmente
+          // currPanelElement.options.headerControls.add.handler = function (panel: any, control: any) {
+          //   panel.options.data.showId = !panel.options.data.showId;
+          //   const nameToShow = panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow;
+          //   panel.setHeaderTitle(panel.options.data.headerPrefixToShow + nameToShow);
+          // }
+          console.error("ONTOLOGY_CLASS_VIEWER shouldn't have been saved")
+          break;
 
         default:
           console.error("type " + tile.type + " not implemented");
@@ -1072,6 +1264,98 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const element = componentRef.location.nativeElement;
     return element;
+  }
+
+  /**Method that handles the display of the loading modal of a new file */
+  showUploadFileModal(): void {
+    this.uploaderForm.reset();
+    this.visibleUploadFile = true;
+  }
+
+  /**
+* Method that handles the upload event of a file
+* @param event {any} upload event of a file
+* @returns {void}
+*/
+  onFileUpload(event: any): void {
+    const validExtensions = ['.owl', '.rdf', '.ttl'];
+    const file = event.target.files[0];
+
+    if (!file) {
+      this.fileUploaded = undefined;
+      return;
+    }
+
+    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+
+    if (!validExtensions.includes(fileExtension)) {
+      this.fileUploaded = undefined;
+      this.isFileUploaded = false;
+      this.ontologyFileExtensionUnsupported = true;
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      this.fileUploaded = undefined;
+      this.isFileUploaded = false;
+      this.isFileSizeExceed = true;
+      return;
+    }
+
+    this.fileUploaded = file;
+
+    this.isFileUploaded = true;
+    this.isFileSizeExceed = false;
+    this.ontologyFileExtensionUnsupported = false;
+  }
+
+  /**Method that handles touch on the uploader */
+  onFileUploaderTouch(): void {
+    this.isFileUploaderTouched = true;
+  }
+  /**
+ * Method that submits the upload of a file
+ * @returns {void}
+ */
+  onSubmitFileUploaderModal(): void {
+    if (this.uploaderForm.invalid || !this.fileUploaded) { //invalid form or file not uploaded
+      return this.saveUploadFileWithFormErrors();
+    }
+
+    if (this.fileUploaded) {
+      const fileData = new FormData();
+      fileData.append('file', this.fileUploaded);
+      this.ontologyService.upload(fileData).pipe(
+        take(1),
+        catchError((error: HttpErrorResponse) => {
+          this.commonService.throwHttpErrorAndMessage(error, error.error.detail);
+          this.fileUploaded = undefined;
+          return throwError(() => new Error(error.error));
+        }),
+      ).subscribe(
+        () => {
+          this.fileUploaded = undefined;
+          this.messageService.add(this.msgConfService.generateSuccessMessageConfig('ONTOLOGY.UPLOAD.loadSuccess'));
+        });
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateErrorMessageConfig(this.commonService.translateKey('ONTOLOGY.UPLOAD.errorLoadingFile')));
+    }
+
+    this.visibleUploadFile = false;
+  }
+
+  /**
+* @private
+* Method that marks form fields as touched and reports failure to load
+*/
+  private saveUploadFileWithFormErrors(): void {
+    this.uploaderForm.markAllAsTouched();
+
+    if (!this.fileUploaded) {
+      this.isFileUploaded = false;
+      this.isFileUploaderTouched = true;
+    }
   }
 
   /**
@@ -1303,12 +1587,12 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
           handler: (panel: any, control: any) => {
-            this.commonService.notifyOther({ option: 'tag_clicked', value: 'clicked' });
+            this.commonService.notifyOther({ option: EventsConstants.tag_clicked_lexicon, value: 'clicked' });
           }
         }
       },
       onclosed: function (this: any, panel: any, closedByUser: boolean) {
-        this.removeFromTileMap(panel.id, TileType.CORPUS);
+        this.removeFromTileMap(panel.id, TileType.LEXICON);
         this.removeComponentFromList(panel.id);
 
         if (componentRef) {
@@ -1328,7 +1612,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       id: lexiconPanelId,
       component: componentRef,
       panelConfig: config,
-      tileType: TileType.CORPUS
+      tileType: TileType.LEXICON
     };
   }
 
@@ -1385,7 +1669,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           html: '<span class="pi pi-tag"></span>',
           name: 'tag',
           handler: () => {
-            this.commonService.notifyOther({ option: 'tag_clicked_edit_tile', value: 'clicked' });
+            this.commonService.notifyOther({ option: EventsConstants.tag_clicked_lexicon_edit, value: 'clicked' });
           }
         }
       },
@@ -1617,6 +1901,184 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       panelConfig: config,
       tileType: TileType.DICTIONARY_EDIT
     };
+  }
+
+  /**
+ * @private
+ * Generate the configurations for the ontology panel
+ * @param ontologyPanelId {string} panel identifier
+ * panel configuration
+ */
+  private generateOntologyExplorerPanelConfiguration(ontologyPanelId: string) {
+    let componentRef = this.vcr.createComponent(WorkspaceOntologyExplorerComponent) as ComponentRef<WorkspaceOntologyExplorerComponent> | null;
+
+    const element = componentRef!.location.nativeElement;
+
+    const config = {
+      id: ontologyPanelId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: 'Ontology Explorer',
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      contentOverflow: 'hidden',
+      syncMargins: true,
+      theme: {
+        bgPanel: '#eceae4',
+        colorHeader: 'black',
+        border: 'thin solid #eceae4',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.28,
+        height: '60vh',
+      },
+      resizeit: {
+        minWidth: 250,
+        resize: (panel: any, paneldata: any, event: any) => {
+          componentRef!.instance.updateHeight(paneldata.height);
+        }
+      },
+      onmaximized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef!.instance.updateHeight(panelH);
+      },
+      onminimized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef!.instance.updateHeight(panelH);;
+      },
+      onnormalized: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef!.instance.updateHeight(panelH);
+      },
+      onsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef!.instance.updateHeight(panelH);
+      },
+      onunsmallified: function (this: any, panel: any, status: any) {
+        const panelH = Number.parseFloat(panel.style.height.split('px')[0]);
+        componentRef!.instance.updateHeight(panelH);
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: () => {
+            this.commonService.notifyOther({ option: EventsConstants.ontology_explorer_tag_clicked, value: 'clicked' });
+          }
+        }
+      },
+      onclosed: function (this: any, panel: any, closedByUser: boolean) {
+        this.removeFromTileMap(panel.id, TileType.ONTOLOGY_EXPLORER);
+        this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
+      },
+    };
+
+    return {
+      id: ontologyPanelId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: TileType.ONTOLOGY_EXPLORER
+    };
+  }
+
+  /**
+   * 
+   * @param ontologyViewerTileId 
+   * @param selectedSubTree 
+   * @param showLabelName 
+   * @returns 
+   */
+  private generateOntologyViewerTileConfiguration(ontologyViewerTileId: string, selectedNode: TreeNode<OntologyBase>, tileType: TileType) {
+    let componentRef = this.vcr.createComponent(WorkspaceOntologyViewerComponent) as ComponentRef<WorkspaceOntologyViewerComponent> | null;
+
+    componentRef!.instance.visibleTileType = tileType;
+    componentRef!.instance.id = selectedNode.data!.id!;
+    const name = selectedNode.data?.label ?? selectedNode.data?.shortId
+
+    let headerPrefix = "";
+    switch (tileType) {
+      case TileType.ONTOLOGY_CLASS_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-dot"></span>';
+        break;
+      case TileType.ONTOLOGY_OBJECT_PROPERTY_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-object-rectangle"></span>';
+        break;
+      case TileType.ONTOLOGY_DATA_PROPERTY_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-data-rectangle"></span>';
+        break;
+      case TileType.ONTOLOGY_INDIVIDUAL_VIEWER:
+        headerPrefix = 'Ontology Viewer - <span class="ontology-individual-rhombus"></span>';
+        break;
+      default:
+        console.error("tileType of type" + tileType + " cannot be recognized");
+    }
+
+    const element = componentRef!.location.nativeElement;
+
+    const config = {
+      id: ontologyViewerTileId,
+      container: this.workspaceContainer,
+      content: element,
+      headerTitle: headerPrefix + name,
+      maximizedMargin: 5,
+      dragit: { snap: false },
+      syncMargins: true,
+      theme: {
+        bgPanel: '#ECEAE4',
+        colorHeader: 'black',
+        border: 'thin solid #ECEAE4',
+        borderRadius: '.33rem',
+      },
+      panelSize: {
+        width: () => window.innerWidth * 0.55,
+        height: '60vh'
+      },
+      data: {
+        showId: false,
+        headerPrefixToShow: headerPrefix,
+        headerNameToShow: name,
+        parentNodeIdToShow: selectedNode.data?.id
+      },
+      headerControls: {
+        add: {
+          html: '<span class="pi pi-tag"></span>',
+          name: 'tag',
+          handler: (panel: any, control: any) => {
+            panel.options.data.showId = !panel.options.data.showId;
+            const nameToShow = panel.options.data.showId ? panel.options.data.parentNodeIdToShow : panel.options.data.headerNameToShow;
+            panel.setHeaderTitle(panel.options.data.headerPrefixToShow + nameToShow);
+          }
+        }
+      },
+      onclosed: function (this: any, panel: any) {
+        this.removeFromTileMap(panel.id, tileType);
+        this.removeComponentFromList(panel.id);
+
+        if (componentRef) {
+          componentRef.destroy();
+          componentRef = null;
+        }
+      },
+      onfronted: function (this: any, panel: any) {
+        const panelIDs = jsPanel.getPanels(function () {
+          return panel.classList.contains('jsPanel-standard');
+        }).map((panel: any) => panel.id);
+      }
+    };
+
+    return {
+      id: ontologyViewerTileId,
+      component: componentRef,
+      panelConfig: config,
+      tileType: tileType
+    };
+
   }
 }
 

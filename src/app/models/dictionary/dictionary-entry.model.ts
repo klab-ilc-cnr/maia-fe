@@ -1,3 +1,4 @@
+import { LinguisticRelationModel } from "../lexicon/linguistic-relation.model";
 import { DictionaryBase } from "./dictionary-base.model";
 import { DictionaryListItem } from "./dictionary-list-item.model";
 
@@ -10,5 +11,5 @@ export interface DictionaryEntry extends DictionaryBase, DictionaryListItem {
     images: string[];
     note: string;
     /**List of entities (dictionary entries) to which it is linked by a type relationship see also */
-    seeAlso: any[]; //TODO sostituire con il modello dati corretto
+    seeAlso: LinguisticRelationModel[];
 }
