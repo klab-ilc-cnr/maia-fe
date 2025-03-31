@@ -97,7 +97,7 @@
           </div>
           <div class="text-end">
             <button type="button" (click)="goToUserList()" class="btn btn-secondary ms-auto">
-              {{'GENERAL.save'|translate}}
+              {{'GENERAL.cancel'|translate}}
             </button>
             <button type="submit" [disabled]="(!canManageUsers && user.id != currentMaiaUserId) || userForm.invalid"
               [hidden]="!canManageUsers && user.id != currentMaiaUserId" class="btn btn-danger ms-2">

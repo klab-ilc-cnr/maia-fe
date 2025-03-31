@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
+import { Observable, take } from 'rxjs';
+import { LexicalEntryCore, LexicalEntryType } from 'src/app/models/lexicon/lexical-entry.model';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { environment } from 'src/environments/environment';
 /**Componente dei tab per la lavorazione di un'entrata lessicale */
@@ -17,6 +17,8 @@ export class TabsLexicalEntryComponent implements OnInit {
   @Input() lexicalEntryInstanceName!: string;
   /**Tab iniziale selezionato */
   selectedTab = 0;
+  LEXICAL_ENTRY_TYPE = LexicalEntryType;
+  isMultiword = false;
 
  /**
   * Costruttore per TabsLexicalEntryComponent
@@ -30,5 +32,8 @@ export class TabsLexicalEntryComponent implements OnInit {
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero dei dati iniziali */
   ngOnInit(): void {
     this.lexicalEntry$ = this.lexiconService.getLexicalEntry(this.lexicalEntryInstanceName);
+    this.lexicalEntry$.pipe(take(1)).subscribe(le => {
+      this.isMultiword = le.type.includes(this.LEXICAL_ENTRY_TYPE.MULTI_WORD_EXPRESSION);
+    });
   }
 }

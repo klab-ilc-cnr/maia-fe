@@ -1,0 +1,35 @@
+:host::ng-deep legend {
+    width: auto;
+    float: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    margin-left: -1px;
+}
+
+.fieldTitle {
+    color: #919191;
+    font-weight: 500;
+}
+
+.axiom {
+    font-weight: 650;
+}
+
+:host::ng-deep .p-divider-horizontal {
+    margin-top: 4px;
+}
+
+p-tabView,
+::ng-deep.p-tabview.p-component,
+::ng-deep div[role="tabpanel"] {
+    height: 100%;
+
+    .p-tabview-panels {
+        height: calc(100% - 41px);
+    }
+}
+
+.pinned-tab-panel {
+    height: 100%;
+    overflow-y: scroll;
+}

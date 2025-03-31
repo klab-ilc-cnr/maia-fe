@@ -692,7 +692,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   highlightSelection() {
     this.removeTextSelection();
 
-    if (!this.specialTextSelectionHighlight.active) { return; }
+    if (!this.specialTextSelectionHighlight.active) {
+      window.getSelection()?.removeAllRanges(); // Remove all ranges from the current selection
+      return; 
+    }
 
     const textSelection: TextSelection = this.specialTextSelectionHighlight.textSelection!;
     let range = textSelection.selection!.getRangeAt(0);
@@ -765,6 +768,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     range.startContainer.parentElement!.removeAttribute("selectionHighlight");
     range.endContainer.parentElement!.removeAttribute("selectionHighlight");
+    window.getSelection()?.removeAllRanges(); // Remove all ranges from the current selection
   }
 
   /**

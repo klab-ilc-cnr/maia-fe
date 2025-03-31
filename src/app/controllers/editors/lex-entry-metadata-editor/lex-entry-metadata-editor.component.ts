@@ -50,6 +50,16 @@ export class LexEntryMetadataEditorComponent extends BaseMetadataEditorComponent
 
   override async onUpdateField(userName: string, relation: LEXICAL_ENTRY_RELATIONS, value: string): Promise<Observable<string>> {
     this.commonService.notifyOther({ option: 'lexicon_edit_update_tree', value: this.entry.lexicalEntry });
+    if(value==='') {
+      const relationLabel = relation.split('#')[1];
+      return this.lexiconService.deleteRelation(
+        this.entry.lexicalEntry, 
+        {
+          relation:relation,
+          value: this.entry[relationLabel]
+        }
+      );
+    }
     return this.lexiconService.updateLexicalEntry(
       userName,
       this.entry.lexicalEntry,

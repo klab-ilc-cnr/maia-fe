@@ -62,6 +62,21 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
+import { WorkspaceOntologyExplorerComponent } from './pages/workspace/workspace-ontology-explorer/workspace-ontology-explorer.component';
+import { OntologyObjectPropertyExplorerComponent } from './controllers/explorers/ontology-object-property-explorer/ontology-object-property-explorer.component';
+import { OntologyDataPropertyExplorerComponent } from './controllers/explorers/ontology-data-property-explorer/ontology-data-property-explorer.component';
+import { OntologyIndividualsExplorerComponent } from './controllers/explorers/ontology-individuals-explorer/ontology-individuals-explorer.component';
+import { OntologyClassExplorerComponent } from './controllers/explorers/ontology-class-explorer/ontology-class-explorer.component';
+import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-ontology-viewer/workspace-ontology-viewer.component';
+import { OntologyIndividualViewerComponent } from './controllers/viewers/ontology-individual-viewer/ontology-individual-viewer.component';
+import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontology-data-property-viewer/ontology-data-property-viewer.component';
+import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
+import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
+import { OntologyTabUsageComponent } from './controllers/viewers/common/ontology-tab-usage/ontology-tab-usage.component';
+import { AnnotationsSectionComponent } from './controllers/viewers/common/annotations-section/annotations-section.component';
+import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-data-explorer/ontology-data-explorer.component';
+import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/lex-entry-decomp.component';
+import { DictionaryPreviewComponent } from './controllers/editors/dictionary-preview/dictionary-preview.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +123,22 @@ import { MatchNewPasswordDirective } from './validators/match-new-password.direc
     DictionaryEntryFullEditorComponent,
     DropdownPlusNumberComponent,
     ReplaceLineFeedPipe,
-    DictionarySortingEditorComponent
+    DictionarySortingEditorComponent,
+    LexEntryDecompComponent,
+    WorkspaceOntologyExplorerComponent,
+    OntologyClassExplorerComponent,
+    OntologyObjectPropertyExplorerComponent,
+    OntologyDataPropertyExplorerComponent,
+    OntologyIndividualsExplorerComponent,
+    WorkspaceOntologyViewerComponent,
+    OntologyObjectPropertyViewerComponent,
+    OntologyDataPropertyViewerComponent,
+    OntologyIndividualViewerComponent,
+    OntologyTabUsageComponent,
+    OntologyClassViewerComponent,
+    AnnotationsSectionComponent,
+    OntologyDataExplorerComponent,
+    DictionaryPreviewComponent
   ],
   imports: [
     BrowserModule,
