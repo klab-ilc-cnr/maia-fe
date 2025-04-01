@@ -162,6 +162,13 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   /**Metodo dell'interfaccia OnInit, utilizzato per la valorizzazione iniziale del componente e del form */
   ngOnInit(): void {
     const pos = this.formEntry.inheritedMorphology.find(m => m.trait.endsWith('partOfSpeech'))?.value;
+    this.formEntry.inheritedMorphology.forEach(m => {
+      if(!m.trait.endsWith('partOfSpeech')) {
+        const morphElement = { relation: m.trait, value: m.value, external: true };
+        this.morphology.push(new FormControl(morphElement));
+        this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
+        }
+    });
     if (pos) {
       this.form.get('pos')?.setValue(pos);
     }
