@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, debounceTime, map, of, skip, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, map, of, skip, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { LexicalEntryCore, MorphologyProperty } from 'src/app/models/lexicon/lexical-entry.model';
 import { GENERIC_RELATIONS, GENERIC_RELATION_TYPE, GenericRelationUpdater, LEXICAL_ENTRY_RELATIONS, LINGUISTIC_RELATION_TYPE, LexicalEntryUpdater, LinguisticRelationUpdater } from 'src/app/models/lexicon/lexicon-updater';
@@ -38,8 +38,13 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     type: new FormControl<string[]>([]),
     evokes: new FormArray<FormControl>([]),
     denotes: new FormArray<FormControl>([]),
-    seeAlso: new FormArray<FormControl>([])
+    seeAlso: new FormArray<FormControl>([]),
+    morphology: new FormArray<FormControl>([]),
   });
+  /**Lista di controllo dei tratti morfologici */
+  _morphology: { relation: string, value: string, external: boolean }[] = [];
+  /**Getter del form array dei tratti morfologici */
+  get morphology() { return this.form.controls['morphology'] as FormArray; }
   /**Lista di controllo degli evokes */
   _evokes: { label: string, value: string, external: boolean, inferred: boolean }[] = [];
   /**Lista di controllo dei denotes */
@@ -100,6 +105,24 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       external: false,
       inferred: false
     }))
+  );
+  /**Observable delle relazioni morfologiche */
+  morphRelations$ = this.globalState.morphologies$.pipe(
+    switchMap(list => {
+      const mappedElements = list.map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
+      return of(mappedElements);
+    }),
+  );
+  /**
+   * Funzione di filtro delle relazioni morfologiche
+   * @param relation {string} relazione selezionata
+   * @returns {Observable<OntolexType[]>} observable della lista di valori associati a una relazione
+   */
+  morphRelationValues = (relation: string) => this.globalState.morphologies$.pipe(
+    switchMap(list => {
+      const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
+      return of(values);
+    }),
   );
   /**
    * Funzione di filtro delle ontologie
@@ -207,6 +230,13 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
       this.lexicalEntry.type.forEach(type => {
         lexEntryTypeCode.push('http://www.w3.org/ns/lemon/ontolex#' + type); //TODO capire come gestire in maniera generalizzata @andreabellandi
       });
+      this.lexicalEntry.morphology.forEach(m => {
+        if(!m.trait.endsWith('#partOfSpeech')){
+          const morphElement = { relation: m.trait, value: m.value, external: false };
+          this.morphology.push(new FormControl(morphElement));
+          this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
+          }
+      });  
       if (le.status) this.form.get('status')?.setValue(le.status);
       if (le.label) this.form.get('label')?.setValue(le.label);
       if (le.language) this.form.get('language')?.setValue(le.language);
@@ -244,11 +274,34 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     this._evokes.push({ ...newEvokes });
   }
 
+  /**Metodo di aggiunta di una riga di tratti morfologici */
+  onAddMorphology() {
+    const newMorph = { relation: '', value: '', external: false };
+    this.morphology.push(new FormControl(newMorph));
+    this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...newMorph });
+  }
+
   /**Metodo di aggiunta di un elemento (lista e form) a see also */
   onAddSeeAlso() {
     const newSeeAlso = { label: '', value: '', external: false, inferred: false };
     this.seeAlso.push(new FormControl(newSeeAlso));
     this._seeAlso.push({ ...newSeeAlso });
+  }
+
+  /**
+   * Metodo che salva la selezione di un tratto morfologico e del suo valore
+   * @param event {{ relation: string, value: string, external: boolean }} evento emesso dal componente su selezione
+   * @param index {number} indice nella lista dei campi di morfologia
+   */
+  onMorphSelection(event: { relation: string, value: string, external: boolean }, index: number) {
+    const currentValue = this._morphology[index].value;
+    if (currentValue !== event.value) {
+      this.updateLinguisticRelation(LINGUISTIC_RELATION_TYPE.MORPHOLOGY, event.relation, event.value, currentValue).then(() => {
+        // this.updateListControlList(this.morphology, this._morphology, index, event);
+        this.morphology.at(index).setValue(event);
+        this._morphology[index] = <{ relation: string, value: string, external: boolean }>{ ...event };
+      });
+    }
   }
 
   /**Metodo di rimozione di un elemento (lista e form) a denotes */
@@ -290,6 +343,33 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
           () => {
             this.evokes.removeAt(index);
             this._evokes.splice(index, 1);
+          },
+          () => null
+        );
+      });
+    }
+  }
+
+  /**
+   * Metodo che rimuove un elemento dalla lista dei tratti morfologici
+   * @param index {number} indice del tratto morfologico nella lista
+   * @returns {void}
+   */
+  onRemoveMorph(index: number) {
+    const currentValue = this._morphology[index].value;
+    if (!currentValue || currentValue === '') {
+      this.morphology.removeAt(index);
+      this._morphology.splice(index, 1);
+      return;
+    }
+    if (currentValue && currentValue !== '') {
+      const confirmMsg = `Are you sure to remove "${currentValue}"?`;
+      this.popupDeleteItem.confirmMessage = confirmMsg;
+      this.popupDeleteItem.showDeleteConfirmSimple(() => {
+        this.removeRelation({ relation: this._morphology[index].relation, value: currentValue }).then(
+          () => {
+            this.morphology.removeAt(index);
+            this._morphology.splice(index, 1);
           },
           () => null
         );
