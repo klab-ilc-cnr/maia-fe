@@ -44,7 +44,7 @@ export class LexEntryDecompComponent implements OnInit, OnDestroy {
     limit: 500
   }).pipe(
     map(resp => resp.list.map(le => <{ label: string, value: string, external: boolean, inferred: boolean }>{
-      label: le.label,
+      label: `${le.label} [${le.pos}]`,
       value: le.lexicalEntry,
       external: false,
       inferred: false
@@ -66,7 +66,7 @@ export class LexEntryDecompComponent implements OnInit, OnDestroy {
     ).subscribe(resp => {
       this.lexicalEntryComponents = resp;
       this.lexicalEntryComponents.forEach(c => {
-        const componentElement = { label: c.label, value: c.lexicalEntry, external: false, inferred: false };
+        const componentElement = { label: `${c.label} [${c.pos}]`, value: c.lexicalEntry, external: false, inferred: false };
         this.components.push(new FormControl(componentElement));
         this._components.push({ ...componentElement });
       });
