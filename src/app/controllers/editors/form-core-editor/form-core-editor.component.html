@@ -51,7 +51,7 @@
         <ng-template pTemplate="content">
           <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"
             [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"
-            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"
+            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel" [isInherited]="morph.value.external"
             [isCheckboxVisible]="false" [relationField]="morph.value.relation"
             [valueField]="morph.value.value"></app-double-autocomplete>
         </ng-template>
