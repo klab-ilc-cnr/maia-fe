@@ -297,7 +297,6 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
     const currentValue = this._morphology[index].value;
     if (currentValue !== event.value) {
       this.updateLinguisticRelation(LINGUISTIC_RELATION_TYPE.MORPHOLOGY, event.relation, event.value, currentValue).then(() => {
-        // this.updateListControlList(this.morphology, this._morphology, index, event);
         this.morphology.at(index).setValue(event);
         this._morphology[index] = <{ relation: string, value: string, external: boolean }>{ ...event };
       });
