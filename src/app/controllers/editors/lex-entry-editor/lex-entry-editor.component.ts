@@ -101,6 +101,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   }).pipe(
     map(resp => resp.list.map(le => <{ label: string, value: string, external: boolean, inferred: boolean }>{
       label: le.label,
+      sub: le.pos,
       value: le.lexicalEntry,
       external: false,
       inferred: false

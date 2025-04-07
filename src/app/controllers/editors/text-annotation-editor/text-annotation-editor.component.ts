@@ -102,9 +102,21 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map(resp => resp.list)
+    map(resp => resp.list.map(le => {
+      return {
+        ...le,
+        label: `${le.label} [${le.pos}]`
+      }
+    }))
   );
-  lexEntryById = (id: string) => this.lexiconService.getLexicalEntry(id);
+  lexEntryById = (id: string) => this.lexiconService.getLexicalEntry(id).pipe(
+    map(le => {
+      return {
+        ...le,
+        label: `${le.label} [${le.pos}]`
+      }
+    })
+  );
 
   formList = (text: string) => this.lexiconService.getFormList({
     text: text,
@@ -119,6 +131,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   formById = (id: string) => this.lexiconService.getForm(id).pipe(
     map(form => {
       const label = form.label.find(e => e.propertyID === 'writtenRep')?.propertyValue;
+      // const label = `${form.label.find(e => e.propertyID === 'writtenRep')?.propertyValue} [${form.lexicalEntryLabel}]`; #TODO valuta se integrare
       return <FormListItem>{
         creator: form.creator,
         lastUpdate: form.lastUpdate,
@@ -147,11 +160,17 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map((resp: any) => resp.list),
+    map((resp: any) => {
+      console.info(resp.list)
+      return resp.list.map((s:any) => {return {
+        ...s,
+        definition: `[${s.lemma}] - ${s.definition}`
+      }});
+    }),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
-      const definition = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue;
+      const definition = `[${sense.lexicalEntryLabel.split('@')[0]}] - ${sense.definition.find(s => s.propertyID === 'definition')?.propertyValue}`;
       return <SenseListItem>{
         creator: sense.creator,
         lastUpdate: sense.lastUpdate,

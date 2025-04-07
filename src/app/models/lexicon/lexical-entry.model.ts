@@ -133,6 +133,7 @@ export interface SenseCore extends LexicalElementBase {
   senseTranslation: string | null;
   topic: string;
   usage: string;
+  lexicalEntryLabel: string;
 }
 
 export enum LexicalEntryType {
