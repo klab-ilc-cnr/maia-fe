@@ -366,6 +366,12 @@
             "clear": "Clear",
             "saveAs": "Save As",
             "export": "Export"
+        },
+        "restriction":{
+            "placeholder": "Select restriction",
+            "none": "none",
+            "annotedOnly": "Only annotated strings",
+            "notAnnotedOnly": "Only not annotated strings"
         }
     }
 }

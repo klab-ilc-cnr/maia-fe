@@ -6,8 +6,10 @@ import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
+import { TLayer } from 'src/app/models/texto/t-layer';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
+import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { SearchService } from 'src/app/services/search.service';
 
@@ -18,17 +20,24 @@ interface SearchMode {
   inactive: boolean
 }
 
+enum Restriction {
+  none = 'none',
+  annotedOnly = 'annotedOnly',
+  notAnnotedOnly = 'notAnnotedOnly',
+}
+
 @Component({
   selector: 'app-workspace-search-tile',
   templateUrl: './workspace-search-tile.component.html',
   styleUrls: ['./workspace-search-tile.component.scss'],
-  providers: [CorpusStateService]
+  providers: [CorpusStateService, LayerStateService]
 })
 export class WorkspaceSearchTileComponent implements OnInit {
 
   constructor(private corpusStateService: CorpusStateService,
     private searchService: SearchService,
     private commonService: CommonService,
+    private layerState: LayerStateService,
     private renderer: Renderer2,
     private loaderService: LoaderService) { }
 
@@ -45,6 +54,16 @@ export class WorkspaceSearchTileComponent implements OnInit {
   contextMaxLenght: number = 10;
   files$!: Observable<TreeNode<CorpusElement>[]>;
   selectedDocuments: TreeNode<CorpusElement>[] = [];
+  selectedLayer: TLayer | undefined;
+  layers$ = this.layerState.layers$.pipe(
+    switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
+  );
+  selectedRestriction: Restriction = Restriction.none;
+  restrictionOptions = [
+    { name: this.commonService.translateKey('SEARCH.restriction.none'), code: Restriction.none },
+    { name: this.commonService.translateKey('SEARCH.restriction.annotedOnly'), code: Restriction.annotedOnly },
+    { name: this.commonService.translateKey('SEARCH.restriction.notAnnotedOnly'), code: Restriction.notAnnotedOnly }
+  ];
 
   //**kwic table data */
   searchResults: Array<SearchResultRow> = [];
@@ -339,6 +358,16 @@ export class WorkspaceSearchTileComponent implements OnInit {
   /**update the table heigth */
   updateTableHeight() {
     this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith;
+  }
+
+  onChangeLayerSelection(event: any) {
+    if (!this.selectedLayer) {
+      this.selectedRestriction = Restriction.none;
+    }
+  }
+
+  onChangeRestrictionSelection(event: any) {
+
   }
 
   /**init searchMode data */
