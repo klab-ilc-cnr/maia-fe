@@ -60,13 +60,13 @@
               {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
         </div>
         <div class="col d-flex justify-content-end">
-          <p-splitButton #exp appendTo="body" 
-              label="Annota"
-              (onClick)="exp.onDropdownButtonClick($event)"
-              (onDropdownClick)="setExportMenuItems()"
-              [model]="exportItems"
+          <p-splitButton #annotate appendTo="body" 
+              label="{{'SEARCH.buttons.annotate'|translate}}"
+              (onClick)="showAnnotationTile($event)"
+              (onDropdownClick)="setAnnotateMenuItems()"
+              [model]="annotateItems"
               [disabled]="searchResults.length === 0"
-              styleClass="p-button-raised p-button-info mx-2">
+              styleClass="custom-info-btn p-button-raised p-button-info mx-2">
           </p-splitButton>
           <p-splitButton #exp appendTo="body" 
               label="{{'SEARCH.buttons.export'|translate}}"
