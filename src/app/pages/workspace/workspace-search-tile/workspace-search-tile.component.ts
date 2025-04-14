@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
+import { FilterMetadata, MenuItem, SelectItem, TreeNode } from 'primeng/api';
+import { Dropdown } from 'primeng/dropdown';
 import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap, takeUntil } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -20,10 +21,15 @@ interface SearchMode {
   inactive: boolean
 }
 
-enum Restriction {
+enum RestrictionEnum {
   none = 'none',
   annotedOnly = 'annotedOnly',
   notAnnotedOnly = 'notAnnotedOnly',
+}
+
+interface Restriction {
+  name: string,
+  code: RestrictionEnum
 }
 
 @Component({
@@ -58,12 +64,12 @@ export class WorkspaceSearchTileComponent implements OnInit {
   layers$ = this.layerState.layers$.pipe(
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
-  selectedRestriction: Restriction = Restriction.none;
   restrictionOptions = [
-    { name: this.commonService.translateKey('SEARCH.restriction.none'), code: Restriction.none },
-    { name: this.commonService.translateKey('SEARCH.restriction.annotedOnly'), code: Restriction.annotedOnly },
-    { name: this.commonService.translateKey('SEARCH.restriction.notAnnotedOnly'), code: Restriction.notAnnotedOnly }
+    { name: this.commonService.translateKey('SEARCH.restriction.none'), code: RestrictionEnum.none },
+    { name: this.commonService.translateKey('SEARCH.restriction.annotedOnly'), code: RestrictionEnum.annotedOnly },
+    { name: this.commonService.translateKey('SEARCH.restriction.notAnnotedOnly'), code: RestrictionEnum.notAnnotedOnly }
   ];
+  selectedRestriction?: Restriction;
 
   //**kwic table data */
   searchResults: Array<SearchResultRow> = [];
@@ -362,7 +368,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   onChangeLayerSelection(event: any) {
     if (!this.selectedLayer) {
-      this.selectedRestriction = Restriction.none;
+      this.selectedRestriction = undefined;
+    }
+    if (this.selectedLayer && !this.selectedRestriction) {
+      this.selectedRestriction = this.restrictionOptions[0];
     }
   }
 
