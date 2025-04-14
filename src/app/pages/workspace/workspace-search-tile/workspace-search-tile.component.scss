@@ -46,14 +46,24 @@ small {
   padding: 0;
 }
 
-:host::ng-deep .p-datatable .p-datatable-thead > tr > th {
+:host::ng-deep .p-datatable .p-datatable-thead>tr>th {
   padding: 0.5rem;
 }
 
-:host::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+:host::ng-deep .p-datatable .p-datatable-tbody>tr>td {
   padding: 0.5rem;
 }
 
-.dropdownDimensions{
+.dropdownDimensions {
   min-width: 200px;
+}
+
+::ng-deep .p-splitbutton.custom-info-btn .p-button {
+  background-color: #2196F3;
+  color: #fff;
+  border: none;
+}
+
+::ng-deep .p-splitbutton.custom-info-btn .p-button:hover {
+  background-color: #1976D2;
 }

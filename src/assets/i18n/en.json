@@ -365,7 +365,9 @@
             "search": "Search",
             "clear": "Clear",
             "saveAs": "Save As",
-            "export": "Export"
+            "export": "Export",
+            "annotate": "Annotate",
+            "removeAnnotations": "Remove annotations"
         },
         "restriction":{
             "placeholder": "Select restriction",

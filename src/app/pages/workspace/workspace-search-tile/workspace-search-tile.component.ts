@@ -96,6 +96,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   /**export button items */
   exportItems!: MenuItem[];
 
+  /**annotate button items */
+  annotateItems!: MenuItem[];
+
   @ViewChild('searchInput') searchInput: any;
   @ViewChild('dt') searchResultsTable!: Table;
 
@@ -158,6 +161,21 @@ export class WorkspaceSearchTileComponent implements OnInit {
     ];
   }
 
+  public showAnnotationTile(event: any) {
+
+  }
+
+  //**init for annotate menu button */
+  setAnnotateMenuItems() {
+    this.annotateItems = [
+      {
+        label: this.commonService.translateKey('SEARCH.buttons.removeAnnotations'), command: () => {
+          this.showRemoveAnnotationTile();
+        }
+      }
+    ];
+  }
+
   isAnyRowSelected(): boolean {
     return this.selectedSearchResults.length === 0;
   }
@@ -203,6 +221,10 @@ export class WorkspaceSearchTileComponent implements OnInit {
         this.commonService.throwHttpErrorAndMessage(error, error.error.message);
       },
     });
+  }
+
+  showRemoveAnnotationTile() {
+
   }
 
   /**handler for page change */
