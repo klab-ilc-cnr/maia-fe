@@ -65,7 +65,7 @@
               (onClick)="showAnnotationTile($event)"
               (onDropdownClick)="setAnnotateMenuItems()"
               [model]="annotateItems"
-              [disabled]="searchResults.length === 0"
+              [disabled]="selectedSearchResults.length === 0"
               styleClass="custom-info-btn p-button-raised p-button-info mx-2">
           </p-splitButton>
           <p-splitButton #exp appendTo="body" 

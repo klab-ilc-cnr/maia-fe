@@ -77,7 +77,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
   selectedSearchResults: Array<SearchResultRow> = [];
   loading: boolean = false;
   tableContainerHeight!: number;
-  tableHeaderHegith: number = 250;
+  tableHeaderHegith: number = 270;
   totalRecords: number = 0;
   visibleRows: number = 10;
   tableCleared = false;
