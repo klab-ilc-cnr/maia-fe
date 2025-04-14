@@ -162,7 +162,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     ];
   }
 
-  public showAnnotationTile(event: any) {
+  showAnnotationTile(event: any) {
 
   }
 
@@ -184,44 +184,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
   /**manages double click on a table row */
   tableRowDoubleClickHandler(event: any, rowNode: any) {
     this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode] });
-  }
-
-  /** exports all the rows */
-  exportAll() {
-    this.loaderService.show();
-
-    this.searchService.exportAll().subscribe({
-      next: (document) => {
-        this.loaderService.hide();
-        (window as any)["saveAs"](
-          document,
-          `${this.commonService.translateKey('SEARCH.exportAllFileName')}.xlsx`
-        );
-      },
-      error: (error) => {
-        this.loaderService.hide();
-        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
-      },
-    });
-  }
-
-  /**exports only the selected rows */
-  exportSelected() {
-    if (!this.selectedSearchResults) { return; }
-
-    this.searchService.exportSelected(this.selectedSearchResults.map(e => e.id)).subscribe({
-      next: (document) => {
-        this.loaderService.hide();
-        (window as any)["saveAs"](
-          document,
-          `${this.commonService.translateKey('SEARCH.exportSelectedFileName')}.xlsx`
-        );
-      },
-      error: (error) => {
-        this.loaderService.hide();
-        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
-      },
-    });
   }
 
   showRemoveAnnotationTile() {
@@ -246,17 +208,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.filtersSubject.next(event);
   }
 
-  //**executs the lazy load */
-  lazyLoadSearchResultsDebounced(event: any) {
-    if (this.tableCleared) {
-      this.tableCleared = false;
-      return;
-    }
-
-    this.setColumnFilters();
-    this.search();
-  }
-
   filterInputColumn(target: EventTarget | null, fieldName: string, matchMode: string) {
     if (target == null) { return; }
 
@@ -264,16 +215,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.filtersChanged = true;
     this.searchInput.control.markAsTouched();
     this.searchResultsTable.filter(input.value, fieldName, matchMode);
-  }
-
-  /**set the request filters based on the table ones */
-  setColumnFilters() {
-    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
-    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
-    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
-    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
-    this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
-    this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
 
   /**
@@ -310,8 +251,123 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.search();
   }
 
+  onColResize(event: any) {
+    const tableElement = this.searchResultsTable?.tableViewChild?.nativeElement;
+    if (tableElement) {
+      this.renderer.setStyle(tableElement, 'minWidth', '100%');
+    }
+  }
+
+  /**clear function results and data */
+  onClear() {
+    this.searchRequest = new SearchRequest();
+    this.searchResults = [];
+    this.totalRecords = 0;
+    this.selectedSearchResults = [];
+    this.selectedDocuments = [];
+    this.searchValue = '';
+    this.selectedSearchMode = this.searchModes[0];
+    this.contextLength = this.contextLenghtDefaultValue;
+    this.resetTable();
+    this.updateTableHeight();
+  }
+
+  onChangeLayerSelection(event: any) {
+    this.emptyTableResultsOnly();
+
+    if (!this.selectedLayer) {
+      this.selectedRestriction = undefined;
+    }
+    if (this.selectedLayer && !this.selectedRestriction) {
+      this.selectedRestriction = this.restrictionOptions[0];
+    }
+  }
+
+  onChangeRestrictionSelection(event: any) {
+    this.emptyTableResultsOnly();
+  }
+
+  highlightAnnotation(searchResult: SearchResultRow) {
+    if (!searchResult.annotated
+      || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return; }
+
+    const backgroundColor = this.searchResultHighlightColor;
+    const textColor = backgroundColor ? (this.getContrastYIQ(backgroundColor) === 'dark' ? '#FFFFFF' : '#000000') : '#000000';
+
+    return {
+      'background-color': backgroundColor,
+      'color': textColor
+    };
+  }
+
+  /**
+ *refresh documents data  
+ */
+  reloadSelectedDocuments(): void {
+    this.corpusStateService.refreshFileSystem.next();
+  }
+
+  /** exports all the rows */
+  private exportAll() {
+    this.loaderService.show();
+
+    this.searchService.exportAll().subscribe({
+      next: (document) => {
+        this.loaderService.hide();
+        (window as any)["saveAs"](
+          document,
+          `${this.commonService.translateKey('SEARCH.exportAllFileName')}.xlsx`
+        );
+      },
+      error: (error) => {
+        this.loaderService.hide();
+        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      },
+    });
+  }
+
+  /**exports only the selected rows */
+  private exportSelected() {
+    if (!this.selectedSearchResults) { return; }
+
+    this.searchService.exportSelected(this.selectedSearchResults.map(e => e.id)).subscribe({
+      next: (document) => {
+        this.loaderService.hide();
+        (window as any)["saveAs"](
+          document,
+          `${this.commonService.translateKey('SEARCH.exportSelectedFileName')}.xlsx`
+        );
+      },
+      error: (error) => {
+        this.loaderService.hide();
+        this.commonService.throwHttpErrorAndMessage(error, error.error.message);
+      },
+    });
+  }
+
+  //**executs the lazy load */
+  private lazyLoadSearchResultsDebounced(event: any) {
+    if (this.tableCleared) {
+      this.tableCleared = false;
+      return;
+    }
+
+    this.setColumnFilters();
+    this.search();
+  }
+
+  /**set the request filters based on the table ones */
+  private setColumnFilters() {
+    this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
+    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
+    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
+    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
+    this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
+    this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
+  }
+
   /**validate inputs and start the search */
-  search() {
+  private search() {
     this.searchInput.control.markAsTouched();
 
     if (!this.searchRequest.filters.searchValue) {
@@ -341,22 +397,14 @@ export class WorkspaceSearchTileComponent implements OnInit {
     });
   }
 
-  setResizeTableWidth(width: string): void {
-    const tableElement = this.searchResultsTable?.tableViewChild?.nativeElement;
-    if (tableElement) {
-      this.renderer.setStyle(tableElement, 'width', width);
-      this.renderer.setStyle(tableElement, 'minWidth', '100%');
-    }
-  }
-
   /**clears table and prevent triggering lazy loading multiple times */
-  clearTable() {
+  private clearTable() {
     this.searchResultsTable.clear();
     this.tableCleared = true;
   }
 
   /**reset table and prevent triggering lazy loading */
-  resetTable() {
+  private resetTable() {
     this.searchResultsTable.reset();
     this.tableCleared = true;
     this.searchResultsTable.columnWidthsState = this.pTabelColumnWidthStates.columnWidths;
@@ -364,55 +412,22 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchResultsTable.restoreColumnWidths();
   }
 
-  onColResize(event: any) {
+  private setResizeTableWidth(width: string): void {
     const tableElement = this.searchResultsTable?.tableViewChild?.nativeElement;
     if (tableElement) {
+      this.renderer.setStyle(tableElement, 'width', width);
       this.renderer.setStyle(tableElement, 'minWidth', '100%');
     }
   }
 
-  /**clear function results and data */
-  onClear() {
-    this.searchRequest = new SearchRequest();
-    this.searchResults = [];
-    this.totalRecords = 0;
-    this.selectedSearchResults = [];
-    this.selectedDocuments = [];
-    this.searchValue = '';
-    this.selectedSearchMode = this.searchModes[0];
-    this.contextLength = this.contextLenghtDefaultValue;
-    this.resetTable();
-    this.updateTableHeight();
-  }
-
   /**update the table heigth */
-  updateTableHeight() {
+  private updateTableHeight() {
     this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith;
   }
 
-  onChangeLayerSelection(event: any) {
-    if (!this.selectedLayer) {
-      this.selectedRestriction = undefined;
-    }
-    if (this.selectedLayer && !this.selectedRestriction) {
-      this.selectedRestriction = this.restrictionOptions[0];
-    }
-  }
-
-  onChangeRestrictionSelection(event: any) {
-
-  }
-
-  highlightAnnotation(searchResult: SearchResultRow) {
-    if (!searchResult.annotated || !this.searchResultHighlightColor) { return; }
-
-    const backgroundColor = this.searchResultHighlightColor;
-    const textColor = backgroundColor ? (this.getContrastYIQ(backgroundColor) === 'dark' ? '#FFFFFF' : '#000000') : '#000000';
-
-    return {
-      'background-color': backgroundColor,
-      'color': textColor
-    };
+  private emptyTableResultsOnly() {
+    this.searchResults = [];
+    this.searchResultHighlightColor = this.selectedLayer?.color;
   }
 
   /** Determines if the text color should be light or dark based on the background color */
@@ -438,13 +453,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
   /**extract only ids of the files from the document tree */
   private mapSelectedDocumentsIds(): Array<number> {
     return this.selectedDocuments.filter(selectedNode => selectedNode.leaf).map(leaf => leaf.data?.id!);
-  }
-
-  /**
-   *refresh documents data  
-   */
-  reloadSelectedDocuments(): void {
-    this.corpusStateService.refreshFileSystem.next();
   }
 
   /**
