@@ -41,6 +41,16 @@
         <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
             styleClass="w-100" class="dropdownDimensions"
             placeholder="Layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
+            <ng-template let-layer pTemplate="item">
+                <div class="country-item">
+                  <span class="pe-2">
+                    <i class="fa-solid fa-palette" [ngStyle]="{'color': layer.color}" style="font-size: 1.5rem;"></i>
+                  </span>
+                  <span>
+                    {{ layer.name }}
+                  </span>
+                </div>
+            </ng-template>
         </p-dropdown>
         <p-dropdown #restriction="ngModel" name="restriction" appendTo="body" [(ngModel)]="selectedRestriction" optionLabel="name"
             styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
