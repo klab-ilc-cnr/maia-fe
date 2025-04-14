@@ -60,8 +60,9 @@ export class WorkspaceSearchTileComponent implements OnInit {
   contextMaxLenght: number = 10;
   files$!: Observable<TreeNode<CorpusElement>[]>;
   selectedDocuments: TreeNode<CorpusElement>[] = [];
-  selectedLayer: TLayer | undefined;
-  layers$ = this.layerState.layers$.pipe(
+  selectedLayer?: TLayer;
+  searchResultHighlightColor?: string;
+  layers$: Observable<TLayer[]> = this.layerState.layers$.pipe(
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
   restrictionOptions = [
@@ -330,6 +331,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
         this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
         this.loading = false;
         this.totalRecords = result.count;
+        this.searchResultHighlightColor = this.selectedLayer?.color;
         this.updateTableHeight();
       },
       error: (error) => {
@@ -399,6 +401,27 @@ export class WorkspaceSearchTileComponent implements OnInit {
 
   onChangeRestrictionSelection(event: any) {
 
+  }
+
+  highlightAnnotation(searchResult: SearchResultRow) {
+    if (!searchResult.annotated || !this.searchResultHighlightColor) { return; }
+
+    const backgroundColor = this.searchResultHighlightColor;
+    const textColor = backgroundColor ? (this.getContrastYIQ(backgroundColor) === 'dark' ? '#FFFFFF' : '#000000') : '#000000';
+
+    return {
+      'background-color': backgroundColor,
+      'color': textColor
+    };
+  }
+
+  /** Determines if the text color should be light or dark based on the background color */
+  private getContrastYIQ(hexColor: string): 'light' | 'dark' {
+    const r = parseInt(hexColor.slice(1, 3), 16);
+    const g = parseInt(hexColor.slice(3, 5), 16);
+    const b = parseInt(hexColor.slice(5, 7), 16);
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 128 ? 'light' : 'dark';
   }
 
   /**init searchMode data */
