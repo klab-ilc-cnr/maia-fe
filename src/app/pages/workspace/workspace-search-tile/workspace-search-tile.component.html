@@ -187,7 +187,7 @@
                     </div>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center">
-                    <b>{{searchResult.kwic}}</b>
+                    <b [ngStyle]="highlightAnnotation(searchResult)">{{searchResult.kwic}}</b>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start">
                     <div class="rightContext">
