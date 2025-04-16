@@ -1,13 +1,15 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { text } from '@fortawesome/fontawesome-svg-core';
 import { FilterMetadata, MenuItem, SelectItem, TreeNode } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
 import { Table } from 'primeng/table';
-import { Observable, Subject, debounceTime, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, of, switchMap, takeUntil, map, catchError } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { TLayer } from 'src/app/models/texto/t-layer';
+import { AnnotationService, WordAnnotationRequest } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
@@ -44,6 +46,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     private searchService: SearchService,
     private commonService: CommonService,
     private layerState: LayerStateService,
+    private annotationService: AnnotationService,
     private renderer: Renderer2,
     private loaderService: LoaderService) { }
 
@@ -242,6 +245,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.resources = this.mapSelectedDocumentsIds();
+    this.searchRequest.layerId = this.selectedLayer?.id;
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
@@ -298,6 +302,25 @@ export class WorkspaceSearchTileComponent implements OnInit {
       'background-color': backgroundColor,
       'color': textColor
     };
+  }
+
+  showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<string> => {
+    if (!this.selectedLayer
+      || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return of(''); }
+
+    const request = new WordAnnotationRequest();
+    request.start = this.searchRequest.start;
+    request.end = this.searchRequest.end;
+    request.layers = this.selectedLayer ? [this.selectedLayer.id!] : [];
+
+    return this.annotationService.retrieveWordAnnotations(Number(searchResult?.textId), request).pipe(
+      map(result => {
+        // Assuming the backend returns the desired text in a property called `tooltipText`
+        // return result.tooltipText || 'No data available';
+        return 'test'
+      }),
+      catchError(() => of('Error retrieving tooltip data'))
+    );
   }
 
   /**
