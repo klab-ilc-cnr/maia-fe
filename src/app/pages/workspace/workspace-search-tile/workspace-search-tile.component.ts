@@ -1,7 +1,5 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { text } from '@fortawesome/fontawesome-svg-core';
-import { FilterMetadata, MenuItem, SelectItem, TreeNode } from 'primeng/api';
-import { Dropdown } from 'primeng/dropdown';
+import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap, takeUntil, map, catchError } from 'rxjs';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -16,17 +14,16 @@ import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { SearchService } from 'src/app/services/search.service';
 
-/**selectButton model for search mode*/
+export enum RestrictionEnum {
+  none = 'none',
+  annotedOnly = 'annotedOnly',
+  notAnnotedOnly = 'notAnnotedOnly',
+}
+
 interface SearchMode {
   name: string,
   code: string
   inactive: boolean
-}
-
-enum RestrictionEnum {
-  none = 'none',
-  annotedOnly = 'annotedOnly',
-  notAnnotedOnly = 'notAnnotedOnly',
 }
 
 interface Restriction {
@@ -40,7 +37,7 @@ interface Restriction {
   styleUrls: ['./workspace-search-tile.component.scss'],
   providers: [CorpusStateService, LayerStateService]
 })
-export class WorkspaceSearchTileComponent implements OnInit {
+export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
   constructor(private corpusStateService: CorpusStateService,
     private searchService: SearchService,
@@ -51,7 +48,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     private loaderService: LoaderService) { }
 
   /**initial panel size */
-  currentPanelHeight: number = 500;
+  currentPanelHeight: number = 0;
 
   /**search data parameters */
   searchValue: string = '';
@@ -130,6 +127,11 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.setExportMenuItems();
   }
 
+  ngAfterViewChecked() {
+    this.currentPanelHeight = document.getElementById("searchTile")!.clientHeight;
+
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -178,10 +180,6 @@ export class WorkspaceSearchTileComponent implements OnInit {
         }
       }
     ];
-  }
-
-  isAnyRowSelected(): boolean {
-    return this.selectedSearchResults.length === 0;
   }
 
   /**manages double click on a table row */
@@ -246,6 +244,7 @@ export class WorkspaceSearchTileComponent implements OnInit {
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.resources = this.mapSelectedDocumentsIds();
     this.searchRequest.layerId = this.selectedLayer?.id;
+    this.searchRequest.restriction = this.selectedRestriction?.code;
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
