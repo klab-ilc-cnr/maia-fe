@@ -1,0 +1,18 @@
+<span #tooltipTarget
+      class="tooltip-trigger"
+      (mouseenter)="onMouseEnter($event)"
+      (mouseleave)="onMouseLeave()">
+  <ng-content></ng-content>
+</span>
+
+<div class="custom-primeng-tooltip"
+     *ngIf="tooltipVisible"
+     [style.top.px]="tooltipY"
+     [style.left.px]="tooltipX">
+  <ng-container *ngIf="tooltipText; else loading">
+    {{ tooltipText }}
+  </ng-container>
+  <ng-template #loading>
+    <i class="pi pi-spin pi-spinner" style="font-size: 0.9rem; margin-right: 5px;"></i>
+  </ng-template>
+</div>

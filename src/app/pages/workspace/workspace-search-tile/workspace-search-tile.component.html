@@ -197,7 +197,17 @@
                     </div>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center">
-                    <b [ngStyle]="highlightAnnotation(searchResult)">{{searchResult.kwic}}</b>
+                    <b *ngIf="!searchResult.annotated" [ngStyle]="highlightAnnotation(searchResult)">{{searchResult.kwic}}</b>
+                    <app-async-tooltip
+                        *ngIf="searchResult.annotated"
+                        [tooltipId]="searchResult.id"
+                        [tooltipParams]="searchResult"
+                        [fetchContent]="showKwicTooltip"
+                        [cache]="true"
+                        [delay]="700"
+                        [timeout]="2000">
+                        <b [ngStyle]="highlightAnnotation(searchResult)" class="cursor-pointer">{{ searchResult.kwic }}</b>
+                    </app-async-tooltip>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start">
                     <div class="rightContext">

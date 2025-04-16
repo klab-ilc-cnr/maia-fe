@@ -7,6 +7,29 @@ import { PaginatedResponse } from '../models/texto/paginated-response';
 import { TAnnotation } from '../models/texto/t-annotation';
 import { TAnnotationFeature } from '../models/texto/t-annotation-feature';
 
+export class WordAnnotationRequest {
+  start!: number;
+  end!: number;
+  layers: number[] = [];
+}
+
+export interface FeatureWordResponse {
+  value: string;
+  feature_name: string;
+  feature_id: number;
+}
+
+export interface WordAnnotationResponse {
+  annotation_id: number,
+  resource_id: number,
+  resource_name: string,
+  layer_id: number,
+  layer_name: string,
+  start: number,
+  end: number,
+  features: FeatureWordResponse[]
+}
+
 /**Class of annotation management services */
 @Injectable({
   providedIn: 'root'
@@ -80,8 +103,18 @@ export class AnnotationService {
    * @param textId {number} resource identifier
    * @returns number of rows
    */
-  retrieveTextTotalRows(textId: number) : Observable<number> {
+  public retrieveTextTotalRows(textId: number): Observable<number> {
     return this.http.get<number>(`${this.textoUrl}/resource/${textId}/rowCount`);
+  }
+
+  /**
+   * Retrieves the list of annotations associated with a portion of text.
+   * @param textId {number} resource identifier
+   * @param wordAnnotationRequest {WordAnnotationRequest} coordinates of the set of rows for which we want annotations and optional list of visible layer ids
+   * @returns {Observable<WordAnnotationResponse[]>} observable of the annotation list
+   */
+  public retrieveWordAnnotations(textId: number, wordAnnotationRequest: WordAnnotationRequest): Observable<WordAnnotationResponse[]> {
+    return this.http.post<WordAnnotationResponse[]>(`${this.textoUrl}/util/resource/${textId}/word-annotations`, wordAnnotationRequest);
   }
 
   /**
