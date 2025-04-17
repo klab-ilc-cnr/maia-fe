@@ -100,6 +100,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   /**annotate button items */
   annotateItems!: MenuItem[];
 
+  showMultipleAnnotationDialog: boolean = false;
+
   @ViewChild('searchInput') searchInput: any;
   @ViewChild('dt') searchResultsTable!: Table;
 
@@ -168,7 +170,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   }
 
   showAnnotationTile(event: any) {
-
+    this.showMultipleAnnotationDialog = true;
   }
 
   //**init for annotate menu button */
@@ -244,7 +246,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.end = this.visibleRows;
     this.searchRequest.resources = this.mapSelectedDocumentsIds();
     this.searchRequest.layerId = this.selectedLayer?.id;
-    this.searchRequest.restriction = this.selectedRestriction?.code;
+    this.searchRequest.filters.annotated = this.setAnnotadeFilter(this.selectedRestriction?.code);
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
@@ -449,6 +451,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
   private emptyTableResultsOnly() {
     this.searchResults = [];
+    this.selectedSearchResults = [];
     this.searchResultHighlightColor = this.selectedLayer?.color;
   }
 
@@ -507,4 +510,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     return node;
   }
 
+  private setAnnotadeFilter(restriction?: RestrictionEnum): boolean | undefined {
+    if (!restriction || restriction === RestrictionEnum.none) { return undefined; }
+
+    return restriction === RestrictionEnum.annotedOnly ? true : false;
+  }
 }
+
