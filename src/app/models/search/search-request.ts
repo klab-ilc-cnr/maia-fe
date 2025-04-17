@@ -1,5 +1,3 @@
-import { RestrictionEnum } from "src/app/pages/workspace/workspace-search-tile/workspace-search-tile.component";
-
 /**Model of a search request */
 export class SearchRequest {
   start!: number;
@@ -7,7 +5,6 @@ export class SearchRequest {
   resources: Array<number> = [];
   filters : SearchFilters = new SearchFilters();
   layerId?: number;
-  restriction? : RestrictionEnum;
 }
 
 export class SearchFilters {
@@ -22,4 +19,5 @@ export class SearchFilters {
   rightContext?: string;
   text?: string;
   reference?: string;
+  annotated? : boolean;
 }
