@@ -8,11 +8,23 @@
 <div class="custom-primeng-tooltip"
      *ngIf="tooltipVisible"
      [style.top.px]="tooltipY"
-     [style.left.px]="tooltipX">
-  <ng-container *ngIf="tooltipText; else loading">
-    {{ tooltipText }}
-  </ng-container>
+     [style.left.px]="tooltipX"
+     [style.background]="backgroundColor">
+     <ng-container *ngIf="tooltipData; else loading">
+      <ng-container
+        *ngIf="tooltipTemplate; else defaultText"
+        [ngTemplateOutlet]="tooltipTemplate"
+        [ngTemplateOutletContext]="{ $implicit: tooltipData }">
+      </ng-container>
+    
+      <ng-template #defaultText>
+        {{ tooltipData }}
+      </ng-template>
+    </ng-container>
+    
+
   <ng-template #loading>
     <i class="pi pi-spin pi-spinner" style="font-size: 0.9rem; margin-right: 5px;"></i>
   </ng-template>
 </div>
+

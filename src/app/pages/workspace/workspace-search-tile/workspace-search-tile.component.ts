@@ -7,7 +7,7 @@ import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { TLayer } from 'src/app/models/texto/t-layer';
-import { AnnotationService, WordAnnotationRequest } from 'src/app/services/annotation.service';
+import { AnnotationService, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
@@ -305,22 +305,21 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     };
   }
 
-  showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<string> => {
+  showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<WordAnnotationResponse[]> => {
     if (!this.selectedLayer
-      || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return of(''); }
+      || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return of([]); }
 
     const request = new WordAnnotationRequest();
-    request.start = this.searchRequest.start;
-    request.end = this.searchRequest.end;
+    request.start = searchResult!.kwicOffset;
+    request.end = searchResult!.kwic.length;
     request.layers = this.selectedLayer ? [this.selectedLayer.id!] : [];
 
     return this.annotationService.retrieveWordAnnotations(Number(searchResult?.textId), request).pipe(
+      takeUntil(this.unsubscribe$),
       map(result => {
-        // Assuming the backend returns the desired text in a property called `tooltipText`
-        // return result.tooltipText || 'No data available';
-        return 'test'
+        return result;
       }),
-      catchError(() => of('Error retrieving tooltip data'))
+      catchError(() => of([]))
     );
   }
 
