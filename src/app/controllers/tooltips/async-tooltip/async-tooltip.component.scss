@@ -11,6 +11,8 @@
     pointer-events: none;
     white-space: normal;
     animation: fadeIn 0.15s ease-in-out;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto; // Enable vertical scrolling if content exceeds max height
 }
 
 @keyframes fadeIn {

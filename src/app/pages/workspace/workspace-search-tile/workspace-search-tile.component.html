@@ -205,42 +205,45 @@
                         [fetchContent]="showKwicTooltip"
                         [cache]="true"
                         [delay]="700"
-                        [timeout]="2000"
+                        [timeout]="5000"
                         [backgroundColor]="'#32323242'"
-                        [tooltipTemplate]="annotationTemplate">
-                  
-                    <b [ngStyle]="highlightAnnotation(searchResult)" class="cursor-pointer">
-                      {{ searchResult.kwic }}
-                    </b>
-                  </app-async-tooltip>
-                  <ng-template #annotationTemplate let-annotations>
-                    <div *ngIf="annotations.length; else noData" class="tooltip-container">
-                        <div *ngFor="let ann of annotations" class="tooltip-card">
-                          <!-- Header Section -->
-                          <div class="annotation-section">
-                            <div class="annotation-field">
-                              <span class="annotation-label">{{ ann.resource_name }}</span>
-                              <span class="annotation-separator">/</span>
-                              <span class="annotation-layer">{{ ann.layer_name }}</span>
+                        [tooltipTemplate]="annotationTemplate"
+                        [keepVisibleOnMouseLeave]="true">
+                        <b [ngStyle]="highlightAnnotation(searchResult)" class="cursor-pointer">
+                            {{ searchResult.kwic }}
+                        </b>
+                    </app-async-tooltip>
+                    <ng-template #annotationTemplate let-annotations>
+                        <div *ngIf="annotations.length; else noData" class="tooltip-container">
+                            <div *ngFor="let ann of annotations" class="tooltip-card">
+                                <!-- Header Section -->
+                                <div class="annotation-section">
+                                    <div class="annotation-field">
+                                        <b class="annotation-label">{{ ann.resource_name }}</b>
+                                        <span class="annotation-separator">/</span>
+                                        <span class="pe-2">
+                                            <i class="fa-solid fa-palette" [ngStyle]="{'color': selectedLayer!.color}" style="font-size: 1.5rem;"></i>
+                                        </span>
+                                        <span class="annotation-layer">{{ ann.layer_name }}</span>
+                                    </div>
+                                </div>
+                                <!-- Features Section -->
+                                <div class="tooltip-features">
+                                    <div class="features-header">Feature</div>
+                                    <div class="feature-item" *ngFor="let feat of ann.features">
+                                        <div class="feature-row">
+                                            <span class="feature-name">{{ feat.feature_name }}</span>
+                                            <span class="feature-separator">:</span>
+                                            <span class="feature-value">{{ feat.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                          <!-- Features Section -->
-                          <div class="tooltip-features">
-                            <div class="features-header">Feature</div>
-                            <div class="feature-item" *ngFor="let feat of ann.features">
-                              <div class="feature-row">
-                                <span class="feature-name">{{ feat.feature_name }}</span>
-                                <span class="feature-separator">:</span>
-                                <span class="feature-value">{{ feat.value }}</span>
-                              </div>
-                            </div>
-                          </div>
                         </div>
-                      </div>
-                      <ng-template #noData>
-                        <i>{{ 'GENERAL.noResult' | translate }}</i>
-                      </ng-template>
-                  </ng-template>
+                        <ng-template #noData>
+                            <i>{{ 'GENERAL.noResult' | translate }}</i>
+                        </ng-template>
+                    </ng-template>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start">
                     <div class="rightContext">
