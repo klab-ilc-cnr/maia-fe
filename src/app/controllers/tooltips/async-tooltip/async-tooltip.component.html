@@ -9,7 +9,10 @@
      *ngIf="tooltipVisible"
      [style.top.px]="tooltipY"
      [style.left.px]="tooltipX"
-     [style.background]="backgroundColor">
+     [style.background]="backgroundColor"
+     [style.pointer-events]="'auto'"
+     (mouseenter)="onTooltipMouseEnter()"
+     (mouseleave)="onTooltipMouseLeave()">
      <ng-container *ngIf="tooltipData; else loading">
       <ng-container
         *ngIf="tooltipTemplate; else defaultText"
@@ -21,7 +24,6 @@
         {{ tooltipData }}
       </ng-template>
     </ng-container>
-    
 
   <ng-template #loading>
     <i class="pi pi-spin pi-spinner" style="font-size: 0.9rem; margin-right: 5px;"></i>

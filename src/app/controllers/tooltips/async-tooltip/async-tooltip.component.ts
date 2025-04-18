@@ -1,13 +1,13 @@
-import { Component, Input, TemplateRef, ViewChild, ElementRef, ContentChild } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Observable, Subscription, timer, of } from 'rxjs';
-import { catchError, switchMap, timeout as rxjsTimeout } from 'rxjs/operators';
+import { catchError, switchMap, timeout as rxjsTimeout, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-async-tooltip',
   templateUrl: './async-tooltip.component.html',
   styleUrls: ['./async-tooltip.component.scss'],
 })
-export class AsyncTooltipComponent<T = any> {
+export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
   @Input() tooltipId!: string;
   @Input() tooltipParams?: any;
 
@@ -17,6 +17,7 @@ export class AsyncTooltipComponent<T = any> {
   @Input() delay: number = 0;
   @Input() timeout?: number;
   @Input() backgroundColor: string = '#323232'; // valore di default
+  @Input() keepVisibleOnMouseLeave: boolean = false; // New input property
 
   @ViewChild('tooltipTarget', { static: true }) tooltipTarget!: ElementRef;
 
@@ -27,11 +28,28 @@ export class AsyncTooltipComponent<T = any> {
 
   private cacheMap = new Map<string, T>();
   private hoverSub?: Subscription;
+  private isTooltipHovered = false;
+  private hideTooltipTimeout?: any;
+  private shouldRecalculateHeight = false;
 
   onMouseEnter(event: MouseEvent): void {
+    // Close any existing tooltip immediately
+    this.tooltipVisible = false;
+    this.tooltipData = null;
+    this.hoverSub?.unsubscribe();
+    clearTimeout(this.hideTooltipTimeout);
+
+    // Reset recalculation flag to ensure proper height calculation
+    this.shouldRecalculateHeight = false;
+
     this.tooltipX = event.clientX + 15;
     this.tooltipY = event.clientY + 15;
-    this.tooltipVisible = true;
+
+    // Delay showing the tooltip slightly to ensure proper cleanup
+    setTimeout(() => {
+      this.tooltipVisible = true;
+      this.shouldRecalculateHeight = true; // Mark for recalculation after rendering
+    }, 50); // Small delay to allow cleanup
 
     const cacheKey = this.tooltipId + JSON.stringify(this.tooltipParams || {});
     if (this.cache && this.cacheMap.has(cacheKey)) {
@@ -50,12 +68,62 @@ export class AsyncTooltipComponent<T = any> {
     ).subscribe(data => {
       this.tooltipData = data;
       if (this.cache) this.cacheMap.set(cacheKey, data);
+
+      // Recalculate max-height after data is loaded
+      this.recalculateMaxHeight();
     });
   }
 
+  ngAfterViewChecked(): void {
+    if (this.shouldRecalculateHeight && this.tooltipVisible) {
+      this.recalculateMaxHeight();
+      this.shouldRecalculateHeight = false;
+    }
+  }
+
+  private recalculateMaxHeight(): void {
+    const viewportHeight = window.innerHeight;
+    const tooltipStartY = this.tooltipY;
+    const maxHeight = viewportHeight - tooltipStartY - 10; // Leave a 10px margin from the bottom
+    const tooltipElement = document.querySelector('.custom-primeng-tooltip') as HTMLElement;
+    if (tooltipElement) {
+      tooltipElement.style.maxHeight = `${maxHeight}px`;
+    }
+  }
+
   onMouseLeave(): void {
-    this.tooltipVisible = false;
-    this.tooltipData = null;
-    this.hoverSub?.unsubscribe();
+    if (this.keepVisibleOnMouseLeave) {
+      this.hideTooltipTimeout = setTimeout(() => {
+        if (!this.isTooltipHovered) {
+          this.tooltipVisible = false;
+          this.tooltipData = null;
+          this.hoverSub?.unsubscribe();
+        }
+      }, 200); // Delay hiding the tooltip by 300ms
+    } else {
+      this.tooltipVisible = false;
+      this.tooltipData = null;
+      this.hoverSub?.unsubscribe();
+    }
+  }
+
+  onTooltipMouseEnter(): void {
+    this.isTooltipHovered = true;
+    if (this.hideTooltipTimeout) {
+      clearTimeout(this.hideTooltipTimeout); // Cancel hiding if the mouse enters the tooltip
+    }
+  }
+
+  onTooltipMouseLeave(): void {
+    this.isTooltipHovered = false;
+    if (this.keepVisibleOnMouseLeave) {
+      this.hideTooltipTimeout = setTimeout(() => {
+        if (!this.isTooltipHovered) {
+          this.tooltipVisible = false;
+          this.tooltipData = null;
+          this.hoverSub?.unsubscribe();
+        }
+      }, 300); // Delay hiding the tooltip by 300ms
+    }
   }
 }
