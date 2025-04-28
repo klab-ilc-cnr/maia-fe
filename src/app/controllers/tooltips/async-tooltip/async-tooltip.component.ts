@@ -1,6 +1,6 @@
 import { Component, Input, TemplateRef, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Observable, Subscription, timer, of } from 'rxjs';
-import { catchError, switchMap, timeout as rxjsTimeout, debounceTime } from 'rxjs/operators';
+import { catchError, switchMap, timeout as rxjsTimeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-async-tooltip',
@@ -25,6 +25,7 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
   tooltipData: T | null = null;  // 👈 cambia da tooltipText a tooltipData
   tooltipX = 0;
   tooltipY = 0;
+  errorMessage: string | null = null; // property for error or timeout messages
 
   private cacheMap = new Map<string, T>();
   private hoverSub?: Subscription;
@@ -36,6 +37,7 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
     // Close any existing tooltip immediately
     this.tooltipVisible = false;
     this.tooltipData = null;
+    this.errorMessage = null; // Reset error message
     this.hoverSub?.unsubscribe();
     clearTimeout(this.hideTooltipTimeout);
 
@@ -64,12 +66,17 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
         const req = this.fetchContent(this.tooltipId, this.tooltipParams);
         return this.timeout ? req.pipe(rxjsTimeout(this.timeout)) : req;
       }),
-      catchError(() => of(null as T)),
+      catchError(() => {
+        // Set error message on timeout or error
+        this.errorMessage = 'Content could not be loaded. Please try again.';
+        return of(null as T);
+      }),
     ).subscribe(data => {
-      this.tooltipData = data;
-      if (this.cache) this.cacheMap.set(cacheKey, data);
-
-      // Recalculate max-height after data is loaded
+      if (data !== null) {
+        this.tooltipData = data;
+        if (this.cache) this.cacheMap.set(cacheKey, data);
+      }
+      // Recalculate max-height after data is loaded or on error
       this.recalculateMaxHeight();
     });
   }
