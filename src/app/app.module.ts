@@ -78,6 +78,7 @@ import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-
 import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/lex-entry-decomp.component';
 import { DictionaryPreviewComponent } from './controllers/editors/dictionary-preview/dictionary-preview.component';
 import { AsyncTooltipComponent } from './controllers/tooltips/async-tooltip/async-tooltip.component';
+import { MultipleTextAnnotationEditorComponent } from './controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 
 @NgModule({
   declarations: [
@@ -140,7 +141,8 @@ import { AsyncTooltipComponent } from './controllers/tooltips/async-tooltip/asyn
     AnnotationsSectionComponent,
     OntologyDataExplorerComponent,
     DictionaryPreviewComponent,
-    AsyncTooltipComponent
+    AsyncTooltipComponent,
+    MultipleTextAnnotationEditorComponent
   ],
   imports: [
     BrowserModule,
