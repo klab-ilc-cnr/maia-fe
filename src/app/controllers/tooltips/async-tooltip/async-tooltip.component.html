@@ -13,20 +13,26 @@
      [style.pointer-events]="'auto'"
      (mouseenter)="onTooltipMouseEnter()"
      (mouseleave)="onTooltipMouseLeave()">
-     <ng-container *ngIf="tooltipData; else loading">
-      <ng-container
-        *ngIf="tooltipTemplate; else defaultText"
-        [ngTemplateOutlet]="tooltipTemplate"
-        [ngTemplateOutletContext]="{ $implicit: tooltipData }">
+     <ng-container *ngIf="!errorMessage; else error">
+      <ng-container *ngIf="tooltipData; else loading">
+        <ng-container
+          *ngIf="tooltipTemplate; else defaultText"
+          [ngTemplateOutlet]="tooltipTemplate"
+          [ngTemplateOutletContext]="{ $implicit: tooltipData }">
+        </ng-container>
+      
+        <ng-template #defaultText>
+          {{ tooltipData }}
+        </ng-template>
       </ng-container>
-    
-      <ng-template #defaultText>
-        {{ tooltipData }}
-      </ng-template>
     </ng-container>
 
-  <ng-template #loading>
-    <i class="pi pi-spin pi-spinner" style="font-size: 0.9rem; margin-right: 5px;"></i>
-  </ng-template>
+    <ng-template #error>
+      <span class="error-message">{{ errorMessage }}</span>
+    </ng-template>
+
+    <ng-template #loading>
+      <i class="pi pi-spin pi-spinner" style="font-size: 0.9rem; margin-right: 5px;"></i>
+    </ng-template>
 </div>
 
