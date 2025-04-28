@@ -88,16 +88,6 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
     }
   }
 
-  private recalculateMaxHeight(): void {
-    const viewportHeight = window.innerHeight;
-    const tooltipStartY = this.tooltipY;
-    const maxHeight = viewportHeight - tooltipStartY - 10; // Leave a 10px margin from the bottom
-    const tooltipElement = document.querySelector('.custom-primeng-tooltip') as HTMLElement;
-    if (tooltipElement) {
-      tooltipElement.style.maxHeight = `${maxHeight}px`;
-    }
-  }
-
   onMouseLeave(): void {
     if (this.keepVisibleOnMouseLeave) {
       this.hideTooltipTimeout = setTimeout(() => {
@@ -131,6 +121,16 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
           this.hoverSub?.unsubscribe();
         }
       }, 300); // Delay hiding the tooltip by 300ms
+    }
+  }
+
+  private recalculateMaxHeight(): void {
+    const viewportHeight = window.innerHeight;
+    const tooltipStartY = this.tooltipY;
+    const maxHeight = viewportHeight - tooltipStartY - 10; // Leave a 10px margin from the bottom
+    const tooltipElement = document.querySelector('.custom-primeng-tooltip') as HTMLElement;
+    if (tooltipElement) {
+      tooltipElement.style.maxHeight = `${maxHeight}px`;
     }
   }
 }

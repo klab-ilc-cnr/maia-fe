@@ -2,10 +2,12 @@ import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angu
 import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, debounceTime, of, switchMap, takeUntil, map, catchError } from 'rxjs';
+import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
+import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { AnnotationService, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -169,8 +171,21 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     ];
   }
 
+  textOffsets: TextOffset[] = [];
+
   showAnnotationTile(event: any) {
     this.showMultipleAnnotationDialog = true;
+    const offsetArray: TextOffset[] = [];
+    this.selectedSearchResults.forEach((row: SearchResultRow) => {
+      let offset: TextOffset = {
+        index: row.index,
+        resourceId: row.textId,
+        start: row.kwicOffset,
+        end: row.kwicOffset + row.kwic.length
+      };
+      offsetArray.push(offset);
+    });
+    this.textOffsets = offsetArray;
   }
 
   //**init for annotate menu button */
