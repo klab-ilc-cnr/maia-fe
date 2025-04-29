@@ -271,5 +271,6 @@
         </div>
     </ng-template>
     <app-multiple-text-annotation-editor #annotationEditor [textOffsets]="textOffsets" [layerId]="selectedLayer?.id"
-    (onSave)="showMultipleAnnotationDialog = false" (onCancel)="showMultipleAnnotationDialog = false"></app-multiple-text-annotation-editor>
+    (onSaveStart)="onSaveStart()"
+    (onSaveEnd)="onSaveEnd($event)" (onCancel)="showMultipleAnnotationDialog = false"></app-multiple-text-annotation-editor>
 </p-dialog>

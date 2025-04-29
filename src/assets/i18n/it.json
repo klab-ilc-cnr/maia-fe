@@ -9,7 +9,8 @@
         "save": "Salva",
         "selectValue": "Seleziona valore",
         "update": "Aggiorna",
-        "browserWarning": "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome"
+        "browserWarning": "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome",
+        "operationInProgress": "Operazione in corso..."
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Aggiungi cartella",
@@ -377,6 +378,10 @@
             "none": "Nessuna",
             "annotedOnly": "Solo stringhe annotate",
             "notAnnotedOnly": "Solo stringhe non annotate"
+        },
+        "annotations":{
+            "saveSuccess": "Annotazioni create con successo",
+            "saveFailed": "Non è stato possibile creare annotazioni per i seguenti indici selezionati: "
         }
     }
 }

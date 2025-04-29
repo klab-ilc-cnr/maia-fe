@@ -8,6 +8,7 @@ import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { User } from 'src/app/models/user';
+import { AnnotationService, CreateMultipleAnnotationRequest, CreateMultipleAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -77,7 +78,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSaveStart = new EventEmitter<void>();
-  @Output() onSaveEnd = new EventEmitter<boolean>();
+  @Output() onSaveEnd = new EventEmitter<CreateMultipleAnnotationResponse>();
   @Output() onDelete = new EventEmitter<void>();
 
   constructor(
@@ -85,7 +86,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     private tagsetService: TagsetService,
     private userService: UserService,
     private lexiconService: LexiconService,
-    private annotationservice: LexiconService,
+    private annotationservice: AnnotationService,
     private commonService: CommonService,
   ) {
     this.userService.retrieveCurrentUser().pipe(
@@ -198,21 +199,24 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
   onSubmitAnnotation() {
     this.onSaveStart.emit();
-    let request: { layerId?: number; features?: TAnnotationFeature[]; offsets?: TextOffset[] } = {}; // Define the type for the request object
-    request.layerId = this.layerId;
-    const features = this.createFeatureValueList();
-    request.features = features;
-    request.offsets = this.textOffsets;
+    let request: CreateMultipleAnnotationRequest = {
+      layerId: this.layerId,
+      features: this.createFeatureValueList(),
+      offsets: this.textOffsets
+    };
 
-    //TODO: add the request to the service
     this.annotationservice.createMultipleAnnotation(request).pipe(
       take(1),
     ).subscribe({
       next: (response) => {
-        this.onSaveEnd.emit(true);
+        if (response.errors.length > 0) {
+          this.onSaveEnd.emit({ status: 'ERROR', errors: response.errors });
+        } else {
+          this.onSaveEnd.emit({ status: 'OK', errors: [] });
+        }
       }
       , error: (err) => {
-        this.onSaveEnd.emit(false);
+        this.onSaveEnd.emit({ status: 'ERROR', errors: [] });
       }
     });
   }
@@ -280,6 +284,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         };
       });
       this.createForm();
+      this.onClearBtn();
     });
   }
 }

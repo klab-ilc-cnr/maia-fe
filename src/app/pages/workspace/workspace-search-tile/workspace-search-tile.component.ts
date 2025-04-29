@@ -1,7 +1,7 @@
 import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, debounceTime, of, switchMap, takeUntil, map, catchError } from 'rxjs';
+import { Observable, Subject, Subscription, debounceTime, of, switchMap, takeUntil, map, catchError } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
@@ -15,6 +15,7 @@ import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { SearchService } from 'src/app/services/search.service';
+import Swal from 'sweetalert2';
 
 export enum RestrictionEnum {
   none = 'none',
@@ -49,6 +50,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     private renderer: Renderer2,
     private loaderService: LoaderService) { }
 
+  private searchSubscription?: Subscription;
   /**initial panel size */
   currentPanelHeight: number = 0;
 
@@ -288,6 +290,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchValue = '';
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
+    this.selectedLayer = undefined;
+    this.selectedRestriction = undefined;
     this.resetTable();
     this.updateTableHeight();
   }
@@ -343,6 +347,45 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
  */
   reloadSelectedDocuments(): void {
     this.corpusStateService.refreshFileSystem.next();
+  }
+
+  onSaveStart() {
+    Swal.fire({
+      title: `${this.commonService.translateKey('GENERAL.operationInProgress')}`,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  }
+
+  onSaveEnd(event: any) {
+    Swal.close();
+    this.showMultipleAnnotationDialog = false;
+    if (event.status === 'ERROR') {
+      Swal.fire({
+        icon: 'error',
+        title: `${this.commonService.translateKey('SEARCH.annotations.saveFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`,
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true
+      });
+    }
+    else {
+      Swal.fire({
+        icon: 'success',
+        title: this.commonService.translateKey('SEARCH.annotations.saveSuccess'),
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true
+      });
+    }
+
+    this.search();
   }
 
   /** exports all the rows */
@@ -419,7 +462,13 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
       this.searchRequest.end = this.visibleRows;
     }
 
-    this.searchService.search(this.searchRequest).subscribe({
+    // Cancel the previous search if it is still ongoing
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+
+    // Start a new search and track its subscription
+    this.searchSubscription = this.searchService.search(this.searchRequest).subscribe({
       next: (result) => {
         this.searchResults = result.data;
         this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
@@ -437,6 +486,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
   /**clears table and prevent triggering lazy loading multiple times */
   private clearTable() {
+    this.selectedSearchResults = [];
     this.searchResultsTable.clear();
     this.tableCleared = true;
   }

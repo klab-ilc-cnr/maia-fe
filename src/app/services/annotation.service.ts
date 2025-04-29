@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PaginatedResponse } from '../models/texto/paginated-response';
 import { TAnnotation } from '../models/texto/t-annotation';
 import { TAnnotationFeature } from '../models/texto/t-annotation-feature';
+import { TextOffset } from '../controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 
 export class WordAnnotationRequest {
   start!: number;
@@ -28,6 +29,17 @@ export interface WordAnnotationResponse {
   start: number,
   end: number,
   features: FeatureWordResponse[]
+}
+
+export interface CreateMultipleAnnotationRequest {
+  layerId?: number;
+  features?: TAnnotationFeature[];
+  offsets?: TextOffset[];
+}
+
+export interface CreateMultipleAnnotationResponse {
+  errors: number[];
+  status: 'OK' | 'ERROR';
 }
 
 /**Class of annotation management services */
@@ -126,6 +138,18 @@ export class AnnotationService {
     return this.http.post<TAnnotation>(
       `${this.textoUrl}/annotation/create`,
       annotation,
+    );
+  }
+
+  /**
+   * Create multiple annotations in a single request
+   * @param request {CreateMultipleAnnotationRequest} the request containing layerId, features, and offsets
+   * @returns {Observable<void>} observable indicating the completion of the operation
+   */
+  public createMultipleAnnotation(request: CreateMultipleAnnotationRequest): Observable<CreateMultipleAnnotationResponse> {
+    return this.http.post<CreateMultipleAnnotationResponse>(
+      `${this.textoUrl}/annotation/multiple`,
+      request,
     );
   }
 
