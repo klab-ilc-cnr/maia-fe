@@ -104,10 +104,11 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   exportItems!: MenuItem[];
 
   /**annotate button items */
-  annotateItems!: MenuItem[];
+  annotateItems: MenuItem[] = [];
 
   showMultipleAnnotationDialog: boolean = false;
   textOffsets: TextOffset[] = [];
+  isDeleting: boolean = false;
 
   @ViewChild('searchInput') searchInput: any;
   @ViewChild('dt') searchResultsTable!: Table;
@@ -176,7 +177,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     ];
   }
 
-  showAnnotationTile(event: any) {
+  showAnnotationTile(isDeleting: boolean = false) {
+    this.isDeleting = isDeleting;
     this.showMultipleAnnotationDialog = true;
     const offsetArray: TextOffset[] = [];
     this.selectedSearchResults.forEach((row: SearchResultRow) => {
@@ -196,7 +198,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.annotateItems = [
       {
         label: this.commonService.translateKey('SEARCH.buttons.removeAnnotations'), command: () => {
-          this.showRemoveAnnotationTile();
+          this.showAnnotationTile(true);
         }
       }
     ];
@@ -211,13 +213,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode] });
   }
 
-  /**
-   * Displays the remove annotation tile.
-   */
-  showRemoveAnnotationTile() {
-
-  }
-
   /**handler for page change */
   /**
    * Handles the page change event in the table.
@@ -226,7 +221,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   onPage(event: any) {
     this.changingPage = true;
   }
-
 
   /**
    * Debounces the search on filter input changes.
@@ -271,7 +265,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.setResizeTableWidth((newWidth - this.nativeTableDelta) + 'px')
   }
 
-
   /**
    * Handles changes in the selected search mode.
    */
@@ -283,7 +276,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
     this.searchLabel = this.commonService.translateKey('SEARCH.insertLemma');
   }
-
 
   /**
    * Prepares data and sends the search request.
@@ -313,7 +305,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
       this.renderer.setStyle(tableElement, 'minWidth', '100%');
     }
   }
-
 
   /**
    * Clears the search results and resets the search parameters.
@@ -412,6 +403,64 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * Displays a loading indicator when a save operation starts.
    */
   onSaveStart() {
+    this.showProgressBar();
+  }
+
+  /**
+   * Handles the end of a save operation.
+   * @param event The event triggered by the save operation.
+   */
+  onSaveEnd(event: any) {
+    this.endMultipleAnnotationOperation(event);
+  }
+
+  /**
+   * Displays a loading indicator when a delete operation starts.
+   */
+  onDeleteStart() {
+    this.showProgressBar();
+  }
+
+  /**
+   * Handles the end of a delete operation.
+   * @param event The event triggered by the delete operation.
+   */
+  onDeleteEnd(event: any) {
+    Swal.close();
+    this.showMultipleAnnotationDialog = false;
+    if (event.status === 'ERROR') {
+      const errorMessage = this.commonService.translateKey('SEARCH.annotations.deleteFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('SEARCH.annotations.deleteSuccess')))
+    }
+
+    this.search();
+  }
+
+  /**
+   * Handles the end of a save or delete operation for multiple annotations.
+   * @param event The event triggered by the save or delete operation.
+   */
+  private endMultipleAnnotationOperation(event: any) {
+    Swal.close();
+    this.showMultipleAnnotationDialog = false;
+    if (event.status === 'ERROR') {
+      const errorMessage = this.commonService.translateKey('SEARCH.annotations.saveFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
+    }
+    else {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('SEARCH.annotations.saveSuccess')));
+    }
+
+    this.search();
+  }
+
+  /**
+* Displays a progress bar when a save operation is in progress.
+*/
+  private showProgressBar() {
     Swal.fire({
       title: `${this.commonService.translateKey('GENERAL.operationInProgress')}`,
       allowOutsideClick: false,
@@ -420,25 +469,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
       }
     });
   }
-
-  /**
-   * Handles the end of a save operation.
-   * @param event The event triggered by the save operation.
-   */
-  onSaveEnd(event: any) {
-    Swal.close();
-    this.showMultipleAnnotationDialog = false;
-    if (event.status === 'ERROR') {
-      const errorMessage = this.commonService.translateKey('SEARCH.annotations.saveFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
-    }
-    else {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('SEARCH.annotations.saveSuccess')))
-    }
-
-    this.search();
-  }
-
 
   /**
    * Exports all rows in the search results.
@@ -461,7 +491,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     });
   }
 
-
   /**
    * Exports only the selected rows in the search results.
    */
@@ -483,7 +512,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     });
   }
 
-
   /**
    * Executes the lazy load for search results with debounce.
    * @param event The event triggered by the lazy load.
@@ -498,7 +526,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.search();
   }
 
-
   /**
    * Sets the column filters for the search request.
    */
@@ -510,7 +537,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
     this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
-
 
   /**
    * Validates inputs and starts the search process.
@@ -551,7 +577,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     });
   }
 
-
   /**
    * Clears the table and prevents triggering lazy loading multiple times.
    */
@@ -560,7 +585,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchResultsTable.clear();
     this.tableCleared = true;
   }
-
 
   /**
    * Resets the table and prevents triggering lazy loading.
@@ -581,7 +605,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     }
   }
 
-
   /**
    * Updates the height of the table container.
    */
@@ -594,7 +617,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.selectedSearchResults = [];
     this.searchResultHighlightColor = this.selectedLayer?.color;
   }
-
 
   /**
    * Determines if the text color should be light or dark based on the background color.
@@ -609,7 +631,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     return yiq >= 128 ? 'light' : 'dark';
   }
 
-
   /**
    * Initializes the search mode data.
    */
@@ -623,7 +644,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.onSearchModeChange();
   }
 
-
   /**
    * Extracts only the IDs of the files from the document tree.
    * @returns An array of file IDs.
@@ -631,7 +651,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   private mapSelectedDocumentsIds(): Array<number> {
     return this.selectedDocuments.filter(selectedNode => selectedNode.leaf).map(leaf => leaf.data?.id!);
   }
-
 
   /**
    * Maps the given elements to tree nodes.

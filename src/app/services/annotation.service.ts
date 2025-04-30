@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PaginatedResponse } from '../models/texto/paginated-response';
 import { TAnnotation } from '../models/texto/t-annotation';
 import { TAnnotationFeature } from '../models/texto/t-annotation-feature';
-import { TextOffset } from '../controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
+import { MultipleAnnotationFeature, TextOffset } from '../controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 
 export class WordAnnotationRequest {
   start!: number;
@@ -31,13 +31,13 @@ export interface WordAnnotationResponse {
   features: FeatureWordResponse[]
 }
 
-export interface CreateMultipleAnnotationRequest {
+export interface MultipleAnnotationRequest {
   layerId?: number;
-  features?: TAnnotationFeature[];
+  features?: MultipleAnnotationFeature[];
   offsets?: TextOffset[];
 }
 
-export interface CreateMultipleAnnotationResponse {
+export interface MultipleAnnotationResponse {
   errors: number[];
   status: 'OK' | 'ERROR';
 }
@@ -143,14 +143,26 @@ export class AnnotationService {
 
   /**
    * Create multiple annotations in a single request
-   * @param request {CreateMultipleAnnotationRequest} the request containing layerId, features, and offsets
+   * @param request {MultipleAnnotationRequest} the request containing layerId, features, and offsets
    * @returns {Observable<void>} observable indicating the completion of the operation
    */
-  public createMultipleAnnotation(request: CreateMultipleAnnotationRequest): Observable<CreateMultipleAnnotationResponse> {
-    return this.http.post<CreateMultipleAnnotationResponse>(
+  public createMultipleAnnotation(request: MultipleAnnotationRequest): Observable<MultipleAnnotationResponse> {
+    return this.http.post<MultipleAnnotationResponse>(
       `${this.textoUrl}/annotation/multiple`,
       request,
     );
+  }
+
+  /**
+   * Deletes multiple annotations based on the provided request.
+   *
+   * @param request - The request object containing the details of the annotations to be deleted.
+   * @returns An observable that emits the response containing the result of the deletion operation.
+   */
+  public deleteMultipleAnnotation(request: MultipleAnnotationRequest): Observable<MultipleAnnotationResponse> {
+    return this.http.request<MultipleAnnotationResponse>('delete', `${this.textoUrl}/annotation/multiple`, {
+      body: request,
+    });
   }
 
   /**

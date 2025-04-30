@@ -10,7 +10,10 @@
         "selectValue": "Select value",
         "update": "Update",
         "browserWarning": "Your browser is not fully supported, please use chrome",
-        "operationInProgress": "Operation in progress..."
+        "operationInProgress": "Operation in progress...",
+        "delete": "Delete",
+        "clean": "Clean",
+        "execute": "Execute"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Add folder",
@@ -378,7 +381,9 @@
         },
         "annotations":{
             "saveSuccess": "Annotations saved",
-            "saveFailed": "Failed to save following search index: "
+            "saveFailed": "Failed to save following search index: ",
+            "deleteSuccess": "Annotations deleted",
+            "deleteFailed": "Failed to delete following search index: "
         }
     }
 }

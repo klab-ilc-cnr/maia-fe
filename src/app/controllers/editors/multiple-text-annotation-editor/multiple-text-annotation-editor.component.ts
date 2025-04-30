@@ -3,12 +3,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, forkJoin, map, take, takeUntil } from 'rxjs';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
-import { TAnnotationFeature } from 'src/app/models/texto/t-annotation-feature';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { User } from 'src/app/models/user';
-import { AnnotationService, CreateMultipleAnnotationRequest, CreateMultipleAnnotationResponse } from 'src/app/services/annotation.service';
+import { AnnotationService, MultipleAnnotationRequest, MultipleAnnotationResponse as MultipleAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -30,6 +29,11 @@ export interface TextOffset {
   end: number;
 }
 
+export interface MultipleAnnotationFeature {
+  featureId: number;
+  value: string | TTagsetItem;
+}
+
 @Component({
   selector: 'app-multiple-text-annotation-editor',
   templateUrl: './multiple-text-annotation-editor.component.html',
@@ -39,6 +43,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   private readonly unsubscribe$ = new Subject();
   private _layerId?: number;
   private _textOffsets: TextOffset[] = [];
+  private _deleteMode: boolean = false;
 
   workingLayer!: TLayer;
   /**Tipi di feature */
@@ -76,10 +81,19 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     return this._textOffsets;
   }
 
+  @Input()
+  set deleteMode(value: boolean) {
+    this._deleteMode = value;
+  }
+  get deleteMode(): boolean {
+    return this._deleteMode;
+  }
+
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSaveStart = new EventEmitter<void>();
-  @Output() onSaveEnd = new EventEmitter<CreateMultipleAnnotationResponse>();
-  @Output() onDelete = new EventEmitter<void>();
+  @Output() onSaveEnd = new EventEmitter<MultipleAnnotationResponse>();
+  @Output() onDeleteStart = new EventEmitter<void>();
+  @Output() onDeleteEnd = new EventEmitter<MultipleAnnotationResponse>();
 
   constructor(
     private layerService: LayerService,
@@ -213,15 +227,39 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
   /**
    * @public
-   * Metodo che gestisce l'invio dell'annotazione, creando una richiesta e notificando l'inizio e la fine del processo
+   * Metodo che emette l'evento di salvataggio o eliminazione dell'annotazione
    */
   onSubmitAnnotation() {
-    this.onSaveStart.emit();
-    let request: CreateMultipleAnnotationRequest = {
+    if (this.deleteMode) {
+      this.onDeleteStart.emit();
+    }
+    else {
+      this.onSaveStart.emit();
+    }
+
+    let request: MultipleAnnotationRequest = {
       layerId: this.layerId,
       features: this.createFeatureValueList(),
       offsets: this.textOffsets
     };
+
+    if (this.deleteMode) {
+      this.annotationservice.deleteMultipleAnnotation(request).pipe(
+        take(1),
+      ).subscribe({
+        next: (response) => {
+          if (response.errors.length > 0) {
+            this.onDeleteEnd.emit({ status: 'ERROR', errors: response.errors });
+          } else {
+            this.onDeleteEnd.emit({ status: 'OK', errors: [] });
+          }
+        },
+        error: (err) => {
+          this.onDeleteEnd.emit({ status: 'ERROR', errors: [] });
+        }
+      });
+      return;
+    }
 
     this.annotationservice.createMultipleAnnotation(request).pipe(
       take(1),
@@ -232,8 +270,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         } else {
           this.onSaveEnd.emit({ status: 'OK', errors: [] });
         }
-      }
-      , error: (err) => {
+      },
+      error: (err) => {
         this.onSaveEnd.emit({ status: 'ERROR', errors: [] });
       }
     });
@@ -242,17 +280,17 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   /**
    * @private
    * Metodo che crea una lista di valori delle feature per l'annotazione
-   * @returns {TAnnotationFeature[]} lista di feature con i relativi valori
+   * @returns {MultipleAnnotationFeature[]} lista di feature con i relativi valori
    */
-  private createFeatureValueList(): TAnnotationFeature[] {
-    const result: TAnnotationFeature[] = [];
+  private createFeatureValueList(): MultipleAnnotationFeature[] {
+    const result: MultipleAnnotationFeature[] = [];
     this.features.forEach(feature => {
       if (!feature.feature?.name) {
         throw Error('Feature missing name');
       }
       const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
-      result.push(<TAnnotationFeature>{
-        feature: feature.feature.id,
+      result.push(<MultipleAnnotationFeature>{
+        featureId: feature.feature.id,
         value: featValue !== null ? (typeof (featValue) === 'string' ? featValue : featValue.name) : '' //FIX empty string to manage reset of a feature
       });
     });

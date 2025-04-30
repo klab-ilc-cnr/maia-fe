@@ -72,7 +72,7 @@
         <div class="col d-flex justify-content-end">
           <p-splitButton #annotate appendTo="body" 
               label="{{'SEARCH.buttons.annotate'|translate}}"
-              (onClick)="showAnnotationTile($event)"
+              (onClick)="showAnnotationTile()"
               (onDropdownClick)="setAnnotateMenuItems()"
               [model]="annotateItems"
               [disabled]="selectedSearchResults.length === 0 || !selectedLayer"
@@ -270,7 +270,10 @@
             <span>{{ selectedLayer?.name }}</span>
         </div>
     </ng-template>
-    <app-multiple-text-annotation-editor #annotationEditor [textOffsets]="textOffsets" [layerId]="selectedLayer?.id"
+    <app-multiple-text-annotation-editor #annotationEditor [deleteMode]="isDeleting" [textOffsets]="textOffsets" [layerId]="selectedLayer?.id"
     (onSaveStart)="onSaveStart()"
-    (onSaveEnd)="onSaveEnd($event)" (onCancel)="showMultipleAnnotationDialog = false"></app-multiple-text-annotation-editor>
+    (onSaveEnd)="onSaveEnd($event)" 
+    (onDeleteStart)="onDeleteStart()"
+    (onDeleteEnd)="onDeleteEnd($event)"
+    (onCancel)="showMultipleAnnotationDialog = false"></app-multiple-text-annotation-editor>
 </p-dialog>
