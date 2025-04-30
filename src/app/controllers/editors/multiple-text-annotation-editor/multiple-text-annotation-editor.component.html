@@ -62,15 +62,20 @@
               </div>
             </form>
           </ng-template>
-            <div class="d-flex justify-content-evenly">
-              <button pButton pRipple type="submit" icon="pi pi-save" pTooltip="Save" class="mb-2 p-button-sm rounded-circle"></button>
-              <button pButton pRipple type="button" icon="pi pi-times" pTooltip="Cancel"
+            <div *ngIf="!deleteMode" class="d-flex justify-content-evenly">
+              <button pButton pRipple type="submit" icon="pi pi-save" pTooltip="'GENERAL.save'|translate" class="mb-2 p-button-sm rounded-circle"></button>
+              <button pButton pRipple type="button" icon="pi pi-times" [pTooltip]="'GENERAL.cancel'|translate"
                 class=" mb-2 p-button-sm p-button-secondary rounded-circle" (click)="onCancelBtn()"></button>
-              <button pButton pRipple type="button" icon="fa-solid fa-eraser" pTooltip="Clean"
+              <button pButton pRipple type="button" icon="fa-solid fa-eraser" [pTooltip]="'GENERAL.clean'|translate"
                 class=" mb-2 p-button-sm p-button-help rounded-circle" (click)="onClearBtn()"></button>
+            </div>
+            <div *ngIf="deleteMode" class="d-flex justify-content-evenly">
+              <button pButton pRipple type="submit" [pTooltip]="'GENERAL.delete'|translate" class="mb-2 p-button-sm p-button-danger d-flex align-items-center justify-content-center">
+                <i class="pi pi-trash mr-2"></i>
+                <span>{{'GENERAL.execute'|translate}}</span>
+              </button>
             </div>
         </form>
       </div>
     </ng-template>
   </div>
-  

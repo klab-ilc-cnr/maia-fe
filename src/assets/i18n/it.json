@@ -10,7 +10,10 @@
         "selectValue": "Seleziona valore",
         "update": "Aggiorna",
         "browserWarning": "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome",
-        "operationInProgress": "Operazione in corso..."
+        "operationInProgress": "Operazione in corso...",
+        "delete": "Elimina",
+        "clean": "Reset",
+        "execute": "Esegui"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Aggiungi cartella",
@@ -381,7 +384,9 @@
         },
         "annotations":{
             "saveSuccess": "Annotazioni create con successo",
-            "saveFailed": "Non è stato possibile creare annotazioni per i seguenti indici selezionati: "
+            "saveFailed": "Non è stato possibile creare annotazioni per i seguenti indici selezionati: ",
+            "deleteSuccess": "Annotazioni eliminate con successo",
+            "deleteFailed": "Non è stato possibile eliminare le annotazioni per i seguenti indici selezionati: "
         }
     }
 }
