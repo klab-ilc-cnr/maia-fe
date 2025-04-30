@@ -364,13 +364,14 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   onSaveEnd(event: any) {
     Swal.close();
     this.showMultipleAnnotationDialog = false;
-    // if (event.status === 'ERROR') {
-    //   const errorMessage = this.commonService.translateKey('SEARCH.annotations.saveFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
-    //   this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
-    // }
-    // else {
+    if (event.status === 'ERROR') {
+
+      const errorMessage = this.commonService.translateKey('SEARCH.annotations.saveFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
+      this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
+    }
+    else {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('SEARCH.annotations.saveSuccess')))
-    // }
+    }
 
     this.search();
   }
