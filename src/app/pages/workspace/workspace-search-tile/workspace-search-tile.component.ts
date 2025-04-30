@@ -107,6 +107,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   annotateItems!: MenuItem[];
 
   showMultipleAnnotationDialog: boolean = false;
+  textOffsets: TextOffset[] = [];
 
   @ViewChild('searchInput') searchInput: any;
   @ViewChild('dt') searchResultsTable!: Table;
@@ -175,8 +176,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     ];
   }
 
-  textOffsets: TextOffset[] = [];
-
   showAnnotationTile(event: any) {
     this.showMultipleAnnotationDialog = true;
     const offsetArray: TextOffset[] = [];
@@ -203,21 +202,36 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     ];
   }
 
-  /**manages double click on a table row */
+  /**
+   * Handles the double-click event on a table row.
+   * @param event The event triggered by the double-click.
+   * @param rowNode The data of the row that was double-clicked.
+   */
   tableRowDoubleClickHandler(event: any, rowNode: any) {
     this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode] });
   }
 
+  /**
+   * Displays the remove annotation tile.
+   */
   showRemoveAnnotationTile() {
 
   }
 
   /**handler for page change */
+  /**
+   * Handles the page change event in the table.
+   * @param event The event triggered by the page change.
+   */
   onPage(event: any) {
     this.changingPage = true;
   }
 
-  /**debouce the search on filters input */
+
+  /**
+   * Debounces the search on filter input changes.
+   * @param event The event triggered by the filter input change.
+   */
   lazyLoadSearchResults(event: any) {
     if (this.changingPage) {
       this.changingPage = false;
@@ -230,6 +244,12 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.filtersSubject.next(event);
   }
 
+  /**
+   * Filters the input column based on the provided field name and match mode.
+   * @param target The target input element.
+   * @param fieldName The name of the field to filter.
+   * @param matchMode The match mode for filtering.
+   */
   filterInputColumn(target: EventTarget | null, fieldName: string, matchMode: string) {
     if (target == null) { return; }
 
@@ -240,16 +260,21 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   }
 
   /**
- * Updates the height of the content of the panel
- * @param newHeight {any} newHeight
- */
+
+   * Updates the height and width of the panel content.
+   * @param newHeight The new height of the panel.
+   * @param newWidth The new width of the panel.
+   */
   updateHeight(newHeight: number, newWidth: number) {
     this.currentPanelHeight = newHeight;
     this.tableContainerHeight = newHeight - this.tableHeaderHegith;
     this.setResizeTableWidth((newWidth - this.nativeTableDelta) + 'px')
   }
 
-  /**search mode handler */
+
+  /**
+   * Handles changes in the selected search mode.
+   */
   onSearchModeChange() {
     if (this.selectedSearchMode.code === 'form') {
       this.searchLabel = this.commonService.translateKey('SEARCH.insertForm');
@@ -259,7 +284,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchLabel = this.commonService.translateKey('SEARCH.insertLemma');
   }
 
-  /**prepare data and send search request */
+
+  /**
+   * Prepares data and sends the search request.
+   */
   onSearch() {
     this.searchRequest.start = 0;
     this.searchRequest.end = this.visibleRows;
@@ -275,6 +303,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.search();
   }
 
+  /**
+   * Handles the column resize event in the table.
+   * @param event The event triggered by column resizing.
+   */
   onColResize(event: any) {
     const tableElement = this.searchResultsTable?.tableViewChild?.nativeElement;
     if (tableElement) {
@@ -282,7 +314,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  /**clear function results and data */
+
+  /**
+   * Clears the search results and resets the search parameters.
+   */
   onClear() {
     this.searchRequest = new SearchRequest();
     this.searchResults = [];
@@ -298,6 +333,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.updateTableHeight();
   }
 
+  /**
+   * Handles changes in the selected layer.
+   * @param event The event triggered by the layer selection change.
+   */
   onChangeLayerSelection(event: any) {
     this.emptyTableResultsOnly();
 
@@ -309,10 +348,19 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  /**
+   * Handles changes in the selected restriction.
+   * @param event The event triggered by the restriction selection change.
+   */
   onChangeRestrictionSelection(event: any) {
     this.emptyTableResultsOnly();
   }
 
+  /**
+   * Highlights the annotation for a search result row.
+   * @param searchResult The search result row to highlight.
+   * @returns The style object for the highlighted row.
+   */
   highlightAnnotation(searchResult: SearchResultRow) {
     if (!searchResult.annotated
       || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return; }
@@ -326,6 +374,12 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     };
   }
 
+  /**
+   * Displays the KWIC tooltip for a search result.
+   * @param tooltipId The ID of the tooltip element.
+   * @param searchResult The search result row for which the tooltip is displayed.
+   * @returns An observable of word annotation responses.
+   */
   showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<WordAnnotationResponse[]> => {
     if (!this.selectedLayer
       || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return of([]); }
@@ -347,10 +401,16 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   /**
  *refresh documents data  
  */
+  /**
+   * Refreshes the documents data.
+   */
   reloadSelectedDocuments(): void {
     this.corpusStateService.refreshFileSystem.next();
   }
 
+  /**
+   * Displays a loading indicator when a save operation starts.
+   */
   onSaveStart() {
     Swal.fire({
       title: `${this.commonService.translateKey('GENERAL.operationInProgress')}`,
@@ -361,11 +421,14 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  /**
+   * Handles the end of a save operation.
+   * @param event The event triggered by the save operation.
+   */
   onSaveEnd(event: any) {
     Swal.close();
     this.showMultipleAnnotationDialog = false;
     if (event.status === 'ERROR') {
-
       const errorMessage = this.commonService.translateKey('SEARCH.annotations.saveFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
       this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
     }
@@ -376,7 +439,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.search();
   }
 
-  /** exports all the rows */
+
+  /**
+   * Exports all rows in the search results.
+   */
   private exportAll() {
     this.loaderService.show();
 
@@ -395,7 +461,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  /**exports only the selected rows */
+
+  /**
+   * Exports only the selected rows in the search results.
+   */
   private exportSelected() {
     if (!this.selectedSearchResults) { return; }
 
@@ -414,7 +483,11 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  //**executs the lazy load */
+
+  /**
+   * Executes the lazy load for search results with debounce.
+   * @param event The event triggered by the lazy load.
+   */
   private lazyLoadSearchResultsDebounced(event: any) {
     if (this.tableCleared) {
       this.tableCleared = false;
@@ -425,7 +498,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.search();
   }
 
-  /**set the request filters based on the table ones */
+
+  /**
+   * Sets the column filters for the search request.
+   */
   private setColumnFilters() {
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
     this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
@@ -435,7 +511,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
 
-  /**validate inputs and start the search */
+
+  /**
+   * Validates inputs and starts the search process.
+   */
   private search() {
     this.searchInput.control.markAsTouched();
 
@@ -472,14 +551,20 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  /**clears table and prevent triggering lazy loading multiple times */
+
+  /**
+   * Clears the table and prevents triggering lazy loading multiple times.
+   */
   private clearTable() {
     this.selectedSearchResults = [];
     this.searchResultsTable.clear();
     this.tableCleared = true;
   }
 
-  /**reset table and prevent triggering lazy loading */
+
+  /**
+   * Resets the table and prevents triggering lazy loading.
+   */
   private resetTable() {
     this.searchResultsTable.reset();
     this.tableCleared = true;
@@ -496,7 +581,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  /**update the table heigth */
+
+  /**
+   * Updates the height of the table container.
+   */
   private updateTableHeight() {
     this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith;
   }
@@ -507,7 +595,12 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchResultHighlightColor = this.selectedLayer?.color;
   }
 
-  /** Determines if the text color should be light or dark based on the background color */
+
+  /**
+   * Determines if the text color should be light or dark based on the background color.
+   * @param hexColor The hex color code of the background.
+   * @returns 'light' if the text color should be light, 'dark' otherwise.
+   */
   private getContrastYIQ(hexColor: string): 'light' | 'dark' {
     const r = parseInt(hexColor.slice(1, 3), 16);
     const g = parseInt(hexColor.slice(3, 5), 16);
@@ -516,7 +609,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     return yiq >= 128 ? 'light' : 'dark';
   }
 
-  /**init searchMode data */
+
+  /**
+   * Initializes the search mode data.
+   */
   private initSearchMode() {
     this.searchModes = [
       { name: this.commonService.translateKey('SEARCH.form'), code: 'form', inactive: false },
@@ -527,13 +623,20 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.onSearchModeChange();
   }
 
-  /**extract only ids of the files from the document tree */
+
+  /**
+   * Extracts only the IDs of the files from the document tree.
+   * @returns An array of file IDs.
+   */
   private mapSelectedDocumentsIds(): Array<number> {
     return this.selectedDocuments.filter(selectedNode => selectedNode.leaf).map(leaf => leaf.data?.id!);
   }
 
+
   /**
-   * mapper to the treenode element
+   * Maps the given elements to tree nodes.
+   * @param elements The elements to map.
+   * @returns An array of tree nodes.
    */
   private mapToTreeNodes(elements: CorpusElement[]): TreeNode<CorpusElement>[] {
     const result: TreeNode<CorpusElement>[] = [];
