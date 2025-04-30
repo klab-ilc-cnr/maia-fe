@@ -1,5 +1,5 @@
 import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
+import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, Subscription, debounceTime, of, switchMap, takeUntil, map, catchError } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
@@ -7,13 +7,13 @@ import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
-import { TAnnotation } from 'src/app/models/texto/t-annotation';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { AnnotationService, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { SearchService } from 'src/app/services/search.service';
 import Swal from 'sweetalert2';
 
@@ -48,6 +48,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     private layerState: LayerStateService,
     private annotationService: AnnotationService,
     private renderer: Renderer2,
+    private messageService: MessageService,
+    private msgConfService: MessageConfigurationService,
     private loaderService: LoaderService) { }
 
   private searchSubscription?: Subscription;
@@ -362,28 +364,13 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   onSaveEnd(event: any) {
     Swal.close();
     this.showMultipleAnnotationDialog = false;
-    if (event.status === 'ERROR') {
-      Swal.fire({
-        icon: 'error',
-        title: `${this.commonService.translateKey('SEARCH.annotations.saveFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`,
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true
-      });
-    }
-    else {
-      Swal.fire({
-        icon: 'success',
-        title: this.commonService.translateKey('SEARCH.annotations.saveSuccess'),
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true
-      });
-    }
+    // if (event.status === 'ERROR') {
+    //   const errorMessage = this.commonService.translateKey('SEARCH.annotations.saveFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
+    //   this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
+    // }
+    // else {
+      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('SEARCH.annotations.saveSuccess')))
+    // }
 
     this.search();
   }
