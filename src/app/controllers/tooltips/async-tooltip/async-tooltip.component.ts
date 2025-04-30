@@ -11,21 +11,21 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
   @Input() tooltipId!: string;
   @Input() tooltipParams?: any;
 
-  @Input() fetchContent!: (id: string, params?: any) => Observable<T>; // 👈 T invece di string
+  @Input() fetchContent!: (id: string, params?: any) => Observable<T>;
   @Input() tooltipTemplate?: TemplateRef<any>;
   @Input() cache: boolean = false;
   @Input() delay: number = 0;
   @Input() timeout?: number;
-  @Input() backgroundColor: string = '#323232'; // valore di default
-  @Input() keepVisibleOnMouseLeave: boolean = false; // New input property
+  @Input() backgroundColor: string = '#323232';
+  @Input() keepVisibleOnMouseLeave: boolean = false;
 
   @ViewChild('tooltipTarget', { static: true }) tooltipTarget!: ElementRef;
 
   tooltipVisible = false;
-  tooltipData: T | null = null;  // 👈 cambia da tooltipText a tooltipData
+  tooltipData: T | null = null;
   tooltipX = 0;
   tooltipY = 0;
-  errorMessage: string | null = null; // property for error or timeout messages
+  errorMessage: string | null = null;
 
   private cacheMap = new Map<string, T>();
   private hoverSub?: Subscription;
@@ -33,11 +33,17 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
   private hideTooltipTimeout?: any;
   private shouldRecalculateHeight = false;
 
+  /**
+   * @public
+   * Metodo che gestisce l'evento di mouse enter sul target del tooltip.
+   * Mostra il tooltip e avvia il caricamento asincrono del contenuto.
+   * @param event {MouseEvent} evento del mouse
+   */
   onMouseEnter(event: MouseEvent): void {
     // Close any existing tooltip immediately
     this.tooltipVisible = false;
     this.tooltipData = null;
-    this.errorMessage = null; // Reset error message
+    this.errorMessage = null;
     this.hoverSub?.unsubscribe();
     clearTimeout(this.hideTooltipTimeout);
 
@@ -50,8 +56,8 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
     // Delay showing the tooltip slightly to ensure proper cleanup
     setTimeout(() => {
       this.tooltipVisible = true;
-      this.shouldRecalculateHeight = true; // Mark for recalculation after rendering
-    }, 50); // Small delay to allow cleanup
+      this.shouldRecalculateHeight = true;
+    }, 50);
 
     const cacheKey = this.tooltipId + JSON.stringify(this.tooltipParams || {});
     if (this.cache && this.cacheMap.has(cacheKey)) {
@@ -67,7 +73,6 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
         return this.timeout ? req.pipe(rxjsTimeout(this.timeout)) : req;
       }),
       catchError(() => {
-        // Set error message on timeout or error
         this.errorMessage = 'Content could not be loaded. Please try again.';
         return of(null as T);
       }),
@@ -76,11 +81,15 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
         this.tooltipData = data;
         if (this.cache) this.cacheMap.set(cacheKey, data);
       }
-      // Recalculate max-height after data is loaded or on error
       this.recalculateMaxHeight();
     });
   }
 
+  /**
+   * @public
+   * Metodo del ciclo di vita Angular chiamato dopo ogni controllo della vista.
+   * Utilizzato per ricalcolare l'altezza massima del tooltip se necessario.
+   */
   ngAfterViewChecked(): void {
     if (this.shouldRecalculateHeight && this.tooltipVisible) {
       this.recalculateMaxHeight();
@@ -88,6 +97,11 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
     }
   }
 
+  /**
+   * @public
+   * Metodo che gestisce l'evento di mouse leave sul target del tooltip.
+   * Nasconde il tooltip immediatamente o con un ritardo, a seconda della configurazione.
+   */
   onMouseLeave(): void {
     if (this.keepVisibleOnMouseLeave) {
       this.hideTooltipTimeout = setTimeout(() => {
@@ -96,7 +110,7 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
           this.tooltipData = null;
           this.hoverSub?.unsubscribe();
         }
-      }, 200); // Delay hiding the tooltip by 300ms
+      }, 200);
     } else {
       this.tooltipVisible = false;
       this.tooltipData = null;
@@ -104,13 +118,23 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
     }
   }
 
+  /**
+   * @public
+   * Metodo che gestisce l'evento di mouse enter sul tooltip stesso.
+   * Impedisce che il tooltip venga nascosto mentre il mouse è sopra di esso.
+   */
   onTooltipMouseEnter(): void {
     this.isTooltipHovered = true;
     if (this.hideTooltipTimeout) {
-      clearTimeout(this.hideTooltipTimeout); // Cancel hiding if the mouse enters the tooltip
+      clearTimeout(this.hideTooltipTimeout);
     }
   }
 
+  /**
+   * @public
+   * Metodo che gestisce l'evento di mouse leave sul tooltip stesso.
+   * Nasconde il tooltip con un ritardo se il mouse lascia il tooltip.
+   */
   onTooltipMouseLeave(): void {
     this.isTooltipHovered = false;
     if (this.keepVisibleOnMouseLeave) {
@@ -120,14 +144,19 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
           this.tooltipData = null;
           this.hoverSub?.unsubscribe();
         }
-      }, 300); // Delay hiding the tooltip by 300ms
+      }, 300);
     }
   }
 
+  /**
+   * @private
+   * Metodo che ricalcola l'altezza massima del tooltip in base alla posizione e all'altezza della finestra.
+   * Imposta lo stile CSS `maxHeight` per evitare che il tooltip esca dallo schermo.
+   */
   private recalculateMaxHeight(): void {
     const viewportHeight = window.innerHeight;
     const tooltipStartY = this.tooltipY;
-    const maxHeight = viewportHeight - tooltipStartY - 10; // Leave a 10px margin from the bottom
+    const maxHeight = viewportHeight - tooltipStartY - 10;
     const tooltipElement = document.querySelector('.custom-primeng-tooltip') as HTMLElement;
     if (tooltipElement) {
       tooltipElement.style.maxHeight = `${maxHeight}px`;

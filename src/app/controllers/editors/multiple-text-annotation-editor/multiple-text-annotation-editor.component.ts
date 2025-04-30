@@ -184,19 +184,37 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  /**
+   * @public
+   * Metodo che emette l'evento di cancellazione dell'annotazione
+   */
   onCancelBtn() {
     this.onCancel.emit();
   }
 
+  /**
+   * @public
+   * Metodo che resetta i campi relativi alle feature e notifica il servizio comune
+   */
   onClearBtn() {
     this.featureForm.reset(); //Svuoto solamente la parte relativa alle feature, perché layer e testo selezionato sono indipendenti
     this.commonService.notifyOther({ option: 'clear_feature_fields' });
   }
 
+  /**
+   * @public
+   * Metodo che imposta un valore indiretto per un campo specifico del form
+   * @param value {any} valore da impostare
+   * @param featureFieldName {string} nome del campo della feature
+   */
   setIndirectValue(value: any, featureFieldName: string) {
     this.featureForm.get(featureFieldName)?.setValue(value);
   }
 
+  /**
+   * @public
+   * Metodo che gestisce l'invio dell'annotazione, creando una richiesta e notificando l'inizio e la fine del processo
+   */
   onSubmitAnnotation() {
     this.onSaveStart.emit();
     let request: CreateMultipleAnnotationRequest = {
@@ -221,6 +239,11 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo che crea una lista di valori delle feature per l'annotazione
+   * @returns {TAnnotationFeature[]} lista di feature con i relativi valori
+   */
   private createFeatureValueList(): TAnnotationFeature[] {
     const result: TAnnotationFeature[] = [];
     this.features.forEach(feature => {
@@ -236,6 +259,10 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     return result;
   }
 
+  /**
+   * @private
+   * Metodo che inizializza il form con i valori del layer e delle feature
+   */
   private createForm() {
     this.annotationForm.controls.layer.setValue(this.workingLayer.name ?? '');
     this.annotationForm.controls.text.setValue(this.annotationFragment);
@@ -268,6 +295,11 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     });
   }
 
+  /**
+   * @private
+   * Metodo che recupera e mappa le feature di un determinato layer
+   * @param layerId {number} ID del layer
+   */
   private fetchAndMapFeatures(layerId: number) {
     forkJoin({
       layer: this.layerService.retrieveLayerById(layerId),
