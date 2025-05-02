@@ -63,7 +63,7 @@
             </form>
           </ng-template>
             <div *ngIf="!deleteMode" class="d-flex justify-content-evenly">
-              <button pButton pRipple type="submit" icon="pi pi-save" pTooltip="'GENERAL.save'|translate" class="mb-2 p-button-sm rounded-circle"></button>
+              <button pButton pRipple type="submit" [disabled]="!isAnyFeatureValue" icon="pi pi-save" pTooltip="'GENERAL.save'|translate" class="mb-2 p-button-sm rounded-circle"></button>
               <button pButton pRipple type="button" icon="pi pi-times" [pTooltip]="'GENERAL.cancel'|translate"
                 class=" mb-2 p-button-sm p-button-secondary rounded-circle" (click)="onCancelBtn()"></button>
               <button pButton pRipple type="button" icon="fa-solid fa-eraser" [pTooltip]="'GENERAL.clean'|translate"

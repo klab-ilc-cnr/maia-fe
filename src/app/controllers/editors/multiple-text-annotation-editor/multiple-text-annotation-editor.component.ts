@@ -193,6 +193,17 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     }),
   );
 
+  get isAnyFeatureValue(): boolean {
+    return this.features.some((f: FeatForAnn) => {
+      const controlName = f.feature?.name;
+      if (!controlName) {
+        return false;
+      }
+      const value = this.featureForm.get(controlName)?.value;
+      return value !== null && value !== undefined && value !== '';
+    });
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
@@ -235,6 +246,10 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     }
     else {
       this.onSaveStart.emit();
+    }
+
+    if (!this.isAnyFeatureValue) {
+      throw Error('No feature value');
     }
 
     let request: MultipleAnnotationRequest = {
