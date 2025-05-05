@@ -377,7 +377,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
     const request = new WordAnnotationRequest();
     request.start = searchResult!.kwicOffset;
-    request.end = searchResult!.kwic.length;
+    request.end = searchResult!.kwicOffset + searchResult!.kwic.length;
     request.layers = this.selectedLayer ? [this.selectedLayer.id!] : [];
 
     return this.annotationService.retrieveWordAnnotations(Number(searchResult?.textId), request).pipe(
