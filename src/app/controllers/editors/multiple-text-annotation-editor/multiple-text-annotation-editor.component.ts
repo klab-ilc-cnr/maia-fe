@@ -42,8 +42,11 @@ export interface MultipleAnnotationFeature {
 export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   private readonly unsubscribe$ = new Subject();
   private _layerId?: number;
+  private _layerColor?: string;
+  private _layerName?: string;
   private _textOffsets: TextOffset[] = [];
   private _deleteMode: boolean = false;
+  private _visible: boolean = false;
 
   workingLayer!: TLayer;
   /**Tipi di feature */
@@ -74,6 +77,22 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   }
 
   @Input()
+  set layerColor(value: string | undefined) {
+    this._layerColor = value;
+  }
+  get layerColor(): string | undefined {
+    return this._layerColor;
+  }
+
+  @Input()
+  set layerName(value: string | undefined) {
+    this._layerName = value;
+  }
+  get layerName(): string | undefined {
+    return this._layerName;
+  }
+
+  @Input()
   set textOffsets(value: TextOffset[]) {
     this._textOffsets = value;
   }
@@ -89,6 +108,15 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     return this._deleteMode;
   }
 
+  @Input()
+  set visible(value: boolean) {
+    this._visible = value;
+  }
+  get visible(): boolean {
+    return this._visible;
+  }
+
+  @Output() onDialogHide = new EventEmitter<void>();
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSaveStart = new EventEmitter<void>();
   @Output() onSaveEnd = new EventEmitter<MultipleAnnotationResponse>();
@@ -248,7 +276,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
       this.onSaveStart.emit();
     }
 
-    if (!this.isAnyFeatureValue) {
+    if (!this.isAnyFeatureValue && !this.deleteMode) {
       throw Error('No feature value');
     }
 
@@ -290,6 +318,14 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         this.onSaveEnd.emit({ status: 'ERROR', errors: [] });
       }
     });
+  }
+
+  /**
+   * Metodo che viene chiamato quando il dialogo viene chiuso.
+   */
+  dialogHide(): void {
+    this.onClearBtn();
+    this.onDialogHide.emit();
   }
 
   /**
