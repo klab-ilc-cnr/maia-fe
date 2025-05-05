@@ -81,7 +81,7 @@ small {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #007bff; // Colore blu neutro
+  border-left: 3px solid #007bff; // Colore blu neutro
 }
 
 .tooltip-header {
@@ -115,14 +115,6 @@ small {
   color: #555555;
 }
 
-.features-header {
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: #222222;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 2px;
-}
-
 .feature-row {
   display: flex;
   justify-content: space-between;
@@ -136,7 +128,7 @@ small {
 }
 
 .annotation-section {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.50rem;
 }
 
 .annotation-label {

@@ -219,17 +219,11 @@
                                 <!-- Header Section -->
                                 <div class="annotation-section">
                                     <div class="annotation-field">
-                                        <b class="annotation-label">{{ ann.resource_name }}</b>
-                                        <span class="annotation-separator">/</span>
-                                        <span class="pe-2">
-                                            <i class="fa-solid fa-palette" [ngStyle]="{'color': selectedLayer!.color}" style="font-size: 1.5rem;"></i>
-                                        </span>
-                                        <span class="annotation-layer">{{ ann.layer_name }}</span>
+                                        <b class="annotation-label">{{ ann.annotation_id }}</b>
                                     </div>
                                 </div>
                                 <!-- Features Section -->
                                 <div class="tooltip-features">
-                                    <div class="features-header">Feature</div>
                                     <div class="feature-item" *ngFor="let feat of ann.features">
                                         <div class="feature-row">
                                             <span class="feature-name">{{ feat.feature_name }}</span>
