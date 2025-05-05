@@ -121,11 +121,17 @@ export class DictionaryPreviewComponent implements OnInit {
   /**
    * Handler for page change event.
    * @param event {any}
-   * @param searchAnnotation {SearchAnnotationResult}
+   * @param annotationTreeItem {any}
    */
-  public onPage(event: any, searchAnnotation: SearchAnnotationResult): void {
+  public onPage(event: any, searchAnnotation: SearchAnnotationResult, tableId: string): void {
     searchAnnotation.first = event.first;
     searchAnnotation.rows = event.rows;
+
+    // Scorri verso la tabella specifica
+    const tableElement = document.getElementById(tableId);
+    if (tableElement) {
+      tableElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   /**
