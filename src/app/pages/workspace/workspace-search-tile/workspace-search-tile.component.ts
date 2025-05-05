@@ -329,7 +329,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * @param event The event triggered by the layer selection change.
    */
   onChangeLayerSelection(event: any) {
-    this.emptyTableResultsOnly();
+    // this.emptyTableResultsOnly();
 
     if (!this.selectedLayer) {
       this.selectedRestriction = undefined;
@@ -344,7 +344,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * @param event The event triggered by the restriction selection change.
    */
   onChangeRestrictionSelection(event: any) {
-    this.emptyTableResultsOnly();
+    // this.emptyTableResultsOnly();
   }
 
   /**
