@@ -261,16 +261,15 @@
     </div>
 </div>
 
-<p-dialog header="header" [modal]="true" [(visible)]="showMultipleAnnotationDialog" [style]="{ width: '25rem' }">
-    <ng-template pTemplate="header">
-        <div class="inline-flex align-items-center justify-content-center gap-2">
-            <span class="pe-2">
-                <i class="fa-solid fa-palette" [ngStyle]="{'color': selectedLayer!.color}" style="font-size: 1.5rem;"></i>
-            </span>
-            <span>{{ selectedLayer?.name }}</span>
-        </div>
-    </ng-template>
-    <app-multiple-text-annotation-editor #annotationEditor [deleteMode]="isDeleting" [textOffsets]="textOffsets" [layerId]="selectedLayer?.id"
-        (onSaveStart)="onSaveStart()" (onSaveEnd)="onSaveEnd($event)" (onDeleteStart)="onDeleteStart()" (onDeleteEnd)="onDeleteEnd($event)"
-        (onCancel)="showMultipleAnnotationDialog = false"></app-multiple-text-annotation-editor>
-</p-dialog>
+<app-multiple-text-annotation-editor #annotationEditor 
+    [visible]="showMultipleAnnotationDialog"
+    [deleteMode]="isDeleting" 
+    [textOffsets]="textOffsets" 
+    [layerId]="selectedLayer?.id"
+    [layerName]="selectedLayer?.name"
+    [layerColor]="selectedLayer?.color"
+    (onDialogHide)="showMultipleAnnotationDialog = false"
+    (onSaveStart)="onSaveStart()" (onSaveEnd)="onSaveEnd($event)"
+    (onDeleteStart)="onDeleteStart()" (onDeleteEnd)="onDeleteEnd($event)"
+    (onCancel)="showMultipleAnnotationDialog = false">
+</app-multiple-text-annotation-editor>
