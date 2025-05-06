@@ -217,6 +217,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
           break;
       }
     });
+
+    this.expandRoot();
   }
 
   ngAfterViewInit(): void {
@@ -537,6 +539,20 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     if (node.children) {
       node.children.forEach(childNode => {
         this.treeTraversalAlternateLabelInstanceName(childNode);
+      });
+    }
+  }
+
+  
+  /**
+   * @private
+   * Metodo per l'espansione del nodo radice dell'albero lessicale
+   */
+  private expandRoot() {
+    if (this.lexicalEntryTree) {
+      this.lexicalEntryTree.forEach(node => {
+        node.expanded = true;
+        this.onNodeExpand({ node });
       });
     }
   }
