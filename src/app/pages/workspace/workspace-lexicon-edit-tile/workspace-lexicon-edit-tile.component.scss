@@ -39,3 +39,7 @@ td {
 :host::ng-deep.p-splitter-panel:last-of-type {
   min-width: 400px;
 }
+
+::ng-deep .p-treetable-scrollable-body {
+  overflow-y: auto !important;
+}
