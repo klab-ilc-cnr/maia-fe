@@ -11,7 +11,7 @@ export class AutocompleteCheckboxComponent {
   /**Nome della proprietà sulla quale eseguire la ricerca dell'autocomplete */
   @Input() field!: string;
   /**Valore del campo da realizzare */
-  @Input() fieldValue!: { label: string, value: string, external: boolean, inferred: boolean };
+  @Input() fieldValue!: { label: string, sub?: string, value: string, external: boolean, inferred: boolean };
   /**Definisce se flaggato (e quindi visualizza input di testo) */
   @Input() isChecked!: boolean;
   /**Definisce se la checkbox è disabilitata */

@@ -28,13 +28,14 @@ To report any bugs or propose new features, you can open a new issue in the [ded
 In case of a bug please indicate the version of the platform used and describe the steps to replicate the error. Where possible and useful, images should also be attached.
 
 ## Versions and compatibility
-| maia-fe | maia-be | TextO |
-| ------------- | ------------- | ------------- |
-| v. 0.13.10 | v. 0.0.8 | v. 0.1.1 |
-| v. 0.13.5 | v. 0.0.7 | v. 0.1.1 |
-| v. 0.12.4 | v. 0.0.7 | v. 0.1.0* | 
-| v. 0.11.0 | v. 0.0.6 | v. 0.0.8 |
-| v. 0.9.10 | v. 0.0.6 | |
+| maia-fe | maia-be | TextO | LexO |
+| ------------- | ------------- | ------------- | ------------- |
+| v. 0.15.0 | v. 0.0.10 | v. 0.1.2 | v. 1.1 |
+| v. 0.13.10 | v. 0.0.8 | v. 0.1.1 | |
+| v. 0.13.5 | v. 0.0.7 | v. 0.1.1 | |
+| v. 0.12.4 | v. 0.0.7 | v. 0.1.0* | |
+| v. 0.11.0 | v. 0.0.6 | v. 0.0.8 | |
+| v. 0.9.10 | v. 0.0.6 | | |
 
 
 *02/08/2024 version
