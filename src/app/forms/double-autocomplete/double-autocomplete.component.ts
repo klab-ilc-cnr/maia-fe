@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 export class DoubleAutocompleteComponent implements OnInit {
   @Input() isCheckboxVisible = true;
   @Input() isChecked = false;
+  @Input() isInherited = false;
   @Input() relationField: string | undefined;
   @Input() relations$!: Observable<{ label: string, id: string }[]>;
   @Input() valueField: string | undefined;

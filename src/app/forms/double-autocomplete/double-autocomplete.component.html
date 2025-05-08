@@ -1,7 +1,7 @@
 <div class="field d-flex justify-content-between">
   <p-dropdown appendTo="body" [(ngModel)]="relationField" [autoDisplayFirst]="false" styleClass="w-full" [disabled]="isValueSelected"
     [options]="(relations$|async)||[]" optionLabel="label" optionValue="id" (onChange)="onSelectRelation($event)" [filter]="true"></p-dropdown>
-  <p-dropdown *ngIf="!isChecked; else uriInput" appendTo="body" [autoDisplayFirst]="false" styleClass="w-full" [(ngModel)]="valueField"
+  <p-dropdown *ngIf="!isChecked; else uriInput" appendTo="body" [autoDisplayFirst]="false" styleClass="w-full" [(ngModel)]="valueField" [disabled]="isInherited"
     [options]="(values|async) || []" [optionLabel]="valueLabel" [optionValue]="valueId" [filter]="true"
     [filterBy]="valueLabel" (onChange)="onSelectValue($event)"></p-dropdown>
   <ng-template #uriInput>
@@ -10,8 +10,8 @@
   </ng-template>
   <input type="checkbox" *ngIf="isCheckboxVisible" (change)="isChecked = !isChecked">
   <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"
-    *ngIf="true; else filler" (click)="onRemove()"></button>
+    *ngIf="!isInherited; else filler" (click)="onRemove()"></button>
   <ng-template #filler>
-    <div></div>
+    <div style="width: 2.5rem;"></div>
   </ng-template>
 </div>

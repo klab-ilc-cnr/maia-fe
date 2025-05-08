@@ -12,7 +12,7 @@
     </div>
 
     <app-lex-entry-direct-relations [lexEntityId]="lexEntry.lexicalEntry" [menuItems]="menuItems" [model]="model"></app-lex-entry-direct-relations>
-    <app-lex-entry-indirect-relations [lexEntityId]="lexEntry.lexicalEntry" [menuItems]="menuItems" [model]="model"></app-lex-entry-indirect-relations>
+    <app-lex-entry-indirect-relations [lexEntityId]="lexEntry.lexicalEntry" [menuItems]="menuItems" [model]="model" *ngIf="!demoHide"></app-lex-entry-indirect-relations><!--TODO: HIDDEN IN THE DEMO, remove demoHide as soon as development is complete-->
 
     <div class="field col-12" *ngIf="!demoHide"><!--TODO HIDDEN IN THE DEMO, remove demoHide as soon as development is complete-->
       <p-fieldset>
