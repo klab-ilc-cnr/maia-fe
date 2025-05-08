@@ -20,6 +20,7 @@ export interface FeatForAnn {
   feature: TFeature | undefined;
   tagsetItems: Observable<TTagsetItem[]> | undefined;
   value: string | undefined;
+  checked: boolean;
 }
 
 export interface TextOffset {
@@ -336,6 +337,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   private createFeatureValueList(): MultipleAnnotationFeature[] {
     const result: MultipleAnnotationFeature[] = [];
     this.features.forEach(feature => {
+      if(!feature.checked) {return;}
+      
       if (!feature.feature?.name) {
         throw Error('Feature missing name');
       }
@@ -380,7 +383,15 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
           break;
       }
       this.featureForm.addControl(controlName, newControl);
-      this.featureForm.get(controlName)?.setValue(false)
+
+      const checkedControl = new FormControl<boolean>(f.checked, { nonNullable: true });
+      this.featureForm.addControl(`${controlName}_checked`, checkedControl);
+
+      checkedControl.valueChanges.subscribe(value => {
+        f.checked = value;
+      });
+
+      checkedControl.setValue(true, { emitEvent: false });
     });
   }
 
@@ -401,7 +412,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const tagsetId = feature.tagset?.id;
         return <FeatForAnn>{
           feature: feature,
-          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId) : undefined
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId) : undefined,
+          checked: true // default value for checked
         };
       });
       this.createForm();
