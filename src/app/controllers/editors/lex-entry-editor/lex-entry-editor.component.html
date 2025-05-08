@@ -87,6 +87,21 @@
         </ng-template>
       </p-fieldset>
     </div>
+    <div class="field col-12">
+      <p-fieldset>
+        <ng-template pTemplate="header">
+          {{'LEXICON_EDITOR.FORM.morphTraits'|translate}}<button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddMorphology()"
+            class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <app-double-autocomplete *ngFor="let morph of morphology.controls; index as index"
+            [relations$]="morphRelations$" [valuesFilterFn]="morphRelationValues" (remove)="onRemoveMorph(index)"
+            (selected)="onMorphSelection($event, index)" valueId="valueId" valueLabel="valueLabel"
+            [isCheckboxVisible]="false" [relationField]="morph.value.relation"
+            [valueField]="morph.value.value"></app-double-autocomplete>
+        </ng-template>
+      </p-fieldset>
+    </div>
   </form>
 </div>
 <app-popup-delete-item #popupDeleteItem></app-popup-delete-item>
