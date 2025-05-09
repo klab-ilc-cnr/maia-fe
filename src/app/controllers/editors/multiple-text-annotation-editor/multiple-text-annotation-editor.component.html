@@ -2,7 +2,7 @@
   header="header"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ width: '25rem' }"
+  [style]="{ width: '30rem' }"
   (onHide)="dialogHide()"
 >
   <ng-template pTemplate="header">
@@ -37,119 +37,127 @@
           </div>
           <ng-template #featureBlock>
             <form [formGroup]="featureForm">
-              <div class="form-group" *ngFor="let feature of features">
+              <div class="form-group mt-2" *ngFor="let feature of features">
+                <label class="form-label ml-1">{{ feature.feature?.name }}</label>
                 <div class="d-flex align-items-center gap-2">
-                  <label class="form-label">{{ feature.feature?.name }}</label>
-                  <p-inputSwitch *ngIf="deleteMode" [formControlName]="feature.feature!.name! + '_checked'"></p-inputSwitch>
-                </div>
-                <div [ngSwitch]="feature.feature?.type" class="p-fluid">
-                  <div *ngSwitchCase="featureTypes.STRING">
-                    <input
-                      class="form-control"
-                      type="text"
-                      [formControlName]="feature.feature!.name!"
-                    />
-                    <div
-                      *ngIf="
-                        featureForm.get(feature.feature!.name!)?.invalid &&
-                        (featureForm.get(feature.feature!.name!)?.touched ||
-                          featureForm.get(feature.feature!.name!)?.dirty)
-                      "
-                      class="invalid-feedback"
-                    >
+                  <p-inputSwitch *ngIf="deleteMode" class="ml-1 align-self-end" [pTooltip]="'SEARCH.disableForAnyValue'|translate" [formControlName]="feature.feature!.name! + '_checked'"></p-inputSwitch>
+                  <div *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value; else anyValueBlock" [ngSwitch]="feature.feature?.type" class="p-fluid flex-grow-1">
+                    <div *ngSwitchCase="featureTypes.STRING">
+                      <input
+                        class="form-control"
+                        type="text"
+                        [formControlName]="feature.feature!.name!"
+                      />
                       <div
-                        *ngIf="featureForm.get(feature.feature!.name!)?.errors?.['isNotOnlyWhitespaces']"
+                        *ngIf="
+                          featureForm.get(feature.feature!.name!)?.invalid &&
+                          (featureForm.get(feature.feature!.name!)?.touched ||
+                            featureForm.get(feature.feature!.name!)?.dirty)
+                        "
+                        class="invalid-feedback"
                       >
-                        {{ feature.feature!.name! }} can't contain only white
-                        space
+                        <div
+                          *ngIf="featureForm.get(feature.feature!.name!)?.errors?.['isNotOnlyWhitespaces']"
+                        >
+                          {{ feature.feature!.name! }} can't contain only white
+                          space
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div *ngSwitchCase="featureTypes.TAGSET">
-                    <p-dropdown
-                      [formControlName]="feature.feature!.name!"
-                      [options]="(feature.tagsetItems | async) || []"
-                      [filter]="true"
-                      [showClear]="true"
-                      optionLabel="name"
-                      optionValue="name"
-                      appendTo="body"
-                      emptyFilterMessage="No element found"
-                      placeholder="Select a value"
-                    >
-                    </p-dropdown>
-                  </div>
-                  <div *ngSwitchCase="featureTypes.URI">
-                    <input
-                      class="form-control"
-                      type="text"
-                      [formControlName]="feature.feature!.name!"
-                    />
-                    <div
-                      *ngIf="
-                        featureForm.get(feature.feature!.name!)?.invalid &&
-                        (featureForm.get(feature.feature!.name!)?.touched ||
-                          featureForm.get(feature.feature!.name!)?.dirty)
-                      "
-                      class="invalid-feedback"
-                    >
-                      <div
-                        *ngIf="featureForm.get(feature.feature!.name!)?.errors?.['isValidUri']"
+                    <div *ngSwitchCase="featureTypes.TAGSET">
+                      <p-dropdown
+                        [formControlName]="feature.feature!.name!"
+                        [options]="(feature.tagsetItems | async) || []"
+                        [filter]="true"
+                        [showClear]="true"
+                        optionLabel="name"
+                        optionValue="name"
+                        appendTo="body"
+                        emptyFilterMessage="No element found"
+                        placeholder="Select a value"
                       >
-                        {{ feature.feature!.name! }} does not contain a valid
-                        uri
+                      </p-dropdown>
+                    </div>
+                    <div *ngSwitchCase="featureTypes.URI">
+                      <input
+                        class="form-control"
+                        type="text"
+                        [formControlName]="feature.feature!.name!"
+                      />
+                      <div
+                        *ngIf="
+                          featureForm.get(feature.feature!.name!)?.invalid &&
+                          (featureForm.get(feature.feature!.name!)?.touched ||
+                            featureForm.get(feature.feature!.name!)?.dirty)
+                        "
+                        class="invalid-feedback"
+                      >
+                        <div
+                          *ngIf="featureForm.get(feature.feature!.name!)?.errors?.['isValidUri']"
+                        >
+                          {{ feature.feature!.name! }} does not contain a valid
+                          uri
+                        </div>
                       </div>
                     </div>
+                    <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
+                      <app-generic-autocomplete
+                        field="label"
+                        valueField="lexicalEntry"
+                        [filterFn]="lexEntryList"
+                        (selected)="
+                          setIndirectValue($event, feature.feature!.name!)
+                        "
+                        [currentValue]="
+                          featureForm.get(feature.feature!.name!)!.value
+                        "
+                        [initialValueFn]="lexEntryById"
+                      ></app-generic-autocomplete>
+                    </div>
+                    <div *ngSwitchCase="featureTypes.FORM">
+                      <app-generic-autocomplete
+                        field="label"
+                        valueField="form"
+                        [filterFn]="formList"
+                        (selected)="
+                          setIndirectValue($event, feature.feature!.name!)
+                        "
+                        [currentValue]="
+                          featureForm.get(feature.feature!.name!)!.value
+                        "
+                        [initialValueFn]="formById"
+                      ></app-generic-autocomplete>
+                    </div>
+                    <div *ngSwitchCase="featureTypes.SENSE">
+                      <app-generic-autocomplete
+                        field="definition"
+                        valueField="sense"
+                        [filterFn]="senseList"
+                        (selected)="
+                          setIndirectValue($event, feature.feature!.name!)
+                        "
+                        [currentValue]="
+                          featureForm.get(feature.feature!.name!)!.value
+                        "
+                        [initialValueFn]="senseById"
+                        [showOptionPrefix]="true"
+                        prefixField="lemma"
+                      ></app-generic-autocomplete>
+                    </div>
                   </div>
-                  <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
-                    <app-generic-autocomplete
-                      field="label"
-                      valueField="lexicalEntry"
-                      [filterFn]="lexEntryList"
-                      (selected)="
-                        setIndirectValue($event, feature.feature!.name!)
-                      "
-                      [currentValue]="
-                        featureForm.get(feature.feature!.name!)!.value
-                      "
-                      [initialValueFn]="lexEntryById"
-                    ></app-generic-autocomplete>
-                  </div>
-                  <div *ngSwitchCase="featureTypes.FORM">
-                    <app-generic-autocomplete
-                      field="label"
-                      valueField="form"
-                      [filterFn]="formList"
-                      (selected)="
-                        setIndirectValue($event, feature.feature!.name!)
-                      "
-                      [currentValue]="
-                        featureForm.get(feature.feature!.name!)!.value
-                      "
-                      [initialValueFn]="formById"
-                    ></app-generic-autocomplete>
-                  </div>
-                  <div *ngSwitchCase="featureTypes.SENSE">
-                    <app-generic-autocomplete
-                      field="definition"
-                      valueField="sense"
-                      [filterFn]="senseList"
-                      (selected)="
-                        setIndirectValue($event, feature.feature!.name!)
-                      "
-                      [currentValue]="
-                        featureForm.get(feature.feature!.name!)!.value
-                      "
-                      [initialValueFn]="senseById"
-                      [showOptionPrefix]="true"
-                      prefixField="lemma"
-                    ></app-generic-autocomplete>
-                  </div>
+                  <ng-template #anyValueBlock>
+                    <input
+                      class="form-control flex-grow-1"
+                      type="text"
+                      [value]="'SEARCH.anyValue'|translate"
+                      disabled
+                    />
+                  </ng-template>
                 </div>
               </div>
             </form>
           </ng-template>
-          <div *ngIf="!deleteMode" class="d-flex justify-content-evenly">
+          <div *ngIf="!deleteMode" class="d-flex justify-content-evenly mt-2">
             <button
               pButton
               pRipple
@@ -178,7 +186,7 @@
               (click)="onClearBtn()"
             ></button>
           </div>
-          <div *ngIf="deleteMode" class="d-flex justify-content-evenly">
+          <div *ngIf="deleteMode" class="d-flex justify-content-evenly mt-2">
             <button
               pButton
               pRipple

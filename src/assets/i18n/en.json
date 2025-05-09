@@ -357,6 +357,8 @@
         "exportSelected": "Export selected",
         "exportSelectedFileName": "export_selected",
         "exportAllFileName": "export_all",
+        "disableForAnyValue": "Disable for any value",
+        "anyValue": "Any value",
         "columns": {
             "index": "Index",
             "text": "Text",

@@ -360,6 +360,8 @@
         "exportSelected": "Esporta selezionati",
         "exportSelectedFileName": "export_selected",
         "exportAllFileName": "export_all",
+        "disableForAnyValue": "Disabilita per qualsiasi valore",
+        "anyValue": "Qualsiasi valore",
         "columns": {
             "index": "Indice",
             "text": "Testo",
