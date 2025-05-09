@@ -37,9 +37,19 @@ export interface MultipleAnnotationRequest {
   offsets?: TextOffset[];
 }
 
-export interface MultipleAnnotationResponse {
-  errors: number[];
-  status: 'OK' | 'ERROR';
+export class MultipleAnnotationResponse {
+  success: number = 0;
+  errors: number[] = [];
+
+  get status(): 'SUCCESS' | 'ERROR' | 'PARTIAL' {
+    if (this.success > 0 && this.errors.length === 0) {
+      return 'SUCCESS';
+    } else if (this.errors.length > 0 && this.success === 0) {
+      return 'ERROR';
+    } else {
+      return 'PARTIAL';
+    }
+  }
 }
 
 /**Class of annotation management services */

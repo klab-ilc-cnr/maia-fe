@@ -292,14 +292,13 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         take(1),
       ).subscribe({
         next: (response) => {
-          if (response.errors.length > 0) {
-            this.onDeleteEnd.emit({ status: 'ERROR', errors: response.errors });
-          } else {
-            this.onDeleteEnd.emit({ status: 'OK', errors: [] });
-          }
+          const result = new MultipleAnnotationResponse();
+          result.errors = response.errors;
+          result.success = response.success;
+          this.onDeleteEnd.emit(result);
         },
         error: (err) => {
-          this.onDeleteEnd.emit({ status: 'ERROR', errors: [] });
+          this.onDeleteEnd.emit({ status: 'ERROR', success: 0, errors: [] });
         }
       });
       return;
@@ -309,14 +308,13 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
       take(1),
     ).subscribe({
       next: (response) => {
-        if (response.errors.length > 0) {
-          this.onSaveEnd.emit({ status: 'ERROR', errors: response.errors });
-        } else {
-          this.onSaveEnd.emit({ status: 'OK', errors: [] });
-        }
+        const result = new MultipleAnnotationResponse();
+          result.errors = response.errors;
+          result.success = response.success;
+        this.onSaveEnd.emit(result);
       },
       error: (err) => {
-        this.onSaveEnd.emit({ status: 'ERROR', errors: [] });
+        this.onSaveEnd.emit({ status: 'ERROR', success: 0, errors: [] });
       }
     });
   }
@@ -337,8 +335,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   private createFeatureValueList(): MultipleAnnotationFeature[] {
     const result: MultipleAnnotationFeature[] = [];
     this.features.forEach(feature => {
-      if(!feature.checked) {return;}
-      
+      if (!feature.checked) { return; }
+
       if (!feature.feature?.name) {
         throw Error('Feature missing name');
       }
