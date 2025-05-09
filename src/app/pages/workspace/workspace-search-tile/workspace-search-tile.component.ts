@@ -8,7 +8,7 @@ import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { TLayer } from 'src/app/models/texto/t-layer';
-import { AnnotationService, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
+import { AnnotationService, MultipleAnnotationResponse, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
@@ -425,15 +425,23 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * Handles the end of a delete operation.
    * @param event The event triggered by the delete operation.
    */
-  onDeleteEnd(event: any) {
+  onDeleteEnd(event: MultipleAnnotationResponse) {
     Swal.close();
     this.showMultipleAnnotationDialog = false;
-    if (event.status === 'ERROR') {
-      const errorMessage = this.commonService.translateKey('SEARCH.annotations.deleteFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
-    }
-    else {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('SEARCH.annotations.deleteSuccess')))
+    switch (event.status) {
+      case 'ERROR':
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.deleteFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
+        break;
+      case 'SUCCESS':
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${event.success} ${this.commonService.translateKey('SEARCH.annotations.deleteSuccess')}`));
+        break;
+      case 'PARTIAL':
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.deleteFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${event.success} ${this.commonService.translateKey('SEARCH.annotations.deleteSuccess')}`));
+        break;
+      default:
+        console.error('Unknown status:', event.status);
+        break;
     }
 
     this.search();
@@ -443,15 +451,23 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * Handles the end of a save or delete operation for multiple annotations.
    * @param event The event triggered by the save or delete operation.
    */
-  private endMultipleAnnotationOperation(event: any) {
+  private endMultipleAnnotationOperation(event: MultipleAnnotationResponse) {
     Swal.close();
     this.showMultipleAnnotationDialog = false;
-    if (event.status === 'ERROR') {
-      const errorMessage = this.commonService.translateKey('SEARCH.annotations.saveFailed') + ' ' + event.errors.map((index: number) => index + 1).join(', ');
-      this.messageService.add(this.msgConfService.generateWarningMessageConfig(errorMessage));
-    }
-    else {
-      this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('SEARCH.annotations.saveSuccess')));
+    switch (event.status) {
+      case 'ERROR':
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.saveFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
+        break;
+      case 'SUCCESS':
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${event.success} ${this.commonService.translateKey('SEARCH.annotations.saveSuccess')}`));
+        break;
+      case 'PARTIAL':
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.saveFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${event.success} ${this.commonService.translateKey('SEARCH.annotations.saveSuccess')}`));
+        break;
+      default:
+        console.error('Unknown status:', event.status);
+        break;
     }
 
     this.search();

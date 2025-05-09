@@ -385,9 +385,9 @@
             "notAnnotedOnly": "Solo stringhe non annotate"
         },
         "annotations":{
-            "saveSuccess": "Annotazioni create con successo",
+            "saveSuccess": "annotazioni create con successo",
             "saveFailed": "Non è stato possibile creare annotazioni per i seguenti indici selezionati: ",
-            "deleteSuccess": "Annotazioni eliminate con successo",
+            "deleteSuccess": "annotazioni eliminate con successo",
             "deleteFailed": "Non è stato possibile eliminare le annotazioni per i seguenti indici selezionati: "
         }
     }
