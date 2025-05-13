@@ -42,12 +42,12 @@ export class MultipleAnnotationResponse {
   errors: number[] = [];
 
   get status(): 'SUCCESS' | 'ERROR' | 'PARTIAL' {
-    if (this.success > 0 && this.errors.length === 0) {
-      return 'SUCCESS';
-    } else if (this.errors.length > 0 && this.success === 0) {
+    if (this.success > 0 && this.errors.length > 0) {
+      return 'PARTIAL';
+    } else if (this.errors.length > 0) {
       return 'ERROR';
     } else {
-      return 'PARTIAL';
+      return 'SUCCESS';
     }
   }
 }
