@@ -9,7 +9,11 @@
         "save": "Save",
         "selectValue": "Select value",
         "update": "Update",
-        "browserWarning": "Your browser is not fully supported, please use chrome"
+        "browserWarning": "Your browser is not fully supported, please use chrome",
+        "operationInProgress": "Operation in progress...",
+        "delete": "Delete",
+        "clean": "Clean",
+        "execute": "Execute"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Add folder",
@@ -353,6 +357,8 @@
         "exportSelected": "Export selected",
         "exportSelectedFileName": "export_selected",
         "exportAllFileName": "export_all",
+        "disableForAnyValue": "Disable for any value",
+        "anyValue": "Any value",
         "columns": {
             "index": "Index",
             "text": "Text",
@@ -365,7 +371,21 @@
             "search": "Search",
             "clear": "Clear",
             "saveAs": "Save As",
-            "export": "Export"
+            "export": "Export",
+            "annotate": "Annotate",
+            "removeAnnotations": "Remove annotations"
+        },
+        "restriction":{
+            "placeholder": "Select restriction",
+            "none": "none",
+            "annotedOnly": "Only annotated strings",
+            "notAnnotedOnly": "Only not annotated strings"
+        },
+        "annotations":{
+            "saveSuccess": "annotations created",
+            "saveFailed": "Failed to save following search index: ",
+            "deleteSuccess": "annotations deleted",
+            "deleteFailed": "Failed to delete following search index: "
         }
     }
 }

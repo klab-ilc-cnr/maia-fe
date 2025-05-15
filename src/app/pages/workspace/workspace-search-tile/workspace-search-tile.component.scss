@@ -46,14 +46,112 @@ small {
   padding: 0;
 }
 
-:host::ng-deep .p-datatable .p-datatable-thead > tr > th {
+:host::ng-deep .p-datatable .p-datatable-thead>tr>th {
   padding: 0.5rem;
 }
 
-:host::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+:host::ng-deep .p-datatable .p-datatable-tbody>tr>td {
   padding: 0.5rem;
 }
 
-.dropdownDimensions{
+.dropdownDimensions {
   min-width: 200px;
 }
+
+:host::ng-deep .p-splitbutton.custom-info-btn .p-button {
+  background-color: #2196F3;
+  color: #fff;
+  border: none;
+}
+
+:host::ng-deep .p-splitbutton.custom-info-btn .p-button:hover {
+  background-color: #1976D2;
+}
+
+
+.tooltip-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 300px;
+}
+
+.tooltip-card {
+  background-color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  border-left: 3px solid #007bff; // Colore blu neutro
+}
+
+.tooltip-header {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333333;
+}
+
+.tooltip-subtitle {
+  font-size: 0.85rem;
+  color: #666666;
+  margin-bottom: 0.5rem;
+}
+
+.tooltip-features {
+  font-size: 0.85rem;
+  color: #555555;
+}
+
+.feature-item {
+  margin: 3px 0;
+}
+
+.feature-name {
+  font-weight: 500;
+  color: #333333;
+}
+
+.feature-value {
+  color: #555555;
+}
+
+.feature-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  border-bottom: 1px dashed #eaeaea;
+}
+
+.feature-separator {
+  margin: 0 4px;
+  color: #999999;
+}
+
+.annotation-section {
+  margin-bottom: 0.50rem;
+}
+
+.annotation-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #007bff;
+  margin-bottom: 2px;
+}
+
+.annotation-field {
+  font-size: 0.95rem;
+  color: #444444;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.annotation-separator {
+  color: #999999;
+}
+
+.annotation-layer {
+  font-style: italic;
+  color: #777777;
+}
+
