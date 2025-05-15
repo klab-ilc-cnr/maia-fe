@@ -52,7 +52,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   public senseInstanceName = '';
 
   public panelId!: string;
-  panelHeight!: string;
+  public panelHeight: number = 0;
 
   /**Definisce se ci sono modifiche pendenti dell'entrata lessicale */
   lexicalEntryPendingChanges = false;
@@ -217,10 +217,12 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
           break;
       }
     });
+
+    this.expandRoot();
   }
 
   ngAfterViewInit(): void {
-    this.panelHeight = document.getElementById(this.panelId)!.style.height;
+    this.panelHeight = document.getElementById(this.panelId)!.clientHeight;
   }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per rimuovere eventuali sottoscrizioni */
@@ -228,6 +230,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
 
+  }
+
+  /**
+* Updates the height of the content of the panel
+* @param newHeight {any} newHeight
+*/
+  updateHeight(newHeight: number) {
+    this.panelHeight = newHeight;
   }
 
   /**Evoca lo switch label-instanceName su tutti i nodi dell'albero visualizzato */
@@ -537,6 +547,20 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     if (node.children) {
       node.children.forEach(childNode => {
         this.treeTraversalAlternateLabelInstanceName(childNode);
+      });
+    }
+  }
+
+
+  /**
+   * @private
+   * Metodo per l'espansione del nodo radice dell'albero lessicale
+   */
+  private expandRoot() {
+    if (this.lexicalEntryTree) {
+      this.lexicalEntryTree.forEach(node => {
+        node.expanded = true;
+        this.onNodeExpand({ node });
       });
     }
   }

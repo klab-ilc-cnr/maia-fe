@@ -49,6 +49,7 @@ export class DictionaryEntryFullEditorComponent implements OnInit, AfterViewChec
     takeUntil(this.unsubscribe$),
     map(resp => resp.list.map(de => <{ label: string, value: string, external: boolean, inferred: boolean }>{
       label: de.label,
+      sub: de.pos,
       value: de.id,
       external: false,
       inferred: false

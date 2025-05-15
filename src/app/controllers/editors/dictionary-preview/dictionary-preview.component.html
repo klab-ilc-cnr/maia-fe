@@ -268,15 +268,12 @@
         <ng-template let-annotationTreeItem pTemplate="annotation">
           <div class="custom-leaf">
             <p-table
+              [id]="'annTable_'+annotationTreeItem.parent.key"
               [value]="annotationTreeItem.data.searchAnnotation.data"
               [lazy]="true"
               [lazyLoadOnInit]="false"
-              (onLazyLoad)="
-                lazyLoadSearchResults($event, annotationTreeItem.parent)
-              "
-              (onPage)="
-                onPage($event, annotationTreeItem.data.searchAnnotation)
-              "
+              (onLazyLoad)="lazyLoadSearchResults($event, annotationTreeItem.parent)"
+              (onPage)="onPage($event, annotationTreeItem.data.searchAnnotation, 'annTable_'+annotationTreeItem.parent.key)"
               [totalRecords]="annotationTreeItem.data.searchAnnotation.count"
               [rowHover]="true"
               [first]="annotationTreeItem.data.searchAnnotation.first"
@@ -285,12 +282,8 @@
               [tableStyle]="{ width: '100%' }"
               [rowsPerPageOptions]="[5, 10, 25]"
               paginatorDropdownAppendTo="body"
-              [showCurrentPageReport]="
-                annotationTreeItem.data.searchAnnotation.count > 0
-              "
-              [currentPageReportTemplate]="
-                'GENERAL.currentPageReportTemplate' | translate
-              "
+              [showCurrentPageReport]="annotationTreeItem.data.searchAnnotation.count > 0"
+              [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate' | translate"
             >
               <ng-template pTemplate="header">
                 <tr>
