@@ -13,6 +13,12 @@ import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.m
 import { CommonService } from './common.service';
 import { LoggedUserService } from './logged-user.service';
 
+
+export class DictionaryTraits {
+  public pos: string | undefined;
+  public traits: string[] | undefined;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -285,6 +291,10 @@ export class DictionaryService {
    */
   retrieveOtherWorks(): Observable<TextualDocument[]> {
     return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/otherDocuments`);
+  }
+
+  retrieveDictionaryTraits(dictionaryId: string): Observable<DictionaryTraits[]> {
+    return this.http.get<DictionaryTraits[]>(`${this.lexoUrl}/data/dictionaryEntryPosTraits?id=${this.commonService.encodeUrl(dictionaryId)}`);
   }
 
   /**
