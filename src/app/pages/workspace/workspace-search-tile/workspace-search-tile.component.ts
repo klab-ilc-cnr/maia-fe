@@ -569,6 +569,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     if (this.filtersChanged) {
       this.searchRequest.start = 0;
       this.searchRequest.end = this.visibleRows;
+      this.filtersChanged = false;
     }
 
     // Cancel the previous search if it is still ongoing
