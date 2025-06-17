@@ -197,7 +197,7 @@
                     </div>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center">
-                    <b *ngIf="!searchResult.annotated" [ngStyle]="highlightAnnotation(searchResult)">{{searchResult.kwic}}</b>
+                    <b *ngIf="!searchResult.annotated">{{searchResult.kwic}}</b>
                     <app-async-tooltip
                         *ngIf="searchResult.annotated"
                         [tooltipId]="searchResult.id"
