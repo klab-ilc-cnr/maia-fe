@@ -23,6 +23,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 export class LexEntryEditorComponent implements OnInit, OnDestroy {
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
+  private readonly partOfSpeechId = 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech';
+
   /**Stringa per il campo vuoto */
   emptyField = '-- Select --';
   /**Observable dell'entrata lessicale in lavorazione */
@@ -52,7 +54,7 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   /**Lista di controllo dei see also */
   _seeAlso: { label: string, value: string, external: boolean, inferred: boolean }[] = [];
   /**Lista delle option dello status */
-  statusForm: string[] = ['working','completed', 'reviewed'];
+  statusForm: string[] = ['working', 'completed', 'reviewed'];
   /**Observable delle lingue disponibili */
   languages$ = this.globalState.languages$;
   /**Observable delle pos disponibili */
@@ -110,7 +112,8 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
   /**Observable delle relazioni morfologiche */
   morphRelations$ = this.globalState.morphologies$.pipe(
     switchMap(list => {
-      const mappedElements = list.map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
+      const mappedElements = list.filter(el => el.propertyId !== this.partOfSpeechId)
+        .map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
       return of(mappedElements);
     }),
   );
@@ -121,7 +124,8 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
    */
   morphRelationValues = (relation: string) => this.globalState.morphologies$.pipe(
     switchMap(list => {
-      const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
+      const values = list.filter(el => el.propertyId !== this.partOfSpeechId)
+        .find(morph => morph.propertyId === relation)?.propertyValues ?? [];
       return of(values);
     }),
   );
@@ -232,12 +236,12 @@ export class LexEntryEditorComponent implements OnInit, OnDestroy {
         lexEntryTypeCode.push('http://www.w3.org/ns/lemon/ontolex#' + type); //TODO capire come gestire in maniera generalizzata @andreabellandi
       });
       this.lexicalEntry.morphology.forEach(m => {
-        if(!m.trait.endsWith('#partOfSpeech')){
+        if (!m.trait.endsWith('#partOfSpeech')) {
           const morphElement = { relation: m.trait, value: m.value, external: false };
           this.morphology.push(new FormControl(morphElement));
           this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
-          }
-      });  
+        }
+      });
       if (le.status) this.form.get('status')?.setValue(le.status);
       if (le.label) this.form.get('label')?.setValue(le.label);
       if (le.language) this.form.get('language')?.setValue(le.language);

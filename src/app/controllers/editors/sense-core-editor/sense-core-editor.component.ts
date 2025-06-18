@@ -23,6 +23,7 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   readonly translatePrefix = 'LEXICON_EDITOR.SENSE';
+  private readonly partOfSpeechId = 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech';
   demoHide = environment.demoHide;
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
@@ -55,7 +56,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   /**Observable della relazioni morfologiche */
   morphRelations$ = this.globalState.morphologies$.pipe(
     switchMap(list => {
-      const mappedElements = list.map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
+      const mappedElements = list.filter(el => el.propertyId !== this.partOfSpeechId)
+        .map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
       return of(mappedElements);
     }),
   );
@@ -66,7 +68,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    */
   morphRelationValues = (relation: string) => this.globalState.morphologies$.pipe(
     switchMap(list => {
-      const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
+      const values = list.filter(el => el.propertyId !== this.partOfSpeechId)
+        .find(morph => morph.propertyId === relation)?.propertyValues ?? [];
       return of(values);
     }),
   );
@@ -96,8 +99,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @param senseId {string} identificativo del senso
    */
   private deleteSense = (senseId: string) => {
-    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix+'.deletionInProg'));
-    const successMsg = this.commonService.translateKey(this.translatePrefix+'.removeSenseSuccess');
+    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix + '.deletionInProg'));
+    const successMsg = this.commonService.translateKey(this.translatePrefix + '.removeSenseSuccess');
     this.lexiconService.deleteLexicalSense(senseId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -142,8 +145,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       for (const key in resp) {
         const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
         const currentPropValue = this.definitionFormItems[currentPropertyId].propertyValue;
-        if (currentPropertyId === -1 || this.senseEntry.definition.find(x => x.propertyID===key)?.propertyValue === resp[key]) continue;
-        if(resp[key] === '') {
+        if (currentPropertyId === -1 || this.senseEntry.definition.find(x => x.propertyID === key)?.propertyValue === resp[key]) continue;
+        if (resp[key] === '') {
           const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { relation: key, value: currentPropValue });
           this.manageUpdateObservable(deleteRelObs, key, resp[key]);
           return;
@@ -160,8 +163,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this.globalState.marksOfUse$.pipe(
       take(1),
     ).subscribe(resp => {
-        this.marksOfUse = resp;
-      });
+      this.marksOfUse = resp;
+    });
     this.globalState.semanticMarks$.pipe(
       take(1),
     ).subscribe(resp => {
@@ -196,15 +199,15 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       const selectedSemanticMarks: LexicalConceptListItem[] = [];
       const selectedGrammaticalMarks: LexicalConceptListItem[] = [];
       rels.forEach(r => {
-        if(r?.entityType && r.entityType[0] === "Marche d'uso") {
+        if (r?.entityType && r.entityType[0] === "Marche d'uso") {
           const tempMoU = this.marksOfUse.find(mou => mou.lexicalConcept === r.entity);
-          if(tempMoU !== undefined) selectedMarksOfUse.push(tempMoU);
-        } else if(r?.entityType && r.entityType[0] === "Marche Semantiche") {
+          if (tempMoU !== undefined) selectedMarksOfUse.push(tempMoU);
+        } else if (r?.entityType && r.entityType[0] === "Marche Semantiche") {
           const tempSM = this.semanticMarks.find(sm => sm.lexicalConcept === r.entity);
-          if(tempSM !== undefined) selectedSemanticMarks.push(tempSM);
-        } else if(r?.entityType && r?.entityType[0] === "Marche grammaticale") {
+          if (tempSM !== undefined) selectedSemanticMarks.push(tempSM);
+        } else if (r?.entityType && r?.entityType[0] === "Marche grammaticale") {
           const tempGM = this.grammaticalMarks.find(gm => gm.lexicalConcept === r.entity);
-          if(tempGM !== undefined) selectedGrammaticalMarks.push(tempGM);
+          if (tempGM !== undefined) selectedGrammaticalMarks.push(tempGM);
         }
       })
       this.form.controls.marksOfUse.setValue(selectedMarksOfUse);
@@ -249,7 +252,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
   onAssociateLexicalConcept(selectedConcept: LexicalConceptListItem) {
     console.info(selectedConcept)
-    if(!selectedConcept) return
+    if (!selectedConcept) return
     this.lexiconService.associateLexicalConceptToSense(this.senseEntry.sense, selectedConcept.lexicalConcept).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
@@ -260,14 +263,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo che gestisce la cancellazione del senso in lavorazione */
   onDeleteLexicalSense() {
-    const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmDelSense');
+    const confirmMsg = this.commonService.translateKey(this.translatePrefix + '.confirmDelSense');
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteSense(this.senseEntry.sense), this.senseEntry.sense);
   }
 
   onDissociateLexicalConcept(removedConcept: LexicalConceptListItem) {
     console.info(removedConcept)
-    if(!removedConcept) return;
+    if (!removedConcept) return;
     this.lexiconService.dissociateLexicalConceptFromSense(this.senseEntry.sense, removedConcept.lexicalConcept).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
@@ -277,11 +280,11 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   onFilter(type: string, event: { originalEvent: { isTrusted: boolean }, query: string }) {
-    if(type === 'marksOfUse') {
+    if (type === 'marksOfUse') {
       this.currentFilterMoU$.next(event.query);
-    } else if(type === 'semanticMarks') {
+    } else if (type === 'semanticMarks') {
       this.currentFilterSM$.next(event.query);
-    } else if(type === 'grammaticalMarks') {
+    } else if (type === 'grammaticalMarks') {
       this.currentFilterGM$.next(event.query);
     }
   }
@@ -331,7 +334,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       return;
     }
     if (currentValue && currentValue !== '') {
-      const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmRemoveMorph').replace('#VALUE#',currentValue);
+      const confirmMsg = this.commonService.translateKey(this.translatePrefix + '.confirmRemoveMorph').replace('#VALUE#', currentValue);
       this.popupDeleteItem.confirmMessage = confirmMsg;
       this.popupDeleteItem.showDeleteConfirmSimple(() => {
         //TODO implementa rimozione della morfologia
@@ -369,10 +372,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       const updatedDefinitions: PropertyElement[] = [...this.senseEntry.definition];
       const relIndex = updatedDefinitions.findIndex(x => x.propertyID === relation);
       updatedDefinitions[relIndex].propertyValue = newValue;
-      this.senseEntry = <SenseCore>{ 
-        ...this.senseEntry, 
+      this.senseEntry = <SenseCore>{
+        ...this.senseEntry,
         definition: updatedDefinitions,
-        lastUpdate: resp 
+        lastUpdate: resp
       };
       // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
 
