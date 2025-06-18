@@ -125,14 +125,7 @@ export class DictionaryPreviewComponent implements OnInit {
    * @param event {any}
    */
   public onNodeExpand(node: TreeNode<DictionaryPreviewItem>): void {
-    if (node.type !== 'meaning' && node.type !== 'meaningAnnotationContainer') { return; }
-
-    if (node.type === 'meaning') {
-      this.expandSenseLexicalEntriesTree([node]);
-      return;
-    }
-
-    this.retrieveAndAddSearchAnnotationsForMeaning(node);
+    this.expandSenseLexicalEntriesTree([node]);
   }
 
   /**
@@ -239,9 +232,11 @@ export class DictionaryPreviewComponent implements OnInit {
   private expandSenseLexicalEntriesTree(senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[]): void {
     const expand = (node: TreeNode<DictionaryPreviewItem>) => {
       node.expanded = true;
-      if (node.type === 'meaningAnnotationContainer') {
-        this.onNodeExpand(node);
-      } else if (node.children) {
+      if (node.type === 'meaning') {
+        this.retrieveAndAddSearchAnnotationsForMeaning(node);
+      }
+
+      if (node.children) {
         node.children.forEach(expand);
       }
     };
@@ -272,7 +267,9 @@ export class DictionaryPreviewComponent implements OnInit {
     ).subscribe(result => {
       result.first = request.start;
       result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;
-      senseChildMeaning.children = this.buildAnnotationsLeaf(result);
+      // Remove any existing annotation leaf nodes before adding the new one
+      const nonAnnotationChildren = (senseChildMeaning.children ?? []).filter(child => child.type !== 'annotation');
+      senseChildMeaning.children = [...this.buildAnnotationsLeaf(result), ...nonAnnotationChildren];
     });
   }
 
@@ -400,9 +397,7 @@ export class DictionaryPreviewComponent implements OnInit {
     }
     return items.map((item, i) => {
       const isMeaning = item.type.includes('LexicalSense');
-      const isMeaningAnnotationContainer = isMeaning && item.children?.length === 0;
       let type = isMeaning ? 'meaning' : 'senseLexicalEntry';
-      type = isMeaningAnnotationContainer ? 'meaningAnnotationContainer' : type;
       return <TreeNode<DictionaryPreviewItem>>{
         key: item.id,
         type: type,
