@@ -13,7 +13,7 @@ export interface DictionaryPreviewItem {
     label: string;
     /**List of string to be visualized after the label @example pos */
     suffix: string[];
-    index: number;
+    index: string;
     // children?: DictionaryPreviewItem[];
     searchAnnotation?: SearchAnnotationResult;
 }
