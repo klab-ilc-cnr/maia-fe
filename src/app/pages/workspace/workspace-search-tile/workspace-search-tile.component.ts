@@ -290,6 +290,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
     this.clearTable();
+    this.resetColumnFilters();
     this.setColumnFilters();
 
     this.search();
@@ -556,6 +557,29 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   }
 
   /**
+   * Resets the column filters in the search results table.
+   */
+  private resetColumnFilters() {
+    if (this.searchResultsTable) {
+      delete this.searchResultsTable.filters['index'];
+      delete this.searchResultsTable.filters['kwic'];
+      delete this.searchResultsTable.filters['leftContext'];
+      delete this.searchResultsTable.filters['rightContext'];
+      delete this.searchResultsTable.filters['text'];
+      delete this.searchResultsTable.filters['textHeader'];
+      const tableElement = this.searchResultsTable?.tableViewChild?.nativeElement;
+      if (tableElement) {
+        const filterInputs = tableElement.querySelectorAll('.p-column-filter .p-inputtext');
+        filterInputs.forEach((input: any) => {
+          if (input) {
+            input.value = '';
+          }
+        });
+      }
+    }
+  }
+
+  /**
    * Validates inputs and starts the search process.
    */
   private search() {
@@ -613,6 +637,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchResultsTable.columnWidthsState = this.pTabelColumnWidthStates.columnWidths;
     this.setResizeTableWidth(this.pTabelColumnWidthStates.tableWidth);
     this.searchResultsTable.restoreColumnWidths();
+    this.resetColumnFilters();
   }
 
   private setResizeTableWidth(width: string): void {
