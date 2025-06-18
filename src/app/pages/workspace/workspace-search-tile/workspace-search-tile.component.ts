@@ -445,6 +445,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     }
 
     this.search();
+    this.selectedSearchResults = [];
   }
 
   /**
@@ -471,6 +472,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     }
 
     this.search();
+    this.selectedSearchResults = [];
   }
 
   /**
