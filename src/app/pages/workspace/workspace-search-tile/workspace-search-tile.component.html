@@ -1,4 +1,4 @@
-<div class="card h-100" (keydown.enter)="onSearch()">
+<div class="card h-100">
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
@@ -20,6 +20,7 @@
               <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
               <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
                 class="w-100"
+                (keydown.enter)="onSearch()"
                 [placeholder]="this.searchLabel"
                 [(ngModel)]="searchValue" />
               <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
