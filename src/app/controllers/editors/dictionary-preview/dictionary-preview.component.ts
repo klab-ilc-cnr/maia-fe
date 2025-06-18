@@ -92,8 +92,8 @@ export class DictionaryPreviewComponent implements OnInit {
     return this.posTraits
       .map(pt => {
         const pos = pt.pos ?? '';
-        const traits = Array.isArray(pt.traits) && pt.traits.length > 0 ? pt.traits.join(', ') : '';
-        return traits ? `${pos}, ${traits}` : pos;
+        const traits = Array.isArray(pt.traits) && pt.traits.length > 0 ? pt.traits.join('') : '';
+        return traits ? `${pos}${traits}` : pos;
       })
       .join(', ');
   }
