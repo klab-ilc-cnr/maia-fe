@@ -344,7 +344,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * @param event The event triggered by the restriction selection change.
    */
   onChangeRestrictionSelection(event: any) {
-    // this.emptyTableResultsOnly();
+    // this.onSearch();
   }
 
   /**
@@ -353,8 +353,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * @returns The style object for the highlighted row.
    */
   highlightAnnotation(searchResult: SearchResultRow) {
-    if (!searchResult.annotated
-      || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return; }
+    if (!searchResult.annotated || !this.selectedLayer) { return; }
 
     const backgroundColor = this.searchResultHighlightColor;
     const textColor = backgroundColor ? (this.getContrastYIQ(backgroundColor) === 'dark' ? '#FFFFFF' : '#000000') : '#000000';
