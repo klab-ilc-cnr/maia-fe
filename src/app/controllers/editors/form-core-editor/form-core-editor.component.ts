@@ -21,6 +21,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 })
 export class FormCoreEditorComponent implements OnInit, OnDestroy {
   readonly translatePrefix = 'LEXICON_EDITOR.FORM';
+  private readonly partOfSpeechId = 'http://www.lexinfo.net/ontology/3.0/lexinfo#partOfSpeech';
+
   /**Subject per la gestione della cancellazione delle subscribe */
   private readonly unsubscribe$ = new Subject();
   /**Stringa per il campo vuoto */
@@ -58,7 +60,8 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   /**Observable delle relazioni morfologiche */
   morphRelations$ = this.globalState.morphologies$.pipe(
     switchMap(list => {
-      const mappedElements = list.map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
+      const mappedElements = list.filter(el => el.propertyId !== this.partOfSpeechId)
+        .map(l => <{ label: string, id: string }>{ label: l.propertyLabel, id: l.propertyId });
       return of(mappedElements);
     }),
   );
@@ -69,7 +72,8 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    */
   morphRelationValues = (relation: string) => this.globalState.morphologies$.pipe(
     switchMap(list => {
-      const values = list.find(morph => morph.propertyId === relation)?.propertyValues ?? [];
+      const values = list.filter(el => el.propertyId !== this.partOfSpeechId)
+        .find(morph => morph.propertyId === relation)?.propertyValues ?? [];
       return of(values);
     }),
   );
@@ -78,8 +82,8 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
    * @param formId {string} identificativo della forma
    */
   private deleteForm = (formId: string) => {
-    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix+'.deletionInProg'));
-    const successMsg = this.commonService.translateKey(this.translatePrefix+'.removeFormSuccess');
+    this.showOperationInProgress(this.commonService.translateKey(this.translatePrefix + '.deletionInProg'));
+    const successMsg = this.commonService.translateKey(this.translatePrefix + '.removeFormSuccess');
     this.lexiconService.deleteForm(formId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
@@ -140,17 +144,17 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
         const currentPropValue = this.labelFormItems[currentPropertyId].propertyValue;
         const respValue = resp[key];
         if (currentPropertyId !== -1 && this.formEntry.label.find(x => x.propertyID === key)?.propertyValue !== respValue) {
-          const isWhiteSpaceOnly = typeof(respValue)==='string' && !respValue.trim();
-          if(key === 'writtenRep' && (respValue === '' || isWhiteSpaceOnly)) {
-            const msg = this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey(this.translatePrefix+'.invalidWrittenRep'));
+          const isWhiteSpaceOnly = typeof (respValue) === 'string' && !respValue.trim();
+          if (key === 'writtenRep' && (respValue === '' || isWhiteSpaceOnly)) {
+            const msg = this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey(this.translatePrefix + '.invalidWrittenRep'));
             this.messageService.add(msg);
             return;
           }
-          if(respValue === '') {
+          if (respValue === '') {
             const deleteRelObs = this.lexiconService.deleteRelation(this.formEntry.form, { relation: key, value: currentPropValue });
             this.manageUpdateObservable(deleteRelObs, key, respValue);
             return;
-            }
+          }
           this.updateForm(key, respValue).then(() => {
             this.labelFormItems[currentPropertyId] = <PropertyElement>{ ...this.labelFormItems[currentPropertyId], propertyValue: respValue };
           });
@@ -163,11 +167,11 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const pos = this.formEntry.inheritedMorphology.find(m => m.trait.endsWith('partOfSpeech'))?.value;
     this.formEntry.inheritedMorphology.forEach(m => {
-      if(!m.trait.endsWith('partOfSpeech')) {
+      if (!m.trait.endsWith('partOfSpeech')) {
         const morphElement = { relation: m.trait, value: m.value, external: true };
         this.morphology.push(new FormControl(morphElement));
         this._morphology.push(<{ relation: string, value: string, external: boolean }>{ ...morphElement });
-        }
+      }
     });
     if (pos) {
       this.form.get('pos')?.setValue(pos);
@@ -231,7 +235,7 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
 
   /**Metodo per la cancellazione della forma */
   onDeleteLexicalForm() {
-    const confirmMsg = this.commonService.translateKey(this.translatePrefix+'.confirmDelForm');
+    const confirmMsg = this.commonService.translateKey(this.translatePrefix + '.confirmDelForm');
     this.popupDeleteItem.confirmMessage = confirmMsg;
     this.popupDeleteItem.showDeleteConfirm(() => this.deleteForm(this.formEntry.form), this.formEntry.form);
   }
@@ -321,15 +325,15 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(resp => {
       this.formEntry = { ...this.formEntry, lastUpdate: resp };
-      if(isLabelEdit) {
+      if (isLabelEdit) {
         const updatedDefinitions: PropertyElement[] = [...this.formEntry.label];
         const relIndex = updatedDefinitions.findIndex(x => x.propertyID === relation);
         updatedDefinitions[relIndex].propertyValue = newValue;
-        this.formEntry = <FormCore>{ 
-          ...this.formEntry, 
+        this.formEntry = <FormCore>{
+          ...this.formEntry,
           definition: updatedDefinitions
         };
-        }
+      }
       // const msg = this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success`);
       // this.messageService.add(msg);
 
