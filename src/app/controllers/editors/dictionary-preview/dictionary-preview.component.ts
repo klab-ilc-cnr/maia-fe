@@ -12,7 +12,7 @@ import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relat
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
 import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/models/search/search-annotation-result';
 import { CommonService } from 'src/app/services/common.service';
-import { DictionaryService } from 'src/app/services/dictionary.service';
+import { DictionaryService, DictionaryTraits } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
 
@@ -61,6 +61,7 @@ export class DictionaryPreviewComponent implements OnInit {
   public meaningsPerSenseAnnotations: SenseEntry[] = [];
   public defaultVisibleRows = 5;
   public orderedSeeAlso: LinguisticRelationModel[] = [];
+  public posTraits: DictionaryTraits[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -84,6 +85,17 @@ export class DictionaryPreviewComponent implements OnInit {
       });
     }
     return this.structuredNote ? count + this.structuredNote.decameronOccurrences : count;
+  }
+
+  get posAndTraits(): string {
+    if (!this.posTraits || this.posTraits.length === 0) return '';
+    return this.posTraits
+      .map(pt => {
+        const pos = pt.pos ?? '';
+        const traits = Array.isArray(pt.traits) && pt.traits.length > 0 ? pt.traits.join('') : '';
+        return traits ? `${pos}${traits}` : pos;
+      })
+      .join(', ');
   }
 
   ngOnInit(): void {
@@ -353,6 +365,13 @@ export class DictionaryPreviewComponent implements OnInit {
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
     ).subscribe((data: TextualDocument[]) => {
       this.firstAttestationLabel = data.filter((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)[0]?.title || '';
+    });
+
+    this.dictionaryService.retrieveDictionaryTraits(this.dictionaryEntry.id).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe((traits: DictionaryTraits[]) => {
+      this.posTraits = traits;
     });
   }
 
