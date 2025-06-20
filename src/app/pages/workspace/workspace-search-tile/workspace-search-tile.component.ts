@@ -68,7 +68,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   selectedDocuments: TreeNode<CorpusElement>[] = [];
   selectedLayer?: TLayer;
   lastSearchRequestLayer?: TLayer;
-  searchResultHighlightColor?: string;
   layers$: Observable<TLayer[]> = this.layerState.layers$.pipe(
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
@@ -117,6 +116,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
   private filtersSubject: Subject<any> = new Subject();
   private readonly unsubscribe$ = new Subject<void>();
+
+  get annotationAllowed(): boolean {
+    return this.annotationEnabled && this.selectedSearchResults && this.selectedSearchResults.length > 0;
+  }
 
   ngOnInit(): void {
     this.files$ = this.corpusStateService.filesystem$.pipe(
@@ -291,6 +294,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
+    this.lastSearchRequestLayer = this.selectedLayer;
     this.clearTable();
     this.resetColumnFilters();
     this.setColumnFilters();
@@ -358,7 +362,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   highlightAnnotation(searchResult: SearchResultRow) {
     if (!searchResult.annotated || !this.lastSearchRequestLayer?.id) { return; }
 
-    const backgroundColor = this.searchResultHighlightColor;
+    const backgroundColor = this.lastSearchRequestLayer?.color;
     const textColor = backgroundColor ? (this.getContrastYIQ(backgroundColor) === 'dark' ? '#FFFFFF' : '#000000') : '#000000';
 
     return {
@@ -611,9 +615,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
         this.loading = false;
         this.totalRecords = result.count;
-        this.searchResultHighlightColor = this.selectedLayer?.color;
         this.updateTableHeight();
-        this.lastSearchRequestLayer = this.selectedLayer;
         this.enableDisableAnnotationButtons();
       },
       error: (error) => {
@@ -669,12 +671,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    */
   private updateTableHeight() {
     this.tableContainerHeight = this.currentPanelHeight - this.tableHeaderHegith;
-  }
-
-  private emptyTableResultsOnly() {
-    this.searchResults = [];
-    this.selectedSearchResults = [];
-    this.searchResultHighlightColor = this.selectedLayer?.color;
   }
 
   /**

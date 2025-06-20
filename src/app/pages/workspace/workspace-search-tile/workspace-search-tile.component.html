@@ -76,7 +76,7 @@
               (onClick)="showAnnotationTile()"
               (onDropdownClick)="setAnnotateMenuItems()"
               [model]="annotateItems"
-              [disabled]="!annotationEnabled"
+              [disabled]="!annotationAllowed"
               styleClass="custom-info-btn p-button-raised p-button-info mx-2">
           </p-splitButton>
           <p-splitButton #exp appendTo="body" 
