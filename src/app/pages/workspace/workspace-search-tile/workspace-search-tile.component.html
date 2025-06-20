@@ -76,7 +76,7 @@
               (onClick)="showAnnotationTile()"
               (onDropdownClick)="setAnnotateMenuItems()"
               [model]="annotateItems"
-              [disabled]="selectedSearchResults.length === 0 || !selectedLayer"
+              [disabled]="!annotationEnabled"
               styleClass="custom-info-btn p-button-raised p-button-info mx-2">
           </p-splitButton>
           <p-splitButton #exp appendTo="body" 
@@ -261,9 +261,9 @@
     [visible]="showMultipleAnnotationDialog"
     [deleteMode]="isDeleting" 
     [textOffsets]="textOffsets" 
-    [layerId]="selectedLayer?.id"
-    [layerName]="selectedLayer?.name"
-    [layerColor]="selectedLayer?.color"
+    [layerId]="lastSearchRequestLayer?.id"
+    [layerName]="lastSearchRequestLayer?.name"
+    [layerColor]="lastSearchRequestLayer?.color"
     (onDialogHide)="showMultipleAnnotationDialog = false"
     (onSaveStart)="onSaveStart()" (onSaveEnd)="onSaveEnd($event)"
     (onDeleteStart)="onDeleteStart()" (onDeleteEnd)="onDeleteEnd($event)"
