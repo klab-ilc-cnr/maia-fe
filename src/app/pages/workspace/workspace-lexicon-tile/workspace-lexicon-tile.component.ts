@@ -16,6 +16,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-workspace-lexicon-tile',
@@ -726,6 +727,19 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       return 0
     })];
   }
+    /**
+ * @private
+ * Metodo che visualizza il popup di operazione fallita
+ * @param errorMessage {string} messaggio di errore
+ */
+  private showOperationFailed(errorMessage: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: true
+    });
+  }
+
 
   /**
    * @private
@@ -750,7 +764,10 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     forkJoin(httpDelete).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        return this.commonService.throwHttpErrorAndMessage(error, error.message)
+                const errMess = JSON.parse(error.error)['message']
+        this.showOperationFailed(errMess);
+        return throwError(() => new Error(error.error));
+        // return this.commonService.throwHttpErrorAndMessage(error, error.message)
       }),
     ).subscribe(() => {
       const successMsg = "Elementi rimossi";
