@@ -87,9 +87,9 @@ export class FormCoreEditorComponent implements OnInit, OnDestroy {
     this.lexiconService.deleteForm(formId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
-        // this.showOperationFailed("Deletion failed: " + error.message);
-        // return throwError(() => new Error(error.error));
+        const errMess = JSON.parse(error.error)['message']
+        this.showOperationFailed(errMess);
+        return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMsg));

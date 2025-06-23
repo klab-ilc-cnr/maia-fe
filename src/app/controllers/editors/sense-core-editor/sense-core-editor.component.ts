@@ -104,7 +104,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     this.lexiconService.deleteLexicalSense(senseId).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
-        this.showOperationFailed("Deletion failed: " + error.message);
+        const errMess = JSON.parse(error.error)['message']
+        this.showOperationFailed(errMess);
         return throwError(() => new Error(error.error));
       }),
     ).subscribe(() => {
