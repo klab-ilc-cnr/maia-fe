@@ -137,7 +137,7 @@
       <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
         <td *ngFor="let col of cols; let i = index">
           <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && (rowData['type'] == LexicalEntryType.LEXICAL_ENTRY && !rowData['isDescribedByLexicographicComponent'])"></p-treeTableCheckbox>
+          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY"></p-treeTableCheckbox>
           <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
             [status]="rowData[col.field]"></app-icon-lock>
           <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]" [pTooltip]="rowData[col.field]" [escape]="false"></app-icon-note>
