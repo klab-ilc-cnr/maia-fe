@@ -57,9 +57,12 @@
             <p-dropdown class="flex  justify-content-between col-6" styleClass="w-100" [options]="(languages$|async)||[]"
                 [placeholder]="'DICTIONARY_EXPLORER.language'|translate" [showClear]="true" formControlName="language">
             </p-dropdown>
-            <p-dropdown class="flex justify-content-between col-6" styleClass="w-100" [options]="[]"
-                [placeholder]="'DICTIONARY_EXPLORER.editor'|translate" [showClear]="true" [filter]="true"
+            <p-dropdown class="flex justify-content-between col-6" styleClass="w-100" [options]="(authors$|async)||[]"
+                optionValue="label" [placeholder]="'DICTIONARY_EXPLORER.editor'|translate" [showClear]="true" [filter]="true"
                 filterBy="label" formControlName="editor">
+                <ng-template let-item pTemplate="item">
+                    <div>{{item.label}} ({{item.count}})</div>
+                </ng-template>
             </p-dropdown>
         </div>
         <div class="flex flex-row">

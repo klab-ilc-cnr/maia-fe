@@ -9,6 +9,7 @@ import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-requ
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
 import { LexicographicComponent } from '../models/dictionary/lexicographic-component.model';
 import { TextualDocument } from '../models/dictionary/textual-document.model';
+import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 import { CommonService } from './common.service';
 import { LoggedUserService } from './logged-user.service';
@@ -213,6 +214,14 @@ export class DictionaryService {
         seeAlsoDictionaryId: seeAlsoId
       }
     );
+  }
+
+  /**
+   * GET to retrieve the list of types available for selection
+   * @returns {Observable<any>} observable of the author list
+   */
+  getAuthors(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}/statistics/dictionary/authors`);
   }
 
   /**
