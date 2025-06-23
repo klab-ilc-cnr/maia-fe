@@ -378,8 +378,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * @returns An observable of word annotation responses.
    */
   showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<WordAnnotationResponse[]> => {
-    if (!this.lastSearchRequestLayer?.id
-      || this.selectedRestriction?.code === RestrictionEnum.notAnnotedOnly) { return of([]); }
+    if (!this.lastSearchRequestLayer?.id) { return of([]); }
 
     const request = new WordAnnotationRequest();
     request.start = searchResult!.kwicOffset;
