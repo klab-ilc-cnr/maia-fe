@@ -1,0 +1,38 @@
+<span #tooltipTarget
+      class="tooltip-trigger"
+      (mouseenter)="onMouseEnter($event)"
+      (mouseleave)="onMouseLeave()">
+  <ng-content></ng-content>
+</span>
+
+<div class="custom-primeng-tooltip"
+     *ngIf="tooltipVisible"
+     [style.top.px]="tooltipY"
+     [style.left.px]="tooltipX"
+     [style.background]="backgroundColor"
+     [style.pointer-events]="'auto'"
+     (mouseenter)="onTooltipMouseEnter()"
+     (mouseleave)="onTooltipMouseLeave()">
+     <ng-container *ngIf="!errorMessage; else error">
+      <ng-container *ngIf="tooltipData; else loading">
+        <ng-container
+          *ngIf="tooltipTemplate; else defaultText"
+          [ngTemplateOutlet]="tooltipTemplate"
+          [ngTemplateOutletContext]="{ $implicit: tooltipData }">
+        </ng-container>
+      
+        <ng-template #defaultText>
+          {{ tooltipData }}
+        </ng-template>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #error>
+      <span class="error-message">{{ errorMessage }}</span>
+    </ng-template>
+
+    <ng-template #loading>
+      <i class="pi pi-spin pi-spinner" style="font-size: 0.9rem; margin-right: 5px;"></i>
+    </ng-template>
+</div>
+

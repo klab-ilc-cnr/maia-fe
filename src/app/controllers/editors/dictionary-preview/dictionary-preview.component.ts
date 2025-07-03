@@ -12,7 +12,7 @@ import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relat
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
 import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/models/search/search-annotation-result';
 import { CommonService } from 'src/app/services/common.service';
-import { DictionaryService } from 'src/app/services/dictionary.service';
+import { DictionaryService, DictionaryTraits } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
 
@@ -61,6 +61,7 @@ export class DictionaryPreviewComponent implements OnInit {
   public meaningsPerSenseAnnotations: SenseEntry[] = [];
   public defaultVisibleRows = 5;
   public orderedSeeAlso: LinguisticRelationModel[] = [];
+  public posTraits: DictionaryTraits[] = [];
 
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
@@ -84,6 +85,17 @@ export class DictionaryPreviewComponent implements OnInit {
       });
     }
     return this.structuredNote ? count + this.structuredNote.decameronOccurrences : count;
+  }
+
+  get posAndTraits(): string {
+    if (!this.posTraits || this.posTraits.length === 0) return '';
+    return this.posTraits
+      .map(pt => {
+        const pos = pt.pos ?? '';
+        const traits = Array.isArray(pt.traits) && pt.traits.length > 0 ? pt.traits.join('') : '';
+        return traits ? `${pos}${traits}` : pos;
+      })
+      .join(', ');
   }
 
   ngOnInit(): void {
@@ -113,9 +125,7 @@ export class DictionaryPreviewComponent implements OnInit {
    * @param event {any}
    */
   public onNodeExpand(node: TreeNode<DictionaryPreviewItem>): void {
-    if (node.type !== 'meaning') { return; }
-
-    this.retrieveAndAddSearchAnnotationsForMeaning(node);
+    this.expandSenseLexicalEntriesTree([node]);
   }
 
   /**
@@ -188,16 +198,24 @@ export class DictionaryPreviewComponent implements OnInit {
   private buildSenseLexicalEntriesTree(sortedItems: DictionarySortingItem[]): TreeNode<DictionaryPreviewItem>[] {
     return this.mapSortingItemToPreviewTreeNode(sortedItems).map(node => {
       if (node.children) {
-        const uniqueChildren = new Map<string, TreeNode<DictionaryPreviewItem>>();
-        node.children.forEach(child => {
-          if (child.data?.referredEntity && !uniqueChildren.has(child.data.referredEntity)) {
-            uniqueChildren.set(child.data.referredEntity, child);
+        const uniqueChildren = Array.from(
+          new Map(
+            node.children
+              .filter(child => child.data?.referredEntity)
+              .map(child => [child.data!.referredEntity, child])
+          ).values()
+        );
+        uniqueChildren.forEach((child, index) => {
+          child.data!.index = (index + 1).toString();
+          if (child.children) {
+            child.children.forEach((grandChild, grandChildIndex) => {
+              if (grandChild.data) {
+                grandChild.data.index = `${child.data!.index}.${grandChildIndex + 1}`;
+              }
+            });
           }
         });
-        node.children = Array.from(uniqueChildren.values()).map((child, index) => {
-          child.data!.index = index + 1;
-          return child;
-        });
+        node.children = uniqueChildren;
       }
       return node;
     });
@@ -212,15 +230,17 @@ export class DictionaryPreviewComponent implements OnInit {
    * @param senseLexicalEntriesTree - An array of `TreeNode` objects representing the tree of sense lexical entries.
    */
   private expandSenseLexicalEntriesTree(senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[]): void {
-    senseLexicalEntriesTree.forEach(node => {
-      if (node.children) {
-        node.expanded = true;
-        node.children.forEach(child => {
-          child.expanded = true;
-          this.onNodeExpand(child);
-        });
+    const expand = (node: TreeNode<DictionaryPreviewItem>) => {
+      node.expanded = true;
+      if (node.type === 'meaning') {
+        this.retrieveAndAddSearchAnnotationsForMeaning(node);
       }
-    });
+
+      if (node.children) {
+        node.children.forEach(expand);
+      }
+    };
+    senseLexicalEntriesTree.forEach(expand);
   }
 
   /**
@@ -247,7 +267,9 @@ export class DictionaryPreviewComponent implements OnInit {
     ).subscribe(result => {
       result.first = request.start;
       result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;
-      senseChildMeaning.children = this.buildAnnotationsLeaf(result);
+      // Remove any existing annotation leaf nodes before adding the new one
+      const nonAnnotationChildren = (senseChildMeaning.children ?? []).filter(child => child.type !== 'annotation');
+      senseChildMeaning.children = [...this.buildAnnotationsLeaf(result), ...nonAnnotationChildren];
     });
   }
 
@@ -265,7 +287,7 @@ export class DictionaryPreviewComponent implements OnInit {
       prefix: [],
       label: '',
       suffix: [],
-      index: 0
+      index: '0'
     };
 
     const annotationLeaf: TreeNode<DictionaryPreviewItem> = {
@@ -354,6 +376,13 @@ export class DictionaryPreviewComponent implements OnInit {
     ).subscribe((data: TextualDocument[]) => {
       this.firstAttestationLabel = data.filter((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)[0]?.title || '';
     });
+
+    this.dictionaryService.retrieveDictionaryTraits(this.dictionaryEntry.id).pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message)),
+    ).subscribe((traits: DictionaryTraits[]) => {
+      this.posTraits = traits;
+    });
   }
 
   /**
@@ -368,9 +397,10 @@ export class DictionaryPreviewComponent implements OnInit {
     }
     return items.map((item, i) => {
       const isMeaning = item.type.includes('LexicalSense');
+      let type = isMeaning ? 'meaning' : 'senseLexicalEntry';
       return <TreeNode<DictionaryPreviewItem>>{
         key: item.id,
-        type: isMeaning ? 'meaning' : 'senseLexicalEntry',
+        type: type,
         label: item.label,
         data: item,
         expanded: !isMeaning,

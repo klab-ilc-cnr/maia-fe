@@ -22,7 +22,7 @@
       <div class="flex-column">
         <h2>
           <span class="fw-bold">{{ dictionaryEntry.label }}</span>
-          <sub class="ml-1">{{ dictionaryEntry["pos"].join(" ") }}</sub>
+          <sub class="ml-1">{{ posAndTraits }}</sub>
         </h2>
       </div>
       <div class="flex-column ml-5 justify-content-end d-flex font-size-larger">
@@ -268,12 +268,20 @@
         <ng-template let-annotationTreeItem pTemplate="annotation">
           <div class="custom-leaf">
             <p-table
-              [id]="'annTable_'+annotationTreeItem.parent.key"
+              [id]="'annTable_' + annotationTreeItem.parent.key"
               [value]="annotationTreeItem.data.searchAnnotation.data"
               [lazy]="true"
               [lazyLoadOnInit]="false"
-              (onLazyLoad)="lazyLoadSearchResults($event, annotationTreeItem.parent)"
-              (onPage)="onPage($event, annotationTreeItem.data.searchAnnotation, 'annTable_'+annotationTreeItem.parent.key)"
+              (onLazyLoad)="
+                lazyLoadSearchResults($event, annotationTreeItem.parent)
+              "
+              (onPage)="
+                onPage(
+                  $event,
+                  annotationTreeItem.data.searchAnnotation,
+                  'annTable_' + annotationTreeItem.parent.key
+                )
+              "
               [totalRecords]="annotationTreeItem.data.searchAnnotation.count"
               [rowHover]="true"
               [first]="annotationTreeItem.data.searchAnnotation.first"
@@ -282,19 +290,33 @@
               [tableStyle]="{ width: '100%' }"
               [rowsPerPageOptions]="[5, 10, 25]"
               paginatorDropdownAppendTo="body"
-              [showCurrentPageReport]="annotationTreeItem.data.searchAnnotation.count > 0"
-              [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate' | translate"
+              [showCurrentPageReport]="
+                annotationTreeItem.data.searchAnnotation.count > 0
+              "
+              [currentPageReportTemplate]="
+                'GENERAL.currentPageReportTemplate' | translate
+              "
             >
               <ng-template pTemplate="header">
                 <tr>
-                  <th class="ellips-text" style="width: 10%" pTooltip="{{
-                    'DICTIONARY_EDITOR.PREVIEW_TAB.text' | translate
-                  }}" tooltipPosition="top">
+                  <th
+                    class="ellips-text"
+                    style="width: 10%"
+                    pTooltip="{{
+                      'DICTIONARY_EDITOR.PREVIEW_TAB.text' | translate
+                    }}"
+                    tooltipPosition="top"
+                  >
                     {{ "DICTIONARY_EDITOR.PREVIEW_TAB.text" | translate }}
                   </th>
-                  <th class="ellips-text" style="width: 10%" pTooltip="{{
-                    'DICTIONARY_EDITOR.PREVIEW_TAB.reference' | translate
-                  }}" tooltipPosition="top">
+                  <th
+                    class="ellips-text"
+                    style="width: 10%"
+                    pTooltip="{{
+                      'DICTIONARY_EDITOR.PREVIEW_TAB.reference' | translate
+                    }}"
+                    tooltipPosition="top"
+                  >
                     {{ "DICTIONARY_EDITOR.PREVIEW_TAB.reference" | translate }}
                   </th>
                   <th style="width: 80%">
@@ -304,8 +326,20 @@
               </ng-template>
               <ng-template pTemplate="body" let-annotation>
                 <tr>
-                  <td class="ellips-text" [pTooltip]="annotation.text" tooltipPosition="top">{{ annotation.text }}</td>
-                  <td class="ellips-text" [pTooltip]="annotation.reference" tooltipPosition="top">{{ annotation.reference }}</td>
+                  <td
+                    class="ellips-text"
+                    [pTooltip]="annotation.text"
+                    tooltipPosition="top"
+                  >
+                    {{ annotation.text }}
+                  </td>
+                  <td
+                    class="ellips-text"
+                    [pTooltip]="annotation.reference"
+                    tooltipPosition="top"
+                  >
+                    {{ annotation.reference }}
+                  </td>
                   <td [innerHTML]="highlightSection(annotation)"></td>
                 </tr>
               </ng-template>

@@ -9,7 +9,11 @@
         "save": "Salva",
         "selectValue": "Seleziona valore",
         "update": "Aggiorna",
-        "browserWarning": "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome"
+        "browserWarning": "Il tuo browser non è pienamente compatibile con questo sito, è preferibile utilizzare chrome",
+        "operationInProgress": "Operazione in corso...",
+        "delete": "Elimina",
+        "clean": "Reset",
+        "execute": "Esegui"
     },
     "CORPUS_EXPLORER": {
         "addFolderTitle": "Aggiungi cartella",
@@ -356,6 +360,8 @@
         "exportSelected": "Esporta selezionati",
         "exportSelectedFileName": "export_selected",
         "exportAllFileName": "export_all",
+        "disableForAnyValue": "Disabilita per qualsiasi valore",
+        "anyValue": "Qualsiasi valore",
         "columns": {
             "index": "Indice",
             "text": "Testo",
@@ -368,7 +374,21 @@
             "search": "Cerca",
             "clear": "Reset",
             "saveAs": "Salva",
-            "export": "Esporta"
+            "export": "Esporta",
+            "annotate": "Annota",
+            "removeAnnotations": "Rimuovi annotazioni"
+        },
+        "restriction":{
+            "placeholder": "Restrizione",
+            "none": "Nessuna",
+            "annotedOnly": "Solo stringhe annotate",
+            "notAnnotedOnly": "Solo stringhe non annotate"
+        },
+        "annotations":{
+            "saveSuccess": "annotazioni create con successo",
+            "saveFailed": "Non è stato possibile creare annotazioni per i seguenti indici selezionati: ",
+            "deleteSuccess": "annotazioni eliminate con successo",
+            "deleteFailed": "Non è stato possibile eliminare le annotazioni per i seguenti indici selezionati: "
         }
     }
 }

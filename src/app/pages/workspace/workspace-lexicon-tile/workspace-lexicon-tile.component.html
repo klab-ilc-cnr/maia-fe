@@ -44,32 +44,32 @@
 <p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true">
   <div class="flex flex-row">
     <div class="flex m-2 field-checkbox">
-      <p-checkbox id="caseSensitiveInput" [(ngModel)]="caseSensitive" [binary]="true" inputId="caseSensitive" (ngModelChange)="onChangeFilter()"></p-checkbox>
-      <label for="caseSensitiveInput">Case sensitive</label>
+      <p-checkbox id="lexicon-caseSensitiveInput" [(ngModel)]="caseSensitive" [binary]="true" inputId="caseSensitive" (ngModelChange)="onChangeFilter()"></p-checkbox>
+      <label for="lexicon-caseSensitiveInput">Case sensitive</label>
     </div>
   </div>
   <div class="flex flex-row">
     <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="equals" [(ngModel)]="searchMode"
-        inputId="equals"></p-radioButton>
-      <label for="equals">Equals</label>
+        inputId="lexicon-equals"></p-radioButton>
+      <label for="lexicon-equals">Equals</label>
     </div>
     <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="startsWith" [(ngModel)]="searchMode"
-        inputId="startsWith"></p-radioButton>
-      <label for="startsWith">StartsWith</label>
+        inputId="lexicon-startsWith"></p-radioButton>
+      <label for="lexicon-startsWith">StartsWith</label>
     </div>
   </div>
   <div class="flex flex-row">
     <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="contains" [(ngModel)]="searchMode"
-        inputId="contains"></p-radioButton>
-      <label for="contains">Contains</label>
+        inputId="lexicon-contains"></p-radioButton>
+      <label for="lexicon-contains">Contains</label>
     </div>
     <div class="flex col-6 field-radiobutton">
       <p-radioButton (click)="onChangeFilter()" name="searchMode" value="end" [(ngModel)]="searchMode"
-        inputId="end"></p-radioButton>
-      <label for="end">End</label>
+        inputId="lexicon-end"></p-radioButton>
+      <label for="lexicon-end">End</label>
     </div>
   </div>
   <div class="flex flex-row w-100">
@@ -137,7 +137,7 @@
       <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
         <td *ngFor="let col of cols; let i = index">
           <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && (rowData['type'] == LexicalEntryType.LEXICAL_ENTRY && !rowData['isDescribedByLexicographicComponent'])"></p-treeTableCheckbox>
+          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY"></p-treeTableCheckbox>
           <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
             [status]="rowData[col.field]"></app-icon-lock>
           <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]" [pTooltip]="rowData[col.field]" [escape]="false"></app-icon-note>

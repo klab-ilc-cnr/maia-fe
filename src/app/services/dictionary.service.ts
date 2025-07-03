@@ -9,9 +9,16 @@ import { LexicogEntriesRequest } from '../models/dictionary/lexicog-entries-requ
 import { LexicogEntriesResponse } from '../models/dictionary/lexicog-entries-response.model';
 import { LexicographicComponent } from '../models/dictionary/lexicographic-component.model';
 import { TextualDocument } from '../models/dictionary/textual-document.model';
+import { LexiconStatistics } from '../models/lexicon/lexicon-statistics';
 import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.model';
 import { CommonService } from './common.service';
 import { LoggedUserService } from './logged-user.service';
+
+
+export class DictionaryTraits {
+  public pos: string | undefined;
+  public traits: string[] | undefined;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -210,6 +217,14 @@ export class DictionaryService {
   }
 
   /**
+   * GET to retrieve the list of types available for selection
+   * @returns {Observable<any>} observable of the author list
+   */
+  getAuthors(): Observable<LexiconStatistics[]> {
+    return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}/statistics/dictionary/authors`);
+  }
+
+  /**
  * Request http to retrieve the list of works from an author
  * @returns {Observable<TextualDocument[]>}
  */
@@ -285,6 +300,10 @@ export class DictionaryService {
    */
   retrieveOtherWorks(): Observable<TextualDocument[]> {
     return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/otherDocuments`);
+  }
+
+  retrieveDictionaryTraits(dictionaryId: string): Observable<DictionaryTraits[]> {
+    return this.http.get<DictionaryTraits[]>(`${this.lexoUrl}/data/dictionaryEntryPosTraits?id=${this.commonService.encodeUrl(dictionaryId)}`);
   }
 
   /**

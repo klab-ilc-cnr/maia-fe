@@ -34,6 +34,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   statuses = Object.values(STATUSES);
   /**List of available languages */
   languages$ = this.globalState.languages$; //FIXME probably to be changed
+  authors$ = this.dictionaryService.getAuthors();
   /**Body for the http request of the list of dictionary entries */
   lexicogRequest: LexicogEntriesRequest = {
     text: '',

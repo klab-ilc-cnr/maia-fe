@@ -1,4 +1,4 @@
-<div class="card h-100" (keydown.enter)="onSearch()">
+<div class="card h-100">
     <div class="row">
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
@@ -20,6 +20,7 @@
               <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
               <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
                 class="w-100"
+                (keydown.enter)="onSearch()"
                 [placeholder]="this.searchLabel"
                 [(ngModel)]="searchValue" />
               <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
@@ -38,22 +39,56 @@
 
     <div class="row">
       <div class="col d-flex justify-content-start">
-            {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
+        <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
+            styleClass="w-100" class="dropdownDimensions"
+            placeholder="Layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
+            <ng-template let-layer pTemplate="item">
+                <div class="country-item">
+                  <span class="pe-2">
+                    <i class="fa-solid fa-palette" [ngStyle]="{'color': layer.color}" style="font-size: 1.5rem;"></i>
+                  </span>
+                  <span>
+                    {{ layer.name }}
+                  </span>
+                </div>
+            </ng-template>
+        </p-dropdown>
+        <p-dropdown #restriction="ngModel" name="restriction" appendTo="body" [(ngModel)]="selectedRestriction" optionLabel="name"
+            styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
+            placeholder="{{'SEARCH.restriction.placeholder'|translate}}" [options]="restrictionOptions || []" [filter]="true" 
+            [showClear]="true" (onChange)="onChangeRestrictionSelection($event)"  [required]="false">
+        </p-dropdown>        
       </div>
       <div class="col d-flex justify-content-end">
-        <button pButton type="button" (click)="onSearch()" class="mx-2">{{'SEARCH.buttons.search'|translate}}</button>
+        <button pButton type="button" (click)="onSearch()" class="mx-2 p-button-success">{{'SEARCH.buttons.search'|translate}}</button>
         <button pButton type="button" (click)="onClear()" class="p-button-secondary mx-2">{{'SEARCH.buttons.clear'|translate}}</button>
         <button disabled pButton type="button" class="p-button-help mx-2">{{'SEARCH.buttons.saveAs'|translate}}</button>
-        <p-splitButton #exp appendTo="body" 
-            label="{{'SEARCH.buttons.export'|translate}}"
-            (onClick)="exp.onDropdownButtonClick($event)"
-            (onDropdownClick)="setExportMenuItems()"
-            [model]="exportItems"
-            [disabled]="searchResults.length === 0"
-            styleClass="p-button-raised p-button-info mx-2">
-        </p-splitButton>
       </div>
     </div>
+    <p-divider></p-divider>
+    <div class="row">
+        <div class="col d-flex justify-content-start">
+              {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
+        </div>
+        <div class="col d-flex justify-content-end">
+          <p-splitButton #annotate appendTo="body" 
+              label="{{'SEARCH.buttons.annotate'|translate}}"
+              (onClick)="showAnnotationTile()"
+              (onDropdownClick)="setAnnotateMenuItems()"
+              [model]="annotateItems"
+              [disabled]="!annotationAllowed"
+              styleClass="custom-info-btn p-button-raised p-button-info mx-2">
+          </p-splitButton>
+          <p-splitButton #exp appendTo="body" 
+              label="{{'SEARCH.buttons.export'|translate}}"
+              (onClick)="exp.onDropdownButtonClick($event)"
+              (onDropdownClick)="setExportMenuItems()"
+              [model]="exportItems"
+              [disabled]="searchResults.length === 0"
+              styleClass="p-button-raised p-button-info mx-2">
+          </p-splitButton>
+        </div>
+      </div>
     <div #tableContainer class="row mt-2">
       <p-table #dt 
                 dataKey="id"
@@ -65,6 +100,7 @@
                 (onColResize)="onColResize($event)"
                 [totalRecords]="totalRecords"
                 [(selection)]="selectedSearchResults"
+                [selectionPageOnly]="true"
                 [rowHover]="true"
                 [(rows)]="visibleRows"
                 [scrollable]="true"
@@ -163,7 +199,47 @@
                     </div>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center">
-                    <b>{{searchResult.kwic}}</b>
+                    <b *ngIf="!searchResult.annotated">{{searchResult.kwic}}</b>
+                    <app-async-tooltip
+                        *ngIf="searchResult.annotated"
+                        [tooltipId]="searchResult.id"
+                        [tooltipParams]="searchResult"
+                        [fetchContent]="showKwicTooltip"
+                        [cache]="true"
+                        [delay]="700"
+                        [timeout]="5000"
+                        [backgroundColor]="'#32323242'"
+                        [tooltipTemplate]="annotationTemplate"
+                        [keepVisibleOnMouseLeave]="true">
+                        <b [ngStyle]="highlightAnnotation(searchResult)" class="cursor-pointer">
+                            {{ searchResult.kwic }}
+                        </b>
+                    </app-async-tooltip>
+                    <ng-template #annotationTemplate let-annotations>
+                        <div *ngIf="annotations.length; else noData" class="tooltip-container">
+                            <div *ngFor="let ann of annotations" class="tooltip-card">
+                                <!-- Header Section -->
+                                <div class="annotation-section">
+                                    <div class="annotation-field">
+                                        <b class="annotation-label">{{ ann.annotation_id }}</b>
+                                    </div>
+                                </div>
+                                <!-- Features Section -->
+                                <div class="tooltip-features">
+                                    <div class="feature-item" *ngFor="let feat of ann.features">
+                                        <div class="feature-row">
+                                            <span class="feature-name">{{ feat.feature_name }}</span>
+                                            <span class="feature-separator">:</span>
+                                            <span class="feature-value">{{ feat.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #noData>
+                            <i>{{ 'GENERAL.noResult' | translate }}</i>
+                        </ng-template>
+                    </ng-template>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start">
                     <div class="rightContext">
@@ -180,3 +256,16 @@
       </p-table>
     </div>
 </div>
+
+<app-multiple-text-annotation-editor #annotationEditor 
+    [visible]="showMultipleAnnotationDialog"
+    [deleteMode]="isDeleting" 
+    [textOffsets]="textOffsets" 
+    [layerId]="lastSearchRequestLayer?.id"
+    [layerName]="lastSearchRequestLayer?.name"
+    [layerColor]="lastSearchRequestLayer?.color"
+    (onDialogHide)="showMultipleAnnotationDialog = false"
+    (onSaveStart)="onSaveStart()" (onSaveEnd)="onSaveEnd($event)"
+    (onDeleteStart)="onDeleteStart()" (onDeleteEnd)="onDeleteEnd($event)"
+    (onCancel)="showMultipleAnnotationDialog = false">
+</app-multiple-text-annotation-editor>

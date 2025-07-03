@@ -28,4 +28,6 @@ export class SearchResultRow {
     kwic!: string;
     /**absolute text offset */
     kwicOffset!: number;
+    /**true if it is part of an annotation */
+    annotated!: boolean;
 }

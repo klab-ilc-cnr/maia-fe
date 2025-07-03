@@ -4,6 +4,7 @@ export class SearchRequest {
   end!: number;
   resources: Array<number> = [];
   filters : SearchFilters = new SearchFilters();
+  layerId?: number;
 }
 
 export class SearchFilters {
@@ -18,4 +19,5 @@ export class SearchFilters {
   rightContext?: string;
   text?: string;
   reference?: string;
+  annotated? : boolean;
 }
