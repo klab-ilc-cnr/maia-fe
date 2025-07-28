@@ -110,6 +110,7 @@
         },
         "deleteDictionaryEntries": "Do you want to delete selected dictionary entries?",
         "deleteDictionaryEntry": "Do you want to delete the entry '${dictionaryEntryLabel}'?",
+        "duplicateComponent": "The lexical entry is already associated with this entry.",
         "editor": "Editor",
         "export": "Export",
         "filtersPanel": "Filters",

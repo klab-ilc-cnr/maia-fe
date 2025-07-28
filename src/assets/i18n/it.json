@@ -110,6 +110,7 @@
         },
         "deleteDictionaryEntries": "Vuoi cancellare le voci di dizionario selezionate?",
         "deleteDictionaryEntry": "Vuoi cancellare la voce '${dictionaryEntryLabel}'?",
+        "duplicateComponent": "L'entrata lessicale è già associata a questa voce",
         "editor": "Redattore",
         "export": "Esporta",
         "filtersPanel": "Filtri",
