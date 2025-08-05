@@ -213,7 +213,13 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     let request: Observable<any>;
     let position = 1;
     if (this.entryForLemmaTemp.hasChildren) {
-      position = (await lastValueFrom(this.dictionaryService.retrieveComponents(this.entryForLemmaTemp.id).pipe(take(1)))).length + 1;
+      const comps = (await lastValueFrom(this.dictionaryService.retrieveComponents(this.entryForLemmaTemp.id).pipe(take(1))));
+      const isAlreadyComp = comps.findIndex(c => c.referredEntity === this.newLemmaTemp!.lemma) !== -1; //check if the lexical entry is already target of a component
+      if (isAlreadyComp) {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey('DICTIONARY_EXPLORER.duplicateComponent')));
+        return;
+      }
+      position = comps.length + 1;
     }
     if (this.newLemmaTemp?.isFromLexicon) {
       request = this.dictionaryService.associateLexEntryWithDictionaryEntry(this.entryForLemmaTemp.id, this.newLemmaTemp.lemma, position)
