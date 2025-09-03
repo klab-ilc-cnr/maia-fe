@@ -1,7 +1,7 @@
 import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, Subscription, debounceTime, of, switchMap, takeUntil, map, catchError } from 'rxjs';
+import { Observable, Subject, Subscription, catchError, debounceTime, map, of, switchMap, takeUntil } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
@@ -42,7 +42,8 @@ interface Restriction {
 })
 export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
-  constructor(private corpusStateService: CorpusStateService,
+  constructor(
+    private corpusStateService: CorpusStateService,
     private searchService: SearchService,
     private commonService: CommonService,
     private layerState: LayerStateService,
@@ -50,7 +51,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     private renderer: Renderer2,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private loaderService: LoaderService) { }
+    private loaderService: LoaderService,
+  ) { }
 
   private searchSubscription?: Subscription;
   /**initial panel size */
@@ -77,6 +79,9 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     { name: this.commonService.translateKey('SEARCH.restriction.notAnnotedOnly'), code: RestrictionEnum.notAnnotedOnly }
   ];
   selectedRestriction?: Restriction;
+
+  pos$ = this.searchService.retrieveUpos();
+  posValue: string = '';
 
   //**kwic table data */
   searchResults: Array<SearchResultRow> = [];
@@ -294,6 +299,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
+    this.searchRequest.filters.pos = this.posValue;
     this.lastSearchRequestLayer = this.selectedLayer;
     this.clearTable();
     this.resetColumnFilters();
