@@ -20,4 +20,5 @@ export class SearchFilters {
   text?: string;
   reference?: string;
   annotated? : boolean;
+  pos?: string
 }

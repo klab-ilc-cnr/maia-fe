@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { SearchRequest } from '../models/search/search-request';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { SearchRequest } from '../models/search/search-request';
 import { SearchResult } from '../models/search/search-result';
-import { Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +31,9 @@ export class SearchService {
 
   exportSelected(selectedRowsIndexes: string[]): Observable<Blob> {
     return this.http.post<Blob>(`${this.searchUrl}/exportSelected`, selectedRowsIndexes);
+  }
+
+  retrieveUpos(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.maiaBeTextoUrl}/util/upos`);
   }
 }

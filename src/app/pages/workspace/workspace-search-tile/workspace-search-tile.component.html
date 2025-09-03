@@ -28,7 +28,8 @@
               </small>
             </span>
           </div>
-          <p-dropdown styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="true" placeholder="Pos" optionLabel="name"></p-dropdown>
+          <p-dropdown [options]="(pos$|async)||[]" styleClass="w-100" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
+          filterBy="label" [(ngModel)]="posValue"></p-dropdown>
           
           <div class="slider-input ml-5">
             <label class="mb-2">{{'SEARCH.contextLength'|translate}}: {{contextLength}}</label>
