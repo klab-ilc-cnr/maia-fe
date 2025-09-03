@@ -81,7 +81,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   selectedRestriction?: Restriction;
 
   pos$ = this.searchService.retrieveUpos();
-  posValue: string = '';
+  posValue: string[] = [];
 
   //**kwic table data */
   searchResults: Array<SearchResultRow> = [];

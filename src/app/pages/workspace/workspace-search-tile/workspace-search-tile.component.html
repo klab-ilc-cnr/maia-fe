@@ -28,8 +28,8 @@
               </small>
             </span>
           </div>
-          <p-dropdown [options]="(pos$|async)||[]" styleClass="w-100" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
-          filterBy="label" [(ngModel)]="posValue"></p-dropdown>
+          <p-multiSelect [options]="(pos$|async)||[]" styleClass="w-100" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
+          filterBy="label" [(ngModel)]="posValue" [showClear]="true" ></p-multiSelect>
           
           <div class="slider-input ml-5">
             <label class="mb-2">{{'SEARCH.contextLength'|translate}}: {{contextLength}}</label>
