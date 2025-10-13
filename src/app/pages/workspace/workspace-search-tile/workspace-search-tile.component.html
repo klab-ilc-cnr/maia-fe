@@ -15,7 +15,7 @@
           </p-treeSelect>
 
           <div class="p-inputgroup">
-            <p-selectButton (onChange)="onSearchModeChange()" optionDisabled="inactive" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
+            <p-selectButton (onChange)="onSearchModeChange()" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
             <span class="p-input-icon-left flex-fill">
               <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
               <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
@@ -28,7 +28,8 @@
               </small>
             </span>
           </div>
-          <p-dropdown styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="true" placeholder="Pos" optionLabel="name"></p-dropdown>
+          <p-multiSelect [options]="(pos$|async)||[]" styleClass="w-100" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
+          filterBy="label" [(ngModel)]="posValue" [showClear]="true" ></p-multiSelect>
           
           <div class="slider-input ml-5">
             <label class="mb-2">{{'SEARCH.contextLength'|translate}}: {{contextLength}}</label>
