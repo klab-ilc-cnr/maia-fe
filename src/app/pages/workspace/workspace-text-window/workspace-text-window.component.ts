@@ -474,9 +474,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   public sectionSelected(event: any) {
-    if (event.node.key === this.rootNodeKey) { return; }
 
-    if (event.node.data.start === this.textRange.start) { return; }
+    if (event.node.key === this.rootNodeKey) { return; }
 
     this.scrollingDirection = ScrollingDirectionType.ChangingSection
     this.textRange = new TextRange(event.node.data.start, event.node.data.start + this.textRowsWideness);
@@ -694,7 +693,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (!this.specialTextSelectionHighlight.active) {
       window.getSelection()?.removeAllRanges(); // Remove all ranges from the current selection
-      return; 
+      return;
     }
 
     const textSelection: TextSelection = this.specialTextSelectionHighlight.textSelection!;
@@ -1425,6 +1424,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.sentnumVerticalLine = this.generateSentnumVerticalLine();
 
     this.checkScroll();
+
+    // --- Ensure manual scroll after rendering if section was just selected ---
+    if (this.scrollingDirection === ScrollingDirectionType.ChangingSection && this.currentVisibleRowIndex !== undefined) {
+      // Find the row to scroll to
+      const targetRow = this.rows.find(r => r.rowIndex === this.currentVisibleRowIndex);
+      if (targetRow) {
+        // Scroll so that the selected section is at the top
+        setTimeout(() => {
+          this.textContainer.nativeElement.scrollTop = targetRow.yBG;
+        }, 0);
+      } else {
+        console.warn('[ManualScroll] Target row not found for rowIndex', this.currentVisibleRowIndex);
+      }
+      // Reset after scroll
+      this.scrollingDirection = ScrollingDirectionType.InRange;
+      this.currentVisibleRowIndex = undefined;
+    }
   }
 
   /**

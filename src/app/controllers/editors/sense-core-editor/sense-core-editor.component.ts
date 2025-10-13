@@ -203,10 +203,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         if (r?.entityType && r.entityType[0] === "Marche d'uso") {
           const tempMoU = this.marksOfUse.find(mou => mou.lexicalConcept === r.entity);
           if (tempMoU !== undefined) selectedMarksOfUse.push(tempMoU);
-        } else if (r?.entityType && r.entityType[0] === "Marche Semantiche") {
+        } else if (r?.entityType && r.entityType[0] === "Marche semantiche") {
           const tempSM = this.semanticMarks.find(sm => sm.lexicalConcept === r.entity);
           if (tempSM !== undefined) selectedSemanticMarks.push(tempSM);
-        } else if (r?.entityType && r?.entityType[0] === "Marche grammaticale") {
+        } else if (r?.entityType && r?.entityType[0] === "Marche grammaticali") {
           const tempGM = this.grammaticalMarks.find(gm => gm.lexicalConcept === r.entity);
           if (tempGM !== undefined) selectedGrammaticalMarks.push(tempGM);
         }
