@@ -244,7 +244,18 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         return false;
       }
       const value = this.featureForm.get(controlName)?.value;
-      return value !== null && value !== undefined && value !== '';
+      if (value === null || value === undefined || value === '') {
+        return false;
+      }
+      // Per i tagset, verifica che sia un oggetto con name o una stringa
+      if (typeof value === 'object' && 'name' in value) {
+        return value.name && value.name.trim() !== '';
+      }
+      // Per le stringhe, verifica che non sia solo spazi
+      if (typeof value === 'string') {
+        return value.trim() !== '';
+      }
+      return true;
     });
   }
 
@@ -295,13 +306,11 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
       this.onSaveStart.emit();
     }
 
-    if (!this.isAnyFeatureValue && !this.deleteMode && !this.editMode) {
-      throw Error('No feature value');
-    }
+    const featureList = this.createFeatureValueList();
 
     let request: MultipleAnnotationRequest = {
       layerId: this.layerId,
-      features: this.createFeatureValueList(),
+      features: featureList,
       offsets: this.textOffsets
     };
 
@@ -370,21 +379,45 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   private createFeatureValueList(): MultipleAnnotationFeature[] {
     const result: MultipleAnnotationFeature[] = [];
     this.features.forEach(feature => {
-      if (!feature.checked) { return; }
+      // In edit mode, controlla se c'è un nuovo valore indipendentemente dallo switch
+      // In create/delete mode, controlla solo se la feature è checked
+      if (!this.editMode && !feature.checked) { return; }
 
       if (!feature.feature?.name) {
         throw Error('Feature missing name');
       }
-      const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
-      const newValue = featValue !== null ? (typeof (featValue) === 'string' ? featValue : featValue.name) : '';
+      const featValue: string | TTagsetItem | null | undefined = this.featureForm.get(feature.feature.name)?.value;
+      
+      // Gestisci il valore in base al tipo
+      let newValue: string = '';
+      if (featValue !== null && featValue !== undefined) {
+        if (typeof featValue === 'string') {
+          newValue = featValue;
+        } else if (typeof featValue === 'object' && 'name' in featValue) {
+          newValue = featValue.name || '';
+        }
+      }
 
-      // Secondo le specifiche del backend, l'update non richiede oldValue nel body
-      // oldValue è usato solo nell'UI per mostrare il valore attuale
-      result.push(<MultipleAnnotationFeature>{
-        featureId: feature.feature.id,
-        value: newValue
-        // oldValue non viene inviato al backend secondo le specifiche POST /annotation/multiple-update
-      });
+      // In edit mode: includi solo se c'è un nuovo valore (indipendentemente dallo switch)
+      // In create/delete mode: includi solo se checked e c'è un valore
+      const hasValidValue = newValue && newValue.trim() !== '';
+      if (this.editMode) {
+        // In edit mode, includi solo se c'è un nuovo valore da impostare
+        if (hasValidValue) {
+          result.push(<MultipleAnnotationFeature>{
+            featureId: feature.feature.id,
+            value: newValue.trim()
+          });
+        }
+      } else {
+        // In create/delete mode, includi solo se checked e c'è un valore
+        if (feature.checked && hasValidValue) {
+          result.push(<MultipleAnnotationFeature>{
+            featureId: feature.feature.id,
+            value: newValue.trim()
+          });
+        }
+      }
     });
     return result;
   }
