@@ -7,7 +7,7 @@ import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { User } from 'src/app/models/user';
-import { AnnotationService, MultipleAnnotationRequest, MultipleAnnotationResponse as MultipleAnnotationResponse } from 'src/app/services/annotation.service';
+import { AnnotationService, MultipleAnnotationRequest, MultipleAnnotationResponse as MultipleAnnotationResponse, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -33,6 +33,7 @@ export interface TextOffset {
 export interface MultipleAnnotationFeature {
   featureId: number;
   value: string | TTagsetItem;
+  oldValue?: string; // usato solo in editMode (valore attuale da sostituire)
 }
 
 @Component({
@@ -47,6 +48,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   private _layerName?: string;
   private _textOffsets: TextOffset[] = [];
   private _deleteMode: boolean = false;
+  private _editMode: boolean = false;
   private _visible: boolean = false;
 
   workingLayer!: TLayer;
@@ -54,6 +56,9 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   featureTypes = TFeatureType;
   currentUser!: User;
   features: FeatForAnn[] = [];
+
+  /** Valori esistenti per ogni feature (per il dropdown del valore attuale in edit mode) */
+  existingFeatureValues: Map<string, string[]> = new Map();
 
   annotationForm = new FormGroup({
     layer: new FormControl<string>({ value: '', disabled: true }),
@@ -66,12 +71,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
   @Input()
   set layerId(value: number | undefined) {
-    if (value !== this._layerId) {
-      this._layerId = value;
-      if (value) {
-        this.fetchAndMapFeatures(value);
-      }
-    }
+    this._layerId = value;
   }
   get layerId(): number | undefined {
     return this._layerId;
@@ -110,8 +110,19 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   }
 
   @Input()
+  set editMode(value: boolean) {
+    this._editMode = value;
+  }
+  get editMode(): boolean {
+    return this._editMode;
+  }
+
+  @Input()
   set visible(value: boolean) {
     this._visible = value;
+    if (value) {
+      this.initOnOpen();
+    }
   }
   get visible(): boolean {
     return this._visible;
@@ -123,6 +134,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   @Output() onSaveEnd = new EventEmitter<MultipleAnnotationResponse>();
   @Output() onDeleteStart = new EventEmitter<void>();
   @Output() onDeleteEnd = new EventEmitter<MultipleAnnotationResponse>();
+  @Output() onEditStart = new EventEmitter<void>();
+  @Output() onEditEnd = new EventEmitter<MultipleAnnotationResponse>();
 
   constructor(
     private layerService: LayerService,
@@ -273,11 +286,14 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     if (this.deleteMode) {
       this.onDeleteStart.emit();
     }
+    else if (this.editMode) {
+      this.onEditStart.emit();
+    }
     else {
       this.onSaveStart.emit();
     }
 
-    if (!this.isAnyFeatureValue && !this.deleteMode) {
+    if (!this.isAnyFeatureValue && !this.deleteMode && !this.editMode) {
       throw Error('No feature value');
     }
 
@@ -299,6 +315,23 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         },
         error: (err) => {
           this.onDeleteEnd.emit({ status: 'ERROR', success: 0, errors: [] });
+        }
+      });
+      return;
+    }
+
+    if (this.editMode) {
+      this.annotationservice.updateMultipleAnnotation(request).pipe(
+        take(1),
+      ).subscribe({
+        next: (response) => {
+          const result = new MultipleAnnotationResponse();
+          result.errors = response.errors;
+          result.success = response.success;
+          this.onEditEnd.emit(result);
+        },
+        error: (_err) => {
+          this.onEditEnd.emit({ status: 'ERROR', success: 0, errors: [] });
         }
       });
       return;
@@ -341,9 +374,24 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         throw Error('Feature missing name');
       }
       const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
+      const newValue = featValue !== null ? (typeof (featValue) === 'string' ? featValue : featValue.name) : '';
+
+      // In edit mode, se lo switch è attivo e c'è un oldValue selezionato, lo passiamo (altrimenti: qualsiasi valore)
+      let oldValue: string | undefined = undefined;
+      if (this.editMode) {
+        const checked = !!this.featureForm.get(`${feature.feature.name}_checked`)?.value;
+        if (checked) {
+          const oldValueControl = this.featureForm.get(`${feature.feature.name}_oldValue`);
+          const oldValueFormValue = oldValueControl?.value;
+          if (oldValueFormValue && oldValueFormValue !== '') {
+            oldValue = oldValueFormValue;
+          }
+        }
+      }
       result.push(<MultipleAnnotationFeature>{
         featureId: feature.feature.id,
-        value: featValue !== null ? (typeof (featValue) === 'string' ? featValue : featValue.name) : '' //FIX empty string to manage reset of a feature
+        value: newValue,
+        oldValue: oldValue
       });
     });
     return result;
@@ -382,6 +430,11 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
       }
       this.featureForm.addControl(controlName, newControl);
 
+      // In edit mode: controllo per valore attuale (oldValue)
+      if (this.editMode) {
+        this.featureForm.addControl(`${controlName}_oldValue`, new FormControl<string>(''));
+      }
+
       const checkedControl = new FormControl<boolean>(f.checked, { nonNullable: true });
       this.featureForm.addControl(`${controlName}_checked`, checkedControl);
 
@@ -389,8 +442,22 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         f.checked = value;
       });
 
-      checkedControl.setValue(true, { emitEvent: false });
+      // Default:
+      // - create: campo sempre attivo
+      // - delete/edit: di default "qualsiasi valore" => checked=false (poi il prefill lo porta a true se trova valori)
+      checkedControl.setValue(!(this.deleteMode || this.editMode), { emitEvent: false });
     });
+  }
+
+  private initOnOpen(): void {
+    if (!this.layerId) return;
+
+    // reset form/feature controls per ogni apertura (evita stati sporchi tra aperture)
+    this.annotationForm.setControl('feature', new FormGroup({}));
+    this.features = [];
+    this.existingFeatureValues.clear();
+
+    this.fetchAndMapFeatures(this.layerId);
   }
 
   /**
@@ -415,7 +482,154 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         };
       });
       this.createForm();
-      this.onClearBtn();
+
+      if (!this.deleteMode && !this.editMode) {
+        this.onClearBtn();
+      }
+
+      if (this.deleteMode) {
+        this.loadExistingAnnotationsForDelete();
+      } else if (this.editMode) {
+        this.loadExistingAnnotationsForEdit();
+      }
+    });
+  }
+
+  private loadExistingAnnotationsForDelete(): void {
+    if (!this.layerId || this.textOffsets.length === 0) return;
+
+    const offsetsByResource = new Map<number, TextOffset[]>();
+    this.textOffsets.forEach(offset => {
+      if (!offsetsByResource.has(offset.resourceId)) offsetsByResource.set(offset.resourceId, []);
+      offsetsByResource.get(offset.resourceId)!.push(offset);
+    });
+
+    const annotationRequests: Observable<WordAnnotationResponse[]>[] = [];
+    offsetsByResource.forEach((offsets, resourceId) => {
+      const minStart = Math.min(...offsets.map(o => o.start));
+      const maxEnd = Math.max(...offsets.map(o => o.end));
+
+      const request = new WordAnnotationRequest();
+      request.start = minStart;
+      request.end = maxEnd;
+      request.layers = this.layerId ? [this.layerId] : [];
+
+      annotationRequests.push(this.annotationservice.retrieveWordAnnotations(resourceId, request));
+    });
+
+    if (annotationRequests.length === 0) return;
+
+    forkJoin(annotationRequests).pipe(takeUntil(this.unsubscribe$)).subscribe(responses => {
+      const allAnnotations: WordAnnotationResponse[] = responses.flat();
+
+      this.features.forEach(feature => {
+        const featureName = feature.feature?.name;
+        if (!featureName) return;
+
+        const valueCounts = new Map<string, number>();
+        allAnnotations.forEach(ann => {
+          ann.features.forEach(f => {
+            if (f.feature_name === featureName) {
+              valueCounts.set(f.value, (valueCounts.get(f.value) || 0) + 1);
+            }
+          });
+        });
+
+        const checkedControl = this.featureForm.get(`${featureName}_checked`);
+        const featureControl = this.featureForm.get(featureName);
+
+        if (!checkedControl || !featureControl) return;
+
+        if (valueCounts.size === 0) {
+          checkedControl.setValue(false, { emitEvent: false });
+          return;
+        }
+
+        const sortedValues = Array.from(valueCounts.entries()).sort((a, b) => b[1] - a[1]);
+        const mostCommonValue = sortedValues[0][0];
+
+        const featureObj = this.features.find(f => f.feature?.name === featureName);
+        if (featureObj?.feature?.type === this.featureTypes.TAGSET) {
+          featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
+            const matchingItem = items.find(item => item.name === mostCommonValue);
+            featureControl.setValue(matchingItem ? matchingItem.name : mostCommonValue);
+          });
+        } else {
+          featureControl.setValue(mostCommonValue);
+        }
+
+        checkedControl.setValue(true, { emitEvent: false });
+      });
+    });
+  }
+
+  private loadExistingAnnotationsForEdit(): void {
+    if (!this.layerId || this.textOffsets.length === 0) return;
+
+    const offsetsByResource = new Map<number, TextOffset[]>();
+    this.textOffsets.forEach(offset => {
+      if (!offsetsByResource.has(offset.resourceId)) offsetsByResource.set(offset.resourceId, []);
+      offsetsByResource.get(offset.resourceId)!.push(offset);
+    });
+
+    const annotationRequests: Observable<WordAnnotationResponse[]>[] = [];
+    offsetsByResource.forEach((offsets, resourceId) => {
+      const minStart = Math.min(...offsets.map(o => o.start));
+      const maxEnd = Math.max(...offsets.map(o => o.end));
+
+      const request = new WordAnnotationRequest();
+      request.start = minStart;
+      request.end = maxEnd;
+      request.layers = this.layerId ? [this.layerId] : [];
+
+      annotationRequests.push(this.annotationservice.retrieveWordAnnotations(resourceId, request));
+    });
+
+    if (annotationRequests.length === 0) return;
+
+    forkJoin(annotationRequests).pipe(takeUntil(this.unsubscribe$)).subscribe(responses => {
+      const allAnnotations: WordAnnotationResponse[] = responses.flat();
+
+      this.features.forEach(feature => {
+        const featureName = feature.feature?.name;
+        if (!featureName) return;
+
+        const valueCounts = new Map<string, number>();
+        allAnnotations.forEach(ann => {
+          ann.features.forEach(f => {
+            if (f.feature_name === featureName) {
+              valueCounts.set(f.value, (valueCounts.get(f.value) || 0) + 1);
+            }
+          });
+        });
+
+        this.existingFeatureValues.set(featureName, Array.from(valueCounts.keys()).sort());
+
+        const checkedControl = this.featureForm.get(`${featureName}_checked`);
+        const oldValueControl = this.featureForm.get(`${featureName}_oldValue`);
+        if (!checkedControl || !oldValueControl) return;
+
+        if (valueCounts.size === 0) {
+          checkedControl.setValue(false, { emitEvent: false });
+          oldValueControl.setValue('');
+          return;
+        }
+
+        const sortedValues = Array.from(valueCounts.entries()).sort((a, b) => b[1] - a[1]);
+        const mostCommonValue = sortedValues[0][0];
+
+        const featureObj = this.features.find(f => f.feature?.name === featureName);
+        if (featureObj?.feature?.type === this.featureTypes.TAGSET) {
+          featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
+            const matchingItem = items.find(item => item.name === mostCommonValue);
+            oldValueControl.setValue(matchingItem ? matchingItem.name : mostCommonValue);
+          });
+        } else {
+          oldValueControl.setValue(mostCommonValue);
+        }
+
+        checkedControl.setValue(true, { emitEvent: false });
+      });
     });
   }
 }

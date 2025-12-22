@@ -374,6 +374,7 @@
             "saveAs": "Save As",
             "export": "Export",
             "annotate": "Annotate",
+            "editAnnotations": "Edit annotations",
             "removeAnnotations": "Remove annotations"
         },
         "restriction":{
@@ -385,8 +386,12 @@
         "annotations":{
             "saveSuccess": "annotations created",
             "saveFailed": "Failed to save following search index: ",
+            "editSuccess": "annotations updated",
+            "editFailed": "Failed to update following search index: ",
             "deleteSuccess": "annotations deleted",
             "deleteFailed": "Failed to delete following search index: "
-        }
+        },
+        "currentValue": "Current value",
+        "newValue": "New value"
     }
 }
