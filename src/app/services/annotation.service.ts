@@ -182,7 +182,7 @@ export class AnnotationService {
    * @returns An observable that emits the response containing the result of the update operation.
    */
   public updateMultipleAnnotation(request: MultipleAnnotationRequest): Observable<MultipleAnnotationResponse> {
-    return this.http.put<MultipleAnnotationResponse>(`${this.textoUrl}/annotation/multiple`, request);
+    return this.http.post<MultipleAnnotationResponse>(`${this.textoUrl}/annotation/multiple-update`, request);
   }
 
   /**

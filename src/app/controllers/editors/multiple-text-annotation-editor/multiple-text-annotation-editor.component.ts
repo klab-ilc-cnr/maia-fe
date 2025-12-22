@@ -378,22 +378,12 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
       const featValue: string | TTagsetItem = this.featureForm.get(feature.feature.name)?.value;
       const newValue = featValue !== null ? (typeof (featValue) === 'string' ? featValue : featValue.name) : '';
 
-      // In edit mode, se lo switch è attivo e c'è un oldValue selezionato, lo passiamo (altrimenti: qualsiasi valore)
-      let oldValue: string | undefined = undefined;
-      if (this.editMode) {
-        const checked = !!this.featureForm.get(`${feature.feature.name}_checked`)?.value;
-        if (checked) {
-          const oldValueControl = this.featureForm.get(`${feature.feature.name}_oldValue`);
-          const oldValueFormValue = oldValueControl?.value;
-          if (oldValueFormValue && oldValueFormValue !== '') {
-            oldValue = oldValueFormValue;
-          }
-        }
-      }
+      // Secondo le specifiche del backend, l'update non richiede oldValue nel body
+      // oldValue è usato solo nell'UI per mostrare il valore attuale
       result.push(<MultipleAnnotationFeature>{
         featureId: feature.feature.id,
-        value: newValue,
-        oldValue: oldValue
+        value: newValue
+        // oldValue non viene inviato al backend secondo le specifiche POST /annotation/multiple-update
       });
     });
     return result;
