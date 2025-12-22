@@ -40,30 +40,41 @@
               <div class="form-group mt-2" *ngFor="let feature of features">
                 <label class="form-label ml-1">{{ feature.feature?.name }}</label>
                 <div class="d-flex align-items-center gap-2">
-                  <!-- delete/edit: switch per "qualsiasi valore" -->
+                  <!-- delete mode: switch per "qualsiasi valore" -->
                   <p-inputSwitch
-                    *ngIf="deleteMode || editMode"
+                    *ngIf="deleteMode"
                     class="ml-1 align-self-end"
                     [pTooltip]="'SEARCH.disableForAnyValue'|translate"
                     [formControlName]="feature.feature!.name! + '_checked'">
                   </p-inputSwitch>
 
-                  <div *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value || (!deleteMode && !editMode); else anyValueBlock"
+                  <div *ngIf="editMode || featureForm.get(feature.feature!.name! + '_checked')?.value || (!deleteMode && !editMode); else anyValueBlock"
                        class="p-fluid flex-grow-1">
 
                     <!-- EDIT MODE -->
                     <div *ngIf="editMode" class="d-flex flex-column gap-2 w-100">
                       <div>
                         <label class="form-label small">{{'SEARCH.currentValue'|translate}}</label>
-                        <p-dropdown
-                          [formControlName]="feature.feature!.name! + '_oldValue'"
-                          [options]="existingFeatureValues.get(feature.feature!.name!) || []"
-                          [filter]="true"
-                          [showClear]="true"
-                          [placeholder]="'SEARCH.anyValue'|translate"
-                          appendTo="body"
-                          class="w-100">
-                        </p-dropdown>
+                        <div class="d-flex align-items-center gap-2">
+                          <p-inputSwitch
+                            class="align-self-end"
+                            [pTooltip]="'SEARCH.disableForAnyValue'|translate"
+                            [formControlName]="feature.feature!.name! + '_checked'">
+                          </p-inputSwitch>
+                          <input
+                            *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value"
+                            class="form-control flex-grow-1"
+                            type="text"
+                            [formControlName]="feature.feature!.name! + '_oldValue'"
+                          />
+                          <input
+                            *ngIf="!featureForm.get(feature.feature!.name! + '_checked')?.value"
+                            class="form-control flex-grow-1"
+                            type="text"
+                            [value]="'SEARCH.anyValue'|translate"
+                            disabled
+                          />
+                        </div>
                       </div>
 
                       <div>

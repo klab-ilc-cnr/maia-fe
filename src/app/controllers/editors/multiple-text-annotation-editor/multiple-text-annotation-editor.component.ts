@@ -59,6 +59,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
   /** Valori esistenti per ogni feature (per il dropdown del valore attuale in edit mode) */
   existingFeatureValues: Map<string, string[]> = new Map();
+  /** Valori temporanei salvati quando lo switch viene disattivato (per ripristinarli quando viene riattivato) */
+  private savedOldValues: Map<string, string> = new Map();
 
   annotationForm = new FormGroup({
     layer: new FormControl<string>({ value: '', disabled: true }),
@@ -440,6 +442,26 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
       checkedControl.valueChanges.subscribe(value => {
         f.checked = value;
+        // In edit mode: gestisci il salvataggio/ripristino del valore quando lo switch viene disattivato/riattivato
+        if (this.editMode) {
+          const oldValueControl = this.featureForm.get(`${controlName}_oldValue`);
+          if (oldValueControl) {
+            if (!value) {
+              // Quando lo switch viene disattivato, salva il valore corrente e resetta il campo
+              const currentValue = oldValueControl.value;
+              if (currentValue && currentValue !== '') {
+                this.savedOldValues.set(controlName, currentValue);
+              }
+              oldValueControl.setValue(null, { emitEvent: false });
+            } else {
+              // Quando lo switch viene riattivato, ripristina il valore salvato se esiste
+              const savedValue = this.savedOldValues.get(controlName);
+              if (savedValue) {
+                oldValueControl.setValue(savedValue, { emitEvent: false });
+              }
+            }
+          }
+        }
       });
 
       // Default:
@@ -456,6 +478,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     this.annotationForm.setControl('feature', new FormGroup({}));
     this.features = [];
     this.existingFeatureValues.clear();
+    this.savedOldValues.clear();
 
     this.fetchAndMapFeatures(this.layerId);
   }
@@ -622,10 +645,15 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         if (featureObj?.feature?.type === this.featureTypes.TAGSET) {
           featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
             const matchingItem = items.find(item => item.name === mostCommonValue);
-            oldValueControl.setValue(matchingItem ? matchingItem.name : mostCommonValue);
+            const valueToSet = matchingItem?.name || mostCommonValue;
+            oldValueControl.setValue(valueToSet);
+            // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
+            this.savedOldValues.set(featureName, valueToSet);
           });
         } else {
           oldValueControl.setValue(mostCommonValue);
+          // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
+          this.savedOldValues.set(featureName, mostCommonValue);
         }
 
         checkedControl.setValue(true, { emitEvent: false });
