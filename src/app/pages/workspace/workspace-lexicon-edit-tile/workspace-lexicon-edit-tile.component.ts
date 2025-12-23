@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Subject, catchError, take, takeUntil } from 'rxjs';
+import { decode } from 'html-entities';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -350,7 +351,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         ).subscribe((data: SenseListItem[]) => {
           event.node.children = data.map((val: SenseListItem) => ({
             data: {
-              name: this.showLabelName ? val['definition'] : val.sense,
+              name: this.showLabelName ? this.stripHtml(val['definition']) : val.sense,
               instanceName: val.sense,
               uri: val.sense,
               label: val['label'],
@@ -563,6 +564,19 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         this.onNodeExpand({ node });
       });
     }
+  }
+
+  /**
+   * Rimuove i tag HTML e decodifica le entità HTML da una stringa
+   * @param htmlString {string} stringa contenente HTML
+   * @returns {string} testo pulito senza tag HTML
+   */
+  private stripHtml(htmlString: string): string {
+    if (!htmlString) return '';
+    // Decodifica le entità HTML (es. &lt; -> <, &gt; -> >)
+    const decoded = decode(htmlString);
+    // Rimuove tutti i tag HTML
+    return decoded.replace(/<[^>]*>/g, '').trim();
   }
 
 }

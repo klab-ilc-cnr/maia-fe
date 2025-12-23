@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@a
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, map, take, takeUntil, throwError } from 'rxjs';
+import { decode } from 'html-entities';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
@@ -164,13 +165,14 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       console.info(resp.list)
       return resp.list.map((s:any) => {return {
         ...s,
-        definition: `[${s.lemma}] - ${s.definition}`
+        definition: `[${s.lemma}] - ${this.stripHtml(s.definition)}`
       }});
     }),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
-      const definition = `[${sense.lexicalEntryLabel.split('@')[0]}] - ${sense.definition.find(s => s.propertyID === 'definition')?.propertyValue}`;
+      const definitionValue = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue || '';
+      const definition = `[${sense.lexicalEntryLabel.split('@')[0]}] - ${this.stripHtml(definitionValue)}`;
       return <SenseListItem>{
         creator: sense.creator,
         lastUpdate: sense.lastUpdate,
@@ -344,6 +346,19 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       showCancelButton: false,
       showConfirmButton: false
     });
+  }
+
+  /**
+   * Rimuove i tag HTML e decodifica le entità HTML da una stringa
+   * @param htmlString {string} stringa contenente HTML
+   * @returns {string} testo pulito senza tag HTML
+   */
+  private stripHtml(htmlString: string): string {
+    if (!htmlString) return '';
+    // Decodifica le entità HTML (es. &lt; -> <, &gt; -> >)
+    const decoded = decode(htmlString);
+    // Rimuove tutti i tag HTML
+    return decoded.replace(/<[^>]*>/g, '').trim();
   }
 
 }
