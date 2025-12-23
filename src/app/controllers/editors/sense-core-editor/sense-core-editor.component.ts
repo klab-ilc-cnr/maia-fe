@@ -38,9 +38,18 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   currentUser!: User;
   /**Lista di lingue disponibili per le definizioni */
   etymologyLanguages$ = this.lexiconService.getEtymologyLanguages();
+  /**Elementi del form relativi alle definizioni aggiuntive */
+  definitionFormItems: PropertyElement[] = [];
+  /**Elementi del menu relativi alle definizioni aggiuntive */
+  definitionsMenuItems: { label: string, command: any }[] = [];
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
-    definitions: new FormArray<FormGroup>([]),
+    definition: new FormGroup({
+      language: new FormControl<string>(''),
+      etymon: new FormControl<string>(''),
+      details: new FormControl<string>('')
+    }),
+    additionalFields: new FormGroup({}),
     marksOfUse: new FormControl<LexicalConceptListItem[]>([]),
     semanticMarks: new FormControl<LexicalConceptListItem[]>([]),
     grammaticalMarks: new FormControl<LexicalConceptListItem[]>([]),
@@ -50,8 +59,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   _morphology: { relation: string, value: string, external: boolean }[] = [];
   /**Getter del form array della morfologia */
   get morphology() { return this.form.controls.morphology as FormArray; }
-  /**Getter del form array delle definizioni */
-  get definitions() { return this.form.controls.definitions as FormArray<FormGroup>; }
+  /**Getter del form group della definizione principale */
+  get definition() { return this.form.controls.definition as FormGroup; }
+  /**Getter del form group dei campi aggiuntivi */
+  get additionalFields() { return this.form.controls.additionalFields as FormGroup; }
   /**Observable della relazioni morfologiche */
   morphRelations$ = this.globalState.morphologies$.pipe(
     switchMap(list => {
@@ -137,84 +148,97 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       this.currentUser = cu;
     });
 
-    this.definitions.valueChanges.pipe(
+    // Gestione salvataggio definizione principale (language, etymon, details)
+    this.definition.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
       distinctUntilChanged(),
     ).subscribe(() => {
-      // Salva sempre la prima definizione (principale) al backend
-      const firstDefinition = this.definitions.at(0);
-      if (firstDefinition) {
-        const defValue = firstDefinition.value;
-        const detailsValue = defValue.details || '';
-        const languageValue = defValue.language || '';
-        const etymonValue = defValue.etymon || '';
-        
-        // Recupera i valori correnti dal backend
-        const existingDef = this.senseEntry.definition.find(def => def.propertyID === 'definition');
-        const currentValue = existingDef?.propertyValue ? decode(existingDef.propertyValue) : '';
-        const currentLanguage = this.senseEntry.definition.find(def => def.propertyID === 'definitionLanguage')?.propertyValue || '';
-        const currentEtymon = this.senseEntry.definition.find(def => def.propertyID === 'definitionEtymon')?.propertyValue || '';
-        
-        // Salva details
-        if (detailsValue !== currentValue) {
-          if (detailsValue === '') {
-            // Se il campo è vuoto, elimina la relazione
-            if (existingDef) {
-              const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
-                relation: 'definition', 
-                value: existingDef.propertyValue 
-              });
-              this.manageUpdateObservable(deleteRelObs, 'definition', '');
-            }
-          } else {
-            // Salva il valore encoded
-            const encodedValue = encode(detailsValue);
-            this.updateSense('definition', encodedValue).then(() => {
-              this.updateDefinitionProperty('definition', encodedValue);
+      const defValue = this.definition.value;
+      const detailsValue = defValue.details || '';
+      const languageValue = defValue.language || '';
+      const etymonValue = defValue.etymon || '';
+      
+      // Salva details
+      const existingDef = this.senseEntry.definition.find(def => def.propertyID === 'definition');
+      const currentValue = existingDef?.propertyValue ? decode(existingDef.propertyValue) : '';
+      
+      if (detailsValue !== currentValue) {
+        if (detailsValue === '') {
+          if (existingDef) {
+            const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
+              relation: 'definition', 
+              value: existingDef.propertyValue 
             });
+            this.manageUpdateObservable(deleteRelObs, 'definition', '');
           }
+        } else {
+          const encodedValue = encode(detailsValue);
+          this.updateSense('definition', encodedValue).then(() => {
+            this.updateDefinitionProperty('definition', encodedValue);
+          });
         }
-        
-        // Salva language
-        if (languageValue !== currentLanguage) {
-          if (languageValue === '') {
-            // Se il campo è vuoto, elimina la relazione
-            const existingLanguage = this.senseEntry.definition.find(def => def.propertyID === 'definitionLanguage');
-            if (existingLanguage) {
-              const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
-                relation: 'definitionLanguage', 
-                value: currentLanguage 
-              });
-              this.manageUpdateObservable(deleteRelObs, 'definitionLanguage', '');
-            }
-          } else {
-            // Salva language tramite updateSense
-            this.updateSense('definitionLanguage', languageValue).then(() => {
-              this.updateDefinitionProperty('definitionLanguage', languageValue);
+      }
+      
+      // Salva language
+      const existingLanguage = this.senseEntry.definition.find(def => def.propertyID === 'definitionLanguage');
+      const currentLanguageValue = existingLanguage?.propertyValue || '';
+      
+      if (languageValue !== currentLanguageValue) {
+        if (languageValue === '') {
+          if (existingLanguage) {
+            const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
+              relation: 'definitionLanguage', 
+              value: currentLanguageValue 
             });
+            this.manageUpdateObservable(deleteRelObs, 'definitionLanguage', '');
           }
+        } else {
+          this.updateSense('definitionLanguage', languageValue).then(() => {
+            this.updateDefinitionProperty('definitionLanguage', languageValue);
+          });
         }
-        
-        // Salva etymon
-        if (etymonValue !== currentEtymon) {
-          if (etymonValue === '') {
-            // Se il campo è vuoto, elimina la relazione
-            const existingEtymon = this.senseEntry.definition.find(def => def.propertyID === 'definitionEtymon');
-            if (existingEtymon) {
-              const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
-                relation: 'definitionEtymon', 
-                value: currentEtymon 
-              });
-              this.manageUpdateObservable(deleteRelObs, 'definitionEtymon', '');
-            }
-          } else {
-            // Salva etymon tramite updateSense
-            this.updateSense('definitionEtymon', etymonValue).then(() => {
-              this.updateDefinitionProperty('definitionEtymon', etymonValue);
+      }
+      
+      // Salva etymon
+      const existingEtymon = this.senseEntry.definition.find(def => def.propertyID === 'definitionEtymon');
+      const currentEtymonValue = existingEtymon?.propertyValue || '';
+      
+      if (etymonValue !== currentEtymonValue) {
+        if (etymonValue === '') {
+          if (existingEtymon) {
+            const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
+              relation: 'definitionEtymon', 
+              value: currentEtymonValue 
             });
+            this.manageUpdateObservable(deleteRelObs, 'definitionEtymon', '');
           }
+        } else {
+          this.updateSense('definitionEtymon', etymonValue).then(() => {
+            this.updateDefinitionProperty('definitionEtymon', etymonValue);
+          });
         }
+      }
+    });
+
+    // Gestione salvataggio campi aggiuntivi (come faceva prima)
+    this.additionalFields.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(500),
+      distinctUntilChanged(),
+    ).subscribe((resp: { [key: string]: any }) => {
+      for (const key in resp) {
+        const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
+        const currentPropValue = this.definitionFormItems[currentPropertyId]?.propertyValue;
+        if (currentPropertyId === -1 || this.senseEntry.definition.find(x => x.propertyID === key)?.propertyValue === resp[key]) continue;
+        if (resp[key] === '') {
+          const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { relation: key, value: currentPropValue });
+          this.manageUpdateObservable(deleteRelObs, key, resp[key]);
+          return;
+        }
+        this.updateSense(key, resp[key]).then(() => {
+          this.definitionFormItems[currentPropertyId] = <PropertyElement>{ ...this.definitionFormItems[currentPropertyId], propertyValue: resp[key] };
+        });
       }
     });
   }
@@ -243,39 +267,30 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
 
   /**
    * Inizializza le definizioni dal senso esistente
-   * Migra i dati esistenti nella nuova struttura
    */
   private initDefinitions() {
-    // Cerca la definizione principale (propertyID === 'definition')
+    // Carica la definizione principale (definition, definitionLanguage, definitionEtymon)
     const mainDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definition');
     const languageDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definitionLanguage');
     const etymonDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definitionEtymon');
     
-    if (mainDefinition && mainDefinition.propertyValue) {
-      // Decodifica il valore HTML se è stato encoded
-      const decodedValue = decode(mainDefinition.propertyValue);
-      // Crea una nuova definizione con il contenuto esistente
-      const newDefinition = new FormGroup({
-        language: new FormControl<string>(languageDefinition?.propertyValue || ''),
-        etymon: new FormControl<string>(etymonDefinition?.propertyValue || ''),
-        details: new FormControl<string>(decodedValue)
-      });
-      this.definitions.push(newDefinition);
-    } else {
-      // Se non c'è una definizione principale ma ci sono language o etymon, crea comunque una definizione
-      if (languageDefinition || etymonDefinition) {
-        const newDefinition = new FormGroup({
-          language: new FormControl<string>(languageDefinition?.propertyValue || ''),
-          etymon: new FormControl<string>(etymonDefinition?.propertyValue || ''),
-          details: new FormControl<string>('')
-        });
-        this.definitions.push(newDefinition);
-      }
-    }
+    const decodedValue = mainDefinition?.propertyValue ? decode(mainDefinition.propertyValue) : '';
+    this.definition.patchValue({
+      language: languageDefinition?.propertyValue || '',
+      etymon: etymonDefinition?.propertyValue || '',
+      details: decodedValue
+    });
     
-    // Se non c'è una definizione principale, aggiungi comunque un elemento vuoto
-    if (this.definitions.length === 0) {
-      this.onAddDefinition();
+    // Carica gli altri campi (description, explanation, gloss, ecc.) come faceva prima
+    for (const { propertyID, propertyValue } of this.senseEntry.definition) {
+      // Salta i campi della definizione principale
+      if (propertyID === 'definition' || propertyID === 'definitionLanguage' || propertyID === 'definitionEtymon') {
+        continue;
+      }
+      this.movePropertyToForm(propertyID, propertyValue);
+      if (propertyValue === '') {
+        this.movePropertyToMenu(propertyID);
+      }
     }
   }
 
@@ -311,36 +326,48 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Metodo che gestisce l'inserimento di una nuova definizione
+   * Metodo che sposta una proprietà dal menu al form dinamico
+   * @param propertyID {string} proprietà da spostare
+   * @param propertyValue {string} valore iniziale della proprietà
    */
-  onAddDefinition() {
-    const newDefinition = new FormGroup({
-      language: new FormControl<string>(''),
-      etymon: new FormControl<string>(''),
-      details: new FormControl<string>('')
-    });
-    this.definitions.push(newDefinition);
+  private movePropertyToForm(propertyID: string, propertyValue: string): void {
+    const fieldProperty: PropertyElement = { propertyID, propertyValue };
+    const control = new FormControl<string>(propertyValue, Validators.required);
+    this.definitionFormItems.push(fieldProperty);
+    this.additionalFields.addControl(propertyID, control);
+    this.definitionsMenuItems = this.definitionsMenuItems.filter(i => i.label !== propertyID);
   }
 
   /**
-   * Metodo che gestisce la rimozione di una definizione
-   * @param index {number} indice della definizione da rimuovere
+   * Metodo che sposta una proprietà dal form dinamico al menu
+   * @param propertyID {string} proprietà da spostare
    */
-  onRemoveDefinition(index: number) {
-    const definitionGroup = this.definitions.at(index);
-    const detailsValue = definitionGroup?.value.details;
-    
-    if (detailsValue && detailsValue.trim() !== '') {
-      const confirmMsg = this.commonService.translateKey(this.translatePrefix + '.confirmRemoveDefinition') || 
-                        `Are you sure to remove this definition?`;
-      this.popupDeleteItem.confirmMessage = confirmMsg;
-      this.popupDeleteItem.showDeleteConfirmSimple(() => {
-        // TODO: implementare rimozione dal backend se necessario
-        this.definitions.removeAt(index);
-      });
-    } else {
-      this.definitions.removeAt(index);
-    }
+  private movePropertyToMenu(propertyID: string): void {
+    this.additionalFields.removeControl(propertyID);
+    const index = this.definitionFormItems.findIndex(e => e.propertyID === propertyID);
+    this.definitionFormItems.splice(index, 1);
+    this.definitionsMenuItems.push({
+      label: propertyID,
+      command: () => this.movePropertyToForm(propertyID, '')
+    });
+  }
+
+  /**
+   * Metodo che gestisce la rimozione di un campo aggiuntivo
+   * @param fieldName {string} nome del campo in rimozione
+   */
+  onRemoveDefinitionElement(fieldName: string) {
+    const confirmMsg = `Are you sure to remove "${fieldName}"?`;
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirmSimple(() => {
+      const definition = this.additionalFields.get(fieldName);
+      if (definition?.value === '') {
+        this.movePropertyToMenu(fieldName);
+      }
+      else {
+        definition?.setValue('');
+      }
+    });
   }
 
   /**Metodo che gestisce l'inserimento di un nuovo elemento nei tratti morfologici */

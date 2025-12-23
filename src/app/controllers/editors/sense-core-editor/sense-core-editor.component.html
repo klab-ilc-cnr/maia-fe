@@ -11,35 +11,38 @@
     <div class="field col-12">
       <p-fieldset>
         <ng-template pTemplate="header">
-          {{translatePrefix+'.definitions'|translate}} <button pButton pRipple icon="pi pi-plus" type="button" (click)="onAddDefinition()"
+          <p-menu #menuDefinitions [model]="definitionsMenuItems" [popup]="true" appendTo="body"></p-menu>
+          {{translatePrefix+'.definitions'|translate}} <button pButton pRipple icon="pi pi-plus" type="button" (click)="menuDefinitions.toggle($event)"
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <div [formArrayName]="'definitions'">
-            <div *ngFor="let definition of definitions.controls; index as index" [formGroupName]="index" class="mb-3">
-              <div class="d-flex justify-content-between align-items-start mb-2">
-                <div class="d-flex justify-content-between w-100" style="gap: 1rem;">
-                  <div class="field col-2">
-                    <label class="form-label w-full text-truncate">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}</label>
-                    <p-dropdown formControlName="language" styleClass="w-full" [showClear]="true"
-                      [options]="(etymologyLanguages$|async)||[]" optionLabel="code" optionValue="code"
-                      appendTo="body" [autoDisplayFirst]="false"></p-dropdown>
-                  </div>
-                  <div class="field col-3">
-                    <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.etymon'|translate}}</label>
-                    <input style="font-style: italic;" formControlName="etymon" class="w-full" pInputText type="text">
-                  </div>
-                  <div class="field col-7">
-                    <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.details'|translate}}</label>
-                    <p-editor formControlName="details" styleClass="w-full"></p-editor>
-                  </div>
-                </div>
-                <button *ngIf="definitions.length > 1" pButton pRipple type="button" icon="pi pi-times"
-                  class="p-button-rounded p-button-danger p-button-text ml-2"
-                  (click)="onRemoveDefinition(index)" [pTooltip]="translatePrefix+'.removeDefinition'|translate"></button>
+          <!-- Definizione principale con language, etymon, details -->
+          <div [formGroupName]="'definition'" class="mb-3">
+            <div class="d-flex justify-content-between w-100" style="gap: 1rem;">
+              <div class="field col-2">
+                <label class="form-label w-full text-truncate">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}</label>
+                <p-dropdown formControlName="language" styleClass="w-full" [showClear]="true"
+                  [options]="(etymologyLanguages$|async)||[]" optionLabel="code" optionValue="code"
+                  appendTo="body" [autoDisplayFirst]="false"></p-dropdown>
+              </div>
+              <div class="field col-3">
+                <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.etymon'|translate}}</label>
+                <input style="font-style: italic;" formControlName="etymon" class="w-full" pInputText type="text">
+              </div>
+              <div class="field col-7">
+                <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.details'|translate}}</label>
+                <p-editor formControlName="details" styleClass="w-full"></p-editor>
               </div>
             </div>
           </div>
+          <!-- Campi aggiuntivi dinamici -->
+          <form [formGroupName]="'additionalFields'">
+            <div class="field col-12" *ngFor="let control of definitionFormItems; let i=index; trackBy:trackByIndexFn">
+              <label [for]="control.propertyID">{{control.propertyID}}</label>
+              <textarea pInputTextarea [formControlName]="control.propertyID" [name]="control.propertyID"
+                class="col-12"></textarea>
+            </div>
+          </form>
         </ng-template>
       </p-fieldset>
     </div>
