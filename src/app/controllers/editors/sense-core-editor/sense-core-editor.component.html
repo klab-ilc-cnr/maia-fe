@@ -17,8 +17,8 @@
         </ng-template>
         <ng-template pTemplate="content">
           <!-- Definizione principale con language, etymon, details -->
-          <div [formGroupName]="'definition'" class="mb-3">
-            <div class="d-flex justify-content-between w-100" style="gap: 1rem;">
+          <div [formGroupName]="'definition'">
+            <div class="grid formgrid">
               <div class="field col-2">
                 <label class="form-label w-full text-truncate">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}</label>
                 <p-dropdown formControlName="language" styleClass="w-full" [showClear]="true"
