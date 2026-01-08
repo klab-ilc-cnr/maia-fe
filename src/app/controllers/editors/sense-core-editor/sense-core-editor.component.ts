@@ -36,19 +36,13 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   /**Utente loggato */
   currentUser!: User;
-  /**Lista di lingue disponibili per le definizioni */
-  etymologyLanguages$ = this.lexiconService.getEtymologyLanguages();
   /**Elementi del form relativi alle definizioni aggiuntive */
   definitionFormItems: PropertyElement[] = [];
   /**Elementi del menu relativi alle definizioni aggiuntive */
   definitionsMenuItems: { label: string, command: any }[] = [];
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
-    definition: new FormGroup({
-      language: new FormControl<string>(''),
-      etymon: new FormControl<string>(''),
-      details: new FormControl<string>('')
-    }),
+    definition: new FormControl<string>(''),
     additionalFields: new FormGroup({}),
     marksOfUse: new FormControl<LexicalConceptListItem[]>([]),
     semanticMarks: new FormControl<LexicalConceptListItem[]>([]),
@@ -59,8 +53,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   _morphology: { relation: string, value: string, external: boolean }[] = [];
   /**Getter del form array della morfologia */
   get morphology() { return this.form.controls.morphology as FormArray; }
-  /**Getter del form group della definizione principale */
-  get definition() { return this.form.controls.definition as FormGroup; }
+  /**Getter del form control della definizione principale */
+  get definition() { return this.form.controls.definition as FormControl<string>; }
   /**Getter del form group dei campi aggiuntivi */
   get additionalFields() { return this.form.controls.additionalFields as FormGroup; }
   /**Observable della relazioni morfologiche */
@@ -148,16 +142,13 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       this.currentUser = cu;
     });
 
-    // Gestione salvataggio definizione principale (language, etymon, details)
+    // Gestione salvataggio definizione principale (details)
     this.definition.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
       distinctUntilChanged(),
     ).subscribe(() => {
-      const defValue = this.definition.value;
-      const detailsValue = defValue.details || '';
-      const languageValue = defValue.language || '';
-      const etymonValue = defValue.etymon || '';
+      const detailsValue = this.definition.value || '';
       
       // Salva details
       const existingDef = this.senseEntry.definition.find(def => def.propertyID === 'definition');
@@ -176,46 +167,6 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
           const encodedValue = encode(detailsValue);
           this.updateSense('definition', encodedValue).then(() => {
             this.updateDefinitionProperty('definition', encodedValue);
-          });
-        }
-      }
-      
-      // Salva language
-      const existingLanguage = this.senseEntry.definition.find(def => def.propertyID === 'definitionLanguage');
-      const currentLanguageValue = existingLanguage?.propertyValue || '';
-      
-      if (languageValue !== currentLanguageValue) {
-        if (languageValue === '') {
-          if (existingLanguage) {
-            const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
-              relation: 'definitionLanguage', 
-              value: currentLanguageValue 
-            });
-            this.manageUpdateObservable(deleteRelObs, 'definitionLanguage', '');
-          }
-        } else {
-          this.updateSense('definitionLanguage', languageValue).then(() => {
-            this.updateDefinitionProperty('definitionLanguage', languageValue);
-          });
-        }
-      }
-      
-      // Salva etymon
-      const existingEtymon = this.senseEntry.definition.find(def => def.propertyID === 'definitionEtymon');
-      const currentEtymonValue = existingEtymon?.propertyValue || '';
-      
-      if (etymonValue !== currentEtymonValue) {
-        if (etymonValue === '') {
-          if (existingEtymon) {
-            const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
-              relation: 'definitionEtymon', 
-              value: currentEtymonValue 
-            });
-            this.manageUpdateObservable(deleteRelObs, 'definitionEtymon', '');
-          }
-        } else {
-          this.updateSense('definitionEtymon', etymonValue).then(() => {
-            this.updateDefinitionProperty('definitionEtymon', etymonValue);
           });
         }
       }
@@ -269,22 +220,22 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * Inizializza le definizioni dal senso esistente
    */
   private initDefinitions() {
-    // Carica la definizione principale (definition, definitionLanguage, definitionEtymon)
-    const mainDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definition');
-    const languageDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definitionLanguage');
-    const etymonDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definitionEtymon');
+    // Inizializza il menu con le opzioni disponibili
+    const availableFields = ['description', 'explanation', 'gloss', 'senseExample', 'senseTranslation', 'note', 'usage', 'reference', 'subject', 'confidence'];
+    this.definitionsMenuItems = availableFields.map(field => ({
+      label: field,
+      command: () => this.movePropertyToForm(field, '')
+    }));
     
+    // Carica la definizione principale (definition)
+    const mainDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definition');
     const decodedValue = mainDefinition?.propertyValue ? decode(mainDefinition.propertyValue) : '';
-    this.definition.patchValue({
-      language: languageDefinition?.propertyValue || '',
-      etymon: etymonDefinition?.propertyValue || '',
-      details: decodedValue
-    });
+    this.definition.setValue(decodedValue || '');
     
     // Carica gli altri campi (description, explanation, gloss, ecc.) come faceva prima
     for (const { propertyID, propertyValue } of this.senseEntry.definition) {
-      // Salta i campi della definizione principale
-      if (propertyID === 'definition' || propertyID === 'definitionLanguage' || propertyID === 'definitionEtymon') {
+      // Salta il campo della definizione principale
+      if (propertyID === 'definition') {
         continue;
       }
       this.movePropertyToForm(propertyID, propertyValue);
