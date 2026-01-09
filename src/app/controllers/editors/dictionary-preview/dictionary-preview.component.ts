@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { catchError, of, take } from 'rxjs';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionaryPreviewItem } from 'src/app/models/dictionary/dictionary-preview-item.model';
@@ -401,7 +402,7 @@ export class DictionaryPreviewComponent implements OnInit {
       return <TreeNode<DictionaryPreviewItem>>{
         key: item.id,
         type: type,
-        label: item.label,
+        label: HtmlHelper.stripHtml(item.label),
         data: item,
         expanded: !isMeaning,
         children: this.mapSortingItemToPreviewTreeNode(item.children ?? [])
