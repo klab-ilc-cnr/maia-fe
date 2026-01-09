@@ -571,12 +571,28 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
    * @param htmlString {string} stringa contenente HTML
    * @returns {string} testo pulito senza tag HTML
    */
-  private stripHtml(htmlString: string): string {
+  private stripHtml(htmlString: string | undefined | null): string {
     if (!htmlString) return '';
-    // Decodifica le entità HTML (es. &lt; -> <, &gt; -> >)
-    const decoded = decode(htmlString);
-    // Rimuove tutti i tag HTML
-    return decoded.replace(/<[^>]*>/g, '').trim();
+    
+    try {
+      // Decodifica le entità HTML (es. &lt; -> <, &gt; -> >)
+      // Gestisce anche il caso di doppia codifica
+      let decoded = decode(htmlString);
+      
+      // Se dopo la decodifica ci sono ancora entità HTML, prova a decodificare di nuovo
+      if (decoded.includes('&lt;') || decoded.includes('&gt;') || decoded.includes('&amp;')) {
+        decoded = decode(decoded);
+      }
+      
+      // Rimuove tutti i tag HTML
+      const textOnly = decoded.replace(/<[^>]*>/g, '');
+      
+      // Decodifica eventuali entità HTML rimanenti nel testo (es. &nbsp; -> spazio)
+      return decode(textOnly).trim();
+    } catch (error) {
+      // In caso di errore, restituisce la stringa originale senza tag HTML
+      return htmlString.replace(/<[^>]*>/g, '').trim();
+    }
   }
 
 }
