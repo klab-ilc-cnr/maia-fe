@@ -8,6 +8,9 @@
     (completeMethod)="onSearchForSuggestions($event)"
     (onSelect)="onSelectSuggestionUpdateRelationship($event, control)" [virtualScroll]="true" [virtualScrollItemSize]="34"
     appendTo="body">
+    <ng-template let-item pTemplate="item">
+      <span [textContent]="item.relationshipLabel"></span>
+    </ng-template>
   </p-autoComplete>
 
   <p-tieredMenu #propertiesMenu [model]="menuItems" [popup]="true" appendTo="body"></p-tieredMenu>
