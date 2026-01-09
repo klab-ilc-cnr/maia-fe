@@ -61,12 +61,63 @@
                             [pTooltip]="'SEARCH.disableForAnyValue'|translate"
                             [formControlName]="feature.feature!.name! + '_checked'">
                           </p-inputSwitch>
-                          <input
-                            *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value"
-                            class="form-control flex-grow-1"
-                            type="text"
-                            [formControlName]="feature.feature!.name! + '_oldValue'"
-                          />
+                          <div *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value" class="flex-grow-1">
+                            <div [ngSwitch]="feature.feature?.type">
+                              <input
+                                *ngSwitchCase="featureTypes.STRING"
+                                class="form-control"
+                                type="text"
+                                [formControlName]="feature.feature!.name! + '_oldValue'"
+                              />
+                              <p-dropdown
+                                *ngSwitchCase="featureTypes.TAGSET"
+                                [formControlName]="feature.feature!.name! + '_oldValue'"
+                                [options]="(feature.tagsetItems | async) || []"
+                                [filter]="true"
+                                [showClear]="true"
+                                optionLabel="name"
+                                optionValue="name"
+                                appendTo="body"
+                                emptyFilterMessage="No element found"
+                                placeholder="Select a value">
+                              </p-dropdown>
+                              <input
+                                *ngSwitchCase="featureTypes.URI"
+                                class="form-control"
+                                type="text"
+                                [formControlName]="feature.feature!.name! + '_oldValue'"
+                              />
+                              <app-generic-autocomplete
+                                *ngSwitchCase="featureTypes.LEXICAL_ENTRY"
+                                field="label"
+                                valueField="lexicalEntry"
+                                [filterFn]="lexEntryList"
+                                (selected)="setIndirectOldValue($event, feature.feature!.name!)"
+                                [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
+                                [initialValueFn]="lexEntryById">
+                              </app-generic-autocomplete>
+                              <app-generic-autocomplete
+                                *ngSwitchCase="featureTypes.FORM"
+                                field="label"
+                                valueField="form"
+                                [filterFn]="formList"
+                                (selected)="setIndirectOldValue($event, feature.feature!.name!)"
+                                [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
+                                [initialValueFn]="formById">
+                              </app-generic-autocomplete>
+                              <app-generic-autocomplete
+                                *ngSwitchCase="featureTypes.SENSE"
+                                field="definition"
+                                valueField="sense"
+                                [filterFn]="senseList"
+                                (selected)="setIndirectOldValue($event, feature.feature!.name!)"
+                                [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
+                                [initialValueFn]="senseById"
+                                [showOptionPrefix]="true"
+                                prefixField="lemma">
+                              </app-generic-autocomplete>
+                            </div>
+                          </div>
                           <input
                             *ngIf="!featureForm.get(feature.feature!.name! + '_checked')?.value"
                             class="form-control flex-grow-1"

@@ -60,7 +60,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   /** Valori esistenti per ogni feature (per il dropdown del valore attuale in edit mode) */
   existingFeatureValues: Map<string, string[]> = new Map();
   /** Valori temporanei salvati quando lo switch viene disattivato (per ripristinarli quando viene riattivato) */
-  private savedOldValues: Map<string, string> = new Map();
+  private savedOldValues: Map<string, string> = new Map(); // Salva come stringa (JSON per oggetti)
 
   annotationForm = new FormGroup({
     layer: new FormControl<string>({ value: '', disabled: true }),
@@ -293,6 +293,17 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
   /**
    * @public
+   * Metodo che imposta un valore indiretto per il campo oldValue (valore attuale) in edit mode
+   * @param value {any} valore da impostare
+   * @param featureFieldName {string} nome del campo della feature
+   */
+  setIndirectOldValue(value: any, featureFieldName: string) {
+    this.featureForm.get(`${featureFieldName}_oldValue`)?.setValue(value);
+  }
+
+
+  /**
+   * @public
    * Metodo che emette l'evento di salvataggio o eliminazione dell'annotazione
    */
   onSubmitAnnotation() {
@@ -404,9 +415,34 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
       if (this.editMode) {
         // In edit mode, includi solo se c'è un nuovo valore da impostare
         if (hasValidValue) {
+          // Recupera il valore attuale (oldValue) se lo switch è attivo
+          const checkedControl = this.featureForm.get(`${feature.feature.name}_checked`);
+          const oldValueControl = this.featureForm.get(`${feature.feature.name}_oldValue`);
+          let oldValue: string | undefined = undefined;
+          
+          if (checkedControl?.value && oldValueControl?.value) {
+            const oldValueRaw = oldValueControl.value;
+            // Gestisci il valore in base al tipo: se è un oggetto, estrai l'ID
+            if (typeof oldValueRaw === 'string') {
+              oldValue = oldValueRaw;
+            } else if (typeof oldValueRaw === 'object') {
+              // Per LEXICAL_ENTRY, FORM, SENSE, estrai l'ID dall'oggetto
+              if ('lexicalEntry' in oldValueRaw && oldValueRaw.lexicalEntry) {
+                oldValue = oldValueRaw.lexicalEntry;
+              } else if ('form' in oldValueRaw && oldValueRaw.form) {
+                oldValue = oldValueRaw.form;
+              } else if ('sense' in oldValueRaw && oldValueRaw.sense) {
+                oldValue = oldValueRaw.sense;
+              } else if ('name' in oldValueRaw && oldValueRaw.name) {
+                oldValue = oldValueRaw.name;
+              }
+            }
+          }
+          
           result.push(<MultipleAnnotationFeature>{
             featureId: feature.feature.id,
-            value: newValue.trim()
+            value: newValue.trim(),
+            oldValue: oldValue
           });
         }
       } else {
@@ -457,7 +493,18 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
       // In edit mode: controllo per valore attuale (oldValue)
       if (this.editMode) {
-        this.featureForm.addControl(`${controlName}_oldValue`, new FormControl<string>(''));
+        // Il tipo del FormControl per oldValue dipende dal tipo di feature
+        let oldValueControl: FormControl;
+        if (featureType === this.featureTypes.LEXICAL_ENTRY || 
+            featureType === this.featureTypes.FORM || 
+            featureType === this.featureTypes.SENSE) {
+          // Per autocomplete, il valore può essere un oggetto o una stringa
+          oldValueControl = new FormControl<any>(null);
+        } else {
+          // Per STRING, URI, TAGSET, usa stringa
+          oldValueControl = new FormControl<string>('');
+        }
+        this.featureForm.addControl(`${controlName}_oldValue`, oldValueControl);
       }
 
       const checkedControl = new FormControl<boolean>(f.checked, { nonNullable: true });
@@ -472,15 +519,26 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
             if (!value) {
               // Quando lo switch viene disattivato, salva il valore corrente e resetta il campo
               const currentValue = oldValueControl.value;
-              if (currentValue && currentValue !== '') {
-                this.savedOldValues.set(controlName, currentValue);
+              if (currentValue !== null && currentValue !== undefined && currentValue !== '') {
+                // Per oggetti, salva come JSON string; per stringhe, salva direttamente
+                if (typeof currentValue === 'object') {
+                  this.savedOldValues.set(controlName, JSON.stringify(currentValue));
+                } else {
+                  this.savedOldValues.set(controlName, currentValue);
+                }
               }
               oldValueControl.setValue(null, { emitEvent: false });
             } else {
               // Quando lo switch viene riattivato, ripristina il valore salvato se esiste
               const savedValue = this.savedOldValues.get(controlName);
               if (savedValue) {
-                oldValueControl.setValue(savedValue, { emitEvent: false });
+                // Prova a parsare come JSON se è un oggetto, altrimenti usa direttamente
+                try {
+                  const parsed = JSON.parse(savedValue);
+                  oldValueControl.setValue(parsed, { emitEvent: false });
+                } catch {
+                  oldValueControl.setValue(savedValue, { emitEvent: false });
+                }
               }
             }
           }
@@ -649,7 +707,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
           });
         });
 
-        this.existingFeatureValues.set(featureName, Array.from(valueCounts.keys()).sort());
+        const sortedValuesList = Array.from(valueCounts.keys()).sort();
+        this.existingFeatureValues.set(featureName, sortedValuesList);
 
         const checkedControl = this.featureForm.get(`${featureName}_checked`);
         const oldValueControl = this.featureForm.get(`${featureName}_oldValue`);
@@ -665,7 +724,9 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const mostCommonValue = sortedValues[0][0];
 
         const featureObj = this.features.find(f => f.feature?.name === featureName);
-        if (featureObj?.feature?.type === this.featureTypes.TAGSET) {
+        const featureType = featureObj?.feature?.type;
+
+        if (featureType === this.featureTypes.TAGSET && featureObj) {
           featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
             const matchingItem = items.find(item => item.name === mostCommonValue);
             const valueToSet = matchingItem?.name || mostCommonValue;
@@ -673,7 +734,26 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
             // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
             this.savedOldValues.set(featureName, valueToSet);
           });
+        } else if (featureType === this.featureTypes.LEXICAL_ENTRY) {
+          // Per LEXICAL_ENTRY, recupera l'oggetto completo usando lexEntryById
+          this.lexEntryById(mostCommonValue).pipe(take(1)).subscribe(lexEntry => {
+            oldValueControl.setValue(lexEntry);
+            this.savedOldValues.set(featureName, JSON.stringify(lexEntry));
+          });
+        } else if (featureType === this.featureTypes.FORM) {
+          // Per FORM, recupera l'oggetto completo usando formById
+          this.formById(mostCommonValue).pipe(take(1)).subscribe(form => {
+            oldValueControl.setValue(form);
+            this.savedOldValues.set(featureName, JSON.stringify(form));
+          });
+        } else if (featureType === this.featureTypes.SENSE) {
+          // Per SENSE, recupera l'oggetto completo usando senseById
+          this.senseById(mostCommonValue).pipe(take(1)).subscribe(sense => {
+            oldValueControl.setValue(sense);
+            this.savedOldValues.set(featureName, JSON.stringify(sense));
+          });
         } else {
+          // Per STRING e URI, usa il valore direttamente
           oldValueControl.setValue(mostCommonValue);
           // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
           this.savedOldValues.set(featureName, mostCommonValue);
