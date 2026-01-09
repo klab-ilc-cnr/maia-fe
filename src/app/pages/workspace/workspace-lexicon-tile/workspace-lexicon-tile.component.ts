@@ -4,6 +4,7 @@ import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -523,9 +524,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         ).subscribe((data: SenseListItem[]) => {
           event.node.children = data.map((val: SenseListItem) => ({
             data: {
-              name: this.showLabelName ? val.definition : val.sense,
+              name: this.showLabelName ? HtmlHelper.stripHtml(val.definition) : val.sense,
               instanceName: val.sense,
-              label: val.definition,
+              label: HtmlHelper.stripHtml(val.definition),
               note: val.note,
               creator: val.creator,
               creationDate: val.creationDate ? new Date(val.creationDate).toLocaleString() : '',
@@ -903,5 +904,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = dictionaries.length > 0;
     });
   }
+
 
 }

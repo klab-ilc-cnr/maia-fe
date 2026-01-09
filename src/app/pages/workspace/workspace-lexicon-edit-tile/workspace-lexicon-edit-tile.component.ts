@@ -2,8 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Subject, catchError, take, takeUntil } from 'rxjs';
-import { decode } from 'html-entities';
 import { EventsConstants } from 'src/app/constants/events-constants';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { FormCore, FormListItem, LexicalEntryOld, LexicalEntryTypeOld, SenseCore, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { CommonService } from 'src/app/services/common.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
@@ -351,7 +351,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
         ).subscribe((data: SenseListItem[]) => {
           event.node.children = data.map((val: SenseListItem) => ({
             data: {
-              name: this.showLabelName ? this.stripHtml(val['definition']) : val.sense,
+              name: this.showLabelName ? HtmlHelper.stripHtml(val['definition']) : val.sense,
               instanceName: val.sense,
               uri: val.sense,
               label: val['label'],
@@ -566,33 +566,5 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Rimuove i tag HTML e decodifica le entità HTML da una stringa
-   * @param htmlString {string} stringa contenente HTML
-   * @returns {string} testo pulito senza tag HTML
-   */
-  private stripHtml(htmlString: string | undefined | null): string {
-    if (!htmlString) return '';
-    
-    try {
-      // Decodifica le entità HTML (es. &lt; -> <, &gt; -> >)
-      // Gestisce anche il caso di doppia codifica
-      let decoded = decode(htmlString);
-      
-      // Se dopo la decodifica ci sono ancora entità HTML, prova a decodificare di nuovo
-      if (decoded.includes('&lt;') || decoded.includes('&gt;') || decoded.includes('&amp;')) {
-        decoded = decode(decoded);
-      }
-      
-      // Rimuove tutti i tag HTML
-      const textOnly = decoded.replace(/<[^>]*>/g, '');
-      
-      // Decodifica eventuali entità HTML rimanenti nel testo (es. &nbsp; -> spazio)
-      return decode(textOnly).trim();
-    } catch (error) {
-      // In caso di errore, restituisce la stringa originale senza tag HTML
-      return htmlString.replace(/<[^>]*>/g, '').trim();
-    }
-  }
 
 }
