@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, forkJoin, map, take, takeUntil } from 'rxjs';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
@@ -213,7 +214,13 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map((resp: any) => resp.list),
+    map((resp: any) => {
+      // Rimuove HTML dalle definizioni nella lista
+      return resp.list.map((s: SenseListItem) => ({
+        ...s,
+        definition: HtmlHelper.stripHtml(s.definition)
+      }));
+    }),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
@@ -225,7 +232,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         confidence: sense.confidence,
         sense: sense.sense,
         hasChildren: false,
-        definition: definition,
+        definition: HtmlHelper.stripHtml(definition),
         note: sense.note,
         usage: sense.usage,
         concept: sense.concept,
