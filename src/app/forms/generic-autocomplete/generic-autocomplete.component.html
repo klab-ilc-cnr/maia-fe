@@ -6,10 +6,17 @@
       [showEmptyMessage]="true" emptyMessage="No matching"
       [styleClass]="styleClass" [inputStyleClass]="inputStyleClass" [virtualScroll]="true" [virtualScrollItemSize]="34">
       <ng-template *ngIf="showOptionPrefix && prefixField === 'lemma'" let-item pTemplate="item">
-          <strong>{{item[prefixField]}}</strong> - {{item[field]}}
+          <!-- Se field è 'definition', il campo definition contiene già "lemma - definizione", quindi mostra solo definition -->
+          <ng-container *ngIf="field === 'definition'">
+              {{item[field]}}
+          </ng-container>
+          <!-- Altrimenti formatta manualmente -->
+          <ng-container *ngIf="field !== 'definition'">
+              {{item[prefixField]}} - {{item[field]}}
+          </ng-container>
       </ng-template>
       <ng-template *ngIf="showOptionPrefix && prefixField !== 'lemma'" let-item pTemplate="item">
-          <strong>{{item[prefixField]}}: </strong>{{item[field]}}
+          {{item[prefixField]}}: {{item[field]}}
       </ng-template>
       <ng-template *ngIf="showOptionSuffix" let-item pTemplate="item">
           {{item[field]}}<sub>{{item[suffixField]}}</sub>
