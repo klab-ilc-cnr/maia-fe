@@ -667,16 +667,67 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const mostCommonValue = sortedValues[0][0];
 
         const featureObj = this.features.find(f => f.feature?.name === featureName);
-        if (featureObj?.feature?.type === this.featureTypes.TAGSET) {
+        const featureType = featureObj?.feature?.type;
+
+        // Helper function per verificare se una stringa è un URI valido
+        const isValidUri = (value: string): boolean => {
+          if (!value || typeof value !== 'string') return false;
+          if (value.startsWith('http://') || value.startsWith('https://')) {
+            return true;
+          }
+          if (value.includes('://')) {
+            return true;
+          }
+          // Verifica se è un URI con schema (es: urn:, sense:, lexicalEntry:, form:)
+          if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(value)) {
+            // Escludi valori testuali che contengono @ (come "cacciare@it: ...")
+            // che sono probabilmente rappresentazioni testuali, non URI
+            if (value.includes('@') && !value.startsWith('http')) {
+              return false;
+            }
+            return true;
+          }
+          return false;
+        };
+
+        if (featureType === this.featureTypes.TAGSET && featureObj) {
           featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
             const matchingItem = items.find(item => item.name === mostCommonValue);
             featureControl.setValue(matchingItem ? matchingItem.name : mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
           });
+        } else if (featureType === this.featureTypes.LEXICAL_ENTRY) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            featureControl.setValue(mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il lexical entry per testo
+            this.findLexicalEntryByText(mostCommonValue, featureControl as FormControl, checkedControl as FormControl, featureName);
+          }
+        } else if (featureType === this.featureTypes.FORM) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            featureControl.setValue(mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca la form per testo
+            this.findFormByText(mostCommonValue, featureControl as FormControl, checkedControl as FormControl, featureName);
+          }
+        } else if (featureType === this.featureTypes.SENSE) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            featureControl.setValue(mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il senso per testo e poi carica l'oggetto completo usando l'ID
+            this.findSenseByText(mostCommonValue, featureControl as FormControl, checkedControl as FormControl, featureName);
+          }
         } else {
+          // Per STRING e URI, usa il valore direttamente
           featureControl.setValue(mostCommonValue);
+          checkedControl.setValue(true, { emitEvent: false });
         }
-
-        checkedControl.setValue(true, { emitEvent: false });
       });
     });
   }
