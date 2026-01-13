@@ -145,16 +145,30 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     // Gestione salvataggio definizione principale (details)
     this.definition.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
-      debounceTime(500),
+      debounceTime(300), // Ridotto il debounce per pulire più velocemente
       distinctUntilChanged(),
     ).subscribe(() => {
-      const detailsValue = this.definition.value || '';
+      let detailsValue = this.definition.value || '';
       
-      // Salva details
+      // Pulisce l'HTML rimuovendo i <p> vuoti all'inizio e alla fine e caratteri invisibili
+      const cleanedValue = this.cleanHtmlContent(detailsValue);
+      
+      // Se il valore è cambiato dopo la pulizia, aggiorna il form control immediatamente
+      // per evitare che i caratteri invisibili rimangano nell'editor
+      if (cleanedValue !== detailsValue) {
+        // Usa setTimeout per evitare loop infiniti
+        setTimeout(() => {
+          this.definition.setValue(cleanedValue, { emitEvent: false });
+        }, 0);
+        detailsValue = cleanedValue;
+      }
+      
+      // Salva details solo se il valore pulito è diverso da quello salvato
       const existingDef = this.senseEntry.definition.find(def => def.propertyID === 'definition');
       const currentValue = existingDef?.propertyValue ? decode(existingDef.propertyValue) : '';
+      const cleanedCurrentValue = this.cleanHtmlContent(currentValue);
       
-      if (detailsValue !== currentValue) {
+      if (detailsValue !== cleanedCurrentValue) {
         if (detailsValue === '') {
           if (existingDef) {
             const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
@@ -230,7 +244,9 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     // Carica la definizione principale (definition)
     const mainDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definition');
     const decodedValue = mainDefinition?.propertyValue ? decode(mainDefinition.propertyValue) : '';
-    this.definition.setValue(decodedValue || '');
+    // Pulisce il valore caricato rimuovendo caratteri invisibili e <p> vuoti
+    const cleanedValue = this.cleanHtmlContent(decodedValue || '');
+    this.definition.setValue(cleanedValue);
     
     // Carica gli altri campi (description, explanation, gloss, ecc.) come faceva prima
     for (const { propertyID, propertyValue } of this.senseEntry.definition) {
@@ -514,6 +530,88 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   private updateListControlList(list: FormArray<any>, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
     list.at(index).setValue(value);
     controlList[index] = <{ relation: string, value: string, external: boolean }>{ ...value };
+  }
+
+  /**
+   * Handler per l'evento onTextChange di p-editor
+   * Pulisce il valore immediatamente quando viene modificato
+   * @param event {any} evento emesso da p-editor
+   */
+  onDefinitionTextChange(event: any) {
+    if (event.htmlValue) {
+      const cleaned = this.cleanHtmlContent(event.htmlValue);
+      if (cleaned !== event.htmlValue) {
+        // Aggiorna il valore pulito nel form control
+        setTimeout(() => {
+          this.definition.setValue(cleaned, { emitEvent: false });
+        }, 0);
+      }
+    }
+  }
+
+  /**
+   * Pulisce l'HTML rimuovendo i <p> vuoti all'inizio e alla fine e caratteri invisibili
+   * Rimuove anche i <p> wrapper esterni se il contenuto è già dentro un <p>
+   * @param html {string} contenuto HTML da pulire
+   * @returns {string} HTML pulito
+   */
+  private cleanHtmlContent(html: string): string {
+    if (!html) return '';
+    
+    // Prima decodifica le entità HTML per gestire anche caratteri codificati
+    let cleaned = decode(html);
+    
+    // Rimuove i caratteri invisibili (BOM, zero-width space, etc.) dall'intero contenuto
+    // U+FEFF = BOM (Byte Order Mark)
+    // U+200B = Zero-width space
+    // U+200C = Zero-width non-joiner
+    // U+200D = Zero-width joiner
+    // U+2060 = Word joiner
+    // U+200E = Left-to-right mark
+    // U+200F = Right-to-left mark
+    // U+202A = Left-to-right embedding
+    // U+202B = Right-to-left embedding
+    // U+202C = Pop directional formatting
+    // U+202D = Left-to-right override
+    // U+202E = Right-to-left override
+    cleaned = cleaned.replace(/[\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]/g, '');
+    
+    // Rimuove anche le entità HTML che rappresentano caratteri invisibili
+    cleaned = cleaned.replace(/&#xFEFF;|&#65279;|&#8203;|&#8204;|&#8205;|&#8288;|&#8234;|&#8235;|&#8236;|&#8237;|&#8238;/gi, '');
+    
+    // Rimuove caratteri invisibili anche all'interno dei tag (es. <strong>﻿)
+    cleaned = cleaned.replace(/(<[^>]+>)([\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+)/g, '$1');
+    cleaned = cleaned.replace(/([\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+)(<[^>]+>)/g, '$2');
+    
+    // Rimuove i <p> vuoti all'inizio e alla fine (con o senza spazi/br)
+    cleaned = cleaned.trim();
+    
+    // Rimuove <p></p> o <p><br></p> o <p>&nbsp;</p> all'inizio
+    cleaned = cleaned.replace(/^<p[^>]*>(\s*|<br\s*\/?>|&nbsp;)*<\/p>/i, '');
+    
+    // Rimuove <p></p> o <p><br></p> o <p>&nbsp;</p> alla fine
+    cleaned = cleaned.replace(/<p[^>]*>(\s*|<br\s*\/?>|&nbsp;)*<\/p>$/i, '');
+    
+    // Se il contenuto inizia e finisce con un <p>, rimuove i tag <p> esterni
+    // Questo evita che p-editor aggiunga un altro <p> quando viene caricato
+    const pTagMatch = cleaned.match(/^<p[^>]*>(.*)<\/p>$/i);
+    if (pTagMatch && pTagMatch[1]) {
+      // Se il contenuto interno non è vuoto, usa solo il contenuto interno
+      const innerContent = pTagMatch[1].trim();
+      if (innerContent && innerContent !== '<br>' && innerContent !== '<br/>' && innerContent !== '&nbsp;') {
+        cleaned = innerContent;
+      }
+    }
+    
+    // Rimuove anche eventuali <br> o spazi all'inizio e alla fine
+    cleaned = cleaned.replace(/^(\s*|<br\s*\/?>|&nbsp;)+/i, '');
+    cleaned = cleaned.replace(/(\s*|<br\s*\/?>|&nbsp;)+$/i, '');
+    
+    // Rimuove eventuali caratteri invisibili rimasti all'inizio o alla fine
+    cleaned = cleaned.replace(/^[\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+/, '');
+    cleaned = cleaned.replace(/[\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+$/, '');
+    
+    return cleaned.trim();
   }
 
   /**

@@ -19,7 +19,7 @@
           <!-- Definizione principale (definition) -->
           <div class="field col-12">
             <label class="form-label w-full">definition</label>
-            <p-editor formControlName="definition" styleClass="w-full"></p-editor>
+            <p-editor formControlName="definition" styleClass="w-full" (onTextChange)="onDefinitionTextChange($event)"></p-editor>
           </div>
           <!-- Campi aggiuntivi dinamici -->
           <form [formGroupName]="'additionalFields'">
