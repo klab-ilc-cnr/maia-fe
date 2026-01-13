@@ -176,6 +176,16 @@ export class AnnotationService {
   }
 
   /**
+   * Updates multiple annotations based on the provided request.
+   *
+   * @param request - The request object containing the details of the annotations to be updated.
+   * @returns An observable that emits the response containing the result of the update operation.
+   */
+  public updateMultipleAnnotation(request: MultipleAnnotationRequest): Observable<MultipleAnnotationResponse> {
+    return this.http.post<MultipleAnnotationResponse>(`${this.textoUrl}/annotation/multiple-update`, request);
+  }
+
+  /**
    * Delete an annotation by ID
    * @param annotationId {number} annotation identifier
    * @returns {Observable<Object>}

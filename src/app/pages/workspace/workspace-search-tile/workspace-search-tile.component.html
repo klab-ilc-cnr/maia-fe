@@ -261,12 +261,14 @@
 <app-multiple-text-annotation-editor #annotationEditor 
     [visible]="showMultipleAnnotationDialog"
     [deleteMode]="isDeleting" 
+    [editMode]="isEditing"
     [textOffsets]="textOffsets" 
     [layerId]="lastSearchRequestLayer?.id"
     [layerName]="lastSearchRequestLayer?.name"
     [layerColor]="lastSearchRequestLayer?.color"
-    (onDialogHide)="showMultipleAnnotationDialog = false"
+    (onDialogHide)="showMultipleAnnotationDialog = false; isDeleting = false; isEditing = false"
     (onSaveStart)="onSaveStart()" (onSaveEnd)="onSaveEnd($event)"
     (onDeleteStart)="onDeleteStart()" (onDeleteEnd)="onDeleteEnd($event)"
+    (onEditStart)="onEditStart()" (onEditEnd)="onEditEnd($event)"
     (onCancel)="showMultipleAnnotationDialog = false">
 </app-multiple-text-annotation-editor>

@@ -377,6 +377,7 @@
             "saveAs": "Salva",
             "export": "Esporta",
             "annotate": "Annota",
+            "editAnnotations": "Modifica annotazioni",
             "removeAnnotations": "Rimuovi annotazioni"
         },
         "restriction":{
@@ -388,8 +389,12 @@
         "annotations":{
             "saveSuccess": "annotazioni create con successo",
             "saveFailed": "Non è stato possibile creare annotazioni per i seguenti indici selezionati: ",
+            "editSuccess": "annotazioni modificate con successo",
+            "editFailed": "Non è stato possibile modificare le annotazioni per i seguenti indici selezionati: ",
             "deleteSuccess": "annotazioni eliminate con successo",
             "deleteFailed": "Non è stato possibile eliminare le annotazioni per i seguenti indici selezionati: "
-        }
+        },
+        "currentValue": "Valore attuale",
+        "newValue": "Nuovo valore"
     }
 }
