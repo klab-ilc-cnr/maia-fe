@@ -60,6 +60,30 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
     this.selected.emit(event[this.valueField]);
   }
 
+  /**
+   * Restituisce il testo completo da mostrare nel tooltip
+   */
+  get tooltipText(): string {
+    if (!this.valueToShow) return '';
+    
+    // Se prefixField è 'lemma' e field è 'definition', il campo definition contiene già "lemma - definizione"
+    // quindi usiamo solo il campo definition per evitare duplicazioni
+    if (this.showOptionPrefix && this.prefixField === 'lemma' && this.field === 'definition') {
+      return this.valueToShow[this.field] || '';
+    } else if (this.showOptionPrefix && this.prefixField === 'lemma') {
+      // Se prefixField è 'lemma' ma field non è 'definition', formattiamo manualmente
+      const prefix = this.valueToShow[this.prefixField] || '';
+      const fieldValue = this.valueToShow[this.field] || '';
+      return prefix ? `${prefix} - ${fieldValue}` : fieldValue;
+    } else if (this.showOptionPrefix && this.prefixField) {
+      const prefix = this.valueToShow[this.prefixField] || '';
+      const fieldValue = this.valueToShow[this.field] || '';
+      return prefix ? `${prefix}: ${fieldValue}` : fieldValue;
+    } else {
+      return this.valueToShow[this.field] || '';
+    }
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
