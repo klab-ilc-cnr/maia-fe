@@ -214,7 +214,16 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map((resp: any) => resp.list),
+    map((resp: any) => {
+      return resp.list.map((s: SenseListItem) => {
+        // Formatta il campo definition includendo il lemma
+        const definition = s.lemma ? `${s.lemma} - ${s.definition}` : s.definition;
+        return {
+          ...s,
+          definition: definition
+        };
+      });
+    }),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
