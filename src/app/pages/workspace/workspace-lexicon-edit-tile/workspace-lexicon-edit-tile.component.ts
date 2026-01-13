@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
+import { decode } from 'html-entities';
 import { Subject, catchError, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
@@ -111,8 +112,18 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     let result: boolean;
     switch (field) {
       case 'label':
-        node.data.label = newValue;
-        node.data.name = newValue;
+        // Decodifica e pulisce l'HTML dal valore se presente
+        let cleanedValue = newValue;
+        if (typeof newValue === 'string') {
+          // Se il valore è codificato (contiene &lt; o &gt;), decodificalo prima
+          if (newValue.includes('&lt;') || newValue.includes('&gt;') || newValue.includes('&amp;')) {
+            cleanedValue = decode(newValue);
+          }
+          // Pulisce l'HTML dal valore (rimuove tag HTML e decodifica entità)
+          cleanedValue = HtmlHelper.stripHtml(cleanedValue);
+        }
+        node.data.label = cleanedValue;
+        node.data.name = cleanedValue;
         result = true;
         break;
       case 'pos':

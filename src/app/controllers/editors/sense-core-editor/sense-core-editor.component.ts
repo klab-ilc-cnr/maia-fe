@@ -457,12 +457,15 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
 
       if (relation === 'definition') {
+        // Decodifica e pulisce il valore prima di inviarlo all'albero
+        const decodedValue = decode(newValue);
+        const cleanedValue = this.cleanHtmlContent(decodedValue);
         this.commonService.notifyOther({
           option: 'lexicon_edit_tree_data',
           lexicalEntry: '',
           uri: this.senseEntry.sense,
           field: 'label',
-          newValue
+          newValue: cleanedValue  // Usa il valore pulito invece di quello codificato
         })
       }
     });
