@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, forkJoin, map, take, takeUntil } from 'rxjs';
+import { Observable, Subject, forkJoin, map, take, takeUntil, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
@@ -217,7 +218,10 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
-      const definition = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue;
+      const definitionValue = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue || '';
+      const lemma = sense.lexicalEntryLabel ? sense.lexicalEntryLabel.split('@')[0] : '';
+      // Formatta la definizione includendo il lemma in grassetto
+      const definition = lemma ? `${lemma} - ${definitionValue}` : definitionValue;
       return <SenseListItem>{
         creator: sense.creator,
         lastUpdate: sense.lastUpdate,
@@ -225,6 +229,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         confidence: sense.confidence,
         sense: sense.sense,
         hasChildren: false,
+        lemma: lemma,
         definition: definition,
         note: sense.note,
         usage: sense.usage,
@@ -726,41 +731,229 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const featureObj = this.features.find(f => f.feature?.name === featureName);
         const featureType = featureObj?.feature?.type;
 
+        // Helper function per verificare se una stringa è un URI valido
+        const isValidUri = (value: string): boolean => {
+          if (!value || typeof value !== 'string') return false;
+          if (value.startsWith('http://') || value.startsWith('https://')) {
+            return true;
+          }
+          if (value.includes('://')) {
+            return true;
+          }
+          // Verifica se è un URI con schema (es: urn:, sense:, lexicalEntry:, form:)
+          if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(value)) {
+            // Escludi valori testuali che contengono @ (come "casa@it: ...")
+            // che sono probabilmente rappresentazioni testuali, non URI
+            if (value.includes('@') && !value.startsWith('http')) {
+              return false;
+            }
+            return true;
+          }
+          return false;
+        };
+
         if (featureType === this.featureTypes.TAGSET && featureObj) {
           featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
             const matchingItem = items.find(item => item.name === mostCommonValue);
             const valueToSet = matchingItem?.name || mostCommonValue;
             oldValueControl.setValue(valueToSet);
-            // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
             this.savedOldValues.set(featureName, valueToSet);
+            checkedControl.setValue(true, { emitEvent: false });
           });
         } else if (featureType === this.featureTypes.LEXICAL_ENTRY) {
-          // Per LEXICAL_ENTRY, recupera l'oggetto completo usando lexEntryById
-          this.lexEntryById(mostCommonValue).pipe(take(1)).subscribe(lexEntry => {
-            oldValueControl.setValue(lexEntry);
-            this.savedOldValues.set(featureName, JSON.stringify(lexEntry));
-          });
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            oldValueControl.setValue(mostCommonValue);
+            this.savedOldValues.set(featureName, mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il lexical entry per testo
+            this.findLexicalEntryByText(mostCommonValue, oldValueControl as FormControl, checkedControl as FormControl, featureName);
+          }
         } else if (featureType === this.featureTypes.FORM) {
-          // Per FORM, recupera l'oggetto completo usando formById
-          this.formById(mostCommonValue).pipe(take(1)).subscribe(form => {
-            oldValueControl.setValue(form);
-            this.savedOldValues.set(featureName, JSON.stringify(form));
-          });
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            oldValueControl.setValue(mostCommonValue);
+            this.savedOldValues.set(featureName, mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca la form per testo
+            this.findFormByText(mostCommonValue, oldValueControl as FormControl, checkedControl as FormControl, featureName);
+          }
         } else if (featureType === this.featureTypes.SENSE) {
-          // Per SENSE, recupera l'oggetto completo usando senseById
-          this.senseById(mostCommonValue).pipe(take(1)).subscribe(sense => {
-            oldValueControl.setValue(sense);
-            this.savedOldValues.set(featureName, JSON.stringify(sense));
-          });
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            oldValueControl.setValue(mostCommonValue);
+            this.savedOldValues.set(featureName, mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il senso per testo e poi carica l'oggetto completo usando l'ID
+            this.findSenseByText(mostCommonValue, oldValueControl as FormControl, checkedControl as FormControl, featureName);
+          }
         } else {
           // Per STRING e URI, usa il valore direttamente
           oldValueControl.setValue(mostCommonValue);
-          // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
           this.savedOldValues.set(featureName, mostCommonValue);
+          checkedControl.setValue(true, { emitEvent: false });
         }
-
-        checkedControl.setValue(true, { emitEvent: false });
       });
+    });
+  }
+
+  /**
+   * @private
+   * Cerca un senso per testo e carica l'oggetto completo usando l'ID trovato
+   */
+  private findSenseByText(textValue: string, oldValueControl: FormControl | null, checkedControl: FormControl | null, featureName: string): void {
+    if (!oldValueControl || !checkedControl) return;
+    // Estrai il lemma (prima parte prima di "@") o usa tutto il testo
+    const searchText = textValue.includes('@') ? textValue.split('@')[0].trim() : textValue.trim();
+    
+    if (!searchText) {
+      oldValueControl.setValue(null);
+      checkedControl.setValue(false, { emitEvent: false });
+      return;
+    }
+
+    // Cerca i sensi per testo
+    this.lexiconService.getFilteredSenses({
+      text: searchText,
+      searchMode: searchModeEnum.startsWith,
+      type: "",
+      field: "",
+      pos: '',
+      formType: formTypeEnum.entry,
+      author: "",
+      lang: "",
+      status: "",
+      offset: 0,
+      limit: 500
+    }).pipe(
+      take(1),
+      catchError(error => {
+        console.error('Error finding sense by text:', error);
+        return of({ list: [] });
+      })
+    ).subscribe((response: any) => {
+      const senses = response.list || [];
+      
+      // Cerca il senso che corrisponde meglio al valore originale
+      // Prima prova a trovare una corrispondenza esatta nella definizione
+      let matchingSense = senses.find((s: SenseListItem) => {
+        const senseDefinition = s.definition || s.label || '';
+        return senseDefinition === textValue || senseDefinition.includes(textValue) || textValue.includes(senseDefinition);
+      });
+      
+      // Se non trova una corrispondenza esatta, usa il primo risultato
+      if (!matchingSense && senses.length > 0) {
+        matchingSense = senses[0];
+      }
+      
+      if (matchingSense && matchingSense.sense) {
+        // Imposta l'ID invece dell'oggetto completo (l'autocomplete caricherà l'oggetto usando initialValueFn)
+        oldValueControl.setValue(matchingSense.sense);
+        this.savedOldValues.set(featureName, matchingSense.sense);
+        checkedControl.setValue(true, { emitEvent: false });
+      } else {
+        oldValueControl.setValue(null);
+        checkedControl.setValue(false, { emitEvent: false });
+      }
+    });
+  }
+
+  /**
+   * @private
+   * Cerca un lexical entry per testo
+   */
+  private findLexicalEntryByText(textValue: string, oldValueControl: FormControl | null, checkedControl: FormControl | null, featureName: string): void {
+    if (!oldValueControl || !checkedControl) return;
+    const searchText = textValue.includes('@') ? textValue.split('@')[0].trim() : textValue.trim();
+    
+    if (!searchText) {
+      oldValueControl.setValue(null);
+      checkedControl.setValue(false, { emitEvent: false });
+      return;
+    }
+
+    this.lexiconService.getLexicalEntriesList({
+      text: searchText,
+      searchMode: searchModeEnum.startsWith,
+      type: '',
+      pos: '',
+      formType: '',
+      author: '',
+      lang: '',
+      status: '',
+      offset: 0,
+      limit: 500
+    }).pipe(
+      take(1),
+      catchError(error => {
+        console.error('Error finding lexical entry by text:', error);
+        return of({ list: [] });
+      })
+    ).subscribe((response: any) => {
+      const entries = response.list || [];
+      const matchingEntry = entries.find((e: any) => {
+        const entryLabel = e.label || '';
+        return entryLabel === textValue || entryLabel.includes(textValue) || textValue.includes(entryLabel);
+      }) || entries[0];
+      
+      if (matchingEntry && matchingEntry.lexicalEntry) {
+        // Imposta l'ID invece dell'oggetto completo (l'autocomplete caricherà l'oggetto usando initialValueFn)
+        oldValueControl.setValue(matchingEntry.lexicalEntry);
+        this.savedOldValues.set(featureName, matchingEntry.lexicalEntry);
+        checkedControl.setValue(true, { emitEvent: false });
+      } else {
+        oldValueControl.setValue(null);
+        checkedControl.setValue(false, { emitEvent: false });
+      }
+    });
+  }
+
+  /**
+   * @private
+   * Cerca una form per testo
+   */
+  private findFormByText(textValue: string, oldValueControl: FormControl | null, checkedControl: FormControl | null, featureName: string): void {
+    if (!oldValueControl || !checkedControl) return;
+    const searchText = textValue.includes('@') ? textValue.split('@')[0].trim() : textValue.trim();
+    
+    if (!searchText) {
+      oldValueControl.setValue(null);
+      checkedControl.setValue(false, { emitEvent: false });
+      return;
+    }
+
+    this.lexiconService.getFormList({
+      text: searchText,
+      searchMode: searchModeEnum.startsWith,
+      representationType: "writtenRep",
+      author: '',
+      offset: 0,
+      limit: 500
+    }).pipe(
+      take(1),
+      catchError(error => {
+        console.error('Error finding form by text:', error);
+        return of({ list: [] });
+      })
+    ).subscribe((response: any) => {
+      const forms = response.list || [];
+      const matchingForm = forms.find((f: any) => {
+        const formLabel = f.label || '';
+        return formLabel === textValue || formLabel.includes(textValue) || textValue.includes(formLabel);
+      }) || forms[0];
+      
+      if (matchingForm && matchingForm.form) {
+        // Imposta l'ID invece dell'oggetto completo (l'autocomplete caricherà l'oggetto usando initialValueFn)
+        oldValueControl.setValue(matchingForm.form);
+        this.savedOldValues.set(featureName, matchingForm.form);
+        checkedControl.setValue(true, { emitEvent: false });
+      } else {
+        oldValueControl.setValue(null);
+        checkedControl.setValue(false, { emitEvent: false });
+      }
     });
   }
 }
