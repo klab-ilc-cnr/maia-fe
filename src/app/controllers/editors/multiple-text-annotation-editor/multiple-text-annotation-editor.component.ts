@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, forkJoin, map, take, takeUntil } from 'rxjs';
+import { Observable, Subject, forkJoin, map, take, takeUntil, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -61,7 +62,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   /** Valori esistenti per ogni feature (per il dropdown del valore attuale in edit mode) */
   existingFeatureValues: Map<string, string[]> = new Map();
   /** Valori temporanei salvati quando lo switch viene disattivato (per ripristinarli quando viene riattivato) */
-  private savedOldValues: Map<string, string> = new Map();
+  private savedOldValues: Map<string, string> = new Map(); // Salva come stringa (JSON per oggetti)
 
   annotationForm = new FormGroup({
     layer: new FormControl<string>({ value: '', disabled: true }),
@@ -215,16 +216,24 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     limit: 500
   }).pipe(
     map((resp: any) => {
-      // Rimuove HTML dalle definizioni nella lista
-      return resp.list.map((s: SenseListItem) => ({
-        ...s,
-        definition: HtmlHelper.stripHtml(s.definition)
-      }));
+      return resp.list.map((s: SenseListItem) => {
+        // Rimuove HTML dalla definizione e formatta includendo il lemma
+        const cleanDefinition = HtmlHelper.stripHtml(s.definition || '');
+        const definition = s.lemma ? `${s.lemma} - ${cleanDefinition}` : cleanDefinition;
+        return {
+          ...s,
+          definition: definition
+        };
+      });
     }),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
-      const definition = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue;
+      const definitionValue = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue || '';
+      const lemma = sense.lexicalEntryLabel ? sense.lexicalEntryLabel.split('@')[0] : '';
+      // Rimuove HTML dalla definizione e formatta includendo il lemma
+      const cleanDefinition = HtmlHelper.stripHtml(definitionValue);
+      const definition = lemma ? `${lemma} - ${cleanDefinition}` : cleanDefinition;
       return <SenseListItem>{
         creator: sense.creator,
         lastUpdate: sense.lastUpdate,
@@ -232,7 +241,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         confidence: sense.confidence,
         sense: sense.sense,
         hasChildren: false,
-        definition: HtmlHelper.stripHtml(definition),
+        lemma: lemma,
+        definition: definition,
         note: sense.note,
         usage: sense.usage,
         concept: sense.concept,
@@ -297,6 +307,17 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   setIndirectValue(value: any, featureFieldName: string) {
     this.featureForm.get(featureFieldName)?.setValue(value);
   }
+
+  /**
+   * @public
+   * Metodo che imposta un valore indiretto per il campo oldValue (valore attuale) in edit mode
+   * @param value {any} valore da impostare
+   * @param featureFieldName {string} nome del campo della feature
+   */
+  setIndirectOldValue(value: any, featureFieldName: string) {
+    this.featureForm.get(`${featureFieldName}_oldValue`)?.setValue(value);
+  }
+
 
   /**
    * @public
@@ -411,9 +432,34 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
       if (this.editMode) {
         // In edit mode, includi solo se c'è un nuovo valore da impostare
         if (hasValidValue) {
+          // Recupera il valore attuale (oldValue) se lo switch è attivo
+          const checkedControl = this.featureForm.get(`${feature.feature.name}_checked`);
+          const oldValueControl = this.featureForm.get(`${feature.feature.name}_oldValue`);
+          let oldValue: string | undefined = undefined;
+          
+          if (checkedControl?.value && oldValueControl?.value) {
+            const oldValueRaw = oldValueControl.value;
+            // Gestisci il valore in base al tipo: se è un oggetto, estrai l'ID
+            if (typeof oldValueRaw === 'string') {
+              oldValue = oldValueRaw;
+            } else if (typeof oldValueRaw === 'object') {
+              // Per LEXICAL_ENTRY, FORM, SENSE, estrai l'ID dall'oggetto
+              if ('lexicalEntry' in oldValueRaw && oldValueRaw.lexicalEntry) {
+                oldValue = oldValueRaw.lexicalEntry;
+              } else if ('form' in oldValueRaw && oldValueRaw.form) {
+                oldValue = oldValueRaw.form;
+              } else if ('sense' in oldValueRaw && oldValueRaw.sense) {
+                oldValue = oldValueRaw.sense;
+              } else if ('name' in oldValueRaw && oldValueRaw.name) {
+                oldValue = oldValueRaw.name;
+              }
+            }
+          }
+          
           result.push(<MultipleAnnotationFeature>{
             featureId: feature.feature.id,
-            value: newValue.trim()
+            value: newValue.trim(),
+            oldValue: oldValue
           });
         }
       } else {
@@ -464,7 +510,18 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
       // In edit mode: controllo per valore attuale (oldValue)
       if (this.editMode) {
-        this.featureForm.addControl(`${controlName}_oldValue`, new FormControl<string>(''));
+        // Il tipo del FormControl per oldValue dipende dal tipo di feature
+        let oldValueControl: FormControl;
+        if (featureType === this.featureTypes.LEXICAL_ENTRY || 
+            featureType === this.featureTypes.FORM || 
+            featureType === this.featureTypes.SENSE) {
+          // Per autocomplete, il valore può essere un oggetto o una stringa
+          oldValueControl = new FormControl<any>(null);
+        } else {
+          // Per STRING, URI, TAGSET, usa stringa
+          oldValueControl = new FormControl<string>('');
+        }
+        this.featureForm.addControl(`${controlName}_oldValue`, oldValueControl);
       }
 
       const checkedControl = new FormControl<boolean>(f.checked, { nonNullable: true });
@@ -479,15 +536,26 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
             if (!value) {
               // Quando lo switch viene disattivato, salva il valore corrente e resetta il campo
               const currentValue = oldValueControl.value;
-              if (currentValue && currentValue !== '') {
-                this.savedOldValues.set(controlName, currentValue);
+              if (currentValue !== null && currentValue !== undefined && currentValue !== '') {
+                // Per oggetti, salva come JSON string; per stringhe, salva direttamente
+                if (typeof currentValue === 'object') {
+                  this.savedOldValues.set(controlName, JSON.stringify(currentValue));
+                } else {
+                  this.savedOldValues.set(controlName, currentValue);
+                }
               }
               oldValueControl.setValue(null, { emitEvent: false });
             } else {
               // Quando lo switch viene riattivato, ripristina il valore salvato se esiste
               const savedValue = this.savedOldValues.get(controlName);
               if (savedValue) {
-                oldValueControl.setValue(savedValue, { emitEvent: false });
+                // Prova a parsare come JSON se è un oggetto, altrimenti usa direttamente
+                try {
+                  const parsed = JSON.parse(savedValue);
+                  oldValueControl.setValue(parsed, { emitEvent: false });
+                } catch {
+                  oldValueControl.setValue(savedValue, { emitEvent: false });
+                }
               }
             }
           }
@@ -602,16 +670,67 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const mostCommonValue = sortedValues[0][0];
 
         const featureObj = this.features.find(f => f.feature?.name === featureName);
-        if (featureObj?.feature?.type === this.featureTypes.TAGSET) {
+        const featureType = featureObj?.feature?.type;
+
+        // Helper function per verificare se una stringa è un URI valido
+        const isValidUri = (value: string): boolean => {
+          if (!value || typeof value !== 'string') return false;
+          if (value.startsWith('http://') || value.startsWith('https://')) {
+            return true;
+          }
+          if (value.includes('://')) {
+            return true;
+          }
+          // Verifica se è un URI con schema (es: urn:, sense:, lexicalEntry:, form:)
+          if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(value)) {
+            // Escludi valori testuali che contengono @ (come "cacciare@it: ...")
+            // che sono probabilmente rappresentazioni testuali, non URI
+            if (value.includes('@') && !value.startsWith('http')) {
+              return false;
+            }
+            return true;
+          }
+          return false;
+        };
+
+        if (featureType === this.featureTypes.TAGSET && featureObj) {
           featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
             const matchingItem = items.find(item => item.name === mostCommonValue);
             featureControl.setValue(matchingItem ? matchingItem.name : mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
           });
+        } else if (featureType === this.featureTypes.LEXICAL_ENTRY) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            featureControl.setValue(mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il lexical entry per testo
+            this.findLexicalEntryByText(mostCommonValue, featureControl as FormControl, checkedControl as FormControl, featureName);
+          }
+        } else if (featureType === this.featureTypes.FORM) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            featureControl.setValue(mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca la form per testo
+            this.findFormByText(mostCommonValue, featureControl as FormControl, checkedControl as FormControl, featureName);
+          }
+        } else if (featureType === this.featureTypes.SENSE) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            featureControl.setValue(mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il senso per testo e poi carica l'oggetto completo usando l'ID
+            this.findSenseByText(mostCommonValue, featureControl as FormControl, checkedControl as FormControl, featureName);
+          }
         } else {
+          // Per STRING e URI, usa il valore direttamente
           featureControl.setValue(mostCommonValue);
+          checkedControl.setValue(true, { emitEvent: false });
         }
-
-        checkedControl.setValue(true, { emitEvent: false });
       });
     });
   }
@@ -656,7 +775,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
           });
         });
 
-        this.existingFeatureValues.set(featureName, Array.from(valueCounts.keys()).sort());
+        const sortedValuesList = Array.from(valueCounts.keys()).sort();
+        this.existingFeatureValues.set(featureName, sortedValuesList);
 
         const checkedControl = this.featureForm.get(`${featureName}_checked`);
         const oldValueControl = this.featureForm.get(`${featureName}_oldValue`);
@@ -672,22 +792,231 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const mostCommonValue = sortedValues[0][0];
 
         const featureObj = this.features.find(f => f.feature?.name === featureName);
-        if (featureObj?.feature?.type === this.featureTypes.TAGSET) {
+        const featureType = featureObj?.feature?.type;
+
+        // Helper function per verificare se una stringa è un URI valido
+        const isValidUri = (value: string): boolean => {
+          if (!value || typeof value !== 'string') return false;
+          if (value.startsWith('http://') || value.startsWith('https://')) {
+            return true;
+          }
+          if (value.includes('://')) {
+            return true;
+          }
+          // Verifica se è un URI con schema (es: urn:, sense:, lexicalEntry:, form:)
+          if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(value)) {
+            // Escludi valori testuali che contengono @ (come "casa@it: ...")
+            // che sono probabilmente rappresentazioni testuali, non URI
+            if (value.includes('@') && !value.startsWith('http')) {
+              return false;
+            }
+            return true;
+          }
+          return false;
+        };
+
+        if (featureType === this.featureTypes.TAGSET && featureObj) {
           featureObj.tagsetItems?.pipe(take(1)).subscribe(items => {
             const matchingItem = items.find(item => item.name === mostCommonValue);
             const valueToSet = matchingItem?.name || mostCommonValue;
             oldValueControl.setValue(valueToSet);
-            // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
             this.savedOldValues.set(featureName, valueToSet);
+            checkedControl.setValue(true, { emitEvent: false });
           });
+        } else if (featureType === this.featureTypes.LEXICAL_ENTRY) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            oldValueControl.setValue(mostCommonValue);
+            this.savedOldValues.set(featureName, mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il lexical entry per testo
+            this.findLexicalEntryByText(mostCommonValue, oldValueControl as FormControl, checkedControl as FormControl, featureName);
+          }
+        } else if (featureType === this.featureTypes.FORM) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            oldValueControl.setValue(mostCommonValue);
+            this.savedOldValues.set(featureName, mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca la form per testo
+            this.findFormByText(mostCommonValue, oldValueControl as FormControl, checkedControl as FormControl, featureName);
+          }
+        } else if (featureType === this.featureTypes.SENSE) {
+          if (isValidUri(mostCommonValue)) {
+            // Imposta direttamente l'ID (l'autocomplete caricherà l'oggetto usando initialValueFn)
+            oldValueControl.setValue(mostCommonValue);
+            this.savedOldValues.set(featureName, mostCommonValue);
+            checkedControl.setValue(true, { emitEvent: false });
+          } else {
+            // Cerca il senso per testo e poi carica l'oggetto completo usando l'ID
+            this.findSenseByText(mostCommonValue, oldValueControl as FormControl, checkedControl as FormControl, featureName);
+          }
         } else {
+          // Per STRING e URI, usa il valore direttamente
           oldValueControl.setValue(mostCommonValue);
-          // Salva il valore precaricato per poterlo ripristinare se lo switch viene disattivato e riattivato
           this.savedOldValues.set(featureName, mostCommonValue);
+          checkedControl.setValue(true, { emitEvent: false });
         }
-
-        checkedControl.setValue(true, { emitEvent: false });
       });
+    });
+  }
+
+  /**
+   * @private
+   * Cerca un senso per testo e carica l'oggetto completo usando l'ID trovato
+   */
+  private findSenseByText(textValue: string, oldValueControl: FormControl | null, checkedControl: FormControl | null, featureName: string): void {
+    if (!oldValueControl || !checkedControl) return;
+    // Estrai il lemma (prima parte prima di "@") o usa tutto il testo
+    const searchText = textValue.includes('@') ? textValue.split('@')[0].trim() : textValue.trim();
+    
+    if (!searchText) {
+      oldValueControl.setValue(null);
+      checkedControl.setValue(false, { emitEvent: false });
+      return;
+    }
+
+    // Cerca i sensi per testo
+    this.lexiconService.getFilteredSenses({
+      text: searchText,
+      searchMode: searchModeEnum.startsWith,
+      type: "",
+      field: "",
+      pos: '',
+      formType: formTypeEnum.entry,
+      author: "",
+      lang: "",
+      status: "",
+      offset: 0,
+      limit: 500
+    }).pipe(
+      take(1),
+      catchError(error => {
+        console.error('Error finding sense by text:', error);
+        return of({ list: [] });
+      })
+    ).subscribe((response: any) => {
+      const senses = response.list || [];
+      
+      // Cerca il senso che corrisponde meglio al valore originale
+      // Prima prova a trovare una corrispondenza esatta nella definizione
+      let matchingSense = senses.find((s: SenseListItem) => {
+        const senseDefinition = s.definition || s.label || '';
+        return senseDefinition === textValue || senseDefinition.includes(textValue) || textValue.includes(senseDefinition);
+      });
+      
+      // Se non trova una corrispondenza esatta, usa il primo risultato
+      if (!matchingSense && senses.length > 0) {
+        matchingSense = senses[0];
+      }
+      
+      if (matchingSense && matchingSense.sense) {
+        // Imposta l'ID invece dell'oggetto completo (l'autocomplete caricherà l'oggetto usando initialValueFn)
+        oldValueControl.setValue(matchingSense.sense);
+        this.savedOldValues.set(featureName, matchingSense.sense);
+        checkedControl.setValue(true, { emitEvent: false });
+      } else {
+        oldValueControl.setValue(null);
+        checkedControl.setValue(false, { emitEvent: false });
+      }
+    });
+  }
+
+  /**
+   * @private
+   * Cerca un lexical entry per testo
+   */
+  private findLexicalEntryByText(textValue: string, oldValueControl: FormControl | null, checkedControl: FormControl | null, featureName: string): void {
+    if (!oldValueControl || !checkedControl) return;
+    const searchText = textValue.includes('@') ? textValue.split('@')[0].trim() : textValue.trim();
+    
+    if (!searchText) {
+      oldValueControl.setValue(null);
+      checkedControl.setValue(false, { emitEvent: false });
+      return;
+    }
+
+    this.lexiconService.getLexicalEntriesList({
+      text: searchText,
+      searchMode: searchModeEnum.startsWith,
+      type: '',
+      pos: '',
+      formType: '',
+      author: '',
+      lang: '',
+      status: '',
+      offset: 0,
+      limit: 500
+    }).pipe(
+      take(1),
+      catchError(error => {
+        console.error('Error finding lexical entry by text:', error);
+        return of({ list: [] });
+      })
+    ).subscribe((response: any) => {
+      const entries = response.list || [];
+      const matchingEntry = entries.find((e: any) => {
+        const entryLabel = e.label || '';
+        return entryLabel === textValue || entryLabel.includes(textValue) || textValue.includes(entryLabel);
+      }) || entries[0];
+      
+      if (matchingEntry && matchingEntry.lexicalEntry) {
+        // Imposta l'ID invece dell'oggetto completo (l'autocomplete caricherà l'oggetto usando initialValueFn)
+        oldValueControl.setValue(matchingEntry.lexicalEntry);
+        this.savedOldValues.set(featureName, matchingEntry.lexicalEntry);
+        checkedControl.setValue(true, { emitEvent: false });
+      } else {
+        oldValueControl.setValue(null);
+        checkedControl.setValue(false, { emitEvent: false });
+      }
+    });
+  }
+
+  /**
+   * @private
+   * Cerca una form per testo
+   */
+  private findFormByText(textValue: string, oldValueControl: FormControl | null, checkedControl: FormControl | null, featureName: string): void {
+    if (!oldValueControl || !checkedControl) return;
+    const searchText = textValue.includes('@') ? textValue.split('@')[0].trim() : textValue.trim();
+    
+    if (!searchText) {
+      oldValueControl.setValue(null);
+      checkedControl.setValue(false, { emitEvent: false });
+      return;
+    }
+
+    this.lexiconService.getFormList({
+      text: searchText,
+      searchMode: searchModeEnum.startsWith,
+      representationType: "writtenRep",
+      author: '',
+      offset: 0,
+      limit: 500
+    }).pipe(
+      take(1),
+      catchError(error => {
+        console.error('Error finding form by text:', error);
+        return of({ list: [] });
+      })
+    ).subscribe((response: any) => {
+      const forms = response.list || [];
+      const matchingForm = forms.find((f: any) => {
+        const formLabel = f.label || '';
+        return formLabel === textValue || formLabel.includes(textValue) || textValue.includes(formLabel);
+      }) || forms[0];
+      
+      if (matchingForm && matchingForm.form) {
+        // Imposta l'ID invece dell'oggetto completo (l'autocomplete caricherà l'oggetto usando initialValueFn)
+        oldValueControl.setValue(matchingForm.form);
+        this.savedOldValues.set(featureName, matchingForm.form);
+        checkedControl.setValue(true, { emitEvent: false });
+      } else {
+        oldValueControl.setValue(null);
+        checkedControl.setValue(false, { emitEvent: false });
+      }
     });
   }
 }
