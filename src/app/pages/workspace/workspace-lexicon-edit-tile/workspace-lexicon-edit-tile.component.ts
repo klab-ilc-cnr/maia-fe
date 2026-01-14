@@ -123,7 +123,17 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
           cleanedValue = HtmlHelper.stripHtml(cleanedValue);
         }
         node.data.label = cleanedValue;
-        node.data.name = cleanedValue;
+        // Per i sense, il campo name deve essere la definizione (senza HTML), non il label
+        // Se il nodo è un sense, aggiorna anche il campo definition e usa quello per name
+        if (node.data?.type === LexicalEntryTypeOld.SENSE) {
+          // Aggiorna il campo definition con il valore pulito
+          node.data.definition = cleanedValue;
+          // Il campo name viene impostato in base a showLabelName
+          node.data.name = this.showLabelName ? cleanedValue : node.data.instanceName;
+        } else {
+          // Per gli altri tipi (lexical entry, form), name e label sono uguali
+          node.data.name = cleanedValue;
+        }
         result = true;
         break;
       case 'pos':
@@ -360,20 +370,25 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
           takeUntil(this.unsubscribe$),
           catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, "Error retrieving senses")),
         ).subscribe((data: SenseListItem[]) => {
-          event.node.children = data.map((val: SenseListItem) => ({
-            data: {
-              name: this.showLabelName ? HtmlHelper.stripHtml(val['definition']) : val.sense,
-              instanceName: val.sense,
-              uri: val.sense,
-              label: val['label'],
-              note: val['note'],
-              creator: val['creator'],
-              creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-              lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
-              status: null,
-              type: LexicalEntryTypeOld.SENSE
-            }
-          }));
+          event.node.children = data.map((val: SenseListItem) => {
+            const definition = val['definition'] || '';
+            const cleanedDefinition = HtmlHelper.stripHtml(definition);
+            return {
+              data: {
+                name: this.showLabelName ? cleanedDefinition : val.sense,
+                instanceName: val.sense,
+                uri: val.sense,
+                label: val['label'],
+                definition: cleanedDefinition, // Salva la definizione pulita nel nodo
+                note: val['note'],
+                creator: val['creator'],
+                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+                status: null,
+                type: LexicalEntryTypeOld.SENSE
+              }
+            };
+          });
           if (isNew) {
             event.node.expanded = true;
             const newSenseNode = event.node.children.find((n: any) => n.data.instanceName === elementInstanceName);
