@@ -234,23 +234,20 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * Inizializza le definizioni dal senso esistente
    */
   private initDefinitions() {
-    // Inizializza il menu con le opzioni disponibili
+    if (!this.senseEntry) return;
+    
     const availableFields = ['description', 'explanation', 'gloss', 'senseExample', 'senseTranslation', 'note', 'usage', 'reference', 'subject', 'confidence'];
     this.definitionsMenuItems = availableFields.map(field => ({
       label: field,
       command: () => this.movePropertyToForm(field, '')
     }));
     
-    // Carica la definizione principale (definition)
     const mainDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definition');
     const decodedValue = mainDefinition?.propertyValue ? decode(mainDefinition.propertyValue) : '';
-    // Pulisce il valore caricato rimuovendo caratteri invisibili e <p> vuoti
     const cleanedValue = this.cleanHtmlContent(decodedValue || '');
-    this.definition.setValue(cleanedValue);
+    this.definition.setValue(cleanedValue, { emitEvent: false });
     
-    // Carica gli altri campi (description, explanation, gloss, ecc.) come faceva prima
     for (const { propertyID, propertyValue } of this.senseEntry.definition) {
-      // Salta il campo della definizione principale
       if (propertyID === 'definition') {
         continue;
       }
@@ -454,10 +451,8 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         definition: updatedDefinitions,
         lastUpdate: resp
       };
-      // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
 
       if (relation === 'definition') {
-        // Decodifica e pulisce il valore prima di inviarlo all'albero
         const decodedValue = decode(newValue);
         const cleanedValue = this.cleanHtmlContent(decodedValue);
         this.commonService.notifyOther({
@@ -465,7 +460,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
           lexicalEntry: '',
           uri: this.senseEntry.sense,
           field: 'label',
-          newValue: cleanedValue  // Usa il valore pulito invece di quello codificato
+          newValue: cleanedValue
         })
       }
     });
@@ -627,12 +622,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     const propIndex = updatedDefinitions.findIndex(x => x.propertyID === propertyID);
     
     if (propertyValue === '') {
-      // Rimuovi la proprietà se il valore è vuoto
       if (propIndex >= 0) {
         updatedDefinitions.splice(propIndex, 1);
       }
     } else {
-      // Aggiorna o aggiungi la proprietà
       if (propIndex >= 0) {
         updatedDefinitions[propIndex].propertyValue = propertyValue;
       } else {
