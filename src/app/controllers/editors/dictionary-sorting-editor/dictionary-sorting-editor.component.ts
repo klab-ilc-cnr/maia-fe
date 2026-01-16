@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { catchError, take } from 'rxjs';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
 import { DictionarySortingItem } from 'src/app/models/dictionary/dictionary-sorting-item.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -95,7 +96,7 @@ export class DictionarySortingEditorComponent implements OnInit {
       return <TreeNode<DictionarySortingItem>>{
         key: item.id,
         type: isSense ? 'sense' : 'lexicalEntry',
-        label: item.label,
+        label: HtmlHelper.stripHtml(item.label),
         data: item,
         index: itemIndex,
         expanded: true,

@@ -1,4 +1,5 @@
 import { Observable, map, of } from 'rxjs';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { FilteredSenseModel } from 'src/app/models/lexicon/filtered-sense.model';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -24,7 +25,7 @@ export class LexSenseDirectRelationsStrategy implements BaseLexEntityRelationsSt
         relationshipLabel: relationshipLabelByURI[link],
         relationshipURI: link,
         destinationURI: entity || '',
-        destinationLabel: label || '',
+        destinationLabel: HtmlHelper.stripHtml(label) || '',
         itemID,
         inferred: item.inferred
       };
@@ -51,8 +52,10 @@ export class LexSenseDirectRelationsStrategy implements BaseLexEntityRelationsSt
     }).pipe(
       map((response: FilteredSenseModel) =>
         response.list.map((entry: SenseListItem) => {
+          // Usa definition se disponibile, altrimenti label come fallback
+          const definitionText = entry.definition || entry.label || 'no def';
           return {
-            relationshipLabel: `${entry.lemma} - ${entry.label || 'no def'}`,
+            relationshipLabel: `${entry.lemma} - ${HtmlHelper.stripHtml(definitionText)}`,
             relationshipURI: entry.sense,
           };
         })

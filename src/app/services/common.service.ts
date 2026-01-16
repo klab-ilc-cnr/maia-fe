@@ -47,7 +47,9 @@ export class CommonService {
     "http://www.lexinfo.net/ontology/3.0/lexinfo#gloss",
     "http://www.lexinfo.net/ontology/3.0/lexinfo#senseExample",
     "http://www.lexinfo.net/ontology/3.0/lexinfo#senseTranslation",
-    "http://www.lexinfo.net/ontology/3.0/lexinfo#confidence"
+    "http://www.lexinfo.net/ontology/3.0/lexinfo#confidence",
+    "http://www.w3.org/2004/02/skos/core#definitionLanguage",
+    "http://www.w3.org/2004/02/skos/core#definitionEtymon"
   ];
 
   public notifyOther(data: any) {

@@ -234,6 +234,14 @@ export class LexiconService {
   }
 
   /**
+   * GET to retrieve the list of source languages for etymology
+   * @returns {Observable<{code: string, name: string}[]>} observable of the list of etymology languages
+   */
+  getEtymologyLanguages(): Observable<{code: string, name: string}[]> {
+    return this.http.get<{code: string, name: string}[]>(`${this.lexoUrl}/dictionary/etymology/languages`);
+  }
+
+  /**
    * Retrieve the list of existing lexical concepts
    * @param type {string} keyword for the type of lexical concepts (ie marcheDUso|marcheSemantiche|marcheGrammaticali)
    * @returns {Observable<LexicalConceptsResponse>} observable containing the list of existing lexical concepts

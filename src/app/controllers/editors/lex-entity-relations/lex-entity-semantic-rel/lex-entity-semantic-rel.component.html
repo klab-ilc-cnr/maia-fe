@@ -8,6 +8,9 @@
     (completeMethod)="onSearchForSuggestions($event)"
     (onSelect)="onSelectSuggestionUpdateRelationship($event, control)" [virtualScroll]="true" [virtualScrollItemSize]="34"
     appendTo="body">
+    <ng-template let-item pTemplate="item">
+      <span [textContent]="item.relationshipLabel"></span>
+    </ng-template>
   </p-autoComplete>
 
   <button *ngIf="control.inferred===undefined || !control.inferred" pButton pRipple type="button" icon="pi pi-times"

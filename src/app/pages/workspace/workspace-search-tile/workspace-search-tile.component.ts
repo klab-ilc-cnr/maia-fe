@@ -15,6 +15,7 @@ import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { SearchService } from 'src/app/services/search.service';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import Swal from 'sweetalert2';
 
 export enum RestrictionEnum {
@@ -407,6 +408,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
       }),
       catchError(() => of([]))
     );
+  }
+
+  stripHtml(html: string | undefined | null): string {
+    return HtmlHelper.stripHtml(html);
   }
 
   /**

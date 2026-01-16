@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, forkJoin, map, take, takeUntil, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TFeature, TFeatureType } from 'src/app/models/texto/t-feature';
@@ -216,8 +217,9 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   }).pipe(
     map((resp: any) => {
       return resp.list.map((s: SenseListItem) => {
-        // Formatta il campo definition includendo il lemma
-        const definition = s.lemma ? `${s.lemma} - ${s.definition}` : s.definition;
+        // Rimuove HTML dalla definizione e formatta includendo il lemma
+        const cleanDefinition = HtmlHelper.stripHtml(s.definition || '');
+        const definition = s.lemma ? `${s.lemma} - ${cleanDefinition}` : cleanDefinition;
         return {
           ...s,
           definition: definition
@@ -229,8 +231,9 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
     map(sense => {
       const definitionValue = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue || '';
       const lemma = sense.lexicalEntryLabel ? sense.lexicalEntryLabel.split('@')[0] : '';
-      // Formatta la definizione includendo il lemma in grassetto
-      const definition = lemma ? `${lemma} - ${definitionValue}` : definitionValue;
+      // Rimuove HTML dalla definizione e formatta includendo il lemma
+      const cleanDefinition = HtmlHelper.stripHtml(definitionValue);
+      const definition = lemma ? `${lemma} - ${cleanDefinition}` : cleanDefinition;
       return <SenseListItem>{
         creator: sense.creator,
         lastUpdate: sense.lastUpdate,
