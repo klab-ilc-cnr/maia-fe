@@ -151,25 +151,88 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  private findAndModifyNode(root: any, res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }) {
-    if (res.lexicalEntry === res.uri) { //editing a lexical entry
-      const editNode = root.children.find((n: any) => n.data.uri === res.uri);
-      return this.updateNodeField(editNode, res.field, res.newValue);
+  private findAndModifyNode(root: any, res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }): boolean {
+    if (res.lexicalEntry === res.uri) {
+      const editNode = root.children?.find((n: any) => n.data?.uri === res.uri);
+      if (editNode) {
+        return this.updateNodeField(editNode, res.field, res.newValue);
+      }
+      return false;
     }
-    if (root.data?.uri === res.uri || root.data?.instanceName === res.uri) {
+
+    if (root.data && (root.data.uri === res.uri || root.data.instanceName === res.uri)) {
       return this.updateNodeField(root, res.field, res.newValue);
     }
-    if (!root.children) return false;
+
+    if (!root.children) { return false; }
+
     for (const child of root.children) {
       const found = this.findAndModifyNode(child, res);
-      if (found) return true;
+      if (found) { return true; }
     }
+
     return false;
   }
 
   private lexiconEditTreeData(res: { option: string, lexicalEntry: string, uri: string, field: string, newValue: any }): void {
+    if (res.field === 'label') {
+      const found = this.findAndModifyNode({ children: this.lexicalEntryTree }, res);
+      if (!found) {
+        const sensesRootNode = this.findSensesRootNode({ children: this.lexicalEntryTree }, res.uri);
+        if (sensesRootNode) {
+          const lexicalEntryUri = sensesRootNode.parent?.data?.instanceName;
+          if (lexicalEntryUri) {
+            this.loading = true;
+            this.lexiconService.getLexicalEntrySenses(lexicalEntryUri).pipe(
+              takeUntil(this.unsubscribe$),
+              catchError((error: HttpErrorResponse) => {
+                this.loading = false;
+                return this.commonService.throwHttpErrorAndMessage(error, "Error retrieving senses");
+              }),
+            ).subscribe((data: SenseListItem[]) => {
+              sensesRootNode.children = data.map((val: SenseListItem) => {
+                const definition = val['definition'] || '';
+                const cleanedDefinition = HtmlHelper.stripHtml(definition);
+                return {
+                  data: {
+                    name: this.showLabelName ? cleanedDefinition : val.sense,
+                    instanceName: val.sense,
+                    uri: val.sense,
+                    label: val['label'],
+                    definition: cleanedDefinition,
+                    note: val['note'],
+                    creator: val['creator'],
+                    creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+                    lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+                    status: null,
+                    type: LexicalEntryTypeOld.SENSE
+                  }
+                };
+              });
+              sensesRootNode.expanded = true;
+              this.lexicalEntryTree = [...this.lexicalEntryTree];
+              this.loading = false;
+            });
+            return;
+          }
+        }
+      }
+    }
+    
     this.findAndModifyNode({ children: this.lexicalEntryTree }, res);
     this.lexicalEntryTree = [...this.lexicalEntryTree];
+  }
+
+  private findSensesRootNode(root: any, senseUri: string): TreeNode | null {
+    if (root.data?.type === LexicalEntryTypeOld.SENSES_ROOT) {
+      return root;
+    }
+    if (!root.children) return null;
+    for (const child of root.children) {
+      const found = this.findSensesRootNode(child, senseUri);
+      if (found) return found;
+    }
+    return null;
   }
 
   private onLexiconEditUpdateTree(res: any): void {
