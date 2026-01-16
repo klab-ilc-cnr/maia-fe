@@ -178,43 +178,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     if (res.field === 'label') {
       const found = this.findAndModifyNode({ children: this.lexicalEntryTree }, res);
       if (!found) {
-        const sensesRootNode = this.findSensesRootNode({ children: this.lexicalEntryTree }, res.uri);
-        if (sensesRootNode) {
-          const lexicalEntryUri = sensesRootNode.parent?.data?.instanceName;
-          if (lexicalEntryUri) {
-            this.loading = true;
-            this.lexiconService.getLexicalEntrySenses(lexicalEntryUri).pipe(
-              takeUntil(this.unsubscribe$),
-              catchError((error: HttpErrorResponse) => {
-                this.loading = false;
-                return this.commonService.throwHttpErrorAndMessage(error, "Error retrieving senses");
-              }),
-            ).subscribe((data: SenseListItem[]) => {
-              sensesRootNode.children = data.map((val: SenseListItem) => {
-                const definition = val['definition'] || '';
-                const cleanedDefinition = HtmlHelper.stripHtml(definition);
-                return {
-                  data: {
-                    name: this.showLabelName ? cleanedDefinition : val.sense,
-                    instanceName: val.sense,
-                    uri: val.sense,
-                    label: val['label'],
-                    definition: cleanedDefinition,
-                    note: val['note'],
-                    creator: val['creator'],
-                    creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
-                    lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
-                    status: null,
-                    type: LexicalEntryTypeOld.SENSE
-                  }
-                };
-              });
-              sensesRootNode.expanded = true;
-              this.lexicalEntryTree = [...this.lexicalEntryTree];
-              this.loading = false;
-            });
-            return;
-          }
+        if (this.reloadSensesNode(res.uri)) {
+          return;
         }
       } else {
         this.lexicalEntryTree = [...this.lexicalEntryTree];
@@ -226,15 +191,64 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     this.lexicalEntryTree = [...this.lexicalEntryTree];
   }
 
-  private findSensesRootNode(root: any, senseUri: string): TreeNode | null {
+  private reloadSensesNode(senseUri: string): boolean {
+    const sensesRootNode = this.findSensesRootNode({ children: this.lexicalEntryTree });
+    if (sensesRootNode) {
+      const lexicalEntryUri = sensesRootNode.parent?.data?.instanceName;
+      if (lexicalEntryUri) {
+        this.loading = true;
+        this.lexiconService.getLexicalEntrySenses(lexicalEntryUri).pipe(
+          takeUntil(this.unsubscribe$),
+          catchError((error: HttpErrorResponse) => {
+            this.loading = false;
+            return this.commonService.throwHttpErrorAndMessage(error, "Error retrieving senses");
+          }),
+        ).subscribe((data: SenseListItem[]) => {
+          sensesRootNode.children = data.map((val: SenseListItem) => {
+            const definition = val['definition'] || '';
+            const cleanedDefinition = HtmlHelper.stripHtml(definition);
+            return {
+              data: {
+                name: this.showLabelName ? cleanedDefinition : val.sense,
+                instanceName: val.sense,
+                uri: val.sense,
+                label: val['label'],
+                definition: cleanedDefinition,
+                note: val['note'],
+                creator: val['creator'],
+                creationDate: val['creationDate'] ? new Date(val['creationDate']).toLocaleString() : '',
+                lastUpdate: val['lastUpdate'] ? new Date(val['lastUpdate']).toLocaleString() : '',
+                status: null,
+                type: LexicalEntryTypeOld.SENSE
+              }
+            };
+          });
+          sensesRootNode.expanded = true;
+          this.lexicalEntryTree = [...this.lexicalEntryTree];
+          this.loading = false;
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private findSensesRootNode(root: any): TreeNode | null {
     if (root.data?.type === LexicalEntryTypeOld.SENSES_ROOT) {
       return root;
     }
-    if (!root.children) return null;
-    for (const child of root.children) {
-      const found = this.findSensesRootNode(child, senseUri);
-      if (found) return found;
+    
+    if (!root.children) {
+      return null;
     }
+    
+    for (const child of root.children) {
+      const found = this.findSensesRootNode(child);
+      if (found) {
+        return found;
+      }
+    }
+    
     return null;
   }
 
