@@ -216,6 +216,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
             return;
           }
         }
+      } else {
+        this.lexicalEntryTree = [...this.lexicalEntryTree];
+        return;
       }
     }
     
