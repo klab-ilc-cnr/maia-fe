@@ -247,6 +247,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   setIndirectValue(value: any, featureFieldName: string) {
+    if (value === '') { value = null; }
     this.featureForm.get(featureFieldName)?.setValue(value);
   }
 
