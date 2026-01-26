@@ -3,6 +3,7 @@ import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api'
 import { Table } from 'primeng/table';
 import { Observable, Subject, Subscription, catchError, debounceTime, map, of, switchMap, takeUntil } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
@@ -15,7 +16,6 @@ import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { SearchService } from 'src/app/services/search.service';
-import { HtmlHelper } from 'src/app/helpers/html.helper';
 import Swal from 'sweetalert2';
 
 export enum RestrictionEnum {
@@ -310,6 +310,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
     this.searchRequest.filters.pos = this.posValue;
+    this.searchRequest.reload = true;
     this.lastSearchRequestLayer = this.selectedLayer;
     this.clearTable();
     this.resetColumnFilters();
@@ -476,7 +477,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         console.error('Unknown status:', event.status);
         break;
     }
-
+    this.searchRequest.reload = true;
     this.search();
     this.selectedSearchResults = [];
   }
@@ -504,7 +505,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         console.error('Unknown status:', event.status);
         break;
     }
-
+    this.searchRequest.reload = true;
     this.search();
     this.selectedSearchResults = [];
   }
@@ -533,7 +534,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         console.error('Unknown status:', event.status);
         break;
     }
-
+    this.searchRequest.reload = true;
     this.search();
     this.selectedSearchResults = [];
   }
@@ -668,6 +669,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     // Start a new search and track its subscription
     this.searchSubscription = this.searchService.search(this.searchRequest).subscribe({
       next: (result) => {
+        this.searchRequest.reload = false;
         this.searchResults = result.data;
         this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
         this.loading = false;
@@ -676,6 +678,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         this.enableDisableAnnotationButtons();
       },
       error: (error) => {
+        this.searchRequest.reload = false;
         this.loading = false;
         this.commonService.throwHttpErrorAndMessage(error, error.error.message);
       }
