@@ -5,6 +5,7 @@ export class SearchRequest {
   resources: Array<number> = [];
   filters : SearchFilters = new SearchFilters();
   layerId?: number;
+  reload?: boolean = false;
 }
 
 export class SearchFilters {
