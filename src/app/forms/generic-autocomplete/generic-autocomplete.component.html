@@ -4,6 +4,7 @@
       [field]="showOptionPrefix && prefixField === 'lemma' ? 'definition' : field"
       [forceSelection]="forceSelection" [(ngModel)]="valueToShow"
       [showEmptyMessage]="true" emptyMessage="No matching"
+      [showClear]="true" (onClear)="onClearField()"
       [styleClass]="styleClass" [inputStyleClass]="inputStyleClass" [virtualScroll]="true" [virtualScrollItemSize]="34">
       <ng-template *ngIf="showOptionPrefix && prefixField === 'lemma'" let-item pTemplate="item">
           <!-- Se field è 'definition', il campo definition contiene già "lemma - definizione", quindi mostra solo definition -->

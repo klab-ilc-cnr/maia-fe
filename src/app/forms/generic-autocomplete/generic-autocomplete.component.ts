@@ -52,6 +52,11 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
     });
   }
 
+  onClearField() {
+    this.valueToShow = null;
+    this.selected.emit('');
+  }
+
   onFilter(event: { originalEvent: { isTrusted: boolean }, query: string }) {
     this.currentFilter$.next(event.query);
   }
