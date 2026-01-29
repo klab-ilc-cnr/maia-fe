@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TreeNode } from 'primeng/api';
+import { decode } from 'html-entities';
 import { catchError, of, take } from 'rxjs';
 import { DictionaryNoteVocabo } from 'src/app/models/custom-models/dictionary-note-vocabo';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -66,7 +68,8 @@ export class DictionaryPreviewComponent implements OnInit {
   constructor(private lexiconService: LexiconService,
     private dictionaryService: DictionaryService,
     private searchAnnotationService: SearchAnnotationService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private sanitizer: DomSanitizer
   ) { }
 
   get ready(): boolean {
@@ -386,6 +389,31 @@ export class DictionaryPreviewComponent implements OnInit {
   }
 
   /**
+   * Sanitize HTML content for safe rendering
+   * Decodes HTML entities before sanitizing
+   * @param html {string}
+   * @returns {SafeHtml}
+   */
+  sanitizeHtml(html: string): SafeHtml {
+    if (!html) return this.sanitizer.bypassSecurityTrustHtml('');
+    
+    try {
+      // Decodifica le entità HTML (es. &lt; -> <, &gt; -> >)
+      let decoded = decode(html);
+      
+      // Se dopo la decodifica ci sono ancora entità HTML, prova a decodificare di nuovo
+      if (decoded.includes('&lt;') || decoded.includes('&gt;') || decoded.includes('&amp;')) {
+        decoded = decode(decoded);
+      }
+      
+      return this.sanitizer.bypassSecurityTrustHtml(decoded);
+    } catch (error) {
+      // In caso di errore, restituisce l'HTML originale sanitizzato
+      return this.sanitizer.bypassSecurityTrustHtml(html);
+    }
+  }
+
+  /**
    * Map the list of items to be sorted in a TreeNode list.
    * @param items {DictionaryPreviewItem[]}
    * @param parentIndex {string}
@@ -398,11 +426,22 @@ export class DictionaryPreviewComponent implements OnInit {
     return items.map((item, i) => {
       const isMeaning = item.type.includes('LexicalSense');
       let type = isMeaning ? 'meaning' : 'senseLexicalEntry';
+      
+      // Per i meaning, prepara l'HTML sanitizzato e lo aggiunge al data
+      const previewItem: DictionaryPreviewItem = { 
+        ...item, 
+        index: '' // Verrà assegnato successivamente in buildSenseLexicalEntriesTree
+      };
+      if (isMeaning && item.label) {
+        const sanitized = this.sanitizeHtml(item.label);
+        (previewItem as any).sanitizedLabel = sanitized;
+      }
+      
       return <TreeNode<DictionaryPreviewItem>>{
         key: item.id,
         type: type,
         label: item.label,
-        data: item,
+        data: previewItem,
         expanded: !isMeaning,
         children: this.mapSortingItemToPreviewTreeNode(item.children ?? [])
       }

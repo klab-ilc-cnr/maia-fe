@@ -16,16 +16,17 @@
             class="p-button-rounded p-button-success mx-2 fieldset-small"></button>
         </ng-template>
         <ng-template pTemplate="content">
-          <form [formGroup]="form.controls.definition">
+          <!-- Definizione principale (definition) -->
+          <div class="field col-12">
+            <label class="form-label w-full">definition</label>
+            <p-editor formControlName="definition" styleClass="w-full" (onTextChange)="onDefinitionTextChange($event)"></p-editor>
+          </div>
+          <!-- Campi aggiuntivi dinamici -->
+          <form [formGroupName]="'additionalFields'">
             <div class="field col-12" *ngFor="let control of definitionFormItems; let i=index; trackBy:trackByIndexFn">
               <label [for]="control.propertyID">{{control.propertyID}}</label>
-              <!-- <div class="d-flex justify-content-between" style="align-items: center;"> -->
-                <textarea pInputTextarea [formControlName]="control.propertyID" [name]="control.propertyID"
-                  class="col-12"></textarea>
-                <!-- <button *ngIf="control.propertyID !== 'definition'" pButton pRipple type="button" icon="pi pi-times"
-                  class=" col-1 p-button-rounded p-button-danger p-button-text"
-                  (click)="onRemoveDefinitionElement(control.propertyID)"></button>
-              </div> -->
+              <textarea pInputTextarea [formControlName]="control.propertyID" [name]="control.propertyID"
+                class="col-12"></textarea>
             </div>
           </form>
         </ng-template>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { of, take } from 'rxjs';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { OntologyDenoteUsage } from 'src/app/models/ontology/ontology-denote-usage.model';
 import { OntologyReferenceUsage } from 'src/app/models/ontology/ontology-reference-usage.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -50,6 +51,15 @@ export class OntologyTabUsageComponent implements OnInit {
   extractPosLabel(extendedPosString: string) {
     let indiceHash = extendedPosString.indexOf("#");
     return extendedPosString.substring(indiceHash + 1);
+  }
+
+  /**
+   * Rimuove i tag HTML e decodifica le entità HTML da una stringa
+   * @param htmlString {string | undefined | null} stringa contenente HTML
+   * @returns {string} testo pulito senza tag HTML
+   */
+  stripHtml(htmlString: string | undefined | null): string {
+    return HtmlHelper.stripHtml(htmlString);
   }
 
   //TODO ELIMINARE APPENA SARà CREATO IL VERO SERVIZIO BACKEND

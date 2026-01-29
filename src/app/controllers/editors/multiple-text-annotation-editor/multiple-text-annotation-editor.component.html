@@ -40,8 +40,154 @@
               <div class="form-group mt-2" *ngFor="let feature of features">
                 <label class="form-label ml-1">{{ feature.feature?.name }}</label>
                 <div class="d-flex align-items-center gap-2">
-                  <p-inputSwitch *ngIf="deleteMode" class="ml-1 align-self-end" [pTooltip]="'SEARCH.disableForAnyValue'|translate" [formControlName]="feature.feature!.name! + '_checked'"></p-inputSwitch>
-                  <div *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value; else anyValueBlock" [ngSwitch]="feature.feature?.type" class="p-fluid flex-grow-1">
+                  <!-- delete mode: switch per "qualsiasi valore" -->
+                  <p-inputSwitch
+                    *ngIf="deleteMode"
+                    class="ml-1 align-self-end"
+                    [pTooltip]="'SEARCH.disableForAnyValue'|translate"
+                    [formControlName]="feature.feature!.name! + '_checked'">
+                  </p-inputSwitch>
+
+                  <div *ngIf="editMode || featureForm.get(feature.feature!.name! + '_checked')?.value || (!deleteMode && !editMode); else anyValueBlock"
+                       class="p-fluid flex-grow-1">
+
+                    <!-- EDIT MODE -->
+                    <div *ngIf="editMode" class="d-flex flex-column gap-2 w-100">
+                      <div>
+                        <label class="form-label small">{{'SEARCH.currentValue'|translate}}</label>
+                        <div class="d-flex align-items-center gap-2">
+                          <p-inputSwitch
+                            class="align-self-end"
+                            [pTooltip]="'SEARCH.disableForAnyValue'|translate"
+                            [formControlName]="feature.feature!.name! + '_checked'">
+                          </p-inputSwitch>
+                          <div *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value" class="flex-grow-1">
+                            <div [ngSwitch]="feature.feature?.type">
+                              <input
+                                *ngSwitchCase="featureTypes.STRING"
+                                class="form-control"
+                                type="text"
+                                [formControlName]="feature.feature!.name! + '_oldValue'"
+                              />
+                              <p-dropdown
+                                *ngSwitchCase="featureTypes.TAGSET"
+                                [formControlName]="feature.feature!.name! + '_oldValue'"
+                                [options]="(feature.tagsetItems | async) || []"
+                                [filter]="true"
+                                [showClear]="true"
+                                optionLabel="name"
+                                optionValue="name"
+                                appendTo="body"
+                                emptyFilterMessage="No element found"
+                                placeholder="Select a value">
+                              </p-dropdown>
+                              <input
+                                *ngSwitchCase="featureTypes.URI"
+                                class="form-control"
+                                type="text"
+                                [formControlName]="feature.feature!.name! + '_oldValue'"
+                              />
+                              <app-generic-autocomplete
+                                *ngSwitchCase="featureTypes.LEXICAL_ENTRY"
+                                field="label"
+                                valueField="lexicalEntry"
+                                [filterFn]="lexEntryList"
+                                (selected)="setIndirectOldValue($event, feature.feature!.name!)"
+                                [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
+                                [initialValueFn]="lexEntryById">
+                              </app-generic-autocomplete>
+                              <app-generic-autocomplete
+                                *ngSwitchCase="featureTypes.FORM"
+                                field="label"
+                                valueField="form"
+                                [filterFn]="formList"
+                                (selected)="setIndirectOldValue($event, feature.feature!.name!)"
+                                [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
+                                [initialValueFn]="formById">
+                              </app-generic-autocomplete>
+                              <app-generic-autocomplete
+                                *ngSwitchCase="featureTypes.SENSE"
+                                field="definition"
+                                valueField="sense"
+                                [filterFn]="senseList"
+                                (selected)="setIndirectOldValue($event, feature.feature!.name!)"
+                                [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
+                                [initialValueFn]="senseById"
+                                [showOptionPrefix]="true"
+                                prefixField="lemma">
+                              </app-generic-autocomplete>
+                            </div>
+                          </div>
+                          <input
+                            *ngIf="!featureForm.get(feature.feature!.name! + '_checked')?.value"
+                            class="form-control flex-grow-1"
+                            type="text"
+                            [value]="'SEARCH.anyValue'|translate"
+                            disabled
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label class="form-label small">{{'SEARCH.newValue'|translate}}</label>
+                        <div [ngSwitch]="feature.feature?.type">
+                          <div *ngSwitchCase="featureTypes.STRING">
+                            <input class="form-control" type="text" [formControlName]="feature.feature!.name!" />
+                          </div>
+                          <div *ngSwitchCase="featureTypes.TAGSET">
+                            <p-dropdown
+                              [formControlName]="feature.feature!.name!"
+                              [options]="(feature.tagsetItems | async) || []"
+                              [filter]="true"
+                              [showClear]="true"
+                              optionLabel="name"
+                              optionValue="name"
+                              appendTo="body"
+                              emptyFilterMessage="No element found"
+                              placeholder="Select a value">
+                            </p-dropdown>
+                          </div>
+                          <div *ngSwitchCase="featureTypes.URI">
+                            <input class="form-control" type="text" [formControlName]="feature.feature!.name!" />
+                          </div>
+                          <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
+                            <app-generic-autocomplete
+                              field="label"
+                              valueField="lexicalEntry"
+                              [filterFn]="lexEntryList"
+                              (selected)="setIndirectValue($event, feature.feature!.name!)"
+                              [currentValue]="featureForm.get(feature.feature!.name!)!.value"
+                              [initialValueFn]="lexEntryById">
+                            </app-generic-autocomplete>
+                          </div>
+                          <div *ngSwitchCase="featureTypes.FORM">
+                            <app-generic-autocomplete
+                              field="label"
+                              valueField="form"
+                              [filterFn]="formList"
+                              (selected)="setIndirectValue($event, feature.feature!.name!)"
+                              [currentValue]="featureForm.get(feature.feature!.name!)!.value"
+                              [initialValueFn]="formById">
+                            </app-generic-autocomplete>
+                          </div>
+                          <div *ngSwitchCase="featureTypes.SENSE">
+                            <app-generic-autocomplete
+                              field="definition"
+                              valueField="sense"
+                              [filterFn]="senseList"
+                              (selected)="setIndirectValue($event, feature.feature!.name!)"
+                              [currentValue]="featureForm.get(feature.feature!.name!)!.value"
+                              [initialValueFn]="senseById"
+                              [showOptionPrefix]="true"
+                              prefixField="lemma">
+                            </app-generic-autocomplete>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- CREATE/DELETE MODE -->
+                    <div *ngIf="!editMode" [ngSwitch]="feature.feature?.type">
                     <div *ngSwitchCase="featureTypes.STRING">
                       <input
                         class="form-control"
@@ -144,6 +290,7 @@
                         prefixField="lemma"
                       ></app-generic-autocomplete>
                     </div>
+                    </div>
                   </div>
                   <ng-template #anyValueBlock>
                     <input
@@ -157,7 +304,7 @@
               </div>
             </form>
           </ng-template>
-          <div *ngIf="!deleteMode" class="d-flex justify-content-evenly mt-2">
+          <div *ngIf="!deleteMode && !editMode" class="d-flex justify-content-evenly mt-2">
             <button
               pButton
               pRipple
@@ -165,6 +312,35 @@
               [disabled]="!isAnyFeatureValue"
               icon="pi pi-save"
               [pTooltip]="'GENERAL.save'|translate"
+              class="mb-2 p-button-sm rounded-circle"
+            ></button>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-times"
+              [pTooltip]="'GENERAL.cancel' | translate"
+              class="mb-2 p-button-sm p-button-secondary rounded-circle"
+              (click)="onCancelBtn()"
+            ></button>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="fa-solid fa-eraser"
+              [pTooltip]="'GENERAL.clean' | translate"
+              class="mb-2 p-button-sm p-button-help rounded-circle"
+              (click)="onClearBtn()"
+            ></button>
+          </div>
+          <div *ngIf="editMode" class="d-flex justify-content-evenly mt-2">
+            <button
+              pButton
+              pRipple
+              type="submit"
+              [disabled]="!isAnyFeatureValue"
+              icon="pi pi-save"
+              [pTooltip]="'GENERAL.update'|translate"
               class="mb-2 p-button-sm rounded-circle"
             ></button>
             <button

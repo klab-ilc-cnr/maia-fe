@@ -1,9 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { decode } from 'html-entities';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { LexicalEntriesResponse, LexicalEntryRequest, formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, LexicalEntryCore, LexicalEntryListItem, LexicalEntryOld, LexicalEntryTypeOld, LexoLanguage, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -206,8 +208,18 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     let result: boolean;
     switch (field) {
       case 'label':
-        node.data.label = newValue;
-        node.data.name = newValue;
+        let cleanedValue = newValue;
+        if (typeof newValue === 'string') {
+          if (newValue.includes('&lt;') || newValue.includes('&gt;') || newValue.includes('&amp;')) {
+            cleanedValue = decode(newValue);
+          }
+          cleanedValue = HtmlHelper.stripHtml(cleanedValue);
+        }
+        node.data.label = cleanedValue;
+        node.data.name = cleanedValue;
+        if (node.data?.type === LexicalEntryTypeOld.SENSE) {
+          node.data.definition = cleanedValue;
+        }
         result = true;
         break;
       case 'pos':
@@ -523,9 +535,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
         ).subscribe((data: SenseListItem[]) => {
           event.node.children = data.map((val: SenseListItem) => ({
             data: {
-              name: this.showLabelName ? val.definition : val.sense,
+              name: this.showLabelName ? HtmlHelper.stripHtml(val.definition) : val.sense,
               instanceName: val.sense,
-              label: val.definition,
+              label: HtmlHelper.stripHtml(val.definition),
               note: val.note,
               creator: val.creator,
               creationDate: val.creationDate ? new Date(val.creationDate).toLocaleString() : '',
@@ -903,5 +915,6 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = dictionaries.length > 0;
     });
   }
+
 
 }

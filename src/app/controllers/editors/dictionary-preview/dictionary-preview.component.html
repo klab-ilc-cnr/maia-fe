@@ -258,11 +258,8 @@
             <em *ngIf="item.data.prefix?.length > 0"
               >[{{ item.data.prefix.join(" ") }}]</em
             >
-            {{
-              item.label !== ""
-                ? item.label
-                : ("DICTIONARY_EDITOR.SORT_TAB.noDefinition" | translate)
-            }}
+            <span *ngIf="item.label !== ''" [innerHTML]="item.data.sanitizedLabel ? item.data.sanitizedLabel : item.label"></span>
+            <span *ngIf="item.label === ''">{{ "DICTIONARY_EDITOR.SORT_TAB.noDefinition" | translate }}</span>
           </div>
         </ng-template>
         <ng-template let-annotationTreeItem pTemplate="annotation">

@@ -110,7 +110,7 @@
                 columnResizeMode="expand"
                 [scrollHeight]="tableContainerHeight+'px'"
                 [showCurrentPageReport]="true" 
-                [rowsPerPageOptions]="[10,25,50,100,200]" 
+                [rowsPerPageOptions]="[10,25,50]" 
                 [loading]="loading"
                 [paginator]="true"
                 styleClass="p-datatable-gridlines"
@@ -207,7 +207,7 @@
                         [tooltipParams]="searchResult"
                         [fetchContent]="showKwicTooltip"
                         [cache]="true"
-                        [delay]="700"
+                        [delay]="250"
                         [timeout]="5000"
                         [backgroundColor]="'#32323242'"
                         [tooltipTemplate]="annotationTemplate"
@@ -231,7 +231,7 @@
                                         <div class="feature-row">
                                             <span class="feature-name">{{ feat.feature_name }}</span>
                                             <span class="feature-separator">:</span>
-                                            <span class="feature-value">{{ feat.value }}</span>
+                                            <span class="feature-value">{{ stripHtml(feat.value) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -261,12 +261,14 @@
 <app-multiple-text-annotation-editor #annotationEditor 
     [visible]="showMultipleAnnotationDialog"
     [deleteMode]="isDeleting" 
+    [editMode]="isEditing"
     [textOffsets]="textOffsets" 
     [layerId]="lastSearchRequestLayer?.id"
     [layerName]="lastSearchRequestLayer?.name"
     [layerColor]="lastSearchRequestLayer?.color"
-    (onDialogHide)="showMultipleAnnotationDialog = false"
+    (onDialogHide)="showMultipleAnnotationDialog = false; isDeleting = false; isEditing = false"
     (onSaveStart)="onSaveStart()" (onSaveEnd)="onSaveEnd($event)"
     (onDeleteStart)="onDeleteStart()" (onDeleteEnd)="onDeleteEnd($event)"
+    (onEditStart)="onEditStart()" (onEditEnd)="onEditEnd($event)"
     (onCancel)="showMultipleAnnotationDialog = false">
 </app-multiple-text-annotation-editor>

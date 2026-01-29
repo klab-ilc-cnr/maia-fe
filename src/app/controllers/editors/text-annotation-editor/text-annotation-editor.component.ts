@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@a
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, map, take, takeUntil, throwError } from 'rxjs';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
 import { TAnnotation } from 'src/app/models/texto/t-annotation';
@@ -164,13 +165,14 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       console.info(resp.list)
       return resp.list.map((s:any) => {return {
         ...s,
-        definition: `[${s.lemma}] - ${s.definition}`
+        definition: `[${s.lemma}] - ${HtmlHelper.stripHtml(s.definition)}`
       }});
     }),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
-      const definition = `[${sense.lexicalEntryLabel.split('@')[0]}] - ${sense.definition.find(s => s.propertyID === 'definition')?.propertyValue}`;
+      const definitionValue = sense.definition.find(s => s.propertyID === 'definition')?.propertyValue || '';
+      const definition = `[${sense.lexicalEntryLabel.split('@')[0]}] - ${HtmlHelper.stripHtml(definitionValue)}`;
       return <SenseListItem>{
         creator: sense.creator,
         lastUpdate: sense.lastUpdate,
@@ -245,6 +247,7 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   setIndirectValue(value: any, featureFieldName: string) {
+    if (value === '') { value = null; }
     this.featureForm.get(featureFieldName)?.setValue(value);
   }
 
@@ -345,5 +348,6 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       showConfirmButton: false
     });
   }
+
 
 }

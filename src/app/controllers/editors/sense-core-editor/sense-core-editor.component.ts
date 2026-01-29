@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { decode, encode } from 'html-entities';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject, Observable, Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { LexicalConceptListItem } from 'src/app/models/lexicon/lexical-concept-list-item.model';
@@ -35,13 +36,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   /**Utente loggato */
   currentUser!: User;
-  /**Elementi del form relativi alle definizioni */
+  /**Elementi del form relativi alle definizioni aggiuntive */
   definitionFormItems: PropertyElement[] = [];
-  /**Elementi del menu relativi alle definizioni */
+  /**Elementi del menu relativi alle definizioni aggiuntive */
   definitionsMenuItems: { label: string, command: any }[] = [];
   /**Form per la modifica dei valori del senso */
   form = new FormGroup({
-    definition: new FormGroup({}),
+    definition: new FormControl<string>(''),
+    additionalFields: new FormGroup({}),
     marksOfUse: new FormControl<LexicalConceptListItem[]>([]),
     semanticMarks: new FormControl<LexicalConceptListItem[]>([]),
     grammaticalMarks: new FormControl<LexicalConceptListItem[]>([]),
@@ -51,8 +53,10 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   _morphology: { relation: string, value: string, external: boolean }[] = [];
   /**Getter del form array della morfologia */
   get morphology() { return this.form.controls.morphology as FormArray; }
-  /**Getter del form group delle definizioni */
-  get definition() { return this.form.controls.definition; }
+  /**Getter del form control della definizione principale */
+  get definition() { return this.form.controls.definition as FormControl<string>; }
+  /**Getter del form group dei campi aggiuntivi */
+  get additionalFields() { return this.form.controls.additionalFields as FormGroup; }
   /**Observable della relazioni morfologiche */
   morphRelations$ = this.globalState.morphologies$.pipe(
     switchMap(list => {
@@ -138,14 +142,59 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       this.currentUser = cu;
     });
 
+    // Gestione salvataggio definizione principale (details)
     this.definition.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(300), // Ridotto il debounce per pulire più velocemente
+      distinctUntilChanged(),
+    ).subscribe(() => {
+      let detailsValue = this.definition.value || '';
+      
+      // Pulisce l'HTML rimuovendo i <p> vuoti all'inizio e alla fine e caratteri invisibili
+      const cleanedValue = this.cleanHtmlContent(detailsValue);
+      
+      // Se il valore è cambiato dopo la pulizia, aggiorna il form control immediatamente
+      // per evitare che i caratteri invisibili rimangano nell'editor
+      if (cleanedValue !== detailsValue) {
+        // Usa setTimeout per evitare loop infiniti
+        setTimeout(() => {
+          this.definition.setValue(cleanedValue, { emitEvent: false });
+        }, 0);
+        detailsValue = cleanedValue;
+      }
+      
+      // Salva details solo se il valore pulito è diverso da quello salvato
+      const existingDef = this.senseEntry.definition.find(def => def.propertyID === 'definition');
+      const currentValue = existingDef?.propertyValue ? decode(existingDef.propertyValue) : '';
+      const cleanedCurrentValue = this.cleanHtmlContent(currentValue);
+      
+      if (detailsValue !== cleanedCurrentValue) {
+        if (detailsValue === '') {
+          if (existingDef) {
+            const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { 
+              relation: 'definition', 
+              value: existingDef.propertyValue 
+            });
+            this.manageUpdateObservable(deleteRelObs, 'definition', '');
+          }
+        } else {
+          const encodedValue = encode(detailsValue);
+          this.updateSense('definition', encodedValue).then(() => {
+            this.updateDefinitionProperty('definition', encodedValue);
+          });
+        }
+      }
+    });
+
+    // Gestione salvataggio campi aggiuntivi (come faceva prima)
+    this.additionalFields.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
       distinctUntilChanged(),
     ).subscribe((resp: { [key: string]: any }) => {
       for (const key in resp) {
         const currentPropertyId = this.definitionFormItems.findIndex(e => e.propertyID === key);
-        const currentPropValue = this.definitionFormItems[currentPropertyId].propertyValue;
+        const currentPropValue = this.definitionFormItems[currentPropertyId]?.propertyValue;
         if (currentPropertyId === -1 || this.senseEntry.definition.find(x => x.propertyID === key)?.propertyValue === resp[key]) continue;
         if (resp[key] === '') {
           const deleteRelObs = this.lexiconService.deleteRelation(this.senseEntry.sense, { relation: key, value: currentPropValue });
@@ -178,7 +227,30 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
       this.initLexicalConcepts();
     });
     //TODO aggiungere prevalorizzazione delle restrizioni morfologiche
+    this.initDefinitions();
+  }
+
+  /**
+   * Inizializza le definizioni dal senso esistente
+   */
+  private initDefinitions() {
+    if (!this.senseEntry) return;
+    
+    const availableFields = ['description', 'explanation', 'gloss', 'senseExample', 'senseTranslation', 'note', 'usage', 'reference', 'subject', 'confidence'];
+    this.definitionsMenuItems = availableFields.map(field => ({
+      label: field,
+      command: () => this.movePropertyToForm(field, '')
+    }));
+    
+    const mainDefinition = this.senseEntry.definition.find(def => def.propertyID === 'definition');
+    const decodedValue = mainDefinition?.propertyValue ? decode(mainDefinition.propertyValue) : '';
+    const cleanedValue = this.cleanHtmlContent(decodedValue || '');
+    this.definition.setValue(cleanedValue, { emitEvent: false });
+    
     for (const { propertyID, propertyValue } of this.senseEntry.definition) {
+      if (propertyID === 'definition') {
+        continue;
+      }
       this.movePropertyToForm(propertyID, propertyValue);
       if (propertyValue === '') {
         this.movePropertyToMenu(propertyID);
@@ -226,7 +298,7 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     const fieldProperty: PropertyElement = { propertyID, propertyValue };
     const control = new FormControl<string>(propertyValue, Validators.required);
     this.definitionFormItems.push(fieldProperty);
-    this.definition.addControl(propertyID, control);
+    this.additionalFields.addControl(propertyID, control);
     this.definitionsMenuItems = this.definitionsMenuItems.filter(i => i.label !== propertyID);
   }
 
@@ -235,12 +307,30 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
    * @param propertyID {string} proprietà da spostare
    */
   private movePropertyToMenu(propertyID: string): void {
-    this.definition.removeControl(propertyID);
+    this.additionalFields.removeControl(propertyID);
     const index = this.definitionFormItems.findIndex(e => e.propertyID === propertyID);
     this.definitionFormItems.splice(index, 1);
     this.definitionsMenuItems.push({
       label: propertyID,
       command: () => this.movePropertyToForm(propertyID, '')
+    });
+  }
+
+  /**
+   * Metodo che gestisce la rimozione di un campo aggiuntivo
+   * @param fieldName {string} nome del campo in rimozione
+   */
+  onRemoveDefinitionElement(fieldName: string) {
+    const confirmMsg = `Are you sure to remove "${fieldName}"?`;
+    this.popupDeleteItem.confirmMessage = confirmMsg;
+    this.popupDeleteItem.showDeleteConfirmSimple(() => {
+      const definition = this.additionalFields.get(fieldName);
+      if (definition?.value === '') {
+        this.movePropertyToMenu(fieldName);
+      }
+      else {
+        definition?.setValue('');
+      }
     });
   }
 
@@ -304,23 +394,6 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Metodo che gestisce la rimozione di una definizione
-   * @param fieldName {string} nome del campo definition in rimozione
-   */
-  onRemoveDefinitionElement(fieldName: string) {
-    const confirmMsg = `Are you sure to remove "${fieldName}"?`;
-    this.popupDeleteItem.confirmMessage = confirmMsg;
-    this.popupDeleteItem.showDeleteConfirmSimple(() => {
-      const definition = this.definition.get(fieldName);
-      if (definition?.value === '') {
-        this.movePropertyToMenu(fieldName);
-      }
-      else {
-        definition?.setValue('');
-      }
-    });
-  }
 
   /**
    * Metodo che gestisce la rimozione di un elemento dalla lista dei tratti morfologici
@@ -378,15 +451,16 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
         definition: updatedDefinitions,
         lastUpdate: resp
       };
-      // this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`"${relation}" update success `));
 
       if (relation === 'definition') {
+        const decodedValue = decode(newValue);
+        const cleanedValue = this.cleanHtmlContent(decodedValue);
         this.commonService.notifyOther({
           option: 'lexicon_edit_tree_data',
           lexicalEntry: '',
           uri: this.senseEntry.sense,
           field: 'label',
-          newValue
+          newValue: cleanedValue
         })
       }
     });
@@ -454,5 +528,114 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   private updateListControlList(list: FormArray<any>, controlList: { relation: string, value: string, external: boolean }[], index: number, value: { relation: string, value: string, external: boolean }) {
     list.at(index).setValue(value);
     controlList[index] = <{ relation: string, value: string, external: boolean }>{ ...value };
+  }
+
+  /**
+   * Handler per l'evento onTextChange di p-editor
+   * Pulisce il valore immediatamente quando viene modificato
+   * @param event {any} evento emesso da p-editor
+   */
+  onDefinitionTextChange(event: any) {
+    if (event.htmlValue) {
+      const cleaned = this.cleanHtmlContent(event.htmlValue);
+      if (cleaned !== event.htmlValue) {
+        // Aggiorna il valore pulito nel form control
+        setTimeout(() => {
+          this.definition.setValue(cleaned, { emitEvent: false });
+        }, 0);
+      }
+    }
+  }
+
+  /**
+   * Pulisce l'HTML rimuovendo i <p> vuoti all'inizio e alla fine e caratteri invisibili
+   * Rimuove anche i <p> wrapper esterni se il contenuto è già dentro un <p>
+   * @param html {string} contenuto HTML da pulire
+   * @returns {string} HTML pulito
+   */
+  private cleanHtmlContent(html: string): string {
+    if (!html) return '';
+    
+    // Prima decodifica le entità HTML per gestire anche caratteri codificati
+    let cleaned = decode(html);
+    
+    // Rimuove i caratteri invisibili (BOM, zero-width space, etc.) dall'intero contenuto
+    // U+FEFF = BOM (Byte Order Mark)
+    // U+200B = Zero-width space
+    // U+200C = Zero-width non-joiner
+    // U+200D = Zero-width joiner
+    // U+2060 = Word joiner
+    // U+200E = Left-to-right mark
+    // U+200F = Right-to-left mark
+    // U+202A = Left-to-right embedding
+    // U+202B = Right-to-left embedding
+    // U+202C = Pop directional formatting
+    // U+202D = Left-to-right override
+    // U+202E = Right-to-left override
+    cleaned = cleaned.replace(/[\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]/g, '');
+    
+    // Rimuove anche le entità HTML che rappresentano caratteri invisibili
+    cleaned = cleaned.replace(/&#xFEFF;|&#65279;|&#8203;|&#8204;|&#8205;|&#8288;|&#8234;|&#8235;|&#8236;|&#8237;|&#8238;/gi, '');
+    
+    // Rimuove caratteri invisibili anche all'interno dei tag (es. <strong>﻿)
+    cleaned = cleaned.replace(/(<[^>]+>)([\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+)/g, '$1');
+    cleaned = cleaned.replace(/([\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+)(<[^>]+>)/g, '$2');
+    
+    // Rimuove i <p> vuoti all'inizio e alla fine (con o senza spazi/br)
+    cleaned = cleaned.trim();
+    
+    // Rimuove <p></p> o <p><br></p> o <p>&nbsp;</p> all'inizio
+    cleaned = cleaned.replace(/^<p[^>]*>(\s*|<br\s*\/?>|&nbsp;)*<\/p>/i, '');
+    
+    // Rimuove <p></p> o <p><br></p> o <p>&nbsp;</p> alla fine
+    cleaned = cleaned.replace(/<p[^>]*>(\s*|<br\s*\/?>|&nbsp;)*<\/p>$/i, '');
+    
+    // Se il contenuto inizia e finisce con un <p>, rimuove i tag <p> esterni
+    // Questo evita che p-editor aggiunga un altro <p> quando viene caricato
+    const pTagMatch = cleaned.match(/^<p[^>]*>(.*)<\/p>$/i);
+    if (pTagMatch && pTagMatch[1]) {
+      // Se il contenuto interno non è vuoto, usa solo il contenuto interno
+      const innerContent = pTagMatch[1].trim();
+      if (innerContent && innerContent !== '<br>' && innerContent !== '<br/>' && innerContent !== '&nbsp;') {
+        cleaned = innerContent;
+      }
+    }
+    
+    // Rimuove anche eventuali <br> o spazi all'inizio e alla fine
+    cleaned = cleaned.replace(/^(\s*|<br\s*\/?>|&nbsp;)+/i, '');
+    cleaned = cleaned.replace(/(\s*|<br\s*\/?>|&nbsp;)+$/i, '');
+    
+    // Rimuove eventuali caratteri invisibili rimasti all'inizio o alla fine
+    cleaned = cleaned.replace(/^[\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+/, '');
+    cleaned = cleaned.replace(/[\uFEFF\u200B\u200C\u200D\u2060\u200E\u200F\u202A\u202B\u202C\u202D\u202E]+$/, '');
+    
+    return cleaned.trim();
+  }
+
+  /**
+   * Metodo che aggiorna una proprietà nell'array definition
+   * @param propertyID {string} identificativo della proprietà
+   * @param propertyValue {string} valore della proprietà
+   */
+  private updateDefinitionProperty(propertyID: string, propertyValue: string) {
+    const updatedDefinitions: PropertyElement[] = [...this.senseEntry.definition];
+    const propIndex = updatedDefinitions.findIndex(x => x.propertyID === propertyID);
+    
+    if (propertyValue === '') {
+      if (propIndex >= 0) {
+        updatedDefinitions.splice(propIndex, 1);
+      }
+    } else {
+      if (propIndex >= 0) {
+        updatedDefinitions[propIndex].propertyValue = propertyValue;
+      } else {
+        updatedDefinitions.push({ propertyID, propertyValue });
+      }
+    }
+    
+    this.senseEntry = <SenseCore>{
+      ...this.senseEntry,
+      definition: updatedDefinitions
+    };
   }
 }

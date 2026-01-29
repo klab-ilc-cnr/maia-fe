@@ -1,12 +1,26 @@
-<p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
-    appendTo="body" [virtualScroll]="true" (onSelect)="onSelectSuggestion($event)" [field]="field"
-    [forceSelection]="forceSelection" [(ngModel)]="valueToShow"
-    [showEmptyMessage]="true" emptyMessage="No matching"
-    [styleClass]="styleClass" [inputStyleClass]="inputStyleClass" [virtualScroll]="true" [virtualScrollItemSize]="34">
-    <ng-template *ngIf="showOptionPrefix" let-item pTemplate="item">
-        <strong>{{item[prefixField]}}: </strong>{{item[field]}}
-    </ng-template>
-    <ng-template *ngIf="showOptionSuffix" let-item pTemplate="item">
-        {{item[field]}}<sub>{{item[suffixField]}}</sub>
-    </ng-template>
-</p-autoComplete>
+<div [pTooltip]="tooltipText" [showDelay]="500" [hideDelay]="0" [tooltipPosition]="'top'" style="width: 100%;">
+  <p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
+      appendTo="body" [virtualScroll]="true" (onSelect)="onSelectSuggestion($event)" 
+      [field]="showOptionPrefix && prefixField === 'lemma' ? 'definition' : field"
+      [forceSelection]="forceSelection" [(ngModel)]="valueToShow"
+      [showEmptyMessage]="true" emptyMessage="No matching"
+      [showClear]="true" (onClear)="onClearField()"
+      [styleClass]="styleClass" [inputStyleClass]="inputStyleClass" [virtualScroll]="true" [virtualScrollItemSize]="34">
+      <ng-template *ngIf="showOptionPrefix && prefixField === 'lemma'" let-item pTemplate="item">
+          <!-- Se field è 'definition', il campo definition contiene già "lemma - definizione", quindi mostra solo definition -->
+          <ng-container *ngIf="field === 'definition'">
+              {{item[field]}}
+          </ng-container>
+          <!-- Altrimenti formatta manualmente -->
+          <ng-container *ngIf="field !== 'definition'">
+              {{item[prefixField]}} - {{item[field]}}
+          </ng-container>
+      </ng-template>
+      <ng-template *ngIf="showOptionPrefix && prefixField !== 'lemma'" let-item pTemplate="item">
+          {{item[prefixField]}}: {{item[field]}}
+      </ng-template>
+      <ng-template *ngIf="showOptionSuffix" let-item pTemplate="item">
+          {{item[field]}}<sub>{{item[suffixField]}}</sub>
+      </ng-template>
+  </p-autoComplete>
+</div>

@@ -6,7 +6,7 @@
                 <div class="ml-4" *ngFor="let el of references">
                     <ng-container *ngIf="el.lexicalEntryLabel">
                         <div class="block label">[{{el.lexicalEntryLabel+'@'+el.language+' : '+extractPosLabel(el.pos)}}]</div>
-                        <div class="block">{{el.definition}}</div>
+                        <div class="block">{{stripHtml(el.definition)}}</div>
                         <p-divider></p-divider>
                     </ng-container>
                 </div>

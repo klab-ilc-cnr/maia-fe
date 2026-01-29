@@ -3,6 +3,7 @@ import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api'
 import { Table } from 'primeng/table';
 import { Observable, Subject, Subscription, catchError, debounceTime, map, of, switchMap, takeUntil } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
+import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { ElementType } from 'src/app/models/corpus/element-type';
 import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
@@ -114,6 +115,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   showMultipleAnnotationDialog: boolean = false;
   textOffsets: TextOffset[] = [];
   isDeleting: boolean = false;
+  isEditing: boolean = false;
   annotationEnabled: boolean = false;
 
   @ViewChild('searchInput') searchInput: any;
@@ -187,9 +189,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     ];
   }
 
-  showAnnotationTile(isDeleting: boolean = false) {
-    this.isDeleting = isDeleting;
-    this.showMultipleAnnotationDialog = true;
+  showAnnotationTile(isDeleting: boolean = false, isEditing: boolean = false) {
     const offsetArray: TextOffset[] = [];
     this.selectedSearchResults.forEach((row: SearchResultRow) => {
       let offset: TextOffset = {
@@ -201,14 +201,24 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
       offsetArray.push(offset);
     });
     this.textOffsets = offsetArray;
+
+    // Importante: prima settiamo gli offsets, poi apriamo la finestra (evita race-condition sugli @Input)
+    this.isDeleting = isDeleting;
+    this.isEditing = isEditing;
+    this.showMultipleAnnotationDialog = true;
   }
 
   //**init for annotate menu button */
   setAnnotateMenuItems() {
     this.annotateItems = [
       {
+        label: this.commonService.translateKey('SEARCH.buttons.editAnnotations'), command: () => {
+          this.showAnnotationTile(false, true);
+        }
+      },
+      {
         label: this.commonService.translateKey('SEARCH.buttons.removeAnnotations'), command: () => {
-          this.showAnnotationTile(true);
+          this.showAnnotationTile(true, false);
         }
       }
     ];
@@ -300,6 +310,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.searchValue = this.searchValue?.trim();
     this.searchRequest.filters.contextLength = this.contextLength;
     this.searchRequest.filters.pos = this.posValue;
+    this.searchRequest.reload = true;
     this.lastSearchRequestLayer = this.selectedLayer;
     this.clearTable();
     this.resetColumnFilters();
@@ -400,6 +411,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     );
   }
 
+  stripHtml(html: string | undefined | null): string {
+    return HtmlHelper.stripHtml(html);
+  }
+
   /**
  *refresh documents data  
  */
@@ -433,12 +448,20 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   }
 
   /**
+   * Displays a loading indicator when an edit operation starts.
+   */
+  onEditStart() {
+    this.showProgressBar();
+  }
+
+  /**
    * Handles the end of a delete operation.
    * @param event The event triggered by the delete operation.
    */
   onDeleteEnd(event: MultipleAnnotationResponse) {
     Swal.close();
     this.showMultipleAnnotationDialog = false;
+    this.isDeleting = false;
     switch (event.status) {
       case 'ERROR':
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.deleteFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
@@ -454,18 +477,48 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         console.error('Unknown status:', event.status);
         break;
     }
-
+    this.searchRequest.reload = true;
     this.search();
     this.selectedSearchResults = [];
   }
 
   /**
-   * Handles the end of a save or delete operation for multiple annotations.
-   * @param event The event triggered by the save or delete operation.
+   * Handles the end of an edit operation.
+   * @param event The event triggered by the edit operation.
+   */
+  onEditEnd(event: MultipleAnnotationResponse) {
+    Swal.close();
+    this.showMultipleAnnotationDialog = false;
+    this.isEditing = false;
+    switch (event.status) {
+      case 'ERROR':
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.editFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
+        break;
+      case 'SUCCESS':
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${event.success} ${this.commonService.translateKey('SEARCH.annotations.editSuccess')}`));
+        break;
+      case 'PARTIAL':
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.editFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
+        this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`${event.success} ${this.commonService.translateKey('SEARCH.annotations.editSuccess')}`));
+        break;
+      default:
+        console.error('Unknown status:', event.status);
+        break;
+    }
+    this.searchRequest.reload = true;
+    this.search();
+    this.selectedSearchResults = [];
+  }
+
+  /**
+   * Handles the end of a save operation for multiple annotations.
+   * @param event The event triggered by the save operation.
    */
   private endMultipleAnnotationOperation(event: MultipleAnnotationResponse) {
     Swal.close();
     this.showMultipleAnnotationDialog = false;
+    this.isDeleting = false;
+    this.isEditing = false;
     switch (event.status) {
       case 'ERROR':
         this.messageService.add(this.msgConfService.generateWarningMessageConfig(`${this.commonService.translateKey('SEARCH.annotations.saveFailed')} ${event.errors.map((index: number) => index + 1).join(', ')}`));
@@ -481,7 +534,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         console.error('Unknown status:', event.status);
         break;
     }
-
+    this.searchRequest.reload = true;
     this.search();
     this.selectedSearchResults = [];
   }
@@ -616,6 +669,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     // Start a new search and track its subscription
     this.searchSubscription = this.searchService.search(this.searchRequest).subscribe({
       next: (result) => {
+        this.searchRequest.reload = false;
         this.searchResults = result.data;
         this.searchResults.forEach(res => res.id ? res.id : res.id = `id_${res.index}`);
         this.loading = false;
@@ -624,6 +678,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
         this.enableDisableAnnotationButtons();
       },
       error: (error) => {
+        this.searchRequest.reload = false;
         this.loading = false;
         this.commonService.throwHttpErrorAndMessage(error, error.error.message);
       }
