@@ -145,23 +145,14 @@ export class SenseCoreEditorComponent implements OnInit, OnDestroy {
     // Gestione salvataggio definizione principale (details)
     this.definition.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
-      debounceTime(300), // Ridotto il debounce per pulire più velocemente
+      debounceTime(800),
       distinctUntilChanged(),
     ).subscribe(() => {
       let detailsValue = this.definition.value || '';
       
       // Pulisce l'HTML rimuovendo i <p> vuoti all'inizio e alla fine e caratteri invisibili
       const cleanedValue = this.cleanHtmlContent(detailsValue);
-      
-      // Se il valore è cambiato dopo la pulizia, aggiorna il form control immediatamente
-      // per evitare che i caratteri invisibili rimangano nell'editor
-      if (cleanedValue !== detailsValue) {
-        // Usa setTimeout per evitare loop infiniti
-        setTimeout(() => {
-          this.definition.setValue(cleanedValue, { emitEvent: false });
-        }, 0);
-        detailsValue = cleanedValue;
-      }
+      detailsValue = cleanedValue;
       
       // Salva details solo se il valore pulito è diverso da quello salvato
       const existingDef = this.senseEntry.definition.find(def => def.propertyID === 'definition');
