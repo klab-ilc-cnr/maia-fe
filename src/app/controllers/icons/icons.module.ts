@@ -1,17 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconBaseComponent } from './icon-base/icon-base.component';
-import { IconAddFolderComponent } from './icon-add-folder/icon-add-folder.component';
-import { IconUploadFileComponent } from './icon-upload-file/icon-upload-file.component';
-import { IconRenameComponent } from './icon-rename/icon-rename.component';
-import { IconMoveComponent } from './icon-move/icon-move.component';
+import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { IconLayerGroupComponent } from './icon-layer-group/icon-layer-group.component';
-import { IconAuthorComponent } from './icon-author/icon-author.component';
 import { TooltipModule } from 'primeng/tooltip';
-import { IconNoteComponent } from './icon-note/icon-note.component';
+import { IconAddFolderComponent } from './icon-add-folder/icon-add-folder.component';
+import { IconAuthorComponent } from './icon-author/icon-author.component';
+import { IconBaseComponent } from './icon-base/icon-base.component';
+import { IconLayerGroupComponent } from './icon-layer-group/icon-layer-group.component';
 import { IconLockComponent } from './icon-lock/icon-lock.component';
-import { IconPlusCircleComponent } from './icon-circle-plus/icon-circle-plus.component';
+import { IconMoveComponent } from './icon-move/icon-move.component';
+import { IconNoteComponent } from './icon-note/icon-note.component';
+import { IconRenameComponent } from './icon-rename/icon-rename.component';
+import { IconUploadFileComponent } from './icon-upload-file/icon-upload-file.component';
 
 
 @NgModule({
@@ -25,7 +24,6 @@ import { IconPlusCircleComponent } from './icon-circle-plus/icon-circle-plus.com
     IconAuthorComponent,
     IconNoteComponent,
     IconLockComponent,
-    IconPlusCircleComponent
   ],
   exports: [
     IconBaseComponent,
@@ -37,7 +35,6 @@ import { IconPlusCircleComponent } from './icon-circle-plus/icon-circle-plus.com
     IconAuthorComponent,
     IconNoteComponent,
     IconLockComponent,
-    IconPlusCircleComponent
   ],
   imports: [
     CommonModule,
