@@ -74,7 +74,9 @@
             "entryBody": "Corpo della voce",
             "text": "Testo",
             "reference": "Riferimento",
-            "section": "Occorrenza"
+            "section": "Occorrenza",
+            "exportPdf": "Esporta PDF",
+            "exportPdfDisabled": "L'esportazione PDF è disponibile solo per voci approvate (lucchetto verde)"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",

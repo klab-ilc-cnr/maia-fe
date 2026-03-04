@@ -18,24 +18,27 @@
 </div>
 <ng-template #previewContent>
   <div class="card ml-1 mr-2">
-    <div class="d-flex flex-wrap mt-2 mb-2">
-      <div class="flex-column">
-        <h2>
-          <span class="fw-bold">{{ dictionaryEntry.label }}</span>
-          <sub class="ml-1">{{ posAndTraits }}</sub>
-        </h2>
-      </div>
-      <div class="flex-column ml-5 justify-content-end d-flex font-size-larger">
-        <div class="d-flex align-items-center">
-          <app-icon-lock
-            class="d-inline-block mr-2"
-            [status]="dictionaryEntry.status"
-          ></app-icon-lock>
-          <span class="badge badge-info">{{
-            dictionaryEntry.status | translate
-          }}</span>
-        </div>
-      </div>
+    <div class="d-flex flex-wrap align-items-center mt-2 mb-2 gap-2">
+      <h2 class="mb-0 d-flex align-items-center flex-wrap">
+        <span class="fw-bold">{{ dictionaryEntry.label }}</span>
+        <sub class="ml-1">{{ posAndTraits }}</sub>
+      </h2>
+      <app-icon-lock
+        class="d-inline-block ms-2"
+        [status]="dictionaryEntry.status"
+      ></app-icon-lock>
+      <span class="badge badge-info font-size-larger">{{
+        dictionaryEntry.status | translate
+      }}</span>
+      <button pButton type="button"
+        icon="pi pi-download"
+        class="p-button-rounded p-button-text p-button-primary ms-auto preview-export-btn"
+        [pTooltip]="(dictionaryEntry.status === 'reviewed' ? 'DICTIONARY_EDITOR.PREVIEW_TAB.exportPdf' : 'DICTIONARY_EDITOR.PREVIEW_TAB.exportPdfDisabled') | translate"
+        tooltipPosition="left"
+        [disabled]="dictionaryEntry.status !== 'reviewed'"
+        (click)="onExportPdf()"
+        aria-label="Export PDF">
+      </button>
     </div>
   </div>
   <h5 class="pl-2">

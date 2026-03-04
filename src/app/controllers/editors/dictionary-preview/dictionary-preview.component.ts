@@ -14,6 +14,7 @@ import { LinguisticRelationModel } from 'src/app/models/lexicon/linguistic-relat
 import { SearchAnnotationFilters, SearchAnnotationRequest } from 'src/app/models/search/search-annotation-request';
 import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/models/search/search-annotation-result';
 import { CommonService } from 'src/app/services/common.service';
+import { DictionaryPdfService, DictionaryPreviewPdfData } from 'src/app/services/dictionary-pdf.service';
 import { DictionaryService, DictionaryTraits } from 'src/app/services/dictionary.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
@@ -69,7 +70,8 @@ export class DictionaryPreviewComponent implements OnInit {
     private dictionaryService: DictionaryService,
     private searchAnnotationService: SearchAnnotationService,
     private commonService: CommonService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private dictionaryPdfService: DictionaryPdfService
   ) { }
 
   get ready(): boolean {
@@ -99,6 +101,22 @@ export class DictionaryPreviewComponent implements OnInit {
         return traits ? `${pos}${traits}` : pos;
       })
       .join(', ');
+  }
+
+  onExportPdf(): void {
+    if (this.dictionaryEntry?.status !== 'reviewed') return;
+    const data: DictionaryPreviewPdfData = {
+      entry: this.dictionaryEntry,
+      posAndTraits: this.posAndTraits,
+      structuredNote: this.structuredNote,
+      forms: this.forms,
+      firstAttestationLabel: this.firstAttestationLabel,
+      totalOccurrences: this.totalOccurrences,
+      frequencies: this.frequencies,
+      senseLexicalEntriesTree: this.senseLexicalEntriesTree,
+      orderedSeeAlso: this.orderedSeeAlso
+    };
+    this.dictionaryPdfService.generatePreviewPdf(data);
   }
 
   ngOnInit(): void {
