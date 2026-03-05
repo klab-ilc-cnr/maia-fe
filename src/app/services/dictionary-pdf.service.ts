@@ -204,7 +204,7 @@ export class DictionaryPdfService {
     if (!html || typeof html !== 'string') return [];
     const decoded = this.decodeHtmlEntities(html);
     try {
-      const parsed = htmlToPdfmake(decoded);
+      const parsed = htmlToPdfmake(decoded) as Content | Content[];
       return Array.isArray(parsed) ? parsed : [parsed];
     } catch {
       return [{ text: this.stripHtml(decoded) }];

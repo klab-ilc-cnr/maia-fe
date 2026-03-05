@@ -104,7 +104,6 @@ export class DictionaryPreviewComponent implements OnInit {
   }
 
   onExportPdf(): void {
-    if (this.dictionaryEntry?.status !== 'reviewed') return;
     const data: DictionaryPreviewPdfData = {
       entry: this.dictionaryEntry,
       posAndTraits: this.posAndTraits,
