@@ -75,8 +75,7 @@
             "text": "Text",
             "reference": "Reference",
             "section": "Occurrence",
-            "exportPdf": "Export PDF",
-            "exportPdfDisabled": "PDF export is only available for approved entries (green lock)"
+            "exportPdf": "Export PDF"
         },
         "SORT_TAB": {
             "noDefinition": "No definition provided",
