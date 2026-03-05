@@ -33,9 +33,8 @@
       <button pButton type="button"
         icon="pi pi-download"
         class="p-button-rounded p-button-text p-button-primary ms-auto preview-export-btn"
-        [pTooltip]="(dictionaryEntry.status === 'reviewed' ? 'DICTIONARY_EDITOR.PREVIEW_TAB.exportPdf' : 'DICTIONARY_EDITOR.PREVIEW_TAB.exportPdfDisabled') | translate"
+        [pTooltip]="'DICTIONARY_EDITOR.PREVIEW_TAB.exportPdf' | translate"
         tooltipPosition="left"
-        [disabled]="dictionaryEntry.status !== 'reviewed'"
         (click)="onExportPdf()"
         aria-label="Export PDF">
       </button>

@@ -75,8 +75,7 @@
             "text": "Testo",
             "reference": "Riferimento",
             "section": "Occorrenza",
-            "exportPdf": "Esporta PDF",
-            "exportPdfDisabled": "L'esportazione PDF è disponibile solo per voci approvate (lucchetto verde)"
+            "exportPdf": "Esporta PDF"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",
