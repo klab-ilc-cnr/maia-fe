@@ -222,12 +222,9 @@
             {{ "DICTIONARY_EDITOR.EDIT_TAB.seeAlso" | translate }}
           </ng-template>
           <ng-template pTemplate="content">
-            <p *ngFor="let seeAlso of this.orderedSeeAlso" class="form-label">
-              <span *ngIf="seeAlso.label" class="form-label fw-bold"
-                >{{ seeAlso.label }} -
-              </span>
-              <span
-                ><em>{{ seeAlso.entity }}</em></span
+            <p *ngFor="let entry of seeAlsoWithLabels" class="form-label">
+              <span [pTooltip]="entry.item.entity ?? ''" tooltipPosition="top"
+                ><em>{{ entry.displayLabel }}</em></span
               >
             </p>
           </ng-template>

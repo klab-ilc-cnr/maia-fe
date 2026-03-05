@@ -28,6 +28,7 @@ export interface DictionaryPreviewPdfData {
   frequencies: { documentLabel: string; frequency: number }[];
   senseLexicalEntriesTree: TreeNode<DictionaryPreviewItem>[];
   orderedSeeAlso: LinguisticRelationModel[];
+  seeAlsoDisplayLabels?: string[];
 }
 
 @Injectable({
@@ -153,11 +154,11 @@ export class DictionaryPdfService {
     });
 
     // See also
-    if (data.orderedSeeAlso?.length) {
+    if (data.orderedSeeAlso?.length || data.seeAlsoDisplayLabels?.length) {
       content.push({ text: seeAlsoLabel, style: 'fieldsetTitle', marginTop: 8 });
-      data.orderedSeeAlso.forEach(s => {
-        const line = [s.label ? `${s.label} - ` : '', s.entity ? { text: s.entity, italics: true } : ''].filter(Boolean);
-        if (line.length) content.push({ text: line, marginLeft: 8, marginBottom: 2 });
+      const labels = data.seeAlsoDisplayLabels ?? data.orderedSeeAlso!.map(s => s.label ? `${s.label} - ${s.entity ?? ''}` : (s.entity ?? ''));
+      labels.forEach(displayLabel => {
+        if (displayLabel) content.push({ text: { text: displayLabel, italics: true }, marginLeft: 8, marginBottom: 2 });
       });
       content.push({ text: '', marginBottom: 8 });
     }
@@ -204,7 +205,7 @@ export class DictionaryPdfService {
     if (!html || typeof html !== 'string') return [];
     const decoded = this.decodeHtmlEntities(html);
     try {
-      const parsed = htmlToPdfmake(decoded);
+      const parsed = htmlToPdfmake(decoded) as Content | Content[];
       return Array.isArray(parsed) ? parsed : [parsed];
     } catch {
       return [{ text: this.stripHtml(decoded) }];

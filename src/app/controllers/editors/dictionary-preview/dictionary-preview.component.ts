@@ -16,6 +16,7 @@ import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/model
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryPdfService, DictionaryPreviewPdfData } from 'src/app/services/dictionary-pdf.service';
 import { DictionaryService, DictionaryTraits } from 'src/app/services/dictionary.service';
+import { LexicalEntryLabelService } from 'src/app/services/lexical-entry-label.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
 
@@ -64,9 +65,12 @@ export class DictionaryPreviewComponent implements OnInit {
   public meaningsPerSenseAnnotations: SenseEntry[] = [];
   public defaultVisibleRows = 5;
   public orderedSeeAlso: LinguisticRelationModel[] = [];
+  public seeAlsoWithLabels: { item: LinguisticRelationModel; displayLabel: string }[] = [];
   public posTraits: DictionaryTraits[] = [];
 
-  constructor(private lexiconService: LexiconService,
+  constructor(
+    private lexiconService: LexiconService,
+    private lexicalEntryLabelService: LexicalEntryLabelService,
     private dictionaryService: DictionaryService,
     private searchAnnotationService: SearchAnnotationService,
     private commonService: CommonService,
@@ -114,7 +118,8 @@ export class DictionaryPreviewComponent implements OnInit {
       totalOccurrences: this.totalOccurrences,
       frequencies: this.frequencies,
       senseLexicalEntriesTree: this.senseLexicalEntriesTree,
-      orderedSeeAlso: this.orderedSeeAlso
+      orderedSeeAlso: this.orderedSeeAlso,
+      seeAlsoDisplayLabels: this.seeAlsoWithLabels.map(e => e.displayLabel)
     };
     this.dictionaryPdfService.generatePreviewPdf(data);
   }
@@ -123,6 +128,23 @@ export class DictionaryPreviewComponent implements OnInit {
     this.retrieveHeaderEntryData();
 
     this.orderedSeeAlso = this.dictionaryEntry.seeAlso.sort((a, b) => (a.label ?? '').localeCompare(b.label ?? ''));
+
+    this.seeAlsoWithLabels = this.orderedSeeAlso.map(item => ({
+      item,
+      displayLabel: item.label ?? item.entity ?? ''
+    }));
+    const entityIds = this.orderedSeeAlso.map(s => s.entity).filter((id): id is string => !!id && this.lexicalEntryLabelService.isLexicalEntryCode(id));
+    if (entityIds.length > 0) {
+      this.lexicalEntryLabelService.getLabels(entityIds).pipe(
+        take(1),
+        catchError(() => of(new Map<string, string>()))
+      ).subscribe(labelMap => {
+        this.seeAlsoWithLabels = this.orderedSeeAlso.map(item => ({
+          item,
+          displayLabel: (item.entity && labelMap.get(item.entity)) ?? item.label ?? item.entity ?? ''
+        }));
+      });
+    }
 
     this.dictionaryService.retrieveDictionarySortingItems(this.dictionaryEntry.id).pipe(
       take(1),

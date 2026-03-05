@@ -797,7 +797,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   private mapLexicalEntryListItemToTreeNode(item: LexicalEntryListItem) {
     return {
       data: {
-        name: this.showLabelName ? item.label : item.lexicalEntry,
+        name: item.label || item.lexicalEntry,
         instanceName: item.lexicalEntry,
         language: item.language,
         label: item.label,

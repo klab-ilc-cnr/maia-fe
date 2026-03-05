@@ -117,14 +117,14 @@ small {
 
 .feature-row {
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.35em;
   padding: 2px 0;
   border-bottom: 1px dashed #eaeaea;
 }
 
-.feature-separator {
-  margin: 0 4px;
-  color: #999999;
+.feature-name {
+  flex-shrink: 0;
 }
 
 .annotation-section {

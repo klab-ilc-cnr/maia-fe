@@ -222,16 +222,15 @@
                                 <!-- Header Section -->
                                 <div class="annotation-section">
                                     <div class="annotation-field">
-                                        <b class="annotation-label">{{ ann.annotation_id }}</b>
+                                        <b class="annotation-label">{{ ann.resource_display_label ?? ann.resource_name ?? ann.annotation_id }}</b>
                                     </div>
                                 </div>
                                 <!-- Features Section -->
                                 <div class="tooltip-features">
                                     <div class="feature-item" *ngFor="let feat of ann.features">
                                         <div class="feature-row">
-                                            <span class="feature-name">{{ feat.feature_name }}</span>
-                                            <span class="feature-separator">:</span>
-                                            <span class="feature-value">{{ stripHtml(feat.value) }}</span>
+                                            <span class="feature-name">{{ feat.feature_name }}:</span>
+                                            <span class="feature-value">{{ stripHtml(feat.displayValue ?? feat.value) }}</span>
                                         </div>
                                     </div>
                                 </div>

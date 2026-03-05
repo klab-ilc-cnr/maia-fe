@@ -9,14 +9,20 @@ import { SearchRequest } from 'src/app/models/search/search-request';
 import { SearchResultRow } from 'src/app/models/search/search-result';
 import { CorpusElement, FolderElement } from 'src/app/models/texto/corpus-element';
 import { TLayer } from 'src/app/models/texto/t-layer';
-import { AnnotationService, MultipleAnnotationResponse, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
+import { AnnotationService, FeatureWordResponse, MultipleAnnotationResponse, WordAnnotationRequest, WordAnnotationResponse } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
+import { LexicalEntryLabelService } from 'src/app/services/lexical-entry-label.service';
 import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { SearchService } from 'src/app/services/search.service';
 import Swal from 'sweetalert2';
+
+export interface EnrichedWordAnnotationResponse extends WordAnnotationResponse {
+  resource_display_label?: string;
+  features: (FeatureWordResponse & { displayValue?: string })[];
+}
 
 export enum RestrictionEnum {
   none = 'none',
@@ -49,6 +55,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     private commonService: CommonService,
     private layerState: LayerStateService,
     private annotationService: AnnotationService,
+    private lexicalEntryLabelService: LexicalEntryLabelService,
     private renderer: Renderer2,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
@@ -390,11 +397,12 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
   /**
    * Displays the KWIC tooltip for a search result.
+   * Resolves lexical entry codes to human-readable labels for tooltip display.
    * @param tooltipId The ID of the tooltip element.
    * @param searchResult The search result row for which the tooltip is displayed.
    * @returns An observable of word annotation responses.
    */
-  showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<WordAnnotationResponse[]> => {
+  showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<EnrichedWordAnnotationResponse[]> => {
     if (!this.lastSearchRequestLayer?.id) { return of([]); }
 
     const request = new WordAnnotationRequest();
@@ -404,11 +412,37 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
     return this.annotationService.retrieveWordAnnotations(Number(searchResult?.textId), request).pipe(
       takeUntil(this.unsubscribe$),
-      map(result => {
-        return result;
+      switchMap(annotations => {
+        const codes: string[] = [];
+        annotations.forEach(ann => {
+          if (this.lexicalEntryLabelService.isLexicalEntryCode(ann.resource_name)) {
+            codes.push(ann.resource_name.trim());
+          }
+          ann.features?.forEach(f => {
+            if (this.lexicalEntryLabelService.isLexicalEntryCode(f.value)) {
+              codes.push(f.value.trim());
+            }
+          });
+        });
+        if (codes.length === 0) {
+          return of(annotations.map(ann => this.toEnriched(ann, new Map())));
+        }
+        return this.lexicalEntryLabelService.getLabels(codes).pipe(
+          map(labelMap => annotations.map(ann => this.toEnriched(ann, labelMap)))
+        );
       }),
       catchError(() => of([]))
     );
+  }
+
+  private toEnriched(ann: WordAnnotationResponse, labelMap: Map<string, string>): EnrichedWordAnnotationResponse {
+    const resource_display_label = ann.resource_name && labelMap.has(ann.resource_name.trim())
+      ? labelMap.get(ann.resource_name.trim())! : undefined;
+    const features = (ann.features || []).map(f => ({
+      ...f,
+      displayValue: f.value && labelMap.has(f.value.trim()) ? labelMap.get(f.value.trim())! : undefined
+    }));
+    return { ...ann, resource_display_label, features };
   }
 
   stripHtml(html: string | undefined | null): string {
