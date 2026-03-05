@@ -74,7 +74,8 @@
             "entryBody": "Body of the entry",
             "text": "Text",
             "reference": "Reference",
-            "section": "Occurrence"
+            "section": "Occurrence",
+            "exportPdf": "Export PDF"
         },
         "SORT_TAB": {
             "noDefinition": "No definition provided",
