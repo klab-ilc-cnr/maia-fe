@@ -236,7 +236,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * @param rowNode The data of the row that was double-clicked.
    */
   tableRowDoubleClickHandler(event: any, rowNode: any) {
-    this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode] });
+    this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode, this.selectedLayer] });
   }
 
   /**handler for page change */
