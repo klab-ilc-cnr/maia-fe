@@ -456,7 +456,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
           const cached = this.lexicalEntryLabelCache.get(id);
           if (cached !== undefined) return of(cached);
           return this.lexiconService.getLexicalEntry(id).pipe(
-            map(le => le.label),
+            map(le => le.pos ? `${le.label} [${le.pos}]` : (le.label ?? id)),
             catchError(() => of(id)),
             map(label => {
               this.lexicalEntryLabelCache.set(id, label);

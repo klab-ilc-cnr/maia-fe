@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, debounceTime, switchMap, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, debounceTime, of, switchMap, take, takeUntil } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -38,7 +38,14 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.currentValue) {
-      this.initialValueFn(this.currentValue).pipe(take(1)).subscribe(resp => {
+      this.initialValueFn(this.currentValue).pipe(
+        take(1),
+        catchError(() => {
+          const fallback: Record<string, unknown> = {};
+          fallback[this.field] = this.currentValue;
+          return of(fallback);
+        })
+      ).subscribe(resp => {
         this.valueToShow = resp;
         this.selected.emit(this.currentValue); //altrimenti non salva nel form i valori non modificati
       });
