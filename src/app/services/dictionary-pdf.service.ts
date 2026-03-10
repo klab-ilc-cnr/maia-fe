@@ -211,18 +211,49 @@ export class DictionaryPdfService {
     }
   }
 
-  /**
-   * Returns inline text runs from HTML for use inside a composite text array (e.g. with index + prefix + definition).
-   */
+  private collectInlineRuns(content: Content | Content[] | undefined): Content[] {
+    if (content == null) return [];
+    const contents = Array.isArray(content) ? content : [content];
+    const runs: Content[] = [];
+    for (const item of contents) {
+      if (typeof item === 'string') {
+        runs.push({ text: item });
+        continue;
+      }
+      if (typeof item !== 'object') continue;
+      const obj = item as unknown as Record<string, unknown>;
+      const text = obj['text'];
+      const stack = obj['stack'];
+      const columns = obj['columns'];
+      if (Array.isArray(text)) {
+        runs.push(...(text as Content[]));
+        continue;
+      }
+      if (typeof text === 'string') {
+        runs.push({ text });
+        continue;
+      }
+      if (Array.isArray(stack)) {
+        runs.push(...this.collectInlineRuns(stack as Content[]));
+        continue;
+      }
+      if (Array.isArray(columns)) {
+        for (const col of columns as Content[]) {
+          runs.push(...this.collectInlineRuns(col));
+        }
+        continue;
+      }
+    }
+    return runs;
+  }
+
   private getInlineRunsFromHtml(html: string): Content[] {
     if (!html || typeof html !== 'string') return [];
     const decoded = this.decodeHtmlEntities(html);
     try {
       const parsed = htmlToPdfmake(decoded) as Content | Content[];
-      const block = Array.isArray(parsed) ? parsed[0] : parsed;
-      const text = block && typeof block === 'object' && (block as any).text;
-      if (Array.isArray(text)) return text as Content[];
-      if (typeof text === 'string') return [{ text }];
+      const runs = this.collectInlineRuns(parsed);
+      if (runs.length > 0) return runs;
       return [{ text: this.stripHtml(decoded) }];
     } catch {
       return [{ text: this.stripHtml(decoded) }];
