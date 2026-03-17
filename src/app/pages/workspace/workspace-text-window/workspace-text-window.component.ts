@@ -128,6 +128,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   selectedLayers: TLayer[] = [];
   lastRenderedLayers: number[] = [];
 
+  initialKwicLayer?: TLayer;
+  pendingKwicOpen?: { start: number; end: number; text: string };
+  openAnnotationEditorFromKwic = false;
+
   sentnumVerticalLine = "M 0 0";
   /**Definisce se visualizzare l'editor di annotazione */
   showAnnotationEditor = false;
@@ -292,6 +296,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: (list) => {
         this.layersList = list;
+        this.applyInitialKwicLayer(list);
       },
       error: (error) => {
         this.commonService.throwHttpErrorAndMessage(error, `Loading layers failed: ${error.error.message}`);
@@ -306,7 +311,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.textRowsWideness = this.textRowsRangeWidenessPredictor();
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
-    this.loadInitialData();
+    if (this.initialKwicLayer) {
+      this.layers$.pipe(take(1)).subscribe((list) => {
+        this.applyInitialKwicLayer(list);
+        this.loadInitialData();
+      });
+    } else {
+      this.loadInitialData();
+    }
 
     setTimeout(() => {
       this.textTileSplitter.cd.detectChanges();
@@ -804,6 +816,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
  * prepare data for the highlight operation from the search kwic
  */
   setHighlightSelectionFromSearch(start: number, end: number, text: string) {
+    this.applyInitialKwicLayer(this.layersList);
     this.onAnnotationCancel();
     this.specialTextSelectionHighlight.textSelection.startIndex = start;
     this.specialTextSelectionHighlight.textSelection.endIndex = end;
@@ -914,6 +927,23 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private resetAnnotation() {
     this.textoAnnotation = new TAnnotation();
     this.visibleAnnotationId = undefined;
+  }
+
+  private applyInitialKwicLayer(list?: TLayer[]) {
+    if (!this.initialKwicLayer) { return; }
+    const layers = list ?? this.layersList;
+    if (!layers?.length) { return; }
+    const layer = layers.find((l) => l.id === this.initialKwicLayer!.id);
+    if (layer) {
+      this.selectedLayer = layer;
+      if (this.selectedLayers.findIndex((l) => l.id === layer.id) === -1) {
+        this.selectedLayers = [...(this.selectedLayers || []), layer];
+      } else {
+        this.selectedLayers = this.selectedLayers ?? [];
+      }
+      this.visibleLayers = this.selectedLayers;
+    }
+    this.initialKwicLayer = undefined;
   }
 
   /**
@@ -1177,6 +1207,25 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.setTextData(textResponse);
 
         this.renderData();
+
+        if (this.openAnnotationEditorFromKwic && this.pendingKwicOpen) {
+          const { start: kwicStart, end: kwicEnd, text: kwicText } = this.pendingKwicOpen;
+          const layerId = this.selectedLayer?.id;
+          const existingAnn = this.textoAnnotationsRes.find(
+            (a) => a.start === kwicStart && a.end === kwicEnd && a.layer?.id === layerId
+          );
+          if (existingAnn && existingAnn.id !== undefined) {
+            this.openAnnotation(existingAnn.id);
+          } else {
+            this.textoAnnotation.layer = this.selectedLayer;
+            this.textoAnnotation.start = kwicStart;
+            this.textoAnnotation.end = kwicEnd;
+            this.selectedText = kwicText;
+            this.showEditorAndHideOthers(EditorType.Annotation);
+          }
+          this.openAnnotationEditorFromKwic = false;
+          this.pendingKwicOpen = undefined;
+        }
       });
   }
 

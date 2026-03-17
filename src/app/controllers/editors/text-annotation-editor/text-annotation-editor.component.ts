@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, forkJoin, map, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, map, of, take, takeUntil, throwError } from 'rxjs';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -112,11 +112,15 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   );
   lexEntryById = (id: string) => this.lexiconService.getLexicalEntry(id).pipe(
     map(le => {
+      const displayLabel = (le.pos != null && le.pos !== '')
+        ? `${le.label ?? id} [${le.pos}]`
+        : (le.label ?? id);
       return {
         ...le,
-        label: `${le.label} [${le.pos}]`
-      }
-    })
+        label: displayLabel
+      };
+    }),
+    catchError(() => of({ label: id, lexicalEntry: id }))
   );
 
   formList = (text: string) => this.lexiconService.getFormList({

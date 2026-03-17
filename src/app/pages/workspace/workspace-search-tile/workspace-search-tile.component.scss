@@ -117,13 +117,23 @@ small {
 
 .feature-row {
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.35rem;
   padding: 2px 0;
   border-bottom: 1px dashed #eaeaea;
 }
 
+.feature-label {
+  flex-shrink: 0;
+
+  .feature-name {
+    white-space: nowrap;
+  }
+}
+
 .feature-separator {
-  margin: 0 4px;
+  margin-left: 0;
+  margin-right: 0;
   color: #999999;
 }
 
