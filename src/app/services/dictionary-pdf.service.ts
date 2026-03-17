@@ -95,10 +95,15 @@ export class DictionaryPdfService {
     // Forms (data.forms may be empty)
     content.push({ text: `${formsLabel}:`, style: 'fieldLabel' });
     if (data.forms?.length) {
-      content.push({
-        text: data.forms.map(f => `${f.label} (${f.pos})`).join(', '),
-        marginBottom: 6
+      const formRuns: Content[] = [];
+      data.forms.forEach((f, i) => {
+        formRuns.push({ text: f.label });
+        formRuns.push({ text: ' ' + f.pos, fontSize: 11, sub: true } as unknown as Content);
+        if (i < data.forms.length - 1) {
+          formRuns.push({ text: '     ' } as Content);
+        }
       });
+      content.push({ text: formRuns, marginBottom: 6 });
     } else {
       content.push({ text: '', marginBottom: 6 });
     }
@@ -211,35 +216,58 @@ export class DictionaryPdfService {
     }
   }
 
-  private collectInlineRuns(content: Content | Content[] | undefined): Content[] {
+  private static readonly STYLE_KEYS = [
+    'bold', 'italics', 'decoration', 'decorationStyle', 'decorationColor',
+    'color', 'background', 'fontSize', 'font', 'lineHeight',
+    'characterSpacing', 'sub', 'sup', 'opacity'
+  ];
+
+  private extractStyles(obj: Record<string, unknown>): Record<string, unknown> {
+    const styles: Record<string, unknown> = {};
+    for (const key of DictionaryPdfService.STYLE_KEYS) {
+      if (obj[key] !== undefined) styles[key] = obj[key];
+    }
+    return styles;
+  }
+
+  private collectInlineRuns(
+    content: Content | Content[] | undefined,
+    inherited?: Record<string, unknown>
+  ): Content[] {
     if (content == null) return [];
     const contents = Array.isArray(content) ? content : [content];
     const runs: Content[] = [];
+
     for (const item of contents) {
       if (typeof item === 'string') {
-        runs.push({ text: item });
+        runs.push({ text: item, ...inherited } as unknown as Content);
         continue;
       }
       if (typeof item !== 'object') continue;
+
       const obj = item as unknown as Record<string, unknown>;
       const text = obj['text'];
       const stack = obj['stack'];
       const columns = obj['columns'];
-      if (Array.isArray(text)) {
-        runs.push(...(text as Content[]));
+      const nodeStyles = this.extractStyles(obj);
+      const merged = { ...inherited, ...nodeStyles };
+      const hasStyles = Object.keys(merged).length > 0;
+
+      if (typeof text === 'string') {
+        runs.push({ text, ...merged } as unknown as Content);
         continue;
       }
-      if (typeof text === 'string') {
-        runs.push({ text });
+      if (Array.isArray(text)) {
+        runs.push(...this.collectInlineRuns(text as Content[], hasStyles ? merged : undefined));
         continue;
       }
       if (Array.isArray(stack)) {
-        runs.push(...this.collectInlineRuns(stack as Content[]));
+        runs.push(...this.collectInlineRuns(stack as Content[], hasStyles ? merged : undefined));
         continue;
       }
       if (Array.isArray(columns)) {
         for (const col of columns as Content[]) {
-          runs.push(...this.collectInlineRuns(col));
+          runs.push(...this.collectInlineRuns(col, hasStyles ? merged : undefined));
         }
         continue;
       }
@@ -276,18 +304,19 @@ export class DictionaryPdfService {
       const marginLeft = 8 + depth * 8;
 
       if (node.type === 'senseLexicalEntry' && d) {
-        const suffix = (d.suffix && d.suffix.length) ? ` ${d.suffix.join(' ')}` : '';
-        result.push({
-          text: [{ text: (node.label || '') + suffix, bold: true }],
-          marginLeft,
-          marginBottom: 4
-        });
+        const parts: Content[] = [{ text: node.label || '', bold: true }];
+        if (d.suffix?.length) {
+          parts.push({ text: ' ' + d.suffix.join(' '), bold: true, fontSize: 7, sub: true } as unknown as Content);
+        }
+        result.push({ text: parts, marginLeft, marginBottom: 4 });
       } else if (node.type === 'meaning' && d) {
-        const indexPart = d.index ? `${d.index}. ` : '';
-        const prefixPart = (d.prefix && d.prefix.length) ? [{ text: `[${d.prefix.join(' ')}] `, italics: true }] : [];
+        const parts: Content[] = [];
+        if (d.index) parts.push({ text: d.index, bold: true }, { text: '. ' } as Content);
+        if (d.prefix?.length) parts.push({ text: `[${d.prefix.join(' ')}]`, italics: true }, { text: ' ' } as Content);
         const labelRuns = d.label ? this.getInlineRunsFromHtml(d.label) : [{ text: noDefLabel }];
+        parts.push(...labelRuns);
         result.push({
-          text: [{ text: indexPart, bold: true }, ...prefixPart, ...labelRuns],
+          text: parts,
           marginLeft,
           marginBottom: 4
         });
