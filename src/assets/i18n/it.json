@@ -74,7 +74,8 @@
             "entryBody": "Corpo della voce",
             "text": "Testo",
             "reference": "Riferimento",
-            "section": "Occorrenza"
+            "section": "Occorrenza",
+            "exportPdf": "Esporta PDF"
         },
         "SORT_TAB": {
             "noDefinition": "Nessuna definizione fornita",

@@ -14,6 +14,7 @@ import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.mode
 import { Layer } from 'src/app/models/layer/layer.model';
 import { LexicalEntryOld, LexicalEntryTypeOld } from 'src/app/models/lexicon/lexical-entry.model';
 import { SearchResultRow } from 'src/app/models/search/search-result';
+import { TLayer } from 'src/app/models/texto/t-layer';
 import { CorpusElement } from 'src/app/models/texto/corpus-element';
 import { DictionaryEditorTileContent } from 'src/app/models/tile/dictionary-editor-tile-content.model';
 import { DictionaryExplorerTileContent } from 'src/app/models/tile/dictionary-explorer-tile-content.model';
@@ -245,7 +246,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           case EventsConstants.onSearchResultTableDoubleClickEvent: {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
-            this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset);
+            const selectedLayer: TLayer | undefined = res.value[1] ? structuredClone(res.value[1]) : undefined;
+            this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset, selectedLayer);
             break;
           }
           case EventsConstants.onDictionaryEntryDblClickEvent: {
@@ -527,7 +529,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param title {string} titolo del testo
    * @returns {void}
    */
-  openTextPanel(textId: number, title: string, startingRowIndex?: number, kwic?: string, kwicOffsetStart?: number) {
+  openTextPanel(textId: number, title: string, startingRowIndex?: number, kwic?: string, kwicOffsetStart?: number, selectedLayer?: TLayer) {
     const modalTextSelect = jsPanel.getPanels(function (this: any) {
       return this.classList.contains('jsPanel-modal');
     })
@@ -546,7 +548,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     if (panelExist) { //caso di pannello già presente
       if (startingRowIndex !== undefined && startingRowIndex !== null) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
-        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!);
+        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!, selectedLayer);
         textTileComponent.component.instance.loadInitialData();
       }
 
@@ -557,7 +559,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
     if (startingRowIndex !== undefined && startingRowIndex !== null) {
-      this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!);
+      this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!, selectedLayer);
     }
 
     const textTileConfig = res.panelConfig;
@@ -1363,10 +1365,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param textTileComponent angular component
    * @param startingRowIndex 
    */
-  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number, kwic: string, kwicOffsetStart: number) {
+  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number, kwic: string, kwicOffsetStart: number, selectedLayer?: TLayer) {
     const kwicOffsetEnd = kwicOffsetStart + kwic.length;
     textTileComponent.instance.startingRowIndex = startingRowIndex;
     textTileComponent.instance.scrollingDirection = ScrollingDirectionType.ChangingSection;
+    if (selectedLayer) {
+      textTileComponent.instance.initialKwicLayer = selectedLayer;
+      textTileComponent.instance.pendingKwicOpen = { start: kwicOffsetStart, end: kwicOffsetEnd, text: kwic };
+      textTileComponent.instance.openAnnotationEditorFromKwic = true;
+    }
     textTileComponent.instance.setHighlightSelectionFromSearch(kwicOffsetStart, kwicOffsetEnd, kwic);
   }
 

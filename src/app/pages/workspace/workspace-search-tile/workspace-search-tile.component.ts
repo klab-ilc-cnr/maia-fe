@@ -1,7 +1,7 @@
 import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, Subscription, catchError, debounceTime, map, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, catchError, debounceTime, forkJoin, map, of, switchMap, takeUntil } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -15,8 +15,11 @@ import { CorpusStateService } from 'src/app/services/corpus-state.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
+import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchService } from 'src/app/services/search.service';
 import Swal from 'sweetalert2';
+
+const LEXICAL_ENTRY_FEATURE_NAMES = ['lexical_entry', 'lexicalEntry', 'reference', 'lemma', 'lessico'];
 
 export enum RestrictionEnum {
   none = 'none',
@@ -49,11 +52,14 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     private commonService: CommonService,
     private layerState: LayerStateService,
     private annotationService: AnnotationService,
+    private lexiconService: LexiconService,
     private renderer: Renderer2,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
     private loaderService: LoaderService,
   ) { }
+
+  private lexicalEntryLabelCache = new Map<string, string>();
 
   private searchSubscription?: Subscription;
   /**initial panel size */
@@ -230,7 +236,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * @param rowNode The data of the row that was double-clicked.
    */
   tableRowDoubleClickHandler(event: any, rowNode: any) {
-    this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode] });
+    this.commonService.notifyOther({ option: 'onSearchResultTableDoubleClickEvent', value: [rowNode, this.selectedLayer] });
   }
 
   /**handler for page change */
@@ -388,11 +394,50 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     };
   }
 
+  private isLexicalEntryFeature(featureName: string): boolean {
+    const name = (featureName || '').toLowerCase();
+    return LEXICAL_ENTRY_FEATURE_NAMES.some(n => name.includes(n.toLowerCase()));
+  }
+
+  private looksLikeLexicalEntryId(value: string | undefined | null): boolean {
+    if (!value || typeof value !== 'string') return false;
+    const v = value.trim();
+    return v.startsWith('http') || v.includes('@');
+  }
+
+  private collectLexicalEntryIds(annotations: WordAnnotationResponse[]): string[] {
+    const set = new Set<string>();
+    for (const ann of annotations) {
+      for (const f of ann.features || []) {
+        if (this.isLexicalEntryFeature(f.feature_name) && this.looksLikeLexicalEntryId(f.value)) {
+          set.add(f.value.trim());
+        }
+      }
+    }
+    return [...set];
+  }
+
+  private applyLexicalEntryLabels(
+    annotations: WordAnnotationResponse[],
+    ids: string[],
+    labels: string[]
+  ): WordAnnotationResponse[] {
+    const idToLabel = new Map(ids.map((id, i) => [id, labels[i]]));
+    return annotations.map(ann => ({
+      ...ann,
+      features: (ann.features || []).map(f => {
+        if (!this.isLexicalEntryFeature(f.feature_name) || !this.looksLikeLexicalEntryId(f.value)) return f;
+        const label = idToLabel.get(f.value!.trim());
+        return { ...f, value: label ?? f.value };
+      })
+    }));
+  }
+
   /**
    * Displays the KWIC tooltip for a search result.
    * @param tooltipId The ID of the tooltip element.
    * @param searchResult The search result row for which the tooltip is displayed.
-   * @returns An observable of word annotation responses.
+   * @returns An observable of word annotation responses
    */
   showKwicTooltip = (tooltipId: string, searchResult?: SearchResultRow): Observable<WordAnnotationResponse[]> => {
     if (!this.lastSearchRequestLayer?.id) { return of([]); }
@@ -404,8 +449,24 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
     return this.annotationService.retrieveWordAnnotations(Number(searchResult?.textId), request).pipe(
       takeUntil(this.unsubscribe$),
-      map(result => {
-        return result;
+      switchMap(result => {
+        const ids = this.collectLexicalEntryIds(result);
+        if (ids.length === 0) return of(result);
+        const observables = ids.map(id => {
+          const cached = this.lexicalEntryLabelCache.get(id);
+          if (cached !== undefined) return of(cached);
+          return this.lexiconService.getLexicalEntry(id).pipe(
+            map(le => le.pos ? `${le.label} [${le.pos}]` : (le.label ?? id)),
+            catchError(() => of(id)),
+            map(label => {
+              this.lexicalEntryLabelCache.set(id, label);
+              return label;
+            })
+          );
+        });
+        return forkJoin(observables).pipe(
+          map(labels => this.applyLexicalEntryLabels(result, ids, labels))
+        );
       }),
       catchError(() => of([]))
     );
@@ -416,7 +477,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   }
 
   /**
- *refresh documents data  
+ *refresh documents data
  */
   /**
    * Refreshes the documents data.
