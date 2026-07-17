@@ -1,4 +1,4 @@
-const serverUrl = window.location.protocol + "//" + window.location.hostname + window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + '/maia';
+const serverUrl = window.location.protocol + "//" + window.location.host + window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + '/maia';
 
 export const environment = {
   production: false,
