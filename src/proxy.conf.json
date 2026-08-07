@@ -1,3 +1,22 @@
 {
-
+  "/api": {
+    "target": "https://192.168.92.24:11443",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/lexo": {
+    "target": "https://192.168.92.24:11443",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/texto": {
+    "target": "https://192.168.92.24:11443",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/cash": {
+    "target": "https://192.168.92.24:11443",
+    "secure": false,
+    "changeOrigin": true
+  }
 }
