@@ -47,8 +47,6 @@ export const environment = {
   relationUrl: allowedUrls + '/relations',
   //lexoUrl: "http://licodemo.ilc.cnr.it:8080/LexO-backend-maia/service/",
   lexoUrl: "https://klab.ilc.cnr.it/maia-demo/LexO-backend-maia/service/",
-  //cashUrl: "http://146.48.93.223:8080/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
-  cashUrl: "https://klab.ilc.cnr.it/maia-demo/cash-0.0.1-SNAPSHOT", //TODO sostituire con il deploy di cash (o altro backend del testo)
   lexoPrefix: "ferrandi",
   lexoBaseIRI: "http://rut/somali/ferrandi#",
   textoUrl: "https://146.48.93.234:9443",

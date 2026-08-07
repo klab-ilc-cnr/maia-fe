@@ -22,13 +22,5 @@
     "pathRewrite": {
       "^/texto": "/maia/texto"
     }
-  },
-  "/cash": {
-    "target": "https://192.168.92.24:11900",
-    "secure": false,
-    "changeOrigin": true,
-    "pathRewrite": {
-      "^/cash": "/maia/cash"
-    }
   }
 }

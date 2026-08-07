@@ -107,9 +107,8 @@ export class AnnotationEditorComponent implements OnInit, OnDestroy {
           newFeature.modelPropName = `${feature.name}`;
 
           if (annotation.attributes['features']) {
-            //GESTIONE BUG SULLE API CASH
-            //non viene restituito un array di feature nel caso ci sia una sola feature
-            //ma solo un elemento feature
+            //Normalizzazione: il backend può restituire una singola feature
+            //invece di un array nel caso ci sia una sola feature
             if(!Array.isArray(annotation.attributes['features']))
             {
               annotation.attributes['features'] = new Array(annotation.attributes['features']);
