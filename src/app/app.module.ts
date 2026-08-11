@@ -18,7 +18,6 @@ import { LexEntryMetadataEditorComponent } from './controllers/editors/lex-entry
 import { LexSenseDirectRelationsComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-direct-relations/lex-sense-direct-relations.component';
 import { LexSenseIndirectRelationsComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-indirect-relations/lex-sense-indirect-relations.component';
 import { LexSenseRelationsEditorComponent } from './controllers/editors/lex-sense-relations-editor/lex-sense-relations-editor.component';
-import { LexicalEntryEditorComponent } from './controllers/editors/lexical-entry-editor/lexical-entry-editor.component';
 import { RelationEditorComponent } from './controllers/editors/relation-editor/relation-editor.component';
 
 import { LexEntityIndirectRelPropertyComponent } from './controllers/editors/lex-entity-relations/lex-entity-semantic-rel-indirect/lex-entity-indirect-rel-property/lex-entity-indirect-rel-property.component';
@@ -32,14 +31,29 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DictionaryEntryFullEditorComponent } from './controllers/editors/dictionary-entry-full-editor/dictionary-entry-full-editor.component';
 import { DictionaryEntryReferralEditorComponent } from './controllers/editors/dictionary-entry-referral-editor/dictionary-entry-referral-editor.component';
+import { DictionaryPreviewComponent } from './controllers/editors/dictionary-preview/dictionary-preview.component';
 import { DictionarySortingEditorComponent } from './controllers/editors/dictionary-sorting-editor/dictionary-sorting-editor.component';
+import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/lex-entry-decomp.component';
+import { MultipleTextAnnotationEditorComponent } from './controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 import { SenseCoreEditorComponent } from './controllers/editors/sense-core-editor/sense-core-editor.component';
 import { SenseMetadataEditorComponent } from './controllers/editors/sense-metadata-editor/sense-metadata-editor.component';
 import { TextAnnotationEditorComponent } from './controllers/editors/text-annotation-editor/text-annotation-editor.component';
+import { OntologyClassExplorerComponent } from './controllers/explorers/ontology-class-explorer/ontology-class-explorer.component';
+import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-data-explorer/ontology-data-explorer.component';
+import { OntologyDataPropertyExplorerComponent } from './controllers/explorers/ontology-data-property-explorer/ontology-data-property-explorer.component';
+import { OntologyIndividualsExplorerComponent } from './controllers/explorers/ontology-individuals-explorer/ontology-individuals-explorer.component';
+import { OntologyObjectPropertyExplorerComponent } from './controllers/explorers/ontology-object-property-explorer/ontology-object-property-explorer.component';
 import { IconsModule } from './controllers/icons/icons.module';
 import { TabsFormComponent } from './controllers/tab-controllers/tabs-form/tabs-form.component';
 import { TabsLexicalEntryComponent } from './controllers/tab-controllers/tabs-lexical-entry/tabs-lexical-entry.component';
 import { TabsSenseComponent } from './controllers/tab-controllers/tabs-sense/tabs-sense.component';
+import { AsyncTooltipComponent } from './controllers/tooltips/async-tooltip/async-tooltip.component';
+import { AnnotationsSectionComponent } from './controllers/viewers/common/annotations-section/annotations-section.component';
+import { OntologyTabUsageComponent } from './controllers/viewers/common/ontology-tab-usage/ontology-tab-usage.component';
+import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
+import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontology-data-property-viewer/ontology-data-property-viewer.component';
+import { OntologyIndividualViewerComponent } from './controllers/viewers/ontology-individual-viewer/ontology-individual-viewer.component';
+import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
 import { DropdownPlusNumberComponent } from './forms/dropdown-plus-number/dropdown-plus-number.component';
 import { httpInterceptorProviders } from './interceptors/authentication.interceptor';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
@@ -54,6 +68,8 @@ import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-l
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceListComponent } from './pages/workspace/workspace-list/workspace-list.component';
 import { WorkspaceMenuComponent } from './pages/workspace/workspace-menu/workspace-menu.component';
+import { WorkspaceOntologyExplorerComponent } from './pages/workspace/workspace-ontology-explorer/workspace-ontology-explorer.component';
+import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-ontology-viewer/workspace-ontology-viewer.component';
 import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './pages/workspace/workspace-text-selector/workspace-text-selector.component';
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
@@ -62,23 +78,6 @@ import { PendingChangesGuard } from './pending-changes-guard';
 import { ReplaceLineFeedPipe } from './pipes/replace-line-feed.pipe';
 import { CommonService } from './services/common.service';
 import { MatchNewPasswordDirective } from './validators/match-new-password.directive';
-import { WorkspaceOntologyExplorerComponent } from './pages/workspace/workspace-ontology-explorer/workspace-ontology-explorer.component';
-import { OntologyObjectPropertyExplorerComponent } from './controllers/explorers/ontology-object-property-explorer/ontology-object-property-explorer.component';
-import { OntologyDataPropertyExplorerComponent } from './controllers/explorers/ontology-data-property-explorer/ontology-data-property-explorer.component';
-import { OntologyIndividualsExplorerComponent } from './controllers/explorers/ontology-individuals-explorer/ontology-individuals-explorer.component';
-import { OntologyClassExplorerComponent } from './controllers/explorers/ontology-class-explorer/ontology-class-explorer.component';
-import { WorkspaceOntologyViewerComponent } from './pages/workspace/workspace-ontology-viewer/workspace-ontology-viewer.component';
-import { OntologyIndividualViewerComponent } from './controllers/viewers/ontology-individual-viewer/ontology-individual-viewer.component';
-import { OntologyDataPropertyViewerComponent } from './controllers/viewers/ontology-data-property-viewer/ontology-data-property-viewer.component';
-import { OntologyObjectPropertyViewerComponent } from './controllers/viewers/ontology-object-property-viewer/ontology-object-property-viewer.component';
-import { OntologyClassViewerComponent } from './controllers/viewers/ontology-class-viewer/ontology-class-viewer.component';
-import { OntologyTabUsageComponent } from './controllers/viewers/common/ontology-tab-usage/ontology-tab-usage.component';
-import { AnnotationsSectionComponent } from './controllers/viewers/common/annotations-section/annotations-section.component';
-import { OntologyDataExplorerComponent } from './controllers/explorers/ontology-data-explorer/ontology-data-explorer.component';
-import { LexEntryDecompComponent } from './controllers/editors/lex-entry-decomp/lex-entry-decomp.component';
-import { DictionaryPreviewComponent } from './controllers/editors/dictionary-preview/dictionary-preview.component';
-import { AsyncTooltipComponent } from './controllers/tooltips/async-tooltip/async-tooltip.component';
-import { MultipleTextAnnotationEditorComponent } from './controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +93,6 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
     RelationEditorComponent,
     WorkspaceLexiconTileComponent,
     WorkspaceLexiconEditTileComponent,
-    LexicalEntryEditorComponent,
     TabsLexicalEntryComponent,
     TabsFormComponent,
     TabsSenseComponent,
