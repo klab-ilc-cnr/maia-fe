@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { decode } from 'html-entities';
 import { Subject, catchError, take, takeUntil } from 'rxjs';
@@ -76,7 +76,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private loggedUserService: LoggedUserService,
     private messageService: MessageService,
-    private msgConfService: MessageConfigurationService
+    private msgConfService: MessageConfigurationService,
+    private elRef: ElementRef
   ) { }
 
 
@@ -324,7 +325,8 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.panelHeight = document.getElementById(this.panelId)!.clientHeight;
+    const host = this.elRef.nativeElement as HTMLElement;
+    this.panelHeight = host?.clientHeight ?? this.panelHeight;
   }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per rimuovere eventuali sottoscrizioni */

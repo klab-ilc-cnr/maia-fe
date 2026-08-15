@@ -48,3 +48,5 @@ Thumbs.db
 /src/environments/environment.demo-articolo.ts
 #*environment.production.ts
 /src/environments/environment.ts
+# Proxy locale (istanzia da src/proxy_stub.conf.json)
+/src/proxy.conf.json
