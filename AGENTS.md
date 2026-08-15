@@ -33,7 +33,9 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 
 ## Backend & proxy
 
-- `src/proxy.conf.json` → **`https://192.168.92.24:11900`** (maia-be Spring, context `/maia`) with `pathRewrite`:
+- `angular.json` (`serve.options.proxyConfig`) points to **`src/proxy.conf.json`** — a **gitignored, machine-specific** file. On a fresh clone run once: `cp src/proxy_stub.conf.json src/proxy.conf.json`, then fill it with your backend target (`{}` = no proxy).
+- Versioned default in the repo: `src/proxy_stub.conf.json` (empty stub).
+- Local instance used in this project targets **`https://192.168.92.24:11900`** (`maia-be` Spring, context `/maia`) with `pathRewrite`:
   - `/api` → `/maia/api`
   - `/lexo` → `/maia/lexo` (LexO, still used by ontology/lexicon/dictionary services)
   - `/texto` → `/maia/texto` (TexO)
@@ -64,7 +66,7 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 ## Recent work (this branch / chat memory)
 
 - Audit 84→29 via overrides (fix commits) — build verified each step.
-- Backend proxy debugged: VM `192.168.92.24:11443` serves only the deployed FE (Apache, `/maia/`); the actual Spring API is on **`:11900`** context `/maia`. Left proxy pointing at `:11900`.
+- Backend proxy debugged: VM `192.168.92.24:11443` serves only the deployed FE (Apache, `/maia/`); the actual Spring API is on **`:11900`** context `/maia`. Proxy made machine-local: versioned stub `src/proxy_stub.conf.json`, gitignored `src/proxy.conf.json` (real config for this dev machine).
 - quill 2 regression discovered & reverted (commit `59d22b3e`).
 - CASH fully removed: proxy `/cash`, `cashUrl` in demo env, ~250 lines of commented legacy methods in `workspace.service.ts`, and the two "GESTIONE BUG SULLE API CASH" comments rewritten neutrally (active `normalizzazione features` code kept).
 - Latest state: branch `study/security-fixes` (local, not pushed) with `npm audit` = 29 total.

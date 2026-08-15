@@ -22,6 +22,16 @@ Once the branch is selected, the basic steps to follow are:
 
 The deployment package will then be available in the maia folder.
 
+### Local development proxy
+
+For local development with `ng serve`, Angular CLI expects a proxy configuration file: copy the provided stub once and, if needed, fill it with the target of your `maia-be` backend:
+
+```
+cp src/proxy_stub.conf.json src/proxy.conf.json
+```
+
+`src/proxy.conf.json` is intentionally gitignored (machine-specific), so it will not appear in commits; the versioned default is the empty stub `src/proxy_stub.conf.json`.
+
 ## Reporting issues and bugs
 To report any bugs or propose new features, you can open a new issue in the [dedicated section](https://github.com/klab-ilc-cnr/Maia/issues) of the main Maia repository.
 
