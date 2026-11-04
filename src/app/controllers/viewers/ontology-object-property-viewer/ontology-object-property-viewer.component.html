@@ -7,25 +7,25 @@
                 <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.characteristics'|translate}}</ng-template>
                 <ng-template pTemplate="content">
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.functional" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.functional'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.functional"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.functional'|translate }}</span></label>
                     </div>
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.inverseFunctional" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.inverseFunctional'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.inverseFunctional"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.inverseFunctional'|translate }}</span></label>
                     </div>
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.transitive" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.transitive'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.transitive"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.transitive'|translate }}</span></label>
                     </div>
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.symmetric" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.symmetric'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.symmetric"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.symmetric'|translate }}</span></label>
                     </div>
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.asymmetric" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.asymmetric'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.asymmetric"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.asymmetric'|translate }}</span></label>
                     </div>
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.reflexive" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.reflexive'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.reflexive"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.reflexive'|translate }}</span></label>
                     </div>
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.irreflexive" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.irreflexive'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.irreflexive"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.irreflexive'|translate }}</span></label>
                     </div>
                 </ng-template>
             </p-fieldset>

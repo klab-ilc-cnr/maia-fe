@@ -34,21 +34,23 @@ test('regressione: colori dei tab nel lexicon editor', async ({ page, baseURL },
   await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
   await expect(page.locator('#lexiconTile')).toBeVisible();
   await page.locator('#lexiconTile tr', { hasText: '@' }).first().dblclick();
-  const nav = page.locator('.p-tabview-nav').first();
+  // selettori ARIA: validi sia con TabView di PrimeNG <= 17 (li > a) sia con Tabs di PrimeNG 18+ (button.p-tab)
+  const nav = page.locator('[role="tablist"]').first();
   await expect(nav).toBeVisible({ timeout: 30_000 });
   await page.waitForTimeout(1500);
 
   const primary = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim());
-  const tabs = await page.evaluate(() => [...document.querySelectorAll('.p-tabview-nav li')]
-    .filter((li) => li.querySelector('a'))
-    .map((li) => ({ text: (li.querySelector('a') as HTMLElement).innerText.trim(), cls: li.className, color: getComputedStyle(li.querySelector('a')!).color })));
+  const tabs = await page.evaluate(() => [...document.querySelector('[role="tablist"]')!.querySelectorAll('[role="tab"]')]
+    .map((t) => ({ text: (t as HTMLElement).innerText.trim(), selected: t.getAttribute('aria-selected') === 'true',
+      disabled: t.getAttribute('aria-disabled') === 'true' || (t.closest('li')?.classList.contains('p-disabled') ?? false),
+      color: getComputedStyle(t).color })));
   testInfo.annotations.push({ type: 'tab', description: JSON.stringify(tabs.map((t) => `${t.text}:${t.color}`)) });
 
   // Difetto visto: la regola globale `a { color: var(--primary-color) }` colorava tutti i tab del rosso dell'app.
   const red = await page.evaluate((c) => { const d = document.createElement('div'); d.style.color = c; document.body.appendChild(d); const v = getComputedStyle(d).color; d.remove(); return v; }, primary);
   for (const t of tabs) expect(t.color, `tab "${t.text}" non deve avere il colore primario dell'app`).not.toBe(red);
-  const active = tabs.find((t) => t.cls.includes('p-highlight'));
-  const inactive = tabs.find((t) => !t.cls.includes('p-highlight') && !t.cls.includes('p-disabled'));
+  const active = tabs.find((t) => t.selected);
+  const inactive = tabs.find((t) => !t.selected && !t.disabled);
   expect(active, 'un tab attivo').toBeTruthy();
   if (inactive) expect(active!.color, 'tab attivo e tab normale devono avere colori diversi').not.toBe(inactive.color);
   await nav.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'r1-lexicon-tabs.png') });
@@ -61,7 +63,7 @@ test('regressione: tabella dei risultati del Search (colonne e KWIC)', async ({ 
   await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
   await expect(page.locator('#searchTile')).toBeVisible();
   // selettori indipendenti dalla lingua (il test gira in it-IT): input con l'icona di ricerca, Invio = onSearch()
-  const query = page.locator('#searchTile .pi-search ~ input[pinputtext]').first();
+  const query = page.locator('#searchTile .pi-search ~ input[pinputtext], #searchTile p-iconfield input[pinputtext]').first();
   await query.fill('amore');
   await query.press('Enter');
   await expect(page.locator('#searchTile tbody tr').nth(1)).toBeVisible({ timeout: 30_000 });
@@ -104,7 +106,7 @@ test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)
   await w.settle();
   // pannello "Dictionary Editor - <voce>" (jsPanel) con i tab Entry / Sorting / Preview
   const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
-  const tabs = editor.locator('.p-tabview-nav li a');
+  const tabs = editor.locator('[role="tab"]');
   await expect(tabs.nth(2)).toBeVisible({ timeout: 30_000 });
   await tabs.nth(2).click(); // terzo tab: anteprima
   await w.settle();
@@ -125,8 +127,9 @@ test('regressione: etichette dell\'albero delle sezioni nel pannello Text', asyn
   await openSmokeWorkspace(page, baseURL!);
   await page.locator('#workspace-menu').getByText('Corpus', { exact: true }).click();
   await expect(page.locator('#corpusExplorerTile')).toBeVisible();
-  await page.locator('#corpusExplorerTile .p-treenode-label', { hasText: 'Decameron' }).first().dblclick();
-  const first = page.locator('#sectionsTree .p-treenode-label').first();
+  // .p-treenode-label fino a PrimeNG 17, .p-tree-node-label da PrimeNG 18
+  await page.locator('#corpusExplorerTile .p-treenode-label, #corpusExplorerTile .p-tree-node-label').filter({ hasText: 'Decameron' }).first().dblclick();
+  const first = page.locator('#sectionsTree .p-treenode-label, #sectionsTree .p-tree-node-label').first();
   await expect(first).toBeVisible({ timeout: 30_000 });
   const label = (await first.innerText()).trim();
   testInfo.annotations.push({ type: 'label', description: label });

@@ -42,13 +42,10 @@
 							"src/assets"
 						],
 						"styles": [
-							"src/styles/layer-primeicons.css",
-							"node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-							"node_modules/primeng/resources/primeng.min.css",
-							"src/styles/layer-fontawesome.css",
-							"src/styles/layer-bootstrap.css",
-							"src/styles.scss",
-              "src/styles/layer-quill-snow.css"
+							"src/styles/vendor.css",
+							"src/styles/saga-variables.css",
+							"src/styles/primeng-compat.css",
+							"src/styles.scss"
 						],
 						"scripts": [
 							"node_modules/jquery/dist/jquery.min.js",
@@ -202,8 +199,10 @@
 							"src/assets"
 						],
 						"styles": [
-							"src/styles.scss",
-							"node_modules/jspanel4/dist/jspanel.min.css"
+							"src/styles/vendor.css",
+							"src/styles/saga-variables.css",
+							"src/styles/primeng-compat.css",
+							"src/styles.scss"
 						],
 						"scripts": [
 							"node_modules/jspanel4/dist/jspanel.js",

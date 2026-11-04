@@ -269,7 +269,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.items = [
       {
         label: 'Corpus',
-        styleClass: 'p-button-raised p-button-text',
         command: (event) => { this.openExploreCorpusPanel(event) }
       },
       {

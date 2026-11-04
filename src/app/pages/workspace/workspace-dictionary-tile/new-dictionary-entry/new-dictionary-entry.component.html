@@ -4,9 +4,9 @@
             <div class="field col-4">
                 <label for="dictLang"
                     class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.language'|translate}} *</label>
-                <p-dropdown id="dictLang" styleClass="w-full" [options]="languages" optionLabel="label"
+                <p-select id="dictLang" styleClass="w-full" [options]="languages" optionLabel="label"
                     optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel" placeholder="Select value"
-                    formControlName="language"></p-dropdown>
+                    formControlName="language"></p-select>
             </div>
             <div class="field col-4 form-group">
                 <label for="dictName"

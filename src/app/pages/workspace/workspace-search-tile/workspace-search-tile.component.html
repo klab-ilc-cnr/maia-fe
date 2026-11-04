@@ -14,20 +14,22 @@
               [filterInputAutoFocus]="true">
           </p-treeSelect>
 
-          <div class="p-inputgroup">
+          <p-inputgroup>
             <p-selectButton (onChange)="onSearchModeChange()" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
-            <span class="p-input-icon-left flex-fill">
-              <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
-              <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
-                class="w-100"
-                (keydown.enter)="onSearch()"
-                [placeholder]="this.searchLabel"
-                [(ngModel)]="searchValue" />
+            <div class="flex-fill">
+              <p-iconfield iconPosition="left">
+                <p-inputicon class="pi pi-search"></p-inputicon>
+                <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
+                  class="w-100"
+                  (keydown.enter)="onSearch()"
+                  [placeholder]="this.searchLabel"
+                  [(ngModel)]="searchValue" />
+              </p-iconfield>
               <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
                 {{'SEARCH.validSearchValue'|translate}}
               </small>
-            </span>
-          </div>
+            </div>
+          </p-inputgroup>
           <p-multiSelect [options]="(pos$|async)||[]" styleClass="w-100" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
           filterBy="label" [(ngModel)]="posValue" [showClear]="true" ></p-multiSelect>
           
@@ -40,7 +42,7 @@
 
     <div class="row">
       <div class="col d-flex justify-content-start">
-        <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
+        <p-select #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
             styleClass="w-100" class="dropdownDimensions"
             placeholder="Layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
             <ng-template let-layer pTemplate="item">
@@ -53,12 +55,12 @@
                   </span>
                 </div>
             </ng-template>
-        </p-dropdown>
-        <p-dropdown #restriction="ngModel" name="restriction" appendTo="body" [(ngModel)]="selectedRestriction" optionLabel="name"
+        </p-select>
+        <p-select #restriction="ngModel" name="restriction" appendTo="body" [(ngModel)]="selectedRestriction" optionLabel="name"
             styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
             placeholder="{{'SEARCH.restriction.placeholder'|translate}}" [options]="restrictionOptions || []" [filter]="true" 
             [showClear]="true" (onChange)="onChangeRestrictionSelection($event)"  [required]="false">
-        </p-dropdown>        
+        </p-select>        
       </div>
       <div class="col d-flex justify-content-end">
         <button pButton type="button" (click)="onSearch()" class="mx-2 p-button-success">{{'SEARCH.buttons.search'|translate}}</button>
@@ -78,7 +80,7 @@
               (onDropdownClick)="setAnnotateMenuItems()"
               [model]="annotateItems"
               [disabled]="!annotationAllowed"
-              styleClass="custom-info-btn p-button-raised p-button-info mx-2">
+              severity="info" styleClass="custom-info-btn mx-2">
           </p-splitButton>
           <p-splitButton #exp appendTo="body" 
               label="{{'SEARCH.buttons.export'|translate}}"
@@ -86,7 +88,7 @@
               (onDropdownClick)="setExportMenuItems()"
               [model]="exportItems"
               [disabled]="searchResults.length === 0"
-              styleClass="p-button-raised p-button-info mx-2">
+              severity="info" styleClass="mx-2">
           </p-splitButton>
         </div>
       </div>
@@ -113,7 +115,7 @@
                 [rowsPerPageOptions]="[10,25,50]" 
                 [loading]="loading"
                 [paginator]="true"
-                styleClass="p-datatable-gridlines"
+                [showGridlines]="true"
                 [tableStyle]="{'table-layout': 'fixed'}"
                 paginatorDropdownAppendTo="body"
                 [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate">

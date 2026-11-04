@@ -96,10 +96,10 @@
           <div class="form-group">
             <label class="form-label">Type *</label>
             <div class="p-fluid">
-              <p-dropdown formControlName="type" name="type" placeholder="Feature type" appendTo="body"
+              <p-select formControlName="type" name="type" placeholder="Feature type" appendTo="body"
                 [options]="featureTypes|keyvalue" optionLabel="key" optionValue="value" [filter]="true"
                 [showClear]="true">
-              </p-dropdown>
+              </p-select>
               <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">
                 <div *ngIf="type.errors?.['required']">
                   Need to enter the type of the feature
@@ -110,9 +110,9 @@
           <div class="form-group" *ngIf="type.value === featureTypes.TAGSET">
             <label class="form-label">Tagset *</label>
             <div class="p-fluid">
-              <p-dropdown formControlName="tagset" name="tagset" placeholder="Tagset value" optionLabel="name"
+              <p-select formControlName="tagset" name="tagset" placeholder="Tagset value" optionLabel="name"
                 [options]="(tagsets$|async)||[]" [filter]="true" [showClear]="true" appendTo="body">
-              </p-dropdown>
+              </p-select>
               <div *ngIf="tagset.invalid && (tagset.touched || tagset.dirty)" class="invalid-feedback">
                 <div *ngIf="tagset.errors?.['required']">
                   Need to enter the tagset of the feature

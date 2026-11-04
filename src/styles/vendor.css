@@ -1,0 +1,20 @@
+/*
+ * Ordine dei layer CSS dell'app (vedi src/styles/README-layer.md). Deve essere la prima regola del bundle.
+ *   base    : librerie CSS esterne (Bootstrap, jsPanel, icone, PrimeFlex, Quill) e, dopo, le regole dell'app
+ *             sugli elementi HTML (body, a, p, h1... in styles.scss). Nello stesso layer contano specificita'
+ *             e ordine, come prima: `.form-label` di Bootstrap vince su `p` dell'app.
+ *   primeng  : stili dei componenti PrimeNG, iniettati a runtime (providePrimeNG -> cssLayer)
+ * Gli override dell'app (styles.scss fuori da @layer) e gli stili dei componenti Angular non hanno layer:
+ * vincono su tutti i layer.
+ */
+@layer base, primeng;
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+
+@import url('primeicons/primeicons.css') layer(base);
+@import url('bootstrap/dist/css/bootstrap.min.css') layer(base);
+@import url('jspanel4/dist/jspanel.min.css') layer(base);
+@import url('@fortawesome/fontawesome-free/css/all.min.css') layer(base);
+@import url('primeflex/primeflex.css') layer(base);
+@import url('quill/dist/quill.snow.css') layer(base);

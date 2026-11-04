@@ -1,16 +1,16 @@
-:host::ng-deep.p-tabview .p-tabview-panels {
+:host::ng-deep.p-tabs .p-tabpanels {
     padding: 0.5rem;
 }
 
 
 // START MANAGE SCROLLABLE PANEL CONTENT
-:host::ng-deep.p-tabview,
+:host::ng-deep.p-tabs,
 p-tabView {
     display: block;
     height: 100%;
 }
 
-:host::ng-deep.p-tabview-panels {
+:host::ng-deep.p-tabpanels {
     height: calc(100% - 41px);
 }
 

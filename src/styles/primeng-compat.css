@@ -1,0 +1,108 @@
+/*
+ * Classi globali di PrimeNG <= 17 che PrimeNG 18+ non ha piu', ancora usate nei template dell'app.
+ * Stesso effetto di prima, adattato ai nuovi nomi delle classi dei componenti.
+ * Le regole sui componenti PrimeNG stanno nel layer "primeng", quelle sugli elementi dell'app nel layer "base".
+ * Quando un template passa all'API nuova (<p-fluid>, [fluid], button link...), la regola qui non serve piu'.
+ */
+@layer primeng {
+  /* .p-fluid: in PrimeNG 18+ conta solo il componente <p-fluid> o l'input [fluid].
+     Regole = quelle di PrimeNG 17 (.p-fluid .p-dropdown {display:flex} ...) con le classi nuove
+     (= quelle che PrimeNG 18 applica con [fluid]); i pulsanti restano larghi quanto il testo, come prima. */
+  .p-fluid .p-inputtext,
+  .p-fluid .p-textarea,
+  .p-fluid .p-inputnumber,
+  .p-fluid p-inputnumber,
+  .p-fluid .p-iconfield,
+  .p-fluid .p-password .p-password-input {
+    width: 100%;
+  }
+  .p-fluid .p-select,
+  .p-fluid .p-multiselect,
+  .p-fluid .p-treeselect,
+  .p-fluid .p-autocomplete,
+  .p-fluid .p-password,
+  .p-fluid .p-datepicker,
+  .p-fluid .p-cascadeselect,
+  .p-fluid .p-splitbutton {
+    display: flex;
+  }
+  .p-fluid .p-autocomplete:has(.p-autocomplete-dropdown) .p-autocomplete-input,
+  .p-fluid .p-datepicker .p-datepicker-input,
+  .p-fluid .p-inputnumber .p-inputnumber-input,
+  .p-fluid .p-cascadeselect .p-cascadeselect-label {
+    width: 1%;
+  }
+
+  /* p-panel iconPos="start": PrimeNG 18 applica la classe ma non ha la regola (icona prima del titolo, come in 17) */
+  .p-panel-header:has(> .p-panel-icons-start) { justify-content: flex-start; }
+  .p-panel-icons-start { order: -1; margin-right: 0.5rem; }
+
+  .p-panel .p-panel-header .p-panel-toggler { width: 2rem; height: 2rem; padding: 0; color: var(--p-text-color); }
+
+  /* Tab (TabView/Tabs): in PrimeNG 17 il titolo aveva line-height 1 (barra dei tab alta 41px, come prevedono
+     gli stili dell'app: height: calc(100% - 41px)) */
+  .p-tablist .p-tab { line-height: 1; }
+
+  /* p-tree: bordo intorno all'albero come in PrimeNG 17 */
+  .p-tree { border: 1px solid var(--p-content-border-color); border-radius: var(--p-content-border-radius); }
+  .p-tree > .p-iconfield { margin-bottom: 0.5rem; }
+
+  /* p-treeTable: spazio tra il pulsante di espansione e il testo (PrimeNG 17: margin-right .5rem) */
+  .p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler { margin-right: 0.5rem; padding: 0; }
+
+  /* p-listbox con checkbox e filtro: in PrimeNG 17 stavano sulla stessa riga dell'intestazione */
+  .p-listbox-header { display: flex; align-items: center; gap: 0.5rem; }
+  .p-listbox-header .p-iconfield, .p-listbox-header .p-listbox-filter-container { flex: 1 1 auto; }
+  .p-listbox-option .p-checkbox { margin: 0 0.5rem 0 0; }
+
+  /* p-orderList: la lista occupa lo spazio accanto ai pulsanti (PrimeNG 17: flex 1) */
+  .p-orderlist .p-orderlist-list-container { flex: 1 1 auto; }
+
+  /* p-scroller (virtual scroll) dentro contenitori flex, es. p-treeTable scrollHeight="flex" del Lexicon:
+     PrimeNG 17 aveva `p-scroller { flex: 1 }`, PrimeNG 18 no -> altezza 0 e nessuna riga visibile */
+  p-scroller { flex: 1; outline: 0 none; }
+
+  /* p-table: riepilogo (pTemplate "summary") e icona di ordinamento come in PrimeNG 17.
+     PrimeNG 18-19 rendono il riepilogo come div.p-datatable-tfoot (senza stile) e danno all'icona
+     la vecchia classe p-sortable-column-icon, per cui non c'e' piu' stile. */
+  .p-datatable > div.p-datatable-tfoot,
+  .p-datatable > .p-datatable-footer {
+    background: var(--p-datatable-footer-background);
+    color: var(--p-datatable-footer-color);
+    border: 1px solid var(--p-datatable-footer-border-color);
+    border-width: var(--p-datatable-footer-border-width);
+    padding: var(--p-datatable-footer-padding);
+    font-weight: 600;
+  }
+  p-sorticon, p-treetablesorticon { margin-left: 0.5rem; }
+  .p-sortable-column-icon {
+    color: var(--p-datatable-sort-icon-color);
+    width: var(--p-datatable-sort-icon-size);
+    height: var(--p-datatable-sort-icon-size);
+    vertical-align: middle;
+  }
+  .p-datatable-column-sorted .p-sortable-column-icon { color: var(--p-datatable-header-cell-selected-color); }
+}
+
+/* Classi usate su elementi dell'app (non su componenti PrimeNG): layer "base", come gli altri stili globali,
+   cosi' le regole dell'app piu' specifiche (es. .layout-topbar .layout-topbar-button) vincono come prima. */
+@layer base {
+  /* .p-link (header): pulsante/link senza sfondo */
+  .p-link {
+    text-align: left;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    user-select: none;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    border-radius: 3px;
+  }
+  .p-link:disabled { cursor: default; }
+  .p-link:focus-visible { outline: 0 none; outline-offset: 0; box-shadow: 0 0 0 0.2rem #a6d5fa; }
+
+  /* .p-error: testo dei messaggi di errore */
+  .p-error { color: #f44336; }
+}

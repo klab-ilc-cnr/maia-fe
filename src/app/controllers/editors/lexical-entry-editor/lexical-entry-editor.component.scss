@@ -4,8 +4,8 @@ label {
 
 ::ng-deep {
 
-    .p-selectbutton .p-button.p-highlight,
-    .p-selectbutton .p-button.p-highlight:hover {
+    .p-selectbutton .p-togglebutton.p-togglebutton-checked,
+    .p-selectbutton .p-togglebutton.p-togglebutton-checked:hover {
         background-color: lightgrey !important;
         border-color: lightgray !important;
     }

@@ -69,7 +69,7 @@
                                 type="text"
                                 [formControlName]="feature.feature!.name! + '_oldValue'"
                               />
-                              <p-dropdown
+                              <p-select
                                 *ngSwitchCase="featureTypes.TAGSET"
                                 [formControlName]="feature.feature!.name! + '_oldValue'"
                                 [options]="(feature.tagsetItems | async) || []"
@@ -80,7 +80,7 @@
                                 appendTo="body"
                                 emptyFilterMessage="No element found"
                                 placeholder="Select a value">
-                              </p-dropdown>
+                              </p-select>
                               <input
                                 *ngSwitchCase="featureTypes.URI"
                                 class="form-control"
@@ -135,7 +135,7 @@
                             <input class="form-control" type="text" [formControlName]="feature.feature!.name!" />
                           </div>
                           <div *ngSwitchCase="featureTypes.TAGSET">
-                            <p-dropdown
+                            <p-select
                               [formControlName]="feature.feature!.name!"
                               [options]="(feature.tagsetItems | async) || []"
                               [filter]="true"
@@ -145,7 +145,7 @@
                               appendTo="body"
                               emptyFilterMessage="No element found"
                               placeholder="Select a value">
-                            </p-dropdown>
+                            </p-select>
                           </div>
                           <div *ngSwitchCase="featureTypes.URI">
                             <input class="form-control" type="text" [formControlName]="feature.feature!.name!" />
@@ -211,7 +211,7 @@
                       </div>
                     </div>
                     <div *ngSwitchCase="featureTypes.TAGSET">
-                      <p-dropdown
+                      <p-select
                         [formControlName]="feature.feature!.name!"
                         [options]="(feature.tagsetItems | async) || []"
                         [filter]="true"
@@ -222,7 +222,7 @@
                         emptyFilterMessage="No element found"
                         placeholder="Select a value"
                       >
-                      </p-dropdown>
+                      </p-select>
                     </div>
                     <div *ngSwitchCase="featureTypes.URI">
                       <input

@@ -7,7 +7,7 @@
           class="ms-start"></p-button>
       </div>
       <p-table #dt [value]="(users|async) ?? []" [rowHover]="true" [responsive]="true" [scrollable]="false" [paginator]="true"
-        [rows]="5" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" styleClass="p-datatable-striped"
+        [rows]="5" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" [stripedRows]="true"
         responsiveLayout="scroll" (onRowSelect)="goToEditUser($event)">
         <ng-template pTemplate="header">
           <tr>

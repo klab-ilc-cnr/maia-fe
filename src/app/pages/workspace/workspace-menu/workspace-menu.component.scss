@@ -17,7 +17,7 @@
     background-color: white;
   }
 
-  ::ng-deep.p-menubar .p-menubar-root-list>.p-menuitem>.p-menuitem-link:not(.p-disabled):hover {
+  ::ng-deep.p-menubar .p-menubar-root-list>.p-menubar-item:not(.p-disabled)>.p-menubar-item-content:hover {
     background-color: #FCDBDA;
     color: var(--primary-color);
     border-radius: 12px;

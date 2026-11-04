@@ -25,9 +25,9 @@
                 <div class="field col-6">
                     <label class="form-label w-full"
                         for="firstAttestationB">{{'DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc'|translate}}:</label>
-                    <p-dropdown inputId="firstAttestationB" styleClass="w-full" [options]="(authorWorks$|async)||[]" [showClear]="true"
+                    <p-select inputId="firstAttestationB" styleClass="w-full" [options]="(authorWorks$|async)||[]" [showClear]="true"
                         optionLabel="title" optionValue="code" [filter]="true" formControlName="firstAttestation"
-                        [autoDisplayFirst]="false"></p-dropdown>
+                        [autoDisplayFirst]="false"></p-select>
                 </div>
                 <div class="field col-6">
                     <label class="form-label w-full" for="firstAttestationBDetails">{{'DICTIONARY_EDITOR.EDIT_TAB.topographicReference'|translate}}</label>
@@ -61,9 +61,9 @@
                             <div class="d-flex justify-content-between" formGroupName="etymology">
                                 <div class="field col-2">
                                     <label class="form-label w-full text-truncate">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}</label>
-                                    <p-dropdown formControlName="language" styleClass="w-full" [showClear]="true"
+                                    <p-select formControlName="language" styleClass="w-full" [showClear]="true"
                                         [options]="(etymologyLanguages$|async)||[]" optionLabel="code" optionValue="code"
-                                        appendTo="body" [autoDisplayFirst]="false"></p-dropdown>
+                                        appendTo="body" [autoDisplayFirst]="false"></p-select>
                                 </div>
                                 <div class="field col-3">
                                     <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.etymon'|translate}}</label>

@@ -26,7 +26,8 @@ td:has(sub) {
   label,
   input[type="text"],
   ::ng-deep p-autocomplete .p-component,
-  ::ng-deep p-dropdown .p-component {
+  ::ng-deep p-select .p-component,
+  ::ng-deep p-select .p-component {
     width: 100%;
   }
 }

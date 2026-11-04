@@ -10,12 +10,16 @@ import { ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { EditorModule } from 'primeng/editor';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputIconModule } from 'primeng/inputicon';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
@@ -60,7 +64,7 @@ const PRIMENG_MODULES = [
   ButtonModule,
   TableModule,
   MultiSelectModule,
-  DropdownModule,
+  SelectModule,
   InputSwitchModule,
   ListboxModule,
   MenubarModule,
@@ -95,6 +99,10 @@ const PRIMENG_MODULES = [
   PaginatorModule,
   PasswordModule,
   InputTextModule,
+  IconFieldModule,
+  InputGroupModule,
+  InputGroupAddonModule,
+  InputIconModule,
   SliderModule,
   SplitButtonModule,
   OrderListModule,

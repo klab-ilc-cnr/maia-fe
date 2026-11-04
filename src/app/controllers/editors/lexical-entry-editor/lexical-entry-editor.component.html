@@ -28,8 +28,8 @@
     </div>
     <div class="field col-4">
       <label for="language">Language</label>
-      <p-dropdown id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name"
-        (onChange)="onPendingChanges()" [style]="{'width': '100%'}"></p-dropdown>
+      <p-select id="language" [options]="languagesForm" [(ngModel)]="selectedLanguageForm" optionLabel="name"
+        (onChange)="onPendingChanges()" [style]="{'width': '100%'}"></p-select>
     </div>
 
     <!-- <div class="field col-12">
@@ -40,14 +40,14 @@
     </div> -->
     <div class="field col-6">
       <label for="partOdSpeech">Part-of-Speech</label>
-      <p-dropdown id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechesForm"
+      <p-select id="partOfSpeech" [options]="partOfSpeechesForm" [(ngModel)]="selectedPartOfSpeechesForm"
         (onChange)="onPendingChanges()" [filter]="true" filterBy="name" optionLabel="name"
-        [style]="{'width': '100%'}"></p-dropdown>
+        [style]="{'width': '100%'}"></p-select>
     </div>
     <div class="field col-6">
       <label for="type">Type</label>
-      <p-dropdown id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name"
-        (onChange)="onPendingChanges()" [style]="{'width': '100%'}"></p-dropdown>
+      <p-select id="type" [options]="typesForm" [(ngModel)]="selectedTypeForm" optionLabel="name"
+        (onChange)="onPendingChanges()" [style]="{'width': '100%'}"></p-select>
     </div>
     <!-- <div class="field col-12">
       <label for="note">Note</label>
