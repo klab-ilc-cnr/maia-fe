@@ -210,6 +210,20 @@ Cose emerse in PrimeNG 15/16, tutte gestite:
 
 Pacchetto per il test manuale del checkpoint 16: `dist/maia-fe-0.20.0-test-ng16-20261104-1559.zip` (con elenco delle cose da provare in `DEPLOY.txt`).
 
+#### Regressioni trovate dal test manuale (Simone) e corrette — `a4ae8abe`, test `193f0922`
+
+Diagnosi con un'**istanza Angular 14 di riferimento** (git worktree del commit `49474068` in `/home/simone/maia-fe-ng14`, `ng serve` su **4201**, stesso backend) confrontata con lo sviluppo su 4200.
+
+| # | Sintomo | Causa | Correzione |
+|---|---|---|---|
+| 1 | tab del lexicon editor tutti rossi | `@layer primeng` (PrimeNG ≥ 16.4): la regola globale `a { color: var(--primary-color) }` senza layer batteva i tab | tutti i CSS globali nello stesso layer, `:root` dell'app fuori dal layer (vedi `src/styles/README-layer.md`) |
+| 2 | Search: campi/colonne spostati a destra, KWIC non allineato | celle native invece di flex in PrimeNG 16: riga vuota `width:100%` senza colspan; `table-layout: auto`; `justify-content-*` senza effetto | `colspan="7"`, `table-layout: fixed`, `text-end`/`text-center` → larghezze identiche ad Angular 14 |
+| 3 | numero dei figli dopo le etichette degli alberi (`Decameron 11`) | difetto di PrimeNG 16.8.0–16.9.1 | **non corretto**: la 16.7.2 (senza il difetto) ha un crash del ContextMenu che blocca il rientro nel workspace; nessuna 16 MIT ha entrambe le correzioni. Sparisce con PrimeNG 17 (fase 2) |
+
+Pacchetto aggiornato: `dist/maia-fe-0.20.0-test-ng16-v2-20261104-1702.zip`.
+
+Residuo minore da rivedere nella fase 3: nel form del Search il campo "insert form" è più stretto e "Pos"/"restriction" sono spostati di circa 13 px.
+
 Scoperte utili per le fasi successive:
 - `#/lexicon/languages` è una **pagina segnaposto** mai implementata (template `languages-list works!`).
 - Vengono caricati **due temi PrimeNG** insieme (`saga-blue` da `styles.scss` e `lara-light-blue` da `angular.json`) e **Bootstrap due volte** (`angular.json` e `styles.scss`): da sistemare nella fase 3 (nuovo tema).
