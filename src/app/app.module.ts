@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageControllersModule } from './controllers/page-controllers/page-controllers.module';
@@ -156,7 +155,6 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
       }
     }),
     BrowserAnimationsModule,
-    NgbModule,
     PageControllersModule,
     FontAwesomeModule,
     IconsModule,
