@@ -83,6 +83,21 @@ export function annotate(testInfo: TestInfo, step: string, w: ReturnType<typeof 
   for (const e of w.httpErrors) testInfo.annotations.push({ type: `http-error (${step})`, description: e });
 }
 
+/** Login dall'interfaccia (pagina #/login). */
+export async function uiLogin(page: Page) {
+  const { user, password } = credentials();
+  await page.goto('#/login');
+  await page.locator('input[formcontrolname="username"]').fill(user);
+  await page.locator('p-password input').fill(password);
+  await page.locator('button[type="submit"]').click();
+  await expect(page).not.toHaveURL(/#\/login/, { timeout: 30_000 });
+}
+
+/** Parte dell'URL dopo il '#', es. "/tagsets/5". */
+export function hashPath(page: Page): string {
+  return new URL(page.url()).hash.replace(/^#/, '');
+}
+
 /** Screenshot in artifacts/screens/<E2E_LABEL>/ per i confronti prima/dopo. */
 export async function snap(page: Page, name: string) {
   const dir = path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run');
