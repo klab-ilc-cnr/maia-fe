@@ -127,4 +127,31 @@ test('smoke: titolo, login, pagine principali, workspace', async ({ page, baseUR
     annotate(testInfo, 'ripristino layout', w); w.reset();
     await snap(page, '12-layout-ripristinato');
   });
+
+  // AutoComplete: da PrimeNG 16 onSelect emette { originalEvent, value } invece dell'elemento.
+  // Il dialogo "Upload CoNLL" del Lexicon: scegliendo un Prefix, onSelectPrefixBaseIRI compila il Base IRI.
+  // Se l'handler ricevesse l'evento sbagliato, il Base IRI resterebbe vuoto. Nessun dato viene scritto.
+  await test.step('autocomplete: scelta di un prefisso compila il Base IRI', async () => {
+    const { api, token, base } = await apiLogin(baseURL!);
+    const res = await api.get(`${base}/lexo/repository/namespaces`, { headers: { Authorization: `Bearer ${token}` } });
+    expect(res.status(), 'namespaces da LexO').toBe(200);
+    const namespaces = (await res.json()) as Array<{ prefix: string; base: string }>;
+    await api.dispose();
+    const ns = namespaces.find((n) => n.prefix && n.base && n.prefix.length >= 2);
+    expect(ns, 'almeno un namespace sulla VM').toBeTruthy();
+    testInfo.annotations.push({ type: 'namespace', description: `${ns!.prefix} -> ${ns!.base}` });
+
+    await page.locator('#lexiconTile button:has(i.pi-file-import)').click();
+    const prefix = page.locator('p-autoComplete[name="prefix"] input');
+    const baseIri = page.locator('p-autoComplete[name="baseIRI"] input');
+    await expect(prefix).toBeVisible();
+    await expect(baseIri).toHaveValue('');
+    await prefix.pressSequentially(ns!.prefix.slice(0, 2), { delay: 80 });
+    await page.getByRole('option', { name: ns!.prefix, exact: true }).first().click();
+    await expect(baseIri, 'Base IRI compilato da onSelect').toHaveValue(ns!.base);
+    await snap(page, '13-autocomplete-prefix');
+    await page.locator('p-dialog .btn-secondary').filter({ visible: true }).first().click();
+    expect(w.pageErrors, 'eccezioni JS nel dialogo di upload').toEqual([]);
+    annotate(testInfo, 'autocomplete', w); w.reset();
+  });
 });
