@@ -114,6 +114,7 @@
                 [loading]="loading"
                 [paginator]="true"
                 styleClass="p-datatable-gridlines"
+                [tableStyle]="{'table-layout': 'fixed'}"
                 paginatorDropdownAppendTo="body"
                 [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate">
         <ng-template pTemplate="header">
@@ -127,7 +128,7 @@
                 <th [ngStyle]="{'width.%': colDefaultWidths[6]}" pResizableColumn>{{'SEARCH.columns.rightContext'|translate}}</th>
             </tr>
             <tr>
-                <th [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center">
+                <th [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center text-center">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
                 <th [ngStyle]="{'width.%': colDefaultWidths[1]}">
@@ -182,7 +183,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-searchResult>
             <tr class="p-selectable-row" (dblclick)="tableRowDoubleClickHandler($event, searchResult)">
-                <td [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center">
+                <td [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center text-center">
                     <p-tableCheckbox [value]="searchResult"></p-tableCheckbox>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[1]}">
@@ -194,12 +195,12 @@
                 <td [ngStyle]="{'width.%': colDefaultWidths[3]}">
                     {{searchResult.reference}}
                 </td>
-                <td [ngStyle]="{'width.%': colDefaultWidths[4]}" class="justify-content-end">
+                <td [ngStyle]="{'width.%': colDefaultWidths[4]}" class="justify-content-end text-end">
                     <div class="leftContext">
                         <span>{{searchResult.leftContext | replaceEscapes}}</span>
                     </div>
                 </td>
-                <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center">
+                <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center text-center">
                     <b *ngIf="!searchResult.annotated">{{searchResult.kwic}}</b>
                     <app-async-tooltip
                         *ngIf="searchResult.annotated"
@@ -242,7 +243,7 @@
                         </ng-template>
                     </ng-template>
                 </td>
-                <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start">
+                <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start text-start">
                     <div class="rightContext">
                         {{searchResult.rightContext | replaceEscapes}}
                     </div>
@@ -251,7 +252,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td style="width:100%">{{'SEARCH.noResult'|translate}}</td>
+                <td colspan="7">{{'SEARCH.noResult'|translate}}</td>
             </tr>
         </ng-template>
       </p-table>

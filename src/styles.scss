@@ -3,20 +3,17 @@
 // @import url('https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @import "../node_modules/primeng/resources/primeng.min.css";
-@import "../node_modules/primeicons/primeicons.css";
+@import url('../node_modules/primeicons/primeicons.css') layer(primeng); // stesso layer di PrimeNG >= 16.4: vedi src/styles/README-layer.md
 @import url('~primeng/resources/themes/saga-blue/theme.css');
-@import url('~bootstrap/dist/css/bootstrap.min.css') layer(primeng); // stesso layer di PrimeNG >= 16.4: vedi src/styles/bootstrap-primeng-layer.css
-@import url('~jspanel4/dist/jspanel.min.css');
-@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import url('~bootstrap/dist/css/bootstrap.min.css') layer(primeng); // stesso layer di PrimeNG >= 16.4: vedi src/styles/README-layer.md
+@import url('~jspanel4/dist/jspanel.min.css') layer(primeng); // stesso layer di PrimeNG >= 16.4: vedi src/styles/README-layer.md
+@import url('../node_modules/@fortawesome/fontawesome-free/css/all.min.css') layer(primeng); // stesso layer di PrimeNG >= 16.4: vedi src/styles/README-layer.md
 @import "./assets/scss/variables";
 @import "./assets/scss/mixins";
-@import "../node_modules/primeflex/primeflex.css";
+@import url('../node_modules/primeflex/primeflex.css') layer(primeng); // stesso layer di PrimeNG >= 16.4: vedi src/styles/README-layer.md
 
-@font-face { //TODO opzione con font caricato negli asset
-  font-family: "Cousine";
-  src: url("assets/fonts/cousine/Cousine-Regular.ttf");
-}
-
+// Variabili dell'app FUORI dal layer: i temi PrimeNG definiscono :root (--primary-color, ...) senza layer,
+// quindi le nostre devono restare senza layer e dopo i temi per sovrascriverle (come con PrimeNG 14).
 :root {
   --primary-color: #{$redPalette2};
   --focus-ring: 0 0 0 0.2rem #{$redPalette3};
@@ -27,6 +24,15 @@
   --arc-font-family:'PT Sans Caption';
   --arc-font-size:11px;
 }
+
+// Regole globali dell'app nello stesso layer di PrimeNG >= 16.4 (vedi src/styles/README-layer.md).
+@layer primeng {
+
+@font-face { //TODO opzione con font caricato negli asset
+  font-family: "Cousine";
+  src: url("assets/fonts/cousine/Cousine-Regular.ttf");
+}
+
 
 // MAIN
 * {
@@ -812,3 +818,5 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   margin-right: 0.5rem;
   transform: rotate(45deg);
 }
+
+} // fine @layer primeng
