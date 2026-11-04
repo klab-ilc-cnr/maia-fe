@@ -92,6 +92,34 @@ test('regressione: tabella dei risultati del Search (colonne e KWIC)', async ({ 
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
+  // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  await w.settle();
+  const row = page.locator('#dictionaryTile tbody tr').filter({ hasText: /\w/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  await w.settle();
+  // pannello "Dictionary Editor - <voce>" (jsPanel) con i tab Entry / Sorting / Preview
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  const tabs = editor.locator('.p-tabview-nav li a');
+  await expect(tabs.nth(2)).toBeVisible({ timeout: 30_000 });
+  await tabs.nth(2).click(); // terzo tab: anteprima
+  await w.settle();
+  const exportBtn = editor.locator('button[aria-label="Export PDF"]').first();
+  await expect(exportBtn).toBeVisible({ timeout: 30_000 });
+  const [download] = await Promise.all([page.waitForEvent('download', { timeout: 30_000 }), exportBtn.click()]);
+  const file = await download.path();
+  const head = fs.readFileSync(file).subarray(0, 5).toString();
+  const size = fs.statSync(file).size;
+  testInfo.annotations.push({ type: 'pdf', description: `${download.suggestedFilename()} ${size} byte` });
+  expect(head, 'file PDF valido').toBe('%PDF-');
+  expect(size, 'PDF con contenuto e font').toBeGreaterThan(10_000);
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: etichette dell\'albero delle sezioni nel pannello Text', async ({ page, baseURL }, testInfo) => {
   const w = watchPage(page);
   await openSmokeWorkspace(page, baseURL!);

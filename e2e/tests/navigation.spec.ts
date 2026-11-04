@@ -17,10 +17,17 @@ test('navigazioni relative (relativeLinkResolution)', async ({ page }, testInfo)
   await test.step('menu laterale: routerLink="lexicon" (relativo) e "/tagsets" (assoluto)', async () => {
     await page.goto('#/tagsets');
     await w.settle();
-    await page.locator('app-side-menu a', { hasText: 'Lexicon' }).first().click();
-    await w.settle();
-    testInfo.annotations.push({ type: 'url', description: `Lexicon -> ${hashPath(page)}` });
-    expect(hashPath(page)).toBe('/lexicon');
+    // La voce Lexicon e' nascosta quando environment.demoHide e' true (build di produzione):
+    // in quel caso il link relativo non c'e' e il controllo viene saltato (annotato).
+    const lexiconLink = page.locator('app-side-menu a', { hasText: 'Lexicon' });
+    if (await lexiconLink.count() === 0) {
+      testInfo.annotations.push({ type: 'url', description: 'Lexicon: voce non presente nel menu (demoHide), controllo saltato' });
+    } else {
+      await lexiconLink.first().click();
+      await w.settle();
+      testInfo.annotations.push({ type: 'url', description: `Lexicon -> ${hashPath(page)}` });
+      expect(hashPath(page)).toBe('/lexicon');
+    }
 
     await page.locator('app-side-menu a', { hasText: 'Tagset' }).first().click();
     await w.settle();
