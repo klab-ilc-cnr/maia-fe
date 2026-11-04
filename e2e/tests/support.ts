@@ -21,12 +21,12 @@ export function credentials(): { user: string; password: string } {
 
 /**
  * Base degli endpoint del back-end vista dal browser, con la stessa regola dell'app:
- *  - ng serve (localhost:4200): proxy locale -> http://localhost:4200
+ *  - ng serve (localhost:42xx, es. 4200 sviluppo / 4201 riferimento Angular 14): proxy locale -> origin
  *  - installazione pubblicata:  <cartella UI>/maia  (es. https://klabsrv:19443/maia/maia)
  */
 export function backendBase(baseURL: string): string {
   const u = new URL(baseURL);
-  if (u.port === '4200') return u.origin;
+  if (/^(localhost|127\.0\.0\.1)$/.test(u.hostname) && /^42\d\d$/.test(u.port)) return u.origin;
   return `${u.origin}${u.pathname.replace(/\/+$/, '')}/maia`;
 }
 

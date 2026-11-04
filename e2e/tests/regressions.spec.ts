@@ -1,0 +1,117 @@
+import { expect, Page, test } from '@playwright/test';
+import * as fs from 'fs';
+import * as path from 'path';
+import { apiLogin, snap, uiLogin, watchPage } from './support';
+
+/**
+ * Regressioni segnalate durante il test manuale del checkpoint Angular 16 (2026-11-04).
+ * Ognuna e' stata confrontata con un'istanza Angular 14 di riferimento.
+ * Solo letture: la ricerca e' una query, nessun dato viene scritto.
+ */
+
+/** Apre il workspace "e2e-smoke" (id ricavato via API: la lista dell'interfaccia e' paginata). */
+async function openSmokeWorkspace(page: Page, baseURL: string) {
+  const { api, token, base } = await apiLogin(baseURL);
+  const res = await api.get(`${base}/api/workspaces/workspaceChoiceList`, { headers: { Authorization: `Bearer ${token}` } });
+  const ws = ((await res.json()) as Array<{ id: number; name: string }>).find((x) => x.name === 'e2e-smoke');
+  await api.dispose();
+  expect(ws, 'workspace e2e-smoke (lo crea lo smoke test)').toBeTruthy();
+  await uiLogin(page);
+  await page.goto(`#/workspace/${ws!.id}`);
+  await expect(page.locator('#workspace-menu').first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(3000);
+}
+
+/** Versione di PrimeNG installata nell'app (per i difetti noti legati alla versione). */
+function primengVersion(): string {
+  const p = path.join(__dirname, '..', '..', 'node_modules', 'primeng', 'package.json');
+  return JSON.parse(fs.readFileSync(p, 'utf-8')).version;
+}
+
+test('regressione: colori dei tab nel lexicon editor', async ({ page, baseURL }, testInfo) => {
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  await expect(page.locator('#lexiconTile')).toBeVisible();
+  await page.locator('#lexiconTile tr', { hasText: '@' }).first().dblclick();
+  const nav = page.locator('.p-tabview-nav').first();
+  await expect(nav).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+
+  const primary = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim());
+  const tabs = await page.evaluate(() => [...document.querySelectorAll('.p-tabview-nav li')]
+    .filter((li) => li.querySelector('a'))
+    .map((li) => ({ text: (li.querySelector('a') as HTMLElement).innerText.trim(), cls: li.className, color: getComputedStyle(li.querySelector('a')!).color })));
+  testInfo.annotations.push({ type: 'tab', description: JSON.stringify(tabs.map((t) => `${t.text}:${t.color}`)) });
+
+  // Difetto visto: la regola globale `a { color: var(--primary-color) }` colorava tutti i tab del rosso dell'app.
+  const red = await page.evaluate((c) => { const d = document.createElement('div'); d.style.color = c; document.body.appendChild(d); const v = getComputedStyle(d).color; d.remove(); return v; }, primary);
+  for (const t of tabs) expect(t.color, `tab "${t.text}" non deve avere il colore primario dell'app`).not.toBe(red);
+  const active = tabs.find((t) => t.cls.includes('p-highlight'));
+  const inactive = tabs.find((t) => !t.cls.includes('p-highlight') && !t.cls.includes('p-disabled'));
+  expect(active, 'un tab attivo').toBeTruthy();
+  if (inactive) expect(active!.color, 'tab attivo e tab normale devono avere colori diversi').not.toBe(inactive.color);
+  await nav.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'r1-lexicon-tabs.png') });
+  expect(w.pageErrors).toEqual([]);
+});
+
+test('regressione: tabella dei risultati del Search (colonne e KWIC)', async ({ page, baseURL }, testInfo) => {
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  // selettori indipendenti dalla lingua (il test gira in it-IT): input con l'icona di ricerca, Invio = onSearch()
+  const query = page.locator('#searchTile .pi-search ~ input[pinputtext]').first();
+  await query.fill('amore');
+  await query.press('Enter');
+  await expect(page.locator('#searchTile tbody tr').nth(1)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1000);
+
+  const m = await page.evaluate(() => {
+    const table = document.querySelector('#searchTile table') as HTMLElement;
+    const ths = [...document.querySelectorAll('#searchTile thead tr:first-child th')].map((th) => th.getBoundingClientRect().width);
+    const row = document.querySelector('#searchTile tbody tr')!;
+    const tds = [...row.querySelectorAll('td')];
+    // geometria del testo (indipendente da come e' ottenuto l'allineamento: flex in PrimeNG 14, text-align in 16)
+    const textRect = (el: Element) => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect(); };
+    const cell = (td: Element) => { const r = td.getBoundingClientRect(); const cs = getComputedStyle(td); return { left: r.left + parseFloat(cs.paddingLeft), right: r.right - parseFloat(cs.paddingRight) }; };
+    const left = textRect(tds[4].querySelector('.leftContext span') || tds[4]); const lc = cell(tds[4]);
+    const kw = textRect(tds[5].querySelector('b') || tds[5]); const kc = cell(tds[5]);
+    return { tableW: table.getBoundingClientRect().width, ths,
+      leftGapRight: Math.round(lc.right - left.right), leftGapLeft: Math.round(left.left - lc.left),
+      kwicOffCenter: Math.round(Math.abs((kw.left + kw.right) / 2 - (kc.left + kc.right) / 2)) };
+  });
+  testInfo.annotations.push({ type: 'search', description: JSON.stringify(m) });
+  // Difetto visto: la colonna della checkbox occupava quasi tutta la tabella (riga vuota con width:100% senza colspan).
+  expect(m.ths[0] / m.tableW, 'colonna checkbox stretta (< 10% della tabella)').toBeLessThan(0.1);
+  // Difetto visto: con le celle native (PrimeNG 16) le classi flex non allineavano piu' la concordanza.
+  expect(m.leftGapRight, 'contesto sinistro attaccato al bordo destro della cella (concordanza KWIC)').toBeLessThanOrEqual(4);
+  expect(m.leftGapLeft, 'contesto sinistro non allineato a sinistra').toBeGreaterThan(m.leftGapRight);
+  expect(m.kwicOffCenter, 'KWIC centrato nella cella').toBeLessThanOrEqual(4);
+  await snap(page, 'r2-search-results');
+  expect(w.pageErrors).toEqual([]);
+});
+
+test('regressione: etichette dell\'albero delle sezioni nel pannello Text', async ({ page, baseURL }, testInfo) => {
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Corpus', { exact: true }).click();
+  await expect(page.locator('#corpusExplorerTile')).toBeVisible();
+  await page.locator('#corpusExplorerTile .p-treenode-label', { hasText: 'Decameron' }).first().dblclick();
+  const first = page.locator('#sectionsTree .p-treenode-label').first();
+  await expect(first).toBeVisible({ timeout: 30_000 });
+  const label = (await first.innerText()).trim();
+  testInfo.annotations.push({ type: 'label', description: label });
+
+  // Difetto di PrimeNG 16.8.0-16.9.x: il template predefinito stampa il numero dei figli dopo l'etichetta.
+  // Nessuna versione 16 MIT ha sia questa correzione sia quella del ContextMenu: corretto da PrimeNG 17.
+  const v = primengVersion();
+  const knownBug = /^16\.(8|9)\./.test(v);
+  if (knownBug && /\s\d+$/.test(label)) {
+    testInfo.annotations.push({ type: 'difetto noto', description: `PrimeNG ${v}: numero dei figli nell'etichetta ("${label}")` });
+  } else {
+    expect(label, 'etichetta senza il numero dei figli').toBe('Decameron');
+  }
+  await snap(page, 'r3-text-tree');
+  expect(w.pageErrors).toEqual([]);
+});
