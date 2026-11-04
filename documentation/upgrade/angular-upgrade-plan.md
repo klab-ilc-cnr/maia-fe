@@ -177,6 +177,24 @@ Branch dedicato (es. `upgrade/angular-22`) che parte da `master` **dopo il merge
 
 ---
 
+## 6ter. Versioni dell'app durante l'upgrade (decisione 2026-11-04)
+
+Schema X.Y.Z (`package.json`, visibile nel footer come "v. X.Y.Z", verificato dagli e2e):
+- **X** resta 0 (eventuale salto di X da valutare alla fine, non ora);
+- **Y** aumenta a ogni salto di Angular consegnato;
+- **Z** aumenta a ogni pacchetto di correzioni consegnato.
+
+Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci veri).
+
+| Versione | Contenuto | Stato |
+|---|---|---|
+| 0.20.0 | ultima release, Angular 14 (`master`) | in produzione |
+| 0.21.0 | Angular 16 (comprende il passaggio intermedio a 15) | superata |
+| **0.21.1** | + correzioni regressioni (tab, Search, colori) | **attuale** — `dist/maia-fe-0.21.1-test-ng16-*.zip` |
+| 0.22.0 | Angular 17 (fase 2) | da fare |
+| 0.23.0 | Angular 18 + builder esbuild (fase 2) | da fare |
+| 0.24.0 – 0.26.0 | Angular 19, 20, 21 (fase 3) | da fare |
+
 ## 6bis. Avanzamento
 
 ### Fase 0 — completata (2026-11-04, Angular 14 invariato)
