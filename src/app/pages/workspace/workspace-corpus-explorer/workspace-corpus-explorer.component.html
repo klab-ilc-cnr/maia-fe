@@ -33,7 +33,7 @@
 </div>
 
 <div class="corpus-tree-container">
-  <p-tree [value]="(files$|async)||[]" selectionMode="single" [selection]="selectedNode" (selectionChange)="selectedNode = $any($event)"
+  <p-tree [metaKeySelection]="true" [value]="(files$|async)||[]" selectionMode="single" [selection]="selectedNode" (selectionChange)="selectedNode = $any($event)"
   (onNodeSelect)="nodeSelect($event)" [contextMenu]="cm" (onNodeContextMenuSelect)="onOpenContextMenu($event)"
   [filter]="true"></p-tree>
 </div>
@@ -79,7 +79,7 @@
           <div class="form-group">
             <label class="form-label">{{'CORPUS_EXPLORER.selectFolder'|translate}} *</label>
             <div class="p-fluid">
-              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]"
+              <p-treeSelect [metaKeySelection]="true" name="parentFolder" formControlName="parentFolder" [options]="(folders$|async)||[]"
                 [showClear]="true" [placeholder]="'CORPUS_EXPLORER.rootFolder'|translate"
                 appendTo="body"></p-treeSelect>
             </div>
@@ -125,7 +125,7 @@
           <div class="form-group">
             <label class="form-label">{{'CORPUS_EXPLORER.selectFolder'|translate}}</label>
             <div class="p-fluid">
-              <p-treeSelect name="parentFolder" formControlName="parentFolder" [options]="(folders$|async) || []" [showClear]="true"
+              <p-treeSelect [metaKeySelection]="true" name="parentFolder" formControlName="parentFolder" [options]="(folders$|async) || []" [showClear]="true"
                 [placeholder]="'CORPUS_EXPLORER.rootFolder'|translate" appendTo="body"></p-treeSelect>
             </div>
           </div>
@@ -183,7 +183,7 @@
           <div class="form-group">
             <label class="form-label">{{'CORPUS_EXPLORER.selectTargetFolder'|translate}}</label>
             <div class="p-fluid">
-              <p-treeSelect name="targetFolder" formControlName="targetFolder" [options]="(folders$ | async) || []" [showClear]="true"
+              <p-treeSelect [metaKeySelection]="true" name="targetFolder" formControlName="targetFolder" [options]="(folders$ | async) || []" [showClear]="true"
                 [placeholder]="'CORPUS_EXPLORER.rootFolder'|translate" appendTo="body"></p-treeSelect>
             </div>
           </div>

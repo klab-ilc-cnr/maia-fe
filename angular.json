@@ -151,30 +151,30 @@
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"browserTarget": "projectxFE:build",
-						"proxyConfig": "src/proxy.conf.json"
+          "options": {
+            "proxyConfig": "src/proxy.conf.json",
+            "buildTarget": "projectxFE:build"
 					},
 					"configurations": {
-						"production": {
-						"browserTarget": "projectxFE:build:production"
+            "production": {
+              "buildTarget": "projectxFE:build:production"
 						},
-						"collaudo": {
-							"browserTarget": "projectxFE:build:collaudo"
+            "collaudo": {
+              "buildTarget": "projectxFE:build:collaudo"
 						},
-						"development": {
-							"browserTarget": "projectxFE:build:development"
+            "development": {
+              "buildTarget": "projectxFE:build:development"
 						},
-						"complit": {
-							"browserTarget": "projectxFE:build:complit"
+            "complit": {
+              "buildTarget": "projectxFE:build:complit"
 						}
 					},
 					"defaultConfiguration": "development"
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "projectxFE:build"
+          "options": {
+            "buildTarget": "projectxFE:build"
 					}
 				},
 				"test": {

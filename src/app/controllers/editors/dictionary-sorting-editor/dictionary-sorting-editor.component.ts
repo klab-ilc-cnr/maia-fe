@@ -98,7 +98,7 @@ export class DictionarySortingEditorComponent implements OnInit {
         type: isSense ? 'sense' : 'lexicalEntry',
         label: HtmlHelper.stripHtml(item.label),
         data: item,
-        index: itemIndex,
+        sortIndex: itemIndex, // non "index": da PrimeNG 17 TreeNode.index e' un numero riservato
         expanded: true,
         children: this.mapSortingItemToTreeNode(item.children ?? [], itemIndex)
       }
