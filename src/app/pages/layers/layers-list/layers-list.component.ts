@@ -13,7 +13,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-layers-list',
   templateUrl: './layers-list.component.html',
   styleUrls: ['./layers-list.component.scss'],
-  providers: [LayerStateService]
+  providers: [LayerStateService],
+  standalone: false
 })
 export class LayersListComponent {
   /**Subject for subscribe management */

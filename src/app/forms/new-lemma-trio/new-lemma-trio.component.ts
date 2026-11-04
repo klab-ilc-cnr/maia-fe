@@ -10,7 +10,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
 @Component({
   selector: 'app-new-lemma-trio',
   templateUrl: './new-lemma-trio.component.html',
-  styleUrls: ['./new-lemma-trio.component.scss']
+  styleUrls: ['./new-lemma-trio.component.scss'],
+  standalone: false
 })
 export class NewLemmaTrioComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

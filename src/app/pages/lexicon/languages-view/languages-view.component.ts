@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-languages-view',
   templateUrl: './languages-view.component.html',
-  styleUrls: ['./languages-view.component.scss']
+  styleUrls: ['./languages-view.component.scss'],
+  standalone: false
 })
 export class LanguagesViewComponent implements OnInit {
 

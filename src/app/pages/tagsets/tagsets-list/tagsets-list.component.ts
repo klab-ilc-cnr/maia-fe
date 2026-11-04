@@ -14,7 +14,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-tagsets-list',
   templateUrl: './tagsets-list.component.html',
   styleUrls: ['./tagsets-list.component.scss'],
-  providers: [TagsetStateService]
+  providers: [TagsetStateService],
+  standalone: false
 })
 export class TagsetsListComponent implements OnDestroy {
   /**Subject for subscribe management */

@@ -20,7 +20,8 @@ export const matchNewPassword: ValidatorFn = (control: AbstractControl): Validat
   selector: '[appMatchNewPassword]',
   providers: [
     { provide: NG_VALIDATORS, useExisting: matchNewPassword, multi: true },
-  ]
+  ],
+  standalone: false
 })
 export class MatchNewPasswordDirective implements Validator {
 

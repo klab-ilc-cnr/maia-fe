@@ -12,7 +12,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 @Component({
   selector: 'app-lex-entry-decomp',
   templateUrl: './lex-entry-decomp.component.html',
-  styleUrls: ['./lex-entry-decomp.component.scss']
+  styleUrls: ['./lex-entry-decomp.component.scss'],
+  standalone: false
 })
 export class LexEntryDecompComponent implements OnInit, OnDestroy {
   /**Subject per la gestione della cancellazione delle subscribe */

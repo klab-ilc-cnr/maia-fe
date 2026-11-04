@@ -11,7 +11,8 @@ import { PropertyItem } from "../lex-entity-semantic-rel-indirect.component";
 @Component({
   selector: 'app-lex-entity-indirect-rel-property',
   templateUrl: 'lex-entity-indirect-rel-property.component.html',
-  styleUrls: ['./lex-entity-indirect-rel-property.component.scss']
+  styleUrls: ['./lex-entity-indirect-rel-property.component.scss'],
+  standalone: false
 })
 export class LexEntityIndirectRelPropertyComponent implements OnInit, OnDestroy {
 

@@ -4,7 +4,8 @@ import { OntologyDataExplorerComponent } from 'src/app/controllers/explorers/ont
 @Component({
   selector: 'app-workspace-ontology-explorer',
   templateUrl: './workspace-ontology-explorer.component.html',
-  styleUrls: ['./workspace-ontology-explorer.component.scss']
+  styleUrls: ['./workspace-ontology-explorer.component.scss'],
+  standalone: false
 })
 export class WorkspaceOntologyExplorerComponent implements OnInit {
 

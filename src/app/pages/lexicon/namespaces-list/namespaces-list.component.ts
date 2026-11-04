@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-namespaces-list',
   templateUrl: './namespaces-list.component.html',
-  styleUrls: ['./namespaces-list.component.scss']
+  styleUrls: ['./namespaces-list.component.scss'],
+  standalone: false
 })
 export class NamespacesListComponent implements OnInit {
 

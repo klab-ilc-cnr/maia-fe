@@ -6,7 +6,8 @@ import { IconBaseComponent } from '../icon-base/icon-base.component';
   selector: 'app-icon-lock',
   templateUrl: './icon-lock.component.html',
   styleUrls: ['./icon-lock.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class IconLockComponent extends IconBaseComponent implements OnInit {
 

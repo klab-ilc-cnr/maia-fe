@@ -10,7 +10,8 @@ import { BaseMetadataEditorComponent } from '../base-metadata-editor/base-metada
 @Component({
   selector: 'app-sense-metadata-editor',
   templateUrl: '../base-metadata-editor/base-metadata-editor.component.html',
-  styleUrls: ['../base-metadata-editor/base-metadata-editor.component.scss']
+  styleUrls: ['../base-metadata-editor/base-metadata-editor.component.scss'],
+  standalone: false
 })
 export class SenseMetadataEditorComponent extends BaseMetadataEditorComponent {
 

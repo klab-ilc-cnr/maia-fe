@@ -13,7 +13,8 @@ export type PropertyItem = {
 @Component({
   selector: 'app-lex-entity-semantic-rel-indirect',
   templateUrl: './lex-entity-semantic-rel-indirect.component.html',
-  styleUrls: ['./lex-entity-semantic-rel-indirect.component.scss']
+  styleUrls: ['./lex-entity-semantic-rel-indirect.component.scss'],
+  standalone: false
 })
 export class LexEntitySemanticRelIndirectComponent extends LexEntitySemanticRelComponent {
 

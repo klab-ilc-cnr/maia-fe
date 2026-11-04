@@ -10,7 +10,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
 @Component({
   selector: 'app-new-dictionary-entry',
   templateUrl: './new-dictionary-entry.component.html',
-  styleUrls: ['./new-dictionary-entry.component.scss']
+  styleUrls: ['./new-dictionary-entry.component.scss'],
+  standalone: false
 })
 export class NewDictionaryEntryComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

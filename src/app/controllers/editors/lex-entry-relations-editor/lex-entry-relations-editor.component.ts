@@ -6,7 +6,8 @@ import { LexicalEntryCore } from 'src/app/models/lexicon/lexical-entry.model';
 @Component({
   selector: 'app-lex-entry-relations-editor',
   templateUrl: './lex-entry-relations-editor.component.html',
-  styleUrls: ['./lex-entry-relations-editor.component.scss']
+  styleUrls: ['./lex-entry-relations-editor.component.scss'],
+  standalone: false
 })
 export class LexEntryRelationsEditorComponent extends BaseLexEntityEditorComponent implements OnInit {
   @Input() entry$!: Observable<LexicalEntryCore>;

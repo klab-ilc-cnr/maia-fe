@@ -15,7 +15,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 @Component({
   selector: 'app-sense-editor',
   templateUrl: './sense-editor.component.html',
-  styleUrls: ['./sense-editor.component.scss']
+  styleUrls: ['./sense-editor.component.scss'],
+  standalone: false
 })
 export class SenseEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Sottoscrizione per la gestione del notify */

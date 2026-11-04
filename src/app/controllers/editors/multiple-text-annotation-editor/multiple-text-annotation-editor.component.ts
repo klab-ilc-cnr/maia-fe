@@ -41,7 +41,8 @@ export interface MultipleAnnotationFeature {
 @Component({
   selector: 'app-multiple-text-annotation-editor',
   templateUrl: './multiple-text-annotation-editor.component.html',
-  styleUrls: ['./multiple-text-annotation-editor.component.scss']
+  styleUrls: ['./multiple-text-annotation-editor.component.scss'],
+  standalone: false
 })
 export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   private readonly unsubscribe$ = new Subject();

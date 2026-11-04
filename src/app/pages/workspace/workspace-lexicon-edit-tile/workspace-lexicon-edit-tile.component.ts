@@ -15,7 +15,8 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 @Component({
   selector: 'app-workspace-lexicon-edit-tile',
   templateUrl: './workspace-lexicon-edit-tile.component.html',
-  styleUrls: ['./workspace-lexicon-edit-tile.component.scss']
+  styleUrls: ['./workspace-lexicon-edit-tile.component.scss'],
+  standalone: false
 })
 export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

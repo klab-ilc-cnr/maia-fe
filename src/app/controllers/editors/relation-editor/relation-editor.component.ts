@@ -17,7 +17,8 @@ import { RelationService } from 'src/app/services/relation.service';
 @Component({
   selector: 'app-relation-editor',
   templateUrl: './relation-editor.component.html',
-  styleUrls: ['./relation-editor.component.scss']
+  styleUrls: ['./relation-editor.component.scss'],
+  standalone: false
 })
 export class RelationEditorComponent implements OnInit {
 

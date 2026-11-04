@@ -25,6 +25,7 @@ export enum DICTIONARY_NODE {
   selector: 'app-workspace-dictionary-tile',
   templateUrl: './workspace-dictionary-tile.component.html',
   styleUrls: ['./workspace-dictionary-tile.component.scss'],
+  standalone: false
 })
 export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

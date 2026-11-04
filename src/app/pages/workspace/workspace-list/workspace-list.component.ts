@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
   selector: 'app-workspace-list',
   templateUrl: './workspace-list.component.html',
   styleUrls: ['./workspace-list.component.scss'],
+  standalone: false
 })
 export class WorkspaceListComponent {
   /**Subject for subscribe management */

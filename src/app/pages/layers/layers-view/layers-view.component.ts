@@ -16,7 +16,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-layers-view',
   templateUrl: './layers-view.component.html',
   styleUrls: ['./layers-view.component.scss'],
-  providers: [LayerStateService, TagsetStateService]
+  providers: [LayerStateService, TagsetStateService],
+  standalone: false
 })
 export class LayersViewComponent implements OnInit {
   /**Subject for subscribe management */

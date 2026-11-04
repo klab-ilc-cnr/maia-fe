@@ -56,7 +56,8 @@ let currentWorkspaceInstance: any; //TODO verificare effettivo utilizzo
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
-  styleUrls: ['./workspace.component.scss']
+  styleUrls: ['./workspace.component.scss'],
+  standalone: false
 })
 export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

@@ -28,7 +28,8 @@ export function nameDuplicateValidator(options: string[]): ValidatorFn {
   selector: '[appNotDuplicateName]',
   providers: [
     { provide: NG_VALIDATORS, useExisting: NotDuplicateNameDirective, multi: true }
-  ]
+  ],
+  standalone: false
 })
 export class NotDuplicateNameDirective {
   /**List of strings on which to perform validation */

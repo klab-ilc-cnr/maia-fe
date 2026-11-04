@@ -57,6 +57,7 @@ export enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp
   templateUrl: './workspace-text-window.component.html',
   styleUrls: ['./workspace-text-window.component.scss'],
   providers: [LayerStateService],
+  standalone: false
 })
 export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

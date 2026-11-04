@@ -11,7 +11,8 @@ import { ScrollPanel } from 'primeng/scrollpanel';
 @Component({
   selector: 'app-ontology-data-explorer',
   templateUrl: './ontology-data-explorer.component.html',
-  styleUrls: ['./ontology-data-explorer.component.scss']
+  styleUrls: ['./ontology-data-explorer.component.scss'],
+  standalone: false
 })
 export class OntologyDataExplorerComponent implements OnInit, AfterViewInit {
 

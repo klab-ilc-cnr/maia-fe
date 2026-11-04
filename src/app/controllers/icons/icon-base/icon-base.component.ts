@@ -6,7 +6,8 @@ import { IconDefinition, SizeProp } from '@fortawesome/fontawesome-svg-core';
   selector: 'app-icon-base',
   templateUrl: './icon-base.component.html',
   styleUrls: ['./icon-base.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class IconBaseComponent implements OnInit {
   /**Input per il componente base delle icone */

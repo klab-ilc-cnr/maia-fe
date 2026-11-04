@@ -5,7 +5,8 @@ import { LexEntryDirectRelationsStrategy } from './lex-entry-direct-relations-st
 @Component({
   selector: 'app-lex-entry-direct-relations',
   templateUrl: './lex-entry-direct-relations.component.html',
-  styleUrls: ['./lex-entry-direct-relations.component.scss']
+  styleUrls: ['./lex-entry-direct-relations.component.scss'],
+  standalone: false
 })
 export class LexEntryDirectRelationsComponent extends BaseLexEntityRelationsComponent {
 

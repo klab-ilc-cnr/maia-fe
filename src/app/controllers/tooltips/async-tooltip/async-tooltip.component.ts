@@ -6,6 +6,7 @@ import { catchError, switchMap, timeout as rxjsTimeout } from 'rxjs/operators';
   selector: 'app-async-tooltip',
   templateUrl: './async-tooltip.component.html',
   styleUrls: ['./async-tooltip.component.scss'],
+  standalone: false
 })
 export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
   @Input() tooltipId!: string;

@@ -18,7 +18,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-workspace-corpus-explorer',
   templateUrl: './workspace-corpus-explorer.component.html',
   styleUrls: ['./workspace-corpus-explorer.component.scss'],
-  providers: [CorpusStateService]
+  providers: [CorpusStateService],
+  standalone: false
 })
 export class WorkspaceCorpusExplorerComponent {
   private readonly unsubscribe$ = new Subject<void>();

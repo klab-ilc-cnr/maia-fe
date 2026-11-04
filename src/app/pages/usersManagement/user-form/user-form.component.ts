@@ -20,7 +20,8 @@ import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.di
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss']
+  styleUrls: ['./user-form.component.scss'],
+  standalone: false
 })
 export class UserFormComponent implements OnInit, OnDestroy {
   /**Subject for subscribe management */

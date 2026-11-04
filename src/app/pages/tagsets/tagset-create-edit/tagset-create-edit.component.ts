@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
   templateUrl: './tagset-create-edit.component.html',
   styleUrls: ['./tagset-create-edit.component.scss'],
   providers: [TagsetStateService],
+  standalone: false
 })
 export class TagsetCreateEditComponent implements OnInit, OnDestroy {
   /**Subject for subscribe management */

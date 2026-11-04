@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'replaceEscapes'
+  name: 'replaceEscapes',
+  standalone: false
 })
 export class ReplaceLineFeedPipe implements PipeTransform {
 

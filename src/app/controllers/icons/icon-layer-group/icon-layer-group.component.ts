@@ -10,7 +10,8 @@ import { IconBaseComponent } from '../icon-base/icon-base.component';
   selector: 'app-icon-layer-group',
   templateUrl: '../icon-base/icon-base.component.html',
   styleUrls: ['../icon-base/icon-base.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class IconLayerGroupComponent extends IconBaseComponent implements OnInit {
  /**Metodo dell'interfaccia OnInit, utilizzato per inizializzare l'icona visualizzata */

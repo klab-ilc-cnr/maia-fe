@@ -18,7 +18,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 @Component({
   selector: 'app-lex-entry-editor',
   templateUrl: './lex-entry-editor.component.html',
-  styleUrls: ['./lex-entry-editor.component.scss']
+  styleUrls: ['./lex-entry-editor.component.scss'],
+  standalone: false
 })
 export class LexEntryEditorComponent implements OnInit, OnDestroy {
   /**Subject per la gestione della cancellazione delle subscribe */

@@ -5,7 +5,8 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-generic-autocomplete',
   templateUrl: './generic-autocomplete.component.html',
-  styleUrls: ['./generic-autocomplete.component.scss']
+  styleUrls: ['./generic-autocomplete.component.scss'],
+  standalone: false
 })
 export class GenericAutocompleteComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

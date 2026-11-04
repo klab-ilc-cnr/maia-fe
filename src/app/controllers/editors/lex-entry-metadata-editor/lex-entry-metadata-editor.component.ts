@@ -12,7 +12,8 @@ import { BaseMetadataEditorComponent } from '../base-metadata-editor/base-metada
 @Component({
   selector: 'app-lex-entry-metadata-editor',
   templateUrl: './lex-entry-metadata-editor.component.html',
-  styleUrls: ['./lex-entry-metadata-editor.component.scss']
+  styleUrls: ['./lex-entry-metadata-editor.component.scss'],
+  standalone: false
 })
 export class LexEntryMetadataEditorComponent extends BaseMetadataEditorComponent {
 

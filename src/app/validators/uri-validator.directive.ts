@@ -21,7 +21,8 @@ export const uriValidator: ValidatorFn = (control: AbstractControl): ValidationE
     selector: '[appUriValidator]',
     providers: [
         { provide: NG_VALIDATORS, useExisting: UriValidator, multi: true }
-    ]
+    ],
+    standalone: false
 })
 export class UriValidator implements Validator {
     /**

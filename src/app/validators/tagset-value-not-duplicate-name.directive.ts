@@ -31,7 +31,8 @@ export function TagsetValueNameDuplicateValidator(options: TagsetValue[]): Valid
   selector: '[appTagsetValueNotDuplicateName]',
   providers: [
     { provide: NG_VALIDATORS, useExisting: TagsetValueNotDuplicateNameDirective, multi: true }
-  ]
+  ],
+  standalone: false
 })
 export class TagsetValueNotDuplicateNameDirective {
   /**List of values of a tagset on which to perform control */

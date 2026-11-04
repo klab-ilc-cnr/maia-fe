@@ -5,7 +5,8 @@ import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 @Component({
   selector: 'app-double-autocomplete',
   templateUrl: './double-autocomplete.component.html',
-  styleUrls: ['./double-autocomplete.component.scss']
+  styleUrls: ['./double-autocomplete.component.scss'],
+  standalone: false
 })
 export class DoubleAutocompleteComponent implements OnInit {
   @Input() isCheckboxVisible = true;

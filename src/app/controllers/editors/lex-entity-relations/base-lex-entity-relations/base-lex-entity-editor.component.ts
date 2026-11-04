@@ -7,7 +7,7 @@ import { LexiconService } from 'src/app/services/lexicon.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { environment } from 'src/environments/environment';
 
-@Component({ template: '' })
+@Component({ template: '', standalone: false })
 export class BaseLexEntityEditorComponent {
   /**Elementi del menu relativi alle definizioni */
   menuItems: MenuItem[] = [];

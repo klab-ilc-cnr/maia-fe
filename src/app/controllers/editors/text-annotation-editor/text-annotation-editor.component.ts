@@ -33,7 +33,8 @@ export interface FeatForAnn {
 @Component({
   selector: 'app-text-annotation-editor',
   templateUrl: './text-annotation-editor.component.html',
-  styleUrls: ['./text-annotation-editor.component.scss']
+  styleUrls: ['./text-annotation-editor.component.scss'],
+  standalone: false
 })
 export class TextAnnotationEditorComponent implements OnDestroy {
   private readonly unsubscribe$ = new Subject();

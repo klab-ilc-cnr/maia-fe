@@ -10,7 +10,8 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-data-property-viewer',
   templateUrl: './ontology-data-property-viewer.component.html',
-  styleUrls: ['./ontology-data-property-viewer.component.scss', '../common/shared.scss']
+  styleUrls: ['./ontology-data-property-viewer.component.scss', '../common/shared.scss'],
+  standalone: false
 })
 export class OntologyDataPropertyViewerComponent implements OnInit {
   /**ontology element id */

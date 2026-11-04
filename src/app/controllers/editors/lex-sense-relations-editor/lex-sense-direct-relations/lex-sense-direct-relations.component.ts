@@ -5,7 +5,8 @@ import { BaseLexEntityRelationsComponent } from '../../lex-entity-relations/base
 @Component({
   selector: 'app-lex-sense-direct-relations',
   templateUrl: './lex-sense-direct-relations.component.html',
-  styleUrls: ['./lex-sense-direct-relations.component.scss']
+  styleUrls: ['./lex-sense-direct-relations.component.scss'],
+  standalone: false
 })
 export class LexSenseDirectRelationsComponent extends BaseLexEntityRelationsComponent {
 

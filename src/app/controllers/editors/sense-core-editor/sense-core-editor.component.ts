@@ -20,7 +20,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 @Component({
   selector: 'app-sense-core-editor',
   templateUrl: './sense-core-editor.component.html',
-  styleUrls: ['./sense-core-editor.component.scss']
+  styleUrls: ['./sense-core-editor.component.scss'],
+  standalone: false
 })
 export class SenseCoreEditorComponent implements OnInit, OnDestroy {
   readonly translatePrefix = 'LEXICON_EDITOR.SENSE';

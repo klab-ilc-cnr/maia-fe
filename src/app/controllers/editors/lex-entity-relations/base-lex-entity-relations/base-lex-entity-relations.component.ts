@@ -19,7 +19,7 @@ export interface FormItem {
   properties?: LinguisticRelationModel[],
 }
 
-@Component({ template: '' })
+@Component({ template: '', standalone: false })
 export abstract class BaseLexEntityRelationsComponent implements OnChanges {
 
   @Input() lexEntityId!: string;

@@ -16,7 +16,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-dictionary-entry-full-editor',
   templateUrl: './dictionary-entry-full-editor.component.html',
   styleUrls: ['./dictionary-entry-full-editor.component.scss', '../dictionary-entry-referral-editor/dictionary-entry-referral-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class DictionaryEntryFullEditorComponent implements OnInit, AfterViewChecked {
   /**To manage subscription */

@@ -23,7 +23,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-workspace-lexicon-tile',
   templateUrl: './workspace-lexicon-tile.component.html',
-  styleUrls: ['./workspace-lexicon-tile.component.scss']
+  styleUrls: ['./workspace-lexicon-tile.component.scss'],
+  standalone: false
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
   private readonly unsubscribe$ = new Subject();

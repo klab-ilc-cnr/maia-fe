@@ -5,7 +5,8 @@ import { LexSenseIndirectRelationsStrategy } from './lex-sense-indirect-relation
 @Component({
   selector: 'app-lex-sense-indirect-relations',
   templateUrl: './lex-sense-indirect-relations.component.html',
-  styleUrls: ['./lex-sense-indirect-relations.component.scss']
+  styleUrls: ['./lex-sense-indirect-relations.component.scss'],
+  standalone: false
 })
 
 export class LexSenseIndirectRelationsComponent extends BaseLexEntityRelationsComponent  {

@@ -5,7 +5,8 @@ import { OntologyAnnotations } from 'src/app/models/ontology/ontology-annotation
 @Component({
   selector: 'app-annotations-section',
   templateUrl: './annotations-section.component.html',
-  styleUrls: ['./annotations-section.component.scss']
+  styleUrls: ['./annotations-section.component.scss'],
+  standalone: false
 })
 export class AnnotationsSectionComponent implements OnInit {
   @Input()

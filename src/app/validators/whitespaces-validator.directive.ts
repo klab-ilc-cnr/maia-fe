@@ -21,7 +21,8 @@ export const whitespacesValidator: ValidatorFn = (control: AbstractControl): Val
   selector: '[appWhitespacesValidator]',
   providers: [
     { provide: NG_VALIDATORS, useExisting: WhitespacesValidatorDirective, multi: true }
-  ]
+  ],
+  standalone: false
 })
 export class WhitespacesValidatorDirective implements Validator {
   /**

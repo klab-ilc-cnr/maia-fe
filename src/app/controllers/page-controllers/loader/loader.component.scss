@@ -1,5 +1,5 @@
 // @import "../../../../assets/scss/variables";
-@import "src/assets/scss/_variables.scss";
+@use "src/assets/scss/variables" as *;
 
 $color1: $ilcColorRed;
 $color2: $ilcColorGold;

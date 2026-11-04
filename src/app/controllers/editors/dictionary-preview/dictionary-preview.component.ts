@@ -48,7 +48,8 @@ interface FormItemPreview {
 @Component({
   selector: 'app-dictionary-preview',
   templateUrl: './dictionary-preview.component.html',
-  styleUrls: ['./dictionary-preview.component.scss']
+  styleUrls: ['./dictionary-preview.component.scss'],
+  standalone: false
 })
 export class DictionaryPreviewComponent implements OnInit {
   private readonly CONTEXT_LENGTH = 20;

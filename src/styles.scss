@@ -1,7 +1,7 @@
 // Le librerie CSS esterne (Bootstrap, jsPanel, icone, PrimeFlex, Quill) sono in src/styles/vendor.css,
 // le variabili del vecchio tema saga-blue in src/styles/saga-variables.css. Ordine dei layer: src/styles/README-layer.md
-@import "./assets/scss/variables";
-@import "./assets/scss/mixins";
+@use "./assets/scss/variables" as *;
+@use "./assets/scss/mixins" as *;
 
 // Variabili dell'app, senza layer e dopo saga-variables.css: ridefiniscono --primary-color e --focus-ring (rosso MAIA).
 :root {

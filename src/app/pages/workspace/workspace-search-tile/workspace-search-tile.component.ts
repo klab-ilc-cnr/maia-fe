@@ -42,7 +42,8 @@ interface Restriction {
   selector: 'app-workspace-search-tile',
   templateUrl: './workspace-search-tile.component.html',
   styleUrls: ['./workspace-search-tile.component.scss'],
-  providers: [CorpusStateService, LayerStateService]
+  providers: [CorpusStateService, LayerStateService],
+  standalone: false
 })
 export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
