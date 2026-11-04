@@ -192,6 +192,24 @@ Non fatto, con motivo:
 - `require('package.json')` nel footer: **lasciato**. Webpack include già solo la versione (`{i8:"0.20.0"}`), nessuna esposizione. Da riverificare alla migrazione al builder esbuild (fase 2).
 - `production: false` in `environment.production.ts`: da decidere a parte (cambia il comportamento a runtime).
 
+### Fase 1 — completata (2026-11-04): Angular 14 → 15 → 16
+
+| Commit | Contenuto |
+|---|---|
+| `c81b404f` | e2e: navigazioni relative con i clic (riferimento su Angular 14 per `relativeLinkResolution`) |
+| `d7cc6cef` | **Angular 15**: core/cli 15.2, cdk 15.2.9, PrimeNG 15.4.1, TS 4.9.5, rxjs 7.8.2; rimosso `relativeLinkResolution` (stessi URL di Angular 14 nei test); `p-panel iconPos` left→start; `p-toolbar-group-left`→`-start` |
+| `20454ee2` | e2e: autocomplete del Prefix (Upload CoNLL), con controprova |
+| `91db54e6` | **Angular 16**: core/cli 16.2, cdk 16.2.14, PrimeNG 16.9.1, zone 0.13, TS 5.1.6, ngx-translate 15/8 |
+
+Cose emerse in PrimeNG 15/16, tutte gestite:
+- **AutoComplete `onSelect`/`onUnselect` cambiano contenuto a runtime** (`{originalEvent, value}` al posto dell'elemento): 12 binding corretti con `$event.value`. Uno (`generic-autocomplete`) non dava errore di compilazione e avrebbe passato dati sbagliati in silenzio. Confronto automatico degli `emit` 15.4.1 vs 16.9.1 su tutti i 38 moduli usati: nessun altro cambiamento a runtime.
+- **`@layer primeng` da PrimeNG 16.4**: Bootstrap senza layer vinceva sempre (pulsanti tondi diventati quadrati). Bootstrap è stato messo nello stesso layer (`src/styles/bootstrap-primeng-layer.css`): screenshot tornati entro l'1% rispetto alla 15. **Da rivedere nella fase 3** (nuovo tema PrimeNG 18+).
+- Icona del toggle di `p-panel` invertita in PrimeNG 15–16.4: corretta nella 16.9.1.
+- Le versioni PrimeNG con suffisso **`-lts`** (es. `16.9.17-lts`) sono **commerciali**: un range `^16.x` non le seleziona (sono pre-release). Non installarle mai esplicitamente.
+- `npm audit` a fine fase 1: 96 (era 92). Atteso: le correzioni dei CVE `@angular/*` partono da 20.3.27.
+
+Pacchetto per il test manuale del checkpoint 16: `dist/maia-fe-0.20.0-test-ng16-20261104-1559.zip` (con elenco delle cose da provare in `DEPLOY.txt`).
+
 Scoperte utili per le fasi successive:
 - `#/lexicon/languages` è una **pagina segnaposto** mai implementata (template `languages-list works!`).
 - Vengono caricati **due temi PrimeNG** insieme (`saga-blue` da `styles.scss` e `lara-light-blue` da `angular.json`) e **Bootstrap due volte** (`angular.json` e `styles.scss`): da sistemare nella fase 3 (nuovo tema).

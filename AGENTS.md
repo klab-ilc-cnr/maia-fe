@@ -4,7 +4,7 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 
 ## Overview
 
-- **What it is**: MAIA is an open, collaborative web tool for text annotation, e-lexicography and lexical linking, built by [KLAB @ ILC-CNR](https://www.ilc.cnr.it/klab/). This repo is the **Angular frontend**, currently **Angular 14.2.9** (project name in `angular.json`: `projectxFE`).
+- **What it is**: MAIA is an open, collaborative web tool for text annotation, e-lexicography and lexical linking, built by [KLAB @ ILC-CNR](https://www.ilc.cnr.it/klab/). This repo is the **Angular frontend**: **Angular 14.2.9 on `master`**, **Angular 16.2.12 on `upgrade/angular-21`** (work in progress towards 21) (project name in `angular.json`: `projectxFE`).
 - **Backend**: `maia-be` (Spring Boot). Others: **TexO** (text backend; replaced the legacy CASH app) and **LexO** (lexicon backend).
 - **Versions**: package.json `name: maia-fe`, `version: 0.20.0`. Docs/versions map in `README.md`.
 - **Branches**: `master` (stable; `study/security-fixes` fast-forwarded into it on 2026-11-04), `develop`. **Active work: `upgrade/angular-21`** (plan: `documentation/upgrade/angular-upgrade-plan.md`). `epic/#9044-…` is stale and fully contained in master. No CI workflows configured.
@@ -12,7 +12,7 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 ## Toolchain (MUST FOLLOW)
 
 - **Node 16.20.2 via nvm** — the Angular 14 build breaks on newer Node (e.g. v24). Use: `export NVM_DIR="$HOME/.nvm"; source "$NVM_DIR/nvm.sh"; nvm use 16.20.2`.
-- npm 8.19.4, TypeScript **4.8.4** (project constraint).
+- npm 8.19.4, TypeScript **4.8.4** on master / **5.1.6** on `upgrade/angular-21` (Angular 16). Node 16.20.2 is still fine up to Angular 16; Angular 17 needs Node ≥ 18.13.
 - Commands:
   - `npm install` — fine on Node 16 (engine warnings are advisory).
   - `npm run build-prod` (=`ng build --configuration production --base-href='./'`) — **passes** (±30s). Budget warning only (initial 5.65 MB > 5 MB).
@@ -71,6 +71,10 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 - **Never run `npm install` outside the intended folder**: a failed `cd` once installed Playwright into the app's `package.json`/lockfile with npm 11 (reverted via `git checkout` + `npm ci` on Node 16). Put `npm` on the same line as the `cd` check, not after a heredoc. Note: `nvm` breaks under `set -u`.
 - **Stopping `ng serve`**: don't `pkill -f "ng serve ..."` from a command that itself contains that string (it kills its own shell, exit 143). Kill the PID listening on port 4200 (`ss -ltnp`). Start the server and run tests **sequentially**, not in parallel tool calls.
 - `environment.ts` on `upgrade/angular-21` has `applicationSubTitle: "VocaBO - DEV UPGRADE"`: **revert to `"develop"` before merging into master**.
+- **PrimeNG 16+ AutoComplete** `onSelect`/`onUnselect` emit `{originalEvent, value}`: bind handlers with `$event.value`. When upgrading PrimeNG, **diff the `.emit(` payloads** of every used module between versions: handlers typed `any` hide runtime breakages from the compiler.
+- **PrimeNG ≥ 16.4 uses `@layer primeng`**: unlayered CSS (Bootstrap) always wins. Bootstrap is imported into the same layer (`src/styles/bootstrap-primeng-layer.css` + `styles.scss`). Revisit with the PrimeNG 18+ theme.
+- **Never install PrimeNG `*-lts` versions** (commercial, e.g. `16.9.17-lts`); caret ranges don't pick them.
+- Editing `angular.json`: use targeted text replacement (it has mixed tab indentation); a JSON dump reformats the whole file.
 - **No CHANGELOG.md** convention — do not create one unless asked; use/docs live in README + `documentation/`.
 
 ## Recent work (this branch / chat memory)
@@ -83,3 +87,4 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 - `npm audit` re-run 2026-11-02: **92** (4 critical: handlebars, proxy-addr, piscina, build-angular) — new advisories on already-overridden packages; mostly resolved by the Angular upgrade.
 - 2026-11-04: `study/security-fixes` merged (ff) into `master`; branch `upgrade/angular-21` created; upgrade plan written with decisions.
 - 2026-11-04: **phase 0 done** on `upgrade/angular-21` (still Angular 14): runtime-overridable subtitle, e2e smoke baseline, 8 unused deps removed, dead PrimeFlex 2 classes removed — all pixel-identical to baseline. Next: phase 1 (Angular 14 → 15 → 16).
+- 2026-11-04: **phase 1 done**: Angular 16.2.12 / PrimeNG 16.9.1 on `upgrade/angular-21` (commits `d7cc6cef`, `91db54e6`); e2e green incl. relative navigation and autocomplete; test package `dist/maia-fe-0.20.0-test-ng16-*.zip` for the manual checkpoint. Next: phase 2 (16 → 17 → 18, Node 18, esbuild builder).
