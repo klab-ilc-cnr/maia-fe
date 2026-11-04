@@ -9,8 +9,7 @@
           class="ms-start"></p-button>
       </div>
       <p-table #dt [value]="(workspaces$|async) || []" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
-        [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true" selectionMode="single"
+        currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements" [showCurrentPageReport]="true" selectionMode="single"
         (onRowSelect)="openWorkspace($event)">
         <ng-template pTemplate="header">
           <tr>

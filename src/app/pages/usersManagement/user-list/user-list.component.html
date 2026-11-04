@@ -6,9 +6,8 @@
         <p-button [label]="'USERS_MANAGER.newUser'|translate" icon="pi pi-user-plus" styleClass="p-button-danger" (click)="goToNewUser()"
           class="ms-start"></p-button>
       </div>
-      <p-table #dt [value]="(users|async) ?? []" [rowHover]="true" [responsive]="true" [scrollable]="false" [paginator]="true"
-        [rows]="5" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" [stripedRows]="true"
-        responsiveLayout="scroll" (onRowSelect)="goToEditUser($event)">
+      <p-table #dt [value]="(users|async) ?? []" [rowHover]="true" [scrollable]="false" [paginator]="true"
+        [rows]="5" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" [stripedRows]="true" (onRowSelect)="goToEditUser($event)">
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>

@@ -630,9 +630,8 @@ p {
 .cross-validation-error input,
 input.ng-invalid.ng-touched,
 p-radioButton.ng-invalid.ng-touched .p-radiobutton-box,
-p-select.ng-invalid.ng-touched > .p-select,
-p-select.ng-invalid.ng-touched > .p-select,
-p-treeselect.ng-invalid.ng-touched > .p-treeselect,
+p-select.ng-invalid.ng-touched, // PrimeNG 18+ (select) e 20+ (treeselect): l'host e' il componente
+p-treeselect.ng-invalid.ng-touched,
 p-inputnumber.ng-invalid.ng-touched  input,
 input[type="file"].form-control.is-invalid {
   border-left: 5px solid $errorRed;

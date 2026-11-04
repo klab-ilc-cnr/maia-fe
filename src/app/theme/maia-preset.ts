@@ -1,5 +1,5 @@
-import { definePreset } from '@primeng/themes';
-import Lara from '@primeng/themes/lara';
+import { definePreset } from '@primeuix/themes';
+import Lara from '@primeuix/themes/lara';
 
 /**
  * Tema PrimeNG di MAIA (sistema di temi di PrimeNG 18+, design token).
@@ -105,7 +105,7 @@ export const MaiaPreset = definePreset(Lara, {
       colorScheme: { light: { root: { borderColor: '{surface.100}' }, row: { stripedBackground: '#fcfcfc' } } },
     },
     treetable: {
-      row: { hoverColor: '{content.hover.color}' }, // in Lara 18 punta a un token inesistente
+      row: { hoverColor: '{content.hover.color}' }, // in Lara punta a un token inesistente ({sr.hover.color})
       nodeToggleButton: { size: '2rem' },
       header: { padding: '1rem' },
       headerCell: { padding: '1rem' },
@@ -120,7 +120,6 @@ export const MaiaPreset = definePreset(Lara, {
     checkbox: { root: { width: '20px', height: '20px' }, icon: { size: '14px' } },
     radiobutton: { root: { width: '20px', height: '20px' } },
     panel: {
-      root: { background: '{content.background}', color: '{content.color}' }, // mancano in Lara 18
       header: { padding: '1rem', borderRadius: '3px 3px 0 0' },
       toggleableHeader: { padding: '0.5rem 1rem' },
       title: { fontWeight: '600' },
@@ -132,11 +131,9 @@ export const MaiaPreset = definePreset(Lara, {
       body: { padding: '1rem' },
       title: { fontSize: '1.5rem', fontWeight: '700' },
     },
-    menubar: { root: { padding: '0.5rem', gap: '0', borderColor: '{content.border.color}' }, baseItem: { padding: '0.75rem 1rem' },
-      submenu: { color: '{content.color}' } }, // submenu.color manca in Lara 18
+    menubar: { root: { padding: '0.5rem', gap: '0', borderColor: '{content.border.color}' }, baseItem: { padding: '0.75rem 1rem' } },
     menu: { item: { padding: '0.75rem 1.25rem' } },
     tree: { root: { padding: '1rem', gap: '2px' }, node: { padding: '0', gap: '0.5rem' }, nodeToggleButton: { size: '2rem' } },
-    slider: { root: { borderRadius: '{content.border.radius}' } }, // manca in Lara 18
     listbox: { list: { header: { padding: '0.5rem 1rem' } } },
     dialog: {
       root: { shadow: '0px 11px 15px -7px rgba(0,0,0,.2), 0px 24px 38px 3px rgba(0,0,0,.14), 0px 9px 46px 8px rgba(0,0,0,.12)' },
@@ -155,7 +152,6 @@ export const MaiaPreset = definePreset(Lara, {
       root: { padding: '0.5rem 1rem', fontWeight: '700', checkedBackground: '{primary.color}', checkedColor: '{primary.contrast.color}',
         checkedBorderColor: '{primary.color}' },
       icon: { checkedColor: '{primary.contrast.color}' },
-      content: { left: '0', top: '0' },
     },
     splitter: { gutter: { background: '{surface.50}' }, colorScheme: { light: { handle: { background: '{surface.200}' } } } },
     tooltip: { root: { padding: '0.5rem' }, colorScheme: { light: { root: { background: '{text.color}' } } } },

@@ -3,7 +3,6 @@
         <div class="col d-flex justify-content-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
               class="mr-5 dropdownDimensions"
-              styleClass="w-100"
               (onShow)="reloadSelectedDocuments()"
               [options]="(files$|async)||[]"
               [metaKeySelection]="false"
@@ -30,7 +29,7 @@
               </small>
             </div>
           </p-inputgroup>
-          <p-multiSelect [options]="(pos$|async)||[]" styleClass="w-100" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
+          <p-multiSelect [options]="(pos$|async)||[]" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
           filterBy="label" [(ngModel)]="posValue" [showClear]="true" ></p-multiSelect>
           
           <div class="slider-input ml-5">

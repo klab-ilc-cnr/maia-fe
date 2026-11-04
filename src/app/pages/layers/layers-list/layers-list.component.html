@@ -8,8 +8,7 @@
       </div>
       <div class="card-body p-fluid">
         <p-table #dt [value]="(layers$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-          currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements"
-          [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true"
+          currentPageReportTemplate="Elements {first} to {last} for a total of {totalRecords} elements" [showCurrentPageReport]="true"
           [globalFilterFields]="['name','color','description']">
           <ng-template pTemplate="header">
             <tr>

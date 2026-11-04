@@ -1,7 +1,7 @@
 <div [pTooltip]="tooltipText" [showDelay]="500" [hideDelay]="0" [tooltipPosition]="'top'" style="width: 100%;">
   <p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
       appendTo="body" [virtualScroll]="true" (onSelect)="onSelectSuggestion($event.value)" 
-      [field]="showOptionPrefix && prefixField === 'lemma' ? 'definition' : field"
+      [optionLabel]="showOptionPrefix && prefixField === 'lemma' ? 'definition' : field"
       [forceSelection]="forceSelection" [(ngModel)]="valueToShow"
       [showEmptyMessage]="true" emptyMessage="No matching"
       [showClear]="true" (onClear)="onClearField()"

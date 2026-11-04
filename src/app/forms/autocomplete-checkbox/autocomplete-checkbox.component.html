@@ -3,7 +3,7 @@
     [(ngModel)]="fieldValue.value" (focusout)="onFocusOut()" [disabled]="fieldValue.inferred"
     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary col-9">
   <ng-template #autocomplete>
-    <p-autoComplete [placeholder]="placeholderMsg" [field]="field" [suggestions]="(suggestions | async) || []"
+    <p-autoComplete [placeholder]="placeholderMsg" [optionLabel]="field" [suggestions]="(suggestions | async) || []"
       [(ngModel)]="fieldValue" (completeMethod)="onFilter($event)" (onSelect)="onSelectSuggestion($event.value)" [showEmptyMessage]="true"
       [virtualScroll]="true" [disabled]="fieldValue.inferred" appendTo="body">
       <ng-template let-element pTemplate="item">

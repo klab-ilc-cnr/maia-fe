@@ -36,8 +36,7 @@
           <button pButton pRipple type="button" label="New feature" icon="pi pi-plus" class="w-auto"
             (click)="showFeatureModal()"></button>
         </div>
-        <p-table #dt [value]="(features$|async)||[]" [rowHover]="true" dataKey="id" [responsive]="true"
-          responsiveLayout="scroll">
+        <p-table #dt [value]="(features$|async)||[]" [rowHover]="true" dataKey="id">
           <ng-template pTemplate="header">
             <tr>
               <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon>

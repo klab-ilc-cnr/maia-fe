@@ -7,8 +7,7 @@
       </div>
       <div class="card-body p-fluid">
         <p-table [value]="(tagsets$|async)||[]" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
-          [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate"
-          [responsive]="true" responsiveLayout="scroll" [showCurrentPageReport]="true">
+          [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate" [showCurrentPageReport]="true">
           <ng-template pTemplate="header">
             <tr>
               <th pSortableColumn="name">{{'TAGSET_MANAGER.name'|translate}}<p-sortIcon field="name"></p-sortIcon></th>

@@ -37,7 +37,7 @@
   .p-panel-header:has(> .p-panel-icons-start) { justify-content: flex-start; }
   .p-panel-icons-start { order: -1; margin-right: 0.5rem; }
 
-  .p-panel .p-panel-header .p-panel-toggler { width: 2rem; height: 2rem; padding: 0; color: var(--p-text-color); }
+  .p-panel .p-panel-header :is(.p-panel-toggler, .p-panel-toggle-button) { width: 2rem; height: 2rem; padding: 0; color: var(--p-text-color); }
 
   /* Tab (TabView/Tabs): in PrimeNG 17 il titolo aveva line-height 1 (barra dei tab alta 41px, come prevedono
      gli stili dell'app: height: calc(100% - 41px)) */
@@ -62,6 +62,15 @@
 
   /* p-orderList: la lista occupa lo spazio accanto ai pulsanti (PrimeNG 17: flex 1) */
   .p-orderlist .p-orderlist-list-container { flex: 1 1 auto; }
+
+  /* Pulsanti con sola icona: in @primeuix/styles 1.x (PrimeNG 20) il carattere di riempimento di ::after e'
+     scritto male ("\0A0" diventa NUL + "A0"), va a capo e il pulsante diventa alto tre righe. Corretto in 2.x. */
+  .p-button.p-button-icon-only::after { content: "\00a0"; }
+
+  /* Campi disabilitati semitrasparenti come in PrimeNG 17 (da PrimeNG 20 hanno opacity 1 e uno sfondo) */
+  .p-component.p-disabled:is(.p-select, .p-multiselect, .p-treeselect, .p-autocomplete, .p-cascadeselect, .p-listbox,
+    .p-togglebutton, .p-toggleswitch, .p-checkbox, .p-radiobutton, .p-inputnumber, .p-password),
+  .p-component:disabled:is(.p-inputtext, .p-textarea) { opacity: var(--p-disabled-opacity); }
 
   /* p-scroller (virtual scroll) dentro contenitori flex, es. p-treeTable scrollHeight="flex" del Lexicon:
      PrimeNG 17 aveva `p-scroller { flex: 1 }`, PrimeNG 18 no -> altezza 0 e nessuna riga visibile */
