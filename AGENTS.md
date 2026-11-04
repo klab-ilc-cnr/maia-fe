@@ -11,11 +11,12 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 
 ## Toolchain (MUST FOLLOW)
 
-- **Node 16.20.2 via nvm** — the Angular 14 build breaks on newer Node (e.g. v24). Use: `export NVM_DIR="$HOME/.nvm"; source "$NVM_DIR/nvm.sh"; nvm use 16.20.2`.
+- **Node by branch (via nvm)**: `master` (Angular 14) → **Node 16.20.2** (newer Node breaks Angular 14). `upgrade/angular-21` (Angular 18 now) → **Node 22.23.4** (valid for Angular 18–22; Angular 17 needed Node 20.20.2, also installed). Use: `export NVM_DIR="$HOME/.nvm"; source "$NVM_DIR/nvm.sh"; nvm use <version>`; `nvm` is a shell function (cannot be wrapped by `timeout`).
 - npm 8.19.4, TypeScript **4.8.4** on master / **5.1.6** on `upgrade/angular-21` (Angular 16). Node 16.20.2 is still fine up to Angular 16; Angular 17 needs Node ≥ 18.13.
 - Commands:
   - `npm install` — fine on Node 16 (engine warnings are advisory).
-  - `npm run build-prod` (=`ng build --configuration production --base-href='./'`) — **passes** (±30s). Budget warning only (initial 5.65 MB > 5 MB).
+  - `npm run build-prod` (=`ng build --configuration production --base-href='./'`) — **passes** (±30s). Budget warning only (initial 5.65 MB > 5 MB). *(master)*
+  - **On `upgrade/angular-21`** (builder `@angular/build:application`, esbuild): `npx ng build -c production --base-href=""` → flat output in `dist/projectx-fe` (`outputPath.browser: ""`). **Do not pass `--output-path`** on the CLI (it replaces the outputPath object and re-adds `browser/`). Deploy packages are built this way and copied into `maia/`.
   - `npm start` (=`ng serve`) — dev server on `http://localhost:4200`, uses `src/proxy.conf.json`.
   - `npm test` (=`ng test`, karma/ChromeHeadless) — **BROKEN on master**: ~19 TS errors under `strict` (spec + app files), `Executed 0 of 0`. Pre-existing, not caused by security work. Fixing it is a separate task (172 `.spec.ts` exist).
   - `npm run compodoc` — offline doc generation (uses `tsconfig.doc.json`).
@@ -61,7 +62,8 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 - **Do NOT bump `quill` to 2.x**: primeng 14's `p-editor` is built for quill 1.x and renders an *empty editor* with quill 2 (verified in smoke test). quill 2 must wait for the primeng+Angular upgrade.
 - **Do NOT bump primeng/@ng-bootstrap/@ngx-translate without the Angular upgrade** — they are pinned to the 14.x toolchain.
 - **npm overrides**: you may NOT override a package that is also a *direct dependency* (`EOVERRIDE`). For multi-major transitive deps use version-keyed keys, e.g. `"minimatch@3": "3.1.4", "minimatch@9": "9.0.8"`. Verify target versions exist before writing them (some advisories are *unfixed* — e.g. newest tar `<=7.5.18` critical had no patch until 7.5.22 was published).
-- Always run builds with **Node 16.20.2**; newer Node breaks Angular 14 (`ng build`).
+- Always check `node -v` before building: Node 16.20.2 on `master`, Node 22.23.4 on `upgrade/angular-21`.
+- Test a deploy package **before** handing it over: `python3 e2e/tools/serve-package.py dist/projectx-fe 8099` (same topology as the test VM) + full e2e with `E2E_BASE_URL=http://127.0.0.1:8099/maia/`.
 - `NG0100: ExpressionChangedAfterItHasBeenCheckedError` in dev on the lexicon tile (`workspace-lexicon-edit-tile`, `[scrollHeight]="panelHeight-40+'px'"`, panelHeight set in `ngAfterViewInit`) is **cosmetic and dev-only** — ignore.
 - `bootstrap-autofill-overlay.js` console errors come from the Bitwarden browser extension — ignore.
 - **Upgrade target is Angular 21 + PrimeNG 21** (last MIT PrimeNG). **PrimeNG 22 and primeicons 8 are proprietary (PrimeUI license, key required)** — do not install them. The future v22 step will evaluate `@openng/optimus-ui` (MIT fork of PrimeNG 21).
@@ -90,3 +92,4 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 - 2026-11-04: `study/security-fixes` merged (ff) into `master`; branch `upgrade/angular-21` created; upgrade plan written with decisions.
 - 2026-11-04: **phase 0 done** on `upgrade/angular-21` (still Angular 14): runtime-overridable subtitle, e2e smoke baseline, 8 unused deps removed, dead PrimeFlex 2 classes removed — all pixel-identical to baseline. Next: phase 1 (Angular 14 → 15 → 16).
 - 2026-11-04: **phase 1 done**: Angular 16.2.12 / PrimeNG 16.9.1 on `upgrade/angular-21` (commits `d7cc6cef`, `91db54e6`); e2e green incl. relative navigation and autocomplete; test package `dist/maia-fe-0.20.0-test-ng16-*.zip` for the manual checkpoint. Next: phase 2 (16 → 17 → 18, Node 18, esbuild builder).
+- 2026-11-04: **phase 2 done** → **v0.23.0**: Angular 17 (`5e45d8b7`, v0.22.0), Angular 18 (`9b1b24a9`), esbuild builder (`5097203d`). PrimeNG 17.18.15 (tree children-count bug gone; Tree/TreeSelect `metaKeySelection` default changed true→false, restored explicitly). pdfmake export fixed for esbuild (`addVirtualFileSystem`). `npm audit` 82. Package `dist/maia-fe-0.23.0-test-ng18-*.zip`. Next: phase 3 (19 → 20 → 21, PrimeNG 18+ new theme).

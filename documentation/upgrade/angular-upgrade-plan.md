@@ -242,6 +242,25 @@ Pacchetto aggiornato: `dist/maia-fe-0.20.0-test-ng16-v2-20261104-1702.zip`.
 
 Residuo minore da rivedere nella fase 3: nel form del Search il campo "insert form" è più stretto e "Pos"/"restriction" sono spostati di circa 13 px.
 
+### Fase 2 — completata (2026-11-04): Angular 16 → 17 → 18 + builder esbuild — v0.23.0
+
+| Commit | Contenuto |
+|---|---|
+| `5e45d8b7` | **Angular 17** (v0.22.0): Node 20.20.2, PrimeNG 17.18.15, TS 5.4.5, zone 0.14, cdk 17, angular-fontawesome 0.14 |
+| `9b1b24a9` | **Angular 18**: Node 22.23.4, cdk 18, angular-fontawesome 0.15; `HttpClientModule` → `provideHttpClient(withInterceptorsFromDi())` (JWT invariato) |
+| `5097203d` | **builder esbuild** `@angular/build:application` (v0.23.0) |
+| `6eb24048` | e2e: regressione export PDF, navigazioni con `demoHide` |
+
+Cose emerse e gestite:
+- PrimeNG 17: **default di `metaKeySelection` di Tree/TreeSelect da `true` a `false`** → ripristinato esplicitamente su 2 `p-tree` e 3 `p-treeSelect` (doppio clic che apre un testo, dialoghi del Corpus). `TreeNode.index` ora è un numero riservato → campo dell'editor di ordinamento rinominato `sortIndex`. Difetto del numero dei figli negli alberi: **sparito**.
+- Migrazione del builder: eseguita con la **CLI 18** (`--migrate-only`); una prima esecuzione aveva usato la CLI 22 ed è stata annullata. Il target test punta a `@angular/build:karma`, disponibile solo da Angular 19.
+- esbuild: `~` negli import CSS non supportato → rimosso; **pdfmake**: assegnare `pdfMake.vfs` a un import è vietato → `addVirtualFileSystem` (PDF identico ad Angular 14, ora coperto da un test); il `require(package.json)` del footer incorporava l'intero package.json → import nominato `version`; inlining dei Google Fonts disattivato per mantenere gli `@import` esterni come con webpack.
+- **Output**: `outputPath.browser: ""` mantiene la struttura piatta; **non passare `--output-path`** da CLI. README aggiornato.
+- Pacchetto di produzione testato con `e2e/tools/serve-package.py` (stessa topologia della VM): e2e completo verde.
+- Bundle iniziale 5.79 MB (webpack: 6.12). `npm audit`: 82 (era 96).
+
+Pacchetto per il test manuale: `dist/maia-fe-0.23.0-test-ng18-20261104-1747.zip` (**svuotare `maia/` prima di scompattare**: i nomi dei file sono cambiati).
+
 Scoperte utili per le fasi successive:
 - `#/lexicon/languages` è una **pagina segnaposto** mai implementata (template `languages-list works!`).
 - Vengono caricati **due temi PrimeNG** insieme (`saga-blue` da `styles.scss` e `lara-light-blue` da `angular.json`) e **Bootstrap due volte** (`angular.json` e `styles.scss`): da sistemare nella fase 3 (nuovo tema).
