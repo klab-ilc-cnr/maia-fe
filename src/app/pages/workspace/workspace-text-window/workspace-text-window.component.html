@@ -79,7 +79,7 @@
             [virtualScrollItemSize]="20" 
             [scrollHeight]="sectionsTreeHeight + 'px'"
             selectionMode="single"
-            [(selection)]="selectedSection"
+            [selection]="selectedSection" (selectionChange)="selectedSection = $any($event)"
             (onNodeSelect)="sectionSelected($event)"
             [filter]="true">
           </p-tree>

@@ -80,7 +80,7 @@
     <!--NOTE il componente sembra non supportare la combinazione virtual scroll + lazy loading https://github.com/primefaces/primeng/issues/11789 -->
     <!-- <p-treeTable selectionMode="checkbox" dataKey="lexicogEntry" [value]="lexicogEntries" [scrollable]="true" [columns]="cols" [rows]="rows"
         scrollHeight="flex" [lazy]="true" (onLazyLoad)="loadNodes($event)" [totalRecords]="counter" [paginator]="true"> -->
-        <p-treeTable selectionMode="checkbox" [(selection)]="selectedNodes" dataKey="id" [value]="lexicogEntries" [scrollable]="true" [columns]="cols"
+        <p-treeTable selectionMode="checkbox" [selection]="selectedNodes" (selectionChange)="selectedNodes = $any($event)" dataKey="id" [value]="lexicogEntries" [scrollable]="true" [columns]="cols"
         scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true" (onNodeExpand)="onFetchChildren($event)" [(contextMenuSelection)]="selectedNode" [contextMenu]="cm" contextMenuSelectionMode="separate" (onContextMenuSelect)="loadContextMenu()">
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>

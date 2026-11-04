@@ -33,7 +33,7 @@
 </div>
 
 <div class="corpus-tree-container">
-  <p-tree [value]="(files$|async)||[]" selectionMode="single" [(selection)]="selectedNode"
+  <p-tree [value]="(files$|async)||[]" selectionMode="single" [selection]="selectedNode" (selectionChange)="selectedNode = $any($event)"
   (onNodeSelect)="nodeSelect($event)" [contextMenu]="cm" (onNodeContextMenuSelect)="onOpenContextMenu($event)"
   [filter]="true"></p-tree>
 </div>

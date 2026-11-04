@@ -1,0 +1,11 @@
+/*
+ * PrimeNG >= 16.4 carica i propri stili dentro "@layer primeng".
+ * Un CSS senza layer (come Bootstrap) vince SEMPRE su un CSS in un layer, a prescindere
+ * dalla specificita': per esempio `button { border-radius: 0 }` di Bootstrap rendeva quadrati
+ * i pulsanti `p-button-rounded`.
+ * Mettere Bootstrap nello stesso layer di PrimeNG ripristina la cascata di PrimeNG <= 16.3:
+ * dentro un layer contano di nuovo specificita' e ordine. I nostri stili in styles.scss
+ * restano fuori dai layer e continuano a vincere su entrambi.
+ * Da rivedere con il nuovo tema di PrimeNG 18+ (fase 3 dell'upgrade).
+ */
+@import url('~bootstrap/dist/css/bootstrap.min.css') layer(primeng);

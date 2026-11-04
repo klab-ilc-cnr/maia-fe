@@ -1,4 +1,4 @@
-import { CanDeactivate } from '@angular/router';
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -15,7 +15,7 @@ export interface ComponentCanDeactivate {
  * Guard che gestisce la navigazione verso un altro punto dell'app. Se non sono presenti modifiche permette la disattivazione, altrimenti presenta un messaggio di conferma
  */
 @Injectable()
-export class PendingChangesGuard implements CanDeactivate<ComponentCanDeactivate> {
+export class PendingChangesGuard  {
   /**
    * Implementazione del metodo che definisce se una route può essere disattivata
    * @param component {ComponentCanDeactivate} metodo di valutazione di modifiche pendenti

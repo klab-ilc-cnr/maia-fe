@@ -29,7 +29,7 @@
                  [loading]="loading" 
                  selectionMode="checkbox"
                  dataKey="id" 
-                 [(selection)]="selectedNodes" 
+                 [selection]="selectedNodes" (selectionChange)="selectedNodes = $any($event)" 
                  [value]="results"
                  (onNodeExpand)="onNodeExpand($event)">
       <ng-template pTemplate="colgroup" let-columns>

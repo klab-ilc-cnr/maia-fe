@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DropdownChangeEvent } from 'primeng/dropdown';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 
 @Component({
@@ -39,11 +40,11 @@ export class DoubleAutocompleteComponent implements OnInit {
     this.remove.emit();
   }
 
-  onSelectRelation(event: { originalEvent: PointerEvent, value: string }) {
+  onSelectRelation(event: DropdownChangeEvent) {
     this.currentRelation$.next(event.value);
   }
 
-  onSelectValue(event: { originalEvent: PointerEvent, value: string }) {
+  onSelectValue(event: DropdownChangeEvent) {
     if (!this.relationField) {
       console.error('manca la relazione');
       return;

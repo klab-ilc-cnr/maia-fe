@@ -125,7 +125,7 @@
   <!-- <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
     [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true" scrollHeight="flex"> -->
-  <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
+  <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [selection]="selectedNodes" (selectionChange)="selectedNodes = $any($event)" [value]="results"
     [columns]="cols" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true" scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true">
     <ng-template pTemplate="colgroup" let-columns>
@@ -202,12 +202,12 @@
             <label class="form-label">Prefix *</label>
             <p-autoComplete #prefix="ngModel" name="prefix" [(ngModel)]="selectedUploadPrefix"
               [suggestions]="filteredPrefix" (completeMethod)="filterPrefix($event)"
-              (onSelect)="onSelectPrefixBaseIRI($event, true)" [required]="true" appendTo="body"></p-autoComplete>
+              (onSelect)="onSelectPrefixBaseIRI($event.value, true)" [required]="true" appendTo="body"></p-autoComplete>
           </div>
           <div class="form-group field col-6">
             <label class="form-label">Base IRI *</label>
             <p-autoComplete #baseIRI="ngModel" name="baseIRI" [(ngModel)]="selectedBaseIRI" [suggestions]="filteredBase"
-              (completeMethod)="filterBase($event)" (onSelect)="onSelectPrefixBaseIRI($event, false)" [required]="true"
+              (completeMethod)="filterBase($event)" (onSelect)="onSelectPrefixBaseIRI($event.value, false)" [required]="true"
               appendTo="body"></p-autoComplete>
           </div>
           <div class="field col-6">

@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
+import { TreeTableNodeExpandEvent } from 'primeng/treetable';
 import { Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
@@ -252,7 +253,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
    * @param event {{originalEvent: PointerEvent, node: TreeNode<any>}} event emitted on the expansion of a node
    * @returns {void}
    */
-  onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
+  onFetchChildren(event: TreeTableNodeExpandEvent) {
     this.loading = true;
     const dictionaryId = event.node.data?.id;
     console.info(dictionaryId)

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
+import { TreeNodeContextMenuSelectEvent, TreeNodeSelectEvent } from 'primeng/tree';
 import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -170,7 +171,7 @@ export class WorkspaceCorpusExplorerComponent {
    * Method that handles the selection of a node in the document tree
    * @param event { originalEvent: MouseEvent, node: TreeNode<CorpusElement> } Click event on a node in the document tree
    */
-  nodeSelect(event: { originalEvent: MouseEvent, node: TreeNode<CorpusElement> }): void {
+  nodeSelect(event: TreeNodeSelectEvent): void {
     this.clickCount++; //unito al timeout, viene utilizzato per gestire comportamenti diversi per click singolo e doppio click
 
     setTimeout(() => {
@@ -331,7 +332,7 @@ export class WorkspaceCorpusExplorerComponent {
    * Method that handles the opening of the context menu
    * @param event {{ originalEvent: PointerEvent, node: TreeNode<CorpusElement> }} event right clicking on a tree node
    */
-  onOpenContextMenu(event: { originalEvent: PointerEvent, node: TreeNode<CorpusElement> }) {
+  onOpenContextMenu(event: TreeNodeContextMenuSelectEvent) {
     this.generateContextMenu(event.node);
   }
 

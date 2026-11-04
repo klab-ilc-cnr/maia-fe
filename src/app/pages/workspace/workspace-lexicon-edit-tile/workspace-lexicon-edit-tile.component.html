@@ -1,6 +1,6 @@
 <p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[40,60]">
   <ng-template pTemplate>
-    <p-treeTable #tt selectionMode="single" dataKey="instanceName" [(selection)]="selectedNode"
+    <p-treeTable #tt selectionMode="single" dataKey="instanceName" [selection]="selectedNode" (selectionChange)="selectedNode = $any($event)"
       [value]="lexicalEntryTree" [columns]="cols" [lazy]="true" [loading]="loading" [scrollHeight]="panelHeight-40+'px'"
       [scrollable]="true" (onNodeExpand)="onNodeExpand($event)" (onNodeSelect)="onNodeSelect($event)">
       <ng-template pTemplate="colgroup" let-columns>
