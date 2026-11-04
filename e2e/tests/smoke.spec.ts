@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
+import * as fs from 'fs';
+import * as path from 'path';
 import { annotate, apiLogin, credentials, snap, watchPage } from './support';
+
+/** Versione dell'app nel package.json del repo: il footer deve mostrare la stessa (si sa quale build si sta testando). */
+const APP_VERSION = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'package.json'), 'utf-8')).version as string;
 
 /** Workspace dedicato ai test: creato al primo giro e poi riutilizzato. */
 const WORKSPACE_NAME = 'e2e-smoke';
@@ -44,6 +49,11 @@ test('smoke: titolo, login, pagine principali, workspace', async ({ page, baseUR
     await w.settle();
     expect(w.pageErrors, 'eccezioni JS durante il login').toEqual([]);
     annotate(testInfo, 'login', w); w.reset();
+  });
+
+  await test.step(`versione nel footer (v. ${APP_VERSION})`, async () => {
+    await expect(page.locator('app-footer').first()).toContainText(`v. ${APP_VERSION}`);
+    testInfo.annotations.push({ type: 'versione', description: APP_VERSION });
   });
 
   for (const p of PAGES) {
