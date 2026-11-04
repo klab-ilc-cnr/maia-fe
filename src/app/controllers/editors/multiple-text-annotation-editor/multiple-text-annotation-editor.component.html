@@ -41,12 +41,12 @@
                 <label class="form-label ml-1">{{ feature.feature?.name }}</label>
                 <div class="d-flex align-items-center gap-2">
                   <!-- delete mode: switch per "qualsiasi valore" -->
-                  <p-inputSwitch
+                  <p-toggleswitch
                     *ngIf="deleteMode"
                     class="ml-1 align-self-end"
                     [pTooltip]="'SEARCH.disableForAnyValue'|translate"
                     [formControlName]="feature.feature!.name! + '_checked'">
-                  </p-inputSwitch>
+                  </p-toggleswitch>
 
                   <div *ngIf="editMode || featureForm.get(feature.feature!.name! + '_checked')?.value || (!deleteMode && !editMode); else anyValueBlock"
                        class="p-fluid flex-grow-1">
@@ -56,11 +56,11 @@
                       <div>
                         <label class="form-label small">{{'SEARCH.currentValue'|translate}}</label>
                         <div class="d-flex align-items-center gap-2">
-                          <p-inputSwitch
+                          <p-toggleswitch
                             class="align-self-end"
                             [pTooltip]="'SEARCH.disableForAnyValue'|translate"
                             [formControlName]="feature.feature!.name! + '_checked'">
-                          </p-inputSwitch>
+                          </p-toggleswitch>
                           <div *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value" class="flex-grow-1">
                             <div [ngSwitch]="feature.feature?.type">
                               <input

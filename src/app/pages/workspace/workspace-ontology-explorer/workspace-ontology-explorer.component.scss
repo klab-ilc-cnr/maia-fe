@@ -1,6 +1,6 @@
-:host p-tabView,
+:host p-tabs,
 :host::ng-deep.p-tabs,
-:host::ng-deep div[role="tabpanel"] {
+:host::ng-deep [role="tabpanel"] {
   height: 100%;
 
   .p-tabpanels {

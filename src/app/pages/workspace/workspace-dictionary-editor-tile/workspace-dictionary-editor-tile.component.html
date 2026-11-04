@@ -1,12 +1,20 @@
-<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
-    <p-tabPanel [header]="'DICTIONARY_EDITOR.EDIT_TAB.title'|translate">
-        <app-dictionary-entry-referral-editor *ngIf="selectedTab === 0 && isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-referral-editor>
-        <app-dictionary-entry-full-editor *ngIf="selectedTab === 0 && !isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-full-editor>
-    </p-tabPanel>
-    <p-tabPanel [header]="'DICTIONARY_EDITOR.SORT_TAB.title'|translate" [disabled]="isReferral"> 
-        <app-dictionary-sorting-editor *ngIf="selectedTab === 1" [dictionaryEntry]="dictionaryEntry"></app-dictionary-sorting-editor>
-    </p-tabPanel>
-    <p-tabPanel [header]="'DICTIONARY_EDITOR.PREVIEW_TAB.title'|translate">
-        <app-dictionary-preview *ngIf="selectedTab === 2" [dictionaryEntry]="dictionaryEntry"></app-dictionary-preview>
-    </p-tabPanel>
-</p-tabView>
+<p-tabs [(value)]="selectedTab" [scrollable]="true">
+    <p-tablist>
+        <p-tab [value]="0">{{ 'DICTIONARY_EDITOR.EDIT_TAB.title'|translate }}</p-tab>
+        <p-tab [value]="1" [disabled]="isReferral">{{ 'DICTIONARY_EDITOR.SORT_TAB.title'|translate }}</p-tab>
+        <p-tab [value]="2">{{ 'DICTIONARY_EDITOR.PREVIEW_TAB.title'|translate }}</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+        <p-tabpanel [value]="0">
+            <app-dictionary-entry-referral-editor *ngIf="selectedTab === 0 && isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-referral-editor>
+            <app-dictionary-entry-full-editor *ngIf="selectedTab === 0 && !isReferral" [dictionaryEntry]="dictionaryEntry"></app-dictionary-entry-full-editor>
+        </p-tabpanel>
+        <p-tabpanel [value]="1">
+ 
+            <app-dictionary-sorting-editor *ngIf="selectedTab === 1" [dictionaryEntry]="dictionaryEntry"></app-dictionary-sorting-editor>
+        </p-tabpanel>
+        <p-tabpanel [value]="2">
+            <app-dictionary-preview *ngIf="selectedTab === 2" [dictionaryEntry]="dictionaryEntry"></app-dictionary-preview>
+        </p-tabpanel>
+    </p-tabpanels>
+</p-tabs>

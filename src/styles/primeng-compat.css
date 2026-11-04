@@ -42,6 +42,11 @@
   /* Tab (TabView/Tabs): in PrimeNG 17 il titolo aveva line-height 1 (barra dei tab alta 41px, come prevedono
      gli stili dell'app: height: calc(100% - 41px)) */
   .p-tablist .p-tab { line-height: 1; }
+  /* Tabs: p-tabpanels e p-tabpanel sono elementi custom (inline); con TabView erano div. Blocchi, perche'
+     gli stili dei pannelli dell'app ne impostano l'altezza (height: 100%, calc(100% - 41px)). */
+  p-tabpanels, p-tabpanel { display: block; }
+  /* pannello non attivo: in PrimeNG 19 resta vuoto ma visibile (occuperebbe spazio), in 21 ha [hidden] */
+  p-tabpanel[data-p-active="false"] { display: none; }
 
   /* p-tree: bordo intorno all'albero come in PrimeNG 17 */
   .p-tree { border: 1px solid var(--p-content-border-color); border-radius: var(--p-content-border-radius); }

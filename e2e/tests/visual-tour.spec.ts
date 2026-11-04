@@ -99,7 +99,8 @@ test('giro visivo dei componenti', async ({ page, baseURL }, testInfo) => {
     const n = Math.min(await tabs.count(), 8);
     for (let i = 1; i < n; i++) {
       const t = tabs.nth(i);
-      if ((await t.getAttribute('aria-disabled')) === 'true') continue;
+      // tab disabilitato: aria-disabled (TabView) oppure classe p-disabled (Tabs, PrimeNG 19+)
+      if ((await t.getAttribute('aria-disabled')) === 'true' || /\bp-disabled\b/.test((await t.getAttribute('class')) || '')) continue;
       const label = ((await t.innerText()).trim().replace(/[^\w]+/g, '-').toLowerCase() || String(i));
       await t.click(); await w.settle(); await page.waitForTimeout(500);
       await shot(page, `10-lexical-entry-tab-${i}-${label}`);
@@ -113,6 +114,48 @@ test('giro visivo dei componenti', async ({ page, baseURL }, testInfo) => {
     await page.keyboard.press('Escape');
     await ed.locator('.jsPanel-btn-normalize').click().catch(() => undefined);
     await ed.locator('.jsPanel-btn-minimize').click().catch(() => undefined); await page.waitForTimeout(500);
+  });
+  await step(testInfo, '11b forma e senso nell\'editor della voce (tab)', async () => {
+    await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click(); await w.settle();
+    await page.locator('#lexiconTile tr', { hasText: '@' }).nth(1).dblclick(); await w.settle(); await page.waitForTimeout(1000);
+    const ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+    await ed.locator('.jsPanel-btn-maximize').click().catch(() => undefined); await page.waitForTimeout(800);
+    for (const [kind, name] of [['form', '11b-form'], ['sense', '11c-sense']]) {
+      // riga "form (1)" / "sense (1)": espande e seleziona il primo figlio
+      const row = ed.locator('tr', { hasText: new RegExp(`^\\s*${kind} \\(\\d+\\)`) }).first();
+      await row.locator('button').first().click(); await w.settle(); await page.waitForTimeout(500);
+      await row.locator('xpath=following-sibling::tr[1]').click(); await w.settle(); await page.waitForTimeout(1500);
+      await shot(page, name);
+      const tabs = ed.locator('app-tabs-form, app-tabs-sense').last().locator('[role="tab"]').filter({ visible: true });
+      for (let i = 1; i < Math.min(await tabs.count(), 4); i++) {
+        await tabs.nth(i).click(); await w.settle(); await page.waitForTimeout(800);
+        await shot(page, `${name}-tab-${i}`);
+      }
+    }
+    await ed.locator('.jsPanel-btn-normalize').click().catch(() => undefined);
+    await ed.locator('.jsPanel-btn-minimize').click().catch(() => undefined); await page.waitForTimeout(500);
+  });
+  await step(testInfo, '11d popover di aiuto nel Lexicon', async () => {
+    const tile = page.locator('#lexiconTile');
+    await tile.locator('button:has(.pi-info-circle)').first().click(); await page.waitForTimeout(600);
+    await shot(page, '11d-lexicon-popover');
+    await page.keyboard.press('Escape'); await page.mouse.click(1500, 950);
+  });
+  await step(testInfo, '11e explorer dell\'ontologia (tab)', async () => {
+    const onto = page.locator('#workspace-menu').getByText('Ontology', { exact: true });
+    await onto.click(); await page.waitForTimeout(400);
+    const explorer = page.locator('#workspace-menu').getByText('Explorer', { exact: true });
+    if (!(await explorer.isVisible())) { await onto.hover(); await page.waitForTimeout(400); } // PrimeNG <= 17: sottomenu all'hover
+    await explorer.click(); await w.settle(); await page.waitForTimeout(1500);
+    const tile = page.locator('#ontologyExplorerTile');
+    await expect(tile).toBeVisible();
+    await shot(tile, '11e-ontology-0');
+    const tabs = tile.locator('[role="tab"]').filter({ visible: true });
+    for (let i = 1; i < Math.min(await tabs.count(), 5); i++) {
+      await tabs.nth(i).click(); await w.settle(); await page.waitForTimeout(800);
+      await shot(tile, `11e-ontology-${i}`);
+    }
+    await tile.locator('.jsPanel-btn-minimize').click().catch(() => undefined); await page.waitForTimeout(500);
   });
   await step(testInfo, '12 context menu nel Corpus', async () => {
     await page.locator('#workspace-menu').getByText('Corpus', { exact: true }).click(); await w.settle();

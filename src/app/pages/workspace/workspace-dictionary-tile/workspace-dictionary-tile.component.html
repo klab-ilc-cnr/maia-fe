@@ -118,8 +118,8 @@
     </p-treeTable>
     <p-contextMenu #cm [model]="items" appendTo="body"></p-contextMenu>
 </div>
-<p-overlayPanel #op [dismissable]="true">
-    <ng-template pTemplate>
+<p-popover #op [dismissable]="true">
+    <ng-template #content>
         <h3>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.title'|translate}}</h3>
         <br>
         <span><b>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.multiCharWildcard'|translate}}</b></span>
@@ -131,7 +131,7 @@
         <br><b>{{'DICTIONARY_EXPLORER.SEARCH_GUIDE.weightedFuzzy'|translate}}</b>
         <span><i>test~0.8</i></span>
     </ng-template>
-</p-overlayPanel>
+</p-popover>
 <p-dialog *ngIf="isAddDictionaryEntryVisible" [(visible)]="isAddDictionaryEntryVisible">
     <ng-template pTemplate="header">
         <h5 class="modal-title">{{'DICTIONARY_EXPLORER.addEntry'|translate}}</h5>

@@ -14,7 +14,7 @@ import { SelectModule } from 'primeng/select';
 import { EditorModule } from 'primeng/editor';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -25,7 +25,7 @@ import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OrderListModule } from 'primeng/orderlist';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PopoverModule } from 'primeng/popover';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
 import { PasswordModule } from 'primeng/password';
@@ -37,7 +37,7 @@ import { SliderModule } from 'primeng/slider';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
 import { TagModule } from 'primeng/tag';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
@@ -65,7 +65,7 @@ const PRIMENG_MODULES = [
   TableModule,
   MultiSelectModule,
   SelectModule,
-  InputSwitchModule,
+  ToggleSwitchModule,
   ListboxModule,
   MenubarModule,
   DialogModule,
@@ -83,7 +83,7 @@ const PRIMENG_MODULES = [
   SkeletonModule,
   ToggleButtonModule,
   TagModule,
-  OverlayPanelModule,
+  PopoverModule,
   SplitterModule,
   SelectButtonModule,
   ScrollPanelModule,
@@ -92,7 +92,7 @@ const PRIMENG_MODULES = [
   MenuModule,
   TieredMenuModule,
   EditorModule,
-  TabViewModule,
+  TabsModule,
   AutoCompleteModule,
   CardModule,
   InputNumberModule,

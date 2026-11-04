@@ -177,8 +177,8 @@
   </p-treeTable>
 </div>
 
-<p-overlayPanel #op [dismissable]="true">
-  <ng-template pTemplate>
+<p-popover #op [dismissable]="true">
+  <ng-template #content>
     <h3>Search examples</h3>
     <br>
     <span><b>Multiple character wildcard search:</b></span>
@@ -190,7 +190,7 @@
     <br><b>Weighted fuzzy search:</b>
     <span><i>test~0.8</i></span>
   </ng-template>
-</p-overlayPanel>
+</p-popover>
 
 <p-dialog [(visible)]="isUploadLexiconVisible" [style]="{ width: '40vw' }">
   <ng-template pTemplate="header">
@@ -208,7 +208,7 @@
           </div>
           <div class="field col-6">
             <label class="form-label">Overwrite</label>
-            <p-inputSwitch #drop="ngModel" name="drop" [(ngModel)]="isOverwriteLexicon"></p-inputSwitch>
+            <p-toggleswitch #drop="ngModel" name="drop" [(ngModel)]="isOverwriteLexicon"></p-toggleswitch>
           </div>
           <div class="form-group field col-6">
             <label class="form-label">Prefix *</label>

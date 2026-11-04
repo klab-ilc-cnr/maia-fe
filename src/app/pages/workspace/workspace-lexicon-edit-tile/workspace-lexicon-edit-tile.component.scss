@@ -3,9 +3,9 @@ p-treetable,
   height: calc(100% - 31px);
 }
 
-p-tabView,
+p-tabs,
 ::ng-deep.p-tabs,
-::ng-deep div[role="tabpanel"] {
+::ng-deep [role="tabpanel"] {
   height: 100%;
 
   .p-tabpanels {

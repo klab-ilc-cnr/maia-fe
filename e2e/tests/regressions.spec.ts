@@ -42,7 +42,7 @@ test('regressione: colori dei tab nel lexicon editor', async ({ page, baseURL },
   const primary = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim());
   const tabs = await page.evaluate(() => [...document.querySelector('[role="tablist"]')!.querySelectorAll('[role="tab"]')]
     .map((t) => ({ text: (t as HTMLElement).innerText.trim(), selected: t.getAttribute('aria-selected') === 'true',
-      disabled: t.getAttribute('aria-disabled') === 'true' || (t.closest('li')?.classList.contains('p-disabled') ?? false),
+      disabled: t.getAttribute('aria-disabled') === 'true' || t.classList.contains('p-disabled') || (t.closest('li')?.classList.contains('p-disabled') ?? false),
       color: getComputedStyle(t).color })));
   testInfo.annotations.push({ type: 'tab', description: JSON.stringify(tabs.map((t) => `${t.text}:${t.color}`)) });
 

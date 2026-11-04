@@ -5,7 +5,7 @@
 
 // START MANAGE SCROLLABLE PANEL CONTENT
 :host::ng-deep.p-tabs,
-p-tabView {
+p-tabs {
     display: block;
     height: 100%;
 }
@@ -14,12 +14,11 @@ p-tabView {
     height: calc(100% - 41px);
 }
 
-:host::ng-deep p-tabPanel > div[aria-hidden="false"], 
-p-tabPanel {
+:host::ng-deep p-tabpanel {
     height: 100%;
 }
 
-:host::ng-deep p-tabPanel > div[aria-hidden="false"]>* {
+:host::ng-deep p-tabpanel[data-p-active="true"] > * {
     overflow-y: scroll;
     display: block;
     height: 100%;

@@ -35,11 +35,10 @@ export class WorkspaceOntologyExplorerComponent implements OnInit {
 
   /**
    * On tab change
-   * @param $event {any} event
+   * @param index {string | number | undefined} valore (indice) del tab attivo
    * @returns
   */
-  onTabChange(event: any) {
-    const index = event.index;
+  onTabChange(index: string | number | undefined) {
     // Verify open tab is Ontology-Data
     if (index === 0) {
       if (this.ontologyDataExplorerComponent) {
