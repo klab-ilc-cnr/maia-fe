@@ -3,8 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { TreeNode } from 'primeng/api';
 import { decode } from 'html-entities';
 import htmlToPdfmake from 'html-to-pdfmake';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as pdfMakeModule from 'pdfmake/build/pdfmake';
+import * as pdfFontsModule from 'pdfmake/build/vfs_fonts';
 import { DictionaryEntry } from '../models/dictionary/dictionary-entry.model';
 import { DictionaryNoteVocabo } from '../models/custom-models/dictionary-note-vocabo';
 import { DictionaryPreviewItem } from '../models/dictionary/dictionary-preview-item.model';
@@ -12,11 +12,14 @@ import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.m
 import { SearchAnnotationResultRow } from '../models/search/search-annotation-result';
 import type { Content } from 'pdfmake/interfaces';
 
-if (typeof (pdfFonts as any).pdfMake !== 'undefined') {
-  (pdfMake as any).vfs = (pdfFonts as any).pdfMake.vfs;
-} else if (typeof (pdfFonts as any).default?.pdfMake !== 'undefined') {
-  (pdfMake as any).vfs = (pdfFonts as any).default.pdfMake.vfs;
-}
+/*
+ * pdfmake 0.3: vfs_fonts esporta direttamente l'oggetto dei font e si registra con addVirtualFileSystem.
+ * Non si assegna `pdfMake.vfs` sul modulo importato: con il builder esbuild gli import ES sono in sola lettura.
+ * `default ?? modulo` regge entrambe le forme di interoperabilita' CommonJS (webpack ed esbuild).
+ */
+const pdfMake: any = (pdfMakeModule as any).default ?? pdfMakeModule;
+const pdfFonts: any = (pdfFontsModule as any).default ?? pdfFontsModule;
+pdfMake.addVirtualFileSystem(pdfFonts.pdfMake?.vfs ?? pdfFonts);
 
 export interface DictionaryPreviewPdfData {
   entry: DictionaryEntry;

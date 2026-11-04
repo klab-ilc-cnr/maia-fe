@@ -1,6 +1,6 @@
 {
   "name": "maia-fe",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -46,7 +46,7 @@
     "zone.js": "^0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.21",
+    "@angular/build": "^18.2.21",
     "@angular/cli": "^18.2.21",
     "@angular/compiler-cli": "^18.2.14",
     "@compodoc/compodoc": "^1.1.19",

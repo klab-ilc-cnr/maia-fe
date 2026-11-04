@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-declare const require: (path: string) => any;
+// Import nominato: il bundler include solo la proprieta' "version", non l'intero package.json
+// (con require(), esbuild incorporava anche script e dipendenze).
+import { version } from '../../../../../package.json';
 
 /**Componente del footer */
 @Component({
@@ -8,5 +10,5 @@ declare const require: (path: string) => any;
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
-  APP_VERSION = require('../../../../../package.json').version;
+  APP_VERSION = version;
 }

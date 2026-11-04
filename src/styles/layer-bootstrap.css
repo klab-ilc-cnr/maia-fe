@@ -1,2 +1,2 @@
 /* vedi src/styles/README-layer.md */
-@import url('~bootstrap/dist/css/bootstrap.min.css') layer(primeng);
+@import url('bootstrap/dist/css/bootstrap.min.css') layer(primeng);
