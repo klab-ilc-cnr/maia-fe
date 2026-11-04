@@ -19,6 +19,7 @@ Reference doc for AI agents working on this repository. Keep it updated when the
   - `npm start` (=`ng serve`) — dev server on `http://localhost:4200`, uses `src/proxy.conf.json`.
   - `npm test` (=`ng test`, karma/ChromeHeadless) — **BROKEN on master**: ~19 TS errors under `strict` (spec + app files), `Executed 0 of 0`. Pre-existing, not caused by security work. Fixing it is a separate task (172 `.spec.ts` exist).
   - `npm run compodoc` — offline doc generation (uses `tsconfig.doc.json`).
+- **Smoke e2e** (`e2e/`, see `e2e/README.md`): separate toolchain, **Node ≥ 20 via `nvm use 24.14.0`** (never the app's Node 16). Run against `ng serve`: `E2E_LABEL=<tag> E2E_EXPECT_TITLE="MAIA - VocaBO - DEV UPGRADE" npx playwright test`. Credentials in `~/.config/maia/e2e.env` (outside repo, 600; user `agente`, ADMINISTRATOR on the test VM). Uses/reuses workspace `e2e-smoke` (id 19). Run it after every upgrade step and compare `artifacts/screens/<tag>/` with the `ng14` baseline.
 
 ## Project map (`src/`)
 
@@ -66,6 +67,10 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 - **Upgrade target is Angular 21 + PrimeNG 21** (last MIT PrimeNG). **PrimeNG 22 and primeicons 8 are proprietary (PrimeUI license, key required)** — do not install them. The future v22 step will evaluate `@openng/optimus-ui` (MIT fork of PrimeNG 21).
 - **jsPanel4 is abandoned** (last release 2022) and its layouts are **persisted in maia-be** (`tile.tileConfig`, restored via `jsPanel.layout.restoreId`). Keep it during the upgrade; replacement is a separate backlog project.
 - Checking out old commits where `src/proxy.conf.json` was still tracked **silently overwrites/deletes the local ignored file** (happened on the 2026-11-04 merge). Recreate it from `src/proxy_stub.conf.json` / this guide.
+- **Node on this machine**: `/usr/local/bin/node` = 24.14.1 is the shell default but is **not** an nvm version (`nvm use 24.14.1` fails); `/usr/bin/node` = 18.19.1. Always select explicitly: `nvm use 16.20.2` (app) / `nvm use 24.14.0` (e2e), and check `node -v` before any `npm` command.
+- **Never run `npm install` outside the intended folder**: a failed `cd` once installed Playwright into the app's `package.json`/lockfile with npm 11 (reverted via `git checkout` + `npm ci` on Node 16). Put `npm` on the same line as the `cd` check, not after a heredoc. Note: `nvm` breaks under `set -u`.
+- **Stopping `ng serve`**: don't `pkill -f "ng serve ..."` from a command that itself contains that string (it kills its own shell, exit 143). Kill the PID listening on port 4200 (`ss -ltnp`). Start the server and run tests **sequentially**, not in parallel tool calls.
+- `environment.ts` on `upgrade/angular-21` has `applicationSubTitle: "VocaBO - DEV UPGRADE"`: **revert to `"develop"` before merging into master**.
 - **No CHANGELOG.md** convention — do not create one unless asked; use/docs live in README + `documentation/`.
 
 ## Recent work (this branch / chat memory)
@@ -77,3 +82,4 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 - Port fix (2026-11-02, commit `0af11417`): runtime backend URL keeps the port; deployed on `klabsrv:19443` and verified working.
 - `npm audit` re-run 2026-11-02: **92** (4 critical: handlebars, proxy-addr, piscina, build-angular) — new advisories on already-overridden packages; mostly resolved by the Angular upgrade.
 - 2026-11-04: `study/security-fixes` merged (ff) into `master`; branch `upgrade/angular-21` created; upgrade plan written with decisions.
+- 2026-11-04: **phase 0 done** on `upgrade/angular-21` (still Angular 14): runtime-overridable subtitle, e2e smoke baseline, 8 unused deps removed, dead PrimeFlex 2 classes removed — all pixel-identical to baseline. Next: phase 1 (Angular 14 → 15 → 16).

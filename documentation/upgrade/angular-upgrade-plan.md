@@ -177,6 +177,28 @@ Branch dedicato (es. `upgrade/angular-22`) che parte da `master` **dopo il merge
 
 ---
 
+## 6bis. Avanzamento
+
+### Fase 0 — completata (2026-11-04, Angular 14 invariato)
+
+| Commit | Contenuto | Verifica |
+|---|---|---|
+| `c9e591de` | titolo "MAIA - VocaBO - DEV UPGRADE": in `ng serve` da `environment.ts`; nel pacchetto di test via `window.__MAIA_CONFIG.applicationSubTitle` (prod invariata: senza override resta "MAIA - VocaBO") | verificato nel browser con e senza override |
+| `9bd5baa8` | smoke e2e Playwright in `e2e/` (Node 24, toolchain separata): titolo, login, 7 pagine con dati, workspace `e2e-smoke` (id 19), pannelli jsPanel Corpus/Lexicon, **salvataggio e ripristino del layout dal DB** | baseline `ng14` verde, 12 screenshot |
+| `cb9a267a` | rimosse 8 dipendenze inutilizzate (ng-bootstrap, popper, angular-jwt, angular-oauth2-oidc, font-awesome 4, @angular/localize, schematics-scss-migrate, @types/uuid); 16 pacchetti in meno nel lockfile, nessuna versione cambiata | build verde (initial 5.65 → 5.59 MB), smoke verde, screenshot **identici al pixel** |
+| `48f3a232` | rimosse 10 classi PrimeFlex 2 senza effetto (layers, tagsets, workspace-list) | smoke verde, screenshot identici al pixel |
+
+Non fatto, con motivo:
+- `require('package.json')` nel footer: **lasciato**. Webpack include già solo la versione (`{i8:"0.20.0"}`), nessuna esposizione. Da riverificare alla migrazione al builder esbuild (fase 2).
+- `production: false` in `environment.production.ts`: da decidere a parte (cambia il comportamento a runtime).
+
+Scoperte utili per le fasi successive:
+- `#/lexicon/languages` è una **pagina segnaposto** mai implementata (template `languages-list works!`).
+- Vengono caricati **due temi PrimeNG** insieme (`saga-blue` da `styles.scss` e `lara-light-blue` da `angular.json`) e **Bootstrap due volte** (`angular.json` e `styles.scss`): da sistemare nella fase 3 (nuovo tema).
+- Il layout del workspace si salva **uscendo dal workspace** (`canDeactivate` / `beforeunload` → `PUT /api/workspaces/layout`), non all'apertura dei pannelli.
+
+---
+
 ## 7. Browser supportati (domanda 7)
 
 Angular 21 genera codice per la baseline "widely available" al 2025-10-20. Versioni minime (browserslist):
