@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
@@ -146,7 +146,6 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -160,7 +159,9 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
     IconsModule,
     SharedModule
   ],
-  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders],
+  // Angular 18: HttpClientModule deprecato -> provideHttpClient; withInterceptorsFromDi mantiene gli interceptor
+  // registrati con HTTP_INTERCEPTORS (httpInterceptorProviders: JWT).
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders, provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
 export class AppModule {
