@@ -2504,7 +2504,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       lineHighlights.push({
         id: undefined,
-        width: width,
+        width: width + 2, // as the annotation highlight (x - 1, width + 2): 1px of padding on both sides, otherwise the frame is tight on the right
         height: this.visualConfig.stdTextLineHeight - 2,
         coordinates: {
           x: startX - 1,

@@ -267,6 +267,41 @@ test('regressione: Text - evidenziazione del testo selezionato (colori e contras
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Text - cornice della parola aperta dai risultati del Search (padding simmetrico)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const t = page.locator('#searchTile');
+  const input = t.locator('p-iconfield input[pinputtext]').first();
+  await input.fill('casa'); await input.press('Enter');
+  await expect(t.locator('tbody tr').nth(1)).toBeVisible({ timeout: 30_000 });
+  const kwic = (await t.locator('tbody tr').nth(1).locator('td').nth(5).innerText()).trim();
+  await t.locator('tbody tr').nth(1).dblclick();
+  const rect = page.locator('[id^="textTile_"] #selectionHighlightg rect').first();
+  await expect(rect).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  // margini tra la cornice e la parola (solo le lettere della parola, senza lo spazio che segue)
+  const m = await page.evaluate((kw) => {
+    const r = document.querySelector('[id^="textTile_"] #selectionHighlightg rect')!.getBoundingClientRect();
+    let best: DOMRect | null = null;
+    for (const el of Array.from(document.querySelectorAll('[id^="textTile_"] #gText tspan tspan'))) {
+      if ((el.textContent || '').trim().toLowerCase() !== kw.toLowerCase() || !el.firstChild) continue;
+      const rg = document.createRange(); rg.setStart(el.firstChild, 0); rg.setEnd(el.firstChild, kw.length);
+      const b = rg.getBoundingClientRect();
+      if (!best || Math.abs(b.top - r.top) < Math.abs(best.top - r.top)) best = b;
+    }
+    return best ? { left: best.left - r.left, right: r.right - best.right } : null;
+  }, kwic);
+  testInfo.annotations.push({ type: 'margini', description: JSON.stringify(m) });
+  expect(m, 'parola trovata sotto la cornice').not.toBeNull();
+  // Difetto visto: la cornice finiva stretta sul lato destro (larghezza senza il +2 delle annotazioni)
+  expect(Math.abs(m!.left - m!.right), 'cornice simmetrica a sinistra e a destra').toBeLessThan(1);
+  expect(m!.right, 'padding a destra').toBeGreaterThan(0.5);
+  await snap(page, 'r10-kwic-selection');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
