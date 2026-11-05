@@ -33,7 +33,9 @@
   
   td:has(> span),
   td:has(> span) div:has(> span){
-    width: 100px;
+    // width auto: with the fixed table layout a fixed 100px on the label cell made the table spread the remaining
+    // space over all the columns; now the label column takes the rest and clips with an ellipsis
+    width: auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -49,4 +51,22 @@
     span {
       display: inline;
     }
+  }
+
+  // fixed layout: the icon columns keep their width (colgroup), the label column takes the rest
+  ::ng-deep .p-treetable-table,
+  ::ng-deep .p-treetable-scrollable-body table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  // icon columns (author, status, add button): content centered in the fixed-width cell
+  td:nth-child(n + 2) {
+    text-align: center;
+  }
+
+  // add lemma button: small round button, same size as the "+" of the fieldsets (.fieldset-small), colour unchanged
+  .add-lemma-button {
+    height: 1.5rem !important;
+    width: 1.5rem;
   }

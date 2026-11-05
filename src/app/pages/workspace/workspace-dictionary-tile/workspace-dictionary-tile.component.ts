@@ -121,11 +121,13 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Label takes the remaining width; the icon columns have a fixed width so the icons stay together on the right
+    // whatever the width of the panel (percentages spread them apart and cut the add button).
     this.cols = [
-      { field: 'label', header: '', width: '70%', display: 'true' },
-      { field: 'creator', width: '10%', display: 'true' },
-      { field: 'status', header: 'Autore', width: '10%', display: 'true' },
-      { field: 'add', header: 'Stato', width: '10%', display: 'true' },
+      { field: 'label', header: '' },
+      { field: 'creator', width: '2.5rem' },
+      { field: 'status', header: 'Autore', width: '2.5rem' },
+      { field: 'add', header: 'Stato', width: '3rem' },
     ];
 
     this.searchTextForm.valueChanges.pipe(

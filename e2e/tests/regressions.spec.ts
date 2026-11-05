@@ -400,6 +400,33 @@ test('regressione: Lexicon Explorer - niente colonna delle note, icone a larghez
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Dictionary Explorer - pulsante "+" piccolo e non tagliato', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const btn = tile.locator('tbody button[aria-label="Add lemma"]').first();
+  await expect(btn).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  const m = await tile.evaluate((e) => {
+    const b = e.querySelector('tbody button[aria-label="Add lemma"]')!; const r = b.getBoundingClientRect(); const c = b.closest('td')!.getBoundingClientRect();
+    const sb = e.querySelector('.p-treetable-scrollable-body') as HTMLElement;
+    return { w: r.width, h: r.height, left: r.left - c.left, right: c.right - r.right, overflowX: sb.scrollWidth - sb.clientWidth, bg: getComputedStyle(b).backgroundColor };
+  });
+  testInfo.annotations.push({ type: 'pulsante', description: JSON.stringify(m) });
+  // Difetto visto: bottone da 2.5rem+ nella colonna da 10%: tagliato sul bordo destro; ora 1.5rem come il "+" dei fieldset
+  expect(m.w, 'pulsante piccolo (1.5rem = 19.5px)').toBeLessThanOrEqual(21);
+  expect(m.h).toBeLessThanOrEqual(21);
+  expect(m.left, 'non tagliato a sinistra').toBeGreaterThanOrEqual(0);
+  expect(m.right, 'non tagliato a destra').toBeGreaterThanOrEqual(0);
+  expect(Math.abs(m.left - m.right), 'centrato nella cella').toBeLessThan(1.5);
+  expect(m.overflowX, 'nessuna barra orizzontale').toBeLessThanOrEqual(0);
+  expect(m.bg, 'colore invariato (blu)').toBe('rgb(33, 150, 243)');
+  await snap(page, 'r13-dictionary-explorer');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
