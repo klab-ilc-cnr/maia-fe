@@ -143,6 +143,47 @@ test('regressione: etichette dell\'albero delle sezioni nel pannello Text', asyn
   } else {
     expect(label, 'etichetta senza il numero dei figli').toBe('Decameron');
   }
+  // Difetto visto (PrimeNG 20+): MultiSelect non ha piu' `defaultLabel`; senza `placeholder` l'etichetta vuota
+  // del filtro "Visibility" dei layer era nascosta (classe p-multiselect-label-empty).
+  const vis = page.locator('app-workspace-text-window .p-multiselect-label').first();
+  await expect(vis, 'etichetta del filtro Visibility').toBeVisible();
+  testInfo.annotations.push({ type: 'visibility', description: (await vis.innerText()).trim() });
+  expect((await vis.innerText()).trim(), 'testo del filtro Visibility').not.toBe('');
+  expect(await vis.innerText()).not.toContain('empty');
   await snap(page, 'r3-text-tree');
+  expect(w.pageErrors).toEqual([]);
+});
+
+test('regressione: marche del senso (etichette dei chip degli autocomplete)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile).toBeVisible();
+  await tile.locator('#searchInput').fill('sonare'); await page.waitForTimeout(2500);
+  await tile.locator('tr', { hasText: 'sonare@it' }).first().dblclick();
+  const ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  await expect(ed).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+
+  // Difetto visto (PrimeNG 20+): AutoComplete non ha piu' l'input `field`; l'attributo statico field="defaultLabel"
+  // restava un attributo HTML e i chip mostravano "[object Object]". Ora optionLabel.
+  const row = ed.locator('tr', { hasText: /^\s*sense \(\d+\)/ }).first();
+  const n = Number(((await row.innerText()).match(/sense \((\d+)\)/) || [])[1] || 0);
+  await row.locator('button').first().click(); await page.waitForTimeout(1000);
+  const chips: string[] = [];
+  for (let i = 1; i <= n; i++) {
+    await row.locator(`xpath=following-sibling::tr[${i}]`).click(); await w.settle(); await page.waitForTimeout(1500);
+    const core = ed.locator('app-sense-core-editor').last();
+    for (const id of ['marksOfUse', 'grammaticalMarks', 'semanticMarks']) {
+      const txt = (await core.locator(`p-autocomplete:has(#${id}), p-autoComplete:has(#${id})`).first().innerText()).trim();
+      if (txt) chips.push(`${i}.${id}: ${txt.replace(/\s+/g, ' ')}`);
+    }
+  }
+  testInfo.annotations.push({ type: 'marche', description: chips.join(' | ') });
+  expect(chips.length, 'almeno un senso di sonare@it con marche (dati della VM di test)').toBeGreaterThan(0);
+  for (const c of chips) expect(c, 'etichetta del chip').not.toContain('[object Object]');
+  await snap(page, 'r5-sense-marks');
   expect(w.pageErrors).toEqual([]);
 });

@@ -9,7 +9,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "compodoc": "npx compodoc -p tsconfig.doc.json",
-    "check-licenses": "node tools/check-licenses.mjs"
+    "check-licenses": "node tools/check-licenses.mjs",
+    "check-primeng-attrs": "node tools/check-primeng-attrs.mjs"
   },
   "private": true,
   "dependencies": {

@@ -13,7 +13,13 @@ import { apiLogin, uiLogin, watchPage } from './support';
 
 const dir = () => path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run');
 
+/** Testi visibili con "[object Object]" (es. un'etichetta configurata con un input che PrimeNG non ha piu'). */
+const objectLabels: string[] = [];
+
 async function shot(target: Page | Locator, name: string) {
+  const page = 'goto' in target ? target : target.page();
+  const bad = await page.evaluate(() => document.body.innerText.split('\n').filter((l) => l.includes('[object Object]')));
+  if (bad.length) objectLabels.push(`${name}: ${bad.slice(0, 3).join(' / ')}`);
   fs.mkdirSync(dir(), { recursive: true });
   const file = path.join(dir(), `v-${name}.png`);
   if ('goto' in target) await target.screenshot({ path: file, fullPage: true });
@@ -182,5 +188,6 @@ test('giro visivo dei componenti', async ({ page, baseURL }, testInfo) => {
     }
   });
 
+  expect(objectLabels, 'testi "[object Object]" nelle schermate').toEqual([]);
   expect(w.pageErrors).toEqual([]);
 });
