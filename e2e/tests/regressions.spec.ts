@@ -512,7 +512,9 @@ test('regressione: Search - modifica massiva delle annotazioni: lemma (lessico) 
   await expect(lexical).toBeVisible({ timeout: 15_000 });
   await lexical.click(); await lexical.fill('villano');
   const options = page.locator('.p-autocomplete-option');
-  await expect(options.first()).toBeVisible({ timeout: 15_000 });
+  // aspetta l'elenco filtrato (prima puo' vedersi quello della ricerca precedente, ancora vuota)
+  await expect(options.filter({ hasText: /villano/i }).first()).toBeVisible({ timeout: 15_000 });
+  await expect(options).toHaveCount(2, { timeout: 15_000 });
   const texts = (await options.allInnerTexts()).map((t) => t.trim());
   testInfo.annotations.push({ type: 'opzioni', description: JSON.stringify(texts) });
   // Prima: due "villano" identici (aggettivo e sostantivo omografi): scelta alla cieca. Ora la POS tra parentesi quadre accanto al lemma (come nell'annotazione singola).
