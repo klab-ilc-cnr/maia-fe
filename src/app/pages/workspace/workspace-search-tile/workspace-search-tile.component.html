@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col d-flex justify-content-start align-items-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
-              class="mr-5 dropdownDimensions"
+              class="mr-5 shrinkField"
               (onShow)="reloadSelectedDocuments()"
               [options]="(files$|async)||[]"
               [metaKeySelection]="false"
@@ -29,7 +29,7 @@
               </small>
             </div>
           </div>
-          <p-multiSelect [options]="(pos$|async)||[]" class="mx-5 posDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
+          <p-multiSelect [options]="(pos$|async)||[]" class="mx-5 shrinkField" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
           filterBy="label" [(ngModel)]="posValue" [showClear]="true" ></p-multiSelect>
           
           <div class="slider-input ml-5">
@@ -42,7 +42,7 @@
     <div class="row">
       <div class="col d-flex justify-content-start">
         <p-select #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
-            styleClass="w-100" class="dropdownDimensions"
+            class="shrinkField"
             placeholder="Layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
             <ng-template let-layer pTemplate="item">
                 <div class="country-item">
@@ -56,7 +56,7 @@
             </ng-template>
         </p-select>
         <p-select #restriction="ngModel" name="restriction" appendTo="body" [(ngModel)]="selectedRestriction" optionLabel="name"
-            styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
+            class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
             placeholder="{{'SEARCH.restriction.placeholder'|translate}}" [options]="restrictionOptions || []" [filter]="true" 
             [showClear]="true" (onChange)="onChangeRestrictionSelection($event)"  [required]="false">
         </p-select>        

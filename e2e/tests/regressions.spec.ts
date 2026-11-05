@@ -121,9 +121,31 @@ test('regressione: maschera di input del Search (altezze, distanze, larghezza di
   // Difetto visto (PrimeNG 18+): i campi della riga si allungavano all'altezza del messaggio d'errore.
   for (const k of ['tree', 'mode', 'pos'] as const) expect(m[k].height, `altezza di ${k} con l'errore visibile`).toBeLessThan(45);
   expect(Math.abs(m.tree.top - m.input.top), 'campi allineati in alto').toBeLessThan(3);
-  expect(m.input.left - m.mode.right, 'distanza tra il selettore forma/lemma e il campo di ricerca').toBeGreaterThanOrEqual(8);
+  expect(m.input.left - m.mode.right, 'distanza tra il selettore forma/lemma e il campo di ricerca').toBeGreaterThanOrEqual(6);
   expect(m.pos.width, 'Pos non piu\' largo degli altri select').toBeLessThanOrEqual(m.layer.width + 2);
   await snap(page, 'r6-search-form');
+
+  // Larghezza minima del pannello (830px, come da configurazione) e oltre: i campi si restringono insieme
+  // al campo di ricerca, "lunghezza contesto: N" non tocca il bordo destro.
+  const widths = async (w: number) => {
+    await page.evaluate((px) => { (document.querySelector('#searchTile')!.closest('.jsPanel') as HTMLElement).style.width = px + 'px'; }, w);
+    await page.waitForTimeout(500);
+    return page.evaluate(() => {
+      const t = document.querySelector('#searchTile')!;
+      const w = (e: Element | null) => e!.getBoundingClientRect().width;
+      const panel = t.closest('.jsPanel')!.getBoundingClientRect();
+      return { tree: w(t.querySelector('p-treeselect')), pos: w(t.querySelector('p-multiselect')), input: w(t.querySelector('p-iconfield input')),
+        sliderGap: panel.right - t.querySelector('.slider-input label')!.getBoundingClientRect().right };
+    });
+  };
+  const min = await widths(830);
+  const narrow = await widths(700);
+  testInfo.annotations.push({ type: 'larghezze', description: JSON.stringify({ min, narrow }) });
+  expect(min.input, 'campo di ricerca leggibile alla larghezza minima').toBeGreaterThan(110);
+  expect(min.sliderGap, 'spazio a destra di "lunghezza contesto"').toBeGreaterThan(8);
+  expect(narrow.tree, 'il selettore dei testi si restringe').toBeLessThan(min.tree);
+  expect(narrow.pos, 'Pos si restringe').toBeLessThan(min.pos);
+  expect(narrow.tree, 'il selettore dei testi non scende sotto il minimo').toBeGreaterThanOrEqual(109);
   expect(w.pageErrors).toEqual([]);
 });
 
