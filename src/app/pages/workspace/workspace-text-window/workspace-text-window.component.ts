@@ -44,7 +44,10 @@ export class TextSelection {
 
 export class TextSelectionAnnotation {
   textSelection!: TextSelection;
+  /** fill color of the selection highlight */
   color!: string;
+  /** border color of the selection highlight (darker than the fill: contrast >= 3:1 with the row background, WCAG 1.4.11) */
+  borderColor!: string;
   active!: boolean;
 }
 
@@ -171,7 +174,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   selectionHighlights: TextHighlight[] = [];
   /** property used to support the build of the selection highlight rect for the svg */
   specialTextSelectionHighlight: TextSelectionAnnotation = {
-    color: "#0067D1",
+    color: "#9CCBFF",
+    borderColor: "#0050A8",
     active: false,
     textSelection: new TextSelection()
   };

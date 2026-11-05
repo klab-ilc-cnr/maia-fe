@@ -240,6 +240,33 @@ test('regressione: Text - filtro Visibility (chip non tagliato, checkbox solo "d
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Text - evidenziazione del testo selezionato (colori e contrasto)', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Corpus', { exact: true }).click();
+  await page.locator('#corpusExplorerTile .p-treenode-label, #corpusExplorerTile .p-tree-node-label').filter({ hasText: 'Decameron' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile.locator('#gText tspan tspan').nth(12)).toBeVisible({ timeout: 30_000 });
+  // la selezione si evidenzia solo con un layer scelto
+  await tile.locator('p-select').first().click();
+  await page.locator('.p-select-option').first().click();
+  await page.waitForTimeout(800);
+  const word = tile.locator('#gText tspan tspan').nth(12);
+  const b = (await word.boundingBox())!;
+  await page.mouse.dblclick(b.x + b.width / 2, b.y + b.height / 2);
+  const rect = page.locator('#selectionHighlightg rect').first();
+  await expect(rect).toBeVisible();
+  const a = await rect.evaluate((e) => ({ fill: e.getAttribute('fill'), stroke: e.getAttribute('stroke'), so: e.getAttribute('stroke-opacity'), fo: Number(e.getAttribute('fill-opacity')) }));
+  // riempimento azzurro chiaro, bordo blu scuro pieno (contrasto del bordo >= 3:1, WCAG 1.4.11)
+  expect(a.fill?.toLowerCase()).toBe('#9ccbff');
+  expect(a.stroke?.toLowerCase()).toBe('#0050a8');
+  expect(a.so, 'bordo pieno').toBeNull();
+  expect(a.fo).toBeGreaterThan(0.5);
+  await snap(page, 'r9-text-selection');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
