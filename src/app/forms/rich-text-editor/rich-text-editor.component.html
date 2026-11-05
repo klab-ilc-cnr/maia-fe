@@ -21,10 +21,10 @@
       <!-- the buttons below have no "ql-" class: Quill ignores them, they open the menus -->
       <button type="button" class="rte-menu-button" (click)="charsPopover.toggle($event)"
         [attr.aria-label]="'RICH_EDITOR.specialChars'|translate" [title]="'RICH_EDITOR.specialChars'|translate"
-        aria-haspopup="true"><span aria-hidden="true">Ω</span></button>
+        aria-haspopup="true"><span aria-hidden="true">Ω</span><span class="rte-caret" aria-hidden="true">▾</span></button>
       <button type="button" class="rte-menu-button" (click)="formatsPopover.toggle($event)"
         [attr.aria-label]="'RICH_EDITOR.moreFormats'|translate" [title]="'RICH_EDITOR.moreFormats'|translate"
-        aria-haspopup="true"><span aria-hidden="true">⋯</span></button>
+        aria-haspopup="true"><span aria-hidden="true">x<sup>2</sup></span><span class="rte-caret" aria-hidden="true">▾</span></button>
     </span>
     <span class="ql-formats">
       <button type="button" class="ql-clean" [attr.aria-label]="'RICH_EDITOR.clean'|translate" [title]="'RICH_EDITOR.clean'|translate"></button>
