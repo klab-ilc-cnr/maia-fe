@@ -211,6 +211,14 @@ test('regressione: Text - filtro Visibility (chip non tagliato, checkbox solo "d
   const header = () => page.locator('.p-multiselect-overlay .p-multiselect-header .p-checkbox').first();
   const chips = () => ms.locator('.layer-item-value');
 
+  // centratura verticale (box ad altezza fissa): segnaposto prima, chip del layer poi
+  const offCenter = (sel: string) => ms.evaluate((e, q) => {
+    const box = e.getBoundingClientRect(); const el = e.querySelector(q)!;
+    const r = document.createRange(); r.selectNodeContents(el); const b = q.includes('layer-item') ? el.getBoundingClientRect() : r.getBoundingClientRect();
+    return Math.abs((b.top + b.height / 2) - (box.top + box.height / 2));
+  }, sel);
+  expect(await offCenter('.p-multiselect-label'), 'segnaposto centrato in verticale').toBeLessThan(1.5);
+
   // checkbox dell'intestazione senza layer scelti: "seleziona tutti" non ha effetto (troppe richieste al backend)
   await ms.click();
   await expect(header()).toBeVisible();
@@ -222,6 +230,7 @@ test('regressione: Text - filtro Visibility (chip non tagliato, checkbox solo "d
   await expect(chips()).toHaveCount(1);
   const over = await ms.evaluate((e) => e.querySelector('.layer-item-value')!.getBoundingClientRect().bottom - (e.getBoundingClientRect().bottom - 1));
   expect(over, 'chip del layer tagliato in basso').toBeLessThanOrEqual(0.5);
+  expect(await offCenter('.layer-item-value'), 'chip del layer centrato in verticale').toBeLessThan(1.5);
   await snap(page, 'r8-text-visibility');
 
   // la checkbox ora deseleziona tutto

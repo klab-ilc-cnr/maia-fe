@@ -136,10 +136,16 @@ path {
 }
 
 :host ::ng-deep .multiselect-custom {
+  // il campo ha altezza fissa (layerVisibilityHeight): testo segnaposto e chip del layer centrati in verticale
+  // (con il padding verticale del label il chip veniva tagliato in basso e il testo restava in alto)
+  .p-multiselect-label-container {
+    display: flex;
+    align-items: center;
+  }
+
   .p-multiselect-label {
-    // il campo ha altezza fissa (layerVisibilityHeight): con .5rem il chip con il livello veniva tagliato in basso
-    padding-top: .25rem;
-    padding-bottom: .25rem;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .layer-item-value {
@@ -148,7 +154,10 @@ path {
     padding: .25rem .5rem;
     border-radius: 3px;
     display: inline-flex;
+    align-items: center;
     margin-right: .5rem;
+
+    i { line-height: 1; }
   }
 
   .layer-placeholder {
