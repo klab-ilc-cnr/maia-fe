@@ -17,6 +17,14 @@ Le dipendenze di questa cartella non entrano nel `package.json` dell'app.
 Fallisce su: titolo errato, login fallito, pagine o pannelli che non compaiono, tabelle vuote, **eccezioni JS non gestite**.
 Errori di console e risposte HTTP ≥ 400 vengono solo **annotati** nel report.
 
+Altri file:
+- `tests/navigation.spec.ts`: navigazioni con link relativi (menu laterale, dettaglio tagset/layer e ritorno);
+- `tests/regressions.spec.ts`: difetti trovati nei test manuali (colori dei tab, tabella KWIC del Search,
+  export PDF del dizionario, etichette dell'albero del testo), con selettori validi per tutte le versioni di PrimeNG;
+- `tests/visual-tour.spec.ts`: **giro visivo** in sola lettura (pagine, dialoghi, select aperti, menu, context menu,
+  tutti i tab degli editor, popover, explorer dell'ontologia). Fotografa in `artifacts/screens/<E2E_LABEL>/v-*.png`
+  per il confronto prima/dopo di un cambio di tema; i passi che non trovano l'elemento sono annotati come "saltato".
+
 ## Credenziali
 
 File locale **fuori dal repository** (e fuori da Nextcloud), permessi 600: `~/.config/maia/e2e.env`

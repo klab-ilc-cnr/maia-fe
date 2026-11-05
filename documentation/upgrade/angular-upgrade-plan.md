@@ -190,10 +190,12 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 |---|---|---|
 | 0.20.0 | ultima release, Angular 14 (`master`) | in produzione |
 | 0.21.0 | Angular 16 (comprende il passaggio intermedio a 15) | superata |
-| **0.21.1** | + correzioni regressioni (tab, Search, colori) | **attuale** — `dist/maia-fe-0.21.1-test-ng16-*.zip` |
-| 0.22.0 | Angular 17 (fase 2) | da fare |
-| 0.23.0 | Angular 18 + builder esbuild (fase 2) | da fare |
-| 0.24.0 – 0.26.0 | Angular 19, 20, 21 (fase 3) | da fare |
+| 0.21.1 | + correzioni regressioni (tab, Search, colori) | testata (ok) |
+| 0.22.0 | Angular 17 (fase 2) | superata |
+| 0.23.0 | Angular 18 + builder esbuild (fase 2) | testata (ok) |
+| 0.24.0 | Angular 19 + PrimeNG 19 con il nuovo sistema di temi (fase 3) | superata |
+| 0.25.0 | Angular 20 + PrimeNG 20 (fase 3) | superata |
+| **0.26.0** | **Angular 21 + PrimeNG 21** (fase 3, checkpoint) | **attuale** — `dist/maia-fe-0.26.0-test-ng21-*.zip` |
 
 ## 6bis. Avanzamento
 
@@ -265,6 +267,31 @@ Scoperte utili per le fasi successive:
 - `#/lexicon/languages` è una **pagina segnaposto** mai implementata (template `languages-list works!`).
 - Vengono caricati **due temi PrimeNG** insieme (`saga-blue` da `styles.scss` e `lara-light-blue` da `angular.json`) e **Bootstrap due volte** (`angular.json` e `styles.scss`): da sistemare nella fase 3 (nuovo tema).
 - Il layout del workspace si salva **uscendo dal workspace** (`canDeactivate` / `beforeunload` → `PUT /api/workspaces/layout`), non all'apertura dei pannelli.
+
+### Fase 3 — completata (2026-11-05): PrimeNG 18 (nuovo tema) → Angular 19 → 20 → 21 — v0.26.0
+
+| Commit | Contenuto |
+|---|---|
+| `1323f8a8` | e2e: **giro visivo** dei componenti (baseline prima del cambio di tema) |
+| `5a4c4c8e` | **PrimeNG 18 con il nuovo sistema di temi** (su Angular 18): preset `maia-preset.ts` (Lara con i valori di saga-blue), layer CSS `base, primeng`, variabili saga, compatibilità PrimeNG 17, Dropdown → Select |
+| `3733aa45` | **Angular 19** + PrimeNG 19.1.4, Font Awesome 6, Sass `@use` (v0.24.0) |
+| `40780f18` | TabView → Tabs, OverlayPanel → Popover, InputSwitch → ToggleSwitch (rimossi in PrimeNG 20) |
+| `1c52fc0f` | **Angular 20** + PrimeNG 20.4.0, `@primeuix/themes` 1.2.5 (v0.25.0) |
+| `88066505` | **Angular 21** + PrimeNG 21.1.10, `@primeuix/themes` 2.0.3, Font Awesome svg 7 (v0.26.0) |
+| `fa37439d` | tolti gli `overrides` di npm dell'era Angular 14, compodoc 2, `npm run check-licenses` |
+
+Scelte e scoperte:
+- **Ordine**: il tema nuovo su Angular 18 (PrimeNG 17 non supporta Angular 19), poi un salto di Angular alla volta con la PrimeNG corrispondente. Ogni passo confrontato con il giro visivo e con un **confronto puntuale delle posizioni dei testi** tra la 0.23.0 (worktree `maia-fe-ng18`, porta 4202) e la versione nuova.
+- **Tema**: nessun preset è uguale a saga-blue; Lara + token (colore primario blu Material, grigi Bootstrap, angoli 3px, spaziature e colori delle severità dei pulsanti di saga). Fino a PrimeNG 17 l'app caricava `lara-light-blue` e poi `saga-blue`: dove saga non definiva una proprietà restava Lara (es. pulsanti in grassetto), riprodotto anche questo. Risolto anche il doppio caricamento di tema e Bootstrap.
+- **Layer CSS**: `@layer base, primeng;`; Bootstrap & co. e le regole dell'app sugli elementi nel layer `base` (sotto PrimeNG), le classi dell'app senza layer. Dettagli in `src/styles/README-layer.md`. Sostituisce il layer unico temporaneo delle fasi 1-2.
+- **PrimeFlex resta 3.2.1** (non 4): con le 45 variabili di saga (`saga-variables.css`) produce esattamente gli stessi stili di prima.
+- **Licenze**: `@primeuix/themes` 3.x, `@primeuix/styles` 3.x, `@primeuix/styled` 1.x, `@primeuix/utils` 0.8.x e `@primeuix/motion` 1.x sono **PrimeUI (proprietari)**: PrimeNG 21.1.10 usa solo le versioni MIT (themes 2.0.3, styles 2.0.3, styled 0.7.4, utils 0.7.2, motion 0.0.10). `npm run check-licenses` lo verifica.
+- **Host come elemento principale** (Select da 18, molti componenti da 20): classi e `styleClass` finiscono sullo stesso elemento e i selettori `host .p-xxx` non trovano più nulla. Corretti i casi trovati (filtri Lexicon/Dictionary, menu del workspace, Search, campi non validi).
+- **Difetti di PrimeNG gestiti in `primeng-compat.css`**: `p-scroller` senza `flex:1` (lista del Lexicon vuota), icona di ordinamento e riepilogo delle tabelle senza stile, `iconPos="start"` dei pannelli senza regola, pulsanti con sola icona alti tre righe in PrimeNG 20 (`\0A0` scritto male), campi disabilitati non più semitrasparenti in PrimeNG 20.
+- **Comportamenti cambiati**: `autoDisplayFirst` dei Select rimosso (verificato che nessun select dipendesse dalla prima opzione automatica); pulsanti di `p-orderList` secondary di default; pannelli dei Tabs vuoti ma presenti in PrimeNG 19.
+- **Non fatto (di proposito)**: migrazione dei template al control flow `@if/@for` proposta da `ng update` 21 (61 template, un errore): i template restano `*ngIf/*ngFor`, ancora supportati; **quill resta 1.3.7** (quill 2 cambia l'HTML salvato dagli editor: da decidere e provare sui dati).
+- **Differenze visibili accettate**: hover rosa delle voci del menu del workspace (aspetto di Angular 14, perso con PrimeNG 16 e tornato); campi "Marche d'uso/grammaticali/semantiche" del senso a tutta colonna (`styleClass="w-full"` del template); pannello dei select con sfondo pieno; scarti di 2-4 px nelle colonne delle tabelle e nel pannello di ordinamento del dizionario.
+- `npm audit`: **20** (0 critiche, 0 alte): strumenti di sviluppo (Angular CLI 21, corretti solo dalla 22; compodoc) e quill 1.3.7. Spariti tutti gli avvisi su `@angular/*`.
 
 ---
 
