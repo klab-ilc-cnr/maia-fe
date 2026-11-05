@@ -198,6 +198,39 @@ test('regressione: Search - errore del campo vuoto e avvisi del pulsante Annota'
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Text - filtro Visibility (chip non tagliato, checkbox solo "deseleziona tutto")', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Corpus', { exact: true }).click();
+  await page.locator('#corpusExplorerTile .p-treenode-label, #corpusExplorerTile .p-tree-node-label').filter({ hasText: 'Decameron' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  const ms = tile.locator('p-multiselect').first();
+  await expect(ms).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  const header = () => page.locator('.p-multiselect-overlay .p-multiselect-header .p-checkbox').first();
+  const chips = () => ms.locator('.layer-item-value');
+
+  // checkbox dell'intestazione senza layer scelti: "seleziona tutti" non ha effetto (troppe richieste al backend)
+  await ms.click();
+  await expect(header()).toBeVisible();
+  await header().click({ force: true }); await page.waitForTimeout(800);
+  await expect(chips(), 'seleziona tutti inibito').toHaveCount(0);
+
+  // un layer scelto: il chip non e' tagliato in basso (altezza fissa del campo)
+  await page.locator('.p-multiselect-option').first().click(); await page.waitForTimeout(1000);
+  await expect(chips()).toHaveCount(1);
+  const over = await ms.evaluate((e) => e.querySelector('.layer-item-value')!.getBoundingClientRect().bottom - (e.getBoundingClientRect().bottom - 1));
+  expect(over, 'chip del layer tagliato in basso').toBeLessThanOrEqual(0.5);
+  await snap(page, 'r8-text-visibility');
+
+  // la checkbox ora deseleziona tutto
+  await expect(header()).toHaveClass(/p-checkbox-checked/);
+  await header().click(); await page.waitForTimeout(800);
+  await expect(chips(), 'deseleziona tutto').toHaveCount(0);
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

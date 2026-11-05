@@ -416,6 +416,33 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
    * @param event {any} evento di variazione dei layer visibili
    */
+  /** true when the header checkbox was clicked to "select all" (ignored): the onChange PrimeNG emits right after must not reload the text */
+  private ignoreNextLayersChange = false;
+
+  /**
+   * Header checkbox of the layer visibility selector: it works only as "deselect all".
+   * Selecting every layer at once would trigger a huge number of backend requests and rendering work,
+   * so checking it is ignored (the checkbox is checked only while at least one layer is selected).
+   * PrimeNG emits onChange right after this event, which reloads the text for the new selection.
+   * @param event checked: new state requested by the user
+   */
+  onToggleAllLayers(event: { checked: boolean }) {
+    if (event.checked) {
+      this.ignoreNextLayersChange = true;
+      return;
+    }
+    this.selectedLayers = [];
+  }
+
+  /** Selection change of the layer visibility selector. */
+  onLayersChange(event?: any) {
+    if (this.ignoreNextLayersChange) {
+      this.ignoreNextLayersChange = false;
+      return;
+    }
+    this.changeVisibleLayers(event);
+  }
+
   changeVisibleLayers(event?: any) {
     this.visibleLayers = this.selectedLayers || [];
     this.scrollingDirection = ScrollingDirectionType.InRange;

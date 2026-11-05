@@ -812,3 +812,10 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   margin-right: 0.5rem;
   transform: rotate(45deg);
 }
+
+/* Selettore "Visibility" dei layer del pannello Text: la checkbox dell'intestazione funziona solo come "deseleziona tutto"
+   (selezionare tutti i layer insieme genera moltissime richieste); senza layer selezionati non ha effetto: la si mostra spenta. */
+.layer-visibility-panel-empty .p-multiselect-header .p-checkbox {
+  opacity: 0.5;
+  pointer-events: none;
+}

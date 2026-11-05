@@ -12,7 +12,9 @@
   <div class="col-sm-6">
     <label class="col-sm-1 col-form-label">Visibility</label>
     <div class="p-fluid">
-      <p-multiSelect [style]="{'height': layerVisibilityHeight + 'px'}" [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" placeholder="Select the layers to be displayed" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="changeVisibleLayers($event)">
+      <p-multiSelect [style]="{'height': layerVisibilityHeight + 'px'}" [options]="(layers$|async) || []" [(ngModel)]="selectedLayers" placeholder="Select the layers to be displayed" optionLabel="name" class="multiselect-custom" display="chip" (onChange)="onLayersChange($event)"
+        [selectAll]="!!selectedLayers?.length" (onSelectAllChange)="onToggleAllLayers($event)"
+        [panelStyleClass]="'layer-visibility-panel' + (selectedLayers?.length ? '' : ' layer-visibility-panel-empty')">
         <ng-template let-value pTemplate="selectedItems">
           <div class="layer-item-value" *ngFor="let option of selectedLayers" [ngStyle]="{'border-color': option.color}">
             <span class="pe-2">
