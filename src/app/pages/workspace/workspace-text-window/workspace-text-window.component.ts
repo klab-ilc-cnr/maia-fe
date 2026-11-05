@@ -327,7 +327,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.textTileSplitter.cd.detectChanges();
-      this.fixPrimeNgSplitterPanelInitialSize();
     });
   }
 
@@ -1037,13 +1036,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (annotationIndex !== -1) {
       this.textoAnnotationsRes.splice(annotationIndex, 1);
     }
-  }
-
-  /**this is a workaround to fix a rendering problem with the primneg splitter component */
-  private fixPrimeNgSplitterPanelInitialSize() {
-    const panels: any = document.getElementsByClassName('p-splitter-panel');
-    const annotationPanel = panels[2];
-    annotationPanel.style.flexBasis = 'calc(' + this.textTileSplitter.panelSizes[2] + '% - ' + ((panels.length - 1) * 4) + 'px)';
   }
 
   /** inits the text tile splitteer properties */

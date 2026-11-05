@@ -353,6 +353,28 @@ test('regressione: Lexicon Editor - albero a sinistra senza barra orizzontale, i
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Text - apertura senza errori in console, pannelli 24/52/24', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  w.reset();
+  await page.locator('#workspace-menu').getByText('Corpus', { exact: true }).click();
+  await page.locator('#corpusExplorerTile .p-treenode-label, #corpusExplorerTile .p-tree-node-label').filter({ hasText: 'Decameron' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile.locator('#gText tspan tspan').nth(12)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  // Difetto visto: il workaround "fixPrimeNgSplitterPanelInitialSize" cercava la classe .p-splitter-panel (rinominata
+  // .p-splitterpanel in PrimeNG 20) e lanciava "annotationPanel is undefined" a ogni apertura del pannello Text.
+  expect(w.consoleErrors.filter((e) => /annotationPanel|is undefined|TypeError/.test(e)), 'errori in console all\'apertura').toEqual([]);
+  // dimensioni iniziali dei tre pannelli (sezioni / testo / annotazione) senza il workaround
+  const pct = await tile.evaluate((e) => {
+    const sp = e.querySelector('p-splitter')!; const tot = sp.getBoundingClientRect().width;
+    return [...sp.querySelectorAll('.p-splitterpanel, .p-splitter-panel')].map((x) => Math.round((100 * x.getBoundingClientRect().width) / tot));
+  });
+  expect(pct).toEqual([24, 52, 24]);
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

@@ -1,7 +1,7 @@
 import { expect, Locator, Page, test, TestInfo } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
-import { apiLogin, uiLogin, watchPage } from './support';
+import { annotate, apiLogin, uiLogin, watchPage } from './support';
 
 /**
  * Giro visivo (solo letture) per il confronto prima/dopo del nuovo sistema di temi di PrimeNG 18+.
@@ -188,6 +188,7 @@ test('giro visivo dei componenti', async ({ page, baseURL }, testInfo) => {
     }
   });
 
+  annotate(testInfo, 'giro', w); // errori di console e risposte HTTP >= 400 vengono solo annotati
   expect(objectLabels, 'testi "[object Object]" nelle schermate').toEqual([]);
   expect(w.pageErrors).toEqual([]);
 });
