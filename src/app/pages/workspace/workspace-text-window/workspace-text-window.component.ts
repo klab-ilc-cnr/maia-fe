@@ -795,13 +795,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         };
 
         if (widthPx > 0) {
+          // same geometry as the annotation highlights and the selection built from indexes (KWIC):
+          // 1px of padding on both sides (x - 1, width + 2) and the standard line box (yText - lineHeight + 5, lineHeight - 2),
+          // not the glyph bounding box of the tspan
+          const yText = Number(tSpanSentence.getAttribute("y"));
           this.selectionHighlights.push({
             id: undefined,
-            width: widthPx,
-            height: height,
+            width: widthPx + 2,
+            height: this.visualConfig.stdTextLineHeight - 2,
             coordinates: {
-              x: x + startOffsetPx,
-              y: y
+              x: x + startOffsetPx - 1,
+              y: Number.isFinite(yText) ? yText - this.visualConfig.stdTextLineHeight + 5 : y
             },
             bgColor: this.specialTextSelectionHighlight.color
           });

@@ -263,6 +263,20 @@ test('regressione: Text - evidenziazione del testo selezionato (colori e contras
   expect(a.stroke?.toLowerCase()).toBe('#0050a8');
   expect(a.so, 'bordo pieno').toBeNull();
   expect(a.fo).toBeGreaterThan(0.5);
+  // stessa geometria della cornice delle annotazioni: padding di 1px per lato e stessa altezza
+  // (prima la selezione col mouse usava il box dei glifi: piu' stretta e alta di 1px)
+  const g = await page.evaluate(() => {
+    const r = document.querySelector('[id^="textTile_"] #selectionHighlightg rect')!.getBoundingClientRect();
+    const ann = document.querySelector('[id^="textTile_"] g.highlight rect');
+    let word: DOMRect | null = null; let best = 1e9;
+    for (const e of Array.from(document.querySelectorAll('[id^="textTile_"] #gText tspan tspan'))) {
+      const b = e.getBoundingClientRect(); const c = (r.left + r.right) / 2;
+      if (b.width && b.left <= c && b.right >= c && Math.abs(b.top - r.top) < best) { best = Math.abs(b.top - r.top); word = b; }
+    }
+    return { h: r.height, annH: ann ? ann.getBoundingClientRect().height : null, left: word ? word.left - r.left : null };
+  });
+  if (g.annH) expect(g.h, 'stessa altezza della cornice delle annotazioni').toBeCloseTo(g.annH, 0);
+  expect(g.left, 'padding a sinistra (1px)').toBeGreaterThan(0.5);
   await snap(page, 'r9-text-selection');
   expect(w.pageErrors).toEqual([]);
 });
