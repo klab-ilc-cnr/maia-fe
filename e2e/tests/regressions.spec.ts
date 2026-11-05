@@ -456,6 +456,41 @@ test('regressione: Dictionary Editor - anteprima: tabelle delle occorrenze visib
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: campi numerici - le frecce su/giu della tastiera non cambiano il valore', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  // 1) Dictionary Editor, scheda della voce: "N. occorrenze nel Decameron" e "Occ. altre opere"
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  await w.settle();
+  const row = page.locator('#dictionaryTile tbody tr').filter({ hasText: /\w/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  await w.settle();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').first()).toBeVisible({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').first().click();
+  const fields = editor.locator('p-inputnumber input').filter({ visible: true });
+  await expect(fields.first()).toBeVisible({ timeout: 30_000 });
+  const n = await fields.count();
+  testInfo.annotations.push({ type: 'campi-dizionario', description: String(n) });
+  expect(n, 'campi numerici nella scheda della voce').toBeGreaterThan(0);
+  // Difetto: ArrowUp/ArrowDown cambiavano il numero (inavvertitamente, muovendosi nella pagina con la tastiera)
+  for (let i = 0; i < n; i++) {
+    const f = fields.nth(i);
+    const before = await f.inputValue();
+    await f.click();
+    for (const k of ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowUp']) await f.press(k);
+    expect(await f.inputValue(), `campo numerico #${i} invariato con le frecce`).toBe(before);
+  }
+  // si puo' ancora scrivere: la tastiera numerica funziona (nessuna modifica salvata)
+  const first = fields.first(); const v = await first.inputValue();
+  await first.click(); await first.press('End'); await first.pressSequentially('7');
+  expect(await first.inputValue(), 'digitare funziona ancora').toBe(v + '7');
+  await first.fill(v);
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
