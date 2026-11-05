@@ -79,3 +79,9 @@ td:nth-child(n + 2) {
     margin-left: 0.5rem;
   }
 }
+
+// add form / add sense button: small round button, same size as the "+" of the fieldsets (.fieldset-small), colour unchanged
+.add-node-button {
+  height: 1.5rem !important;
+  width: 1.5rem;
+}

@@ -290,7 +290,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     // columns were never displayed (their display value was invalid): removed, they only added empty cells.
     this.cols = [
       { field: 'name', header: '' },
-      { field: 'creator', header: 'Autore', width: '4rem' },
+      { field: 'creator', header: 'Autore', width: '2.5rem' },
       { field: 'status', header: 'Stato', width: '2.5rem' }
     ];
 

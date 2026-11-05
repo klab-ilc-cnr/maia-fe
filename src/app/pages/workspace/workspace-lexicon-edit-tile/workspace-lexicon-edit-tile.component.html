@@ -27,7 +27,7 @@
             <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
               [tooltip]="'<em>Autore</em>: '+rowData['creator']+'<br><em>Creato il</em>: '+ rowData['creationDate']+'<br><em>Ultima modifica</em>: '+ rowData['lastUpdate']"></app-icon-author>
             <button pButton type="button" icon="pi pi-plus"
-              class="p-element p-button-rounded mx-0 p-button-sm p-component p-button-icon-only"
+              class="p-element p-button-rounded p-component p-button-icon-only add-node-button"
               *ngIf="col.field === 'creator' && (rowData['type'] == LexicalEntryType.FORMS_ROOT || rowData['type'] == LexicalEntryType.SENSES_ROOT)"
               (click)="onAdd($event, rowData['type'])"></button>
           </td>

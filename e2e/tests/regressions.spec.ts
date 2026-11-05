@@ -333,7 +333,8 @@ test('regressione: Lexicon Editor - albero a sinistra senza barra orizzontale, i
       const tree = e.querySelector('p-treetable')!;
       const body = tree.querySelector('.p-treetable-scrollable-body') as HTMLElement;
       const tds = [...tree.querySelectorAll('tbody tr:first-child td')].map((td) => td.getBoundingClientRect().width);
-      return { panel: tree.getBoundingClientRect().width, overflowX: body.scrollWidth - body.clientWidth, name: tds[0], icons: tds.slice(1).map(Math.round) };
+      const add = tree.querySelector('button.add-node-button')?.getBoundingClientRect();
+      return { panel: tree.getBoundingClientRect().width, overflowX: body.scrollWidth - body.clientWidth, name: tds[0], icons: tds.slice(1).map(Math.round), add: add ? Math.round(add.width * 10) / 10 : null };
     });
   };
   // larghezza minima del pannello (600px: la colonna sinistra scendeva a ~236px e compariva la barra) e piu' largo
@@ -348,6 +349,9 @@ test('regressione: Lexicon Editor - albero a sinistra senza barra orizzontale, i
   expect(wide.icons, 'colonne delle icone invariate allargando il pannello').toEqual(narrow.icons);
   // la colonna delle note non c'e' piu' (l'icona sta accanto al nome): restano autore/"+" e stato, e il nome ha piu' spazio
   expect(narrow.icons.length, 'solo le colonne autore e stato').toBe(2);
+  // i "+" di form/sense: piccoli come quelli dei fieldset (1.5rem), non i pulsanti grandi di prima
+  expect(narrow.add, 'pulsante + presente').not.toBeNull();
+  expect(narrow.add!, 'pulsante + piccolo (1.5rem = 19.5px)').toBeLessThanOrEqual(21);
   expect(narrow.name, 'spazio per il nome a pannello stretto').toBeGreaterThan(170);
   await snap(page, 'r11-lexicon-editor-tree');
   expect(w.pageErrors).toEqual([]);
