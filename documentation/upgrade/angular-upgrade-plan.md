@@ -195,7 +195,8 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 | 0.23.0 | Angular 18 + builder esbuild (fase 2) | testata (ok) |
 | 0.24.0 | Angular 19 + PrimeNG 19 con il nuovo sistema di temi (fase 3) | superata |
 | 0.25.0 | Angular 20 + PrimeNG 20 (fase 3) | superata |
-| **0.26.0** | **Angular 21 + PrimeNG 21** (fase 3, checkpoint) | **attuale** — `dist/maia-fe-0.26.0-test-ng21-*.zip` |
+| 0.26.0 | Angular 21 + PrimeNG 21 (fase 3, checkpoint) | testata: 1 difetto (marche del senso) |
+| **0.26.1** | + correzioni del test manuale (chip delle marche, Visibility) | **attuale** — `dist/maia-fe-0.26.1-test-ng21-*.zip` |
 
 ## 6bis. Avanzamento
 
@@ -292,6 +293,14 @@ Scelte e scoperte:
 - **Non fatto (di proposito)**: migrazione dei template al control flow `@if/@for` proposta da `ng update` 21 (61 template, un errore): i template restano `*ngIf/*ngFor`, ancora supportati; **quill resta 1.3.7** (quill 2 cambia l'HTML salvato dagli editor: da decidere e provare sui dati).
 - **Differenze visibili accettate**: hover rosa delle voci del menu del workspace (aspetto di Angular 14, perso con PrimeNG 16 e tornato); campi "Marche d'uso/grammaticali/semantiche" del senso a tutta colonna (`styleClass="w-full"` del template); pannello dei select con sfondo pieno; scarti di 2-4 px nelle colonne delle tabelle e nel pannello di ordinamento del dizionario.
 - `npm audit`: **20** (0 critiche, 0 alte): strumenti di sviluppo (Angular CLI 21, corretti solo dalla 22; compodoc) e quill 1.3.7. Spariti tutti gli avvisi su `@angular/*`.
+
+Test manuale della 0.26.0 (2026-11-05) → **0.26.1**: le marche del senso mostravano `[object Object]`. Causa: input rinominati
+da PrimeNG 20 (AutoComplete `field` → `optionLabel`, MultiSelect `defaultLabel` → `placeholder`) scritti come **attributi
+statici**, che il compilatore non controlla (i binding `[field]` invece erano stati corretti). Trovati altri 2 casi con lo
+stesso difetto (relazioni semantiche) e il segnaposto "Visibility" della finestra del testo. Da allora
+`npm run check-primeng-attrs` confronta gli attributi statici e i `pTemplate` dei template con PrimeNG installato: **va
+lanciato a ogni aggiornamento di PrimeNG** (anche per Angular 22 / Optimus UI). Ripristinato anche l'aspetto azzurro di
+Angular 14 dei chip di AutoComplete/MultiSelect (già grigi e arrotondati dalla 0.21).
 
 ---
 
