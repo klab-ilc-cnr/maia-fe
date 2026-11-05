@@ -16,17 +16,19 @@
           <div class="search-input-group">
             <p-selectButton (onChange)="onSearchModeChange()" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
             <div class="flex-fill">
-              <p-iconfield iconPosition="left">
+              <p-iconfield iconPosition="left" [class.search-error]="searchValueMissing">
                 <p-inputicon class="pi pi-search"></p-inputicon>
-                <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
+                <input #searchField type="text" pInputText
                   class="w-100"
+                  aria-required="true" [attr.aria-invalid]="searchValueMissing"
                   (keydown.enter)="onSearch()"
                   [placeholder]="this.searchLabel"
-                  [(ngModel)]="searchValue" />
+                  [(ngModel)]="searchValue" (ngModelChange)="searchValueMissing = false" />
+                <!-- errore senza spostare il layout: cornice e segnaposto rossi, icona (con tooltip) e avviso per gli screen reader -->
+                <i *ngIf="searchValueMissing" class="pi pi-exclamation-circle search-error-icon"
+                  [pTooltip]="'SEARCH.validSearchValue'|translate" tooltipPosition="top"></i>
+                <span *ngIf="searchValueMissing" class="visually-hidden" role="alert">{{'SEARCH.validSearchValue'|translate}}</span>
               </p-iconfield>
-              <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
-                {{'SEARCH.validSearchValue'|translate}}
-              </small>
             </div>
           </div>
           <p-multiSelect [options]="(pos$|async)||[]" class="mx-5 shrinkField" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
@@ -71,16 +73,22 @@
     <div class="row">
         <div class="col d-flex justify-content-start">
               {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
+              <span *ngIf="searchResults.length > 0 && !annotationEnabled" class="ms-3 text-secondary">
+                <i class="pi pi-info-circle"></i> {{'SEARCH.annotateHint.noLayer'|translate}}
+              </span>
         </div>
         <div class="col d-flex justify-content-end">
-          <p-splitButton #annotate appendTo="body" 
-              label="{{'SEARCH.buttons.annotate'|translate}}"
-              (onClick)="showAnnotationTile()"
-              (onDropdownClick)="setAnnotateMenuItems()"
-              [model]="annotateItems"
-              [disabled]="!annotationAllowed"
-              severity="info" styleClass="custom-info-btn mx-2">
-          </p-splitButton>
+          <!-- un pulsante disabilitato non riceve il mouse: il tooltip sta sul contenitore e spiega il primo requisito mancante -->
+          <span class="d-inline-block" [pTooltip]="annotateHint ? (annotateHint|translate) : ''" [tooltipDisabled]="!annotateHint" tooltipPosition="top">
+            <p-splitButton #annotate appendTo="body" 
+                label="{{'SEARCH.buttons.annotate'|translate}}"
+                (onClick)="showAnnotationTile()"
+                (onDropdownClick)="setAnnotateMenuItems()"
+                [model]="annotateItems"
+                [disabled]="!annotationAllowed"
+                severity="info" styleClass="custom-info-btn mx-2">
+            </p-splitButton>
+          </span>
           <p-splitButton #exp appendTo="body" 
               label="{{'SEARCH.buttons.export'|translate}}"
               (onClick)="exp.onDropdownButtonClick($event)"

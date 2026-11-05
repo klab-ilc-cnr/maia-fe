@@ -354,6 +354,11 @@
         "validSearchValue": "insert a value",
         "numberOfResults": "Number of results",
         "selected": "Selected",
+        "annotateHint": {
+            "noResults": "Run a search first",
+            "noLayer": "To annotate, choose a layer and run the search again",
+            "noRows": "Select at least one result row to annotate"
+        },
         "selectFile": "Select file",
         "exportAll": "Export all",
         "exportSelected": "Export selected",

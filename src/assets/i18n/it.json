@@ -357,6 +357,11 @@
         "validSearchValue": "inserisci un valore",
         "numberOfResults": "Numero di risultati",
         "selected": "Selezionati",
+        "annotateHint": {
+            "noResults": "Esegui prima una ricerca",
+            "noLayer": "Per annotare scegli un layer e rilancia la ricerca",
+            "noRows": "Seleziona almeno una riga del risultato per annotare"
+        },
         "selectFile": "Seleziona file",
         "exportAll": "Esporta tutto",
         "exportSelected": "Esporta selezionati",

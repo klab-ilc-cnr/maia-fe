@@ -106,7 +106,8 @@ test('regressione: maschera di input del Search (altezze, distanze, larghezza di
 
   // "Cerca" senza valore: compare l'errore del campo obbligatorio sotto il campo di ricerca
   await tile.locator('button.p-button-success').first().click();
-  await expect(tile.locator('small.p-error')).toBeVisible();
+  await expect(tile.locator('.search-error-icon')).toBeVisible();
+  expect(await tile.locator('small.p-error').count(), 'nessun messaggio sotto il campo (sposterebbe il layout)').toBe(0);
   await page.waitForTimeout(500);
   const m = await page.evaluate(() => {
     const r = (el: Element | null) => { const b = el!.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, height: b.height, width: b.width }; };
@@ -146,6 +147,54 @@ test('regressione: maschera di input del Search (altezze, distanze, larghezza di
   expect(narrow.tree, 'il selettore dei testi si restringe').toBeLessThan(min.tree);
   expect(narrow.pos, 'Pos si restringe').toBeLessThan(min.pos);
   expect(narrow.tree, 'il selettore dei testi non scende sotto il minimo').toBeGreaterThanOrEqual(109);
+  expect(w.pageErrors).toEqual([]);
+});
+
+test('regressione: Search - errore del campo vuoto e avvisi del pulsante Annota', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(1500);
+  const input = tile.locator('p-iconfield input[pinputtext]').first();
+  const icon = tile.locator('.search-error-icon');
+  const border = () => input.evaluate((e) => getComputedStyle(e).borderTopColor);
+  const normal = await border();
+  const top = () => tile.locator('p-divider').first().evaluate((e) => e.getBoundingClientRect().top);
+  const top0 = await top();
+
+  // 1) nessun errore finche' non si preme "Cerca": ne' scrivendo e cancellando, ne' uscendo dal campo
+  await input.fill('a'); await input.fill(''); await input.blur(); await page.waitForTimeout(300);
+  await expect(icon).toHaveCount(0);
+  expect(await border(), 'cornice normale senza "Cerca"').toBe(normal);
+
+  // 2) "Cerca" con il campo vuoto: cornice rossa + icona, il layout non si sposta, il campo ha il focus
+  await tile.locator('button.p-button-success').first().click(); await page.waitForTimeout(400);
+  await expect(icon).toBeVisible();
+  expect(await border(), 'cornice rossa').not.toBe(normal);
+  expect(Math.abs((await top()) - top0), 'il layout non si sposta').toBeLessThan(2);
+  await expect(input).toBeFocused();
+  await snap(page, 'r7-search-empty-error');
+
+  // 3) scrivendo l'errore sparisce; cancellando non ricompare
+  await input.pressSequentially('am'); await expect(icon).toHaveCount(0);
+  await input.fill(''); await page.waitForTimeout(300);
+  await expect(icon).toHaveCount(0);
+
+  // 4) avvisi del pulsante "Annota", dal primo requisito mancante
+  const annotate = tile.locator('p-splitbutton').first().locator('xpath=ancestor::span[1]');
+  const hint = async () => { await annotate.hover(); await page.waitForTimeout(500); return (await page.locator('.p-tooltip').filter({ visible: true }).last().innerText().catch(() => '')).trim(); };
+  const h1 = await hint(); testInfo.annotations.push({ type: 'avviso-1', description: h1 });
+  expect(h1, 'senza risultati').toMatch(/ricerca/i);
+  await input.fill('amore'); await input.press('Enter');
+  await expect(tile.locator('tbody tr').nth(1)).toBeVisible({ timeout: 30_000 });
+  await page.mouse.move(0, 0); await page.waitForTimeout(300);
+  const h2 = await hint(); testInfo.annotations.push({ type: 'avviso-2', description: h2 });
+  expect(h2, 'risultati ma ricerca senza layer').toMatch(/layer/i);
+  await expect(tile.getByText(/layer/i).filter({ has: page.locator('.pi-info-circle') })).toBeVisible();
+  await snap(page, 'r7-search-annotate-hint');
   expect(w.pageErrors).toEqual([]);
 });
 

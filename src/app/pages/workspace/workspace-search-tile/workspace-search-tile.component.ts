@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable, Subject, Subscription, catchError, debounceTime, forkJoin, map, of, switchMap, takeUntil, tap } from 'rxjs';
@@ -126,11 +126,21 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   isEditing: boolean = false;
   annotationEnabled: boolean = false;
 
-  @ViewChild('searchInput') searchInput: any;
+  @ViewChild('searchField') searchField?: ElementRef<HTMLInputElement>;
+  /** true dopo "Cerca" con il campo vuoto; torna false appena si scrive (non compare cancellando il testo) */
+  searchValueMissing = false;
   @ViewChild('dt') searchResultsTable!: Table;
 
   private filtersSubject: Subject<any> = new Subject();
   private readonly unsubscribe$ = new Subject<void>();
+
+  /** Chiave di traduzione del primo requisito mancante per annotare (null se si puo' annotare). */
+  get annotateHint(): string | null {
+    if (this.searchResults.length === 0) { return 'SEARCH.annotateHint.noResults'; }
+    if (!this.annotationEnabled) { return 'SEARCH.annotateHint.noLayer'; }
+    if (!this.selectedSearchResults || this.selectedSearchResults.length === 0) { return 'SEARCH.annotateHint.noRows'; }
+    return null;
+  }
 
   get annotationAllowed(): boolean {
     return this.annotationEnabled && this.selectedSearchResults && this.selectedSearchResults.length > 0;
@@ -278,7 +288,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
     const input = target as HTMLInputElement;
     this.filtersChanged = true;
-    this.searchInput.control.markAsTouched();
     this.searchResultsTable.filter(input.value, fieldName, matchMode);
   }
 
@@ -321,6 +330,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.filters.pos = this.posValue;
     this.searchRequest.reload = true;
     this.lastSearchRequestLayer = this.selectedLayer;
+    this.searchValueMissing = !this.searchRequest.filters.searchValue;
+    if (this.searchValueMissing) { this.searchField?.nativeElement.focus(); }
     this.clearTable();
     this.resetColumnFilters();
     this.setColumnFilters();
@@ -350,6 +361,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.selectedDocuments = [];
     this.selectSingleDocument(this.corpusNodes);
     this.searchValue = '';
+    this.searchValueMissing = false;
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
     this.selectedLayer = undefined;
@@ -712,8 +724,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * Validates inputs and starts the search process.
    */
   private search() {
-    this.searchInput.control.markAsTouched();
-
     if (!this.searchRequest.filters.searchValue) {
       return;
     }
