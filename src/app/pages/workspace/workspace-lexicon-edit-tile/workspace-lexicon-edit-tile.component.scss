@@ -13,6 +13,7 @@ p-tabs,
   }
 }
 
+td:has(> .name-cell),
 td:has(> span),
 td:has(> span) div:has(> span) {
   // width auto: with the fixed table layout a fixed 100px on the name cell made the table spread the remaining
@@ -54,4 +55,27 @@ td {
 // icon columns (note, author / add button, status): content centered in the fixed-width cell
 td:nth-child(n + 2) {
   text-align: center;
+}
+
+// name cell: the name shrinks with an ellipsis, toggler / sub / note icon keep their size
+.name-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  white-space: nowrap;
+
+  > span {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  > p-treetabletoggler, > sub, > .note-icon {
+    flex: none;
+  }
+
+  > .note-icon {
+    margin-left: 0.5rem;
+  }
 }
