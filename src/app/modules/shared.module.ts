@@ -58,6 +58,7 @@ import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value
 import { UriValidator } from '../validators/uri-validator.directive';
 import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
 import { NoArrowSpinDirective } from '../directives/no-arrow-spin.directive';
+import { RichTextEditorComponent } from '../forms/rich-text-editor/rich-text-editor.component';
 import { DividerModule } from "primeng/divider";
 import { ChipModule } from 'primeng/chip';
 
@@ -120,6 +121,7 @@ const DIRECTIVES = [
 ];
 
 const COMPONENTS = [
+  RichTextEditorComponent,
   PopupDeleteItemComponent,
   AutocompleteCheckboxComponent,
   DoubleAutocompleteComponent,

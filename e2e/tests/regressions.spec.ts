@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
-import { apiLogin, snap, uiLogin, watchPage } from './support';
+import { apiLogin, blockWrites, snap, uiLogin, watchPage } from './support';
 
 /**
  * Regressioni segnalate durante il test manuale del checkpoint Angular 16 (2026-11-04).
@@ -459,6 +459,7 @@ test('regressione: Dictionary Editor - anteprima: tabelle delle occorrenze visib
 test('regressione: campi numerici - le frecce su/giu della tastiera non cambiano il valore', async ({ page, baseURL }, testInfo) => {
   test.setTimeout(180_000);
   const w = watchPage(page);
+  await blockWrites(page, testInfo); // la scheda della voce del dizionario salva da sola: nessuna scrittura deve arrivare al server
   await openSmokeWorkspace(page, baseURL!);
   // 1) Dictionary Editor, scheda della voce: "N. occorrenze nel Decameron" e "Occ. altre opere"
   await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
@@ -483,11 +484,7 @@ test('regressione: campi numerici - le frecce su/giu della tastiera non cambiano
     for (const k of ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowUp']) await f.press(k);
     expect(await f.inputValue(), `campo numerico #${i} invariato con le frecce`).toBe(before);
   }
-  // si puo' ancora scrivere: la tastiera numerica funziona (nessuna modifica salvata)
-  const first = fields.first(); const v = await first.inputValue();
-  await first.click(); await first.press('End'); await first.pressSequentially('7');
-  expect(await first.inputValue(), 'digitare funziona ancora').toBe(v + '7');
-  await first.fill(v);
+  // (le scritture sono bloccate da blockWrites: la scheda della voce salva da sola)
   expect(w.pageErrors).toEqual([]);
 });
 
@@ -565,6 +562,64 @@ test('regressione: Text - annotazione singola: la POS del lemma (lessico) compar
   // Difetto visto: "villano [adjective] (adjective)": l'editor singolo aggiunge gia' "[pos]", la POS non va ripetuta
   expect(value, 'etichetta "lemma [pos]" con la POS una sola volta').toMatch(/^[^\[\]()]+ \[\w+\]$/);
   await snap(page, 'r16-annotazione-singola-lessico');
+  expect(w.pageErrors).toEqual([]);
+});
+
+test('regressione: editor di testo - barra ridotta, caratteri speciali, incolla pulita', async ({ page, baseURL, context }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  // I test che digitano NON devono scrivere sul back-end (molti editor salvano da soli, senza pulsante): scritture bloccate.
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: new URL(baseURL!).origin });
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  await expect(page.locator('#lexiconTile')).toBeVisible();
+  await page.locator('#lexiconTile tr', { hasText: '@' }).nth(1).dblclick();
+  const editor = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  await editor.locator('.jsPanel-btn-maximize').click().catch(() => undefined);
+  // si apre la definizione di un senso (editor di testo "definition"); salva solo con il pulsante di salvataggio
+  const row = editor.locator('tr', { hasText: /^\s*sense \(\d+\)/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.locator('button').first().click();
+  await row.locator('xpath=following-sibling::tr[1]').click();
+  const rte = editor.locator('app-rich-text-editor').first();
+  await expect(rte).toBeVisible({ timeout: 30_000 });
+  const toolbar = rte.locator('.ql-toolbar');
+
+  // 1) barra: solo gli strumenti scelti (niente tipo di testo, font, colori, elenchi, immagine, codice)
+  const tools = await toolbar.evaluate((t) => [...t.querySelectorAll('button, select')].map((b) => [...b.classList].find((c) => c.startsWith('ql-') || c.startsWith('rte-')) || '?'));
+  testInfo.annotations.push({ type: 'strumenti', description: tools.join(' ') });
+  expect(tools, 'strumenti della barra').toEqual(['ql-bold', 'ql-italic', 'ql-underline', 'ql-align', 'ql-link', 'rte-menu-button', 'rte-menu-button', 'ql-clean']);
+
+  // 2) caratteri speciali dal menu "Ω": inseriti al cursore
+  const area = rte.locator('.ql-editor');
+  const changes = await area.evaluateHandle((el) => { const host = el.closest('app-rich-text-editor')!; const c = { n: 0 }; host.addEventListener('change', () => c.n++); return c; });
+  await area.click(); await area.press('Control+A'); await area.press('Delete');
+  await area.pressSequentially('Parola ');
+  for (const ch of ['«', 'È', '–', '»']) {
+    await toolbar.locator('.rte-menu-button').first().click();
+    await page.locator('.rte-char', { hasText: new RegExp(`^${ch}$`) }).click();
+  }
+  expect(await area.innerText(), 'caratteri inseriti al cursore').toContain('Parola «È–»');
+  // le modifiche dell'utente fanno scattare il "change" DOM (come prima faceva la barra), usato da onPendingChanges()
+  expect(await changes.evaluate((c) => c.n), 'evento change alle modifiche').toBeGreaterThan(0);
+
+  // 3) "Altri formati": apice sul testo selezionato
+  await area.press('Control+A');
+  await toolbar.locator('.rte-menu-button').nth(1).click();
+  await page.locator('.rte-format').first().click();
+  expect(await area.innerHTML(), 'apice applicato').toContain('<sup>');
+
+  // 4) incolla da Word/web: colori, sfondi, font, titoli, immagini e dimensioni vengono scartati; restano corsivo, grassetto, link
+  const html = '<p style="color:red;font-family:Arial;font-size:14pt">Testo <span style="background:yellow;color:#0563c1">colorato</span> <b>grassetto</b> <i>corsivo</i> <a href="https://example.org">link</a></p><h1>Titolo</h1><img src="data:image/png;base64,iVBORw0KGgo=">';
+  await page.evaluate(async (h) => { await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([h], { type: 'text/html' }), 'text/plain': new Blob(['x'], { type: 'text/plain' }) })]); }, html);
+  await area.press('Control+A'); await area.press('Control+V');
+  await expect(area.locator('a')).toHaveCount(1);
+  const pasted = await area.innerHTML();
+  testInfo.annotations.push({ type: 'incollato', description: pasted.slice(0, 300) });
+  for (const bad of ['style=', 'color:', 'background', 'font-', '<img', '<h1', '<span']) expect(pasted, `incolla senza "${bad}"`).not.toContain(bad);
+  for (const good of ['<strong>grassetto</strong>', '<em>corsivo</em>', '<a href="https://example.org/"']) expect(pasted, `incolla con ${good}`).toContain(good);
+  await snap(page, 'r17-editor-testo');
   expect(w.pageErrors).toEqual([]);
 });
 

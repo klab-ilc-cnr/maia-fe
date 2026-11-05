@@ -104,3 +104,31 @@ export async function snap(page: Page, name: string) {
   fs.mkdirSync(dir, { recursive: true });
   await page.screenshot({ path: path.join(dir, `${name}.png`), fullPage: true });
 }
+
+/**
+ * Impedisce ai test di SCRIVERE sul back-end: le richieste di modifica vengono intercettate e rispondono 200 senza
+ * arrivare al server. Da usare in ogni test che digita o modifica campi.
+ *
+ * Perche': molti editor dell'app salvano da soli (scheda della voce del dizionario, definizione dei sensi...: valueChanges
+ * + debounce, senza pulsante) e la VM di test ha dati veri. Un test che digitava in un campo ha gia' modificato la voce
+ * "abbaiare" e la definizione di un suo senso.
+ * Bloccate: /lexo/(update|create|delete)/..., /texto/ con metodi di scrittura, /api/ con PUT / PATCH / DELETE.
+ * Non bloccate: il login e le POST di sola lettura (/lexo/data/..., ricerche).
+ */
+export async function blockWrites(page: Page, testInfo?: TestInfo): Promise<string[]> {
+  const blocked: string[] = [];
+  await page.route((url) => /\/(lexo|texto|api)\//.test(url.pathname), async (route) => {
+    const req = route.request();
+    const path = new URL(req.url()).pathname;
+    const method = req.method();
+    const write =
+      (/\/lexo\/(update|create|delete)\//.test(path)) ||
+      (/\/texto\//.test(path) && method !== 'GET' && !/\/(search|data)\b/i.test(path)) ||
+      (/\/api\//.test(path) && ['PUT', 'PATCH', 'DELETE'].includes(method));
+    if (!write) { await route.fallback(); return; }
+    blocked.push(`${method} ${path}`);
+    testInfo?.annotations.push({ type: 'scrittura-bloccata', description: `${method} ${path}` });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+  });
+  return blocked;
+}

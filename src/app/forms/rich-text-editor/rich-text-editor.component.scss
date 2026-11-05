@@ -1,0 +1,102 @@
+// the component has no view encapsulation: Quill builds its own DOM, and the popovers are appended to the body
+
+app-rich-text-editor {
+  display: block;
+}
+
+// buttons that open the menus, in the Quill toolbar (same size as the Quill buttons)
+.p-editor-toolbar .rte-menu-button {
+  width: 28px;
+  height: 24px;
+  padding: 3px 5px;
+  background: transparent;
+  border: 0;
+  color: #444;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover, &:focus-visible {
+    color: #06c;
+  }
+}
+
+.rte-popover {
+  .p-popover-content {
+    padding: 0.5rem;
+  }
+}
+
+.rte-chars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .rte-chars-group {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  // a thin line between the groups
+  .rte-chars-group + .rte-chars-group {
+    border-top: 1px solid #dee2e6;
+    padding-top: 0.5rem;
+  }
+
+  .rte-char {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.15rem;
+    line-height: 1;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 3px;
+    color: #495057;
+    cursor: pointer;
+
+    &:hover, &:focus-visible {
+      background: #e3f2fd;
+      border-color: #2196f3;
+      outline: 0;
+    }
+  }
+}
+
+.rte-formats {
+  display: flex;
+  flex-direction: column;
+  min-width: 11rem;
+
+  .rte-format {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    background: transparent;
+    border: 0;
+    border-radius: 3px;
+    color: #495057;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover, &:focus-visible {
+      background: #e3f2fd;
+      outline: 0;
+    }
+
+    &.active {
+      font-weight: 600;
+    }
+
+    .rte-format-preview {
+      width: 1.5rem;
+      text-align: center;
+      color: #6c757d;
+    }
+
+    .rte-format-check {
+      margin-left: auto;
+      color: #2196f3;
+    }
+  }
+}

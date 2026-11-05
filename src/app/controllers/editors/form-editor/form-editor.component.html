@@ -19,7 +19,7 @@
         </div>
         <div class="field col-12">
             <label for="note">Note</label>
-            <p-editor id="note" [(ngModel)]="noteInput" type="text" (change)="onPendingChanges()"></p-editor>
+            <app-rich-text-editor id="note" [(ngModel)]="noteInput" type="text" (change)="onPendingChanges()"></app-rich-text-editor>
         </div>
         <div class="field col-12">
             <label for="attestations">Attestations</label>

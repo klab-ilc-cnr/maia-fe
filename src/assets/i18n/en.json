@@ -1,4 +1,35 @@
 {
+    "RICH_EDITOR": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "underline": "Underline",
+        "align": "Alignment",
+        "link": "Link",
+        "specialChars": "Special characters",
+        "moreFormats": "More formats",
+        "clean": "Clear formatting",
+        "superscript": "Superscript",
+        "subscript": "Subscript",
+        "strike": "Strikethrough",
+        "bulletList": "Bulleted list",
+        "orderedList": "Numbered list",
+        "chars": {
+            "laquo": "Opening guillemet «",
+            "raquo": "Closing guillemet »",
+            "ndash": "En dash –",
+            "Egrave": "Capital È",
+            "rsquo": "Typographic apostrophe ’",
+            "Agrave": "Capital À",
+            "Eacute": "Capital É",
+            "Igrave": "Capital Ì",
+            "Ograve": "Capital Ò",
+            "Ugrave": "Capital Ù",
+            "ldquo": "Opening double quote “",
+            "rdquo": "Closing double quote ”",
+            "hellip": "Ellipsis …",
+            "mdash": "Em dash —"
+        }
+    },
     "GENERAL": {
         "add": "Add",
         "backToList": "Back to list",

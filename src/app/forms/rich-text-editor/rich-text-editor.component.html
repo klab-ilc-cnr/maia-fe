@@ -1,0 +1,65 @@
+<p-editor [ngModel]="value" (ngModelChange)="value = $event" [readonly]="disabled" [placeholder]="placeholder" [styleClass]="styleClass"
+  [formats]="formats" (onInit)="onEditorInit($event)" (onTextChange)="onTextChange($event)" (onBlur)="onBlur()">
+  <ng-template pTemplate="header">
+    <span class="ql-formats">
+      <button type="button" class="ql-bold" [attr.aria-label]="'RICH_EDITOR.bold'|translate" [title]="'RICH_EDITOR.bold'|translate"></button>
+      <button type="button" class="ql-italic" [attr.aria-label]="'RICH_EDITOR.italic'|translate" [title]="'RICH_EDITOR.italic'|translate"></button>
+      <button type="button" class="ql-underline" [attr.aria-label]="'RICH_EDITOR.underline'|translate" [title]="'RICH_EDITOR.underline'|translate"></button>
+    </span>
+    <span class="ql-formats">
+      <select class="ql-align" [attr.aria-label]="'RICH_EDITOR.align'|translate" [title]="'RICH_EDITOR.align'|translate">
+        <option selected></option>
+        <option value="center"></option>
+        <option value="right"></option>
+        <option value="justify"></option>
+      </select>
+    </span>
+    <span class="ql-formats">
+      <button type="button" class="ql-link" [attr.aria-label]="'RICH_EDITOR.link'|translate" [title]="'RICH_EDITOR.link'|translate"></button>
+    </span>
+    <span class="ql-formats rte-menus">
+      <!-- the buttons below have no "ql-" class: Quill ignores them, they open the menus -->
+      <button type="button" class="rte-menu-button" (click)="charsPopover.toggle($event)"
+        [attr.aria-label]="'RICH_EDITOR.specialChars'|translate" [title]="'RICH_EDITOR.specialChars'|translate"
+        aria-haspopup="true"><span aria-hidden="true">Ω</span></button>
+      <button type="button" class="rte-menu-button" (click)="formatsPopover.toggle($event)"
+        [attr.aria-label]="'RICH_EDITOR.moreFormats'|translate" [title]="'RICH_EDITOR.moreFormats'|translate"
+        aria-haspopup="true"><span aria-hidden="true">⋯</span></button>
+    </span>
+    <span class="ql-formats">
+      <button type="button" class="ql-clean" [attr.aria-label]="'RICH_EDITOR.clean'|translate" [title]="'RICH_EDITOR.clean'|translate"></button>
+    </span>
+  </ng-template>
+</p-editor>
+
+<p-popover #charsPopover styleClass="rte-popover">
+  <ng-template #content>
+    <div class="rte-chars">
+      <div class="rte-chars-group">
+        <button type="button" class="rte-char" *ngFor="let c of frequentChars" (mousedown)="$event.preventDefault()"
+          (click)="insertChar(c.char)" [title]="('RICH_EDITOR.chars.' + c.key)|translate" [attr.aria-label]="('RICH_EDITOR.chars.' + c.key)|translate">{{c.char}}</button>
+      </div>
+      <div class="rte-chars-group">
+        <button type="button" class="rte-char" *ngFor="let c of accentedCapitals" (mousedown)="$event.preventDefault()"
+          (click)="insertChar(c.char)" [title]="('RICH_EDITOR.chars.' + c.key)|translate" [attr.aria-label]="('RICH_EDITOR.chars.' + c.key)|translate">{{c.char}}</button>
+      </div>
+      <div class="rte-chars-group">
+        <button type="button" class="rte-char" *ngFor="let c of otherChars" (mousedown)="$event.preventDefault()"
+          (click)="insertChar(c.char)" [title]="('RICH_EDITOR.chars.' + c.key)|translate" [attr.aria-label]="('RICH_EDITOR.chars.' + c.key)|translate">{{c.char}}</button>
+      </div>
+    </div>
+  </ng-template>
+</p-popover>
+
+<p-popover #formatsPopover styleClass="rte-popover" (onShow)="onFormatsMenuShow()">
+  <ng-template #content>
+    <div class="rte-formats" role="menu">
+      <button type="button" role="menuitemcheckbox" class="rte-format" *ngFor="let f of otherFormats" (mousedown)="$event.preventDefault()"
+        [class.active]="isActive(f)" [attr.aria-checked]="isActive(f)" (click)="toggleFormat(f)">
+        <span class="rte-format-preview" aria-hidden="true">{{f.preview}}</span>
+        <span>{{('RICH_EDITOR.' + f.key)|translate}}</span>
+        <i class="pi pi-check rte-format-check" *ngIf="isActive(f)" aria-hidden="true"></i>
+      </button>
+    </div>
+  </ng-template>
+</p-popover>

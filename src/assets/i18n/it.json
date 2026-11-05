@@ -1,4 +1,35 @@
 {
+    "RICH_EDITOR": {
+        "bold": "Grassetto",
+        "italic": "Corsivo",
+        "underline": "Sottolineato",
+        "align": "Allineamento",
+        "link": "Link",
+        "specialChars": "Caratteri speciali",
+        "moreFormats": "Altri formati",
+        "clean": "Rimuovi formattazione",
+        "superscript": "Apice",
+        "subscript": "Pedice",
+        "strike": "Barrato",
+        "bulletList": "Elenco puntato",
+        "orderedList": "Elenco numerato",
+        "chars": {
+            "laquo": "Caporale aperta «",
+            "raquo": "Caporale chiusa »",
+            "ndash": "Trattino breve (en dash) –",
+            "Egrave": "È maiuscola",
+            "rsquo": "Apostrofo tipografico ’",
+            "Agrave": "À maiuscola",
+            "Eacute": "É maiuscola",
+            "Igrave": "Ì maiuscola",
+            "Ograve": "Ò maiuscola",
+            "Ugrave": "Ù maiuscola",
+            "ldquo": "Virgolette alte aperte “",
+            "rdquo": "Virgolette alte chiuse ”",
+            "hellip": "Puntini di sospensione …",
+            "mdash": "Trattino lungo (em dash) —"
+        }
+    },
     "GENERAL": {
         "add": "Aggiungi",
         "backToList": "Torna all'elenco",

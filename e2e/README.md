@@ -64,3 +64,8 @@ Variabili utili: `E2E_BASE_URL` (default `http://localhost:4200/`; es. `https://
 `E2E_LABEL` (cartella degli screenshot), `E2E_EXPECT_TITLE`, `E2E_ENV_FILE`.
 
 Output in `artifacts/` (ignorata da git): `screens/<label>/` per i confronti prima/dopo, `report/` (HTML), `test-results/` (trace dei fallimenti).
+
+## Test che scrivono: bloccare le scritture
+Molti editor dell'app **salvano da soli** (scheda della voce del dizionario, definizione dei sensi...) e la VM di test ha dati veri.
+Un test che digita in un campo deve chiamare `blockWrites(page, testInfo)` (in `tests/support.ts`) **prima** di aprire l'app:
+le richieste di modifica rispondono 200 senza arrivare al server e vengono annotate come `scrittura-bloccata`.
