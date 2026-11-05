@@ -21,8 +21,10 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
   @Input() showOptionPrefix = false;
   @Input() showOptionSuffix = false;
   /**
-   * Property appended in brackets to the label of every option and of the selected value, e.g. "villano (adjective)"
+   * Property appended in square brackets to the label of every option and of the selected value, e.g. "villano [adjective]"
    * with `field="label"` and `labelSuffixField="pos"`: tells apart homographs (same label, different part of speech).
+   * Same format as the lexical entries of the single annotation editor, which builds the "label [pos]" itself
+   * (do not use both: the part of speech would be shown twice).
    * The label also drives the exact-match check of `forceSelection`, so typing "villano" no longer silently selects
    * the first of two homographs: the user has to pick one from the list.
    */
@@ -80,11 +82,11 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
     this.selected.emit(event[this.valueField]);
   }
 
-  /** Label of an option / of the selected value: `field`, followed by `labelSuffixField` in brackets when present */
+  /** Label of an option / of the selected value: `field`, followed by `labelSuffixField` in square brackets when present */
   private labelOf(item: any): string {
     const label = item?.[this.field] ?? '';
     const suffix = this.labelSuffixField ? item?.[this.labelSuffixField] : '';
-    return suffix ? `${label} (${suffix})` : label;
+    return suffix ? `${label} [${suffix}]` : label;
   }
 
   /** Value for the `optionLabel` of the autocomplete: a property name, or a function when a label suffix is used */

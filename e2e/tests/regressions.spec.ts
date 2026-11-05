@@ -515,13 +515,54 @@ test('regressione: Search - modifica massiva delle annotazioni: lemma (lessico) 
   await expect(options.first()).toBeVisible({ timeout: 15_000 });
   const texts = (await options.allInnerTexts()).map((t) => t.trim());
   testInfo.annotations.push({ type: 'opzioni', description: JSON.stringify(texts) });
-  // Prima: due "villano" identici (aggettivo e sostantivo omografi): scelta alla cieca. Ora la POS accanto al lemma.
+  // Prima: due "villano" identici (aggettivo e sostantivo omografi): scelta alla cieca. Ora la POS tra parentesi quadre accanto al lemma (come nell'annotazione singola).
   expect(texts.length, 'almeno due lessemi omografi (dati della VM di test)').toBeGreaterThan(1);
-  for (const t of texts) expect(t, 'etichetta con la POS tra parentesi').toMatch(/^villano \(\w+\)$/);
+  for (const t of texts) expect(t, 'etichetta con la POS tra parentesi quadre').toMatch(/^villano \[\w+\]$/);
   expect(new Set(texts).size, 'etichette tutte diverse').toBe(texts.length);
   await snap(page, 'r15-lemma-lessico-pos');
   // nessun salvataggio: si chiude il dialogo senza applicare
   await page.keyboard.press('Escape');
+  expect(w.pageErrors).toEqual([]);
+});
+
+test('regressione: Text - annotazione singola: la POS del lemma (lessico) compare una volta sola', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(1500);
+  await tile.locator('p-select').first().click();
+  await page.locator('.p-select-option').filter({ hasText: /^\s*Lemma\s*$/ }).first().click();
+  const input = tile.locator('p-iconfield input[pinputtext]').first();
+  await input.fill('villano'); await input.press('Enter');
+  await expect(tile.locator('tbody tr').nth(1)).toBeVisible({ timeout: 30_000 });
+  await tile.locator('tbody tr').nth(1).dblclick();
+  const text = page.locator('[id^="textTile_"]').first();
+  const sel = text.locator('#selectionHighlightg rect').first();
+  await expect(sel).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  // annotazione "Lemma" piu' vicina alla parola selezionata
+  const target = await text.evaluate((e) => {
+    const s = e.querySelector('#selectionHighlightg rect')!.getBoundingClientRect(); let best: { x: number; y: number } | null = null; let bd = 1e9;
+    for (const t of Array.from(e.querySelectorAll('#svg g.span text'))) {
+      if (!/^\s*Lemma/.test(t.textContent || '')) continue;
+      const b = t.getBoundingClientRect(); const d = Math.abs(b.x + b.width / 2 - (s.x + s.width / 2)) + Math.abs(b.y - s.y);
+      if (d < bd) { bd = d; best = { x: b.x + b.width / 2, y: b.y + b.height / 2 }; }
+    }
+    return best;
+  });
+  expect(target, 'annotazione Lemma vicino alla parola').not.toBeNull();
+  await page.mouse.click(target!.x, target!.y);
+  const lexical = text.locator('app-generic-autocomplete input').first();
+  await expect(lexical).toBeVisible({ timeout: 15_000 });
+  await expect(lexical, 'valore del lemma (lessico) caricato').not.toHaveValue('', { timeout: 15_000 });
+  const value = await lexical.inputValue();
+  testInfo.annotations.push({ type: 'lemma-lessico', description: value });
+  // Difetto visto: "villano [adjective] (adjective)": l'editor singolo aggiunge gia' "[pos]", la POS non va ripetuta
+  expect(value, 'etichetta "lemma [pos]" con la POS una sola volta').toMatch(/^[^\[\]()]+ \[\w+\]$/);
+  await snap(page, 'r16-annotazione-singola-lessico');
   expect(w.pageErrors).toEqual([]);
 });
 
