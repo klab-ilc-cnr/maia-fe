@@ -36,21 +36,21 @@
       <label for="marksOfUse" class="w-full">{{translatePrefix+'.marksOfUse'|translate}}:</label>
       <p-autoComplete [suggestions]="(marksOfUse$|async)||[]" [delay]="300" name="marksOfUse" [virtualScroll]="true" (completeMethod)="onFilter('marksOfUse', $event)"
         emptyMessage="No results" [multiple]="true" formControlName="marksOfUse" dataKey="lexicalConcept" 
-        inputStyleClass="w-full" inputId="marksOfUse" [forceSelection]="true" appendTo="body" field="defaultLabel"
+        inputStyleClass="w-full" inputId="marksOfUse" [forceSelection]="true" appendTo="body" optionLabel="defaultLabel"
         styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event.value)" (onUnselect)="onDissociateLexicalConcept($event.value)"></p-autoComplete>
       </div>
     <div class="field col-6">
       <label for="grammaticalMarks" class="w-full">{{translatePrefix+'.grammaticalMarks'|translate}}:</label>
       <p-autoComplete [suggestions]="(grammaticalMarks$|async)||[]" [delay]="300" name="grammaticalMarks" [virtualScroll]="true" (completeMethod)="onFilter('grammaticalMarks', $event)"
         emptyMessage="No results" [multiple]="true" formControlName="grammaticalMarks" dataKey="lexicalConcept"
-        inputStyleClass="w-full" inputId="grammaticalMarks" [forceSelection]="true" appendTo="body" field="defaultLabel"
+        inputStyleClass="w-full" inputId="grammaticalMarks" [forceSelection]="true" appendTo="body" optionLabel="defaultLabel"
         styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event.value)" (onUnselect)="onDissociateLexicalConcept($event.value)"></p-autoComplete>
       </div>
       <div class="field col-6">
         <label for="semanticMarks" class="w-full">{{translatePrefix+'.semanticMarks'|translate}}:</label>
         <p-autoComplete [suggestions]="(semanticMarks$|async)||[]" [delay]="300" name="semanticMarks" [virtualScroll]="true" (completeMethod)="onFilter('semanticMarks', $event)"
           emptyMessage="No results" [multiple]="true" formControlName="semanticMarks" dataKey="lexicalConcept"
-          inputStyleClass="w-full" inputId="semanticMarks" [forceSelection]="true" appendTo="body" field="defaultLabel"
+          inputStyleClass="w-full" inputId="semanticMarks" [forceSelection]="true" appendTo="body" optionLabel="defaultLabel"
           styleClass="w-full" (onSelect)="onAssociateLexicalConcept($event.value)" (onUnselect)="onDissociateLexicalConcept($event.value)"></p-autoComplete>
         </div>  
     <div class="field col-12" *ngIf="!demoHide"> <!--NOTE REMOVE DEMOHIDE WHEN FULLY DEVELOPED-->

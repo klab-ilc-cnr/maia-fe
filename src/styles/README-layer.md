@@ -16,7 +16,7 @@ di `vendor.css` (primo file del bundle):
 |---|---|---|
 | `base` | Bootstrap, jsPanel, Font Awesome, primeicons, PrimeFlex, Quill; poi le regole dell'app sugli **elementi HTML** (`*`, `body`, `a`, `p`, `h1`…) e le classi di PrimeNG 17 usate su elementi dell'app (`.p-link`, `.p-error`) | `vendor.css`, `styles.scss` (blocchi `@layer base`), `primeng-compat.css` |
 | `primeng` | stili dei componenti PrimeNG (runtime) + regole di compatibilità con PrimeNG 17 sui componenti | runtime, `primeng-compat.css` |
-| senza layer | variabili del vecchio tema (`saga-variables.css`), variabili e regole dell'app (layout, `.card`, override `.p-*`), stili dei componenti Angular | `saga-variables.css`, `styles.scss`, `*.component.scss` |
+| senza layer | variabili del vecchio tema (`saga-variables.css`), variabili e regole dell'app (layout, `.card`, override `.p-*`), stili dei componenti Angular, aspetto saga dei chip di AutoComplete/MultiSelect | `saga-variables.css`, `styles.scss`, `*.component.scss`, `primeng-compat.css` (chip) |
 
 Perché così:
 - **Bootstrap sotto PrimeNG**: `button { border-radius: 0 }` di Bootstrap non rende quadrati i `p-button-rounded`.

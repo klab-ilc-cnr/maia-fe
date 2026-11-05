@@ -40,7 +40,7 @@
                 <div class="d-flex w-full">
                     <p-autoComplete [style]="{'width': 'inherit'}" inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
                     (completeMethod)="onFilter($event)" [delay]="300" appendTo="body" [virtualScroll]="true"
-                    field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
+                    optionLabel="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
                     [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate"
                     formControlName="fullEntry">
                     <ng-template let-item pTemplate="item">

@@ -4,7 +4,7 @@
     [ngModelOptions]="{standalone: true}"
     [(ngModel)]="selectedSuggestion"
     [suggestions]="suggestions"
-    field="relationshipLabel"
+    optionLabel="relationshipLabel"
     (completeMethod)="onSearchForSuggestions($event)"
     (onSelect)="onSelectSuggestionUpdateRelationship($event.value, control)" [virtualScroll]="true" [virtualScrollItemSize]="34"
     appendTo="body">

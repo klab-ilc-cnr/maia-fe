@@ -203,7 +203,7 @@
           <div class="field col-6">
             <label for="language">Language *</label>
             <p-autoComplete #language="ngModel" name="language" [(ngModel)]="selectedUploadLanguage"
-              [suggestions]="(filteredLanguages$ | async) || []" field="label" (completeMethod)="filterLanguage($event)"
+              [suggestions]="(filteredLanguages$ | async) || []" optionLabel="label" (completeMethod)="filterLanguage($event)"
               [required]="true" appendTo="body"></p-autoComplete>
           </div>
           <div class="field col-6">

@@ -3,7 +3,7 @@
         <div class="field col-4 form-group">
             <label class="form-label w-full">Lemma *</label>
             <p-autoComplete [suggestions]="(suggestions|async)||[]" (completeMethod)="onFilter($event)" [delay]="300"
-                appendTo="body" [virtualScroll]="true" field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
+                appendTo="body" [virtualScroll]="true" optionLabel="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
                 [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate" formControlName="lemma">
                 <ng-template let-item pTemplate="item">
                     {{item['label']}}<sub>{{item['pos']}}</sub>

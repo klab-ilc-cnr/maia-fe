@@ -98,6 +98,26 @@
   .p-datatable-column-sorted .p-sortable-column-icon { color: var(--p-datatable-header-cell-selected-color); }
 }
 
+/* Chip dei valori scelti in AutoComplete multiplo e MultiSelect display="chip": in PrimeNG 18+ sono <p-chip>
+   e prendono lo stile dei p-chip isolati (grigio, arrotondato). In saga erano "token" azzurri:
+   sfondo highlight, angoli 3px, padding 0.25rem 0.5rem, 0.5rem prima dell'icona e tra un chip e l'altro.
+   Le variabili sul chip stesso valgono solo qui (il p-chip isolato del dizionario resta com'era).
+   Fuori dai layer: a pari specificita' le regole del tema (iniettate dopo) vincerebbero. */
+.p-autocomplete-chip.p-chip,
+.p-multiselect-label .p-chip {
+  --p-chip-background: var(--highlight-bg);
+  --p-chip-color: var(--highlight-text-color);
+  --p-chip-remove-icon-color: var(--highlight-text-color);
+  --p-chip-gap: 0.5rem;
+  --p-chip-padding-x: 0.5rem;
+  border-radius: 3px;
+  padding: 0.25rem 0.5rem;
+}
+.p-autocomplete-input-multiple:has(.p-autocomplete-chip),
+.p-multiselect-label:has(.p-chip) { padding: 0.25rem 0.5rem; }
+.p-autocomplete-input-multiple,
+.p-multiselect-display-chip .p-multiselect-label { gap: 0.5rem; }
+
 /* Classi usate su elementi dell'app (non su componenti PrimeNG): layer "base", come gli altri stili globali,
    cosi' le regole dell'app piu' specifiche (es. .layout-topbar .layout-topbar-button) vincono come prima. */
 @layer base {
