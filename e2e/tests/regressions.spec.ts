@@ -94,6 +94,39 @@ test('regressione: tabella dei risultati del Search (colonne e KWIC)', async ({ 
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: maschera di input del Search (altezze, distanze, larghezza di Pos)', async ({ page, baseURL }, testInfo) => {
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(1500);
+  const label = (await tile.locator('p-treeselect').first().innerText()).trim().replace(/\s+/g, ' ');
+  testInfo.annotations.push({ type: 'testo', description: label });
+
+  // "Cerca" senza valore: compare l'errore del campo obbligatorio sotto il campo di ricerca
+  await tile.locator('button.p-button-success').first().click();
+  await expect(tile.locator('small.p-error')).toBeVisible();
+  await page.waitForTimeout(500);
+  const m = await page.evaluate(() => {
+    const r = (el: Element | null) => { const b = el!.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, height: b.height, width: b.width }; };
+    const t = document.querySelector('#searchTile');
+    return {
+      tree: r(t!.querySelector('p-treeselect')), mode: r(t!.querySelector('p-selectbutton')),
+      input: r(t!.querySelector('p-iconfield input')), pos: r(t!.querySelector('p-multiselect')),
+      layer: r(t!.querySelector('p-select, p-dropdown')),
+    };
+  });
+  testInfo.annotations.push({ type: 'search-form', description: JSON.stringify(m) });
+  // Difetto visto (PrimeNG 18+): i campi della riga si allungavano all'altezza del messaggio d'errore.
+  for (const k of ['tree', 'mode', 'pos'] as const) expect(m[k].height, `altezza di ${k} con l'errore visibile`).toBeLessThan(45);
+  expect(Math.abs(m.tree.top - m.input.top), 'campi allineati in alto').toBeLessThan(3);
+  expect(m.input.left - m.mode.right, 'distanza tra il selettore forma/lemma e il campo di ricerca').toBeGreaterThanOrEqual(8);
+  expect(m.pos.width, 'Pos non piu\' largo degli altri select').toBeLessThanOrEqual(m.layer.width + 2);
+  await snap(page, 'r6-search-form');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

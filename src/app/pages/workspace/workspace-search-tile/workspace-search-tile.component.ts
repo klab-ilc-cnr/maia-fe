@@ -1,7 +1,7 @@
 import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, Subscription, catchError, debounceTime, forkJoin, map, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, catchError, debounceTime, forkJoin, map, of, switchMap, takeUntil, tap } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -76,6 +76,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   contextMaxLenght: number = 10;
   files$!: Observable<TreeNode<CorpusElement>[]>;
   selectedDocuments: TreeNode<CorpusElement>[] = [];
+  private corpusNodes: TreeNode<CorpusElement>[] = [];
   selectedLayer?: TLayer;
   lastSearchRequestLayer?: TLayer;
   layers$: Observable<TLayer[]> = this.layerState.layers$.pipe(
@@ -138,6 +139,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.files$ = this.corpusStateService.filesystem$.pipe(
       switchMap(docs => of(this.mapToTreeNodes(docs))),
+      tap(nodes => { this.corpusNodes = nodes; this.selectSingleDocument(nodes); }),
       takeUntil(this.unsubscribe$)
     );
 
@@ -346,6 +348,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.totalRecords = 0;
     this.selectedSearchResults = [];
     this.selectedDocuments = [];
+    this.selectSingleDocument(this.corpusNodes);
     this.searchValue = '';
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
@@ -840,6 +843,32 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
       result.push(this.mapToTreeNode(element));
     });
     return result;
+  }
+
+  /**
+   * If the corpus contains exactly one text, selects it (and shows it) in the tree selector,
+   * so the user does not have to choose the only possible text.
+   * Selection state of the folders above it is the same PrimeNG computes when the user checks the leaf.
+   * @param nodes The tree nodes of the corpus.
+   */
+  private selectSingleDocument(nodes: TreeNode<CorpusElement>[]): void {
+    const leaves: TreeNode<CorpusElement>[] = [];
+    const collect = (list: TreeNode<CorpusElement>[]) => list.forEach(n => n.leaf ? leaves.push(n) : collect(n.children ?? []));
+    collect(nodes);
+    if (leaves.length !== 1) { return; }
+
+    const selection: TreeNode<CorpusElement>[] = [];
+    const visit = (node: TreeNode<CorpusElement>): boolean => {
+      if (node === leaves[0]) { selection.push(node); return true; }
+      const children = node.children ?? [];
+      const results = children.map(visit);
+      const all = children.length > 0 && results.every(r => r);
+      node.partialSelected = !all && results.some(r => r);
+      if (all) { selection.push(node); }
+      return all;
+    };
+    nodes.forEach(visit);
+    this.selectedDocuments = selection;
   }
 
   private mapToTreeNode(element: CorpusElement): TreeNode<CorpusElement> {

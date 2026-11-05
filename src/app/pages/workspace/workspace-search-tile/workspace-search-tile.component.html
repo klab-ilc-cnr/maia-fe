@@ -1,6 +1,6 @@
 <div class="card h-100">
     <div class="row">
-        <div class="col d-flex justify-content-start">
+        <div class="col d-flex justify-content-start align-items-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
               class="mr-5 dropdownDimensions"
               (onShow)="reloadSelectedDocuments()"
@@ -13,7 +13,7 @@
               [filterInputAutoFocus]="true">
           </p-treeSelect>
 
-          <p-inputgroup>
+          <div class="search-input-group">
             <p-selectButton (onChange)="onSearchModeChange()" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
             <div class="flex-fill">
               <p-iconfield iconPosition="left">
@@ -28,8 +28,8 @@
                 {{'SEARCH.validSearchValue'|translate}}
               </small>
             </div>
-          </p-inputgroup>
-          <p-multiSelect [options]="(pos$|async)||[]" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
+          </div>
+          <p-multiSelect [options]="(pos$|async)||[]" class="mx-5 posDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
           filterBy="label" [(ngModel)]="posValue" [showClear]="true" ></p-multiSelect>
           
           <div class="slider-input ml-5">

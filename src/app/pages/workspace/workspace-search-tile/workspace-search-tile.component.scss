@@ -52,6 +52,20 @@ small {
   min-width: 200px;
 }
 
+/* Pos: etichette lunghe (es. "Nome proprio") non devono allargare il campo: stessa larghezza dei select vicini, testo con puntini */
+.posDimensions {
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}
+
+/* selettore forma/lemma + campo di ricerca (con il messaggio d'errore sotto): distanziati, allineati in alto */
+.search-input-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
 :host::ng-deep .p-splitbutton.custom-info-btn .p-button {
   background-color: #2196F3;
   color: #fff;
