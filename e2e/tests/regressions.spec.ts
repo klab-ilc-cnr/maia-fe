@@ -316,6 +316,40 @@ test('regressione: Text - cornice della parola aperta dai risultati del Search (
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Lexicon Editor - albero a sinistra senza barra orizzontale, icone ancorate a destra', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  await expect(page.locator('#lexiconTile')).toBeVisible();
+  await page.locator('#lexiconTile tr', { hasText: '@' }).nth(1).dblclick();
+  const ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  await expect(ed.locator('p-treetable tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1000);
+  const measure = async (width: number) => {
+    await ed.evaluate((e, px) => { (e as HTMLElement).style.width = px + 'px'; }, width);
+    await page.waitForTimeout(600);
+    return ed.evaluate((e) => {
+      const tree = e.querySelector('p-treetable')!;
+      const body = tree.querySelector('.p-treetable-scrollable-body') as HTMLElement;
+      const tds = [...tree.querySelectorAll('tbody tr:first-child td')].map((td) => td.getBoundingClientRect().width);
+      return { panel: tree.getBoundingClientRect().width, overflowX: body.scrollWidth - body.clientWidth, icons: tds.slice(1).map(Math.round) };
+    });
+  };
+  // larghezza minima del pannello (600px: la colonna sinistra scendeva a ~236px e compariva la barra) e piu' largo
+  const narrow = await measure(600);
+  const wide = await measure(1300);
+  testInfo.annotations.push({ type: 'albero', description: JSON.stringify({ narrow, wide }) });
+  // Difetto visto (PrimeNG 20+): la classe dei pannelli dello splitter e' cambiata e la larghezza minima di 265px andava persa
+  expect(narrow.panel, 'colonna sinistra: larghezza minima').toBeGreaterThanOrEqual(264);
+  expect(narrow.overflowX, 'nessuna barra orizzontale nell\'albero').toBeLessThanOrEqual(0);
+  expect(wide.overflowX).toBeLessThanOrEqual(0);
+  // colonne delle icone a larghezza fissa: non si allargano con il pannello (le icone restano vicine, a destra)
+  expect(wide.icons, 'colonne delle icone invariate allargando il pannello').toEqual(narrow.icons);
+  await snap(page, 'r11-lexicon-editor-tree');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

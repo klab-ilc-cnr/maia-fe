@@ -15,7 +15,9 @@ p-tabs,
 
 td:has(> span),
 td:has(> span) div:has(> span) {
-  width: 100px;
+  // width auto: with the fixed table layout a fixed 100px on the name cell made the table spread the remaining
+  // space over all the columns (icons far apart); now the name column takes the rest and clips with an ellipsis
+  width: auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -32,14 +34,24 @@ td {
   }
 }
 
-:host::ng-deep.p-splitter-panel:first-of-type {
+:host::ng-deep.p-splitterpanel:first-of-type { // PrimeNG 20+: .p-splitterpanel (was .p-splitter-panel)
   min-width: 265px;
 }
 
-:host::ng-deep.p-splitter-panel:last-of-type {
+:host::ng-deep.p-splitterpanel:last-of-type {
   min-width: 400px;
 }
 
 ::ng-deep .p-treetable-scrollable-body {
   overflow-y: auto !important;
+}
+// fixed layout: the icon columns keep their width (colgroup), the name column takes the rest
+::ng-deep .p-treetable-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+// icon columns (note, author / add button, status): content centered in the fixed-width cell
+td:nth-child(n + 2) {
+  text-align: center;
 }

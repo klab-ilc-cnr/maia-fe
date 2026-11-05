@@ -285,15 +285,14 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     }
     this.refreshEditorView(this.selectedType, this.selectedInstanceName);
 
+    // Name takes the remaining width; the icon columns have a fixed width so the icons stay together on the right
+    // whatever the width of the panel (percentages spread them apart). The creation/update date, type and sub
+    // columns were never displayed (their display value was invalid): removed, they only added empty cells.
     this.cols = [
-      { field: 'name', header: '', width: '70%', display: 'true' },
-      { field: 'note', width: '10%', display: 'true' },
-      { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
-      { field: 'creationDate', header: 'Data creazione', display: 'false' },
-      { field: 'lastUpdate', header: 'Data modifica', display: 'false' },
-      { field: 'status', header: 'Stato', width: '10%', display: 'true' },
-      { field: 'type', display: 'false' },
-      { field: 'sub', display: 'false' }
+      { field: 'name', header: '' },
+      { field: 'note', width: '2.5rem' },
+      { field: 'creator', header: 'Autore', width: '4rem' },
+      { field: 'status', header: 'Stato', width: '2.5rem' }
     ];
 
     this.commonService.notifyObservable$.pipe(

@@ -26,7 +26,7 @@
             <sub
               *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
             <button pButton type="button" icon="pi pi-plus"
-              class="p-element p-button-rounded mx-2 p-button-sm p-component p-button-icon-only"
+              class="p-element p-button-rounded mx-0 p-button-sm p-component p-button-icon-only"
               *ngIf="col.field === 'creator' && (rowData['type'] == LexicalEntryType.FORMS_ROOT || rowData['type'] == LexicalEntryType.SENSES_ROOT)"
               (click)="onAdd($event, rowData['type'])"></button>
           </td>
