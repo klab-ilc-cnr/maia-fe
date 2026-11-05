@@ -4,10 +4,38 @@ app-rich-text-editor {
   display: block;
 }
 
-// buttons that open the menus, in the Quill toolbar (same size as the Quill buttons)
-.p-editor-toolbar .rte-menu-button {
-  width: auto;
-  min-width: 28px;
+// Uniform spacing of the toolbar: Quill puts 15px between the groups (.ql-formats) and nothing between the buttons of a
+// group, so the visual gaps depend on how wide each icon is. Here every tool is a box of the same size and there is the
+// same gap between all of them.
+app-rich-text-editor .p-editor-toolbar.ql-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+
+  .ql-formats {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 0;
+
+    // Quill's clearfix (:after, display: table) would become one more flex item and add one more gap
+    &::after {
+      display: none;
+    }
+  }
+
+  // every tool: a box of the same size (Quill's own padding is kept: it sizes the icons)
+  button, .ql-picker.ql-icon-picker, .ql-picker.ql-icon {
+    width: 28px;
+    height: 24px;
+  }
+}
+
+// buttons that open the menus, in the Quill toolbar: same height as the other tools, a bit wider (icon + arrow)
+app-rich-text-editor .p-editor-toolbar.ql-toolbar button.rte-menu-button {
+  width: 36px;
+  justify-content: center;
   height: 24px;
   padding: 3px 5px;
   display: inline-flex;
