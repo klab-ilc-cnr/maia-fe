@@ -491,6 +491,40 @@ test('regressione: campi numerici - le frecce su/giu della tastiera non cambiano
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Search - modifica massiva delle annotazioni: lemma (lessico) con la POS', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(1500);
+  await tile.locator('p-select').first().click();
+  await page.locator('.p-select-option').filter({ hasText: /^\s*Lemma\s*$/ }).first().click();
+  const input = tile.locator('p-iconfield input[pinputtext]').first();
+  await input.fill('villano'); await input.press('Enter');
+  await expect(tile.locator('tbody tr').nth(1)).toBeVisible({ timeout: 30_000 });
+  await tile.locator('thead .p-checkbox').first().click();
+  await tile.locator('p-splitbutton button').nth(1).click();
+  await page.locator('[role="menuitem"]', { hasText: /Edit annotations|Modifica annotazioni/ }).first().click();
+  const dialog = page.locator('.p-dialog').filter({ visible: true }).first();
+  const lexical = dialog.locator('app-generic-autocomplete input').last();
+  await expect(lexical).toBeVisible({ timeout: 15_000 });
+  await lexical.click(); await lexical.fill('villano');
+  const options = page.locator('.p-autocomplete-option');
+  await expect(options.first()).toBeVisible({ timeout: 15_000 });
+  const texts = (await options.allInnerTexts()).map((t) => t.trim());
+  testInfo.annotations.push({ type: 'opzioni', description: JSON.stringify(texts) });
+  // Prima: due "villano" identici (aggettivo e sostantivo omografi): scelta alla cieca. Ora la POS accanto al lemma.
+  expect(texts.length, 'almeno due lessemi omografi (dati della VM di test)').toBeGreaterThan(1);
+  for (const t of texts) expect(t, 'etichetta con la POS tra parentesi').toMatch(/^villano \(\w+\)$/);
+  expect(new Set(texts).size, 'etichette tutte diverse').toBe(texts.length);
+  await snap(page, 'r15-lemma-lessico-pos');
+  // nessun salvataggio: si chiude il dialogo senza applicare
+  await page.keyboard.press('Escape');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

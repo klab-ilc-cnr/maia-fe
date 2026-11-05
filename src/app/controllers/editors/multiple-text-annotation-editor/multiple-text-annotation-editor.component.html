@@ -90,7 +90,7 @@
                               <app-generic-autocomplete
                                 *ngSwitchCase="featureTypes.LEXICAL_ENTRY"
                                 field="label"
-                                valueField="lexicalEntry"
+                                valueField="lexicalEntry" labelSuffixField="pos"
                                 [filterFn]="lexEntryList"
                                 (selected)="setIndirectOldValue($event, feature.feature!.name!)"
                                 [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
@@ -153,7 +153,7 @@
                           <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
                             <app-generic-autocomplete
                               field="label"
-                              valueField="lexicalEntry"
+                              valueField="lexicalEntry" labelSuffixField="pos"
                               [filterFn]="lexEntryList"
                               (selected)="setIndirectValue($event, feature.feature!.name!)"
                               [currentValue]="featureForm.get(feature.feature!.name!)!.value"
@@ -249,7 +249,7 @@
                     <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
                       <app-generic-autocomplete
                         field="label"
-                        valueField="lexicalEntry"
+                        valueField="lexicalEntry" labelSuffixField="pos"
                         [filterFn]="lexEntryList"
                         (selected)="
                           setIndirectValue($event, feature.feature!.name!)

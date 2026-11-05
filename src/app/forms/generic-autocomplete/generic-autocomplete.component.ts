@@ -20,6 +20,13 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
   @Input() initialValueFn!: (id: string) => Observable<unknown>;
   @Input() showOptionPrefix = false;
   @Input() showOptionSuffix = false;
+  /**
+   * Property appended in brackets to the label of every option and of the selected value, e.g. "villano (adjective)"
+   * with `field="label"` and `labelSuffixField="pos"`: tells apart homographs (same label, different part of speech).
+   * The label also drives the exact-match check of `forceSelection`, so typing "villano" no longer silently selects
+   * the first of two homographs: the user has to pick one from the list.
+   */
+  @Input() labelSuffixField = '';
   @Input() forceSelection = true;
   @Input() styleClass = '';
   @Input() inputStyleClass = '';
@@ -73,6 +80,19 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
     this.selected.emit(event[this.valueField]);
   }
 
+  /** Label of an option / of the selected value: `field`, followed by `labelSuffixField` in brackets when present */
+  private labelOf(item: any): string {
+    const label = item?.[this.field] ?? '';
+    const suffix = this.labelSuffixField ? item?.[this.labelSuffixField] : '';
+    return suffix ? `${label} (${suffix})` : label;
+  }
+
+  /** Value for the `optionLabel` of the autocomplete: a property name, or a function when a label suffix is used */
+  get optionLabelProp(): string | ((item: any) => string) {
+    if (this.labelSuffixField) { return (item: any) => this.labelOf(item); }
+    return this.showOptionPrefix && this.prefixField === 'lemma' ? 'definition' : this.field;
+  }
+
   /**
    * Restituisce il testo completo da mostrare nel tooltip
    */
@@ -92,6 +112,8 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
       const prefix = this.valueToShow[this.prefixField] || '';
       const fieldValue = this.valueToShow[this.field] || '';
       return prefix ? `${prefix}: ${fieldValue}` : fieldValue;
+    } else if (this.labelSuffixField) {
+      return this.labelOf(this.valueToShow);
     } else {
       return this.valueToShow[this.field] || '';
     }
