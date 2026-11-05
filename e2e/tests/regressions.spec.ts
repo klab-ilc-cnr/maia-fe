@@ -431,6 +431,31 @@ test('regressione: Dictionary Explorer - pulsante "+" piccolo e non tagliato', a
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Dictionary Editor - anteprima: tabelle delle occorrenze visibili senza clic', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  await w.settle();
+  const row = page.locator('#dictionaryTile tbody tr').filter({ hasText: /\w/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  await w.settle();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  const tabs = editor.locator('[role="tab"]');
+  await expect(tabs.nth(2)).toBeVisible({ timeout: 30_000 });
+  await tabs.nth(2).click(); // anteprima
+  // Difetto visto (PrimeNG 20+, nodi dell'albero OnPush): le tabelle delle occorrenze (esempi) di ogni accezione
+  // comparivano solo dopo un clic nell'albero: i figli del nodo erano sostituiti sul posto.
+  // Nessun clic: le tabelle devono comparire da sole.
+  const tables = editor.locator('.custom-leaf p-table');
+  await expect(tables.first(), 'tabella delle occorrenze visibile senza clic').toBeVisible({ timeout: 20_000 });
+  testInfo.annotations.push({ type: 'tabelle', description: String(await tables.count()) });
+  await expect(editor.locator('.custom-leaf thead').first()).toBeVisible();
+  await snap(page, 'r14-dictionary-preview');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

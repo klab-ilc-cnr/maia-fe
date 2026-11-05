@@ -290,8 +290,25 @@ export class DictionaryPreviewComponent implements OnInit {
       result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;
       // Remove any existing annotation leaf nodes before adding the new one
       const nonAnnotationChildren = (senseChildMeaning.children ?? []).filter(child => child.type !== 'annotation');
-      senseChildMeaning.children = [...this.buildAnnotationsLeaf(result), ...nonAnnotationChildren];
+      this.replaceNodeChildren(senseChildMeaning.key!, [...this.buildAnnotationsLeaf(result), ...nonAnnotationChildren]);
     });
+  }
+
+  /**
+   * Replaces the children of the tree node with the given key, creating new objects only along the path to it.
+   * PrimeNG 20+ tree nodes are OnPush components: changing `node.children` in place is not detected (the annotation
+   * tables showed up only after a click inside the tree), a new node object is.
+   * @param key {string} key of the node to update
+   * @param children {Array<TreeNode<DictionaryPreviewItem>>} new children
+   */
+  private replaceNodeChildren(key: string, children: Array<TreeNode<DictionaryPreviewItem>>): void {
+    const update = (nodes: Array<TreeNode<DictionaryPreviewItem>>): Array<TreeNode<DictionaryPreviewItem>> => nodes.map(node => {
+      if (node.key === key) { return { ...node, children }; }
+      if (!node.children?.length) { return node; }
+      const updated = update(node.children);
+      return updated.some((child, i) => child !== node.children![i]) ? { ...node, children: updated } : node;
+    });
+    this.senseLexicalEntriesTree = update(this.senseLexicalEntriesTree);
   }
 
   /**
