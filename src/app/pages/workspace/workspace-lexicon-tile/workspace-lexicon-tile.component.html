@@ -148,24 +148,26 @@
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
       <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
         <td *ngFor="let col of cols; let i = index">
-          <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY"></p-treeTableCheckbox>
+          <!-- name cell: toggler, checkbox, name (clipped with an ellipsis), sub, then the note icon right after the label (no column of its own) -->
+          <div *ngIf="col.field === 'name'" class="name-cell">
+            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+            <p-treeTableCheckbox [value]="rowNode" *ngIf="isVisibleCheckbox && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY"></p-treeTableCheckbox>
+            <span *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
+              rowData[col.field]+'@'+rowData['language'] }}</span>
+            <span *ngIf="rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
+              [pTooltip]="rowData['sub']" tooltipPosition="bottom"
+              [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
+            <sub *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
+            <app-icon-note *ngIf="rowData['note']" class="note-icon" [pTooltip]="rowData['note']" [escape]="false"></app-icon-note>
+          </div>
           <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
             [status]="rowData[col.field]"></app-icon-lock>
-          <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]" [pTooltip]="rowData[col.field]" [escape]="false"></app-icon-note>
           <!--TODO completare con tooltip e dialog con la label del dictionary associato-->
           <i class="pi pi-link link-pointer"
             *ngIf="col.field === 'isDescribedByLexicographicComponent'&& rowData['type'] == LexicalEntryType.LEXICAL_ENTRY && rowData['isDescribedByLexicographicComponent']"
             [pTooltip]="'LEXICON_EXPLORER.associatedToDictionary'|translate" (click)="onOpenLinkedDictionaries(rowData)"></i>
           <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
-          <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
-            rowData[col.field]+'@'+rowData['language'] }}</span>
-          <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
-            [pTooltip]="rowData['sub']" tooltipPosition="bottom"
-            [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
-          <sub
-            *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
         </td>
       </tr>
     </ng-template>

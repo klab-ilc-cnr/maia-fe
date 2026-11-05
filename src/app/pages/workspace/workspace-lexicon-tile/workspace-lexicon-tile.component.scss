@@ -37,9 +37,12 @@ td:has(sub) {
   height: calc(100% - 200px);
 }
 
+td:has(> .name-cell),
 td:has(> span),
 td:has(> span) div:has(> span){
-  width: 100px;
+  // width auto: with the fixed table layout a fixed 100px on the name cell made the table spread the remaining
+  // space over all the columns; now the name column takes the rest and clips with an ellipsis
+  width: auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -59,4 +62,38 @@ td {
 
 .pi-link.link-pointer {
   cursor: pointer;
+}
+// fixed layout: the icon columns keep their width (colgroup), the name column takes the rest
+::ng-deep .p-treetable-table,
+::ng-deep .p-treetable-scrollable-body table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+// icon columns (component link, author, status): content centered in the fixed-width cell
+td:nth-child(n + 2) {
+  text-align: center;
+}
+
+// name cell: the name shrinks with an ellipsis, toggler / checkbox / sub / note icon keep their size
+.name-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  white-space: nowrap;
+
+  > span {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  > p-treetabletoggler, > p-treetablecheckbox, > sub, > .note-icon {
+    flex: none;
+  }
+
+  > .note-icon {
+    margin-left: 0.5rem;
+  }
 }

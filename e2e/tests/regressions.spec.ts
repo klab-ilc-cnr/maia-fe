@@ -375,6 +375,31 @@ test('regressione: Text - apertura senza errori in console, pannelli 24/52/24', 
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Lexicon Explorer - niente colonna delle note, icone a larghezza fissa', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  const w = watchPage(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile.locator('tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1000);
+  const m = await tile.evaluate((e) => {
+    const tables = [...e.querySelectorAll('p-treetable table')]; const body = tables[tables.length - 1];
+    const tds = [...body.querySelectorAll('tbody tr:first-child td')].map((td) => Math.round(td.getBoundingClientRect().width));
+    const sb = e.querySelector('.p-treetable-scrollable-body') as HTMLElement;
+    return { tds, overflowX: sb.scrollWidth - sb.clientWidth };
+  });
+  testInfo.annotations.push({ type: 'colonne', description: JSON.stringify(m) });
+  // come nel Lexicon Editor: la colonna delle note (10%) e' vuota quasi sempre e toglie spazio al nome;
+  // l'icona sta accanto al nome. Restano componente, autore e stato, a larghezza fissa.
+  expect(m.tds.length, 'nome + 3 colonne di icone').toBe(4);
+  expect(m.tds.slice(1).every((x) => x >= 30 && x <= 36), 'colonne delle icone a larghezza fissa (~2.5rem)').toBe(true);
+  expect(m.tds[0], 'spazio per il nome').toBeGreaterThan(200);
+  expect(m.overflowX).toBeLessThanOrEqual(0);
+  await snap(page, 'r12-lexicon-explorer');
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

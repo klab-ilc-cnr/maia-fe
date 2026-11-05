@@ -306,12 +306,13 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.languages = l;
       this.lang.setValue(this.languages[0].label);
     })
+    // Name takes the remaining width (the note icon is shown inside the name cell); the icon columns have a fixed
+    // width so the icons stay together on the right whatever the width of the panel (percentages spread them apart).
     this.cols = [
-      { field: 'name', header: '', width: '60%', display: 'true' },
-      { field: 'note', width: '10%', display: 'true' },
-      { field: 'isDescribedByLexicographicComponent', header: 'Component', width: '10%', display: 'true' },
-      { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
-      { field: 'status', header: 'Stato', width: '10%', display: 'true' },
+      { field: 'name', header: '' },
+      { field: 'isDescribedByLexicographicComponent', header: 'Component', width: '2.5rem' },
+      { field: 'creator', header: 'Autore', width: '2.5rem' },
+      { field: 'status', header: 'Stato', width: '2.5rem' },
     ];
 
     this.commonService.notifyObservable$.pipe(
