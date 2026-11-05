@@ -196,7 +196,8 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 | 0.24.0 | Angular 19 + PrimeNG 19 con il nuovo sistema di temi (fase 3) | superata |
 | 0.25.0 | Angular 20 + PrimeNG 20 (fase 3) | superata |
 | 0.26.0 | Angular 21 + PrimeNG 21 (fase 3, checkpoint) | testata: 1 difetto (marche del senso) |
-| **0.26.1** | + correzioni del test manuale (chip delle marche, Visibility) | **attuale** — `dist/maia-fe-0.26.1-test-ng21-*.zip` |
+| 0.26.1 | + correzioni del test manuale (chip delle marche, Visibility) | superata — `dist/maia-fe-0.26.1-test-ng21-*.zip` |
+| **0.26.2** | + correzioni grafiche (Search, Text, Lexicon Editor/Explorer) | **attuale** — nessun pacchetto ancora: test sul server di sviluppo locale |
 
 ## 6bis. Avanzamento
 
