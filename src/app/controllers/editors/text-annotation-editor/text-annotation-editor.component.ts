@@ -121,7 +121,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         label: displayLabel
       };
     }),
-    catchError(() => of({ label: id, lexicalEntry: id }))
+    catchError((error: unknown) => {
+      this.commonService.warnBackendErrorOnce('entryLabel', error);
+      return of({ label: id, lexicalEntry: id });
+    })
   );
 
   formList = (text: string) => this.lexiconService.getFormList({

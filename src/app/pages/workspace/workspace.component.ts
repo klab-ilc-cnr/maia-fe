@@ -300,7 +300,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         command: (event) => { this.openDictionaryPanel(event) }
       }
     ];
-    if (environment.demoHide) {
+    if (this.ontologyDisabled) {
       this.items.splice(2, 1); /**remove ontology from menu */
     }
 
@@ -929,6 +929,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * The ontology is not ready: its menu and windows are hidden (demo/production builds, or `ontologyDisabled` in the
+   * environment). To enable it again set `ontologyDisabled: false` and `demoHide: false`.
+   */
+  private get ontologyDisabled(): boolean {
+    return environment.demoHide || environment.ontologyDisabled;
+  }
+
+  /**
    * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
    * @param workspaceStatus {Workspace} status del workspace
    * @returns {void}
@@ -937,10 +945,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loaderService.show();
 
     let storedData: any = workspaceStatus.layout;
-    const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
+    // ontology disabled: the saved ontology windows are not reopened (they stay in the saved workspace until it is saved again)
+    const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!.filter(
+      tile => !(this.ontologyDisabled && tile.type === TileType.ONTOLOGY_EXPLORER));
     // console.log('restored layout', storedData, storedTiles, workspaceStatus);
 
     if (storedTiles.length == 0) {
+      this.loaderService.hide();
       return;
     }
 

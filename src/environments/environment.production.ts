@@ -40,4 +40,6 @@ export const environment = {
   lexoBaseIRI: "http://lexica/mylexicon#",
   applicationSubTitle: maiaConfig.applicationSubTitle || "VocaBO",
   demoHide: true,
+  // ontologia non ancora pronta: menu e finestre nascosti (portare a false per riabilitarla, insieme a demoHide)
+  ontologyDisabled: true,
 };

@@ -909,7 +909,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const lexEntryIndex = this.results.findIndex(node => node.data?.instanceName === lexicalEntryId);
     this.dictionaryService.retrieveDictionariesByLexicalEntryId(lexicalEntryId).pipe(
       take(1),
-      catchError(() => {
+      catchError((error: unknown) => {
+        // without the answer the indicator stays off, which does not mean "not described": tell the user
+        this.commonService.warnBackendErrorOnce('dictionaryLinks', error);
         this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = false;
         return of([]);
       }),

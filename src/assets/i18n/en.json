@@ -1,4 +1,11 @@
 {
+    "BACKEND_ERROR": {
+        "title": "Server error",
+        "entryLabel": "Could not retrieve the name of a lexical entry from the server: its identifier is shown instead.",
+        "initialValue": "Could not retrieve the value of a field from the server: the saved value is shown instead.",
+        "dictionaryLinks": "Could not check with the server whether the lexical entries are described in the dictionary: the indicator may be incomplete.",
+        "tooltip": "Content could not be loaded. Please try again."
+    },
     "SESSION": {
         "expiredTitle": "Session expired",
         "expiredText": "Your session has expired and the server no longer accepts requests. Please log in again to continue: unsaved changes are lost."

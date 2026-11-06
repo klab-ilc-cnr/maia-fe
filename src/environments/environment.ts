@@ -24,4 +24,6 @@ export const environment = {
   // Da riportare a "develop" prima del merge su master.
   applicationSubTitle: "VocaBO - DEV UPGRADE",
   demoHide: false,
+  // ontologia non ancora pronta: menu e finestre nascosti (portare a false per riabilitarla, insieme a demoHide)
+  ontologyDisabled: true,
 };

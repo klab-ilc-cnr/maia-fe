@@ -473,7 +473,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
           if (cached !== undefined) return of(cached);
           return this.lexiconService.getLexicalEntry(id).pipe(
             map(le => le.pos ? `${le.label} [${le.pos}]` : (le.label ?? id)),
-            catchError(() => of(id)),
+            catchError((error: unknown) => {
+              this.commonService.warnBackendErrorOnce('entryLabel', error);
+              return of(id);
+            }),
             map(label => {
               this.lexicalEntryLabelCache.set(id, label);
               return label;
@@ -484,7 +487,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
           map(labels => this.applyLexicalEntryLabels(result, ids, labels))
         );
       }),
-      catchError(() => of([]))
+      // no catchError here: the tooltip (app-async-tooltip) shows "content could not be loaded" if the call fails;
+      // an empty list would look like "no annotations"
     );
   }
 

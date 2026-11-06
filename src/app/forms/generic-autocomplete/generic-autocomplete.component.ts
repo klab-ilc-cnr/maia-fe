@@ -50,7 +50,8 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
     if (this.currentValue) {
       this.initialValueFn(this.currentValue).pipe(
         take(1),
-        catchError(() => {
+        catchError((error: unknown) => {
+          this.commonService.warnBackendErrorOnce('initialValue', error);
           const fallback: Record<string, unknown> = {};
           fallback[this.field] = this.currentValue;
           return of(fallback);

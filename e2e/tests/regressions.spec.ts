@@ -730,6 +730,39 @@ test('regressione: sessione - l\'avviso di disconnessione compare anche dopo un 
   await expect(page.locator('.swal2-popup').getByText(/about to be disconnected/i)).toBeVisible({ timeout: 20_000 });
 });
 
+test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await expect(page.locator('#workspace-menu').first().getByText('Lexicon', { exact: true })).toBeVisible();
+  await expect(page.locator('#workspace-menu').getByText('Ontology', { exact: true })).toHaveCount(0);
+  await expect(page.locator('#ontologyExplorerTile')).toHaveCount(0);
+});
+
+test('regressione: errori del server su chiamate secondarie - avviso unico invece del silenzio', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').first().getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await expect(tile.locator('tbody tr').nth(2)).toBeVisible({ timeout: 30_000 });
+  // "la voce e' descritta nel dizionario?" e' interrogato solo dopo aver tolto una voce dal dizionario (azione che scrive):
+  // qui si richiama direttamente il metodo del componente (strumenti di debug di Angular: solo con ng serve).
+  const hasNg = await page.evaluate(() => typeof (window as any).ng?.getComponent === 'function');
+  test.skip(!hasNg, 'servono gli strumenti di debug di Angular (ng serve)');
+  await page.route('**/lexo/data/dictionaryEntryByLexicalEntry*', (route) => route.fulfill({ status: 500, contentType: 'application/json', body: '{"status":500,"error":"Internal Server Error"}' }));
+  await page.evaluate(() => {
+    const comp = (window as any).ng.getComponent(document.querySelector('app-workspace-lexicon-tile'));
+    const id = comp.results.find((n: any) => n.data?.instanceName)?.data.instanceName;
+    // piu' chiamate di seguito (come piu' voci in errore): l'avviso deve essere uno solo
+    for (let i = 0; i < 3; i++) comp.updateIsDescribedByLexicographicComponent(id);
+  });
+  // (il tile del lessico ha un suo <p-toast> senza chiave che mostra gli stessi messaggi del <p-toast> del layout: si conta quello del layout)
+  const toast = page.locator('app-workspace-layout p-toast').first().locator('.p-toast-message').getByText(/Errore del server|Server error/);
+  await expect(toast.first()).toBeVisible({ timeout: 15_000 });
+  await page.waitForTimeout(1500);
+  expect(await toast.count(), 'un solo avviso, non uno per chiamata').toBe(1);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
