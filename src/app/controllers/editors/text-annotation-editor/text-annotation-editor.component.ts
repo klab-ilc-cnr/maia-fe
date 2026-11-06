@@ -2,7 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, forkJoin, map, of, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, map, of, shareReplay, take, takeUntil, throwError } from 'rxjs';
+import { applyDefaultTagsetValues } from 'src/app/helpers/annotation-defaults.helper';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -318,6 +319,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       this.featureForm.addControl(controlName, newControl);
       this.featureForm.get(controlName)?.setValue(existingValue)
     });
+    // new annotation: preselect the default value of the tagset fields (e.g. "Parola monorematica"); not when editing
+    if (!this.annotationModel?.id) {
+      applyDefaultTagsetValues(this.features, this.featureForm, this.unsubscribe$);
+    }
   }
 
   private fetchAndMapFeatures(layerId: number) {
@@ -332,7 +337,8 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         const tagsetId = feature.tagset?.id;
         return <FeatForAnn>{
           feature: feature,
-          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId) : undefined
+          // shareReplay: the select (async pipe) and the default value share one request
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId).pipe(shareReplay(1)) : undefined
         };
       });
       this.createForm();

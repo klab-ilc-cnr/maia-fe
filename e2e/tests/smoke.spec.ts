@@ -151,6 +151,9 @@ test('smoke: titolo, login, pagine principali, workspace', async ({ page, baseUR
     expect(ns, 'almeno un namespace sulla VM').toBeTruthy();
     testInfo.annotations.push({ type: 'namespace', description: `${ns!.prefix} -> ${ns!.base}` });
 
+    // il menu porta il pannello Lexicon in primo piano: la finestra Search (grande, ripristinata dal layout salvato) puo'
+    // averlo coperto nei passi precedenti
+    await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
     await page.locator('#lexiconTile button:has(i.pi-file-import)').click();
     const prefix = page.locator('p-autoComplete[name="prefix"] input');
     const baseIri = page.locator('p-autoComplete[name="baseIRI"] input');

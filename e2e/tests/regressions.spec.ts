@@ -863,6 +863,57 @@ test('regressione: Lexicon Editor aperto da una forma o da un senso - espandere 
   expect(rows.some(r => /No definition provided|Nessuna definizione/i.test(r)), 'nessun segnaposto al posto dei sensi').toBe(false);
 });
 
+test('regressione: annotazione semantica nuova - "Tipo lessicale" preselezionato su "Parola monorematica"', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(240_000);
+  await blockWrites(page, testInfo); // non si salva nulla: si apre solo l'editor e si guarda il campo
+  await openSmokeWorkspace(page, baseURL!);
+  // finestra Search "da zero" (quella ripristinata dal layout salvato puo' avere ricerche e filtri precedenti)
+  const oldSearch = page.locator('#searchTile .jsPanel-btn-close');
+  if (await oldSearch.count()) { await oldSearch.first().click(); await expect(page.locator('#searchTile')).toHaveCount(0); }
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(1500);
+  // livello Semantica (il secondo select e' "Layer"), poi la ricerca
+  await tile.locator('p-select').filter({ hasText: /Layer/ }).first().click();
+  await page.locator('.p-select-option').filter({ hasText: /^\s*Semantica\s*$/ }).first().click();
+  const input = tile.locator('p-iconfield input[pinputtext]').first();
+  await input.fill('paura'); await input.press('Enter');
+  await expect(tile.locator('tbody tr').nth(1)).toBeVisible({ timeout: 90_000 });
+  await tile.locator('thead .p-checkbox').first().click();
+  await tile.locator('p-splitbutton button').first().click(); // "Annota": crea nuove annotazioni
+  const dialog = page.locator('.p-dialog').filter({ visible: true }).first();
+  const field = dialog.locator('p-select').filter({ hasText: /Parola monorematica|Select a value|Seleziona/ }).first();
+  await expect(field).toBeVisible({ timeout: 15_000 });
+  // (il testo del campo "Tipo lessicale" e' l'opzione preselezionata)
+  await expect(dialog.locator('p-select').filter({ hasText: 'Parola monorematica' }), 'Tipo lessicale preselezionato').toHaveCount(1, { timeout: 15_000 });
+  // resta modificabile: si puo' svuotare
+  await dialog.locator('p-select').filter({ hasText: 'Parola monorematica' }).locator('.p-select-clear-icon').click();
+  await expect(dialog.locator('p-select').filter({ hasText: 'Parola monorematica' })).toHaveCount(0);
+  await snap(page, 'r16-annotazione-default');
+});
+
+test('regressione: annotazione semantica singola (finestra del testo) - "Tipo lessicale" preselezionato', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  for (const id of ['searchTile']) { const c = page.locator(`#${id} .jsPanel-btn-close`); if (await c.count()) { await c.first().click(); } }
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const t = page.locator('#searchTile');
+  await expect(t).toBeVisible();
+  const input = t.locator('p-iconfield input[pinputtext]').first();
+  await input.fill('casa'); await input.press('Enter');
+  await expect(t.locator('tbody tr').nth(1)).toBeVisible({ timeout: 30_000 });
+  await t.locator('tbody tr').nth(1).dblclick(); // apre la finestra del testo
+  const text = page.locator('[id^="textTile_"]').first();
+  await expect(text).toBeVisible({ timeout: 30_000 });
+  await text.locator('p-select').filter({ hasText: /Select a layer|Seleziona/ }).first().click();
+  await page.locator('.p-select-option').filter({ hasText: /^\s*Semantica\s*$/ }).first().click();
+  const editor = text.locator('app-text-annotation-editor');
+  await expect(editor.locator('p-select').filter({ hasText: 'Parola monorematica' }), 'Tipo lessicale preselezionato (annotazione nuova)').toHaveCount(1, { timeout: 15_000 });
+  await snap(page, 'r17-annotazione-singola-default');
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

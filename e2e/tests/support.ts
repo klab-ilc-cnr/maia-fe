@@ -112,8 +112,8 @@ export async function snap(page: Page, name: string) {
  * Perche': molti editor dell'app salvano da soli (scheda della voce del dizionario, definizione dei sensi...: valueChanges
  * + debounce, senza pulsante) e la VM di test ha dati veri. Un test che digitava in un campo ha gia' modificato la voce
  * "abbaiare" e la definizione di un suo senso.
- * Bloccate: /lexo/(update|create|delete)/..., /texto/ con metodi di scrittura, /api/ con PUT / PATCH / DELETE.
- * Non bloccate: il login e le POST di sola lettura (/lexo/data/..., ricerche).
+ * Bloccate: /lexo/(update|create|delete)/..., /texto/ con metodi di scrittura (annotation/create, ...), /api/ con PUT / PATCH / DELETE.
+ * Non bloccate: il login e le POST di sola lettura (/lexo/data/..., /texto/util/... = ricerche e letture).
  */
 export async function blockWrites(page: Page, testInfo?: TestInfo): Promise<string[]> {
   const blocked: string[] = [];
@@ -123,7 +123,7 @@ export async function blockWrites(page: Page, testInfo?: TestInfo): Promise<stri
     const method = req.method();
     const write =
       (/\/lexo\/(update|create|delete)\//.test(path)) ||
-      (/\/texto\//.test(path) && method !== 'GET' && !/\/(search|data)\b/i.test(path)) ||
+      (/\/texto\//.test(path) && method !== 'GET' && !/\/texto\/util\//.test(path)) || // /texto/util/*: ricerche e letture (kwic, ais, annotations...)
       (/\/api\//.test(path) && ['PUT', 'PATCH', 'DELETE'].includes(method));
     if (!write) { await route.fallback(); return; }
     blocked.push(`${method} ${path}`);

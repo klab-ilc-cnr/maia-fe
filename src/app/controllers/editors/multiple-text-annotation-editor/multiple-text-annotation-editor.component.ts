@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, forkJoin, map, take, takeUntil, of } from 'rxjs';
+import { Observable, Subject, forkJoin, map, shareReplay, take, takeUntil, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { applyDefaultTagsetValues } from 'src/app/helpers/annotation-defaults.helper';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -599,7 +600,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const tagsetId = feature.tagset?.id;
         return <FeatForAnn>{
           feature: feature,
-          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId) : undefined,
+          // shareReplay: the select (async pipe) and the default value share one request
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId).pipe(shareReplay(1)) : undefined,
           checked: true // default value for checked
         };
       });
@@ -607,6 +609,9 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
       if (!this.deleteMode && !this.editMode) {
         this.onClearBtn();
+        // new annotations: preselect the default value of the tagset fields (e.g. "Parola monorematica"); the
+        // user can still change or clear it
+        applyDefaultTagsetValues(this.features, this.featureForm, this.unsubscribe$);
       }
 
       if (this.deleteMode) {
