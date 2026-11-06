@@ -723,11 +723,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     searchTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     searchTileElement.titlebar.style.fontSize = '14px'
 
+    // Default size: tall enough for the default page of 10 results without having to resize the window every time
+    // (the table area is the window height minus 270px, 10 rows need ~425px); on small screens it is limited to the
+    // available space and the table scrolls.
+    const searchPanelHeight = this.defaultSearchPanelHeight();
     searchTileElement
       .resize({
-        height: 500
+        height: searchPanelHeight
       })
       .reposition();
+    result.component?.instance.updateHeight(searchPanelHeight, searchTileElement.getBoundingClientRect().width);
 
     const { content, ...text } = searchTileConfig;
 
@@ -1748,6 +1753,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param searchPanelId {string} search tile identifier
    * @returns search tile configurations
    */
+  /** Default height of the search window: 705px (10 result rows fit), limited to the space of the workspace */
+  private defaultSearchPanelHeight(): number {
+    const available = (document.querySelector(this.workspaceContainer) as HTMLElement | null)?.clientHeight ?? window.innerHeight;
+    return Math.max(500, Math.min(705, available - 10));
+  }
+
+  /** Default width of the search window: 60% of the window but at least 1000px, limited to the width of the workspace */
+  private defaultSearchPanelWidth(): number {
+    const available = (document.querySelector(this.workspaceContainer) as HTMLElement | null)?.clientWidth ?? window.innerWidth;
+    return Math.max(830, Math.min(Math.max(1000, window.innerWidth * 0.6), available - 10));
+  }
+
   private generateSearchPanelConfiguration(searchPanelId: string) {
     let componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent) as ComponentRef<WorkspaceSearchTileComponent> | null;
 
@@ -1769,7 +1786,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.6
+        width: () => this.defaultSearchPanelWidth()
       },
       resizeit: {
         minWidth: 830,

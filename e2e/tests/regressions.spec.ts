@@ -763,6 +763,57 @@ test('regressione: errori del server su chiamate secondarie - avviso unico invec
   expect(await toast.count(), 'un solo avviso, non uno per chiamata').toBe(1);
 });
 
+/** Apre la finestra Search "da zero" (chiude quella eventualmente ripristinata dal layout salvato) e fa la ricerca. */
+async function openFreshSearch(page: Page, query: string) {
+  const old = page.locator('#searchTile .jsPanel-btn-close');
+  if (await old.count()) { await old.first().click(); await expect(page.locator('#searchTile')).toHaveCount(0); }
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  const input = page.locator('#searchTile .pi-search ~ input[pinputtext], #searchTile p-iconfield input[pinputtext]').first();
+  await input.fill(query);
+  await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr').nth(9)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+}
+
+test('regressione: finestra Search - dimensione iniziale: 10 risultati senza ridimensionare, larga almeno 1000px', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await openFreshSearch(page, 'amore');
+  const m = await page.evaluate(() => {
+    const panel = document.querySelector('#searchTile')!.getBoundingClientRect();
+    const sc = document.querySelector('#searchTile .p-datatable-table-container')!;
+    const container = document.querySelector('#panelsContainer')!.getBoundingClientRect();
+    return { w: Math.round(panel.width), h: Math.round(panel.height), top: Math.round(panel.top), bottom: Math.round(panel.bottom), containerBottom: Math.round(container.bottom),
+      overflow: sc.scrollHeight - sc.clientHeight, rows: document.querySelectorAll('#searchTile tbody tr').length };
+  });
+  expect(m.rows).toBe(10);
+  expect(m.w, 'larghezza iniziale').toBeGreaterThanOrEqual(1000);
+  expect(m.h, 'altezza iniziale').toBeGreaterThanOrEqual(700);
+  expect(m.overflow, 'le 10 righe devono entrare senza scorrere').toBeLessThanOrEqual(1);
+  expect(m.bottom, 'la finestra sta dentro lo spazio del workspace').toBeLessThanOrEqual(m.containerBottom);
+});
+
+test('regressione: finestra Search - su uno schermo piccolo resta dentro lo spazio disponibile', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).waitFor();
+  const old = page.locator('#searchTile .jsPanel-btn-close');
+  if (await old.count()) { await old.first().click(); await expect(page.locator('#searchTile')).toHaveCount(0); }
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  await page.waitForTimeout(800);
+  const m = await page.evaluate(() => {
+    const panel = document.querySelector('#searchTile')!.getBoundingClientRect();
+    const container = document.querySelector('#panelsContainer')!.getBoundingClientRect();
+    return { h: Math.round(panel.height), w: Math.round(panel.width), bottom: Math.round(panel.bottom), right: Math.round(panel.right), cb: Math.round(container.bottom), cr: Math.round(container.right) };
+  });
+  expect(m.h, 'altezza limitata allo spazio disponibile').toBeLessThan(705);
+  expect(m.bottom, 'sotto non esce dallo spazio').toBeLessThanOrEqual(m.cb);
+  expect(m.right, 'a destra non esce dallo spazio').toBeLessThanOrEqual(m.cr);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
