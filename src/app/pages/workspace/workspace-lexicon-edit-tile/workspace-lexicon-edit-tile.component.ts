@@ -388,13 +388,18 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 
             formChildNode.data.name = `form (${countFormChildren})`;
 
-            if (countFormChildren > 0) {
+            // The placeholder (a child that makes the node expandable) must not replace the children that are already
+            // loaded: when the editor is opened from a form or a sense the tree arrives with them loaded, and the
+            // placeholder would show up as "No definition provided" in place of the forms/senses at the next refresh.
+            const hasLoadedChildren = (node: TreeNode) => !!node.children?.some(child => child.data?.instanceName);
+
+            if (countFormChildren > 0 && !hasLoadedChildren(formChildNode)) {
               formChildNode.children = [{ data: { name: '' } }];
             }
 
             senseChildNode.data.name = `sense (${countSenseChildren})`;
 
-            if (countSenseChildren > 0) {
+            if (countSenseChildren > 0 && !hasLoadedChildren(senseChildNode)) {
               senseChildNode.children = [{ data: { name: '' } }];
             }
 

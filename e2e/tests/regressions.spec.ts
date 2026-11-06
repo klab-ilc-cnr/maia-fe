@@ -814,6 +814,55 @@ test('regressione: finestra Search - su uno schermo piccolo resta dentro lo spaz
   expect(m.right, 'a destra non esce dallo spazio').toBeLessThanOrEqual(m.cr);
 });
 
+test('regressione: Lexicon Editor aperto da una forma o da un senso - espandere l\'altro ramo non svuota quello gia\' aperto', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  // chiude gli editor eventualmente ripristinati dal layout salvato
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (x.querySelector?.('app-workspace-lexicon-edit-tile')) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await tile.locator('#searchInput').fill('brigata'); await page.waitForTimeout(2500);
+  await tile.locator('tr', { hasText: 'brigata@it' }).first().locator('button').first().click();
+  const root = (re: RegExp) => tile.locator('tr', { hasText: re }).first();
+  await expect(root(/^\s*form \(\d+\)/)).toBeVisible({ timeout: 15_000 });
+  const edRows = (ed: any) => ed.locator('p-treetable tbody tr, p-treeTable tbody tr');
+  const rowsText = async (ed: any) => (await edRows(ed).allInnerTexts()).map((t: string) => t.replace(/\s+/g, ' ').trim());
+
+  // Difetto visto: aprendo l'editor da una forma e poi espandendo "sense", le forme sparivano e comparivano le righe
+  // segnaposto "No definition provided": l'albero arrivava gia' caricato e veniva sovrascritto dal segnaposto.
+  // 1) da una FORMA, poi si espande "sense"
+  await root(/^\s*form \(\d+\)/).locator('button').first().click();
+  await page.waitForTimeout(1500);
+  await tile.locator('tr', { hasText: /^\s*brigate\b/ }).first().dblclick();
+  let ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  await expect(ed).toBeVisible({ timeout: 30_000 });
+  await expect(edRows(ed).filter({ hasText: /^\s*brigate\b/ })).toHaveCount(1, { timeout: 15_000 });
+  await edRows(ed).filter({ hasText: /^\s*sense \(\d+\)/ }).first().locator('button').first().click();
+  await page.waitForTimeout(2500);
+  let rows = await rowsText(ed);
+  expect(rows.filter(r => /^brigate\b/.test(r)), 'le forme restano visibili dopo aver espanso sense').toHaveLength(1);
+  expect(rows.filter(r => /^brigata\b(?! noun)/.test(r)), 'la forma "brigata" resta visibile').toHaveLength(1);
+  expect(rows.some(r => /No definition provided|Nessuna definizione/i.test(r)), 'nessun segnaposto al posto delle forme').toBe(false);
+  await ed.locator('.jsPanel-btn-close').click();
+
+  // 2) da un SENSO, poi si espande "form"
+  await root(/^\s*sense \(\d+\)/).locator('button').first().click();
+  await page.waitForTimeout(1500);
+  const senseRow = tile.locator('tr', { hasText: /^\s*sense \(\d+\)/ }).first().locator('xpath=following-sibling::tr[1]');
+  await senseRow.dblclick();
+  ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  await expect(ed).toBeVisible({ timeout: 30_000 });
+  const senseCount = Number(((await rowsText(ed)).find(r => /^sense \(\d+\)/.test(r)) ?? '').match(/\((\d+)\)/)?.[1] ?? 0);
+  await expect(edRows(ed).nth(3), 'i sensi sono elencati').toBeVisible({ timeout: 15_000 });
+  await edRows(ed).filter({ hasText: /^\s*form \(\d+\)/ }).first().locator('button').first().click();
+  await page.waitForTimeout(2500);
+  rows = await rowsText(ed);
+  const senseIdx = rows.findIndex(r => /^sense \(\d+\)/.test(r));
+  expect(rows.length - 1 - senseIdx, 'i sensi restano visibili dopo aver espanso form').toBe(senseCount);
+  expect(rows.some(r => /No definition provided|Nessuna definizione/i.test(r)), 'nessun segnaposto al posto dei sensi').toBe(false);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
