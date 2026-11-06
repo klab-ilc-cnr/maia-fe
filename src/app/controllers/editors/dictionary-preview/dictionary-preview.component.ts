@@ -228,17 +228,26 @@ export class DictionaryPreviewComponent implements OnInit {
         );
         uniqueChildren.forEach((child, index) => {
           child.data!.index = (index + 1).toString();
-          if (child.children) {
-            child.children.forEach((grandChild, grandChildIndex) => {
-              if (grandChild.data) {
-                grandChild.data.index = `${child.data!.index}.${grandChildIndex + 1}`;
-              }
-            });
-          }
+          this.assignChildrenIndexes(child);
         });
         node.children = uniqueChildren;
       }
       return node;
+    });
+  }
+
+  /**
+   * Numbers the descendants of a meaning at every depth (1 -> 1.1 -> 1.1.1 -> ...).
+   * Only the nodes with data are counted: the empty placeholder node `{}` of the leaves has no number.
+   * @param parent {TreeNode<DictionaryPreviewItem>} node whose `data.index` is already set
+   */
+  private assignChildrenIndexes(parent: TreeNode<DictionaryPreviewItem>): void {
+    let position = 0;
+    (parent.children ?? []).forEach(child => {
+      if (!child.data) { return; }
+      position++;
+      child.data.index = `${parent.data!.index}.${position}`;
+      this.assignChildrenIndexes(child);
     });
   }
 
@@ -284,7 +293,12 @@ export class DictionaryPreviewComponent implements OnInit {
 
     this.searchAnnotationService.searchAnnotationBySense(request).pipe(
       take(1),
-      catchError(() => of(new SearchAnnotationResult()))
+      catchError((error: HttpErrorResponse) => {
+        console.error('Errore nel recupero dei contesti della accezione', meaning.referredEntity, error);
+        const failed = new SearchAnnotationResult();
+        failed.error = true;
+        return of(failed);
+      })
     ).subscribe(result => {
       result.first = request.start;
       result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;

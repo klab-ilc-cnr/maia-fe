@@ -6,6 +6,8 @@ export class SearchAnnotationResult {
     data!: Array<SearchAnnotationResultRow>;
     first?: number;
     rows?: number;
+    /** true if the request failed (it is not the same as "no results") */
+    error?: boolean;
 }
 
 export class SearchAnnotationOffset {

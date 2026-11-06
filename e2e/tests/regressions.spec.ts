@@ -623,6 +623,47 @@ test('regressione: editor di testo - barra ridotta, caratteri speciali, incolla 
   expect(w.pageErrors).toEqual([]);
 });
 
+test('regressione: Dictionary Editor - anteprima: numerazione a tre livelli ed errore dei contesti', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const w = watchPage(page);
+  // Si simula il guasto del servizio dei contesti solo per la seconda parte del test.
+  let failContexts = false;
+  await page.route('**/texto/util/ais', async (route) => (failContexts ? route.fulfill({ status: 500, body: 'errore simulato' }) : route.fallback()));
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  await w.settle();
+  const openPreview = async () => {
+    const filter = page.locator('#dictionaryTile input[type="text"]').first();
+    await filter.fill('padre');
+    await filter.press('Enter');
+    const row = page.locator('#dictionaryTile tbody tr', { hasText: /^\s*padre/ }).first();
+    await expect(row).toBeVisible({ timeout: 30_000 });
+    await row.dblclick();
+    const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+    await expect(editor.locator('[role="tab"]').nth(2)).toBeVisible({ timeout: 30_000 });
+    await editor.locator('[role="tab"]').nth(2).click();
+    return editor;
+  };
+  // 1) "padre" ha accezioni di terzo livello: devono avere il numero 1.1.1, 1.1.2 (prima mostravano solo il punto)
+  let editor = await openPreview();
+  const labels = editor.locator('app-dictionary-preview p-tree .p-tree-node-content b');
+  await expect(labels.first()).toBeVisible({ timeout: 30_000 });
+  await expect(editor.locator('app-dictionary-preview p-tree').getByText('1.1.1', { exact: true })).toBeVisible();
+  await expect(editor.locator('app-dictionary-preview p-tree').getByText('1.1.2', { exact: true })).toBeVisible();
+  const texts = (await labels.allInnerTexts()).map(t => t.trim());
+  expect(texts.filter(t => t === ''), 'accezione senza numero').toEqual([]);
+  await snap(page, 'r15-dictionary-preview-numbering');
+  // 2) se il servizio dei contesti fallisce, la tabella lo dice (non "Nessun risultato")
+  await page.keyboard.press('Escape');
+  await editor.locator('.jsPanel-btn-close').click();
+  failContexts = true;
+  editor = await openPreview();
+  await expect(editor.locator('.custom-leaf').getByText(/Impossibile recuperare le occorrenze/).first()).toBeVisible({ timeout: 30_000 });
+  await expect(editor.locator('.custom-leaf').getByText('Nessun risultato')).toHaveCount(0);
+  failContexts = false;
+  expect(w.pageErrors).toEqual([]);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

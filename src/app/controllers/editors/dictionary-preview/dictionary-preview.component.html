@@ -345,7 +345,10 @@
               <ng-template pTemplate="emptymessage">
                 <tr>
                   <td [colSpan]="3" class="w-100 text-center">
-                    {{ "GENERAL.noResult" | translate }}
+                    <span *ngIf="annotationTreeItem.data.searchAnnotation.error" class="p-error">{{
+                      "DICTIONARY_EDITOR.PREVIEW_TAB.occurrencesError" | translate
+                    }}</span>
+                    <ng-container *ngIf="!annotationTreeItem.data.searchAnnotation.error">{{ "GENERAL.noResult" | translate }}</ng-container>
                   </td>
                 </tr>
               </ng-template>
