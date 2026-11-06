@@ -1,6 +1,7 @@
 <div class="card">
     <!-- [buttonProps]="{}": da PrimeNG 18 i pulsanti sono "secondary" di default; cosi' restano del colore primario -->
-    <p-orderList [value]="sortingTrees" [listStyle]="{ height: '100%' }" [buttonProps]="{}">
+    <!-- scrollHeight="100%": the default (14rem) is the max-height of the inner list, which then stays cut at ~180px whatever the height of the card -->
+    <p-orderList [value]="sortingTrees" [listStyle]="{ height: '100%' }" scrollHeight="100%" [buttonProps]="{}">
         <ng-template let-sortingTree pTemplate="item">
             <p-tree [value]="[sortingTree]" [draggableNodes]="true" [droppableNodes]="true" [validateDrop]="true"
                 (onNodeDrop)="onDrop($event)" [droppableScope]="sortingTree.key" [draggableScope]="sortingTree.key">

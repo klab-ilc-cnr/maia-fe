@@ -976,6 +976,26 @@ test('regressione: Dictionary Editor, scheda Ordinamento - la card occupa tutto 
   expect(m.buttonsBottom, 'Save/Restore in fondo al pannello').toBeGreaterThanOrEqual(m.panelBottom - 20);
 });
 
+test('regressione: Dictionary Editor, scheda Ordinamento - l\'albero dei sensi non e\' tagliato (voce "sonare")', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').nth(1)).toBeEnabled({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').nth(1).click();
+  // Difetto visto: la lista interna del p-orderlist aveva un'altezza massima di 14rem (scrollHeight di default): con
+  // molti sensi l'albero restava tagliato dopo ~180px anche se la card era alta tutto il pannello.
+  const last = editor.locator('app-dictionary-sorting-editor').getByText('Colpire, picchiare', { exact: false });
+  await expect(last, 'ultimo senso di "sonare" visibile senza scorrere').toBeInViewport({ ratio: 1, timeout: 20_000 });
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
