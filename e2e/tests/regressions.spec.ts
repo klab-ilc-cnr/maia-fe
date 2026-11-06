@@ -914,6 +914,68 @@ test('regressione: annotazione semantica singola (finestra del testo) - "Tipo le
   await snap(page, 'r17-annotazione-singola-default');
 });
 
+/** Chiude (se aperti) i pannelli indicati, cosi' si riaprono con le dimensioni di default e non con quelle del layout salvato. */
+async function closePanels(page: Page, ids: string[]) {
+  await page.evaluate((list) => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) if (list.includes(x.id) || list.some((i: string) => x.id.startsWith(i))) x.close(); }, ids);
+  await page.waitForTimeout(500);
+}
+
+test('regressione: dimensioni di apertura - explorer >= 350px, Lexicon Editor >= 800px, splitter 300px, tooltip del senso', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['lexiconTile', 'dictionaryTile', 'lexiconEditTile']);
+  for (const m of ['Lexicon', 'Dictionary']) { await page.locator('#workspace-menu').first().getByText(m, { exact: true }).click(); await page.waitForTimeout(1500); }
+  const w = async (sel: string) => Math.round((await page.locator(sel).boundingBox())!.width);
+  const lex = await w('#lexiconTile'), dict = await w('#dictionaryTile');
+  testInfo.annotations.push({ type: 'larghezze', description: JSON.stringify({ lex, dict }) });
+  expect(lex, 'Lexicon Explorer: larghezza di apertura').toBeGreaterThanOrEqual(350);
+  expect(dict, 'Dictionary Explorer: larghezza di apertura').toBeGreaterThanOrEqual(350);
+
+  await page.locator('#workspace-menu').first().getByText('Lexicon', { exact: true }).click(); // in primo piano (le due finestre si aprono nello stesso punto)
+  const tile = page.locator('#lexiconTile');
+  await tile.locator('#searchInput').fill('brigata'); await page.waitForTimeout(2500);
+  await tile.locator('tr', { hasText: 'brigata@it' }).first().dblclick();
+  const ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  await expect(ed).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  expect((await ed.boundingBox())!.width, 'Lexicon Editor: larghezza di apertura').toBeGreaterThanOrEqual(799);
+  const split = await ed.evaluate((e) => parseFloat(getComputedStyle(e.querySelector('.p-splitterpanel:first-of-type')!).minWidth));
+  expect(split, 'larghezza minima del pannello di sinistra (albero)').toBe(300);
+
+  // tooltip con la definizione intera del senso, passando col mouse sul senso nell'albero
+  await ed.locator('tr', { hasText: /^\s*sense \(\d+\)/ }).first().locator('button').first().click();
+  const sense = ed.locator('tr', { hasText: /Gruppo di persone che si raduna/ }).first();
+  await expect(sense).toBeVisible({ timeout: 15_000 });
+  await sense.locator('.name-cell span').first().hover();
+  const tip = page.locator('.p-tooltip.sense-definition-tooltip');
+  await expect(tip, 'tooltip con la definizione intera').toContainText('gruppo legato da vincolo amicale', { timeout: 10_000 });
+  await snap(page, 'r18-lexicon-editor-tooltip');
+});
+
+test('regressione: Dictionary Editor, scheda Ordinamento - la card occupa tutto lo spazio', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const row = page.locator('#dictionaryTile tbody tr').filter({ hasText: /\w/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  const tabs = editor.locator('[role="tab"]');
+  await expect(tabs.nth(1)).toBeVisible({ timeout: 30_000 });
+  await tabs.nth(1).click();
+  await expect(editor.locator('app-dictionary-sorting-editor .card')).toBeVisible({ timeout: 15_000 });
+  await page.waitForTimeout(1000);
+  const m = await editor.evaluate((e) => {
+    const panel = e.querySelector('p-tabpanel[data-p-active="true"]')!.getBoundingClientRect();
+    const card = e.querySelector('app-dictionary-sorting-editor .card')!.getBoundingClientRect();
+    const buttons = e.querySelector('app-dictionary-sorting-editor .sorting-button')!.getBoundingClientRect();
+    return { panel: Math.round(panel.height), card: Math.round(card.height), buttonsBottom: Math.round(buttons.bottom), panelBottom: Math.round(panel.bottom) };
+  });
+  testInfo.annotations.push({ type: 'altezze', description: JSON.stringify(m) });
+  expect(m.card, 'la card riempie il pannello della scheda').toBeGreaterThanOrEqual(m.panel - 4);
+  expect(m.buttonsBottom, 'Save/Restore in fondo al pannello').toBeGreaterThanOrEqual(m.panelBottom - 20);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

@@ -17,7 +17,8 @@
               <!--TODO migliorare-->
               <span *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{ rowData[col.field] }}</span>
               <span *ngIf="rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
-                [pTooltip]="rowData['sub']" tooltipPosition="bottom"
+                [pTooltip]="rowData['type'] == LexicalEntryType.SENSE ? rowData['definition'] : rowData['sub']" tooltipPosition="bottom"
+                tooltipStyleClass="sense-definition-tooltip" [showDelay]="rowData['type'] == LexicalEntryType.SENSE ? 400 : 0"
                 [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
               <sub *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
               <app-icon-note *ngIf="rowData['note']" class="note-icon"></app-icon-note>

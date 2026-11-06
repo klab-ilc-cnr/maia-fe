@@ -1599,11 +1599,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.2,
+        width: () => this.defaultPanelWidth(window.innerWidth * 0.2, this.EXPLORER_MIN_WIDTH),
         height: '60vh'
       },
       resizeit: {
-        minWidth: 250
+        minWidth: this.EXPLORER_MIN_WIDTH
       },
       headerControls: {
         add: {
@@ -1684,7 +1684,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.5,
+        width: () => this.defaultPanelWidth(window.innerWidth * 0.5, 800),
         height: '60vh'
       },
       headerControls: {
@@ -1757,6 +1757,20 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   private defaultSearchPanelHeight(): number {
     const available = (document.querySelector(this.workspaceContainer) as HTMLElement | null)?.clientHeight ?? window.innerHeight;
     return Math.max(500, Math.min(705, available - 10));
+  }
+
+  /** Minimum width (and default minimum opening width) of the Lexicon Explorer and Dictionary Explorer windows */
+  private readonly EXPLORER_MIN_WIDTH = 350;
+
+  /**
+   * Default opening width of a window: the preferred one (usually a fraction of the browser window) but not less than
+   * `minimum`, and never more than the space of the workspace.
+   * @param preferred {number} preferred width in px
+   * @param minimum {number} minimum opening width in px
+   */
+  private defaultPanelWidth(preferred: number, minimum: number): number {
+    const available = (document.querySelector(this.workspaceContainer) as HTMLElement | null)?.clientWidth ?? window.innerWidth;
+    return Math.min(Math.max(preferred, minimum), available - 10);
   }
 
   /** Default width of the search window: 60% of the window but at least 1000px, limited to the width of the workspace */
@@ -1860,11 +1874,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.2,
+        width: () => this.defaultPanelWidth(window.innerWidth * 0.2, this.EXPLORER_MIN_WIDTH),
         height: '60vh'
       },
       resizeit: {
-        minWidth: 250
+        minWidth: this.EXPLORER_MIN_WIDTH
       },
       // headerControls: {
       //   add: {

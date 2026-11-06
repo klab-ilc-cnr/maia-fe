@@ -1,3 +1,22 @@
 .sorting-button {
     width: 35%;
 }
+
+// The card takes all the height of the tab panel (the panel gives its content height: 100%): the sortable list grows
+// with the window and scrolls inside, and the Save / Restore buttons stay at the bottom, always visible.
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+:host ::ng-deep p-orderlist {
+    // PrimeNG 20+: the p-orderlist element is the component root (flex row: controls + list): only its size changes
+    flex: 1 1 auto;
+    min-height: 0;
+
+    .p-listbox {
+        height: 100% !important;
+    }
+}

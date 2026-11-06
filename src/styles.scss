@@ -819,3 +819,13 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   opacity: 0.5;
   pointer-events: none;
 }
+
+// Tooltip with the full definition of a sense (Lexicon Editor tree): the default tooltip is narrow (12.5rem)
+.p-tooltip.sense-definition-tooltip {
+  max-width: min(32rem, 90vw);
+
+  .p-tooltip-text {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}

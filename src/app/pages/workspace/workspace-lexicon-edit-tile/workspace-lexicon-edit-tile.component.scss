@@ -36,7 +36,7 @@ td {
 }
 
 :host::ng-deep.p-splitterpanel:first-of-type { // PrimeNG 20+: .p-splitterpanel (was .p-splitter-panel)
-  min-width: 265px;
+  min-width: 300px;
 }
 
 :host::ng-deep.p-splitterpanel:last-of-type {
