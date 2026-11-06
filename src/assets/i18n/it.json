@@ -1,4 +1,8 @@
 {
+    "SESSION": {
+        "expiredTitle": "Sessione scaduta",
+        "expiredText": "La sessione è scaduta e il server non accetta più le richieste. Accedi di nuovo per continuare: le modifiche non salvate vanno perse."
+    },
     "RICH_EDITOR": {
         "bold": "Grassetto",
         "italic": "Corsivo",

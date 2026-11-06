@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { catchError, take, throwError } from 'rxjs';
 import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
 import { AuthenticationService } from './services/authentication.service';
+import { SessionService } from './services/session.service';
 import { StorageService } from './services/storage.service';
 import Swal from 'sweetalert2';
 import { CommonService } from './services/common.service';
@@ -33,7 +34,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authService: AuthenticationService,
     public translate: TranslateService,
-    public commonService: CommonService
+    public commonService: CommonService,
+    private sessionService: SessionService,
   ) {
     translate.addLangs(['en', 'it']);
     translate.setDefaultLang('en');
@@ -53,6 +55,15 @@ export class AppComponent implements OnInit {
           this.storageService.cleanStorage();
           this.router.navigate(['/login']);
         });
+    });
+
+    // the warning timer lives only in memory: after a reload (F5) it must be set again from the stored expiration
+    this.storageService.scheduleExpirationWarning();
+    // after a long time in the background (or the computer sleeping) the token may have expired meanwhile
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.sessionService.checkExpired();
+      }
     });
 
     this.checkBroser();

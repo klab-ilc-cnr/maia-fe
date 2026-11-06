@@ -1,12 +1,14 @@
 import {
   HTTP_INTERCEPTORS,
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
+import { SessionService } from '../services/session.service';
 import { StorageService } from '../services/storage.service';
 
 /**Class that intercepts all outgoing http calls to add the jwt token  */
@@ -18,6 +20,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
    */
   constructor(
     private storageService: StorageService,
+    private sessionService: SessionService,
   ) { }
 
   /**
@@ -31,7 +34,15 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     const modReq = request.clone({
       headers: request.headers.set('Authorization', `Bearer ${token}`),
     });
-    return next.handle(modReq);
+    return next.handle(modReq).pipe(
+      catchError((error: unknown) => {
+        // an invalid/expired token must not fail in silence: tell the user and go back to the login
+        if (error instanceof HttpErrorResponse && this.sessionService.isSessionError(error)) {
+          this.sessionService.expire();
+        }
+        return throwError(() => error);
+      }),
+    );
   }
 }
 

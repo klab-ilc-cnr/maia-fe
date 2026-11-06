@@ -1,4 +1,8 @@
 {
+    "SESSION": {
+        "expiredTitle": "Session expired",
+        "expiredText": "Your session has expired and the server no longer accepts requests. Please log in again to continue: unsaved changes are lost."
+    },
     "RICH_EDITOR": {
         "bold": "Bold",
         "italic": "Italic",

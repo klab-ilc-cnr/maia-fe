@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
-import { apiLogin, blockWrites, snap, uiLogin, watchPage } from './support';
+import { apiLogin, blockWrites, hashPath, snap, uiLogin, watchPage } from './support';
 
 /**
  * Regressioni segnalate durante il test manuale del checkpoint Angular 16 (2026-11-04).
@@ -662,6 +662,72 @@ test('regressione: Dictionary Editor - anteprima: numerazione a tre livelli ed e
   await expect(editor.locator('.custom-leaf').getByText('Nessun risultato')).toHaveCount(0);
   failContexts = false;
   expect(w.pageErrors).toEqual([]);
+});
+
+// Sessione scaduta: il back-end risponde 500 senza messaggio su /texto e /lexo (maia-be gira il token a TexO/LexO, che
+// rispondono 401, e lo trasforma in 500): l'app restava "viva" ma con ogni chiamata in errore e in silenzio.
+const SESSION_EXPIRED = /Sessione scaduta|Session expired/;
+
+/** Imposta la scadenza salvata dall'app (localStorage, chiave "..._token_expiration"). */
+async function setStoredExpiration(page: Page, inMs: number) {
+  const n = await page.evaluate((delta) => {
+    let count = 0;
+    for (const k of Object.keys(localStorage)) {
+      if (k.endsWith('_token_expiration')) { localStorage.setItem(k, String(Date.now() + delta)); count++; }
+    }
+    return count;
+  }, inMs);
+  expect(n, 'chiave della scadenza nel localStorage').toBeGreaterThan(0);
+}
+
+/** Apre il Dictionary Explorer (se non e' gia' aperto dal layout salvato) e lo ricarica: parte una chiamata a LexO. */
+async function openDictionaryAndRefresh(page: Page) {
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const refresh = page.locator('#dictionaryTile p-button[icon="pi pi-spinner"] button, #dictionaryTile button:has(.pi-spinner)').first();
+  await expect(refresh).toBeVisible({ timeout: 30_000 });
+  await refresh.click();
+}
+
+test('regressione: sessione - 401 dal server riporta al login con un messaggio', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  // da ora TexO rifiuta il token (401), come con un token scaduto
+  await page.route('**/texto/**', (route) => route.fulfill({ status: 401, body: '' }));
+  await page.reload();
+  await expect(page.locator('.swal2-popup').getByText(SESSION_EXPIRED)).toBeVisible({ timeout: 30_000 });
+  await page.locator('.swal2-confirm').click();
+  await expect(page).toHaveURL(/#\/login/, { timeout: 15_000 });
+});
+
+test('regressione: sessione - 500 senza messaggio con il token scaduto riporta al login', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  // il token scade mentre si lavora; il server (maia-be) risponde 500 generico sulle chiamate a LexO
+  await setStoredExpiration(page, -1000);
+  await page.route('**/lexo/**', (route) => route.fulfill({ status: 500, contentType: 'application/json', body: '{"status":500,"error":"Internal Server Error"}' }));
+  await openDictionaryAndRefresh(page);
+  await expect(page.locator('.swal2-popup').getByText(SESSION_EXPIRED)).toBeVisible({ timeout: 30_000 });
+  await page.locator('.swal2-confirm').click();
+  await expect(page).toHaveURL(/#\/login/, { timeout: 15_000 });
+});
+
+test('regressione: sessione - un 500 con il token ancora valido NON porta al login', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.route('**/lexo/**', (route) => route.fulfill({ status: 500, contentType: 'application/json', body: '{"status":500,"error":"Internal Server Error"}' }));
+  await openDictionaryAndRefresh(page);
+  await page.waitForTimeout(4000);
+  await expect(page.locator('.swal2-popup').getByText(SESSION_EXPIRED)).toHaveCount(0);
+  expect(hashPath(page)).not.toMatch(/^\/login/);
+});
+
+test('regressione: sessione - l\'avviso di disconnessione compare anche dopo un ricaricamento della pagina', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  // il timer dell'avviso era solo in memoria: dopo F5 non esisteva piu' e la sessione scadeva senza avvisare
+  await setStoredExpiration(page, 36_000); // scade fra 36 s: l'avviso (30 s prima) deve comparire entro ~6 s
+  await page.reload();
+  await expect(page.locator('.swal2-popup').getByText(/about to be disconnected/i)).toBeVisible({ timeout: 20_000 });
 });
 
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
