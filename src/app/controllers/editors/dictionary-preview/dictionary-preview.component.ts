@@ -412,21 +412,17 @@ export class DictionaryPreviewComponent implements OnInit {
   private retrieveHeaderEntryData(): void {
     this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
 
-    this.structuredNote.frequencies.forEach((f) => {
-      this.dictionaryService.retrieveAuthorDocuments().pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
-      ).subscribe((data: TextualDocument[]) => {
-        let document = data.filter((item: TextualDocument) => item.code === f.documentId)[0] || null;
-        this.frequencies.push({ documentLabel: document?.title || '', frequency: f.frequency });
-      });
-    });
-
+    // one request for the list of works: it gives the label of each "occurrences in other works" row (in the order of
+    // the note) and of the first attestation
     this.dictionaryService.retrieveAuthorDocuments().pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
     ).subscribe((data: TextualDocument[]) => {
-      this.firstAttestationLabel = data.filter((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)[0]?.title || '';
+      this.frequencies = this.structuredNote.frequencies.map(f => ({
+        documentLabel: data.find((item: TextualDocument) => item.code === f.documentId)?.title || '',
+        frequency: f.frequency
+      }));
+      this.firstAttestationLabel = data.find((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)?.title || '';
     });
 
     this.dictionaryService.retrieveDictionaryTraits(this.dictionaryEntry.id).pipe(

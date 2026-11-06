@@ -996,6 +996,29 @@ test('regressione: Dictionary Editor, scheda Ordinamento - l\'albero dei sensi n
   await expect(last, 'ultimo senso di "sonare" visibile senza scorrere').toBeInViewport({ ratio: 1, timeout: 20_000 });
 });
 
+test('regressione: voce del dizionario - la lista delle opere si chiede una sola volta (non una per riga)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  const calls: Record<string, number> = {};
+  page.on('request', (r) => { const m = r.url().match(/\/lexo\/dictionary\/(otherDocuments|authorDocuments)/); if (m) calls[m[1]] = (calls[m[1]] || 0) + 1; });
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('amore'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*amore\s*noun\s*$/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick(); // scheda della voce: una riga "occ. in altre opere" per ogni opera (19 per "amore")
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('app-dropdown-plus-number').nth(5), 'righe delle altre opere').toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  await editor.locator('[role="tab"]').nth(2).click(); // anteprima: legge le stesse opere per le etichette
+  await expect(editor.locator('app-dictionary-preview p-fieldset').filter({ hasText: /Filostrato: 239/ })).toBeVisible({ timeout: 30_000 });
+  testInfo.annotations.push({ type: 'richieste', description: JSON.stringify(calls) });
+  expect(calls['otherDocuments'] ?? 0, 'otherDocuments: una sola richiesta').toBeLessThanOrEqual(1);
+  expect(calls['authorDocuments'] ?? 0, 'authorDocuments: una sola richiesta').toBeLessThanOrEqual(1);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
