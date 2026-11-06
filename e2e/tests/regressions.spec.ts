@@ -1019,6 +1019,38 @@ test('regressione: voce del dizionario - la lista delle opere si chiede una sola
   expect(calls['authorDocuments'] ?? 0, 'authorDocuments: una sola richiesta').toBeLessThanOrEqual(1);
 });
 
+test('regressione: anteprima - i contesti dei sottosensi non si perdono se arrivano prima di quelli del senso padre', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  // Difetto visto: le richieste dei contesti (una per senso) partono tutte insieme; se la risposta di un sottosenso (1.1, 1.2)
+  // arrivava prima di quella del senso padre (1), la risposta del padre rimetteva i vecchi figli e cancellava le tabelle
+  // gia' inserite (ricomparivano solo chiudendo e riaprendo il nodo). Per renderlo deterministico la PRIMA risposta (il
+  // senso di primo livello, che e' il primo ad essere richiesto) viene ritardata.
+  let n = 0;
+  await page.route('**/texto/util/ais', async (route) => {
+    if (n++ === 0) await new Promise((r) => setTimeout(r, 3000));
+    await route.fallback();
+  });
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sentire'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sentire\s*verb\s*$/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').nth(2)).toBeVisible({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').nth(2).click();
+  const preview = editor.locator('app-dictionary-preview');
+  // ogni senso (con o senza occorrenze) ha la sua tabella dei contesti
+  const meanings = preview.locator('p-tree .p-tree-node-content').filter({ has: page.locator('b') });
+  await expect(meanings.nth(10), 'i sensi di "sentire"').toBeVisible({ timeout: 30_000 });
+  await expect.poll(async () => await preview.locator('.custom-leaf p-table').count(), { timeout: 30_000, message: 'una tabella per ogni senso' })
+    .toBe(await meanings.count());
+  testInfo.annotations.push({ type: 'sensi', description: `${await meanings.count()} sensi, ${await preview.locator('.custom-leaf p-table').count()} tabelle` });
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);
