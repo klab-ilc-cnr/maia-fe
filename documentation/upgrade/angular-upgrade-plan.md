@@ -197,7 +197,9 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 | 0.25.0 | Angular 20 + PrimeNG 20 (fase 3) | superata |
 | 0.26.0 | Angular 21 + PrimeNG 21 (fase 3, checkpoint) | testata: 1 difetto (marche del senso) |
 | 0.26.1 | + correzioni del test manuale (chip delle marche, Visibility) | superata — `dist/maia-fe-0.26.1-test-ng21-*.zip` |
-| **0.26.2** | + correzioni grafiche (Search, Text, Lexicon Editor/Explorer) | **attuale** — nessun pacchetto ancora: test sul server di sviluppo locale |
+| 0.26.2 | + correzioni grafiche (Search, Text, Lexicon Editor/Explorer) | mai impacchettata, inclusa nella 0.26.3 |
+| 0.26.3 | + editor di testo, sessione scaduta, errori non silenziosi, ontologia disabilitata, finestra Search | superata — `dist/old/maia-fe-0.26.3-test-ng21-*.tgz` |
+| **0.26.4** | + Lexicon Editor/Explorer (dimensioni, tooltip), annotazioni (Tipo lessicale), Dictionary Editor (Ordinamento, anteprima, richieste) | **attuale** — `dist/maia-fe-0.26.4-test-ng21-20261107-1049.tgz`; elenco in `correzioni-post-upgrade.md` |
 
 ## 6bis. Avanzamento
 

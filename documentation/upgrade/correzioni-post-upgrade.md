@@ -8,7 +8,13 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.4)
+## Non ancora in un pacchetto (prossimo: 0.26.5)
+
+_(nessuna modifica)_
+
+---
+
+## 0.26.4 — pacchetto `maia-fe-0.26.4-test-ng21-20261107-1049.tgz`
 
 ### Lexicon Editor
 - Espandere "sense"/"form" non svuota più il ramo già aperto (apertura da una forma o da un senso)
