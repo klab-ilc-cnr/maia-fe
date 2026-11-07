@@ -964,6 +964,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.visibleAnnotationId = undefined;
   }
 
+  /**
+   * Makes a layer the selected and visible one, without selecting any word (the panel is opened only to show a row).
+   * If the layers are not loaded yet it is applied when they are.
+   * @param layer {TLayer} the layer to show
+   */
+  showLayer(layer: TLayer) {
+    this.initialKwicLayer = layer;
+    this.applyInitialKwicLayer(this.layersList);
+  }
+
   private applyInitialKwicLayer(list?: TLayer[]) {
     if (!this.initialKwicLayer) { return; }
     const layers = list ?? this.layersList;

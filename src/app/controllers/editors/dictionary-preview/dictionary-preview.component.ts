@@ -75,6 +75,17 @@ export class DictionaryPreviewComponent implements OnInit {
     private dictionaryPdfService: DictionaryPdfService
   ) { }
 
+  /**
+   * Opens the text of a context (row of an annotation table) at its row, with the semantic layer active.
+   * @param annotation {SearchAnnotationResultRow} the context row
+   */
+  public openContextInText(annotation: SearchAnnotationResultRow): void {
+    this.commonService.notifyOther({
+      option: 'onDictionaryPreviewRowDoubleClickEvent',
+      value: [annotation.textId, annotation.text, annotation.rowIndex]
+    });
+  }
+
   get ready(): boolean {
     return !!this.dictionaryEntry && !this.loading;
   }

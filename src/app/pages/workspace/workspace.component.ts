@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, lastValueFrom, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, lastValueFrom, of, take, takeUntil, throwError } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
@@ -25,6 +25,7 @@ import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
+import { LayerService } from 'src/app/services/layer.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -229,6 +230,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private lexiconService: LexiconService,
     private ontologyService: OntologyService,
     private dictionaryService: DictionaryService,
+    private layerService: LayerService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
@@ -249,6 +251,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
             const selectedLayer: TLayer | undefined = res.value[1] ? structuredClone(res.value[1]) : undefined;
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset, selectedLayer);
+            break;
+          }
+          case EventsConstants.onDictionaryPreviewRowDoubleClickEvent: {
+            const [textId, title, rowIndex] = res.value;
+            this.layerService.retrieveSemanticLayer().pipe(
+              take(1),
+              catchError(() => of(undefined)),
+            ).subscribe(layer => this.openTextPanel(textId, title, rowIndex, undefined, undefined, layer ? structuredClone(layer) : undefined));
             break;
           }
           case EventsConstants.onDictionaryEntryDblClickEvent: {
@@ -548,7 +558,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     if (panelExist) { //caso di pannello già presente
       if (startingRowIndex !== undefined && startingRowIndex !== null) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
-        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!, selectedLayer);
+        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic, kwicOffsetStart, selectedLayer);
         textTileComponent.component.instance.loadInitialData();
       }
 
@@ -559,7 +569,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
     if (startingRowIndex !== undefined && startingRowIndex !== null) {
-      this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!, selectedLayer);
+      this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic, kwicOffsetStart, selectedLayer);
     }
 
     const textTileConfig = res.panelConfig;
@@ -1381,10 +1391,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param textTileComponent angular component
    * @param startingRowIndex 
    */
-  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number, kwic: string, kwicOffsetStart: number, selectedLayer?: TLayer) {
-    const kwicOffsetEnd = kwicOffsetStart + kwic.length;
+  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number, kwic?: string, kwicOffsetStart?: number, selectedLayer?: TLayer) {
     textTileComponent.instance.startingRowIndex = startingRowIndex;
     textTileComponent.instance.scrollingDirection = ScrollingDirectionType.ChangingSection;
+    if (kwic === undefined || kwicOffsetStart === undefined) {
+      // only the row and the layer (no word to select): e.g. from the contexts of the dictionary preview
+      if (selectedLayer) { textTileComponent.instance.showLayer(selectedLayer); }
+      return;
+    }
+    const kwicOffsetEnd = kwicOffsetStart + kwic.length;
     if (selectedLayer) {
       textTileComponent.instance.initialKwicLayer = selectedLayer;
       textTileComponent.instance.pendingKwicOpen = { start: kwicOffsetStart, end: kwicOffsetEnd, text: kwic };

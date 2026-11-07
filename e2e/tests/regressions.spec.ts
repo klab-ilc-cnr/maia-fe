@@ -1051,6 +1051,48 @@ test('regressione: anteprima - i contesti dei sottosensi non si perdono se arriv
   testInfo.annotations.push({ type: 'sensi', description: `${await meanings.count()} sensi, ${await preview.locator('.custom-leaf p-table').count()} tabelle` });
 });
 
+test('regressione: anteprima - doppio clic su un contesto apre il testo alla riga, col layer semantico attivo', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile', 'textTile_123']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').nth(2)).toBeVisible({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').nth(2).click();
+  const rows = editor.locator('app-dictionary-preview .custom-leaf p-table tbody tr.p-selectable-row');
+  await expect(rows.first(), 'contesti nell\'anteprima').toBeVisible({ timeout: 30_000 });
+
+  const openRow = async (i: number) => {
+    const sentence = (await rows.nth(i).locator('td').last().innerText()).trim().slice(0, 25);
+    // dispatchEvent: la finestra del testo, una volta aperta, copre l'anteprima
+    await rows.nth(i).dispatchEvent('dblclick');
+    return sentence;
+  };
+  const text = page.locator('#textTile_123');
+  const first = await openRow(0);
+  await expect(text, 'finestra del testo aperta').toBeVisible({ timeout: 30_000 });
+  await expect(text.locator('p-multiselect .layer-item-value'), 'layer semantico attivo').toHaveCount(1, { timeout: 30_000 });
+  await expect(text.locator('p-multiselect .layer-item-value').first()).toContainText(/semantic/i);
+  await expect(text, 'riga del contesto visibile').toContainText(first.slice(0, 12), { timeout: 30_000 });
+  // nessuna parola selezionata: e' solo il posizionamento
+  await expect(text.locator('#selectionHighlightg rect')).toHaveCount(0);
+
+  // finestra gia' aperta: un altro contesto la riposiziona (altra riga, es. del libro II)
+  const n = await rows.count();
+  let other = -1;
+  for (let i = 1; i < n; i++) { if (!(await rows.nth(i).locator('td').last().innerText()).startsWith(first.slice(0, 12))) { other = i; break; } }
+  expect(other, 'serve un secondo contesto').toBeGreaterThan(0);
+  const second = await openRow(other);
+  await expect(text, 'finestra riposizionata').toContainText(second.slice(0, 12), { timeout: 30_000 });
+  testInfo.annotations.push({ type: 'righe', description: `${first} / ${second}` });
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

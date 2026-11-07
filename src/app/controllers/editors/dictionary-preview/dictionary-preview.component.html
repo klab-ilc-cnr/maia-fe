@@ -324,7 +324,7 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-annotation>
-                <tr>
+                <tr class="p-selectable-row" (dblclick)="openContextInText(annotation)">
                   <td
                     class="ellips-text"
                     [pTooltip]="annotation.text"

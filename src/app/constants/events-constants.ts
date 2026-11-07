@@ -1,6 +1,7 @@
 export class EventsConstants {
     static readonly onLexiconTreeElementDoubleClickEvent = "onLexiconTreeElementDoubleClickEvent";
     static readonly onSearchResultTableDoubleClickEvent = "onSearchResultTableDoubleClickEvent";
+    static readonly onDictionaryPreviewRowDoubleClickEvent = "onDictionaryPreviewRowDoubleClickEvent";
     static readonly onDictionaryEntryDblClickEvent = "onDictionaryEntryDblClickEvent";
     static readonly onOntologyElementDoubleClickEvent = "onOntologyElementDoubleClickEvent";
 
