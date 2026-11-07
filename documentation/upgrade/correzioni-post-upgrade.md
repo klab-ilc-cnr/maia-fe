@@ -8,7 +8,13 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.5)
+## Non ancora in un pacchetto (prossimo: 0.26.6)
+
+_(nessuna modifica)_
+
+---
+
+## 0.26.5 — pacchetto `maia-fe-0.26.5-test-ng21-20261107-1154.tgz`
 
 ### Dictionary Editor
 - Anteprima: doppio clic su un contesto apre il testo alla riga giusta, con il layer semantico attivo (senza selezione della parola), con la manina sulle righe
