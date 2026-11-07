@@ -11,7 +11,7 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 ## Non ancora in un pacchetto (prossimo: 0.26.5)
 
 ### Dictionary Editor
-- Anteprima: doppio clic su un contesto apre il testo alla riga giusta, con il layer semantico attivo (senza selezione della parola)
+- Anteprima: doppio clic su un contesto apre il testo alla riga giusta, con il layer semantico attivo (senza selezione della parola), con la manina sulle righe
 
 ---
 

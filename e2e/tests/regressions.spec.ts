@@ -1065,8 +1065,10 @@ test('regressione: anteprima - doppio clic su un contesto apre il testo alla rig
   const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
   await expect(editor.locator('[role="tab"]').nth(2)).toBeVisible({ timeout: 30_000 });
   await editor.locator('[role="tab"]').nth(2).click();
-  const rows = editor.locator('app-dictionary-preview .custom-leaf p-table tbody tr.p-selectable-row');
+  const rows = editor.locator('app-dictionary-preview .custom-leaf p-table tbody tr.context-row');
   await expect(rows.first(), 'contesti nell\'anteprima').toBeVisible({ timeout: 30_000 });
+
+  expect(await rows.first().evaluate((e) => getComputedStyle(e).cursor), 'manina sulle righe dei contesti').toBe('pointer');
 
   const openRow = async (i: number) => {
     const sentence = (await rows.nth(i).locator('td').last().innerText()).trim().slice(0, 25);

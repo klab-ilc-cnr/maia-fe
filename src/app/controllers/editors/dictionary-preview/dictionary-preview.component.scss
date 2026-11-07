@@ -45,3 +45,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+/* righe dei contesti: il doppio clic apre il testo (la manina avvisa che c'e' un'azione; un clic singolo non fa nulla) */
+.context-row {
+  cursor: pointer;
+}
