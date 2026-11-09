@@ -857,7 +857,7 @@ test('regressione: Text - annotazioni sovrapposte sullo stesso layer (anche a ca
   }
 });
 
-test('regressione: Text - albero delle sezioni: tooltip col luogo del testo (es. II.8.48)', async ({ page, baseURL }) => {
+test('regressione: Text - albero delle sezioni: tooltip con il luogo del testo (es. II.8.48)', async ({ page, baseURL }) => {
   test.setTimeout(180_000);
   await openSmokeWorkspace(page, baseURL!);
   await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
@@ -875,8 +875,8 @@ test('regressione: Text - albero delle sezioni: tooltip col luogo del testo (es.
   const label = (re: RegExp) => tile.locator('#sectionsTree .section-label').filter({ hasText: re }).first();
   await expect(label(/^Novella 8$/)).toBeVisible({ timeout: 15_000 });
   const tip = page.locator('.p-tooltip');
-  // ogni tipo di elemento: giornata, novella, paragrafo (col luogo del testo), radice (solo il titolo)
-  for (const [re, text] of [[/^Giornata II$/, 'Giornata II · II'], [/^Novella 8$/, 'Novella 8 · II.8'], [/^Paragrafo 3$/, 'Paragrafo 3 · II.8.3'], [/^Decameron$/, 'Decameron']] as Array<[RegExp, string]>) {
+  // ogni tipo di elemento: giornata, novella, paragrafo (solo il luogo del testo, il titolo e' gia' nel nodo), radice (senza luogo: il titolo)
+  for (const [re, text] of [[/^Giornata II$/, 'II'], [/^Novella 8$/, 'II.8'], [/^Paragrafo 3$/, 'II.8.3'], [/^Decameron$/, 'Decameron']] as Array<[RegExp, string]>) {
     await label(re).hover();
     await expect(tip, 'tooltip di ' + text).toHaveText(text, { timeout: 5000 });
     await page.mouse.move(5, 5);

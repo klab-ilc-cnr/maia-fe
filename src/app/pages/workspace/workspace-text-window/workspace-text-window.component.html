@@ -81,9 +81,9 @@
             [selection]="selectedSection" (selectionChange)="selectedSection = $any($event)"
             (onNodeSelect)="sectionSelected($event)"
             [filter]="true">
-            <!-- the place of the text (sentum index, e.g. II.8.48) as a tooltip: the label can be cut by the width of the column -->
+            <!-- the place of the text (sentum index, e.g. II.8.48) as a tooltip, the label if the section has no index (root) -->
             <ng-template let-node pTemplate="default">
-              <span class="section-label" [pTooltip]="node.data?.index ? node.label + ' · ' + node.data.index : node.label" tooltipPosition="right" [showDelay]="400" appendTo="body">{{node.label}}</span>
+              <span class="section-label" [pTooltip]="node.data?.index || node.label" tooltipPosition="right" [showDelay]="400" appendTo="body">{{node.label}}</span>
             </ng-template>
           </p-tree>
         </div>

@@ -11,7 +11,7 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 ## Non ancora in un pacchetto (prossimo: 0.26.6)
 
 ### Finestra del testo
-- Albero delle sezioni: tooltip con titolo e luogo del testo (es. "Paragrafo 48 · II.8.48") su ogni elemento
+- Albero delle sezioni: tooltip con il luogo del testo (es. "II.8.48") su ogni elemento
 - Annotazioni sovrapposte sullo stesso layer (anche a capo): gli handle si impilano, ognuno è visibile e cliccabile (prima si vedeva e selezionava solo l'ultimo)
 - Annotazione su più righe: etichetta solo sul primo frammento (come INCEpTION)
 - Passando col mouse su un handle si evidenzia il testo dell'annotazione
