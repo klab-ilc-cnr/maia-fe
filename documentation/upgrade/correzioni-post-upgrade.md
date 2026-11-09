@@ -8,7 +8,13 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.6)
+## Non ancora in un pacchetto (prossimo: 0.26.7)
+
+_(nessuna modifica)_
+
+---
+
+## 0.26.6 — pacchetto `maia-fe-0.26.6-test-ng21-20261109-1916.tgz`
 
 ### Finestra del testo
 - Puntatore a mano anche sopra il testo annotato (come sull'handle): un clic apre l'annotazione

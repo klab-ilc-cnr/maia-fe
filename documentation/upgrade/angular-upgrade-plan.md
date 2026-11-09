@@ -200,7 +200,8 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 | 0.26.2 | + correzioni grafiche (Search, Text, Lexicon Editor/Explorer) | mai impacchettata, inclusa nella 0.26.3 |
 | 0.26.3 | + editor di testo, sessione scaduta, errori non silenziosi, ontologia disabilitata, finestra Search | superata — `dist/old/maia-fe-0.26.3-test-ng21-*.tgz` |
 | 0.26.4 | + Lexicon Editor/Explorer (dimensioni, tooltip), annotazioni (Tipo lessicale), Dictionary Editor (Ordinamento, anteprima, richieste) | superata — `dist/old/maia-fe-0.26.4-test-ng21-*.tgz` |
-| **0.26.5** | + anteprima: doppio clic su un contesto apre il testo alla riga col layer semantico; correzione dei contesti dei sottosensi | **attuale** — `dist/maia-fe-0.26.5-test-ng21-20261107-1154.tgz`; elenco in `correzioni-post-upgrade.md` |
+| 0.26.5 | + anteprima: doppio clic su un contesto apre il testo alla riga col layer semantico; correzione dei contesti dei sottosensi | superata — `dist/old/maia-fe-0.26.5-test-ng21-*.tgz` |
+| **0.26.6** | + testo: annotazioni sovrapposte impilate, clic sulla parola, mano sul testo annotato, tooltip dell'albero; apertura da Search più rapida; cache di campi/tagset/layer; elenco workspace aggiornato; layout salvato prima della scadenza; explorer a righe fisse | **attuale** — `dist/maia-fe-0.26.6-test-ng21-20261109-1916.tgz`; elenco in `correzioni-post-upgrade.md` |
 
 ## 6bis. Avanzamento
 
