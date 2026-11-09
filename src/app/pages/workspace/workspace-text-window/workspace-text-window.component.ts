@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild 
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
-import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, from, of, switchMap, take, takeUntil, throttleTime } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
@@ -255,6 +255,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private layerService: LayerService,
     private tagsetService: TagsetService,
   ) {
+    this.fontsReady = this.loadTextFonts();
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
     ).subscribe({
@@ -334,12 +335,32 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** resolved when the fonts used to draw the text are loaded (or after a timeout), see `loadTextFonts` */
+  private fontsReady: Promise<unknown> = Promise.resolve();
+
+  /**
+   * The positions of words, highlights and handles are calculated measuring the text on a canvas with the font of the text.
+   * The font is a @font-face that the browser downloads only when text using it is drawn: the first time the window was opened
+   * it was not there yet, the measure used a fallback font and highlights and handles came out shifted from the words (until
+   * the next rendering). The font is asked for in advance and the first load of rows waits for it (at most 2 seconds).
+   */
+  private loadTextFonts(): Promise<unknown> {
+    const css = getComputedStyle(document.documentElement);
+    const font = (size: string, family: string) => `${css.getPropertyValue(size)} ${css.getPropertyValue(family)}`.trim();
+    const fonts = [font('--text-font-size', '--text-font-family'), font('--annotation-font-size', '--annotation-font-family')];
+    const loaded = Promise.all(fonts.map(f => document.fonts.load(f).catch(() => [])));
+    return Promise.race([loaded, new Promise(resolve => setTimeout(resolve, 2000))]);
+  }
+
   /**initialize text range and load data */
   loadInitialData() {
-    this.annotationService.retrieveTextTotalRows(this.textId!).pipe(
+    forkJoin([
+      this.annotationService.retrieveTextTotalRows(this.textId!).pipe(take(1)),
+      from(this.fontsReady),
+    ]).pipe(
       take(1),
     ).subscribe({
-      next: (result) => {
+      next: ([result]) => {
         this.textTotalRows = result!
 
         let start = this.startingRowIndex;
@@ -354,6 +375,14 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.scrollingDirection = this.scrollingDirection ?? ScrollingDirectionType.Init; // if we are changin section we already have a value in this.scrollingDirection
         this.currentVisibleRowIndex = this.startingRowIndex;
         this.scrollingRowIndex = this.textRange.end;
+        if (this.scrollingDirection === ScrollingDirectionType.ChangingSection && this.startingRowIndex > 0) {
+          // Opening at a row (from the search results): the extra rows above and below are asked together with the range, as
+          // when a section is selected in the tree. Without them the row was the first of the range, the scroll check found
+          // nothing above it and asked again for a wider range that contained the first one: two requests of rows and of
+          // annotations, two renderings and a jump of the text.
+          this.addExtraRowsUp();
+          this.addExtraRowsDown();
+        }
         this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
       },
       error: (error) => {
@@ -1432,8 +1461,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     if (this.specialTextSelectionHighlight.active) {
       let text = this.textRes.join('').substring(this.specialTextSelectionHighlight.textSelection.startIndex! - this.offset, this.specialTextSelectionHighlight.textSelection.endIndex! - this.offset);
+      // the annotation editor shows this text in its "Text" field (input `annotationFragment`): the annotation is not copied
+      // any more to "refresh the panel", that rebuilt the editor form at every load of rows (a new request of the sense label
+      // and, if the user was editing the annotation and scrolled the text, the changes not saved were lost)
       this.selectedText = text;
-      this.textoAnnotation = { ...this.textoAnnotation }; //refresh annotation panel
     }
   }
 
@@ -1736,14 +1767,19 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingRowIndex = this.getScrollingRowIndex(this.scrollingDirection);
     const scrollTop = this.calculateScrollTop(this.scrollingDirection, this.scrollingRowIndex);
 
-    if (scrollTop <= 0 && this.textRange.start != 0) {
+    // When a section / a search result is opened (ChangingSection) the scroll top is 0 by definition (the position is set
+    // afterwards by renderData), which looked like "the user scrolled up to the top of the loaded rows" and asked again for a wider
+    // range that contained the one just loaded. The extra rows above and below are already part of the range.
+    const changingSection = this.scrollingDirection === ScrollingDirectionType.ChangingSection;
+
+    if (!changingSection && scrollTop <= 0 && this.textRange.start != 0) {
       this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessUp;
       this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();
       return;
     }
 
-    if (this.scrollBarReachesBottomOfTile(scrollTop) && this.textRange.end < this.textTotalRows) {
+    if (!changingSection && this.scrollBarReachesBottomOfTile(scrollTop) && this.textRange.end < this.textTotalRows) {
       this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessDown;
       this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();

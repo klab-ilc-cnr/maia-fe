@@ -17,6 +17,11 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 - Passando col mouse su un handle si evidenzia il testo dell'annotazione
 - Clic su una parola annotata: apre l'annotazione più interna (il doppio clic resta la selezione della parola)
 
+### Finestra del testo (apertura da un risultato della Search)
+- Una sola richiesta di righe e di annotazioni (prima due, la seconda conteneva la prima), senza il salto del testo
+- L'editor di annotazione non si ricostruisce a ogni caricamento di righe: niente seconda richiesta dell'etichetta del senso e le modifiche non salvate non si perdono scorrendo il testo
+- Alla prima apertura evidenziazioni e handle erano spostati rispetto alle parole (font del testo non ancora caricato al momento della misura): ora si attende il font
+
 ### Finestra del testo (correzione della cache)
 - Il campo "Text" dell'editor di annotazione mostrava il testo precedente (restava indietro di un clic); il form si costruisce ora a inputs completi, anche nell'editor della modifica massiva
 

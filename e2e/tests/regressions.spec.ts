@@ -968,6 +968,127 @@ test('regressione: Text - il campo "Text" dell\'editor di annotazione mostra il 
   await expect(textField, 'annotazione "figliuolo" (prima restava "isposa")').toHaveValue('figliuolo', { timeout: 10_000 });
 });
 
+test('regressione: Text - aprendo da un risultato della Search una sola richiesta di righe/annotazioni e il form dell\'editor non si ricostruisce', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(240_000);
+  await openSmokeWorkspace(page, baseURL!);
+
+  const openFromSearch = async (word: string, reference: string, withLayer: boolean) => {
+    await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+    await page.waitForTimeout(500);
+    await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+    if (withLayer) {
+      await page.locator('#searchTile p-select').filter({ hasText: /Layer/ }).first().click();
+      await page.locator('.p-select-option').filter({ hasText: /^\s*Semantica\s*$/ }).first().click();
+    }
+    const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+    await input.fill(word); await input.press('Enter');
+    const row = page.locator('#searchTile tbody tr', { hasText: reference }).first();
+    await expect(row).toBeVisible({ timeout: 30_000 });
+    await page.waitForTimeout(800);
+    const calls: string[] = [];
+    const onReq = (r: any) => { const u = r.url(); if (/\/resource\/123\/(rows|annotations)$/.test(u) || /lexicalSense/.test(u)) calls.push(u.replace(/^.*\/(resource|data)\//, '').replace(/id=.*/, 'id') + (r.method() === 'POST' ? ' ' + (r.postData() ?? '').slice(0, 70) : '')); };
+    page.on('request', onReq);
+    await row.dblclick();
+    const tile = page.locator('[id^="textTile_"]').first();
+    await expect(tile).toBeVisible({ timeout: 30_000 });
+    await page.waitForTimeout(5000);
+    page.off('request', onReq);
+    return { tile, calls };
+  };
+  // posizione (in px, dall'alto del riquadro del testo) della riga col riferimento
+  const rowTop = (tile: any, reference: string) => tile.evaluate((e: Element, ref: string) => {
+    const box = e.querySelector('.text-container')!.getBoundingClientRect();
+    const label = [...e.querySelectorAll('.sentnum text')].find((t) => (t.textContent ?? '').trim() === ref);
+    return label ? Math.round(label.getBoundingClientRect().top - box.top) : null;
+  }, reference);
+
+  // 1) al centro del testo, con il layer semantico: l'annotazione si apre
+  const mid = await openFromSearch('isposa', 'II.8.48', true);
+  testInfo.annotations.push({ type: 'centro', description: mid.calls.join(' | ') });
+  expect(mid.calls.filter((c) => c.startsWith('123/rows') || c === 'rows').length, 'richieste di righe').toBe(1);
+  expect(mid.calls.filter((c) => /annotations/.test(c)).length, 'richieste di annotazioni').toBe(1);
+  expect(mid.calls.filter((c) => /lexicalSense/.test(c)).length, 'etichetta del senso').toBe(1);
+  const top = await rowTop(mid.tile, 'II.8.48');
+  expect(top, 'la riga cercata e\' visibile in alto nel riquadro').not.toBeNull();
+  expect(top!, 'riga cercata vicino all\'inizio del riquadro').toBeLessThan(120);
+  expect(top!).toBeGreaterThanOrEqual(-5);
+
+  // 1b) con l'annotazione aperta si cambia un campo (senza salvare) e si scorre il testo: caricando altre righe il form non si ricostruisce
+  // (prima si perdeva la modifica e ripartiva la richiesta dell'etichetta del senso)
+  const editor = mid.tile.locator('app-text-annotation-editor');
+  const tipo = editor.locator('p-select').first();
+  await expect(tipo).toBeVisible({ timeout: 15_000 });
+  const initial = (await tipo.innerText()).trim();
+  await tipo.click();
+  const option = page.locator('.p-select-option').filter({ hasNotText: initial }).first();
+  await expect(option).toBeVisible();
+  await option.click();
+  const changed = (await tipo.innerText()).trim();
+  expect(changed, 'campo modificato').not.toBe(initial);
+  const senseCalls: string[] = [];
+  const onSense = (r: any) => { if (/lexicalSense/.test(r.url())) senseCalls.push(r.url()); };
+  page.on('request', onSense);
+  await mid.tile.locator('.text-container').evaluate((e: Element) => { e.scrollTop = e.scrollHeight; });
+  await page.waitForTimeout(3500);
+  await mid.tile.locator('.text-container').evaluate((e: Element) => { e.scrollTop = 0; });
+  await page.waitForTimeout(3500);
+  page.off('request', onSense);
+  expect((await tipo.innerText()).trim(), 'la modifica non salvata resta dopo aver scorso il testo').toBe(changed);
+  expect(senseCalls, 'nessuna nuova richiesta dell\'etichetta del senso').toEqual([]);
+
+  // 2) inizio e fine del testo: l'allargamento si limita, la riga cercata resta visibile e una sola richiesta di righe
+  for (const [reference, label] of [['Pr.1', 'prima riga'], ['X.ConclAut.30', 'ultima riga']]) {
+    const r = await openFromSearch('cognominato', reference, false);
+    testInfo.annotations.push({ type: label, description: r.calls.join(' | ') });
+    expect(r.calls.filter((c) => c.startsWith('123/rows')).length, label + ': richieste di righe').toBe(1);
+    const t = await rowTop(r.tile, reference);
+    expect(t, label + ': riga visibile').not.toBeNull();
+    expect(t!, label + ': nel riquadro').toBeGreaterThanOrEqual(-5);
+    expect(t!, label + ': nel riquadro').toBeLessThan(700);
+  }
+});
+
+test('regressione: Text - prima apertura con il font del testo non ancora caricato: evidenziazioni e handle allineati alle parole', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const ISPOSA = 25388398;
+  await openSmokeWorkspace(page, baseURL!);
+  // Difetto visto: le posizioni si calcolano misurando il testo su un canvas col font del testo (@font-face lazy: si scarica quando
+  // il testo viene disegnato). Alla prima apertura il font non c'e' ancora, la misura usa un font di ripiego e le evidenziazioni e gli
+  // handle risultano spostati rispetto alle parole. Un font solo-web (nessuna copia di sistema) rende il caso riproducibile.
+  await page.addStyleTag({ content: '@font-face { font-family: "CousineWeb"; src: url("assets/fonts/cousine/Cousine-Regular.ttf"); } :root { --text-font-family: "CousineWeb"; }' });
+  expect(await page.evaluate(() => document.fonts.check('15px CousineWeb')), 'il font non e\' ancora caricato').toBe(false);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  // come dalla ricerca dell'utente: layer Semantica scelto nella Search, l'annotazione compare al primo disegno
+  await page.locator('#searchTile p-select').filter({ hasText: /Layer/ }).first().click();
+  await page.locator('.p-select-option').filter({ hasText: /^\s*Semantica\s*$/ }).first().click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await expect(tile.locator(`svg rect[id="${ISPOSA}"]`)).toHaveCount(1, { timeout: 30_000 });
+  // alla prima apertura i riquadri si calcolano sul font "giusto": si riapre con la finestra chiusa e il font caricato non conta,
+  // si controlla subito il primo disegno: estensione della parola "isposa" nel testo e quella dell'handle/evidenziazione
+  const m = await tile.evaluate((e, id) => {
+    const handle = e.querySelector(`svg rect[id="${id}"]`)!.getBoundingClientRect();
+    const high = e.querySelector(`svg rect[id="h-${id}"]`)!.getBoundingClientRect();
+    // la parola "isposa" disegnata subito sotto l'handle (la riga puo' andare a capo in punti diversi)
+    const words = [...e.querySelectorAll('#gText tspan tspan')].filter((t) => (t.textContent ?? '').startsWith('isposa'));
+    const word = words.sort((a, b) => Math.abs(a.getBoundingClientRect().top - handle.bottom) - Math.abs(b.getBoundingClientRect().top - handle.bottom))[0];
+    const node = word.firstChild as Text;
+    const range = document.createRange(); range.setStart(node, 0); range.setEnd(node, 6);
+    const w = range.getBoundingClientRect();
+    return { wordLeft: w.left, wordWidth: w.width, handleLeft: handle.left, handleWidth: handle.width, highLeft: high.left, highWidth: high.width };
+  }, ISPOSA);
+  expect(Math.abs(m.handleLeft - m.wordLeft), 'handle: inizio uguale a quello della parola').toBeLessThan(3);
+  expect(Math.abs(m.handleWidth - m.wordWidth), 'handle: larghezza uguale a quella della parola').toBeLessThan(4);
+  expect(Math.abs(m.highLeft - m.wordLeft), 'evidenziazione: inizio').toBeLessThan(3);
+  expect(Math.abs(m.highWidth - m.wordWidth), 'evidenziazione: larghezza').toBeLessThan(4);
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);
