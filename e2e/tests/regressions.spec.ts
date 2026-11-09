@@ -1149,6 +1149,40 @@ test('regressione: Lexicon Editor - albero a sinistra: barra di scorrimento vert
   expect(m.body).toBeGreaterThanOrEqual(m.column - 2);
 });
 
+test('regressione: Lexicon/Dictionary Explorer - con poche voci le righe non si allungano per riempire il tile', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['lexiconTile', 'dictionaryTile']);
+  // Difetto visto (PrimeNG 20+): il contenuto del virtual scroll e' una <table> con min-height 100% (CSS di p-scroller):
+  // con poche voci la tabella si allungava e le righe si dividevano lo spazio (88px invece di 40px).
+  const heights = (tileId: string) => page.locator('#' + tileId).evaluate((e) =>
+    [...e.querySelectorAll('p-treetable tbody tr, p-treeTable tbody tr')].map(r => Math.round(r.getBoundingClientRect().height)));
+  const space = (tileId: string) => page.locator('#' + tileId).evaluate((e) => {
+    const body = e.querySelector('.p-treetable-scrollable-body') as HTMLElement;
+    const rows = [...e.querySelectorAll('p-treetable tbody tr, p-treeTable tbody tr')];
+    return { body: Math.round(body.getBoundingClientRect().height), rows: Math.round(rows.reduce((a, r) => a + r.getBoundingClientRect().height, 0)) };
+  });
+  const check = async (tileId: string, label: string) => {
+    await expect.poll(async () => { const h = await heights(tileId); return h.length > 0 && h.length <= 6; }, { timeout: 30_000, message: label + ': elenco filtrato' }).toBe(true);
+    const h = await heights(tileId);
+    const sp = await space(tileId);
+    testInfo.annotations.push({ type: label, description: JSON.stringify({ h, sp }) });
+    expect(Math.max(...h), label + ': righe alte come quando l\'elenco e\' lungo').toBeLessThanOrEqual(50);
+    expect(sp.rows, label + ': resta spazio bianco sotto le righe').toBeLessThan(sp.body - 20);
+  };
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const lex = page.locator('#lexiconTile');
+  await expect(lex).toBeVisible({ timeout: 30_000 });
+  await lex.locator('#searchInput').fill('sonag'); await lex.locator('#searchInput').press('Enter');
+  await check('lexiconTile', 'Lexicon Explorer');
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const dic = page.locator('#dictionaryTile');
+  await expect(dic).toBeVisible({ timeout: 30_000 });
+  const filter = dic.locator('input[type="text"]').first();
+  await filter.fill('sonar'); await filter.press('Enter');
+  await check('dictionaryTile', 'Dictionary Explorer');
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

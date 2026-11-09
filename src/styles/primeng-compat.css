@@ -98,6 +98,12 @@
   .p-datatable-column-sorted .p-sortable-column-icon { color: var(--p-datatable-header-cell-selected-color); }
 }
 
+/* Tabelle con virtual scroll (p-treeTable dei Lexicon/Dictionary Explorer): il contenuto e' una <table> con
+   `min-height: 100%` (CSS di p-scroller) e con poche righe la tabella si allunga e le righe si dividono lo spazio
+   (righe di 90px invece di 40px). Le righe devono avere sempre la stessa altezza, lo spazio che avanza resta bianco.
+   Fuori dai layer, come sopra. */
+table.p-virtualscroller-content { min-height: 0; }
+
 /* Chip dei valori scelti in AutoComplete multiplo e MultiSelect display="chip": in PrimeNG 18+ sono <p-chip>
    e prendono lo stile dei p-chip isolati (grigio, arrotondato). In saga erano "token" azzurri:
    sfondo highlight, angoli 3px, padding 0.25rem 0.5rem, 0.5rem prima dell'icona e tra un chip e l'altro.
