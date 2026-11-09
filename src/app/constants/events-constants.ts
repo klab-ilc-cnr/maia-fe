@@ -2,6 +2,8 @@ export class EventsConstants {
     static readonly onLexiconTreeElementDoubleClickEvent = "onLexiconTreeElementDoubleClickEvent";
     static readonly onSearchResultTableDoubleClickEvent = "onSearchResultTableDoubleClickEvent";
     static readonly onDictionaryPreviewRowDoubleClickEvent = "onDictionaryPreviewRowDoubleClickEvent";
+    /** the session is about to end: the open workspace saves its layout while the token is still valid */
+    static readonly saveWorkspaceBeforeLogoutEvent = "saveWorkspaceBeforeLogoutEvent";
     static readonly onDictionaryEntryDblClickEvent = "onDictionaryEntryDblClickEvent";
     static readonly onOntologyElementDoubleClickEvent = "onOntologyElementDoubleClickEvent";
 

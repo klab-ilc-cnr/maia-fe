@@ -162,7 +162,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     // returning false will show a confirm dialog before navigating away
     //this.mainPanel.close();
     //this.openPanels.forEach((panel, id) => panel.close());
-    this.saveWork(null);
+    // when the session is over (logout, expired token) the save cannot succeed: it was done before (see
+    // saveWorkspaceBeforeLogoutEvent) and trying again would only show an error on the login page
+    if (this.storageService.isLoggedIn() && !this.storageService.isExpired()) {
+      this.saveWork(null);
+    }
 
     // if (this.workSaved) {
 
@@ -251,6 +255,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             const searchResultRow: SearchResultRow = structuredClone(res.value[0]);
             const selectedLayer: TLayer | undefined = res.value[1] ? structuredClone(res.value[1]) : undefined;
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset, selectedLayer);
+            break;
+          }
+          case EventsConstants.saveWorkspaceBeforeLogoutEvent: {
+            this.saveWork(null, true);
             break;
           }
           case EventsConstants.onDictionaryPreviewRowDoubleClickEvent: {
@@ -1233,8 +1241,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Metodo che esegue il salvataggio dello stato del workspace
    * @param event {any} evento di click sul salvataggio
+   * @param silent {boolean} salvataggio in background (prima della scadenza della sessione): senza indicatore di caricamento
    */
-  saveWork(event: any) {
+  saveWork(event: any, silent = false) {
     //console.log(this.openPanels);
     //this.workSaved = true;
 
@@ -1247,7 +1256,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     //this.storedTiles = new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
 
     const openTiles = jsPanel.extensions.getTileMap();
-    this.loaderService.show();
+    if (!silent) { this.loaderService.show(); }
     this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {

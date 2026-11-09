@@ -730,6 +730,40 @@ test('regressione: sessione - l\'avviso di disconnessione compare anche dopo un 
   await expect(page.locator('.swal2-popup').getByText(/about to be disconnected/i)).toBeVisible({ timeout: 20_000 });
 });
 
+test('regressione: sessione - il layout del workspace si salva prima della scadenza (e senza avvisi al ritorno al login)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  // Difetto visto: al ritorno al login partiva il salvataggio del layout con il token gia' tolto/scaduto: 401 e avviso
+  // "Error saving workspace status" sulla pagina di login. Ora il layout si salva 30 s prima della scadenza, quando il token
+  // vale ancora, e dopo la fine della sessione non si prova piu' a salvare.
+  const saves: string[] = [];
+  page.on('response', (r) => { if (r.url().endsWith('/layout') && r.request().method() === 'PUT') saves.push(String(r.status())); });
+  await openSmokeWorkspace(page, baseURL!);
+  saves.length = 0;
+  await setStoredExpiration(page, 36_000);
+  await page.reload();
+  await expect(page.locator('.swal2-popup').getByText(/about to be disconnected/i)).toBeVisible({ timeout: 20_000 });
+  await expect.poll(() => saves.length, { timeout: 10_000, message: 'layout salvato all\'avviso di disconnessione' }).toBeGreaterThan(0);
+  await page.locator('.swal2-cancel').click();
+  await expect(page).toHaveURL(/#\/login/, { timeout: 15_000 });
+  await page.waitForTimeout(2500);
+  testInfo.annotations.push({ type: 'salvataggi', description: saves.join(',') });
+  expect(saves.every(s => s === '200'), 'nessun salvataggio fallito: ' + saves).toBe(true);
+  await expect(page.locator('.p-toast-message'), 'nessun avviso sul login').toHaveCount(0);
+
+  // sessione gia' scaduta (token scaduto, il server risponde 500): niente tentativo di salvataggio, nessun avviso sul login
+  await openSmokeWorkspace(page, baseURL!);
+  saves.length = 0;
+  await setStoredExpiration(page, -1000);
+  await page.route('**/lexo/**', (route) => route.fulfill({ status: 500, contentType: 'application/json', body: '{"status":500,"error":"Internal Server Error"}' }));
+  await openDictionaryAndRefresh(page);
+  await expect(page.locator('.swal2-popup').getByText(SESSION_EXPIRED)).toBeVisible({ timeout: 30_000 });
+  await page.locator('.swal2-confirm').click();
+  await expect(page).toHaveURL(/#\/login/, { timeout: 15_000 });
+  await page.waitForTimeout(2500);
+  expect(saves, 'nessun salvataggio dopo la scadenza').toEqual([]);
+  await expect(page.locator('.p-toast-message'), 'nessun avviso sul login (scaduta)').toHaveCount(0);
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);

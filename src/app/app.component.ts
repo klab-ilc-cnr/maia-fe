@@ -1,3 +1,4 @@
+import { EventsConstants } from 'src/app/constants/events-constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -46,12 +47,17 @@ export class AppComponent implements OnInit {
   /**OnInit interface method, used to intercept the token expiration subject */
   ngOnInit(): void {
     this.storageService.tokenTimeout.subscribe(() => {
+      // 30 s before the end of the session the token is still valid: the open workspace (if any) saves its layout now,
+      // after the expiration the save would fail and the layout would be lost
+      this.commonService.notifyOther({ option: EventsConstants.saveWorkspaceBeforeLogoutEvent, value: null });
       this.popupDeleteItem.showLogoutWarming(
         () => {
           console.info('call renew');
           this.refreshToken();
         },
         () => {
+          // the user refused to continue: save again (changes made while the warning was open) before the token is removed
+          this.commonService.notifyOther({ option: EventsConstants.saveWorkspaceBeforeLogoutEvent, value: null });
           this.storageService.cleanStorage();
           this.router.navigate(['/login']);
         });

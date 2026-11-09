@@ -10,6 +10,10 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 
 ## Non ancora in un pacchetto (prossimo: 0.26.6)
 
+### Sessione
+- Il layout del workspace si salva 30 s prima della scadenza (all'avviso di disconnessione) e di nuovo se si rifiuta di continuare
+- Tornando al login non compare più l'avviso "Error saving workspace status" (dopo la fine della sessione non si prova più a salvare)
+
 ### Lexicon Explorer / Dictionary Explorer
 - Con poche voci le righe non si allungano più per riempire il tile: altezza sempre uguale, spazio bianco sotto
 
