@@ -10,7 +10,8 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 
 ## Non ancora in un pacchetto (prossimo: 0.26.6)
 
-_(nessuna modifica)_
+### Lexicon Editor
+- Albero a sinistra: compare la barra di scorrimento verticale quando form e sensi riempiono la colonna (es. "sonare verb"); l'altezza segue la colonna anche ridimensionando il pannello
 
 ---
 

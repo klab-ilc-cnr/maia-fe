@@ -1095,6 +1095,60 @@ test('regressione: anteprima - doppio clic su un contesto apre il testo alla rig
   testInfo.annotations.push({ type: 'righe', description: `${first} / ${second}` });
 });
 
+test('regressione: Lexicon Editor - albero a sinistra: barra di scorrimento verticale quando le liste riempiono la colonna (sonare verb)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (x.querySelector?.('app-workspace-lexicon-edit-tile')) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await tile.locator('#searchInput').fill('sonare'); await page.waitForTimeout(2500);
+  const sonare = tile.locator('tr', { hasText: 'sonare@it' }).first();
+  await expect(sonare, 'voce "sonare" (verb) nel Lexicon').toBeVisible({ timeout: 30_000 });
+  await sonare.dblclick();
+  const ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  const rows = ed.locator('p-treetable tbody tr, p-treeTable tbody tr');
+  await expect(rows.first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1000);
+  const metrics = () => ed.evaluate((e) => {
+    const tree = e.querySelector('p-treetable, p-treeTable')!;
+    const body = tree.querySelector('.p-treetable-scrollable-body') as HTMLElement;
+    const column = e.querySelector('.p-splitterpanel') as HTMLElement;
+    return { column: column.clientHeight, body: body.clientHeight, content: body.scrollHeight, overflowY: getComputedStyle(body).overflowY };
+  });
+  // "sonare verb" ha 12 forme e 7 sensi: espansi riempiono piu' della colonna
+  for (const re of [/^\s*form \(\d+\)/, /^\s*sense \(\d+\)/]) {
+    await rows.filter({ hasText: re }).first().locator('button').first().click();
+    await page.waitForTimeout(2000);
+  }
+  // Difetto visto: l'altezza dell'albero (scrollHeight di PrimeNG) era "-40px" (il componente e' inline: clientHeight 0);
+  // l'albero cresceva col contenuto e la colonna (overflow hidden) lo tagliava senza barra di scorrimento verticale.
+  let m = await metrics();
+  testInfo.annotations.push({ type: 'albero', description: JSON.stringify(m) });
+  expect(m.content, 'le liste sono piu\' alte della colonna').toBeGreaterThan(m.column);
+  expect(m.body, 'l\'albero non e\' piu\' alto della colonna').toBeLessThanOrEqual(m.column);
+  expect(m.body, 'l\'albero riempie la colonna').toBeGreaterThanOrEqual(m.column - 2);
+  expect(m.overflowY).toMatch(/auto|scroll/);
+  await ed.screenshot({ path: testInfo.outputPath('lexed-scroll.png') });
+  // si arriva all'ultima riga scorrendo
+  const lastVisible = await ed.evaluate((e) => {
+    const body = e.querySelector('.p-treetable-scrollable-body') as HTMLElement;
+    const col = e.querySelector('.p-splitterpanel') as HTMLElement;
+    body.scrollTop = body.scrollHeight;
+    const rowsEl = e.querySelectorAll('p-treetable tbody tr, p-treeTable tbody tr');
+    const last = rowsEl[rowsEl.length - 1].getBoundingClientRect();
+    return last.bottom <= col.getBoundingClientRect().bottom + 1;
+  });
+  expect(lastVisible, 'ultima riga raggiungibile scorrendo').toBe(true);
+  // ridimensionando il pannello l'albero segue la colonna
+  await ed.evaluate((e) => { (e as HTMLElement).style.height = '400px'; });
+  await page.waitForTimeout(800);
+  m = await metrics();
+  expect(m.column, 'colonna ridotta').toBeLessThan(450);
+  expect(m.body, 'l\'albero segue la colonna ridotta').toBeLessThanOrEqual(m.column);
+  expect(m.body).toBeGreaterThanOrEqual(m.column - 2);
+});
+
 test('regressione: export PDF della scheda di anteprima del dizionario (pdfmake)', async ({ page, baseURL }, testInfo) => {
   // pdfmake 0.3 con il builder esbuild: i font si registrano con addVirtualFileSystem (gli import ES sono in sola lettura).
   const w = watchPage(page);

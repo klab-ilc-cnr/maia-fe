@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { decode } from 'html-entities';
 import { Subject, catchError, take, takeUntil } from 'rxjs';
@@ -55,7 +55,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   public senseInstanceName = '';
 
   public panelId!: string;
+  /** height (px) of the left column: the tree scrolls inside it (see ngAfterViewInit) */
   public panelHeight: number = 0;
+  private resizeObserver?: ResizeObserver;
 
   /**Definisce se ci sono modifiche pendenti dell'entrata lessicale */
   lexicalEntryPendingChanges = false;
@@ -78,7 +80,9 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
     private loggedUserService: LoggedUserService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
   ) { }
 
 
@@ -324,12 +328,24 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    const host = this.elRef.nativeElement as HTMLElement;
-    this.panelHeight = host?.clientHeight ?? this.panelHeight;
+    // The host element is inline (clientHeight 0): the height of the tree is the one of the left splitter panel, followed
+    // with a ResizeObserver (it changes when the jsPanel is resized, maximized, ...). With 0 the PrimeNG scrollHeight was
+    // invalid, the tree grew with its content and the splitter panel (overflow hidden) cut it without any scrollbar.
+    const column = (this.elRef.nativeElement as HTMLElement).querySelector('.p-splitterpanel');
+    if (!column || typeof ResizeObserver === 'undefined') { return; }
+    this.resizeObserver = new ResizeObserver(() => this.ngZone.run(() => {
+      const height = (column as HTMLElement).clientHeight;
+      if (height !== this.panelHeight) {
+        this.panelHeight = height;
+        this.cdr.detectChanges();
+      }
+    }));
+    this.resizeObserver.observe(column);
   }
 
   /**Metodo dell'interfaccia OnDestroy, utilizzato per rimuovere eventuali sottoscrizioni */
   ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
 
@@ -340,7 +356,7 @@ export class WorkspaceLexiconEditTileComponent implements OnInit, OnDestroy {
 * @param newHeight {any} newHeight
 */
   updateHeight(newHeight: number) {
-    this.panelHeight = newHeight;
+    // nothing to do: the height of the tree comes from the left column (ResizeObserver in ngAfterViewInit)
   }
 
   /**Evoca lo switch label-instanceName su tutti i nodi dell'albero visualizzato */
