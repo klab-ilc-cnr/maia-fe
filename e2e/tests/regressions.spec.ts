@@ -986,7 +986,7 @@ test('regressione: Text - aprendo da un risultato della Search una sola richiest
     await expect(row).toBeVisible({ timeout: 30_000 });
     await page.waitForTimeout(800);
     const calls: string[] = [];
-    const onReq = (r: any) => { const u = r.url(); if (/\/resource\/123\/(rows|annotations)$/.test(u) || /lexicalSense/.test(u)) calls.push(u.replace(/^.*\/(resource|data)\//, '').replace(/id=.*/, 'id') + (r.method() === 'POST' ? ' ' + (r.postData() ?? '').slice(0, 70) : '')); };
+    const onReq = (r: any) => { const u = r.url(); if (/\/resource\/123\/(rows|annotations)$/.test(u) || /lexicalSense/.test(u) || /resource\/123\/rowCount|\/layer\/list/.test(u)) calls.push(u.replace(/^.*\/(resource|data)\//, '').replace(/id=.*/, 'id') + (r.method() === 'POST' ? ' ' + (r.postData() ?? '').slice(0, 70) : '')); };
     page.on('request', onReq);
     await row.dblclick();
     const tile = page.locator('[id^="textTile_"]').first();
@@ -1005,6 +1005,7 @@ test('regressione: Text - aprendo da un risultato della Search una sola richiest
   // 1) al centro del testo, con il layer semantico: l'annotazione si apre
   const mid = await openFromSearch('isposa', 'II.8.48', true);
   testInfo.annotations.push({ type: 'centro', description: mid.calls.join(' | ') });
+  expect(mid.calls.filter((c) => /rowCount/.test(c)), 'il numero di righe del testo non si chiede piu\' prima del primo caricamento (lo da la risposta delle righe)').toEqual([]);
   expect(mid.calls.filter((c) => c.startsWith('123/rows') || c === 'rows').length, 'richieste di righe').toBe(1);
   expect(mid.calls.filter((c) => /annotations/.test(c)).length, 'richieste di annotazioni').toBe(1);
   expect(mid.calls.filter((c) => /lexicalSense/.test(c)).length, 'etichetta del senso').toBe(1);
@@ -1041,6 +1042,7 @@ test('regressione: Text - aprendo da un risultato della Search una sola richiest
     const r = await openFromSearch('cognominato', reference, false);
     testInfo.annotations.push({ type: label, description: r.calls.join(' | ') });
     expect(r.calls.filter((c) => c.startsWith('123/rows')).length, label + ': richieste di righe').toBe(1);
+    expect(r.calls.filter((c) => /rowCount|layer\/list/.test(c)), label + ': niente rowCount e (riapertura) niente elenco layer').toEqual([]);
     const t = await rowTop(r.tile, reference);
     expect(t, label + ': riga visibile').not.toBeNull();
     expect(t!, label + ': nel riquadro').toBeGreaterThanOrEqual(-5);

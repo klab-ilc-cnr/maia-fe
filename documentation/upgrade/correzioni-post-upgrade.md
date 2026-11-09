@@ -21,6 +21,7 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 ### Finestra del testo (apertura da un risultato della Search)
 - Una sola richiesta di righe e di annotazioni (prima due, la seconda conteneva la prima), senza il salto del testo
 - L'editor di annotazione non si ricostruisce a ogni caricamento di righe: niente seconda richiesta dell'etichetta del senso e le modifiche non salvate non si perdono scorrendo il testo
+- Il numero di righe del testo non si chiede più prima del primo caricamento (lo dà la risposta delle righe) e l'elenco dei layer è in cache per 5 minuti: aperture della finestra del testo più rapide e meno richieste
 - Alla prima apertura evidenziazioni e handle erano spostati rispetto alle parole (font del testo non ancora caricato al momento della misura): ora si attende il font
 
 ### Finestra del testo (correzione della cache)

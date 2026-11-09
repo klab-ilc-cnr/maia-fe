@@ -24,7 +24,6 @@ import { AnnotationService } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { TagsetService } from 'src/app/services/tagset.service';
-import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
@@ -61,12 +60,12 @@ export enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp
   selector: 'app-workspace-text-window',
   templateUrl: './workspace-text-window.component.html',
   styleUrls: ['./workspace-text-window.component.scss'],
-  providers: [LayerStateService],
   standalone: false
 })
 export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
-  layers$ = this.layerState.layers$.pipe(
+  /** layers (list cached for a few minutes: it was asked for again at every opening of a text window) */
+  layers$ = this.layerService.retrieveLayerListCached().pipe(
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
   selectedText = '';
@@ -248,7 +247,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private loaderService: LoaderService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private layerState: LayerStateService,
     private commonService: CommonService,
     private workspaceService: WorkspaceService,
     private cdref: ChangeDetectorRef,
@@ -339,6 +337,26 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** true from the first request of rows, made without knowing how many rows the text has, until its answer */
+  private initialRangeToClamp = false;
+
+  /**
+   * The first range (asked for before knowing the total) may go beyond the end of the text: now that the total is known it is
+   * brought back, taking away first the extra rows below and then the rows of the range itself.
+   */
+  private clampInitialRange(): void {
+    if (!this.initialRangeToClamp) { return; }
+    this.initialRangeToClamp = false;
+    const range = this.textRange;
+    if (!range || range.end <= this.textTotalRows) { return; }
+    const over = range.end - this.textTotalRows;
+    const fromExtra = Math.min(over, range.extraRowsAfterEnd);
+    range.extraRowsAfterEnd -= fromExtra;
+    range.end = Math.max(range.start, range._end - (over - fromExtra));
+    this.precTextRange = range.clone();
+    this.scrollingRowIndex = range.end;
+  }
+
   /** resolved when the fonts used to draw the text are loaded (or after a timeout), see `loadTextFonts` */
   private fontsReady: Promise<unknown> = Promise.resolve();
 
@@ -358,21 +376,18 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
   /**initialize text range and load data */
   loadInitialData() {
-    forkJoin([
-      this.annotationService.retrieveTextTotalRows(this.textId!).pipe(take(1)),
-      from(this.fontsReady),
-    ]).pipe(
+    from(this.fontsReady).pipe(
       take(1),
     ).subscribe({
-      next: ([result]) => {
-        this.textTotalRows = result!
+      next: () => {
+        // The total number of rows is not asked for any more before the first load: the answer of the rows has it (`count`) and the
+        // range is adjusted when it arrives (see `clampInitialRange`). It used to be a request in front of the first load of the
+        // text, ~160 ms in the way.
+        this.textTotalRows = Number.MAX_SAFE_INTEGER;
+        this.initialRangeToClamp = true;
 
         let start = this.startingRowIndex;
         let end = this.startingRowIndex + this.textRowsWideness;
-
-        if (end > this.textTotalRows) {
-          end = this.textTotalRows;
-        }
 
         this.textRange = new TextRange(start, end);
         this.precTextRange = this.textRange.clone();
@@ -390,7 +405,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
       },
       error: (error) => {
-        this.commonService.throwHttpErrorAndMessage(error, `Error retrieving text total rows: ${error.error.message}`);
+        this.commonService.throwHttpErrorAndMessage(error, `Error loading the text: ${error?.error?.message}`);
       }
     });
   }
@@ -1484,6 +1499,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 */
   private setTextData(textResponse: PaginatedResponse) {
     this.textTotalRows = textResponse.count!;
+    this.clampInitialRange();
     this.textRes = textResponse.data?.map(d => d.text) || [];
     this.textSplittedRows = textResponse.data;
     this.offset = textResponse.data![0].start;

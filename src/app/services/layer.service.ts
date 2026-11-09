@@ -78,6 +78,8 @@ export class LayerService {
 
   /** features of a layer (cached 5 minutes, see `retrieveLayerFeatureListCached`) */
   private featuresCache = new TtlCache<number, TFeature[]>(5 * 60 * 1000);
+  /** list of the layers (cached 5 minutes, see `retrieveLayerListCached`) */
+  private listCache = new TtlCache<string, TLayer[]>(5 * 60 * 1000);
   /** layers by id (cached 5 minutes, see `retrieveLayerByIdCached`) */
   private layerCache = new TtlCache<number, TLayer>(5 * 60 * 1000);
 
@@ -99,8 +101,16 @@ export class LayerService {
     return this.layerCache.get(layerId, () => this.retrieveLayerById(layerId));
   }
 
+  /**
+   * Same as `retrieveLayerList`, with the answer reused for 5 minutes. For the text window, that asked for the list at every opening.
+   */
+  public retrieveLayerListCached(): Observable<TLayer[]> {
+    return this.listCache.get('list', () => this.retrieveLayerList());
+  }
+
   /** Forgets the cached layers and features: to call after any change of a layer or of its features */
   public clearCache(): void {
+    this.listCache.clear();
     this.featuresCache.clear();
     this.layerCache.clear();
     this.semanticLayer$ = undefined;
