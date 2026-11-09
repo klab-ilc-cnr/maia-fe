@@ -22,6 +22,8 @@ import { TFeature } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
+import { LayerService } from 'src/app/services/layer.service';
+import { TagsetService } from 'src/app/services/tagset.service';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
@@ -249,7 +251,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private layerState: LayerStateService,
     private commonService: CommonService,
     private workspaceService: WorkspaceService,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    private layerService: LayerService,
+    private tagsetService: TagsetService,
   ) {
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
@@ -1280,6 +1284,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.prefetchLayersConfig(visibleLayersIds);
+
     this.loaderService.show();
     // this.relation = new Relation();
 
@@ -1373,7 +1379,29 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 * Manages the retrieve of the layers to add
 * @returns {void}
 */
+  /**
+   * Asks in the background (and keeps) the structure of the visible layers and the values of their tagsets, so that the first
+   * click on an annotation of any visible layer finds the editor data ready. Silent: if it fails the editor asks again.
+   * @param layerIds {Array<number>} visible layers
+   */
+  private prefetchLayersConfig(layerIds: Array<number>): void {
+    layerIds.forEach(layerId => {
+      this.layerService.retrieveLayerFeatureListCached(layerId).pipe(
+        take(1),
+        takeUntil(this.unsubscribe$),
+      ).subscribe({
+        next: (features) => features.forEach(f => {
+          if (f.tagset?.id) {
+            this.tagsetService.getTagsetItemsByIdCached(f.tagset.id).pipe(take(1), takeUntil(this.unsubscribe$)).subscribe({ error: () => { } });
+          }
+        }),
+        error: () => { }, // not cached on failure: the editor will ask again and report the error
+      });
+    });
+  }
+
   private loadLayersOnlyAdd(start: number, end: number, visibleLayersIds: Array<number>, layerIdsToAdd: Array<number>): void {
+    this.prefetchLayersConfig(layerIdsToAdd);
     if (!this.textId) {
       return;
     }

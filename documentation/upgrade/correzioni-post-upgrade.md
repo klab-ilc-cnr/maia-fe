@@ -17,6 +17,10 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 - Passando col mouse su un handle si evidenzia il testo dell'annotazione
 - Clic su una parola annotata: apre l'annotazione più interna (il doppio clic resta la selezione della parola)
 
+### Prestazioni (clic su un'annotazione e campi con autocomplete)
+- Tolta la ricerca a vuoto dei campi con autocomplete (lessico, forme, sensi: un elenco di centinaia di voci richiesto a ogni apertura, mai mostrato): 26 punti dell'applicazione
+- Editor di annotazione: nome del layer dall'elenco già in memoria; campi dei layer e valori dei tagset in cache per 5 minuti (svuotata a ogni modifica fatta dall'app); caricamento in background per i layer resi visibili. Un clic passa da 5 chiamate a 1 (solo l'etichetta del senso)
+
 ### Elenco workspace
 - "Last access" aggiornato: l'elenco veniva richiesto una sola volta per sessione; ora si rinnova a ogni apertura della pagina e dopo il salvataggio all'uscita da un workspace
 

@@ -590,8 +590,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
    */
   private fetchAndMapFeatures(layerId: number) {
     forkJoin({
-      layer: this.layerService.retrieveLayerById(layerId),
-      features: this.layerService.retrieveLayerFeatureList(layerId),
+      layer: this.layerService.retrieveLayerByIdCached(layerId),
+      features: this.layerService.retrieveLayerFeatureListCached(layerId),
     }).pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(response => {
@@ -601,7 +601,7 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         return <FeatForAnn>{
           feature: feature,
           // shareReplay: the select (async pipe) and the default value share one request
-          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId).pipe(shareReplay(1)) : undefined,
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsByIdCached(tagsetId) : undefined,
           checked: true // default value for checked
         };
       });

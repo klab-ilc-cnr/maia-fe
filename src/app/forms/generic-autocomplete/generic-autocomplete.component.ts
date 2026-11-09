@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, catchError, debounceTime, of, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, of, switchMap, take, takeUntil } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -33,8 +33,12 @@ export class GenericAutocompleteComponent implements OnInit, OnDestroy {
   @Input() styleClass = '';
   @Input() inputStyleClass = '';
   valueToShow: any;
-  /**Filtro corrente da applicare */
-  currentFilter$ = new BehaviorSubject<string>('');
+  /**
+   * Filtro corrente da applicare. A Subject, not a BehaviorSubject: with an initial '' the lookup ran as soon as the field
+   * was created (hundreds of lexical entries / senses nobody sees: the field has no dropdown button and PrimeNG asks for
+   * suggestions only after typing), once for each of the autocompletes in the page.
+   */
+  currentFilter$ = new Subject<string>();
   suggestions = this.currentFilter$.pipe(
     debounceTime(300),
     switchMap(text => this.filterFn(text)),

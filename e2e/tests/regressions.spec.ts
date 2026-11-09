@@ -884,6 +884,52 @@ test('regressione: Text - albero delle sezioni: tooltip con il luogo del testo (
   }
 });
 
+test('regressione: Text - cliccare su un\'annotazione non rifa le chiamate di configurazione (layer, campi, tagset, elenco dei sensi)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  const ISPOSA = 25388398, FIGLIUOLO = 25385421;
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  // due layer visibili insieme: Semantica e il primo degli altri
+  await tile.locator('p-multiselect').first().click();
+  await page.locator('.p-multiselect-option', { hasText: 'Semantica' }).first().click();
+  await page.locator('.p-multiselect-option').filter({ hasNotText: 'Semantica' }).first().click();
+  await page.keyboard.press('Escape');
+  await expect(tile.locator(`svg rect[id="${ISPOSA}"]`)).toHaveCount(1, { timeout: 30_000 });
+  await page.waitForTimeout(2500); // il caricamento in background della configurazione dei layer visibili
+
+  const calls: string[] = [];
+  page.on('request', (r) => {
+    const u = r.url();
+    if (/\/texto\/layer\/\d+(\/features)?$/.test(u) || /\/texto\/tagset\/\d+\/items$/.test(u) || /filteredSenses|lexicalSense|lexicalEntry\?|\/data\/form\?/.test(u)) calls.push(`${r.method()} ${u.replace(/^.*\/(texto|lexo)\//, '/$1/').replace(/id=.*/, 'id=…')}`);
+  });
+  const click = async (id: number | string) => { calls.length = 0; await tile.locator(`svg rect[id="${id}"]`).first().click(); await page.waitForTimeout(1800); return [...calls]; };
+  const first = await click(ISPOSA);
+  const second = await click(FIGLIUOLO);
+  const third = await click(ISPOSA);
+  // un'annotazione dell'altro layer (un handle che non sia uno dei tre semantici della frase)
+  const otherId = await tile.evaluate((e) => [...e.querySelectorAll('.span rect')].map((r) => r.getAttribute('id') ?? '').find((id) => id && !id.startsWith('h-') && ![25388541, 25385421, 25388398].includes(Number(id)) && Number(id) > 25000000) ?? '');
+  const other = otherId ? await click(otherId) : [];
+  testInfo.annotations.push({ type: 'chiamate', description: JSON.stringify({ first, second, third, other }) });
+  const heavy = (l: string[]) => l.filter((c) => /filteredSenses|\/texto\/layer\/|\/texto\/tagset\//.test(c));
+  // Difetto visto: a ogni clic partivano GET del layer, dei suoi campi, dei valori del tagset e l'elenco di 887 sensi (ricerca a vuoto)
+  expect(heavy(first), 'primo clic: nessuna chiamata di configurazione (gia\' pre-caricata)').toEqual([]);
+  expect(heavy(second), 'secondo clic').toEqual([]);
+  expect(heavy(third), 'terzo clic').toEqual([]);
+  expect(heavy(other), 'clic su un altro layer').toEqual([]);
+  // resta al piu' l'etichetta del senso (una per annotazione)
+  expect(first.length, 'primo clic: al piu\' l\'etichetta del senso').toBeLessThanOrEqual(1);
+  expect(third.length).toBeLessThanOrEqual(1);
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);

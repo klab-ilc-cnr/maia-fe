@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TTagset } from '../models/texto/t-tagset';
 import { TTagsetItem } from '../models/texto/t-tagset-item';
+import { TtlCache } from '../helpers/ttl-cache';
 
 /**Tagset-related services */
 @Injectable({
@@ -27,10 +28,10 @@ export class TagsetService {
    * @returns {Observable<TTagset>} observable of the new tagset
    */
   public createTagset(newTagset: TTagset): Observable<TTagset> {
-    return this.http.post<TTagset>(
+    return this.invalidating(this.http.post<TTagset>(
       `${this.textoUrl}/tagset/create`,
       newTagset
-    );
+    ));
   }
   /**
    * POST to add a new tagset item (or value)
@@ -38,10 +39,10 @@ export class TagsetService {
    * @returns {Observable<TTagsetItem>} new tagset item
    */
   public createTagsetItem(newTagsetItem: TTagsetItem): Observable<TTagsetItem> {
-    return this.http.post<TTagsetItem>(
+    return this.invalidating(this.http.post<TTagsetItem>(
       `${this.textoUrl}/tagsetItem/create`,
       newTagsetItem
-    );
+    ));
   }
   /**
    * GET to retrieve a tagset by ID
@@ -59,6 +60,28 @@ export class TagsetService {
   public getTagsetItemsById(tagsetId: number): Observable<TTagsetItem[]> {
     return this.http.get<TTagsetItem[]>(`${this.textoUrl}/tagset/${tagsetId}/items`);
   }
+  /** values of a tagset (cached 5 minutes, see `getTagsetItemsByIdCached`) */
+  private itemsCache = new TtlCache<number, TTagsetItem[]>(5 * 60 * 1000);
+
+  /**
+   * Same as `getTagsetItemsById`, but the answer is reused for 5 minutes (the values of a tagset change rarely). For the
+   * annotation editors, that ask for them at every click on an annotation. The administration pages keep reading fresh data.
+   * @param tagsetId {number} tagset identifier
+   */
+  public getTagsetItemsByIdCached(tagsetId: number): Observable<TTagsetItem[]> {
+    return this.itemsCache.get(tagsetId, () => this.getTagsetItemsById(tagsetId));
+  }
+
+  /** Forgets the cached values: to call after any change of a tagset */
+  public clearCache(): void {
+    this.itemsCache.clear();
+  }
+
+  /** Makes a request that changes tagsets invalidate the cache when it succeeds */
+  private invalidating<T>(request: Observable<T>): Observable<T> {
+    return request.pipe(tap(() => this.clearCache()));
+  }
+
   /**
    * GET to retrieve all the tagsets
    * @returns {Observable<TTagset>} observable of the tagset list
@@ -72,7 +95,7 @@ export class TagsetService {
    * @returns {Observable<TTagset>} observable of the removed tagset
    */
   public removeTagsetById(tagsetId: number): Observable<TTagset> { //TODO CHECK RETURN TYPE
-    return this.http.delete<TTagset>(`${this.textoUrl}/tagset/${tagsetId}/remove`);
+    return this.invalidating(this.http.delete<TTagset>(`${this.textoUrl}/tagset/${tagsetId}/remove`));
   }
   /**
    * Delete an item from tagset using tagset ID
@@ -80,7 +103,7 @@ export class TagsetService {
    * @returns {Observable<TTagsetItem>} observable of the item removed from tagset
    */
   public removeTagsetItemById(tagsetItemId: number): Observable<TTagsetItem> { //TODO CHECK RETURN TYPE
-    return this.http.delete<TTagsetItem>(`${this.textoUrl}/tagsetItem/${tagsetItemId}/remove`);
+    return this.invalidating(this.http.delete<TTagsetItem>(`${this.textoUrl}/tagsetItem/${tagsetItemId}/remove`));
   }
   /**
    * POST to update tagset data
@@ -88,10 +111,10 @@ export class TagsetService {
    * @returns {Observable<TTagset>} observable of the updated tagset
    */
   public updateTagset(updatedTagset: TTagset): Observable<TTagset> {
-    return this.http.post<TTagset>(
+    return this.invalidating(this.http.post<TTagset>(
       `${this.textoUrl}/tagset/update`,
       updatedTagset,
-    );
+    ));
   }
   /**
    * POST to update an item of a tagset
@@ -99,9 +122,9 @@ export class TagsetService {
    * @returns {Observable<TTagsetItem>} Observable of the updated item
    */
   public updateTagsetItem(updatedTagsetItem: TTagsetItem): Observable<TTagsetItem> {
-    return this.http.post<TTagsetItem>(
+    return this.invalidating(this.http.post<TTagsetItem>(
       `${this.textoUrl}/tagsetItem/update`,
       updatedTagsetItem,
-    );
+    ));
   }
 }

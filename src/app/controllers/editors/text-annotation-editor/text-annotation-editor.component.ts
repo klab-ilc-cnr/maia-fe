@@ -43,6 +43,8 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   /**Tipi di feature */
   featureTypes = TFeatureType;
   @Input() annotationFragment!: string;
+  /** all the layers (the text window has them already): the name of the layer of the annotation is taken from here */
+  @Input() layers: TLayer[] = [];
   annotationForm = new FormGroup({
     layer: new FormControl<string>({ value: '', disabled: true }),
     text: new FormControl<string>({ value: '', disabled: true }),
@@ -170,13 +172,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map((resp: any) => {
-      console.info(resp.list)
-      return resp.list.map((s:any) => {return {
-        ...s,
-        definition: `[${s.lemma}] - ${HtmlHelper.stripHtml(s.definition)}`
-      }});
-    }),
+    map((resp: any) => resp.list.map((s: any) => ({
+      ...s,
+      definition: `[${s.lemma}] - ${HtmlHelper.stripHtml(s.definition)}`
+    }))),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
@@ -326,9 +325,12 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   }
 
   private fetchAndMapFeatures(layerId: number) {
+    // the layer comes from the list the text window already has (all the layers, visible or not); the structure of the layer
+    // and the values of its tagsets are reused for a few minutes: they were asked for again at every click on an annotation
+    const knownLayer = this.layers?.find(l => l.id === layerId);
     forkJoin({
-      layer: this.layerService.retrieveLayerById(layerId),
-      features: this.layerService.retrieveLayerFeatureList(layerId),
+      layer: knownLayer ? of(knownLayer) : this.layerService.retrieveLayerByIdCached(layerId),
+      features: this.layerService.retrieveLayerFeatureListCached(layerId),
     }).pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(response => {
@@ -337,8 +339,8 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         const tagsetId = feature.tagset?.id;
         return <FeatForAnn>{
           feature: feature,
-          // shareReplay: the select (async pipe) and the default value share one request
-          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId).pipe(shareReplay(1)) : undefined
+          // cached (shared): the select (async pipe) and the default value share one request
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsByIdCached(tagsetId) : undefined
         };
       });
       this.createForm();
