@@ -69,6 +69,12 @@
   cursor: pointer;
 }
 
+// annotated text: a click opens the annotation (class toggled by the component while the mouse is over a highlight)
+.text-editor.over-annotation text,
+.text-editor.over-annotation tspan {
+  cursor: pointer;
+}
+
 .span path.curly {
   /* stroke: grey; */
   stroke-width: 0.5;

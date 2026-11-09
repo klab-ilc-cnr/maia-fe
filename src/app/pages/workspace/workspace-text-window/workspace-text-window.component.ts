@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
@@ -254,6 +254,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private cdref: ChangeDetectorRef,
     private layerService: LayerService,
     private tagsetService: TagsetService,
+    private elementRef: ElementRef,
+    private ngZone: NgZone,
   ) {
     this.fontsReady = this.loadTextFonts();
     this.workspaceService.getTextoCurrentUserId().pipe(
@@ -319,6 +321,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    // outside Angular: a handler in the template would run a change detection at every mouse move (it was removed on purpose, #76)
+    this.ngZone.runOutsideAngular(() => (this.elementRef.nativeElement as HTMLElement).addEventListener('mousemove', this.onMouseMoveOverText, { passive: true }));
     this.textRowsWideness = this.textRowsRangeWidenessPredictor();
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
     if (this.initialKwicLayer) {
@@ -391,7 +395,32 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     });
   }
 
+  private hoverFrame?: number;
+  private overAnnotatedText = false;
+
+  /**
+   * The pointer becomes a hand over annotated text (a click opens the annotation, as clicking its handle does). The highlights are
+   * drawn under the text, which receives the mouse: the elements at the point are asked for, one animation frame at a time.
+   */
+  private onMouseMoveOverText = (event: MouseEvent): void => {
+    if (this.hoverFrame !== undefined) { return; }
+    const { clientX, clientY, target } = event;
+    this.hoverFrame = requestAnimationFrame(() => {
+      this.hoverFrame = undefined;
+      const svg = this.svg?.nativeElement?.querySelector('svg.text-editor') as SVGElement | null;
+      if (!svg) { return; }
+      const overText = target instanceof Element && !!target.closest('#gText');
+      const over = overText && document.elementsFromPoint(clientX, clientY).some(el => el instanceof SVGRectElement && el.id.startsWith('h-'));
+      if (over !== this.overAnnotatedText) {
+        this.overAnnotatedText = over;
+        svg.classList.toggle('over-annotation', over);
+      }
+    });
+  }
+
   ngOnDestroy(): void {
+    (this.elementRef.nativeElement as HTMLElement).removeEventListener('mousemove', this.onMouseMoveOverText);
+    if (this.hoverFrame !== undefined) { cancelAnimationFrame(this.hoverFrame); }
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
 

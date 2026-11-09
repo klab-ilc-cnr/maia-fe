@@ -1089,6 +1089,46 @@ test('regressione: Text - prima apertura con il font del testo non ancora carica
   expect(Math.abs(m.highWidth - m.wordWidth), 'evidenziazione: larghezza').toBeLessThan(4);
 });
 
+test('regressione: Text - il puntatore e\' una mano sopra il testo annotato (e non sul testo normale)', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const ISPOSA = 25388398;
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await page.locator('#searchTile p-select').filter({ hasText: /Layer/ }).first().click();
+  await page.locator('.p-select-option').filter({ hasText: /^\s*Semantica\s*$/ }).first().click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile.locator(`svg rect[id="${ISPOSA}"]`)).toHaveCount(1, { timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  // cursore calcolato dell'elemento sotto il mouse
+  const cursorAt = async (x: number, y: number) => {
+    await page.mouse.move(x, y); await page.waitForTimeout(250);
+    return page.evaluate(([px, py]) => getComputedStyle(document.elementFromPoint(px, py)!).cursor, [x, y]);
+  };
+  // al centro della parola annotata "isposa" e al centro di una parola senza annotazione
+  const pts = await tile.evaluate((e) => {
+    const mid = (el: Element, from: number, to: number) => { const n = el.firstChild as Text; const r = document.createRange(); r.setStart(n, from); r.setEnd(n, to); const b = r.getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; };
+    const words = [...e.querySelectorAll('#gText tspan tspan')];
+    const handleBottom = e.querySelector('svg rect[id="25388398"]')!.getBoundingClientRect().bottom;
+    const annotated = words.filter((t) => (t.textContent ?? '').startsWith('isposa')).sort((a, b) => Math.abs(a.getBoundingClientRect().top - handleBottom) - Math.abs(b.getBoundingClientRect().top - handleBottom))[0];
+    // una parola senza evidenziazione sotto: la prima parola lunga della prima riga visibile che non tocca nessuna evidenziazione
+    const highs = [...e.querySelectorAll('svg rect[id^="h-"]')].map((r) => r.getBoundingClientRect());
+    const box = e.querySelector('.text-container')!.getBoundingClientRect();
+    const plain = words.find((t) => { const b = t.getBoundingClientRect(); return (t.textContent ?? '').trim().length >= 4 && b.top > box.top + 5 && b.bottom < box.bottom - 5 && b.left > box.left + 40 && b.right < box.right - 5 && !highs.some((h) => b.left < h.right && b.right > h.left && b.top < h.bottom && b.bottom > h.top); })!;
+    return { annotated: mid(annotated, 1, 4), plain: mid(plain, 1, 3) };
+  });
+  expect(await cursorAt(pts.annotated.x, pts.annotated.y), 'sopra il testo annotato').toBe('pointer');
+  expect(await cursorAt(pts.plain.x, pts.plain.y), 'sopra il testo normale').not.toBe('pointer');
+  // lasciando il testo annotato il puntatore torna normale
+  expect(await cursorAt(pts.annotated.x, pts.annotated.y), 'di nuovo sopra l\'annotazione').toBe('pointer');
+  expect(await cursorAt(pts.plain.x, pts.plain.y), 'di nuovo sopra il testo normale').not.toBe('pointer');
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);
