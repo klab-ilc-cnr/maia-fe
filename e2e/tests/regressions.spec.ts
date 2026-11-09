@@ -857,6 +857,33 @@ test('regressione: Text - annotazioni sovrapposte sullo stesso layer (anche a ca
   }
 });
 
+test('regressione: Text - albero delle sezioni: tooltip col luogo del testo (es. II.8.48)', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  // un clic su una parola del testo apre nell'albero i rami fino alla sezione di quella riga (qui la novella II.8)
+  await tile.locator('#gText tspan tspan').filter({ hasText: /^gentile\s*$/ }).first().click();
+  const label = (re: RegExp) => tile.locator('#sectionsTree .section-label').filter({ hasText: re }).first();
+  await expect(label(/^Novella 8$/)).toBeVisible({ timeout: 15_000 });
+  const tip = page.locator('.p-tooltip');
+  // ogni tipo di elemento: giornata, novella, paragrafo (col luogo del testo), radice (solo il titolo)
+  for (const [re, text] of [[/^Giornata II$/, 'Giornata II · II'], [/^Novella 8$/, 'Novella 8 · II.8'], [/^Paragrafo 3$/, 'Paragrafo 3 · II.8.3'], [/^Decameron$/, 'Decameron']] as Array<[RegExp, string]>) {
+    await label(re).hover();
+    await expect(tip, 'tooltip di ' + text).toHaveText(text, { timeout: 5000 });
+    await page.mouse.move(5, 5);
+    await expect(tip).toHaveCount(0);
+  }
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);
