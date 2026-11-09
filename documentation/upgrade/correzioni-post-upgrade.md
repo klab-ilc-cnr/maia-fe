@@ -10,6 +10,9 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 
 ## Non ancora in un pacchetto (prossimo: 0.26.6)
 
+### Elenco workspace
+- "Last access" aggiornato: l'elenco veniva richiesto una sola volta per sessione; ora si rinnova a ogni apertura della pagina e dopo il salvataggio all'uscita da un workspace
+
 ### Sessione
 - Il layout del workspace si salva 30 s prima della scadenza (all'avviso di disconnessione) e di nuovo se si rifiuta di continuare
 - Tornando al login non compare più l'avviso "Error saving workspace status" (dopo la fine della sessione non si prova più a salvare)

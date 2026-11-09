@@ -764,6 +764,30 @@ test('regressione: sessione - il layout del workspace si salva prima della scade
   await expect(page.locator('.p-toast-message'), 'nessun avviso sul login (scaduta)').toHaveCount(0);
 });
 
+test('regressione: elenco workspace - "Last access" aggiornato dopo essere usciti da un workspace', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  // Difetto visto: l'elenco dei workspace e' condiviso e tenuto per tutta la sessione (shareReplay): veniva richiesto una
+  // volta sola e "Last access" restava quello del primo caricamento, anche dopo aver salvato uscendo da un workspace.
+  const { api, token, base } = await apiLogin(baseURL!);
+  const fromDb = async () => {
+    const list = (await (await api.get(`${base}/api/workspaces/workspaceChoiceList`, { headers: { Authorization: `Bearer ${token}` } })).json()) as Array<{ name: string; updated: string }>;
+    return list.find((x) => x.name === 'e2e-smoke')!;
+  };
+  const ws = await fromDb();
+  await uiLogin(page); // atterra sull'elenco: primo caricamento
+  await expect(page.locator('tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  await page.goto(`#/workspace/${(await (await api.get(`${base}/api/workspaces/workspaceChoiceList`, { headers: { Authorization: `Bearer ${token}` } })).json() as any[]).find((x) => x.name === 'e2e-smoke').id}`);
+  await expect(page.locator('#workspace-menu').first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  await page.evaluate(() => { location.hash = '#/workspaces'; }); // si esce: il layout viene salvato
+  await expect.poll(async () => (await fromDb()).updated, { timeout: 15_000, message: 'il salvataggio uscendo aggiorna la data' }).not.toBe(ws.updated);
+  const saved = (await fromDb()).updated; // es. 2026-11-09T13:37:27.091304
+  const shown = saved.replace(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}:\d{2}:\d{2}).*$/, '$3-$2-$1 $4');
+  await page.locator('.p-paginator-next').click();
+  await expect(page.locator('tr', { hasText: 'e2e-smoke' }).first(), 'la data mostrata e\' quella aggiornata').toContainText(shown, { timeout: 15_000 });
+  await api.dispose();
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);

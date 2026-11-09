@@ -14,8 +14,16 @@ export class WorkspaceStateService {
   removeWorkspace = new Subject<number>();
   updateWorkspace = new Subject<WorkspaceChoice>();
 
+  /** asks for the list again (see `refresh`) */
+  private refreshWorkspaces = new Subject<void>();
+  /** true once the first request of the list has been answered */
+  private loaded = false;
+
   workspaces$ = merge(
-    this.workspaceService.retrieveWorkspaceChoiceList(),
+    this.workspaceService.retrieveWorkspaceChoiceList().pipe(tap(() => this.loaded = true)),
+    this.refreshWorkspaces.pipe(
+      switchMap(() => this.workspaceService.retrieveWorkspaceChoiceList()),
+    ),
     this.addWorkspace.pipe(
       switchMap(newWorkspace => this.workspaceService.createWorkspace(newWorkspace).pipe(
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(`Workspace ${newWorkspace.name} added`))),
@@ -49,6 +57,17 @@ export class WorkspaceStateService {
   ).pipe(
     shareReplay(1),
   );
+
+  /**
+   * Requests the list again. The list is shared and kept for the whole session (shareReplay), so without this the "Last
+   * access" dates stayed those of the first load. Does nothing if the list has not been loaded yet (the first request
+   * is still going to be made).
+   */
+  public refresh(): void {
+    if (this.loaded) {
+      this.refreshWorkspaces.next();
+    }
+  }
 
   constructor(
     private workspaceService: WorkspaceService,

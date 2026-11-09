@@ -92,7 +92,9 @@ export class WorkspaceListComponent {
       takeUntil(this.unsubscribe$),
     ).subscribe(w => {
       this.workspaceNames = w.map(ws => ws.name!);
-    })
+    });
+    // the list is kept for the whole session: ask for it again each time the page is shown (last access dates)
+    this.workspaceState.refresh();
   }
 
   /**OnDestroy interface method, used for closing any swal popups and managing unsubscribe */

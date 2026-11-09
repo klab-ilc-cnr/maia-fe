@@ -26,6 +26,7 @@ import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
 import { LayerService } from 'src/app/services/layer.service';
+import { WorkspaceStateService } from 'src/app/services/workspace-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -235,6 +236,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private ontologyService: OntologyService,
     private dictionaryService: DictionaryService,
     private layerService: LayerService,
+    private workspaceState: WorkspaceStateService,
   ) { }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
@@ -1266,6 +1268,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe(() => {
       this.workSaved = true;
       this.loaderService.hide();
+      // the save sets the "Last access" date: the list of workspaces (kept for the session) must show it
+      this.workspaceState.refresh();
     });
 
     // close panels, here we simply close all panels in the document
