@@ -5,6 +5,7 @@ Punto di partenza: v0.26.0 (fine dell'upgrade).
 
 **Come mantenerlo**: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto" (in alto);
 quando si prepara un pacchetto, la sezione diventa la sezione di quella versione e se ne apre una nuova vuota.
+Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py documentation/upgrade/correzioni-post-upgrade.md`.
 
 ---
 
