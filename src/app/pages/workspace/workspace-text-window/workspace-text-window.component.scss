@@ -57,9 +57,16 @@
 .highlight rect {
   opacity: 0.3;
 
+  // mouse over the handle of the annotation: its text is evidenced (one rect per line)
   &.over {
     opacity: 0.6;
+    stroke: #1e4d8c;
+    stroke-width: 1.5px;
   }
+}
+
+.span rect {
+  cursor: pointer;
 }
 
 .span path.curly {

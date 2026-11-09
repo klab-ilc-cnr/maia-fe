@@ -10,6 +10,12 @@ quando si prepara un pacchetto, la sezione diventa la sezione di quella versione
 
 ## Non ancora in un pacchetto (prossimo: 0.26.6)
 
+### Finestra del testo
+- Annotazioni sovrapposte sullo stesso layer (anche a capo): gli handle si impilano, ognuno è visibile e cliccabile (prima si vedeva e selezionava solo l'ultimo)
+- Annotazione su più righe: etichetta solo sul primo frammento (come INCEpTION)
+- Passando col mouse su un handle si evidenzia il testo dell'annotazione
+- Clic su una parola annotata: apre l'annotazione più interna (il doppio clic resta la selezione della parola)
+
 ### Elenco workspace
 - "Last access" aggiornato: l'elenco veniva richiesto una sola volta per sessione; ora si rinnova a ogni apertura della pagina e dopo il salvataggio all'uscita da un workspace
 

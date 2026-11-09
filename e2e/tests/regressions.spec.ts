@@ -788,6 +788,75 @@ test('regressione: elenco workspace - "Last access" aggiornato dopo essere uscit
   await api.dispose();
 });
 
+test('regressione: Text - annotazioni sovrapposte sullo stesso layer (anche a capo): handle impilati, etichetta solo sul primo frammento, clic sulla parola', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  // II.8.48 "dare la Giannetta al loro / figliuolo per isposa": tre annotazioni semantiche sovrapposte (nel DB del test):
+  // 25388541 tutta la frase (va a capo), 25385421 "figliuolo", 25388398 "isposa".
+  const LONG = 25388541, FIGLIUOLO = 25385421, ISPOSA = 25388398;
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  await tile.locator('p-multiselect').first().click();
+  await page.locator('.p-multiselect-option', { hasText: 'Semantica' }).first().click();
+  await page.keyboard.press('Escape');
+  const handle = (id: number) => tile.locator(`svg rect[id="${id}"]`);
+  await expect(handle(ISPOSA)).toHaveCount(1, { timeout: 30_000 });
+  await page.waitForTimeout(1000);
+
+  // 1) nessuna coppia di handle si sovrappone (prima i tre erano disegnati nello stesso punto e si poteva cliccare solo l'ultimo)
+  const boxes = await tile.evaluate((e) => [...e.querySelectorAll('.span rect')].filter((r) => !(r.getAttribute('id') ?? '').startsWith('h-')).map((r) => { const b = r.getBoundingClientRect(); return { id: r.getAttribute('id'), x: b.x, y: b.y, w: b.width, h: b.height }; }));
+  const overlaps: string[] = [];
+  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+    const a = boxes[i], b = boxes[j];
+    if (a.x < b.x + b.w - 1 && b.x < a.x + a.w - 1 && a.y < b.y + b.h - 1 && b.y < a.y + a.h - 1) overlaps.push(`${a.id}/${b.id}`);
+  }
+  testInfo.annotations.push({ type: 'handle', description: `${boxes.length} handle, sovrapposti: ${overlaps.join(',') || 'nessuno'}` });
+  expect(overlaps, 'handle sovrapposti').toEqual([]);
+  // la frase lunga ha un handle per riga; gli altri due stanno sotto (piu' vicini al testo) quello della seconda riga
+  await expect(handle(LONG)).toHaveCount(2);
+  const lastLine = await tile.evaluate((e, ids) => {
+    const y = (id: number) => (e.querySelector(`svg rect[id="${id}"]`) as Element).getBoundingClientRect().y;
+    return { fig: y(ids[0]), isp: y(ids[1]), longs: [...e.querySelectorAll(`svg rect[id="${ids[2]}"]`)].map((r) => r.getBoundingClientRect().y) };
+  }, [FIGLIUOLO, ISPOSA, LONG]);
+  expect(Math.min(...lastLine.longs.filter((y) => y > Math.min(...lastLine.longs) + 5)), 'handle lungo (seconda riga) sopra quelli delle parole').toBeLessThan(Math.min(lastLine.fig, lastLine.isp));
+
+  // 2) etichetta solo sul primo frammento
+  const labels = await tile.evaluate((e, id) => [...e.querySelectorAll(`svg rect[id="${id}"]`)].map((r) => r.nextElementSibling?.textContent?.trim() ?? ''), LONG);
+  expect(labels.filter((t) => t !== ''), 'etichetta della frase lunga: una sola volta').toHaveLength(1);
+
+  // 3) il mouse sull'handle evidenzia il testo dell'annotazione
+  await handle(ISPOSA).hover();
+  await expect(tile.locator(`svg rect[id="h-${ISPOSA}"]`)).toHaveClass(/over/);
+  await expect(tile.locator(`svg rect[id="h-${FIGLIUOLO}"]`)).not.toHaveClass(/over/);
+  await page.mouse.move(5, 5);
+  await expect(tile.locator(`svg rect[id="h-${ISPOSA}"]`)).not.toHaveClass(/over/);
+
+  // 4) clic sulla parola: si apre l'annotazione piu' interna (isposa -> la sua; per -> la frase lunga)
+  const openedId = () => tile.evaluate((e) => (window as any).ng?.getComponent(e.closest('app-workspace-text-window') ?? e.querySelector('app-workspace-text-window'))?.textoAnnotation?.id);
+  if (await page.evaluate(() => !!(window as any).ng?.getComponent)) {
+    const clickWord = async (re: RegExp) => { const line = tile.locator('#gText > text > tspan').filter({ hasText: 'figliuolo per isposa' }).first(); await line.locator('tspan').filter({ hasText: re }).first().click({ position: { x: 4, y: 6 } }); };
+    await clickWord(/^isposa/);
+    await expect.poll(openedId, { timeout: 10_000, message: 'clic su "isposa"' }).toBe(ISPOSA);
+    await clickWord(/^figliuolo/);
+    await expect.poll(openedId, { timeout: 10_000, message: 'clic su "figliuolo"' }).toBe(FIGLIUOLO);
+    await clickWord(/^per\s*$/);
+    await expect.poll(openedId, { timeout: 10_000, message: 'clic su "per"' }).toBe(LONG);
+    // il doppio clic seleziona la parola per annotarla: non apre prima l'annotazione esistente
+    const line = tile.locator('#gText > text > tspan').filter({ hasText: 'figliuolo per isposa' }).first();
+    await line.locator('tspan').filter({ hasText: /^isposa/ }).first().dblclick({ position: { x: 4, y: 6 } });
+    await page.waitForTimeout(900);
+    expect(await openedId(), 'doppio clic: nessuna annotazione esistente aperta').toBeFalsy();
+  }
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);

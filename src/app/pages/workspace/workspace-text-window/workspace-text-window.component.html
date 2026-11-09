@@ -198,6 +198,8 @@
                             [attr.stroke]="a.borderColor" 
                             [attr.id]="a.id" 
                             (click)="expandCollapseAnnotationDiv(a.id, row)" 
+                            (mouseenter)="onAnnotationHandleHover(a.id, true)" 
+                            (mouseleave)="onAnnotationHandleHover(a.id, false)" 
                             stroke-width="0.5px" 
                             rx="3px" 
                             ry="3px" 

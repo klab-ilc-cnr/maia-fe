@@ -650,10 +650,56 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
 
+  /** timer of the click on a word that opens its annotation (cancelled if the click turns out to be a double click) */
+  private openClickedAnnotationTimer?: ReturnType<typeof setTimeout>;
+
+  /**
+   * A click (no selection) on an annotated word opens the annotation in the editor, as clicking its handle does. When
+   * several annotations contain the word the innermost (shortest) is opened, the others are reachable from their own handles.
+   * It waits a moment: a double click selects the word to annotate it and must not open anything first.
+   * @param row {TextRow} row clicked
+   */
+  private openAnnotationUnderCaret(row: TextRow): void {
+    const index = this.getCaretIndex();
+    if (index === null) { return; }
+    const candidates = (this.simplifiedAnns ?? []).filter((a: any) => a.span.start <= index && index < a.span.end);
+    if (candidates.length === 0) { return; }
+    const length = (a: any) => a.span.end - a.span.start;
+    const innermost = candidates.reduce((best: any, a: any) => {
+      if (length(a) !== length(best)) { return length(a) < length(best) ? a : best; }
+      return a.layer === this.selectedLayer?.id ? a : best; // same extent: the one of the layer being annotated
+    });
+    this.openClickedAnnotationTimer = setTimeout(() => this.expandCollapseAnnotationDiv(innermost.id, row), 250);
+  }
+
+  /** index (in the text shown) of the caret of a collapsed selection, or null */
+  private getCaretIndex(): number | null {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount <= 0 || !selection.isCollapsed) { return null; }
+    const range = selection.getRangeAt(0);
+    if (!this.svg.nativeElement.contains(range.startContainer)) { return null; }
+    const preRange = range.cloneRange();
+    preRange.selectNodeContents(this.svg.nativeElement);
+    preRange.setEnd(range.startContainer, range.startOffset);
+    return [...preRange.toString()].length;
+  }
+
+  /**
+   * Highlights (or not) the text of an annotation while the mouse is over its handle: with several handles stacked it
+   * shows which text each one refers to. The highlights of an annotation share the id (one per line).
+   * @param annotationId {number} id of the annotation
+   * @param over {boolean} mouse entering or leaving
+   */
+  public onAnnotationHandleHover(annotationId: number, over: boolean): void {
+    const highlights = this.svg?.nativeElement?.querySelectorAll(`[id="${this.generateHighlightId(annotationId)}"]`) ?? [];
+    highlights.forEach((h: Element) => h.classList.toggle('over', over));
+  }
+
   /**this function override the normal window double click text selection
    * that keeps the trailing whitespace at the end of the word and selects just the word
    */
   public onSelectionChangeDoubleClick() {
+    clearTimeout(this.openClickedAnnotationTimer);
     const selection = window.getSelection();
 
     if (!selection) { return; }
@@ -682,11 +728,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   onSelectionChange(event: any, row: TextRow): void {
     this.currentVisibleRowIndex = row.rowIndex;
+    // a pending "click on a word opens its annotation" is cancelled by whatever comes next (double click, new selection)
+    clearTimeout(this.openClickedAnnotationTimer);
 
     const textSelection = this.getCurrentTextSelection();
 
     if (!textSelection) { //in case of no selection
       this.disableTextSelection();
+      if (event?.detail <= 1) { // single click: it may be the first of a double click, see openAnnotationUnderCaret
+        this.openAnnotationUnderCaret(row);
+      }
       return;
     }
 
@@ -2380,21 +2431,24 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       (a.span.start >= (startIndex || 0) && a.span.start < (endIndex || 0) && a.span.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
       (a.span.start < (startIndex || 0) && a.span.end > (endIndex || 0)));
 
-    localAnns.sort((a: any, b: any) => (a.span.end - a.span.start) - (b.span.end - b.span.start));
+    // Each annotation is cut to the line on a COPY (the span object is shared with `simplifiedAnns`: changing it, as it was
+    // done, altered the annotation for the following lines). With the real extent of every fragment on the line the
+    // overlaps between a multi-line annotation and the ones inside it are detected and their handles are stacked, instead
+    // of being drawn one over the other (only the last one could be clicked).
+    const lineFragments = localAnns
+      .map((a: any) => ({
+        ...a,
+        span: { start: Math.max(a.span.start, startIndex || 0), end: Math.min(a.span.end, endIndex || 0) },
+        startsBeforeLine: a.span.start < (startIndex || 0),
+        endsAfterLine: a.span.end > (endIndex || 0),
+        fullLength: a.span.end - a.span.start,
+      }))
+      .filter((a: any) => a.span.end > a.span.start);
 
-    localAnns.map((a: any) => {
-      if (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) {
-        return a;
-      }
-      const temp = { ...a };
-      if (a.span.start < (startIndex || 0) && a.span.end <= endIndex) {
-        const difference = startIndex - a.span.start;
-        temp.span.end = a.span.end - difference;
-      }
-      return temp;
-    });
+    // shorter first (they stay close to the text), then the shortest in absolute terms
+    lineFragments.sort((a: any, b: any) => ((a.span.end - a.span.start) - (b.span.end - b.span.start)) || (a.fullLength - b.fullLength));
 
-    const towers = this.sortFragmentsIntoTowers(localAnns);
+    const towers = this.sortFragmentsIntoTowers(lineFragments);
 
     towers.forEach((t: any) => {
       const annTower = new Array();
@@ -2407,7 +2461,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         let endX = startX + width;
         width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
         endX = startX + width;
-        const text = this.elaborateAnnotationLabel(layer, ann, width);
+        // label only on the first fragment of an annotation that goes over more lines (as in INCEpTION): the following
+        // fragments are plain handles, still clickable
+        const text = ann.startsBeforeLine ? '' : this.elaborateAnnotationLabel(layer, ann, width);
         const textAnnLenght = this.getComputedTextLength(text, this.visualConfig.annotationFont);
 
         // console.log(w, startX + (w/2) - (textAnnLenght/2), this.randomString(t.span.end - t.span.start))
