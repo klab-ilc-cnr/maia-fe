@@ -930,6 +930,44 @@ test('regressione: Text - cliccare su un\'annotazione non rifa le chiamate di co
   expect(third.length).toBeLessThanOrEqual(1);
 });
 
+test('regressione: Text - il campo "Text" dell\'editor di annotazione mostra il testo selezionato / dell\'annotazione cliccata (non resta indietro)', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const ISPOSA = 25388398, FIGLIUOLO = 25385421;
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  await tile.locator('p-multiselect').first().click();
+  await page.locator('.p-multiselect-option', { hasText: 'Semantica' }).first().click();
+  await page.keyboard.press('Escape');
+  await expect(tile.locator(`svg rect[id="${ISPOSA}"]`)).toHaveCount(1, { timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  const textField = tile.locator('app-text-annotation-editor input[formcontrolname="text"]');
+  const line = tile.locator('#gText > text > tspan').filter({ hasText: 'figliuolo per isposa' }).first();
+  const word = (re: RegExp) => line.locator('tspan').filter({ hasText: re }).first();
+
+  // 1) nuova annotazione: si sceglie il layer e si seleziona (doppio clic) una parola, poi un'altra
+  await tile.locator('p-select').first().click();
+  await page.locator('.p-select-option', { hasText: 'Semantica' }).first().click();
+  await word(/^per\s*$/).dblclick({ position: { x: 4, y: 6 } });
+  await expect(textField, 'parola selezionata col doppio clic').toHaveValue('per', { timeout: 10_000 });
+  await word(/^figliuolo/).dblclick({ position: { x: 4, y: 6 } });
+  await expect(textField, 'seconda parola (prima restava la precedente)').toHaveValue('figliuolo', { timeout: 10_000 });
+
+  // 2) annotazione esistente: il campo mostra il testo di quella cliccata
+  await tile.locator(`svg rect[id="${ISPOSA}"]`).first().click();
+  await expect(textField, 'annotazione "isposa"').toHaveValue('isposa', { timeout: 10_000 });
+  await tile.locator(`svg rect[id="${FIGLIUOLO}"]`).first().click();
+  await expect(textField, 'annotazione "figliuolo" (prima restava "isposa")').toHaveValue('figliuolo', { timeout: 10_000 });
+});
+
 test('regressione: ontologia disabilitata - nessun menu Ontology nel workspace', async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   await openSmokeWorkspace(page, baseURL!);

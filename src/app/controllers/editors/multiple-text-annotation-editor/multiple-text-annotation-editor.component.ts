@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, forkJoin, map, shareReplay, take, takeUntil, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -45,7 +45,19 @@ export interface MultipleAnnotationFeature {
   styleUrls: ['./multiple-text-annotation-editor.component.scss'],
   standalone: false
 })
-export class MultipleTextAnnotationEditorComponent implements OnDestroy {
+export class MultipleTextAnnotationEditorComponent implements OnChanges, OnDestroy {
+
+  /**
+   * The form is built here and not in the setter of `visible`: all the other inputs (mode, layer, offsets) are set already,
+   * whatever their order in the template is (with the layer data in memory the form was built before them, with the values
+   * of the previous opening).
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visible'] && this._visible) {
+      this.initOnOpen();
+    }
+  }
+
   private readonly unsubscribe$ = new Subject();
   private _layerId?: number;
   private _layerColor?: string;
@@ -126,9 +138,6 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   @Input()
   set visible(value: boolean) {
     this._visible = value;
-    if (value) {
-      this.initOnOpen();
-    }
   }
   get visible(): boolean {
     return this._visible;

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, Subject, catchError, forkJoin, map, of, shareReplay, take, takeUntil, throwError } from 'rxjs';
@@ -37,12 +37,23 @@ export interface FeatForAnn {
   styleUrls: ['./text-annotation-editor.component.scss'],
   standalone: false
 })
-export class TextAnnotationEditorComponent implements OnDestroy {
+export class TextAnnotationEditorComponent implements OnChanges, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   workingLayer!: TLayer;
   /**Tipi di feature */
   featureTypes = TFeatureType;
-  @Input() annotationFragment!: string;
+  /**
+   * Selected text of the annotation. A setter that updates the "Text" field: the form used to be built, with the value this
+   * input had at that moment, when the annotation arrived; the inputs are set one after the other, so (as soon as the answers
+   * were already in memory) the field showed the previous text, one click behind.
+   */
+  @Input()
+  set annotationFragment(value: string) {
+    this._annotationFragment = value;
+    this.annotationForm.controls.text.setValue(value ?? '');
+  }
+  get annotationFragment(): string { return this._annotationFragment; }
+  private _annotationFragment = '';
   /** all the layers (the text window has them already): the name of the layer of the annotation is taken from here */
   @Input() layers: TLayer[] = [];
   annotationForm = new FormGroup({
@@ -56,8 +67,16 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   get annotationModel(): TAnnotation { return this._annotation; }
   set annotationModel(annotation: TAnnotation) {
     this._annotation = annotation;
+  }
 
-    if (!annotation.layer) { return; }
+  /**
+   * The form of the annotation is built here and not in the setter of `annotationModel`: all the inputs (layers, fragment) are
+   * already set when this runs, whatever their order in the template is.
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['annotationModel']) { return; }
+    const annotation = this._annotation;
+    if (!annotation?.layer) { return; }
 
     const layerId = annotation.layer.id;
     if (!layerId) {
