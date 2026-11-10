@@ -9,7 +9,13 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.7)
+## Non ancora in un pacchetto (prossimo: 0.26.8)
+
+_(nessuna modifica)_
+
+---
+
+## 0.26.7 — pacchetto `maia-fe-0.26.7-test-ng21-20261110-1427.tgz`
 
 ### Finestra del testo
 - Selezione del testo (doppio clic e trascinamento) che smetteva di funzionare fino a un F5: il `p-dialog` di PrimeNG spegne la selezione in tutta la pagina (`user-select: none` sul body) mentre si trascina o ridimensiona una finestra di dialogo, e se si chiude prima del rilascio del mouse resta spenta; ora al primo rilascio del mouse la pagina torna a posto

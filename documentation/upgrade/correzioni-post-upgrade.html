@@ -28,13 +28,16 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 </head>
 <body>
 <div class="layout">
-<nav><h2>Indice</h2><a href="#non-ancora-in-un-pacchetto-prossimo-0267">Non ancora in un pacchetto (prossimo: 0.26.7)</a><a href="#0266-pacchetto-maia-fe-0266-test-ng21-20261109-1916tgz">0.26.6</a><a href="#0265-pacchetto-maia-fe-0265-test-ng21-20261107-1154tgz">0.26.5</a><a href="#0264-pacchetto-maia-fe-0264-test-ng21-20261107-1049tgz">0.26.4</a><a href="#0263-pacchetto-maia-fe-0263-test-ng21-20261106-1554tgz-include-la-0262-mai-impacchettata">0.26.3</a><a href="#0261-pacchetto-maia-fe-0261-test-ng21-20261105-0919zip">0.26.1</a><a href="#da-fare-richieste-già-concordate-non-ancora-implementate">Da fare (richieste già concordate, non ancora implementate)</a><a href="#in-sospeso-backend-decisioni">In sospeso (backend / decisioni)</a></nav>
+<nav><h2>Indice</h2><a href="#non-ancora-in-un-pacchetto-prossimo-0268">Non ancora in un pacchetto (prossimo: 0.26.8)</a><a href="#0267-pacchetto-maia-fe-0267-test-ng21-20261110-1427tgz">0.26.7</a><a href="#0266-pacchetto-maia-fe-0266-test-ng21-20261109-1916tgz">0.26.6</a><a href="#0265-pacchetto-maia-fe-0265-test-ng21-20261107-1154tgz">0.26.5</a><a href="#0264-pacchetto-maia-fe-0264-test-ng21-20261107-1049tgz">0.26.4</a><a href="#0263-pacchetto-maia-fe-0263-test-ng21-20261106-1554tgz-include-la-0262-mai-impacchettata">0.26.3</a><a href="#0261-pacchetto-maia-fe-0261-test-ng21-20261105-0919zip">0.26.1</a><a href="#da-fare-richieste-già-concordate-non-ancora-implementate">Da fare (richieste già concordate, non ancora implementate)</a><a href="#in-sospeso-backend-decisioni">In sospeso (backend / decisioni)</a></nav>
 <main>
 <h1 id="correzioni-e-modifiche-dopo-lupgrade-ad-angular-21-primeng-21">Correzioni e modifiche dopo l'upgrade ad Angular 21 / PrimeNG 21</h1>
 <p>Elenco per punti, senza dettagli (i dettagli stanno nei commit e in <code>AGENTS.md</code>). Punto di partenza: v0.26.0 (fine dell'upgrade).</p>
 <p><strong>Come mantenerlo</strong>: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto" (in alto); quando si prepara un pacchetto, la sezione diventa la sezione di quella versione e se ne apre una nuova vuota. Dopo ogni modifica rigenerare la copia HTML: <code>python3 tools/md-to-html.py documentation/upgrade/correzioni-post-upgrade.md</code>.</p>
 <hr>
-<h2 id="non-ancora-in-un-pacchetto-prossimo-0267">Non ancora in un pacchetto (prossimo: 0.26.7)</h2>
+<h2 id="non-ancora-in-un-pacchetto-prossimo-0268">Non ancora in un pacchetto (prossimo: 0.26.8)</h2>
+<p><em>(nessuna modifica)</em></p>
+<hr>
+<h2 id="0267-pacchetto-maia-fe-0267-test-ng21-20261110-1427tgz">0.26.7 — pacchetto <code>maia-fe-0.26.7-test-ng21-20261110-1427.tgz</code></h2>
 <h3 id="finestra-del-testo">Finestra del testo</h3>
 <ul>
 <li>Selezione del testo (doppio clic e trascinamento) che smetteva di funzionare fino a un F5: il <code>p-dialog</code> di PrimeNG spegne la selezione in tutta la pagina (<code>user-select: none</code> sul body) mentre si trascina o ridimensiona una finestra di dialogo, e se si chiude prima del rilascio del mouse resta spenta; ora al primo rilascio del mouse la pagina torna a posto</li>
