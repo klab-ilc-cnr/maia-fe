@@ -1,7 +1,7 @@
 # Correzioni e modifiche dopo l'upgrade ad Angular 21 / PrimeNG 21
 
 Elenco per punti, senza dettagli (i dettagli stanno nei commit e in `AGENTS.md`).
-Punto di partenza: v0.26.0 (fine dell'upgrade).
+Comprende anche il riassunto dell'upgrade (0.26.0).
 
 **Come mantenerlo**: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto (prossimo: X.Y.Z)",
 in alto (si crea con la prima correzione dopo un pacchetto; quando si prepara un pacchetto diventa la sezione di quella versione).
@@ -165,6 +165,40 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 - Segnaposto del filtro Visibility
 - `scrollDirection` tolto dalla tabella della Search
 - Nuovo controllo `npm run check-primeng-attrs`
+
+---
+
+## 0.26.0 — upgrade ad Angular 21 / PrimeNG 21 — pacchetto `maia-fe-0.26.0-test-ng21-20261104-2231.zip`
+
+Da Angular 14 (v0.20.0, `master`) ad Angular 21 a tappe, con un pacchetto di verifica a ogni traguardo: Angular 16, poi 0.22.0 (17), 0.23.0 (18), 0.24.0 (19), 0.25.0 (20) e 0.26.0 (21). Piano e decisioni: `angular-upgrade-plan.md`.
+
+### Versioni aggiornate (da → a)
+- Angular (core, router, forms, ecc.): 14.2 → **21.2.26**; CLI 14.2 → **21.2.29**; CDK 14.2 → 21.2.14
+- Builder: `build-angular` (webpack) → `@angular/build` (esbuild), uscita piatta in `dist/projectx-fe`
+- PrimeNG: 14.1 → **21.1.10** (l'ultima versione con licenza MIT); tema con `@primeuix/themes` 2.0.3 (nuovo sistema di temi, preset in `src/app/theme/maia-preset.ts`)
+- TypeScript: 4.8 → **5.9**; zone.js 0.11 → 0.15; rxjs 7.4 → 7.8
+- Node richiesto: 16 → **22.23.4** (su `master` resta Node 16)
+- `@ngx-translate/core` 14 → 15; `http-loader` 7 → 8
+- Font Awesome: angular-fontawesome 0.10 → 4; librerie svg 1.2 → 7.3; icone solide 5.15 → 7.3
+- `uuid` 9 → 11; `pdfmake` 0.3.5 → 0.3.x; `sweetalert2` 11.6 → 11.26; Compodoc 1.1 → 2.0
+- `primeicons` 6.0 → 7.0 (ultima versione MIT)
+- Invariate di proposito: `jspanel4` 4.16 (libreria abbandonata, i layout dei tile sono salvati nel backend), `quill` 1.3.7, `primeflex` 3.2.1, `bootstrap` 5.2
+
+### Cosa è cambiato nel codice
+- Tema: PrimeNG 18+ non ha più CSS dei temi; l'aspetto (Lara con i valori di saga-blue) è un preset a runtime, con livelli CSS (`src/styles/README-layer.md`)
+- Sostituiti i componenti rimossi o rinominati: TabView → Tabs, OverlayPanel → Popover, InputSwitch → ToggleSwitch; AutoComplete `field` → `optionLabel`, MultiSelect `defaultLabel` → `placeholder`
+- Nuovi controlli: `npm run check-primeng-attrs` (attributi statici ignorati in silenzio da PrimeNG) e `npm run check-licenses` (impedisce di installare PrimeNG 22, primeicons 8, `@primeuix/themes` 3 o versioni `-lts`)
+- Sicurezza: `npm audit` da 84 (prima dello studio di sicurezza) a **20**, tutte di livello moderato; a runtime resta solo `quill` 1.3.7. Rimossi tutti gli `overrides` dell'era Angular 14
+- Non applicata: migrazione ai blocchi di controllo di flusso (`@if`, `@for`)
+
+### In attesa di aggiornamento (`npm outdated`, 10 novembre 2026)
+- **Angular 22** (core 22.2.5, CLI e builder 22.2.6) e con esso CDK 22, `zone.js` 0.16, angular-fontawesome 5 e `@ngx-translate` 18 (legati al salto di versione): rinviati, si fanno insieme
+- **PrimeNG 22**, **primeicons 8** e `@primeuix/themes` 3: licenza proprietaria (PrimeUI), **da non installare**. Per Angular 22 si valuta `@openng/optimus-ui` (fork MIT di PrimeNG 21, ancora giovane)
+- **quill 2** (2.0.3): cambia l'HTML salvato da liste e formati, usato dal dizionario e dall'esportazione PDF; decisione aperta, da provare sui dati
+- **primeflex 4** (le classi della 3 sono usate nei template), **jquery 4**, **uuid 14**: nessuna urgenza
+- Aggiornamenti minori disponibili senza rischi noti: `bootstrap` 5.3.8, `pdfmake` 0.3.14, `html-to-pdfmake` 2.5.36, `tslib` 2.9, Font Awesome free (CSS) 6.7
+- Strumenti di sviluppo molto indietro: `eslint` 8 (ultima 10), `@typescript-eslint` 6 (8), `karma`/`jasmine`; `npm test` è rotto fin dalla 14 e va sistemato a parte
+- TypeScript 7 è uscito, ma Angular 21 usa la 5.9; `@types/node` è ancora 12
 
 ---
 
