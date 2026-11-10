@@ -35,6 +35,12 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 <p><strong>Come mantenerlo</strong>: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto" (in alto); quando si prepara un pacchetto, la sezione diventa la sezione di quella versione e se ne apre una nuova vuota. Dopo ogni modifica rigenerare la copia HTML: <code>python3 tools/md-to-html.py documentation/upgrade/correzioni-post-upgrade.md</code>.</p>
 <hr>
 <h2 id="non-ancora-in-un-pacchetto-prossimo-0267">Non ancora in un pacchetto (prossimo: 0.26.7)</h2>
+<h3 id="layer-tagset-workspace-finestre-nuovo">Layer, tagset, workspace (finestre "nuovo")</h3>
+<ul>
+<li>Nuovo layer: il campo colore parte con un colore libero (prima il selettore mostrava un rosso ma il campo era vuoto e Add restava spento senza dire perché); alla riapertura della finestra Add era acceso con nome e colore vuoti e il backend rispondeva 500</li>
+<li>Stesso difetto corretto nelle finestre nuovo/modifica di tagset, valore del tagset, workspace e feature: nome obbligatorio e non solo spazi restano validi dopo la prima apertura</li>
+<li>Un errore del backend (es. 500) in layer e tagset non interrompe più la lista (console: «ERROR Error: [object Object]», la lista non si aggiornava più) e l'avviso dice il motivo («server error 500») invece di «undefined»</li>
+</ul>
 <h3 id="tagset">Tagset</h3>
 <ul>
 <li>Valore predefinito del tagset (campo <code>defaultItem</code> del backend): si imposta, si cambia e si toglie dalla pagina dei valori del tagset con la stella; la pagina mostra il valore predefinito</li>
@@ -203,6 +209,8 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 </ul>
 <h2 id="in-sospeso-backend-decisioni">In sospeso (backend / decisioni)</h2>
 <ul>
+<li>Backend: <code>POST /texto/layer/create</code> con colore vuoto dà 500 (dovrebbe rispondere 400 con un messaggio)</li>
+<li>Frontend: lo stesso schema che termina lo stream della lista in caso di errore esiste ancora in corpus, workspace, lexicon e editor (non toccati)</li>
 <li>maia-be: 401 di TexO/LexO restituito come 500</li>
 <li>maia-be/TexO: offset vuoti nei contesti di alcune annotazioni recenti (evidenziazione gialla mancante in anteprima)</li>
 <li>maia-be/TexO: 401 intermittente su <code>/texto/util/ais</code></li>

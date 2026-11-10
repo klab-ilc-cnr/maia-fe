@@ -1429,6 +1429,93 @@ test('regressione: tagset - il valore predefinito si imposta, si cambia, si togl
   }
 });
 
+test('regressione: Layer - nuovo layer con colore gia\' scelto, Add sempre coerente e un errore del backend non rompe la lista', async ({ page, baseURL }, testInfo) => {
+  // Difetti visti: (1) il selettore mostrava un colore ma il campo era vuoto e Add restava spento senza dire perche';
+  // (2) alla riapertura della finestra Add era acceso con nome e colore vuoti (setValidators sostituiva `required`) e il backend
+  // rispondeva 500; (3) l'errore terminava lo stream della lista (console: "ERROR Error: [object Object]") e la lista non si
+  // aggiornava piu'. Le scritture sono finte (`/texto/layer/create` risponde 500 o 200 a comando): non si crea nulla.
+  test.setTimeout(120_000);
+  const errors: string[] = [];
+  page.on('console', (m) => { if (m.type() === 'error' && /Error: \[object Object\]/.test(m.text())) errors.push(m.text()); });
+  const created: any[] = [];
+  let answer500 = true;
+  await page.route(/\/texto\/layer\/create$/, async (route) => {
+    created.push(JSON.parse(route.request().postData() ?? '{}'));
+    if (answer500) return route.fulfill({ status: 500, json: { status: 500, error: 'Internal Server Error' } });
+    return route.fulfill({ json: { id: 999999, ...created[created.length - 1] } });
+  });
+  await uiLogin(page);
+  await page.goto('#/layers');
+  await expect(page.locator('p-table tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  const dlg = page.locator('.p-dialog').filter({ visible: true });
+  const add = dlg.locator('button[type="submit"]');
+  const component = () => page.evaluate(() => { const c = (window as any).ng?.getComponent(document.querySelector('app-layers-list')); return c ? { color: c.color.value, valid: c.tlayerForm.valid } : null; });
+
+  // prima apertura: il colore mostrato e' il colore del campo, basta il nome
+  await page.getByRole('button', { name: /New layer/i }).click();
+  await expect(add).toBeDisabled();
+  const first = await component();
+  if (first) expect(first.color, 'il campo colore ha gia\' un colore libero').toMatch(/^#[0-9a-f]{6}$/);
+  await dlg.locator('input[formControlName="name"]').fill('e2e-layer-prova');
+  await expect(add, 'nome scritto: Add acceso').toBeEnabled();
+
+  // chiudo e riapro: nome vuoto -> Add spento (prima: acceso)
+  await dlg.locator('button.btn-secondary').click();
+  await page.getByRole('button', { name: /New layer/i }).click();
+  await expect(add, 'senza nome Add resta spento anche alla riapertura').toBeDisabled();
+  await dlg.locator('input[formControlName="name"]').fill('   ');
+  await expect(add, 'solo spazi: Add spento').toBeDisabled();
+  await dlg.locator('input[formControlName="name"]').fill('e2e-layer-prova');
+  await expect(add).toBeEnabled();
+
+  // il backend risponde 500: avviso con il motivo (non "undefined"), nessun errore in console, la finestra e' chiusa
+  await add.click();
+  await expect(page.locator('.p-toast-message').filter({ hasText: /failed/i }).first()).toContainText(/server error 500/, { timeout: 15_000 });
+  expect(created.length).toBe(1);
+  expect(created[0].color, 'il colore inviato non e\' vuoto').toMatch(/^#[0-9a-f]{6}$/);
+  expect(errors, 'nessun "ERROR Error: [object Object]"').toEqual([]);
+
+  // la lista e' ancora viva: un secondo tentativo (ora il backend risponde) parte e aggiorna la lista
+  answer500 = false;
+  await page.getByRole('button', { name: /New layer/i }).click();
+  await dlg.locator('input[formControlName="name"]').fill('e2e-layer-prova');
+  await add.click();
+  await expect.poll(() => created.length, { timeout: 15_000 }).toBe(2);
+  await expect(page.locator('.p-toast-message').filter({ hasText: /added/i }).first()).toBeVisible({ timeout: 15_000 });
+  expect(errors).toEqual([]);
+  testInfo.annotations.push({ type: 'richieste', description: JSON.stringify(created) });
+});
+
+test('regressione: finestre "nuovo" di tagset, workspace e valori del tagset - Add resta spento senza nome anche alla riapertura', async ({ page }) => {
+  // stesso difetto del nuovo layer: setValidators sostituiva `required` e gli spazi, e alla seconda apertura Add era acceso
+  test.setTimeout(120_000);
+  await uiLogin(page);
+  const dlg = page.locator('.p-dialog').filter({ visible: true });
+  const add = dlg.locator('button[type="submit"]');
+  const nameInput = dlg.locator('input[type="text"]').first();
+  const check = async (what: string, open: () => Promise<void>) => {
+    for (const round of ['prima apertura', 'riapertura']) {
+      await open();
+      await expect(add, `${what}: ${round}, senza nome`).toBeDisabled();
+      await nameInput.fill('   ');
+      await expect(add, `${what}: ${round}, solo spazi`).toBeDisabled();
+      await nameInput.fill('nome-prova');
+      await expect(add, `${what}: ${round}, con nome`).toBeEnabled();
+      await dlg.locator('button.btn-secondary').click();
+      await expect(dlg).toHaveCount(0);
+    }
+  };
+  await page.goto('#/tagsets');
+  await expect(page.locator('p-table tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  await check('nuovo tagset', async () => { await page.locator('button[aria-label="New tagset"]').click(); });
+  await page.goto('#/workspaces');
+  await expect(page.locator('p-table tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  await check('nuovo workspace', async () => { await page.getByRole('button', { name: /New workspace/i }).click(); });
+  await page.goto('#/tagsets/25364628');
+  await expect(page.locator('p-table tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  await check('nuovo valore del tagset', async () => { await page.locator('button[aria-label="New value"]').click(); });
+});
+
 /** Chiude (se aperti) i pannelli indicati, cosi' si riaprono con le dimensioni di default e non con quelle del layout salvato. */
 async function closePanels(page: Page, ids: string[]) {
   await page.evaluate((list) => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) if (list.includes(x.id) || list.some((i: string) => x.id.startsWith(i))) x.close(); }, ids);

@@ -1,5 +1,6 @@
 import { Directive, Input } from '@angular/core';
-import { AbstractControl, NG_VALIDATORS, ValidatorFn } from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, ValidatorFn, Validators } from '@angular/forms';
+import { whitespacesValidator } from './whitespaces-validator.directive';
 
 /**Validation error on duplicate names */
 const VALIDATOR_ERROR = { 'notDuplicateName': true };
@@ -21,6 +22,19 @@ export function nameDuplicateValidator(options: string[]): ValidatorFn {
 
       return VALIDATOR_ERROR;
   };
+}
+
+/**
+ * Sets on a control the validators of a name field that must also be unique: the base ones (by default required and not only
+ * blanks) plus the duplication check, then evaluates the control again. `setValidators` REPLACES the validators of the control:
+ * using it with the duplication check only, as was done, left the field without `required` after the first opening of the dialog.
+ * @param control {AbstractControl} field to validate
+ * @param names {string[]} names already in use
+ * @param base {ValidatorFn[]} validators that must stay on the field
+ */
+export function setUniqueNameValidators(control: AbstractControl, names: string[], base: ValidatorFn[] = [Validators.required, whitespacesValidator]): void {
+  control.setValidators([...base, nameDuplicateValidator(names)]);
+  control.updateValueAndValidity();
 }
 
 /**Validation directive, defines whether an input value is already in a list of strings */

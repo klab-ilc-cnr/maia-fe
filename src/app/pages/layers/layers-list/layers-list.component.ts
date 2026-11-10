@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { LayerStateService } from 'src/app/services/layer-state.service';
-import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
+import { setUniqueNameValidators } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 /**Component representing the layer table */
@@ -118,10 +118,10 @@ export class LayersListComponent {
     this.layerOnEdit = layer;
     this.name.setValue(layer.name || '');
     const tempNames = this.layersNames.filter(n => n !== layer.name); //If the name is not changed, it should not be invalid
-    this.name.setValidators(nameDuplicateValidator(tempNames));
+    setUniqueNameValidators(this.name, tempNames);
     this.color.setValue(layer.color || '');
     const tempColors = this.layersColor.filter(l => l !== layer.color); //If the color is not changed, it should not be invalid
-    this.color.setValidators(nameDuplicateValidator(tempColors));
+    setUniqueNameValidators(this.color, tempColors, [Validators.required]);
     this.description.setValue(layer.description || '');
     this.modalTitle = layer.name || 'Edit layer';
     this.visibleEditNewLayer = true;
@@ -132,9 +132,30 @@ export class LayersListComponent {
     this.layerOnEdit = undefined;
     this.tlayerForm.reset();
     this.modalTitle = "New layer";
-    this.name.setValidators(nameDuplicateValidator(this.layersNames));
-    this.color.setValidators(nameDuplicateValidator(this.layersColor));
+    setUniqueNameValidators(this.name, this.layersNames);
+    setUniqueNameValidators(this.color, this.layersColor, [Validators.required]);
+    // the color picker always shows a color (red when the field is empty): the field starts with a free one, so what is
+    // shown is what is saved (before, Add stayed disabled with no hint until a color was picked)
+    this.color.setValue(this.freeColor());
     this.visibleEditNewLayer = true;
+  }
+
+  /**
+   * A pastel color that no layer uses yet
+   * @returns {string} color as #rrggbb
+   */
+  private freeColor(): string {
+    const used = new Set(this.layersColor.map(c => (c ?? '').toLowerCase()));
+    const hsl = (h: number) => {
+      const s = 0.7, l = 0.75, k = (n: number) => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+      const f = (n: number) => Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))));
+      return '#' + [f(0), f(8), f(4)].map(x => x.toString(16).padStart(2, '0')).join('');
+    };
+    for (let i = 0; i < 50; i++) {
+      const color = hsl(Math.floor(Math.random() * 360));
+      if (!used.has(color)) { return color; }
+    }
+    return hsl(0);
   }
 
   /**

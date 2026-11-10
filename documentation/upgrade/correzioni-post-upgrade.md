@@ -11,6 +11,11 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: 0.26.7)
 
+### Layer, tagset, workspace (finestre "nuovo")
+- Nuovo layer: il campo colore parte con un colore libero (prima il selettore mostrava un rosso ma il campo era vuoto e Add restava spento senza dire perché); alla riapertura della finestra Add era acceso con nome e colore vuoti e il backend rispondeva 500
+- Stesso difetto corretto nelle finestre nuovo/modifica di tagset, valore del tagset, workspace e feature: nome obbligatorio e non solo spazi restano validi dopo la prima apertura
+- Un errore del backend (es. 500) in layer e tagset non interrompe più la lista (console: «ERROR Error: [object Object]», la lista non si aggiornava più) e l'avviso dice il motivo («server error 500») invece di «undefined»
+
 ### Tagset
 - Valore predefinito del tagset (campo `defaultItem` del backend): si imposta, si cambia e si toglie dalla pagina dei valori del tagset con la stella; la pagina mostra il valore predefinito
 - Le nuove annotazioni preselezionano il valore predefinito del tagset (es. "Tipo lessicale"): sparisce la lista fissa nel codice; senza predefinito nessuna preselezione
@@ -163,6 +168,8 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 - Tagset: dopo la creazione di un nuovo tagset non tornare alla lista, ma aprire la pagina di modifica del tagset appena creato (quella dei valori), per inserirli subito
 
 ## In sospeso (backend / decisioni)
+- Backend: `POST /texto/layer/create` con colore vuoto dà 500 (dovrebbe rispondere 400 con un messaggio)
+- Frontend: lo stesso schema che termina lo stream della lista in caso di errore esiste ancora in corpus, workspace, lexicon e editor (non toccati)
 - maia-be: 401 di TexO/LexO restituito come 500
 - maia-be/TexO: offset vuoti nei contesti di alcune annotazioni recenti (evidenziazione gialla mancante in anteprima)
 - maia-be/TexO: 401 intermittente su `/texto/util/ais`

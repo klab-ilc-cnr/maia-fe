@@ -7,7 +7,7 @@ import { TTagset } from 'src/app/models/texto/t-tagset';
 import { TTagsetItem } from 'src/app/models/texto/t-tagset-item';
 import { CommonService } from 'src/app/services/common.service';
 import { TagsetStateService } from 'src/app/services/tagset-state.service';
-import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
+import { setUniqueNameValidators } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import Swal from 'sweetalert2';
 
@@ -164,7 +164,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     this.ttagsetItemOnEdit = value;
     this.tagsetItemForm.reset();
     this.name.setValue(value.name || '');
-    this.name.setValidators(nameDuplicateValidator(this.ttagsetItemsName));
+    setUniqueNameValidators(this.name, this.ttagsetItemsName);
     this.description.setValue(value.description || '');
     this.visibleEditNewTagsetItem = true;
   }
@@ -174,7 +174,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     this.ttagsetItemOnEdit = undefined;
     this.newEditTitle = this.commonService.translateKey('TAGSET_MANAGER.newTagsetValue');
     this.tagsetItemForm.reset();
-    this.name.setValidators(nameDuplicateValidator(this.ttagsetItemsName));
+    setUniqueNameValidators(this.name, this.ttagsetItemsName);
     this.visibleEditNewTagsetItem = true;
   }
 
