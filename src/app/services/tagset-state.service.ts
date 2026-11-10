@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Subject, catchError, debounceTime, merge, of, shareReplay, switchMap, tap, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, debounceTime, map, merge, of, shareReplay, switchMap, tap, throwError } from 'rxjs';
 import { TTagset } from '../models/texto/t-tagset';
 import { TTagsetItem } from '../models/texto/t-tagset-item';
 import { CommonService } from './common.service';
@@ -27,8 +27,18 @@ export class TagsetStateService {
   updateTagset = new Subject<TTagset>();
   /**Subject to update a tagset item */
   updateTagsetItem = new Subject<TTagsetItem>();
+  /**Subject to set (item) or remove (null) the default value of the tagset shown */
+  setDefaultItem = new Subject<TTagsetItem | null>();
+  /** Tagset changed by the state itself (default value), to be shown */
+  private tagsetChanged = new Subject<TTagset>();
+  /** Last tagset shown: the update of the default value starts from it, because an update without `defaultItem` removes it */
+  private currentTagset: TTagset | undefined;
   /**Observable of a tagset */
   tagset$ = merge(
+    this.tagsetChanged,
+    this.setDefaultItem.pipe(
+      switchMap(item => this.updateDefaultItem(item)),
+    ),
     this.retrieveTagset.pipe(
       switchMap(tagsetId => this.tagsetService.getTagsetById(tagsetId).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -38,6 +48,7 @@ export class TagsetStateService {
       )),
     )
   ).pipe(
+    tap(tagset => this.currentTagset = tagset),
     shareReplay(1),
   );
   /**Observable of the items of a tagset */
@@ -61,7 +72,8 @@ export class TagsetStateService {
       switchMap(tagsetItem => this.tagsetService.getTagsetItemsById(tagsetItem.tagset!.id!)),
     ),
     this.removeTagsetItem.pipe(
-      switchMap(tagsetItem => this.tagsetService.removeTagsetItemById(tagsetItem.id!).pipe(
+      switchMap(tagsetItem => this.clearDefaultIfItem(tagsetItem).pipe(
+        switchMap(() => this.tagsetService.removeTagsetItemById(tagsetItem.id!)),
         tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('TAGSET_STATE.removedTagsetItem')))),
         catchError((error: HttpErrorResponse) => {
           const errorMessage = this.commonService.translateKey('TAGSET_STATE.removingTagsetItemFailed').replace('${errorMessage}', error.error.message);
@@ -126,6 +138,38 @@ export class TagsetStateService {
   ).pipe(
     shareReplay(1),
   );
+
+  /**
+   * Sets or removes the default value of the shown tagset. The tagset is sent whole (with name and description): the backend
+   * replaces it, and an update without `defaultItem` removes the default.
+   * @param item {TTagsetItem|null} new default value, null to remove it
+   */
+  private updateDefaultItem(item: TTagsetItem | null): Observable<TTagset> {
+    const current = this.currentTagset;
+    if (!current) { return EMPTY; }
+    return this.tagsetService.updateTagset({ ...current, defaultItem: item ? { id: item.id } : null }).pipe(
+      map(updated => <TTagset>{ ...current, ...updated }),
+      tap(() => this.messageService.add(this.msgConfService.generateSuccessMessageConfig(
+        this.commonService.translateKey(item ? 'TAGSET_STATE.defaultSet' : 'TAGSET_STATE.defaultRemoved')))),
+      catchError((error: HttpErrorResponse) => {
+        this.messageService.add(this.msgConfService.generateWarningMessageConfig(
+          this.commonService.translateKey('TAGSET_STATE.updatingDefaultFailed').replace('${errorMessage}', error.error?.message ?? error.message)));
+        return EMPTY;
+      }),
+    );
+  }
+
+  /**
+   * The backend does not delete the default value of a tagset: if the item is it, the default is removed first.
+   * @param item {TTagsetItem} item about to be deleted
+   */
+  private clearDefaultIfItem(item: TTagsetItem): Observable<unknown> {
+    const current = this.currentTagset;
+    if (!current?.defaultItem || current.defaultItem.id !== item.id) { return of(null); }
+    return this.tagsetService.updateTagset({ ...current, defaultItem: null }).pipe(
+      tap(updated => this.tagsetChanged.next(<TTagset>{ ...current, ...updated })),
+    );
+  }
 
   /**
    * Constructor for TagsetStateService

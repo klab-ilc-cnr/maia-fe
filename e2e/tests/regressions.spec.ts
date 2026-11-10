@@ -1264,9 +1264,24 @@ test('regressione: Lexicon Editor aperto da una forma o da un senso - espandere 
   expect(rows.some(r => /No definition provided|Nessuna definizione/i.test(r)), 'nessun segnaposto al posto dei sensi').toBe(false);
 });
 
-test('regressione: annotazione semantica nuova - "Tipo lessicale" preselezionato su "Parola monorematica"', async ({ page, baseURL }, testInfo) => {
+/**
+ * Le risposte di `layer/{id}/features` con il tagset "Tipo lessicale" (25364628) che ha come valore predefinito "Parola monorematica"
+ * (25364633), come quando e' impostato dalla pagina dei tagset: cosi' il test non dipende da cosa c'e' nei dati della VM.
+ */
+async function mockTipoLessicaleDefault(page: Page, defaultItem: { id: number } | null = { id: 25364633 }) {
+  await page.route(/\/texto\/layer\/\d+\/features$/, async (route) => {
+    const response = await route.fetch();
+    if (response.status() !== 200) { return route.fulfill({ response }); }
+    const features = (await response.json()) as any[];
+    for (const f of features) { if (f.tagset?.id === 25364628) f.tagset.defaultItem = defaultItem; }
+    return route.fulfill({ response, json: features });
+  });
+}
+
+test('regressione: annotazione semantica nuova - il valore predefinito del tagset e\' preselezionato (Tipo lessicale = Parola monorematica)', async ({ page, baseURL }, testInfo) => {
   test.setTimeout(240_000);
-  await blockWrites(page, testInfo); // non si salva nulla: si apre solo l'editor e si guarda il campo
+  await blockWrites(page, testInfo);
+  await mockTipoLessicaleDefault(page); // non si salva nulla: si apre solo l'editor e si guarda il campo
   await openSmokeWorkspace(page, baseURL!);
   // finestra Search "da zero" (quella ripristinata dal layout salvato puo' avere ricerche e filtri precedenti)
   const oldSearch = page.locator('#searchTile .jsPanel-btn-close');
@@ -1294,10 +1309,8 @@ test('regressione: annotazione semantica nuova - "Tipo lessicale" preselezionato
   await snap(page, 'r16-annotazione-default');
 });
 
-test('regressione: annotazione semantica singola (finestra del testo) - "Tipo lessicale" preselezionato', async ({ page, baseURL }, testInfo) => {
-  test.setTimeout(180_000);
-  await blockWrites(page, testInfo);
-  await openSmokeWorkspace(page, baseURL!);
+async function openSingleAnnotationEditor(page: Page, baseURL: string) {
+  await openSmokeWorkspace(page, baseURL);
   for (const id of ['searchTile']) { const c = page.locator(`#${id} .jsPanel-btn-close`); if (await c.count()) { await c.first().click(); } }
   await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
   const t = page.locator('#searchTile');
@@ -1310,9 +1323,110 @@ test('regressione: annotazione semantica singola (finestra del testo) - "Tipo le
   await expect(text).toBeVisible({ timeout: 30_000 });
   await text.locator('p-select').filter({ hasText: /Select a layer|Seleziona/ }).first().click();
   await page.locator('.p-select-option').filter({ hasText: /^\s*Semantica\s*$/ }).first().click();
-  const editor = text.locator('app-text-annotation-editor');
+  return text.locator('app-text-annotation-editor');
+}
+
+test('regressione: annotazione semantica singola (finestra del testo) - il valore predefinito del tagset e\' preselezionato', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  await mockTipoLessicaleDefault(page);
+  const editor = await openSingleAnnotationEditor(page, baseURL!);
   await expect(editor.locator('p-select').filter({ hasText: 'Parola monorematica' }), 'Tipo lessicale preselezionato (annotazione nuova)').toHaveCount(1, { timeout: 15_000 });
   await snap(page, 'r17-annotazione-singola-default');
+});
+
+test('regressione: annotazione semantica singola - senza valore predefinito nel tagset non si preseleziona nulla', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  await mockTipoLessicaleDefault(page, null);
+  const editor = await openSingleAnnotationEditor(page, baseURL!);
+  await expect(editor.locator('p-select').first(), 'editor aperto').toBeVisible({ timeout: 15_000 });
+  await page.waitForTimeout(2000);
+  await expect(editor.locator('p-select').filter({ hasText: 'Parola monorematica' }), 'nessuna preselezione senza predefinito').toHaveCount(0);
+});
+
+test('regressione: tagset - il valore predefinito si imposta, si cambia, si toglie e sopravvive alla modifica del tagset', async ({ page, baseURL }) => {
+  // Scrive davvero sul backend, su un tagset creato dal test e rimosso alla fine. Il backend salva ogni versione del tagset
+  // con l'istante al secondo: due modifiche dello stesso tagset nello stesso secondo danno 500 (e il tagset non si puo' piu'
+  // modificare). Per questo tra una scrittura e l'altra si aspetta piu' di un secondo.
+  test.setTimeout(240_000);
+  const PAUSE = 1400;
+  const { api, token, base } = await apiLogin(baseURL!);
+  const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  const call = async (method: string, url: string, data?: unknown) => {
+    const r = await api.fetch(`${base}/texto${url}`, { method, headers, data: data as any });
+    const text = await r.text();
+    return { status: r.status(), json: text.startsWith('{') || text.startsWith('[') ? JSON.parse(text) : text };
+  };
+  const name = `e2e-default-${Date.now()}`;
+  const tagset = (await call('POST', '/tagset/create', { name, description: 'test e2e' })).json;
+  const [a, b] = [(await call('POST', '/tagsetItem/create', { name: 'Alfa', tagset: { id: tagset.id } })).json, (await call('POST', '/tagsetItem/create', { name: 'Beta', tagset: { id: tagset.id } })).json];
+  const readDefault = async () => (await call('GET', `/tagset/${tagset.id}`)).json.defaultItem?.id ?? null;
+  const row = (n: string) => page.locator('p-table tbody tr', { hasText: n });
+  try {
+    await uiLogin(page);
+    await page.goto(`#/tagsets/${tagset.id}`);
+    await expect(row('Alfa')).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator('#tagset-default-value'), 'nessun predefinito all\'inizio').toHaveText('–');
+
+    await page.waitForTimeout(PAUSE);
+    await row('Alfa').locator('button.default-toggle').click();
+    await expect(page.locator('#tagset-default-value')).toHaveText('Alfa', { timeout: 15_000 });
+    await expect(row('Alfa').locator('button.default-toggle')).toHaveAttribute('aria-pressed', 'true');
+    expect(await readDefault(), 'impostato sul backend').toBe(a.id);
+
+    await page.waitForTimeout(PAUSE);
+    await row('Beta').locator('button.default-toggle').click();
+    await expect(page.locator('#tagset-default-value')).toHaveText('Beta', { timeout: 15_000 });
+    await expect(row('Alfa').locator('button.default-toggle')).toHaveAttribute('aria-pressed', 'false');
+    expect(await readDefault(), 'cambiato sul backend').toBe(b.id);
+    await snap(page, 'r-tagset-default');
+
+    // la modifica di nome e descrizione dalla lista non lo toglie
+    await page.waitForTimeout(PAUSE);
+    await page.goto('#/tagsets');
+    const listRow = page.locator('p-table tbody tr', { hasText: name });
+    await expect(page.locator('p-table tbody tr').first()).toBeVisible({ timeout: 30_000 });
+    await page.locator('.p-paginator-last').click(); // la lista e' paginata e il tagset nuovo e' l'ultimo
+    await expect(listRow).toBeVisible({ timeout: 15_000 });
+    await listRow.locator('button[aria-label="Edit tagset"]').click();
+    const dialog = page.locator('.p-dialog').filter({ visible: true });
+    await dialog.locator('#description').fill('descrizione modificata');
+    await page.waitForTimeout(PAUSE);
+    await dialog.locator('button[type="submit"]').click();
+    await expect(dialog).toHaveCount(0, { timeout: 15_000 });
+    await expect.poll(async () => (await call('GET', `/tagset/${tagset.id}`)).json.description, { timeout: 15_000 }).toBe('descrizione modificata');
+    expect(await readDefault(), 'il predefinito resta dopo la modifica del tagset').toBe(b.id);
+
+    // un clic sul predefinito lo toglie
+    await page.goto(`#/tagsets/${tagset.id}`);
+    await expect(row('Beta').locator('button.default-toggle')).toHaveAttribute('aria-pressed', 'true', { timeout: 30_000 });
+    await page.waitForTimeout(PAUSE);
+    await row('Beta').locator('button.default-toggle').click();
+    await expect(page.locator('#tagset-default-value')).toHaveText('–', { timeout: 15_000 });
+    expect(await readDefault(), 'tolto sul backend').toBeNull();
+
+    // cancellare il valore predefinito: il backend lo rifiuta, la pagina prima toglie il predefinito
+    await page.waitForTimeout(PAUSE);
+    await row('Alfa').locator('button.default-toggle').click();
+    await expect(page.locator('#tagset-default-value')).toHaveText('Alfa', { timeout: 15_000 });
+    await page.waitForTimeout(PAUSE);
+    await row('Alfa').locator('button[aria-label="Delete tagset item"]').click();
+    await expect(page.locator('.swal2-popup'), 'l\'avviso dice che il predefinito viene tolto').toContainText(/predefinito|default/i);
+    await page.locator('.swal2-confirm').click();
+    await expect(row('Alfa')).toHaveCount(0, { timeout: 15_000 });
+    await expect(page.locator('#tagset-default-value')).toHaveText('–');
+    expect(await readDefault(), 'predefinito tolto insieme al valore').toBeNull();
+    expect((await call('GET', `/tagset/${tagset.id}/items`)).json.map((i: any) => i.name)).toEqual(['Beta']);
+  } finally {
+    // pulizia (con le pause: lo storico del tagset non regge due scritture nello stesso secondo)
+    for (const step of [
+      async () => call('POST', '/tagset/update', { id: tagset.id, name, description: 'x', defaultItem: null }),
+      async () => call('DELETE', `/tagsetItem/${a.id}/remove`),
+      async () => call('DELETE', `/tagsetItem/${b.id}/remove`),
+      async () => call('DELETE', `/tagset/${tagset.id}/remove`),
+    ]) { await page.waitForTimeout(PAUSE); await step().catch(() => undefined); }
+  }
 });
 
 /** Chiude (se aperti) i pannelli indicati, cosi' si riaprono con le dimensioni di default e non con quelle del layout salvato. */

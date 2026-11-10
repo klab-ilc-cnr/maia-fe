@@ -224,8 +224,11 @@
         "username": "Username or E-mail"
     },
     "TAGSET_MANAGER": {
+        "aboutDeleteDefaultTagsetValue": "You are about to delete the tagset value ${tagsetValueName}, which is the default value of the tagset: the default will be removed",
         "aboutDeleteTagset": "You are about to delete the tagset ${tagsetName}",
         "aboutDeleteTagsetValue": "You are about to delete the tagset value ${tagsetValueName}",
+        "default": "Default",
+        "defaultValue": "Default value",
         "description": "Description",
         "editTagset": "Edit tagset",
         "enterNameTagsetValue": "Need to enter the name of the tagset value",
@@ -235,6 +238,8 @@
         "newTagset": "New tagset",
         "newTagsetValue": "New tagset value",
         "newValue": "New value",
+        "removeDefault": "Remove the default value",
+        "setDefault": "Set as default value (preselected in new annotations)",
         "tagsetManager": "Tagset manager",
         "tagsetName": "Tagset name",
         "tagsetSameName": "A tagset with this name already exists",
@@ -246,10 +251,13 @@
     "TAGSET_STATE": {
         "addedTagsetItem": "Tagset item added",
         "addingTagsetItemFailed": "Adding item to tagset failed: ${errorMessage}",
+        "defaultRemoved": "Default value removed",
+        "defaultSet": "Default value set",
         "fetchingTagsetFailed": "Fetching tagset failed: ${errorMessage}",
         "fetchingTagsetItemsFailed": "Fetching tagset items failed: ${errorMessage}",
         "removedTagsetItem": "Tagset item removed",
         "removingTagsetItemFailed": "Removing tagset item failed: ${errorMessage}",
+        "updatingDefaultFailed": "Updating the default value failed: ${errorMessage}",
         "updatedTagsetItem": "Tagset item updated",
         "updatingTagsetItemFailed": "Updating tagset item failed: ${errorMessage}"
     },

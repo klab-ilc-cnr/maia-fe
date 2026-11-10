@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LayerService } from './layer.service';
 import { TTagset } from '../models/texto/t-tagset';
 import { TTagsetItem } from '../models/texto/t-tagset-item';
 import { TtlCache } from '../helpers/ttl-cache';
@@ -18,7 +19,7 @@ export class TagsetService {
    * Constructor for TagsetService
    * @param http {HttpClient} Performs HTTP requests
    */
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private layerService: LayerService) {
     this.textoUrl = environment.maiaBeTextoUrl;
   }
 
@@ -75,6 +76,8 @@ export class TagsetService {
   /** Forgets the cached values: to call after any change of a tagset */
   public clearCache(): void {
     this.itemsCache.clear();
+    // the features of the layers carry their tagset (with its default value)
+    this.layerService.clearCache();
   }
 
   /** Makes a request that changes tagsets invalidate the cache when it succeeds */

@@ -224,8 +224,11 @@
         "username": "Nome utente o E-mail"
     },
     "TAGSET_MANAGER": {
+        "aboutDeleteDefaultTagsetValue": "Si sta per cancellare il valore del tagset ${tagsetValueName}, che è il valore predefinito del tagset: il predefinito verrà tolto",
         "aboutDeleteTagset": "Si sta per cancellare il tagset ${tagsetName}",
         "aboutDeleteTagsetValue": "Si sta per cancellare il valore del tagset ${tagsetValueName}",
+        "default": "Predefinito",
+        "defaultValue": "Valore predefinito",
         "description": "Descrizione",
         "editTagset": "Modifica tagset",
         "enterNameTagsetValue": "È necessario inserire il nome del valore del tagset",
@@ -235,6 +238,8 @@
         "newTagset": "Nuovo tagset",
         "newTagsetValue": "Nuovo valore del tagset",
         "newValue": "Nuovo valore",
+        "removeDefault": "Togli il valore predefinito",
+        "setDefault": "Imposta come valore predefinito (preselezionato nelle nuove annotazioni)",
         "tagsetManager": "Gestione tagset",
         "tagsetName": "Nome del tagset",
         "tagsetSameName": "Esiste già un tagset con questo nome",
@@ -246,10 +251,13 @@
     "TAGSET_STATE": {
         "addedTagsetItem": "Elemento del tagset aggiunto",
         "addingTagsetItemFailed": "Aggiunta di un elemento al tagset fallita: ${errorMessage}",
+        "defaultRemoved": "Valore predefinito tolto",
+        "defaultSet": "Valore predefinito impostato",
         "fetchingTagsetFailed": "Recupero del tagset fallito: ${errorMessage}",
         "fetchingTagsetItemsFailed": "Recupero degli elementi del tagset fallito: ${errorMessage}",
         "removedTagsetItem": "Elemento del tagset rimosso",
         "removingTagsetItemFailed": "Rimozione di un elemento dal tagset fallita: ${errorMessage}",
+        "updatingDefaultFailed": "Aggiornamento del valore predefinito fallito: ${errorMessage}",
         "updatedTagsetItem": "Elemento del tagset aggiornato",
         "updatingTagsetItemFailed": "Aggiornamento dell'elemento del tagset fallito: ${errorMessage}"
     },

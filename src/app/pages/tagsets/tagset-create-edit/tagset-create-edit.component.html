@@ -20,6 +20,10 @@
             <label class="header-label">{{'TAGSET_MANAGER.description'|translate}}</label>
             <p>{{(ttagsetDescription|async)||''}}</p>
           </div>
+          <div class="col">
+            <label class="header-label">{{'TAGSET_MANAGER.defaultValue'|translate}}</label>
+            <p id="tagset-default-value">{{(defaultItemName$|async)||'–'}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -42,6 +46,7 @@
                 <tr>
                   <th pSortableColumn="name">{{'TAGSET_MANAGER.name'|translate}}<p-sortIcon field="name"></p-sortIcon></th>
                   <th pSortableColumn="description">{{'TAGSET_MANAGER.description'|translate}}<p-sortIcon field="description"></p-sortIcon></th>
+                  <th class="text-center">{{'TAGSET_MANAGER.default'|translate}}</th>
                   <th></th>
                 </tr>
               </ng-template>
@@ -49,6 +54,14 @@
                 <tr>
                   <td>{{value.name}}</td>
                   <td>{{value.description}}</td>
+                  <td class="text-center">
+                    <button type="button" pButton pRipple class="p-button-rounded p-button-text default-toggle"
+                      [class.default-on]="isDefaultValue(value)" [icon]="isDefaultValue(value) ? 'pi pi-star-fill' : 'pi pi-star'"
+                      [attr.aria-label]="(isDefaultValue(value) ? 'TAGSET_MANAGER.removeDefault' : 'TAGSET_MANAGER.setDefault')|translate"
+                      [attr.aria-pressed]="isDefaultValue(value)"
+                      [pTooltip]="(isDefaultValue(value) ? 'TAGSET_MANAGER.removeDefault' : 'TAGSET_MANAGER.setDefault')|translate"
+                      (click)="toggleDefaultValue(value)"></button>
+                  </td>
                   <td>
                     <button aria-label="Edit tagset item" pButton pRipple type="button" icon="pi pi-pencil"
                       class="p-button-rounded p-button-success mx-2" (click)="showEditValueModal(value)"></button>

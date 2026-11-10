@@ -11,7 +11,10 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: 0.26.7)
 
-_(nessuna modifica)_
+### Tagset
+- Valore predefinito del tagset (campo `defaultItem` del backend): si imposta, si cambia e si toglie dalla pagina dei valori del tagset con la stella; la pagina mostra il valore predefinito
+- Le nuove annotazioni preselezionano il valore predefinito del tagset (es. "Tipo lessicale"): sparisce la lista fissa nel codice; senza predefinito nessuna preselezione
+- La modifica di nome e descrizione del tagset non toglie il predefinito; cancellare il valore predefinito lo toglie prima (il backend altrimenti rifiuta)
 
 ---
 
@@ -160,7 +163,8 @@ _(nessuna modifica)_
 - maia-be: 401 di TexO/LexO restituito come 500
 - maia-be/TexO: offset vuoti nei contesti di alcune annotazioni recenti (evidenziazione gialla mancante in anteprima)
 - maia-be/TexO: 401 intermittente su `/texto/util/ais`
-- Backend: flag "predefinito" sui valori dei tagset (sostituirà `annotation-defaults.helper.ts`)
+- Backend (TexO): lo storico dei tagset ha `time` al secondo: due modifiche dello stesso tagset nello stesso secondo danno 500 e il tagset resta non modificabile né cancellabile (`prova tagset` 25388553 e `tmp-prova-default` 25388562 da sbloccare o cancellare)
+- Dati: impostare il valore predefinito di "Tipo lessicale" ("Parola monorematica") dalla pagina dei tagset, su ogni istanza (VM di test e produzione), perché la lista fissa non c'è più
 - Decisione: quill 2
 - Decisione: `production: false` in `environment.production.ts`
 - Prima del merge: sottotitolo `environment.ts` da riportare a "develop"

@@ -1,0 +1,9 @@
+
+// star that marks (and sets) the default value of the tagset
+.default-toggle {
+  color: var(--text-color-secondary);
+
+  &.default-on {
+    color: #e6a100;
+  }
+}

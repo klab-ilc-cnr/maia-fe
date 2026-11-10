@@ -35,7 +35,12 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 <p><strong>Come mantenerlo</strong>: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto" (in alto); quando si prepara un pacchetto, la sezione diventa la sezione di quella versione e se ne apre una nuova vuota. Dopo ogni modifica rigenerare la copia HTML: <code>python3 tools/md-to-html.py documentation/upgrade/correzioni-post-upgrade.md</code>.</p>
 <hr>
 <h2 id="non-ancora-in-un-pacchetto-prossimo-0267">Non ancora in un pacchetto (prossimo: 0.26.7)</h2>
-<p><em>(nessuna modifica)</em></p>
+<h3 id="tagset">Tagset</h3>
+<ul>
+<li>Valore predefinito del tagset (campo <code>defaultItem</code> del backend): si imposta, si cambia e si toglie dalla pagina dei valori del tagset con la stella; la pagina mostra il valore predefinito</li>
+<li>Le nuove annotazioni preselezionano il valore predefinito del tagset (es. "Tipo lessicale"): sparisce la lista fissa nel codice; senza predefinito nessuna preselezione</li>
+<li>La modifica di nome e descrizione del tagset non toglie il predefinito; cancellare il valore predefinito lo toglie prima (il backend altrimenti rifiuta)</li>
+</ul>
 <hr>
 <h2 id="0266-pacchetto-maia-fe-0266-test-ng21-20261109-1916tgz">0.26.6 — pacchetto <code>maia-fe-0.26.6-test-ng21-20261109-1916.tgz</code></h2>
 <h3 id="finestra-del-testo">Finestra del testo</h3>
@@ -197,7 +202,8 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 <li>maia-be: 401 di TexO/LexO restituito come 500</li>
 <li>maia-be/TexO: offset vuoti nei contesti di alcune annotazioni recenti (evidenziazione gialla mancante in anteprima)</li>
 <li>maia-be/TexO: 401 intermittente su <code>/texto/util/ais</code></li>
-<li>Backend: flag "predefinito" sui valori dei tagset (sostituirà <code>annotation-defaults.helper.ts</code>)</li>
+<li>Backend (TexO): lo storico dei tagset ha <code>time</code> al secondo: due modifiche dello stesso tagset nello stesso secondo danno 500 e il tagset resta non modificabile né cancellabile (<code>prova tagset</code> 25388553 e <code>tmp-prova-default</code> 25388562 da sbloccare o cancellare)</li>
+<li>Dati: impostare il valore predefinito di "Tipo lessicale" ("Parola monorematica") dalla pagina dei tagset, su ogni istanza (VM di test e produzione), perché la lista fissa non c'è più</li>
 <li>Decisione: quill 2</li>
 <li>Decisione: <code>production: false</code> in <code>environment.production.ts</code></li>
 <li>Prima del merge: sottotitolo <code>environment.ts</code> da riportare a "develop"</li>
