@@ -1973,3 +1973,27 @@ test('regressione: marche del senso (etichette dei chip degli autocomplete)', as
   await snap(page, 'r5-sense-marks');
   expect(w.pageErrors).toEqual([]);
 });
+
+test('regressione: Search - qualsiasi apice digitato trova le parole con l\'apice del testo (\'ntelletto → ’ntelletto)', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  const sent: string[] = [];
+  page.on('request', r => { if (r.url().includes('/texto/util/kwic') && r.method() === 'POST') { try { sent.push(r.postDataJSON()?.filters?.searchValue); } catch { /* ignora */ } } });
+  const old = page.locator('#searchTile .jsPanel-btn-close');
+  if (await old.count()) { await old.first().click(); await expect(page.locator('#searchTile')).toHaveCount(0); }
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  // 1) apice ASCII: la richiesta parte con l'apice del testo e i risultati ci sono; il campo resta com'e' stato digitato
+  await input.fill("'ntelletto"); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr').first()).toBeVisible({ timeout: 30_000 });
+  expect(sent.at(-1)).toBe('\u2019ntelletto');
+  await expect(input).toHaveValue("'ntelletto");
+  const kwics = await page.locator('#searchTile tbody tr').first().innerText();
+  expect(kwics).toContain('\u2019ntelletto');
+  // 2) apice di Word a inizio parola (U+2018) e altre varianti
+  for (const v of ['\u2018ntelletto', '\u02BCntelletto', '`ntelletto', '\u00B4ntelletto']) {
+    await input.fill(v); await input.press('Enter');
+    await expect.poll(() => sent.at(-1), { timeout: 15_000, message: v }).toBe('\u2019ntelletto');
+  }
+});

@@ -35,6 +35,10 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 <p><strong>Come mantenerlo</strong>: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto (prossimo: X.Y.Z)", in alto (si crea con la prima correzione dopo un pacchetto; quando si prepara un pacchetto diventa la sezione di quella versione). Dopo ogni modifica rigenerare la copia HTML: <code>python3 tools/md-to-html.py documentation/upgrade/correzioni-post-upgrade.md</code>.</p>
 <hr>
 <h2 id="non-ancora-in-un-pacchetto-prossimo-0268">Non ancora in un pacchetto (prossimo: 0.26.8)</h2>
+<h3 id="finestra-search">Finestra Search</h3>
+<ul>
+<li>Ricerca: qualsiasi apice digitato (<code>'</code> <code>‘</code> <code>ʼ</code> `<code> </code> `<code> </code>´<code> </code>′<code>) viene inviato come </code>’<code>, la forma usata nei testi, quindi </code>'ntelletto<code> trova </code>’ntelletto`; vale anche per i filtri di colonna (parola, contesti) e per l'esportazione. Il campo resta come l'utente l'ha scritto. Rimedio lato frontend, da togliere quando TexO tratterà gli apici come equivalenti</li>
+</ul>
 <h3 id="finestra-del-testo">Finestra del testo</h3>
 <ul>
 <li>Firefox: il testo di alcune righe veniva impaginato due volte, con le code delle righe sovrapposte alla colonna delle sentenze e le evidenziazioni fuori posto (es. I.Concl.19 aprendo il risultato di «’ntelletto»); i ritorni a capo dentro le righe sono ora disegnati come spazio, come fa Chromium. Il difetto c'era anche in Angular 14 (<code>master</code>), non viene dall'upgrade</li>
@@ -261,6 +265,10 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 <li>maia-be/TexO: 401 intermittente su <code>/texto/util/ais</code></li>
 <li>Backend (TexO): lo storico dei tagset ha <code>time</code> al secondo: due modifiche dello stesso tagset nello stesso secondo danno 500 e il tagset resta non modificabile né cancellabile (<code>prova tagset</code> 25388553 e <code>tmp-prova-default</code> 25388562 da sbloccare o cancellare)</li>
 <li>Dati: impostare il valore predefinito di "Tipo lessicale" ("Parola monorematica") dalla pagina dei tagset, su ogni istanza (VM di test e produzione), perché la lista fissa non c'è più</li>
+<li>Backend (TexO): gli apici sono caratteri diversi nella ricerca (<code>'</code> <code>‘</code> <code>’</code> <code>ʼ</code>…): nessuna collazione MariaDB li unisce, serve la sostituzione nella condizione (<code>form IN (varianti)</code>) o una colonna normalizzata; poi si può togliere la normalizzazione nel frontend (<code>helpers/apostrophes.ts</code>). Nel Decameron: <code>’</code> 8.204 volte, <code>‘</code> 28 (virgolette di apertura), <code>'</code> 1 (in «L'altre», refuso)</li>
+<li>Backend (TexO): la ricerca <code>*</code> da sola (<code>token like '%'</code>, 307.500 token) esaurisce la memoria (<code>-Xmx1024m</code>) e blocca TexO finché non viene riavviato: serve paginazione/limite in SQL</li>
+<li>Ricerca: «ch’io» non trova nulla perché i token sono <code>ch’</code> e <code>io</code>; decidere se suggerirlo o dividere sull'apice</li>
+<li>Editor di testo ricco: conversione di <code>'</code> digitato in <code>’</code> ancora da decidere</li>
 <li>Decisione: quill 2</li>
 <li>Decisione: <code>production: false</code> in <code>environment.production.ts</code></li>
 <li>Prima del merge: sottotitolo <code>environment.ts</code> da riportare a "develop"</li>

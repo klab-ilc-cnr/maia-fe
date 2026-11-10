@@ -1,3 +1,4 @@
+import { normalizeApostrophes } from '../../../helpers/apostrophes';
 import { AfterViewChecked, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -325,7 +326,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.layerId = this.selectedLayer?.id;
     this.searchRequest.filters.annotated = this.setAnnotadeFilter(this.selectedRestriction?.code);
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
-    this.searchRequest.filters.searchValue = this.searchValue?.trim();
+    this.searchRequest.filters.searchValue = normalizeApostrophes(this.searchValue?.trim());
     this.searchRequest.filters.contextLength = this.contextLength;
     this.searchRequest.filters.pos = this.posValue;
     this.searchRequest.reload = true;
@@ -694,9 +695,9 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    */
   private setColumnFilters() {
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
-    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
-    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
-    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
+    this.searchRequest.filters.kwic = normalizeApostrophes((<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value);
+    this.searchRequest.filters.leftContext = normalizeApostrophes((<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value);
+    this.searchRequest.filters.rightContext = normalizeApostrophes((<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value);
     this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
     this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
