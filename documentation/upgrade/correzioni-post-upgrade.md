@@ -159,6 +159,9 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Da fare (richieste già concordate, non ancora implementate)
+- Tagset: dopo la creazione di un nuovo tagset non tornare alla lista, ma aprire la pagina di modifica del tagset appena creato (quella dei valori), per inserirli subito
+
 ## In sospeso (backend / decisioni)
 - maia-be: 401 di TexO/LexO restituito come 500
 - maia-be/TexO: offset vuoti nei contesti di alcune annotazioni recenti (evidenziazione gialla mancante in anteprima)
