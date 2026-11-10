@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.8)
+## 0.26.8 — `dist/maia-fe-0.26.8-test-ng21-20261110-1935.tgz`
 
 ### Finestra Search
 - Ricerca: qualsiasi apice digitato (`'` `‘` `ʼ` `` ` `` `´` `′`) viene inviato come `’`, la forma usata nei testi, quindi `'ntelletto` trova `’ntelletto`; vale anche per i filtri di colonna (parola, contesti) e per l'esportazione. Il campo resta come l'utente l'ha scritto. Rimedio lato frontend, da togliere quando TexO tratterà gli apici come equivalenti
