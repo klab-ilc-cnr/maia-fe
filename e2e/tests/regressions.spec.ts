@@ -1425,7 +1425,7 @@ test('regressione: tagset - il valore predefinito si imposta, si cambia, si togl
       async () => call('DELETE', `/tagsetItem/${a.id}/remove`),
       async () => call('DELETE', `/tagsetItem/${b.id}/remove`),
       async () => call('DELETE', `/tagset/${tagset.id}/remove`),
-    ]) { await page.waitForTimeout(PAUSE); await step().catch(() => undefined); }
+    ]) { await new Promise((r) => setTimeout(r, PAUSE)); await step().catch(() => undefined); } // setTimeout: dopo un timeout del test page.waitForTimeout non funziona piu'
   }
 });
 
@@ -1514,6 +1514,25 @@ test('regressione: finestre "nuovo" di tagset, workspace e valori del tagset - A
   await page.goto('#/tagsets/25364628');
   await expect(page.locator('p-table tbody tr').first()).toBeVisible({ timeout: 30_000 });
   await check('nuovo valore del tagset', async () => { await page.locator('button[aria-label="New value"]').click(); });
+});
+
+test('regressione: finestre "modifica" di layer, feature, tagset, valore del tagset e workspace - Update acceso con il nome invariato', async ({ page }) => {
+  // il controllo dei nomi doppi non deve contare il nome dell'elemento che si sta modificando; si apre e si annulla, non si salva
+  test.setTimeout(120_000);
+  await uiLogin(page);
+  const dlg = page.locator('.p-dialog').filter({ visible: true });
+  const pages: Array<[string, string]> = [['#/layers', 'layer'], ['#/layers/20077428', 'feature'], ['#/tagsets', 'tagset'], ['#/tagsets/25364628', 'valore del tagset'], ['#/workspaces', 'workspace']];
+  for (const [hash, what] of pages) {
+    await page.goto(hash);
+    const edit = page.locator('p-table tbody tr button.p-button-success').first();
+    await expect(edit, what).toBeVisible({ timeout: 30_000 });
+    await edit.click();
+    const submit = dlg.locator('button[type="submit"]');
+    await expect(submit, `${what}: Update acceso con il nome invariato`).toBeEnabled({ timeout: 10_000 });
+    await expect(dlg.locator('.invalid-feedback'), `${what}: nessun errore di nome doppio`).toHaveCount(0);
+    await dlg.locator('button.btn-secondary').click();
+    await expect(dlg).toHaveCount(0);
+  }
 });
 
 /** Chiude (se aperti) i pannelli indicati, cosi' si riaprono con le dimensioni di default e non con quelle del layout salvato. */

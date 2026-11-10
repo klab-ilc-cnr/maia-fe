@@ -186,7 +186,7 @@ export class LayersViewComponent implements OnInit {
     if (feature.type === TFeatureType.TAGSET) {
       this.tagset.setValue(feature.tagset || null);
     }
-    setUniqueNameValidators(this.name, this.featureNames);
+    setUniqueNameValidators(this.name, this.featureNames.filter(n => n !== feature.name)); // its own name is not a duplicate
     this.visibleEditNewFeature = true;
   }
 }

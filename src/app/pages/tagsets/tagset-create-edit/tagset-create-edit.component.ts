@@ -164,7 +164,7 @@ export class TagsetCreateEditComponent implements OnInit, OnDestroy {
     this.ttagsetItemOnEdit = value;
     this.tagsetItemForm.reset();
     this.name.setValue(value.name || '');
-    setUniqueNameValidators(this.name, this.ttagsetItemsName);
+    setUniqueNameValidators(this.name, this.ttagsetItemsName.filter(n => n !== value.name)); // its own name is not a duplicate
     this.description.setValue(value.description || '');
     this.visibleEditNewTagsetItem = true;
   }

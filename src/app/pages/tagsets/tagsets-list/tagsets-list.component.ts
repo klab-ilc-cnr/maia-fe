@@ -100,7 +100,7 @@ export class TagsetsListComponent implements OnDestroy {
     this.tagsetForm.reset();
     this.tagsetOnEdit = tagset;
     this.name.setValue(tagset.name || '');
-    setUniqueNameValidators(this.name, this.tagsetsNames);
+    setUniqueNameValidators(this.name, this.tagsetsNames.filter(n => n !== tagset.name)); // its own name is not a duplicate
     this.description.setValue(tagset.description || '');
     this.modalTitle = tagset.name || this.commonService.translateKey('TAGSET_MANAGER.editTagset');
     this.visibleEditNewTagset = true;
