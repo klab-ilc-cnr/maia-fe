@@ -1582,6 +1582,35 @@ test('regressione: finestra di dialogo chiusa durante il trascinamento - la sele
   await expect.poll(editorText, { timeout: 10_000 }).toBe(second.word);
 });
 
+test('regressione: Text - i ritorni a capo dentro le righe non arrivano al disegno (Firefox impaginava il testo due volte)', async ({ page, baseURL }, testInfo) => {
+  // Difetto visto in Firefox (anche in Angular 14): le righe del testo contengono ritorni a capo ("’ntelletto:\nné"); Chromium li
+  // disegna come uno spazio, Firefox spezza davvero la riga nel testo SVG e il resto finisce sopra le righe precedenti. Si disegnano
+  // come spazio (un carattere per un carattere: gli offset non cambiano). Qui si controlla il DOM, che e' uguale in tutti i browser.
+  test.setTimeout(150_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('’ntelletto'); await input.press('Enter');
+  const row = page.locator('#searchTile tbody tr', { hasText: 'I.Concl.19' }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await row.dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile.locator('#gText tspan tspan', { hasText: 'veggio' }).first()).toBeAttached({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  const r = await tile.evaluate((e) => {
+    const lines = [...e.querySelectorAll('#gText > text > tspan')];
+    const bad = lines.filter((l) => /[\r\n\u2028\u2029]/.test(l.textContent ?? ''));
+    const words = [...e.querySelectorAll('#gText tspan tspan')].map((w) => w.textContent ?? '');
+    return { lines: lines.length, bad: bad.map((l) => JSON.stringify((l.textContent ?? '').slice(0, 50))).slice(0, 3), joined: words.join('').includes('’ntelletto: né') };
+  });
+  expect(r.lines).toBeGreaterThan(5);
+  expect(r.bad, 'nessuna parola disegnata contiene un ritorno a capo').toEqual([]);
+  expect(r.joined, 'il testo "’ntelletto: né" e\' disegnato con uno spazio').toBe(true);
+});
+
 /** Chiude (se aperti) i pannelli indicati, cosi' si riaprono con le dimensioni di default e non con quelle del layout salvato. */
 async function closePanels(page: Page, ids: string[]) {
   await page.evaluate((list) => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) if (list.includes(x.id) || list.some((i: string) => x.id.startsWith(i))) x.close(); }, ids);

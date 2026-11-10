@@ -9,6 +9,13 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: 0.26.8)
+
+### Finestra del testo
+- Firefox: il testo di alcune righe veniva impaginato due volte, con le code delle righe sovrapposte alla colonna delle sentenze e le evidenziazioni fuori posto (es. I.Concl.19 aprendo il risultato di «’ntelletto»); i ritorni a capo dentro le righe sono ora disegnati come spazio, come fa Chromium. Il difetto c'era anche in Angular 14 (`master`), non viene dall'upgrade
+
+---
+
 ## 0.26.7 — pacchetto `maia-fe-0.26.7-test-ng21-20261110-1427.tgz`
 
 ### Finestra del testo

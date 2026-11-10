@@ -2342,7 +2342,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     const line = {
       text: auxLineBuilder.line.text,
-      words: auxLineBuilder.line.words,
+      // the line breaks inside the rows of the text (e.g. "’ntelletto:\nné") are drawn as a space: Chromium does that, Firefox
+      // really breaks the line inside the SVG text and the rest of the row is drawn over the previous lines. One character
+      // for one character, so no offset (selection, annotations, highlights) changes
+      words: auxLineBuilder.line.words?.map((w: string) => w.replace(/[\r\n\u2028\u2029]/g, ' ')),
       height: lineHeight,
       yText: yText,
       x: this.visualConfig.stdTextOffsetX,
