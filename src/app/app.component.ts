@@ -1,9 +1,10 @@
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, take, throwError } from 'rxjs';
+import { guardAgainstStuckTextSelection } from './helpers/stuck-text-selection';
 import { PopupDeleteItemComponent } from './controllers/popup/popup-delete-item/popup-delete-item.component';
 import { AuthenticationService } from './services/authentication.service';
 import { SessionService } from './services/session.service';
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
     public translate: TranslateService,
     public commonService: CommonService,
     private sessionService: SessionService,
+    private ngZone: NgZone,
   ) {
     translate.addLangs(['en', 'it']);
     translate.setDefaultLang('en');
@@ -71,6 +73,9 @@ export class AppComponent implements OnInit {
         this.sessionService.checkExpired();
       }
     });
+
+    // a dialog closed while being dragged leaves the whole page without text selection
+    guardAgainstStuckTextSelection(this.ngZone);
 
     this.checkBroser();
   }

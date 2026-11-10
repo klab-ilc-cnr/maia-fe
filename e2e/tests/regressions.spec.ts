@@ -1535,6 +1535,53 @@ test('regressione: finestre "modifica" di layer, feature, tagset, valore del tag
   }
 });
 
+test('regressione: finestra di dialogo chiusa durante il trascinamento - la selezione del testo non resta spenta', async ({ page, baseURL }, testInfo) => {
+  // Difetto visto: il p-dialog mette user-select:none sul body mentre si trascina e lo toglie al rilascio; se si chiude prima del
+  // rilascio resta cosi' e nella finestra del testo non si seleziona piu' nulla (doppio clic e trascinamento) fino a un F5.
+  // Lo stato si ricrea a mano; al primo rilascio del mouse la pagina deve tornare a posto.
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await page.locator('#searchTile p-select').filter({ hasText: /Layer/ }).first().click();
+  await page.locator('.p-select-option').filter({ hasText: /^\s*Semantica\s*$/ }).first().click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile.locator('#gText tspan tspan').first()).toBeAttached({ timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  const bodyState = () => page.evaluate(() => ({ style: document.body.style.userSelect, attr: document.body.getAttribute('data-p-unselectable-text'), computed: getComputedStyle(document.body).userSelect }));
+  const pickWord = (skip: number) => tile.evaluate((e, k) => {
+    const box = e.querySelector('.text-container')!.getBoundingClientRect();
+    const highs = [...e.querySelectorAll('svg rect[id^="h-"]')].map((r) => r.getBoundingClientRect());
+    const ws = [...e.querySelectorAll('#gText tspan tspan')].filter((t) => { const b = t.getBoundingClientRect(); return (t.textContent ?? '').trim().length >= 5 && b.top > box.top + 20 && b.bottom < box.bottom - 20 && b.left > box.left + 40 && b.right < box.right - 5 && !highs.some((h) => b.left < h.right && b.right > h.left && b.top < h.bottom && b.bottom > h.top); });
+    const w = ws[k]; const n = w.firstChild as Text; const r = document.createRange(); r.setStart(n, 1); r.setEnd(n, 3); const b = r.getBoundingClientRect();
+    return { x: b.left + b.width / 2, y: b.top + b.height / 2, word: (w.textContent ?? '').trim().replace(/[,.;:]$/, '') };
+  }, skip);
+  const editorText = () => tile.locator('app-text-annotation-editor input').nth(1).inputValue().catch(() => '');
+
+  // situazione di partenza: la selezione funziona
+  const first = await pickWord(0);
+  await page.mouse.dblclick(first.x, first.y);
+  await expect.poll(editorText, { timeout: 10_000 }).toBe(first.word);
+
+  // stato lasciato dal dialog: selezione spenta in tutta la pagina
+  await page.evaluate(() => { document.body.setAttribute('data-p-unselectable-text', 'true'); document.body.style.userSelect = 'none'; });
+  expect((await bodyState()).computed).toBe('none');
+  const blank = await tile.locator('.text-container').boundingBox();
+  await page.mouse.click(blank!.x + blank!.width - 6, blank!.y + 60); // un clic qualunque: al rilascio la pagina torna a posto
+  await expect.poll(bodyState, { timeout: 5_000 }).toEqual({ style: '', attr: null, computed: 'auto' });
+
+  // e la selezione funziona di nuovo
+  const second = await pickWord(3);
+  await page.mouse.dblclick(second.x, second.y);
+  await expect.poll(editorText, { timeout: 10_000 }).toBe(second.word);
+});
+
 /** Chiude (se aperti) i pannelli indicati, cosi' si riaprono con le dimensioni di default e non con quelle del layout salvato. */
 async function closePanels(page: Page, ids: string[]) {
   await page.evaluate((list) => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) if (list.includes(x.id) || list.some((i: string) => x.id.startsWith(i))) x.close(); }, ids);
