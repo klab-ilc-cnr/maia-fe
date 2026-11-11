@@ -2242,3 +2242,34 @@ test('regressione: Dictionary Editor, scheda Voce - Etimologia: lingua ed etimo 
   await group.scrollIntoViewIfNeeded();
   await group.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-voce-etimologia.png') });
 });
+
+test('regressione: finestre - il bordo destro ridimensiona solo la larghezza anche se un tasto modificatore è rimasto «premuto» per jsPanel (Alt+Tab, Ctrl+Tab…)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(800);
+  const size = () => tile.evaluate((e) => { const r = e.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height) }; });
+  const dragRight = async (dx: number) => {
+    const b = (await tile.locator('.jsPanel-resizeit-e').boundingBox())!;
+    const x = b.x + b.width / 2, y = b.y + b.height / 2;
+    await page.mouse.move(x, y); await page.mouse.down(); await page.mouse.move(x + dx / 2, y, { steps: 5 }); await page.mouse.move(x + dx, y, { steps: 5 }); await page.mouse.up();
+  };
+  // 1) senza tasti: solo la larghezza cambia
+  const a = await size(); await dragRight(60); const b = await size();
+  expect(b.w, 'larghezza dopo il trascinamento').toBeGreaterThan(a.w + 40);
+  expect(b.h, 'altezza invariata').toBe(a.h);
+  // 2) un keydown con Ctrl senza il keyup (la finestra ha perso il fuoco mentre il tasto era premuto): jsPanel lo ricorda
+  await page.evaluate(() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Control', ctrlKey: true, bubbles: true })));
+  await dragRight(-60); const c = await size();
+  expect(c.w, 'larghezza tornata indietro').toBeLessThan(b.w - 40);
+  expect(c.h, 'altezza invariata anche con il modificatore rimasto attivo').toBe(b.h);
+  // 3) con Ctrl tenuto davvero premuto il comportamento voluto di jsPanel (proporzioni bloccate) resta
+  await page.keyboard.down('Control'); await dragRight(60); await page.keyboard.up('Control');
+  const d = await size();
+  expect(d.h, 'con Ctrl premuto le proporzioni restano bloccate').not.toBe(c.h);
+});

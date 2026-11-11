@@ -20,6 +20,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 - Login: la maschera ha una larghezza standard (420 px al massimo, a misura di schermo sui piccoli) invece di allargarsi con il contenuto (~650 px)
 
 ### Workspace
+- Finestre: il bordo destro (o sinistro) non cambia più anche l'altezza quando jsPanel crede un tasto Ctrl/Alt ancora premuto (il rilascio del tasto non arrivava alla pagina, es. Alt+Tab o Ctrl+Tab): lo stato dei tasti si legge dal clic stesso; Ctrl/Alt/Shift tenuti premuti davvero funzionano come prima
 - Finestra del testo: il titolo è il nome del testo, senza il prefisso «Text - » (anche per i layout già salvati, che lo avevano)
 
 ## 0.26.9 — `dist/maia-fe-0.26.9-test-ng21-20261111-1058.tgz`
