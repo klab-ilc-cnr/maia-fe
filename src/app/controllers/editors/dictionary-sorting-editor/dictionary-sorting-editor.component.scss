@@ -2,6 +2,11 @@
     width: 35%;
 }
 
+// space between the list and the Save / Restore buttons (they used to touch the frame of the list)
+.sorting-actions {
+    margin-top: 1rem;
+}
+
 // The card takes all the height of the tab panel (the panel gives its content height: 100%): the sortable list grows
 // with the window and scrolls inside, and the Save / Restore buttons stay at the bottom, always visible.
 .card {
@@ -19,4 +24,12 @@
     .p-listbox {
         height: 100% !important;
     }
+}
+
+// One frame only: the list already has its own border (and the item its own padding and selection colour), so the tree inside an
+// item has neither border nor padding (it used to be a second frame inside the first).
+:host ::ng-deep p-orderlist p-tree {
+    border: 0;
+    padding: 0;
+    background: transparent;
 }

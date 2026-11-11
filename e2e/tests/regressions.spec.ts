@@ -2294,3 +2294,35 @@ test('regressione: Dictionary Editor, Anteprima - tra la marca di un senso e la 
   const t = await marked.locator('em').first().evaluate((em) => (em.parentElement as HTMLElement).textContent!);
   expect(t, 'testo del senso con marca: «[Mus.] definizione»').toMatch(/\[[^\]]+\] \S/);
 });
+
+test('regressione: Dictionary Editor, scheda Ordinamento - una sola cornice (lista) e spazio tra la lista e i bottoni Save/Restore', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').nth(1)).toBeEnabled({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').nth(1).click();
+  await expect(editor.locator('app-dictionary-sorting-editor p-tree')).toBeVisible({ timeout: 20_000 });
+  await page.waitForTimeout(800);
+  const m = await editor.evaluate((e) => {
+    const root = e.querySelector('app-dictionary-sorting-editor')!;
+    const list = root.querySelector('p-listbox')!.getBoundingClientRect();
+    const btn = root.querySelector('.sorting-button')!.getBoundingClientRect();
+    const tree = getComputedStyle(root.querySelector('p-orderlist p-tree')!);
+    return { gap: Math.round(btn.top - list.bottom), treeBorder: tree.borderTopWidth, treePadding: tree.paddingTop, listBorder: getComputedStyle(root.querySelector('p-listbox')!).borderTopWidth };
+  });
+  testInfo.annotations.push({ type: 'misure', description: JSON.stringify(m) });
+  expect(m.gap, 'spazio tra la lista e i bottoni').toBeGreaterThanOrEqual(12);
+  expect(m.treeBorder, 'l\'albero non ha una seconda cornice').toBe('0px');
+  expect(m.treePadding).toBe('0px');
+  expect(m.listBorder, 'la cornice della lista resta').toBe('1px');
+  await editor.locator('app-dictionary-sorting-editor').screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-ordinamento.png') });
+});
