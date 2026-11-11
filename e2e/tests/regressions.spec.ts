@@ -2100,3 +2100,24 @@ test('barra delle finestre: una finestra minimizzata si salva e si ripristina mi
   expect(after).toEqual(before);
   await page.evaluate(() => localStorage.removeItem('e2e-taskbar'));
 });
+
+test('barra delle finestre: nella voce gli editor sono abbreviati (LexE, DictE) e «Text - » non compare; il tooltip ha il titolo completo', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  // finestre con gli stessi id e titoli che crea il workspace (senza aprire i dati veri)
+  await page.evaluate(() => {
+    const mk = (id: string, headerTitle: string) => (window as any).jsPanel.create({ id, container: '#panelsContainer', headerTitle, content: '<p>x</p>', panelSize: '300 150' });
+    mk('lexiconEditTile_1', 'Lexicon Editor - abbaiare@it');
+    mk('dictionaryEditTile_2', 'Dictionary Editor - abbaiare');
+    mk('textTile_3', 'Text - decameron');
+    mk('searchTile', 'Search');
+  });
+  const labels = page.locator('app-workspace-taskbar .taskbar-item .taskbar-title');
+  await expect(labels).toHaveText(['LexE - abbaiare@it', 'DictE - abbaiare', 'decameron', 'Search']);
+  await expect(page.locator('app-workspace-taskbar [data-window-id="lexiconEditTile_1"]')).toHaveAttribute('title', 'Lexicon Editor - abbaiare@it');
+  await expect(page.locator('app-workspace-taskbar [data-window-id="textTile_3"]')).toHaveAttribute('title', 'Text - decameron');
+  await snap(page, 'barra-finestre-sigle');
+});

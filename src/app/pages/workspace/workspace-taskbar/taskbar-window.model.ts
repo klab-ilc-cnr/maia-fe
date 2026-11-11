@@ -8,7 +8,10 @@ export type TaskbarWindowState = 'normal' | 'maximized' | 'minimized';
 /** Una finestra aperta, come la vede la barra (indipendente da jsPanel). */
 export interface TaskbarWindow {
   id: string;
+  /** Titolo completo della finestra (tooltip). */
   title: string;
+  /** Testo breve mostrato nella voce: senza il prefisso del tipo, che c'è già nell'icona (o abbreviato negli editor). */
+  label: string;
   type: TaskbarWindowType;
   state: TaskbarWindowState;
   /** Finestra in primo piano tra quelle non minimizzate. */

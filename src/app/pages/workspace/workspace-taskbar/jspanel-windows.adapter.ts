@@ -20,6 +20,21 @@ export function windowTypeFromId(id: string): TaskbarWindowType {
   return 'other';
 }
 
+/** Prefissi dei titoli delle finestre che nella barra si accorciano: l'icona dice già il tipo e il nome è la parte utile. */
+const LABEL_PREFIXES: Array<[RegExp, string]> = [
+  [/^Lexicon Editor - /, 'LexE - '],
+  [/^Dictionary Editor - /, 'DictE - '],
+  [/^Text - /, '']
+];
+
+/** Testo breve della voce nella barra (il titolo completo resta nel tooltip). */
+export function taskbarLabel(title: string): string {
+  for (const [prefix, replacement] of LABEL_PREFIXES) {
+    if (prefix.test(title)) { return title.replace(prefix, replacement) || title; }
+  }
+  return title;
+}
+
 /**
  * Adattatore tra la barra delle finestre e jsPanel (abbandonato, da sostituire): quando cambierà la libreria
  * basta riscrivere questa classe.
@@ -88,12 +103,16 @@ export class JsPanelWindowsAdapter implements TaskbarWindowsSource {
   /** Finestre in ordine di apertura (ordine nel DOM, che il porta-davanti non cambia). */
   private read(): TaskbarWindow[] {
     const activeId = this.activeId();
-    return (Array.from(document.querySelectorAll('.jsPanel-standard')) as any[]).map(p => ({
-      id: p.id,
-      title: (p.headertitle?.textContent ?? p.options?.headerTitle ?? p.id).trim(),
-      type: windowTypeFromId(p.id),
-      state: (p.status === 'minimized' ? 'minimized' : p.status === 'maximized' || p.status === 'smallifiedmax' ? 'maximized' : 'normal') as TaskbarWindowState,
-      active: p.id === activeId
-    }));
+    return (Array.from(document.querySelectorAll('.jsPanel-standard')) as any[]).map(p => {
+      const title = (p.headertitle?.textContent ?? p.options?.headerTitle ?? p.id).trim();
+      return {
+        id: p.id,
+        title,
+        label: taskbarLabel(title),
+        type: windowTypeFromId(p.id),
+        state: (p.status === 'minimized' ? 'minimized' : p.status === 'maximized' || p.status === 'smallifiedmax' ? 'maximized' : 'normal') as TaskbarWindowState,
+        active: p.id === activeId
+      };
+    });
   }
 }

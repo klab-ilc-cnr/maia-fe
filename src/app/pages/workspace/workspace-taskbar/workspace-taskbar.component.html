@@ -4,7 +4,7 @@
     [attr.data-window-id]="w.id" [attr.aria-pressed]="w.active" [attr.title]="w.title"
     (click)="onClick(w)" (contextmenu)="onContextMenu($event, w)">
     <i class="pi taskbar-icon" [ngClass]="icon(w)" aria-hidden="true"></i>
-    <span class="taskbar-title">{{ w.title }}</span>
+    <span class="taskbar-title">{{ w.label }}</span>
   </button>
 </div>
 <p-contextMenu #menu [model]="menuItems" appendTo="body"></p-contextMenu>
