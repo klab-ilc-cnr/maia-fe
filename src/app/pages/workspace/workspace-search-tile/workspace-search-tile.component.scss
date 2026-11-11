@@ -43,6 +43,11 @@ small {
   padding: 0.5rem;
 }
 
+// la riga di un risultato si apre con il doppio clic (testo alla riga): mano al posto del cursore di testo
+:host::ng-deep .p-datatable .p-datatable-tbody>tr.p-selectable-row {
+  cursor: pointer;
+}
+
 :host::ng-deep .p-datatable .p-datatable-tbody>tr>td {
   padding: 0.5rem;
 }

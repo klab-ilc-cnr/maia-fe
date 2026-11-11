@@ -2326,3 +2326,19 @@ test('regressione: Dictionary Editor, scheda Ordinamento - una sola cornice (lis
   expect(m.listBorder, 'la cornice della lista resta').toBe('1px');
   await editor.locator('app-dictionary-sorting-editor').screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-ordinamento.png') });
 });
+
+test('regressione: Search - sui risultati il cursore è la mano (la riga si apre con il doppio clic), non il cursore di testo', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  await openFreshSearch(page, 'amore');
+  const m = await page.locator('#searchTile tbody tr').first().evaluate((tr) => {
+    const spans = [...tr.querySelectorAll('td, td span, td b')];
+    return { row: getComputedStyle(tr).cursor, others: [...new Set(spans.map((e) => getComputedStyle(e).cursor))] };
+  });
+  testInfo.annotations.push({ type: 'cursori', description: JSON.stringify(m) });
+  expect(m.row).toBe('pointer');
+  expect(m.others, 'nessun cursore di testo nelle celle del risultato').toEqual(['pointer']);
+});
