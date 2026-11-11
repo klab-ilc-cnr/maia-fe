@@ -2211,7 +2211,7 @@ test('regressione: Dictionary Editor, scheda Voce - il numero di occorrenze tota
   await snap(page, 'dict-voce-occorrenze');
 });
 
-test('regressione: Dictionary Editor, scheda Voce - Etimologia: lingua, etimo e dettagli allineati e l\'etichetta «Lingua di provenienza» non è tagliata', async ({ page, baseURL }, testInfo) => {
+test('regressione: Dictionary Editor, scheda Voce - Etimologia: lingua ed etimo allineati sulla stessa riga, dettagli sotto a tutta larghezza, etichetta «Lingua di provenienza» non tagliata', async ({ page, baseURL }, testInfo) => {
   test.setTimeout(180_000);
   await blockWrites(page, testInfo); // la scheda Voce salva da sola: niente scritture
   await openSmokeWorkspace(page, baseURL!);
@@ -2230,13 +2230,15 @@ test('regressione: Dictionary Editor, scheda Voce - Etimologia: lingua, etimo e 
   const m = await group.evaluate((g) => {
     const fields = [...g.querySelectorAll(':scope > .field')];
     const top = (el: Element | null) => Math.round(el!.getBoundingClientRect().top * 10) / 10;
+    const w = (el: Element | null) => Math.round(el!.getBoundingClientRect().width);
     const label = fields[0].querySelector('label')!;
-    return { select: top(fields[0].querySelector('p-select')), input: top(fields[1].querySelector('input')), editor: top(fields[2].querySelector('app-rich-text-editor')), labelCut: label.scrollWidth > label.clientWidth, labels: fields.map((f) => top(f.querySelector('label'))) };
+    return { select: top(fields[0].querySelector('p-select')), input: top(fields[1].querySelector('input')), editor: top(fields[2].querySelector('app-rich-text-editor')), editorW: w(fields[2].querySelector('app-rich-text-editor')), groupW: w(g), labelCut: label.scrollWidth > label.clientWidth };
   });
   testInfo.annotations.push({ type: 'tops', description: JSON.stringify(m) });
   expect(m.labelCut, 'etichetta «Lingua di provenienza» tagliata').toBe(false);
-  expect(Math.abs(m.select - m.input), 'lingua vs etimo').toBeLessThanOrEqual(1);
-  expect(Math.abs(m.editor - m.input), 'dettagli vs etimo').toBeLessThanOrEqual(1);
+  expect(Math.abs(m.select - m.input), 'lingua vs etimo sulla stessa riga').toBeLessThanOrEqual(1);
+  expect(m.editor, 'dettagli sotto la riga lingua/etimo').toBeGreaterThan(m.input + 30);
+  expect(m.editorW, 'dettagli a tutta larghezza del gruppo').toBeGreaterThanOrEqual(m.groupW - 24); // meno il margine del campo
   await group.scrollIntoViewIfNeeded();
   await group.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-voce-etimologia.png') });
 });

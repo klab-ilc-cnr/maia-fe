@@ -13,7 +13,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ### Dictionary Editor
 - Scheda Voce: il numero di occorrenze totali è allineato in verticale al campo delle occorrenze nel Decameron (prima era 8 px più in alto)
-- Scheda Voce, Etimologia: la lingua di provenienza è allineata in verticale a etimo e dettagli (l'etichetta tagliata spostava il campo di 5 px) e l'etichetta «Lingua di provenienza» non è più tagliata coi tre puntini (colonne 3/3/6)
+- Scheda Voce, Etimologia: lingua di provenienza ed etimo su una riga (colonne 3/3), allineati in verticale; dettagli sotto a tutta larghezza (la toolbar si vede intera); l'etichetta «Lingua di provenienza» non è più tagliata coi tre puntini
 
 ### Login / footer / barra in alto
 - Barra in alto delle pagine (lista workspace, layer, tagset, lessico, utenti): il titolo «MAIA - …» è rosso come nei workspace, non più nero
