@@ -38,7 +38,7 @@
                 </div>
                 <div class="field col-6">
                     <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences'|translate}}</label>
-                    {{(decameronOccurrences.value ?? 0) + otherOccurrences}}
+                    <div class="total-occurrences" id="totalOccurrences">{{(decameronOccurrences.value ?? 0) + otherOccurrences}}</div>
                 </div>
                 <div class="field col-12">
                     <p-fieldset>

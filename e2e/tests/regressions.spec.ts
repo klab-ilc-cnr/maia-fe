@@ -2183,3 +2183,30 @@ test('regressione: titolo della barra in alto (lista workspace, utenti…) rosso
   expect(text, 'non nero').not.toBe('rgb(0, 0, 0)');
   await snap(page, 'titolo-topbar');
 });
+
+test('regressione: Dictionary Editor, scheda Voce - il numero di occorrenze totali è allineato in verticale al campo delle occorrenze nel Decameron', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo); // la scheda Voce salva da sola: niente scritture
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('#totalOccurrences')).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(500);
+  const m = await editor.evaluate((e) => {
+    const input = e.querySelector('p-inputnumber input')!.closest('p-inputnumber')!.querySelector('input')!.getBoundingClientRect();
+    const total = e.querySelector('#totalOccurrences')!;
+    const range = document.createRange(); range.selectNodeContents(total);
+    const text = range.getBoundingClientRect();
+    return { inputCenter: input.top + input.height / 2, textCenter: text.top + text.height / 2, inputTop: input.top, textTop: text.top };
+  });
+  testInfo.annotations.push({ type: 'centri', description: JSON.stringify(m) });
+  expect(Math.abs(m.textCenter - m.inputCenter), 'centro del numero vs centro del campo').toBeLessThanOrEqual(1.5);
+  await snap(page, 'dict-voce-occorrenze');
+});

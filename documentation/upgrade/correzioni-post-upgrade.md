@@ -11,6 +11,9 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: 0.26.10)
 
+### Dictionary Editor
+- Scheda Voce: il numero di occorrenze totali è allineato in verticale al campo delle occorrenze nel Decameron (prima era 8 px più in alto)
+
 ### Login / footer / barra in alto
 - Barra in alto delle pagine (lista workspace, layer, tagset, lessico, utenti): il titolo «MAIA - …» è rosso come nei workspace, non più nero
 - Login: la maschera ha una larghezza standard (420 px al massimo, a misura di schermo sui piccoli) invece di allargarsi con il contenuto (~650 px)
