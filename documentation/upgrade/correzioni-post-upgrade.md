@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.11)
+## 0.26.11 — `dist/maia-fe-0.26.11-test-ng21-20261111-1546.tgz`
 
 ### Finestra Search
 - Risultati: sulla riga di un risultato il cursore è la mano (la riga si apre con il doppio clic) invece del cursore di testo
