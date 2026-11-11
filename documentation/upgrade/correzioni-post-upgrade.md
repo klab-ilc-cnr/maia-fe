@@ -42,7 +42,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 ## 0.26.8 — `dist/maia-fe-0.26.8-test-ng21-20261110-1935.tgz`
 
 ### Finestra Search
-- Ricerca: qualsiasi apice digitato (`'` `‘` `ʼ` `` ` `` `´` `′`) viene inviato come `’`, la forma usata nei testi, quindi `'ntelletto` trova `’ntelletto`; vale anche per i filtri di colonna (parola, contesti) e per l'esportazione. Il campo resta come l'utente l'ha scritto. Rimedio lato frontend, da togliere quando TexO tratterà gli apici come equivalenti
+- Ricerca: qualsiasi apice digitato (`'` `‘` `ʼ` `` ` `` `´` `′`) viene inviato come `’`, la forma usata nei testi, quindi `'ntelletto` trova `’ntelletto`; vale anche per i filtri di colonna (parola, contesti) e per l'esportazione. Il campo resta come l'utente l'ha scritto. Soluzione lato frontend, solo per la ricerca nel testo (vedi «In sospeso»)
 
 ### Finestra del testo
 - Firefox: il testo di alcune righe veniva impaginato due volte, con le code delle righe sovrapposte alla colonna delle sentenze e le evidenziazioni fuori posto (es. I.Concl.19 aprendo il risultato di «’ntelletto»); i ritorni a capo dentro le righe sono ora disegnati come spazio, come fa Chromium. Il difetto c'era anche in Angular 14 (`master`), non viene dall'upgrade
@@ -253,7 +253,8 @@ Da Angular 14 (v0.20.0, `master`) ad Angular 21 a tappe, con un pacchetto di ver
 - maia-be/TexO: 401 intermittente su `/texto/util/ais`
 - Backend (TexO): lo storico dei tagset ha `time` al secondo: due modifiche dello stesso tagset nello stesso secondo danno 500 e il tagset resta non modificabile né cancellabile (`prova tagset` 25388553 e `tmp-prova-default` 25388562 da sbloccare o cancellare)
 - Dati: impostare il valore predefinito di "Tipo lessicale" ("Parola monorematica") dalla pagina dei tagset, su ogni istanza (VM di test e produzione), perché la lista fissa non c'è più
-- Backend (TexO): gli apici sono caratteri diversi nella ricerca (`'` `‘` `’` `ʼ`…): nessuna collazione MariaDB li unisce, serve la sostituzione nella condizione (`form IN (varianti)`) o una colonna normalizzata; poi si può togliere la normalizzazione nel frontend (`helpers/apostrophes.ts`). Nel Decameron: `’` 8.204 volte, `‘` 28 (virgolette di apertura), `'` 1 (in «L'altre», refuso)
+- Decisione (apici nella ricerca): **nessuna richiesta al backend (TexO)**. Il backend deve rispettare i dati e restare generico (regole come «quali caratteri equivalgono» sono del progetto); nessuna collazione MariaDB unisce gli apici, e i dati del corpus sono coerenti (Decameron: `’` 8.204 volte, `‘` 28 virgolette di apertura, `'` 1 in «L'altre», refuso). La normalizzazione in `’` sta nel frontend (`helpers/apostrophes.ts`) e vale **solo per la ricerca nel testo** (finestra Search): lì non si può più cercare il solo apice dritto o `‘`, accettato. **Non riusarla** per ricerche su annotazioni, lessico, dizionario o voci: quei contenuti li scrivono più persone senza una convenzione e le varianti convivono; servirebbero prima una convenzione alla scrittura (vedi sotto la conversione `'` → `’` nell'editor di testo ricco) o un'equivalenza lato ricerca, configurabile e non cablata nel backend
+- Dati (facoltativo): l'unico apice dritto del Decameron («L'altre») si può correggere nel testo; per nuovi testi, uniformare gli apici in `’` nella preparazione/importazione del corpus
 - Backend (TexO): la ricerca `*` da sola (`token like '%'`, 307.500 token) esaurisce la memoria (`-Xmx1024m`) e blocca TexO finché non viene riavviato: serve paginazione/limite in SQL
 - Ricerca: «ch’io» non trova nulla perché i token sono `ch’` e `io`; decidere se suggerirlo o dividere sull'apice
 - Editor di testo ricco: conversione di `'` digitato in `’` ancora da decidere
