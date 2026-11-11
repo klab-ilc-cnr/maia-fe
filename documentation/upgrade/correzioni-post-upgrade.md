@@ -11,6 +11,9 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: 0.26.10)
 
+### Login / footer
+- Login: la maschera ha una larghezza standard (420 px al massimo, a misura di schermo sui piccoli) invece di allargarsi con il contenuto (~650 px)
+
 ### Workspace
 - Finestra del testo: il titolo è il nome del testo, senza il prefisso «Text - » (anche per i layout già salvati, che lo avevano)
 

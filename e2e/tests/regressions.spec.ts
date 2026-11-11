@@ -2150,3 +2150,20 @@ test('regressione: finestra del testo - il titolo è il nome del testo, senza «
   await expect(tile.locator('.jsPanel-title')).toHaveText('decameron');
   await expect(page.locator('app-workspace-taskbar [data-window-id^="textTile_"] .taskbar-title')).toHaveText('decameron');
 });
+
+test('regressione: login - la maschera ha una larghezza standard (non si allarga col contenuto)', async ({ page }) => {
+  await page.goto('#/login');
+  const card = page.locator('app-login p-card, p-card').first();
+  await expect(card).toBeVisible();
+  const w = Math.round((await card.boundingBox())!.width);
+  expect(w, 'larghezza della maschera').toBeGreaterThanOrEqual(360);
+  expect(w, 'larghezza della maschera').toBeLessThanOrEqual(440);
+  // titolo su una riga e campi dentro la card
+  const inner = await page.evaluate(() => {
+    const c = document.querySelector('p-card')!.getBoundingClientRect();
+    const i = document.querySelector('p-card input')!.getBoundingClientRect();
+    return { left: i.left - c.left, right: c.right - i.right };
+  });
+  expect(inner.left).toBeGreaterThan(8); expect(inner.right).toBeGreaterThan(8);
+  await snap(page, 'login-maschera');
+});

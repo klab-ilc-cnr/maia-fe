@@ -11,3 +11,8 @@
     color: var(--primary-color);
     text-align: center;
 }
+
+// larghezza fissa e standard della maschera (senza, la card si allarga con il contenuto: ~650px)
+.login-box {
+    width: min(420px, calc(100vw - 32px));
+}
