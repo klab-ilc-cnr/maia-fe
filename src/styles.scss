@@ -89,7 +89,7 @@ a:hover {
   .layout-topbar-logo {
     display: flex;
     align-items: center;
-    color: var(--surface-900);
+    color: var(--primary-color); // come il titolo nei workspace (workspace-menu)
     font-size: 1.5rem;
     font-weight: 500;
     width: 300px;

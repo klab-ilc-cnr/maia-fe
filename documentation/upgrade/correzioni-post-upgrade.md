@@ -11,7 +11,8 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: 0.26.10)
 
-### Login / footer
+### Login / footer / barra in alto
+- Barra in alto delle pagine (lista workspace, layer, tagset, lessico, utenti): il titolo «MAIA - …» è rosso come nei workspace, non più nero
 - Login: la maschera ha una larghezza standard (420 px al massimo, a misura di schermo sui piccoli) invece di allargarsi con il contenuto (~650 px)
 
 ### Workspace

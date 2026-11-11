@@ -2167,3 +2167,19 @@ test('regressione: login - la maschera ha una larghezza standard (non si allarga
   expect(inner.left).toBeGreaterThan(8); expect(inner.right).toBeGreaterThan(8);
   await snap(page, 'login-maschera');
 });
+
+test('regressione: titolo della barra in alto (lista workspace, utenti…) rosso come nei workspace', async ({ page }) => {
+  await uiLogin(page);
+  await page.goto('#/workspaces');
+  const logo = page.locator('.layout-topbar-logo span').first();
+  await expect(logo).toContainText('MAIA');
+  const { text, primary } = await page.evaluate(() => {
+    const el = document.querySelector('.layout-topbar-logo span') as HTMLElement;
+    const probe = document.createElement('i'); probe.style.color = 'var(--primary-color)'; document.body.appendChild(probe);
+    const primary = getComputedStyle(probe).color; probe.remove();
+    return { text: getComputedStyle(el).color, primary };
+  });
+  expect(text).toBe(primary);
+  expect(text, 'non nero').not.toBe('rgb(0, 0, 0)');
+  await snap(page, 'titolo-topbar');
+});
