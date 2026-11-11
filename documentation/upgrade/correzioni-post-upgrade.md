@@ -11,6 +11,9 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: 0.26.9)
 
+### Login / footer
+- Footer (anche della pagina di login): la versione in basso a destra non tocca più il bordo (margine laterale di 1 rem)
+
 ### Workspace
 - Nuova barra delle finestre in basso, come la barra delle applicazioni: una voce per finestra aperta (icona per tipo, titolo, ordine di apertura), la finestra in primo piano evidenziata; clic = ripristina se minimizzata, porta davanti se dietro, minimizza se già davanti; tasto destro = ripristina/minimizza, ingrandisci, chiudi. Le finestre minimizzate non vanno più nel riquadro in basso a sinistra di jsPanel ma restano nella barra, e il contenitore delle finestre non ci passa sotto. Ripristinate minimizzate alla riapertura del workspace
 - Barra delle finestre: nelle voci gli editor sono abbreviati («LexE - …», «DictE - …») e il prefisso «Text - » non compare, per lasciare spazio al nome; il tooltip ha il titolo completo e i titoli delle finestre non cambiano

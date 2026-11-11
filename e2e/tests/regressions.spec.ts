@@ -2121,3 +2121,15 @@ test('barra delle finestre: nella voce gli editor sono abbreviati (LexE, DictE) 
   await expect(page.locator('app-workspace-taskbar [data-window-id="textTile_3"]')).toHaveAttribute('title', 'Text - decameron');
   await snap(page, 'barra-finestre-sigle');
 });
+
+test('regressione: login - la versione in basso a destra non tocca il bordo destro', async ({ page }) => {
+  await page.goto('#/login');
+  const footer = page.locator('app-footer').first();
+  await expect(footer).toContainText('v. ');
+  const m = await page.evaluate(() => {
+    const span = document.querySelector('app-footer span')!.getBoundingClientRect();
+    return { gap: Math.round(window.innerWidth - span.right) };
+  });
+  expect(m.gap, 'distanza dal bordo destro').toBeGreaterThanOrEqual(12);
+  await snap(page, 'login-versione');
+});
