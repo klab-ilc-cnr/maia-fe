@@ -1016,7 +1016,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
           //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
-          const mergedConfig = { ...textTileComponent.panelConfig, ...tile.tileConfig };
+          // i layout salvati hanno ancora il vecchio titolo «Text - nome»
+          const mergedConfig = { ...textTileComponent.panelConfig, ...tile.tileConfig, headerTitle: textTileComponent.panelConfig.headerTitle };
 
           //Ripristino il layout della tile
           currPanelElement = jsPanel.layout.restoreId({
@@ -1527,6 +1528,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /** Titolo della finestra del testo: il nome del testo in minuscolo, senza il vecchio prefisso «Text - » (anche dei layout salvati). */
+  private static textWindowTitle(title: string): string {
+    return (title ?? '').replace(/^\s*text - /i, '').toLowerCase();
+  }
+
   /**
    * @private
    * Metodo che genera la configurazione del tile di testo
@@ -1541,7 +1547,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       id: panelId,
       container: this.workspaceContainer,
-      headerTitle: 'Text - ' + title.toLowerCase(),
+      headerTitle: WorkspaceComponent.textWindowTitle(title),
       content: textWindowComponent,
       maximizedMargin: 5,
       dragit: { snap: false },

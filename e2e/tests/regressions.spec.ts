@@ -2133,3 +2133,20 @@ test('regressione: login - la versione in basso a destra non tocca il bordo dest
   expect(m.gap, 'distanza dal bordo destro').toBeGreaterThanOrEqual(12);
   await snap(page, 'login-versione');
 });
+
+test('regressione: finestra del testo - il titolo è il nome del testo, senza «Text - » (finestra e barra)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => { for (const x of (window as any).jsPanel?.getPanels?.() ?? []) { if (/textTile_|searchTile/.test(x.id)) x.close(); } });
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  const input = page.locator('#searchTile p-iconfield input[pinputtext]').first();
+  await input.fill('isposa'); await input.press('Enter');
+  await expect(page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('#searchTile tbody tr', { hasText: 'II.8.48' }).first().dblclick();
+  const tile = page.locator('[id^="textTile_"]').first();
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await expect(tile.locator('.jsPanel-title')).toHaveText('decameron');
+  await expect(page.locator('app-workspace-taskbar [data-window-id^="textTile_"] .taskbar-title')).toHaveText('decameron');
+});

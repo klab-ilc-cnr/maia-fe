@@ -9,6 +9,11 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: 0.26.10)
+
+### Workspace
+- Finestra del testo: il titolo è il nome del testo, senza il prefisso «Text - » (anche per i layout già salvati, che lo avevano)
+
 ## 0.26.9 — `dist/maia-fe-0.26.9-test-ng21-20261111-1058.tgz`
 
 ### Login / footer
