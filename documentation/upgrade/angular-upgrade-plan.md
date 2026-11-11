@@ -204,7 +204,8 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 | 0.26.6 | + testo: annotazioni sovrapposte impilate, clic sulla parola, mano sul testo annotato, tooltip dell'albero; apertura da Search più rapida; cache di campi/tagset/layer; elenco workspace aggiornato; layout salvato prima della scadenza; explorer a righe fisse | superata — `dist/old/maia-fe-0.26.6-test-ng21-*.tgz` |
 | 0.26.7 | + valore predefinito dei tagset (campo `defaultItem` del backend, stella nella pagina dei valori); validatori e errori del backend in layer/tagset/workspace; testo: selezione che restava spenta fino a un F5 | superata — `dist/old/maia-fe-0.26.7-test-ng21-*.tgz` |
 | 0.26.8 | + testo: righe con ritorni a capo corrette in Firefox; Search: qualsiasi apice digitato trova `’` (es. `'ntelletto`) | superata — `dist/old/maia-fe-0.26.8-test-ng21-*.tgz` |
-| **0.26.9** | + barra delle finestre del workspace in basso (voci per tipo, clic come in Windows, menu al tasto destro, minimizzate nella barra); footer con margine laterale | **attuale** — `dist/maia-fe-0.26.9-test-ng21-20261111-1058.tgz`; elenco in `correzioni-post-upgrade.md` |
+| 0.26.9 | + barra delle finestre del workspace in basso (voci per tipo, clic come in Windows, menu al tasto destro, minimizzate nella barra); footer con margine laterale | superata — `dist/old/maia-fe-0.26.9-test-ng21-*.tgz` |
+| **0.26.10** | + titolo del testo senza «Text - »; login più stretto; titolo rosso della barra in alto; Dictionary Editor (occorrenze, Etimologia su due righe, spazio nell'anteprima, Ordinamento con una cornice); ridimensionamento finestre con tasto modificatore rimasto attivo | **attuale** — `dist/maia-fe-0.26.10-test-ng21-20261111-1542.tgz`; elenco in `correzioni-post-upgrade.md` |
 
 ## 6bis. Avanzamento
 

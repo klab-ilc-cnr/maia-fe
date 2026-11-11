@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.10)
+## 0.26.10 — `dist/maia-fe-0.26.10-test-ng21-20261111-1542.tgz`
 
 ### Dictionary Editor
 - Scheda Ordinamento: una sola cornice (quella della lista; tolta quella dell'albero dentro la lista) e spazio tra la lista e i bottoni Save/Restore, che toccavano il bordo
