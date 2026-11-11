@@ -12,6 +12,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 ## Non ancora in un pacchetto (prossimo: 0.26.10)
 
 ### Dictionary Editor
+- Anteprima: spazio tra la marca e la definizione di un senso («1. [Mus.] Generare vibrazioni…»; mancava, nel PDF c'era già)
 - Scheda Voce: il numero di occorrenze totali è allineato in verticale al campo delle occorrenze nel Decameron (prima era 8 px più in alto)
 - Scheda Voce, Etimologia: lingua di provenienza ed etimo su una riga (colonne 3/3), allineati in verticale; dettagli sotto a tutta larghezza (la toolbar si vede intera); l'etichetta «Lingua di provenienza» non è più tagliata coi tre puntini
 

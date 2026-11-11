@@ -2273,3 +2273,24 @@ test('regressione: finestre - il bordo destro ridimensiona solo la larghezza anc
   const d = await size();
   expect(d.h, 'con Ctrl premuto le proporzioni restano bloccate').not.toBe(c.h);
 });
+
+test('regressione: Dictionary Editor, Anteprima - tra la marca di un senso e la definizione c\'è uno spazio ([Mus.] Generare…)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').nth(2)).toBeEnabled({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').nth(2).click();
+  const marked = editor.locator('app-dictionary-preview p-tree li').filter({ has: page.locator('em') }).first();
+  await expect(marked.locator('em').first()).toBeVisible({ timeout: 30_000 });
+  const t = await marked.locator('em').first().evaluate((em) => (em.parentElement as HTMLElement).textContent!);
+  expect(t, 'testo del senso con marca: «[Mus.] definizione»').toMatch(/\[[^\]]+\] \S/);
+});
