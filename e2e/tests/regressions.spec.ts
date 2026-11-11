@@ -2210,3 +2210,33 @@ test('regressione: Dictionary Editor, scheda Voce - il numero di occorrenze tota
   expect(Math.abs(m.textCenter - m.inputCenter), 'centro del numero vs centro del campo').toBeLessThanOrEqual(1.5);
   await snap(page, 'dict-voce-occorrenze');
 });
+
+test('regressione: Dictionary Editor, scheda Voce - Etimologia: lingua, etimo e dettagli allineati e l\'etichetta «Lingua di provenienza» non è tagliata', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo); // la scheda Voce salva da sola: niente scritture
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  const group = editor.locator('[formgroupname="etymology"]');
+  await expect(group).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  const m = await group.evaluate((g) => {
+    const fields = [...g.querySelectorAll(':scope > .field')];
+    const top = (el: Element | null) => Math.round(el!.getBoundingClientRect().top * 10) / 10;
+    const label = fields[0].querySelector('label')!;
+    return { select: top(fields[0].querySelector('p-select')), input: top(fields[1].querySelector('input')), editor: top(fields[2].querySelector('app-rich-text-editor')), labelCut: label.scrollWidth > label.clientWidth, labels: fields.map((f) => top(f.querySelector('label'))) };
+  });
+  testInfo.annotations.push({ type: 'tops', description: JSON.stringify(m) });
+  expect(m.labelCut, 'etichetta «Lingua di provenienza» tagliata').toBe(false);
+  expect(Math.abs(m.select - m.input), 'lingua vs etimo').toBeLessThanOrEqual(1);
+  expect(Math.abs(m.editor - m.input), 'dettagli vs etimo').toBeLessThanOrEqual(1);
+  await group.scrollIntoViewIfNeeded();
+  await group.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-voce-etimologia.png') });
+});

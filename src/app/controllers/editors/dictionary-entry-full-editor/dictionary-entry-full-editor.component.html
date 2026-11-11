@@ -58,8 +58,8 @@
                         <ng-template pTemplate="header">{{'DICTIONARY_EDITOR.EDIT_TAB.etymology'|translate}}</ng-template>
                         <ng-template pTemplate="content">
                             <div class="d-flex justify-content-between" formGroupName="etymology">
-                                <div class="field col-2">
-                                    <label class="form-label w-full text-truncate">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}</label>
+                                <div class="field col-3">
+                                    <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage'|translate}}</label>
                                     <p-select formControlName="language" styleClass="w-full" [showClear]="true"
                                         [options]="(etymologyLanguages$|async)||[]" optionLabel="code" optionValue="code"
                                         appendTo="body"></p-select>
@@ -68,7 +68,7 @@
                                     <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.etymon'|translate}}</label>
                                     <input style="font-style: italic;" formControlName="etymon" class="w-full" pInputText type="text">
                                 </div>
-                                <div class="field col-7">
+                                <div class="field col-6">
                                     <label class="form-label w-full">{{'DICTIONARY_EDITOR.EDIT_TAB.details'|translate}}</label>
                                     <app-rich-text-editor formControlName="details"></app-rich-text-editor>
                                 </div>
