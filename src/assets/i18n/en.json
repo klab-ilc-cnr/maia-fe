@@ -395,6 +395,13 @@
         "directImports": "Direct Imports",
         "indirectImports": "Indirect Imports"
     },
+    "TASKBAR": {
+        "label": "Open windows",
+        "restore": "Restore",
+        "minimize": "Minimize",
+        "maximize": "Maximize",
+        "close": "Close"
+    },
     "SEARCH": {
         "insertForm": "insert form",
         "insertLemma": "insert lemma",

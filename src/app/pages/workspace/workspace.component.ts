@@ -370,6 +370,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     }
 
+    // le finestre minimizzate stanno nella barra del workspace (app-workspace-taskbar), non nel contenitore di jsPanel
+    jsPanel.defaults.minimizeTo = false;
+
     jsPanel.extend({
       //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
       lexiconEditTileMap: new Map<number, Tile<LexiconEditTileContent>>(),
@@ -1517,7 +1520,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * Metodo che ridimensiona l'altezza del contenitore del workspace
    */
   private resizeContainerHeight() {
-    const height = window.innerHeight - ((this.wsMenuContainer?.nativeElement?.offsetHeight ?? 0) + 1);
+    const taskbarHeight = (document.querySelector('app-workspace-taskbar') as HTMLElement | null)?.offsetHeight ?? 0;
+    const height = window.innerHeight - ((this.wsMenuContainer?.nativeElement?.offsetHeight ?? 0) + 1) - taskbarHeight;
     if (this.container) {
       this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
     }

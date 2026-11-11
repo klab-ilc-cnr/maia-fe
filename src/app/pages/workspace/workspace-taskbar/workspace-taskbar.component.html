@@ -1,0 +1,10 @@
+<div class="taskbar" role="toolbar" [attr.aria-label]="'TASKBAR.label' | translate">
+  <button type="button" class="taskbar-item" *ngFor="let w of windows; trackBy: trackById"
+    [class.active]="w.active" [class.minimized]="w.state === 'minimized'"
+    [attr.data-window-id]="w.id" [attr.aria-pressed]="w.active" [attr.title]="w.title"
+    (click)="onClick(w)" (contextmenu)="onContextMenu($event, w)">
+    <i class="pi taskbar-icon" [ngClass]="icon(w)" aria-hidden="true"></i>
+    <span class="taskbar-title">{{ w.title }}</span>
+  </button>
+</div>
+<p-contextMenu #menu [model]="menuItems" appendTo="body"></p-contextMenu>

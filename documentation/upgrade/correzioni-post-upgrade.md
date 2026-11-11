@@ -9,6 +9,11 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: 0.26.9)
+
+### Workspace
+- Nuova barra delle finestre in basso, come la barra delle applicazioni: una voce per finestra aperta (icona per tipo, titolo, ordine di apertura), la finestra in primo piano evidenziata; clic = ripristina se minimizzata, porta davanti se dietro, minimizza se già davanti; tasto destro = ripristina/minimizza, ingrandisci, chiudi. Le finestre minimizzate non vanno più nel riquadro in basso a sinistra di jsPanel ma restano nella barra, e il contenitore delle finestre non ci passa sotto. Ripristinate minimizzate alla riapertura del workspace
+
 ## 0.26.8 — `dist/maia-fe-0.26.8-test-ng21-20261110-1935.tgz`
 
 ### Finestra Search

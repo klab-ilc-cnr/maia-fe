@@ -1,6 +1,6 @@
 # Barra delle finestre del workspace (taskbar)
 
-Stato: **piano approvato, non ancora implementato.** Richiesta: una barra in basso con le finestre aperte, come i window manager.
+Stato: **fasi 0, 1 e 2 fatte** (barra, spazio, salvataggio/ripristino con minimizzate); resta la fase 3 (scorrimento con molte finestre, titolo che cambia, accessibilità da tastiera). Conferma: il clic sulla finestra in primo piano la **minimizza**. Richiesta: una barra in basso con le finestre aperte, come i window manager.
 
 ## Decisioni prese
 - Posizione: **in basso** (più simile a Windows; in alto c'è già il menu del workspace).
@@ -9,8 +9,7 @@ Stato: **piano approvato, non ancora implementato.** Richiesta: una barra in bas
 - Funzioni extra: **menu al tasto destro** sulle voci della barra (chiudi, minimizza, ingrandisci). Il resto (scorrimento, «×») si valuta dopo.
 
 ## Da decidere
-- Clic su una finestra già in primo piano: **minimizza** (comportamento Windows, proposto) oppure non fa niente.
-- Icone: il menu del workspace non ne ha (solo «Ontology» ne ha due). Servono icone PrimeIcons/FontAwesome, una per tipo: Corpus, Text, Lexicon Explorer, Lexicon Editor, Search, Dictionary Explorer, Dictionary Editor, Ontology (Explorer/View).
+- Icone (PrimeIcons, scelte da me, da rivedere se non piacciono): Corpus `folder-open`, Text `file`, Lexicon Explorer `list`, Lexicon Editor `pencil`, Search `search`, Dictionary Explorer `book`, Dictionary Editor `file-edit`, Ontology Explorer `sitemap`, Ontology View `share-alt`. Il menu del workspace non ha icone predisposte. Tipi: Corpus, Text, Lexicon Explorer, Lexicon Editor, Search, Dictionary Explorer, Dictionary Editor, Ontology (Explorer/View).
 
 ## Cosa risulta dal codice
 - jsPanel emette sul `document` `jspanelloaded`, `jspanelclosed`, `jspanelstatuschange`, `jspanelminimized`, `jspanelfronted`; `jsPanel.getPanels()` dà l'elenco; `front()`, `minimize()`, `normalize()` già usati.

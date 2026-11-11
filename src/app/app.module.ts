@@ -55,6 +55,7 @@ import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-l
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceListComponent } from './pages/workspace/workspace-list/workspace-list.component';
 import { WorkspaceMenuComponent } from './pages/workspace/workspace-menu/workspace-menu.component';
+import { WorkspaceTaskbarComponent } from './pages/workspace/workspace-taskbar/workspace-taskbar.component';
 import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './pages/workspace/workspace-text-selector/workspace-text-selector.component';
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
@@ -88,6 +89,7 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
     WorkspaceListComponent,
     WorkspaceLayoutComponent,
     WorkspaceMenuComponent,
+    WorkspaceTaskbarComponent,
     WorkspaceTextSelectorComponent,
     WorkspaceCorpusExplorerComponent,
     MainLayoutComponent,

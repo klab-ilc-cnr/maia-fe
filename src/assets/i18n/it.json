@@ -398,6 +398,13 @@
         "directImports": "Direct Imports",
         "indirectImports": "Indirect Imports"
     },
+    "TASKBAR": {
+        "label": "Finestre aperte",
+        "restore": "Ripristina",
+        "minimize": "Minimizza",
+        "maximize": "Ingrandisci",
+        "close": "Chiudi"
+    },
     "SEARCH": {
         "insertForm": "inserisci forma",
         "insertLemma": "inserisci lemma",

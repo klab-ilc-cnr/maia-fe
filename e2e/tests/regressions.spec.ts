@@ -1997,3 +1997,106 @@ test('regressione: Search - qualsiasi apice digitato trova le parole con l\'apic
     await expect.poll(() => sent.at(-1), { timeout: 15_000, message: v }).toBe('\u2019ntelletto');
   }
 });
+
+test('barra delle finestre: voci, clic come in Windows, menu, chiusura e spazio sotto la barra', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(150_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  const bar = page.locator('app-workspace-taskbar');
+  const item = (id: string) => bar.locator(`[data-window-id="${id}"]`);
+  await expect(bar).toBeVisible();
+  await expect(bar.locator('.taskbar-item')).toHaveCount(0);
+  const menu = page.locator('#workspace-menu');
+  await menu.getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  await menu.getByText('Lexicon', { exact: true }).click();
+  await expect(page.locator('#lexiconTile')).toBeVisible();
+  await menu.getByText('Dictionary', { exact: true }).click();
+  await expect(page.locator('#dictionaryTile')).toBeVisible();
+  // 1) una voce per finestra, nell'ordine di apertura, con titolo e icona; l'ultima aperta e' attiva
+  await expect(bar.locator('.taskbar-item')).toHaveCount(3);
+  await expect(bar.locator('.taskbar-item .taskbar-title')).toHaveText(['Search', 'Lexicon Explorer', 'Dictionary Explorer']);
+  await expect(bar.locator('.taskbar-item .taskbar-icon').first()).toHaveClass(/pi-search/);
+  await expect(item('dictionaryTile')).toHaveClass(/active/);
+  await expect(bar.locator('.taskbar-item.active')).toHaveCount(1);
+  // la barra sta in fondo e il contenitore delle finestre non ci passa sotto
+  const geo = await page.evaluate(() => {
+    const b = document.querySelector('app-workspace-taskbar')!.getBoundingClientRect();
+    const c = document.querySelector('#panelsContainer')!.getBoundingClientRect();
+    return { barBottom: Math.round(b.bottom), barTop: Math.round(b.top), containerBottom: Math.round(c.bottom), h: window.innerHeight };
+  });
+  expect(geo.barBottom).toBe(geo.h);
+  expect(geo.containerBottom).toBeLessThanOrEqual(geo.barTop);
+  await snap(page, 'barra-finestre');
+  // 2) clic su una finestra dietro: la porta davanti
+  await item('searchTile').click();
+  await expect(item('searchTile')).toHaveClass(/active/);
+  await expect(item('dictionaryTile')).not.toHaveClass(/active/);
+  // 3) clic sulla finestra davanti: la minimizza (e diventa attiva la successiva)
+  await item('searchTile').click();
+  await expect(item('searchTile')).toHaveClass(/minimized/);
+  await expect(page.locator('#searchTile')).not.toBeInViewport();
+  await expect(item('dictionaryTile')).toHaveClass(/active/);
+  // 4) clic su una minimizzata: la ripristina davanti
+  await item('searchTile').click();
+  await expect(item('searchTile')).not.toHaveClass(/minimized/);
+  await expect(item('searchTile')).toHaveClass(/active/);
+  await expect(page.locator('#searchTile')).toBeInViewport();
+  // niente contenitore di jsPanel in basso a sinistra con i minimizzati
+  expect(await page.locator('#jsPanel-replacement-container .jsPanel-replacement').count()).toBe(0);
+  // 5) menu al tasto destro: minimizza, ingrandisci, chiudi
+  await item('lexiconTile').click({ button: 'right' });
+  await expect(page.locator('.p-contextmenu .p-contextmenu-item-label', { hasText: 'Ingrandisci' })).toBeVisible();
+  await page.locator('.p-contextmenu .p-contextmenu-item-label', { hasText: 'Ingrandisci' }).click();
+  await expect.poll(() => page.evaluate(() => (document.getElementById('lexiconTile') as any).status)).toBe('maximized');
+  const max = await page.evaluate(() => {
+    const p = document.getElementById('lexiconTile')!.getBoundingClientRect();
+    return { bottom: Math.round(p.bottom), barTop: Math.round(document.querySelector('app-workspace-taskbar')!.getBoundingClientRect().top) };
+  });
+  expect(max.bottom, 'finestra ingrandita non sotto la barra').toBeLessThanOrEqual(max.barTop);
+  await snap(page, 'barra-finestre-ingrandita');
+  await item('lexiconTile').click({ button: 'right' });
+  await page.locator('.p-contextmenu .p-contextmenu-item-label', { hasText: 'Chiudi' }).click();
+  await expect(item('lexiconTile')).toHaveCount(0);
+  await expect(page.locator('#lexiconTile')).toHaveCount(0);
+  await expect(bar.locator('.taskbar-item')).toHaveCount(2);
+  // 6) una finestra ingrandita e minimizzata torna ingrandita
+  await menu.getByText('Lexicon', { exact: true }).click();
+  await expect(item('lexiconTile')).toBeVisible();
+  await item('dictionaryTile').click({ button: 'right' });
+  await page.locator('.p-contextmenu .p-contextmenu-item-label', { hasText: 'Ingrandisci' }).click();
+  await item('dictionaryTile').click();
+  await expect(item('dictionaryTile')).toHaveClass(/minimized/);
+  await item('dictionaryTile').click();
+  await expect.poll(() => page.evaluate(() => (document.getElementById('dictionaryTile') as any).status)).toBe('maximized');
+});
+
+test('barra delle finestre: una finestra minimizzata si salva e si ripristina minimizzata, e torna dov\'era', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  const before = await page.evaluate(() => { const r = document.getElementById('searchTile')!.getBoundingClientRect(); return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height) }; });
+  const item = page.locator('app-workspace-taskbar [data-window-id="searchTile"]');
+  await item.click(); // e' la sola finestra, quindi e' davanti: minimizza
+  await expect(item).toHaveClass(/minimized/);
+  // salvataggio come fa il workspace (layout.save) e ricreazione come fa il ripristino (layout.restoreId)
+  const saved = await page.evaluate(() => JSON.parse((window as any).jsPanel.layout.save({ selector: '.jsPanel-standard', storagename: 'e2e-taskbar' })));
+  expect(saved[0].status).toBe('minimized');
+  expect(String(saved[0].left), 'posizione salvata non fuori schermo').not.toContain('-9999');
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await expect(page.locator('app-workspace-taskbar .taskbar-item')).toHaveCount(0);
+  await page.evaluate(() => (window as any).jsPanel.layout.restoreId({ id: 'searchTile', storagename: 'e2e-taskbar', config: { id: 'searchTile', container: '#panelsContainer', headerTitle: 'Search', content: '<p>x</p>' } }));
+  await expect(item).toHaveClass(/minimized/);
+  await item.click();
+  await expect(item).not.toHaveClass(/minimized/);
+  await expect(item).toHaveClass(/active/);
+  const after = await page.evaluate(() => { const r = document.getElementById('searchTile')!.getBoundingClientRect(); return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height) }; });
+  expect(after).toEqual(before);
+  await page.evaluate(() => localStorage.removeItem('e2e-taskbar'));
+});
