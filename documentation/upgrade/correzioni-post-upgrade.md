@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.9)
+## 0.26.9 — `dist/maia-fe-0.26.9-test-ng21-20261111-1058.tgz`
 
 ### Login / footer
 - Footer (anche della pagina di login): la versione in basso a destra non tocca più il bordo (margine laterale di 1 rem)
