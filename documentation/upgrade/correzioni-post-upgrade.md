@@ -15,6 +15,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 - Anteprima, Etimologia: su due righe come nella scheda Voce (lingua ed etimo accanto, dettagli sotto a tutta larghezza invece di una colonna stretta); l'etimo è in corsivo come nella scheda Voce)
 
 ### Workspace
+- Barra delle finestre più alta (42 px invece di 29) e con testo e icone più grandi; l'altezza è una sola variabile (`--taskbar-height` in `workspace-taskbar.component.scss`) e il contenitore delle finestre si adatta
 - Salvataggio automatico del layout (finestre aperte, posizioni, dimensioni, minimizzate): una sola richiesta dopo 10 secondi senza modifiche, nulla se il layout non è cambiato (il primo piano non conta), mai due salvataggi sovrapposti (una modifica durante un salvataggio ne accoda uno solo) e nessun salvataggio automatico durante l'uscita; un errore viene segnalato una volta ogni 20 s. Resta il salvataggio all'uscita dal workspace; «Last access» diventa l'ultima modifica del layout
 
 ### Dictionary Explorer

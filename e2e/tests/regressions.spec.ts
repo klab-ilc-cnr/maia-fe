@@ -2025,9 +2025,10 @@ test('barra delle finestre: voci, clic come in Windows, menu, chiusura e spazio 
   const geo = await page.evaluate(() => {
     const b = document.querySelector('app-workspace-taskbar')!.getBoundingClientRect();
     const c = document.querySelector('#panelsContainer')!.getBoundingClientRect();
-    return { barBottom: Math.round(b.bottom), barTop: Math.round(b.top), containerBottom: Math.round(c.bottom), h: window.innerHeight };
+    return { barBottom: Math.round(b.bottom), barTop: Math.round(b.top), barHeight: Math.round(b.height), containerBottom: Math.round(c.bottom), h: window.innerHeight };
   });
   expect(geo.barBottom).toBe(geo.h);
+  expect(geo.barHeight, 'altezza della barra (var --taskbar-height)').toBeGreaterThanOrEqual(40);
   expect(geo.containerBottom).toBeLessThanOrEqual(geo.barTop);
   await snap(page, 'barra-finestre');
   // 2) clic su una finestra dietro: la porta davanti

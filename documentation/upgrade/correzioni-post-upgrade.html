@@ -41,6 +41,7 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 </ul>
 <h3 id="workspace">Workspace</h3>
 <ul>
+<li>Barra delle finestre più alta (42 px invece di 29) e con testo e icone più grandi; l'altezza è una sola variabile (<code>--taskbar-height</code> in <code>workspace-taskbar.component.scss</code>) e il contenitore delle finestre si adatta</li>
 <li>Salvataggio automatico del layout (finestre aperte, posizioni, dimensioni, minimizzate): una sola richiesta dopo 10 secondi senza modifiche, nulla se il layout non è cambiato (il primo piano non conta), mai due salvataggi sovrapposti (una modifica durante un salvataggio ne accoda uno solo) e nessun salvataggio automatico durante l'uscita; un errore viene segnalato una volta ogni 20 s. Resta il salvataggio all'uscita dal workspace; «Last access» diventa l'ultima modifica del layout</li>
 </ul>
 <h3 id="dictionary-explorer">Dictionary Explorer</h3>

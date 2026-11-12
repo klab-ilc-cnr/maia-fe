@@ -1,6 +1,8 @@
 :host {
+  // altezza della barra: l'unico punto in cui si cambia (il contenitore delle finestre si adatta, misura la barra)
+  --taskbar-height: 3.25rem;
   display: block;
-  height: 2.25rem;
+  height: var(--taskbar-height);
   background: #f1f3f5;
   border-top: 1px solid #ced4da;
   overflow: hidden;
@@ -11,7 +13,7 @@
   align-items: stretch;
   gap: .25rem;
   height: 100%;
-  padding: .2rem .35rem;
+  padding: .3rem .4rem;
 }
 
 .taskbar-item {
@@ -27,7 +29,7 @@
   border-radius: .3rem;
   background: #e9ecef;
   color: #343a40;
-  font-size: .85rem;
+  font-size: .9rem;
   text-align: left;
   cursor: pointer;
 
@@ -49,7 +51,7 @@
   }
 }
 
-.taskbar-icon { flex: 0 0 auto; font-size: .95rem; }
+.taskbar-icon { flex: 0 0 auto; font-size: 1.1rem; }
 
 .taskbar-title {
   min-width: 0;
