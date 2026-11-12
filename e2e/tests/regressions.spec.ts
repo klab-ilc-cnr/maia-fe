@@ -2531,3 +2531,21 @@ test('regressione: Explorer di Lexicon e Dictionary - stessa dimensione di apert
   expect(dict.w, 'larghezza di apertura').toBe(lex.w);
   expect(dict.resetW, `larghezza del pulsante Reset (lexicon ${lex.resetW}, dictionary ${dict.resetW})`).toBe(lex.resetW);
 });
+
+test('regressione: Dictionary Explorer - il pannello dei filtri si chiama «Filters», come nel Lexicon Explorer', async ({ page, baseURL }) => {
+  test.setTimeout(120_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  const header = async (menu: string, id: string) => {
+    await page.locator('#workspace-menu').getByText(menu, { exact: true }).click();
+    const tile = page.locator('#' + id);
+    await expect(tile).toBeVisible({ timeout: 30_000 });
+    const t = (await tile.locator('p-panel .p-panel-header').first().innerText()).trim();
+    await page.evaluate((i) => (document.getElementById(i) as any).close(), id);
+    await page.waitForTimeout(400);
+    return t;
+  };
+  expect(await header('Lexicon', 'lexiconTile')).toBe('Filters');
+  expect(await header('Dictionary', 'dictionaryTile')).toBe('Filters');
+});
