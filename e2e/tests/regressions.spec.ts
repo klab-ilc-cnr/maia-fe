@@ -2398,3 +2398,35 @@ test('regressione: Lexicon Explorer - scrivere nel filtro mentre arriva la lista
   expect(rows, 'solo le entrate filtrate').toEqual(['brigata@it noun']);
   expect(sent.filter((t) => t !== ''), 'richieste col testo digitato: una sola (pausa di 250 ms), non una per tasto').toEqual(['brigata']);
 });
+
+test('regressione: Dictionary Editor, Anteprima - Etimologia su due righe: lingua ed etimo accanto, dettagli sotto a tutta larghezza', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').nth(2)).toBeEnabled({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').nth(2).click();
+  const group = editor.locator('#etymologyPreview');
+  await expect(group).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1000);
+  const m = await group.evaluate((g) => {
+    const cols = [...g.children] as HTMLElement[];
+    const r = (el: Element) => el.getBoundingClientRect();
+    return { lingua: r(cols[0]).top, etimo: r(cols[1]).top, detTop: r(cols[2]).top, detW: Math.round(r(cols[2]).width), groupW: Math.round(r(g).width), linguaBottom: r(cols[0]).bottom, etimoBottom: r(cols[1]).bottom };
+  });
+  testInfo.annotations.push({ type: 'misure', description: JSON.stringify(m) });
+  expect(Math.abs(m.lingua - m.etimo), 'lingua ed etimo sulla stessa riga').toBeLessThanOrEqual(1);
+  expect(m.detTop, 'dettagli sotto la riga lingua/etimo').toBeGreaterThanOrEqual(Math.max(m.linguaBottom, m.etimoBottom) - 1);
+  expect(m.detW, 'dettagli a tutta larghezza del gruppo').toBeGreaterThanOrEqual(m.groupW - 4);
+  await group.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  await group.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-anteprima-etimologia.png') });
+});

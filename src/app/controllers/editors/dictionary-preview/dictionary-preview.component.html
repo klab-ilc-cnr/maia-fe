@@ -118,7 +118,7 @@
             "DICTIONARY_EDITOR.EDIT_TAB.etymology" | translate
           }}</ng-template>
           <ng-template pTemplate="content">
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap" id="etymologyPreview">
               <div class="flex-column w-3">
                 <p class="form-label">
                   {{ "DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage" | translate }}:
@@ -139,7 +139,7 @@
                   >{{ structuredNote.etymology.etymon }}</span
                 >
               </div>
-              <div class="flex-column w-3">
+              <div class="flex-column w-100 mt-3" id="etymologyDetails">
                 <p-editor
                   [(ngModel)]="structuredNote.etymology.details"
                   [readonly]="true"
