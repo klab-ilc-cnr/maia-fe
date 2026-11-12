@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { TreeTableNodeExpandEvent } from 'primeng/treetable';
-import { Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, take, takeUntil } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, switchMap, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -29,6 +29,8 @@ export enum DICTIONARY_NODE {
 })
 export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  /** Load requests: only the latest one counts (a slow older response, e.g. the first full list, must not replace a newer filtered one). */
+  private readonly load$ = new Subject<void>();
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   /**Number of rows (nodes) to be retrieved */
   rows = 5000;
@@ -130,6 +132,22 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       { field: 'add', header: 'Stato', width: '3rem' },
     ];
 
+    this.load$.pipe(
+      // switchMap cancels the request still in flight when a new one starts, so the responses cannot arrive out of order
+      switchMap(() => this.dictionaryService.retrieveLexicogEntryList(this.lexicogRequest).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.loading = false;
+          // the message is shown; the stream of loads stays alive
+          return this.commonService.throwHttpErrorAndMessage(error, error.error.message).pipe(catchError(() => EMPTY));
+        }),
+      )),
+      takeUntil(this.unsubscribe$),
+    ).subscribe(resp => {
+      this.lexicogEntries = resp.list.map(entry => this.mapLexicogEntryToTreenode(entry));
+      this.counter = resp.totalHits;
+      this.loading = false;
+    });
+
     this.searchTextForm.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(500),
@@ -172,17 +190,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
 
   loadNodes() {
     this.loading = true;
-    this.dictionaryService.retrieveLexicogEntryList(this.lexicogRequest).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.loading = false;
-        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
-      }),
-    ).subscribe(resp => {
-      this.lexicogEntries = resp.list.map(entry => this.mapLexicogEntryToTreenode(entry));
-      this.counter = resp.totalHits;
-      this.loading = false;
-    })
+    this.load$.next();
   }
 
   onAddAssociateLemmas(dictionaryEntry: DictionaryEntry, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[]) {

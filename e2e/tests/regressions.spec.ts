@@ -2431,3 +2431,31 @@ test('regressione: Dictionary Editor, Anteprima - Etimologia su due righe: lingu
   await page.waitForTimeout(300);
   await group.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-anteprima-etimologia.png') });
 });
+
+test('regressione: Dictionary Explorer - scrivere nel filtro mentre arriva la lista iniziale (lenta) non la lascia al posto di quella filtrata', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const sent: string[] = [];
+  let firstDelayed = false;
+  await page.route(/\/lexo\/data\/dictionaryEntries$/, async (route) => {
+    const text = (route.request().postDataJSON() as any)?.text ?? '';
+    sent.push(text);
+    if (text === '' && !firstDelayed) { firstDelayed = true; await new Promise((r) => setTimeout(r, 6000)); } // la prima lista arriva molto dopo
+    await route.continue();
+  });
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  sent.length = 0; firstDelayed = false;
+  await page.locator('#workspace-menu').getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  const input = tile.locator('input[type="text"]').first();
+  await input.click();
+  await input.pressSequentially('sonare', { delay: 40 }); // veloce, senza aspettare la lista
+  await expect(tile.locator('tbody tr').first()).toContainText('sonare', { timeout: 30_000 });
+  await page.waitForTimeout(7000); // la lista iniziale in ritardo non deve piu' sovrascrivere
+  const rows = (await tile.locator('tbody tr').allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim());
+  expect(rows.length, 'solo le voci filtrate').toBeGreaterThan(0);
+  expect(rows.every((r) => /^sonare/.test(r)), `tutte le righe iniziano per "sonare": ${rows.slice(0, 4).join(' | ')}`).toBe(true);
+  expect(sent.filter((t) => t !== ''), 'richieste col testo digitato: una sola (pausa), non una per tasto').toEqual(['sonare']);
+});

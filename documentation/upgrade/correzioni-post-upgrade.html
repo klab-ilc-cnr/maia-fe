@@ -39,6 +39,10 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 <ul>
 <li>Anteprima, Etimologia: su due righe come nella scheda Voce (lingua ed etimo accanto, dettagli sotto a tutta larghezza invece di una colonna stretta); l'etimo è in corsivo come nella scheda Voce)</li>
 </ul>
+<h3 id="dictionary-explorer">Dictionary Explorer</h3>
+<ul>
+<li>Filtro: come nel Lexicon Explorer, scrivendo subito la lista iniziale (lenta) poteva arrivare dopo e sostituire quella filtrata (nessun risultato per «sonare» che c'è); ora conta solo l'ultima richiesta (le precedenti vengono annullate) e un errore del backend non spegne più il filtro</li>
+</ul>
 <h3 id="lexicon-explorer">Lexicon Explorer</h3>
 <ul>
 <li>Filtro: scrivendo subito, la lista iniziale (lenta) poteva arrivare dopo e sostituire quella filtrata, e il filtro sembrava non funzionare; ora conta solo l'ultima richiesta (le precedenti vengono annullate) e la scrittura invia una richiesta sola dopo una pausa di 250 ms (prima una per tasto, doppia per il <code>keyup</code>); un errore del backend non spegne più il filtro</li>
