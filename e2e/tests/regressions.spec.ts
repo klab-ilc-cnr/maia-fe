@@ -2370,3 +2370,31 @@ test('regressione: Lexicon Editor - la lista delle morfologie (lexinfo/data/morp
   await page.waitForTimeout(1500);
   expect(morph.length, 'richieste a lexinfo/data/morphology dall\'apertura dell\'editor al clic su una forma').toBeLessThanOrEqual(1);
 });
+
+test('regressione: Lexicon Explorer - scrivere nel filtro mentre arriva la lista iniziale (lenta) non la lascia al posto di quella filtrata; una sola richiesta per la scrittura', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const sent: string[] = [];
+  let firstDelayed = false;
+  await page.route(/\/lexo\/data\/lexicalEntries$/, async (route) => {
+    const text = (route.request().postDataJSON() as any)?.text ?? '';
+    sent.push(text);
+    // la prima lista (tutte le entrate) arriva molto dopo: la corsa che vede chi scrive subito
+    if (text === '' && !firstDelayed) { firstDelayed = true; await new Promise((r) => setTimeout(r, 6000)); }
+    await route.continue();
+  });
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  sent.length = 0; firstDelayed = false;
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  const input = tile.locator('#searchInput');
+  await input.click();
+  await input.pressSequentially('brigata', { delay: 40 }); // veloce, senza aspettare la lista
+  await expect(tile.locator('tbody tr').first()).toContainText('brigata@it', { timeout: 30_000 });
+  await page.waitForTimeout(7000); // la lista iniziale in ritardo non deve piu' sovrascrivere
+  const rows = (await tile.locator('tbody tr').allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim());
+  expect(rows, 'solo le entrate filtrate').toEqual(['brigata@it noun']);
+  expect(sent.filter((t) => t !== ''), 'richieste col testo digitato: una sola (pausa di 250 ms), non una per tasto').toEqual(['brigata']);
+});

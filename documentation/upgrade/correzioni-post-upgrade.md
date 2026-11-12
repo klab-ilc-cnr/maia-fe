@@ -11,6 +11,9 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: 0.26.12)
 
+### Lexicon Explorer
+- Filtro: scrivendo subito, la lista iniziale (lenta) poteva arrivare dopo e sostituire quella filtrata, e il filtro sembrava non funzionare; ora conta solo l'ultima richiesta (le precedenti vengono annullate) e la scrittura invia una richiesta sola dopo una pausa di 250 ms (prima una per tasto, doppia per il `keyup`); un errore del backend non spegne più il filtro
+
 ### Lexicon Editor
 - Forme, sensi ed entrate: la lista delle morfologie (`lexinfo/data/morphology`) si chiede una sola volta e si riusa, invece di una richiesta per ogni riga di morfologia (4 richieste uguali cliccando su una forma con due morfologie)
 

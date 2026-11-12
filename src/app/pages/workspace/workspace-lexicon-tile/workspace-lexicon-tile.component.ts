@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { decode } from 'html-entities';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, debounceTime, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
@@ -28,6 +28,10 @@ import Swal from 'sweetalert2';
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
   private readonly unsubscribe$ = new Subject();
+  /** Load requests: only the latest one counts (a slow older response, e.g. the first full list, must not replace a newer filtered one). */
+  private readonly load$ = new Subject<void>();
+  /** Filter changes (typing, mode, selects): grouped in a single request after a short pause. */
+  private readonly filter$ = new Subject<void>();
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
   isUploadLexiconVisible = false;
@@ -300,6 +304,30 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
+    this.load$.pipe(
+      // switchMap cancels the request still in flight when a new one starts, so the responses cannot arrive out of order
+      switchMap(() => this.lexiconService.getLexicalEntriesList(this.parameters).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.loading = false;
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error?.message ?? error.message));
+          return EMPTY; // the stream of loads stays alive
+        }),
+      )),
+      takeUntil(this.unsubscribe$),
+    ).subscribe((data: LexicalEntriesResponse) => {
+      this.results = data.list.map((val: LexicalEntryListItem) => this.mapLexicalEntryListItemToTreeNode(val));
+      this.counter = data.totalHits;
+      this.loading = false;
+      this.pendingFilters = false;
+    });
+    this.filter$.pipe(
+      debounceTime(250),
+      takeUntil(this.unsubscribe$),
+    ).subscribe(() => {
+      this.updateFilterParameters();
+      this.loadNodes();
+    });
+
     this.globalState.languages$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(l => {
@@ -355,20 +383,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Metodo che esegue il caricamento dei nodi */
   loadNodes() {
     this.loading = true;
-
-    this.lexiconService.getLexicalEntriesList(this.parameters).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe((data: LexicalEntriesResponse) => {
-      this.results = [];
-      this.results = data.list.map((val: LexicalEntryListItem) => this.mapLexicalEntryListItemToTreeNode(val));
-      this.counter = data.totalHits;
-
-      this.loading = false;
-      this.pendingFilters = false;
-    });
+    this.load$.next();
   }
 
   /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
@@ -672,9 +687,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */
   filter() {
-    this.updateFilterParameters();
-
-    this.loadNodes();
+    this.filter$.next();
   }
 
   /**Metodo che resetta i filtri e segnala come siano presenti filtri pendenti (abilitando il bottone di filtro) */

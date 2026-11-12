@@ -35,6 +35,10 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 <p><strong>Come mantenerlo</strong>: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto (prossimo: X.Y.Z)", in alto (si crea con la prima correzione dopo un pacchetto; quando si prepara un pacchetto diventa la sezione di quella versione). Dopo ogni modifica rigenerare la copia HTML: <code>python3 tools/md-to-html.py documentation/upgrade/correzioni-post-upgrade.md</code>.</p>
 <hr>
 <h2 id="non-ancora-in-un-pacchetto-prossimo-02612">Non ancora in un pacchetto (prossimo: 0.26.12)</h2>
+<h3 id="lexicon-explorer">Lexicon Explorer</h3>
+<ul>
+<li>Filtro: scrivendo subito, la lista iniziale (lenta) poteva arrivare dopo e sostituire quella filtrata, e il filtro sembrava non funzionare; ora conta solo l'ultima richiesta (le precedenti vengono annullate) e la scrittura invia una richiesta sola dopo una pausa di 250 ms (prima una per tasto, doppia per il <code>keyup</code>); un errore del backend non spegne più il filtro</li>
+</ul>
 <h3 id="lexicon-editor">Lexicon Editor</h3>
 <ul>
 <li>Forme, sensi ed entrate: la lista delle morfologie (<code>lexinfo/data/morphology</code>) si chiede una sola volta e si riusa, invece di una richiesta per ogni riga di morfologia (4 richieste uguali cliccando su una forma con due morfologie)</li>
