@@ -2426,6 +2426,7 @@ test('regressione: Dictionary Editor, Anteprima - Etimologia su due righe: lingu
   expect(Math.abs(m.lingua - m.etimo), 'lingua ed etimo sulla stessa riga').toBeLessThanOrEqual(1);
   expect(m.detTop, 'dettagli sotto la riga lingua/etimo').toBeGreaterThanOrEqual(Math.max(m.linguaBottom, m.etimoBottom) - 1);
   expect(m.detW, 'dettagli a tutta larghezza del gruppo').toBeGreaterThanOrEqual(m.groupW - 4);
+  await expect(group.locator('#etymonPreview'), 'etimo in corsivo come nella scheda Voce').toHaveCSS('font-style', 'italic');
   await group.scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
   await group.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-anteprima-etimologia.png') });
