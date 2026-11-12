@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { TreeTableNodeExpandEvent } from 'primeng/treetable';
-import { EMPTY, Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, switchMap, take, takeUntil } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, concat, debounceTime, last, lastValueFrom, merge, switchMap, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -21,6 +21,9 @@ export enum DICTIONARY_NODE {
   entry = 'ENTRY',
   lemma = 'LEMMA'
 }
+/** Pause (ms) after the last change of a filter before the list is requested again. */
+const FILTER_PAUSE_MS = 400;
+
 @Component({
   selector: 'app-workspace-dictionary-tile',
   templateUrl: './workspace-dictionary-tile.component.html',
@@ -148,17 +151,13 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
       this.loading = false;
     });
 
-    this.searchTextForm.valueChanges.pipe(
+    // text and filters in a single stream with one pause: a reset (which changes both forms) or any combination of changes
+    // makes a single request, with all the current values
+    merge(this.searchTextForm.valueChanges, this.filtersForm.valueChanges).pipe(
       takeUntil(this.unsubscribe$),
-      debounceTime(500),
-      distinctUntilChanged(),
+      debounceTime(FILTER_PAUSE_MS),
     ).subscribe(() => {
-      this.createFilters(true);
-    });
-    this.filtersForm.valueChanges.pipe(
-      takeUntil(this.unsubscribe$),
-    ).subscribe(() => {
-      this.createFilters(false);
+      this.createFilters();
     });
 
     this.commonService.notifyObservable$.pipe(
@@ -408,18 +407,15 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     })
   }
 
-  private createFilters(isSearchInput: boolean) {
-    if (isSearchInput) {
-      this.lexicogRequest.text = this.searchTextForm.get('search')?.value || '';
-    } else {
-      const values = this.filtersForm.value;
-      if (values.match) {
-        this.lexicogRequest.searchMode = values.match;
-      }
-      this.lexicogRequest.author = values.editor || '';
-      this.lexicogRequest.lang = values.language || '';
-      this.lexicogRequest.status = values.status || '';
+  private createFilters() {
+    this.lexicogRequest.text = this.searchTextForm.get('search')?.value || '';
+    const values = this.filtersForm.value;
+    if (values.match) {
+      this.lexicogRequest.searchMode = values.match;
     }
+    this.lexicogRequest.author = values.editor || '';
+    this.lexicogRequest.lang = values.language || '';
+    this.lexicogRequest.status = values.status || '';
     this.loadNodes();
   }
 

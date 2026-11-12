@@ -138,7 +138,7 @@
     [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true" scrollHeight="flex"> -->
   <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [selection]="selectedNodes" (selectionChange)="selectedNodes = $any($event)" [value]="results"
-    [columns]="cols" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
+    [columns]="cols" (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true" scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true">
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>

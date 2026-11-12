@@ -2459,3 +2459,52 @@ test('regressione: Dictionary Explorer - scrivere nel filtro mentre arriva la li
   expect(rows.every((r) => /^sonare/.test(r)), `tutte le righe iniziano per "sonare": ${rows.slice(0, 4).join(' | ')}`).toBe(true);
   expect(sent.filter((t) => t !== ''), 'richieste col testo digitato: una sola (pausa), non una per tasto').toEqual(['sonare']);
 });
+
+test('regressione: Dictionary Explorer - il Reset del filtro fa una sola richiesta, con il testo vuoto (non una prima col vecchio valore)', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const sent: string[] = [];
+  await page.route(/\/lexo\/data\/dictionaryEntries$/, async (route) => { sent.push((route.request().postDataJSON() as any)?.text ?? ''); await route.continue(); });
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  await page.locator('#workspace-menu').getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  await expect(tile.locator('tbody tr').nth(3)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  const input = tile.locator('input[type="text"]').first();
+  await input.fill('sonare');
+  await expect(tile.locator('tbody tr').first()).toContainText('sonare', { timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  sent.length = 0;
+  await tile.locator('button .pi-filter-slash').click();
+  await expect(tile.locator('tbody tr').nth(3)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2000);
+  expect(sent, 'richieste dopo il Reset').toEqual(['']);
+  await expect(input).toHaveValue('');
+});
+
+test('regressione: Lexicon Explorer - niente overlay con lo spinner sulla lista mentre si filtra (resta lo spin del pulsante); il Reset fa una sola richiesta', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const sent: string[] = [];
+  await page.route(/\/lexo\/data\/lexicalEntries$/, async (route) => { sent.push((route.request().postDataJSON() as any)?.text ?? ''); await new Promise((r) => setTimeout(r, 1500)); await route.continue(); });
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile.locator('tbody tr').nth(3)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  const input = tile.locator('#searchInput');
+  await input.fill('brigata');
+  // durante la richiesta (rallentata) lo spin e' sul pulsante e non c'e' l'overlay sulla lista
+  await expect(tile.locator('p-button[icon="pi pi-spinner"] button')).toBeDisabled({ timeout: 5_000 }).catch(() => {});
+  await page.waitForTimeout(900);
+  expect(await tile.locator('.p-treetable-mask, .p-treetable-loading').count(), 'overlay di caricamento sulla lista').toBe(0);
+  await expect(tile.locator('tbody tr').first()).toContainText('brigata@it', { timeout: 30_000 });
+  await page.waitForTimeout(1500);
+  sent.length = 0;
+  await tile.locator('button .pi-filter-slash').click();
+  await expect(tile.locator('tbody tr').nth(3)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2500);
+  expect(sent, 'richieste dopo il Reset').toEqual(['']);
+});

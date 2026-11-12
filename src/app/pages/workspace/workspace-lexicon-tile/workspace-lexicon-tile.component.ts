@@ -20,6 +20,9 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
+/** Pause (ms) after the last change of a filter before the list is requested again. */
+const FILTER_PAUSE_MS = 400;
+
 @Component({
   selector: 'app-workspace-lexicon-tile',
   templateUrl: './workspace-lexicon-tile.component.html',
@@ -30,7 +33,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   private readonly unsubscribe$ = new Subject();
   /** Load requests: only the latest one counts (a slow older response, e.g. the first full list, must not replace a newer filtered one). */
   private readonly load$ = new Subject<void>();
-  /** Filter changes (typing, mode, selects): grouped in a single request after a short pause. */
+  /** Filter changes (typing, mode, selects): grouped in a single request after a short pause (same pause as the Dictionary Explorer). */
   private readonly filter$ = new Subject<void>();
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
@@ -321,7 +324,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
       this.pendingFilters = false;
     });
     this.filter$.pipe(
-      debounceTime(250),
+      debounceTime(FILTER_PAUSE_MS),
       takeUntil(this.unsubscribe$),
     ).subscribe(() => {
       this.updateFilterParameters();
