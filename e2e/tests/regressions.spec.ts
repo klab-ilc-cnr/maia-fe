@@ -2342,3 +2342,31 @@ test('regressione: Search - sui risultati il cursore è la mano (la riga si apre
   expect(m.row).toBe('pointer');
   expect(m.others, 'nessun cursore di testo nelle celle del risultato').toEqual(['pointer']);
 });
+
+test('regressione: Lexicon Editor - la lista delle morfologie (lexinfo/data/morphology) si chiede una sola volta, non una per riga di morfologia', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const morph: string[] = [];
+  page.on('request', (r) => { if (r.url().includes('/lexinfo/data/morphology')) morph.push(r.url()); });
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  const tile = page.locator('#lexiconTile');
+  await expect(tile).toBeVisible({ timeout: 30_000 });
+  await expect(tile.locator('tbody tr').nth(3)).toBeVisible({ timeout: 30_000 }); // finita la prima lista
+  await page.waitForTimeout(1500);
+  await tile.locator('#searchInput').fill('brigata'); await page.waitForTimeout(3500);
+  await tile.locator('tr', { hasText: 'brigata@it' }).first().locator('button').first().click();
+  const root = tile.locator('tr', { hasText: /^\s*form \(\d+\)/ }).first();
+  await expect(root).toBeVisible({ timeout: 15_000 });
+  await root.locator('button').first().click(); await page.waitForTimeout(1500);
+  await tile.locator('tr', { hasText: /^\s*brigat[ae]\b/ }).first().dblclick();
+  const ed = page.locator('.jsPanel').filter({ has: page.locator('app-workspace-lexicon-edit-tile') }).last();
+  await expect(ed).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(2500);
+  const rows = ed.locator('p-treetable tbody tr, p-treeTable tbody tr');
+  await rows.filter({ hasText: /^\s*brigat[ae]\b/ }).first().click(); // il form della forma: righe di morfologia
+  await expect(ed.locator('app-double-autocomplete').first()).toBeVisible({ timeout: 15_000 });
+  await page.waitForTimeout(1500);
+  expect(morph.length, 'richieste a lexinfo/data/morphology dall\'apertura dell\'editor al clic su una forma').toBeLessThanOrEqual(1);
+});
