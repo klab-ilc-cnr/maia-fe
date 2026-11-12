@@ -794,9 +794,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     dictionaryTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     dictionaryTileElement.titlebar.style.fontSize = '14px'
 
+    // same opening height as the Lexicon Explorer (half of the window), not a fixed 500px
     dictionaryTileElement
       .resize({
-        height: 500
+        height: window.innerHeight / 2
       })
       .reposition();
 

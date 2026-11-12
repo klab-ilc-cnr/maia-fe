@@ -2508,3 +2508,26 @@ test('regressione: Lexicon Explorer - niente overlay con lo spinner sulla lista 
   await page.waitForTimeout(2500);
   expect(sent, 'richieste dopo il Reset').toEqual(['']);
 });
+
+test('regressione: Explorer di Lexicon e Dictionary - stessa dimensione di apertura e pulsante Reset della stessa larghezza', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  await page.setViewportSize({ width: 1600, height: 760 }); // con 1000px di altezza i due valori coincidevano per caso (500 = 1000/2)
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(500);
+  const measure = async (menu: string, id: string) => {
+    await page.locator('#workspace-menu').getByText(menu, { exact: true }).click();
+    const tile = page.locator('#' + id);
+    await expect(tile).toBeVisible({ timeout: 30_000 });
+    await page.waitForTimeout(1500);
+    const m = await tile.evaluate((e) => { const b = e.getBoundingClientRect(); const r = e.querySelector('.pi-filter-slash')!.closest('button')!.getBoundingClientRect(); return { w: Math.round(b.width), h: Math.round(b.height), resetW: Math.round(r.width) }; });
+    await page.evaluate((i) => (document.getElementById(i) as any).close(), id);
+    await page.waitForTimeout(400);
+    return m;
+  };
+  const lex = await measure('Lexicon', 'lexiconTile');
+  const dict = await measure('Dictionary', 'dictionaryTile');
+  expect(dict.h, `altezza di apertura (lexicon ${lex.h}, dictionary ${dict.h})`).toBe(lex.h);
+  expect(dict.w, 'larghezza di apertura').toBe(lex.w);
+  expect(dict.resetW, `larghezza del pulsante Reset (lexicon ${lex.resetW}, dictionary ${dict.resetW})`).toBe(lex.resetW);
+});

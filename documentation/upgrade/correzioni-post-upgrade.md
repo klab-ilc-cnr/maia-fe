@@ -15,6 +15,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 - Anteprima, Etimologia: su due righe come nella scheda Voce (lingua ed etimo accanto, dettagli sotto a tutta larghezza invece di una colonna stretta); l'etimo è in corsivo come nella scheda Voce)
 
 ### Dictionary Explorer
+- Pulsante Reset della stessa larghezza di quello del Lexicon Explorer (era compresso a 18 px invece di 31); finestra con la stessa altezza di apertura del Lexicon Explorer (metà della finestra del browser, non 500 px fissi)
 - Reset del filtro: una sola richiesta, con il testo vuoto (prima ne partiva una prima col vecchio valore, inutile); testo e filtri a tendina hanno ora un'unica pausa
 - Filtro: come nel Lexicon Explorer, scrivendo subito la lista iniziale (lenta) poteva arrivare dopo e sostituire quella filtrata (nessun risultato per «sonare» che c'è); ora conta solo l'ultima richiesta (le precedenti vengono annullate) e un errore del backend non spegne più il filtro
 
