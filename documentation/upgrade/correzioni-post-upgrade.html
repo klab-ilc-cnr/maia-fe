@@ -316,6 +316,7 @@ hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
 </ul>
 <h2 id="in-sospeso-backend-decisioni">In sospeso (backend / decisioni)</h2>
 <ul>
+<li>Backend (maia-be/DB): <code>workspaces.layout</code> e <code>tiles.tile_config</code> sono <code>varchar(2000)</code> (verificato sulla VM il 2026-11-12; anche nel modello Java <code>@Column(length = 2000)</code>). Il layout cresce di ~150 caratteri per finestra e il più lungo oggi è di 1.937 caratteri (13 finestre): con 14 o più finestre aperte il salvataggio non entra nella colonna (errore del server o, senza modalità stretta, testo troncato e quindi layout non ripristinabile). Correzione: <code>ALTER TABLE workspaces MODIFY layout TEXT; ALTER TABLE tiles MODIFY tile_config TEXT;</code> e nel modello togliere <code>length = 2000</code> (o <code>columnDefinition = "TEXT"</code>). Il frontend non può ridurre i dati (jsPanel li produce così)</li>
 <li>Backend: <code>POST /texto/layer/create</code> con colore vuoto dà 500 (dovrebbe rispondere 400 con un messaggio)</li>
 <li>Frontend: lo stesso schema che termina lo stream della lista in caso di errore esiste ancora in corpus, workspace, lexicon e editor (non toccati)</li>
 <li>maia-be: 401 di TexO/LexO restituito come 500</li>

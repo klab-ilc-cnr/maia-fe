@@ -267,6 +267,7 @@ Da Angular 14 (v0.20.0, `master`) ad Angular 21 a tappe, con un pacchetto di ver
 - Tagset: dopo la creazione di un nuovo tagset non tornare alla lista, ma aprire la pagina di modifica del tagset appena creato (quella dei valori), per inserirli subito
 
 ## In sospeso (backend / decisioni)
+- Backend (maia-be/DB): `workspaces.layout` e `tiles.tile_config` sono `varchar(2000)` (verificato sulla VM il 2026-11-12; anche nel modello Java `@Column(length = 2000)`). Il layout cresce di ~150 caratteri per finestra e il più lungo oggi è di 1.937 caratteri (13 finestre): con 14 o più finestre aperte il salvataggio non entra nella colonna (errore del server o, senza modalità stretta, testo troncato e quindi layout non ripristinabile). Correzione: `ALTER TABLE workspaces MODIFY layout TEXT; ALTER TABLE tiles MODIFY tile_config TEXT;` e nel modello togliere `length = 2000` (o `columnDefinition = "TEXT"`). Il frontend non può ridurre i dati (jsPanel li produce così)
 - Backend: `POST /texto/layer/create` con colore vuoto dà 500 (dovrebbe rispondere 400 con un messaggio)
 - Frontend: lo stesso schema che termina lo stream della lista in caso di errore esiste ancora in corpus, workspace, lexicon e editor (non toccati)
 - maia-be: 401 di TexO/LexO restituito come 500
