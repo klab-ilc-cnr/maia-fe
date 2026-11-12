@@ -14,6 +14,9 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 ### Dictionary Editor
 - Anteprima, Etimologia: su due righe come nella scheda Voce (lingua ed etimo accanto, dettagli sotto a tutta larghezza invece di una colonna stretta); l'etimo è in corsivo come nella scheda Voce)
 
+### Workspace
+- Salvataggio automatico del layout (finestre aperte, posizioni, dimensioni, minimizzate): una sola richiesta dopo 10 secondi senza modifiche, nulla se il layout non è cambiato (il primo piano non conta), mai due salvataggi sovrapposti (una modifica durante un salvataggio ne accoda uno solo) e nessun salvataggio automatico durante l'uscita; un errore viene segnalato una volta ogni 20 s. Resta il salvataggio all'uscita dal workspace; «Last access» diventa l'ultima modifica del layout
+
 ### Dictionary Explorer
 - Il pannello dei filtri si chiama «Filters» (era «Filtri») come nel Lexicon Explorer
 - Pulsante Reset della stessa larghezza di quello del Lexicon Explorer (era compresso a 18 px invece di 31); finestra con la stessa altezza di apertura del Lexicon Explorer (metà della finestra del browser, non 500 px fissi)

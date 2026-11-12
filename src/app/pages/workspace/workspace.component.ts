@@ -1,11 +1,12 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, NgZone, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, lastValueFrom, of, take, takeUntil, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, lastValueFrom, of, take, takeUntil, throwError } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
 import { WorkspaceService } from 'src/app/services/workspace.service';
+import { WorkspaceLayoutAutosave } from './workspace-layout-autosave';
 import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { ScrollingDirectionType, WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
@@ -101,6 +102,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * Definisce il lavoro è stato salvato
    */
   private workSaved = false;
+  /** Saves the layout after a pause without changes (see WorkspaceLayoutAutosave); armed once the saved windows are restored */
+  private layoutAutosave!: WorkspaceLayoutAutosave;
   //private mainPanel: any;
   //private openPanels: Map<string, any> = new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
   /**
@@ -165,6 +168,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     //this.openPanels.forEach((panel, id) => panel.close());
     // when the session is over (logout, expired token) the save cannot succeed: it was done before (see
     // saveWorkspaceBeforeLogoutEvent) and trying again would only show an error on the login page
+    // the windows are closed below: those events must not trigger the autosave
+    this.layoutAutosave.disarm();
     if (this.storageService.isLoggedIn() && !this.storageService.isExpired()) {
       this.saveWork(null);
     }
@@ -237,7 +242,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private dictionaryService: DictionaryService,
     private layerService: LayerService,
     private workspaceState: WorkspaceStateService,
-  ) { }
+    private ngZone: NgZone,
+  ) {
+    this.layoutAutosave = new WorkspaceLayoutAutosave(
+      this.ngZone,
+      () => this.layoutSignature(),
+      done => this.saveWork(null, true, done),
+      () => this.storageService.isLoggedIn() && !this.storageService.isExpired() && this.workspaceId != null && this.workspaceId !== this.newId,
+    );
+  }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
@@ -353,7 +366,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         ).subscribe((data) => {
           console.info('load workspace status data', data)
           data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
-          this.restoreTiles(data);
+          this.restoreTiles(data).finally(() => this.layoutAutosave.arm());
           this.loaderService.hide();
         }
         );
@@ -485,6 +498,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Metodo dell'interfaccia OnDestroy, utilizzato per eliminare eventuali sottoscrizioni */
   ngOnDestroy(): void {
     // this.subscription.unsubscribe();
+    this.layoutAutosave.disarm();
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
 
@@ -1246,11 +1260,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Serialization of the layout used by the autosave to know whether something changed: windows (id, position, size, status),
+   * without the z-index (bringing a window to the front is not worth a save) plus the content of each open tile.
+   */
+  private layoutSignature(): string {
+    const layout = JSON.parse(jsPanel.layout.save({ selector: '.jsPanel-standard', storagename: this.storageName }));
+    layout.forEach((w: any) => delete w.zIndex);
+    const tiles = [...(jsPanel.extensions.getTileMap() as Map<string, Tile<any>>).values()].map(t => ({ type: t.type, content: t.content }));
+    return JSON.stringify({ layout, tiles });
+  }
+
+  /**
    * Metodo che esegue il salvataggio dello stato del workspace
    * @param event {any} evento di click sul salvataggio
    * @param silent {boolean} salvataggio in background (prima della scadenza della sessione): senza indicatore di caricamento
+   * @param onDone {(ok: boolean) => void} se presente, è un salvataggio automatico: a fine richiesta chiama la funzione, un errore
+   * viene segnalato una volta ogni 20 s (non a ogni tentativo) e non si aggiorna l'elenco dei workspace (lo fa il salvataggio in uscita)
    */
-  saveWork(event: any, silent = false) {
+  saveWork(event: any, silent = false, onDone?: (ok: boolean) => void) {
     //console.log(this.openPanels);
     //this.workSaved = true;
 
@@ -1268,11 +1295,20 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       take(1),
       catchError((error: HttpErrorResponse) => {
         this.loaderService.hide();
+        if (onDone) {
+          this.commonService.warnBackendErrorOnce('saveLayout', error);
+          onDone(false);
+          return EMPTY;
+        }
         return this.commonService.throwHttpErrorAndMessage(error, 'Error saving workspace status');
       })
     ).subscribe(() => {
       this.workSaved = true;
       this.loaderService.hide();
+      if (onDone) {
+        onDone(true);
+        return;
+      }
       // the save sets the "Last access" date: the list of workspaces (kept for the session) must show it
       this.workspaceState.refresh();
     });

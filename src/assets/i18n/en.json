@@ -4,6 +4,7 @@
         "entryLabel": "Could not retrieve the name of a lexical entry from the server: its identifier is shown instead.",
         "initialValue": "Could not retrieve the value of a field from the server: the saved value is shown instead.",
         "dictionaryLinks": "Could not check with the server whether the lexical entries are described in the dictionary: the indicator may be incomplete.",
+        "saveLayout": "Could not save the layout of the workspace windows: it will be tried again at the next change and when leaving the workspace.",
         "tooltip": "Content could not be loaded. Please try again."
     },
     "SESSION": {

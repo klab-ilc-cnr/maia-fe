@@ -4,6 +4,7 @@
         "entryLabel": "Impossibile recuperare dal server il nome di una voce lessicale: viene mostrato il suo identificativo.",
         "initialValue": "Impossibile recuperare dal server il valore di un campo: viene mostrato quello salvato.",
         "dictionaryLinks": "Impossibile verificare dal server se le voci lessicali sono descritte nel dizionario: l'indicatore può risultare incompleto.",
+        "saveLayout": "Impossibile salvare la disposizione delle finestre del workspace: verrà riprovato alla prossima modifica e quando si esce dal workspace.",
         "tooltip": "Impossibile caricare il contenuto. Riprovare."
     },
     "SESSION": {

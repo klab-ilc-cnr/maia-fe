@@ -2549,3 +2549,77 @@ test('regressione: Dictionary Explorer - il pannello dei filtri si chiama «Filt
   expect(await header('Lexicon', 'lexiconTile')).toBe('Filters');
   expect(await header('Dictionary', 'dictionaryTile')).toBe('Filters');
 });
+
+/** Test dell'autosalvataggio del layout: le richieste PUT /api/workspaces/layout sono intercettate e finte (niente scritture sulla VM). */
+async function trackLayoutSaves(page: Page, delayMs = 0) {
+  const saves: Array<{ at: number; ids: string[] }> = [];
+  await page.route(/\/api\/workspaces\/layout$/, async (route) => {
+    let ids: string[] = [];
+    try { ids = JSON.parse((route.request().postDataJSON() as any).layout).map((w: any) => w.id); } catch { /* ignora */ }
+    saves.push({ at: Date.now(), ids });
+    if (delayMs) { await new Promise((r) => setTimeout(r, delayMs)); }
+    await route.fulfill({ status: 200, contentType: 'application/json', body: 'true' });
+  });
+  return saves;
+}
+
+async function dragWindow(page: Page, id: string, dx: number, dy: number) {
+  const bar = (await page.locator(`#${id} .jsPanel-headerbar`).boundingBox())!;
+  const x = bar.x + 60, y = bar.y + bar.height / 2;
+  await page.mouse.move(x, y); await page.mouse.down(); await page.mouse.move(x + dx / 2, y + dy / 2, { steps: 4 }); await page.mouse.move(x + dx, y + dy, { steps: 4 }); await page.mouse.up();
+}
+
+test('autosalvataggio del layout: una sola richiesta dopo una pausa dalle modifiche, niente se non cambia nulla, niente per il primo piano né all\'uscita', async ({ page, baseURL }) => {
+  test.setTimeout(240_000);
+  const saves = await trackLayoutSaves(page);
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close())); // chiude le finestre ripristinate: e' una modifica
+  await page.waitForTimeout(12_500);
+  saves.length = 0; // dal ripristino/chiusura in poi
+  // 1) nessuna modifica: nessuna richiesta
+  await page.waitForTimeout(12_500);
+  expect(saves.length, 'richieste senza modifiche').toBe(0);
+  // 2) aprire una finestra e spostarla piu' volte a intervalli brevi: una sola richiesta, dopo la pausa
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  const t0 = Date.now();
+  for (let i = 0; i < 3; i++) { await page.waitForTimeout(2500); await dragWindow(page, 'searchTile', 40, 20); }
+  await page.waitForTimeout(8000);
+  expect(saves.length, 'nessuna richiesta mentre l\'utente sta ancora muovendo la finestra (pausa non scaduta)').toBe(0);
+  await page.waitForTimeout(5500);
+  expect(saves.length, 'una sola richiesta dopo la pausa').toBe(1);
+  expect(saves[0].ids).toContain('searchTile');
+  expect(saves[0].at - t0, 'dopo almeno 10 s dall\'ultima modifica').toBeGreaterThan(15_000);
+  // 3) portare davanti una finestra non e' una modifica da salvare
+  await page.locator('#workspace-menu').getByText('Lexicon', { exact: true }).click();
+  await expect(page.locator('#lexiconTile')).toBeVisible();
+  await page.waitForTimeout(12_500);
+  expect(saves.length, 'dopo aver aperto il Lexicon: una richiesta in piu\'').toBe(2);
+  await page.locator('#searchTile .jsPanel-headerbar').click({ position: { x: 20, y: 10 } }); // primo piano
+  await page.waitForTimeout(12_500);
+  expect(saves.length, 'il primo piano non salva').toBe(2);
+  // 4) uscendo dal workspace: il salvataggio in uscita (uno) e nessun autosalvataggio dalla chiusura delle finestre
+  await page.goto('#/workspaces');
+  await page.waitForTimeout(13_000);
+  expect(saves.length, 'uscita: una sola richiesta (quella in uscita)').toBe(3);
+});
+
+test('autosalvataggio del layout: due salvataggi non si sovrappongono (una modifica durante un salvataggio ne accoda uno solo)', async ({ page, baseURL }) => {
+  test.setTimeout(240_000);
+  const saves = await trackLayoutSaves(page, 6000); // ogni richiesta dura 6 s
+  await openSmokeWorkspace(page, baseURL!);
+  await page.evaluate(() => (window as any).jsPanel.getPanels().forEach((x: any) => x.close()));
+  await page.waitForTimeout(12_500);
+  await page.waitForTimeout(7000); // finisce un eventuale salvataggio lento
+  saves.length = 0;
+  await page.locator('#workspace-menu').getByText('Search', { exact: true }).click();
+  await expect(page.locator('#searchTile')).toBeVisible();
+  await expect.poll(() => saves.length, { timeout: 20_000 }).toBe(1); // parte la richiesta lenta (6 s)
+  // durante la richiesta: due modifiche
+  await dragWindow(page, 'searchTile', 60, 30);
+  await page.waitForTimeout(1500);
+  await dragWindow(page, 'searchTile', 60, 30);
+  expect(saves.length, 'nessuna seconda richiesta mentre la prima e\' in corso').toBe(1);
+  await page.waitForTimeout(26_000);
+  expect(saves.length, 'una sola richiesta in piu\' per le due modifiche').toBe(2);
+});
