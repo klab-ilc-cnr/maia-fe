@@ -16,6 +16,7 @@ import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/model
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryPdfService, DictionaryPreviewPdfData } from 'src/app/services/dictionary-pdf.service';
 import { DictionaryService, DictionaryTraits } from 'src/app/services/dictionary.service';
+import { hasRichText } from 'src/app/helpers/rich-text';
 import { orderOtherWorksFrequencies } from 'src/app/helpers/other-works-frequencies';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
@@ -85,6 +86,24 @@ export class DictionaryPreviewComponent implements OnInit {
       option: 'onDictionaryPreviewRowDoubleClickEvent',
       value: [annotation.textId, annotation.text, annotation.rowIndex]
     });
+  }
+
+  /** Template helper: has the rich text value something to show? (empty parts of the preview are not drawn) */
+  public readonly hasRichText = hasRichText;
+
+  /** The etymology box is drawn only if at least one of its three fields has a value. */
+  get hasEtymology(): boolean {
+    const e = this.structuredNote?.etymology;
+    return !!e && (!!e.language || !!e.etymon || hasRichText(e.details));
+  }
+
+  /** Is there anything in the entry header besides the forms? (otherwise the divider and the empty box are not drawn) */
+  get hasHeaderDetails(): boolean {
+    const n = this.structuredNote;
+    if (!n) return false;
+    return !!this.firstAttestationLabel || !!n.firstAttestationDetails || n.decameronOccurrences > 0 || this.totalOccurrences > 0
+      || this.frequencies.length > 0 || this.hasEtymology || this.orderedSeeAlso.length > 0
+      || [n.linguisticsSemantics, n.decameron, n.firstAbsAttestation, n.boccaccioDante, n.crusche, n.polyrhematics].some(v => hasRichText(v));
   }
 
   get ready(): boolean {

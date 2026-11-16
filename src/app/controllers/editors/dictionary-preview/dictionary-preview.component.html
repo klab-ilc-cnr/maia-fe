@@ -44,7 +44,7 @@
     <label>{{ "DICTIONARY_EDITOR.PREVIEW_TAB.entryHeader" | translate }}</label>
   </h5>
   <div class="card ml-1 mr-2">
-    <div class="mb-2 d-flex flex-wrap">
+    <div class="mb-2 d-flex flex-wrap" *ngIf="forms.length > 0" id="previewForms">
       <div class="flex-column">
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.PREVIEW_TAB.forms" | translate }}:
@@ -57,9 +57,9 @@
         </p-chip>
       </div>
     </div>
-    <p-divider></p-divider>
-    <div class="mt-2 mb-2 d-flex flex-wrap">
-      <div class="flex-column w-50">
+    <p-divider *ngIf="forms.length > 0 && hasHeaderDetails"></p-divider>
+    <div class="mt-2 mb-2 d-flex flex-wrap" *ngIf="hasHeaderDetails">
+      <div class="flex-column w-50" *ngIf="firstAttestationLabel" id="previewFirstAttestation">
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.EDIT_TAB.firstAttestBocc" | translate }}:
         </p>
@@ -69,7 +69,7 @@
           >{{ firstAttestationLabel }}</span
         >
       </div>
-      <div class="flex-column w-50">
+      <div class="flex-column w-50" *ngIf="structuredNote.firstAttestationDetails" id="previewTopographicReference">
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.EDIT_TAB.topographicReference" | translate }}:
         </p>
@@ -79,7 +79,7 @@
           >{{ structuredNote.firstAttestationDetails }}</span
         >
       </div>
-      <div class="flex-column w-50 mt-5">
+      <div class="flex-column w-50 mt-5" *ngIf="structuredNote.decameronOccurrences > 0" id="previewDecameronOccurrences">
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.EDIT_TAB.nOccurrencesDecameron" | translate }}:
         </p>
@@ -87,7 +87,7 @@
           structuredNote.decameronOccurrences
         }}</span>
       </div>
-      <div class="flex-column w-50 mt-5">
+      <div class="flex-column w-50 mt-5" *ngIf="totalOccurrences > 0" id="previewTotalOccurrences">
         <p class="form-label">
           {{ "DICTIONARY_EDITOR.EDIT_TAB.nTotalOccurrences" | translate }}:
         </p>
@@ -95,7 +95,7 @@
           totalOccurrences
         }}</span>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="frequencies.length > 0" id="previewOtherWorks">
         <p-fieldset>
           <ng-template pTemplate="header">
             {{ "DICTIONARY_EDITOR.EDIT_TAB.occOtherWorks" | translate }}
@@ -112,14 +112,14 @@
           </ng-template>
         </p-fieldset>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="hasEtymology" id="previewEtymology">
         <p-fieldset>
           <ng-template pTemplate="header">{{
             "DICTIONARY_EDITOR.EDIT_TAB.etymology" | translate
           }}</ng-template>
           <ng-template pTemplate="content">
             <div class="d-flex flex-wrap" id="etymologyPreview">
-              <div class="flex-column w-3">
+              <div class="flex-column w-3" *ngIf="structuredNote.etymology.language">
                 <p class="form-label">
                   {{ "DICTIONARY_EDITOR.EDIT_TAB.sourceLanguage" | translate }}:
                 </p>
@@ -129,7 +129,7 @@
                   >{{ structuredNote.etymology.language }}</span
                 >
               </div>
-              <div class="flex-column w-3">
+              <div class="flex-column w-3" *ngIf="structuredNote.etymology.etymon">
                 <p class="form-label">
                   {{ "DICTIONARY_EDITOR.EDIT_TAB.etymon" | translate }}:
                 </p>
@@ -140,7 +140,7 @@
                   >{{ structuredNote.etymology.etymon }}</span
                 >
               </div>
-              <div class="flex-column w-100 mt-3" id="etymologyDetails">
+              <div class="flex-column w-100 mt-3" id="etymologyDetails" *ngIf="hasRichText(structuredNote.etymology.details)">
                 <p-editor
                   [(ngModel)]="structuredNote.etymology.details"
                   [readonly]="true"
@@ -156,7 +156,7 @@
           </ng-template>
         </p-fieldset>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="hasRichText(structuredNote.linguisticsSemantics)" id="preview_linguisticsSemantics">
         <p-editor
           [(ngModel)]="structuredNote.linguisticsSemantics"
           [readonly]="true"
@@ -170,7 +170,7 @@
           </ng-template>
         </p-editor>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="hasRichText(structuredNote.decameron)" id="preview_decameron">
         <p-editor [(ngModel)]="structuredNote.decameron" [readonly]="true">
           <ng-template pTemplate="header">
             <p class="form-label">
@@ -179,7 +179,7 @@
           </ng-template>
         </p-editor>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="hasRichText(structuredNote.firstAbsAttestation)" id="preview_firstAbsAttestation">
         <p-editor
           [(ngModel)]="structuredNote.firstAbsAttestation"
           [readonly]="true"
@@ -191,14 +191,14 @@
           </ng-template>
         </p-editor>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="hasRichText(structuredNote.boccaccioDante)" id="preview_boccaccioDante">
         <p-editor [(ngModel)]="structuredNote.boccaccioDante" [readonly]="true">
           <ng-template pTemplate="header">
             <p class="form-label">Boccaccio e Dante:</p>
           </ng-template>
         </p-editor>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="hasRichText(structuredNote.crusche)" id="preview_crusche">
         <p-editor [(ngModel)]="structuredNote.crusche" [readonly]="true">
           <ng-template pTemplate="header">
             <p class="form-label">
@@ -207,7 +207,7 @@
           </ng-template>
         </p-editor>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="hasRichText(structuredNote.polyrhematics)" id="preview_polyrhematics">
         <p-editor [(ngModel)]="structuredNote.polyrhematics" [readonly]="true">
           <ng-template pTemplate="header">
             <p class="form-label">
@@ -216,7 +216,7 @@
           </ng-template>
         </p-editor>
       </div>
-      <div class="flex-column w-100 mt-5">
+      <div class="flex-column w-100 mt-5" *ngIf="orderedSeeAlso.length > 0" id="previewSeeAlso">
         <p-fieldset>
           <ng-template pTemplate="header">
             {{ "DICTIONARY_EDITOR.EDIT_TAB.seeAlso" | translate }}

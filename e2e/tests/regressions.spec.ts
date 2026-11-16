@@ -2472,6 +2472,74 @@ test('regressione: Dictionary Editor, Anteprima - occorrenze in altre opere in o
   await fieldset.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-anteprima-altre-opere.png') });
 });
 
+test('regressione: Dictionary Editor, Anteprima - le parti senza valore non si mostrano (e quelle con valore sì)', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(240_000);
+  await blockWrites(page, testInfo);
+  // la nota e i "vedi anche" della voce si sostituiscono solo nella risposta (niente scritto sulla VM)
+  let scenario: 'vuota' | 'piena' = 'vuota';
+  const vuota = {
+    decameronOccurrences: 0, frequencies: [{ documentId: '', frequency: 0 }], firstAttestation: '', firstAttestationDetails: '',
+    etymology: { language: '', etymon: '', details: '<p><br></p>' },
+    linguisticsSemantics: '<p><br></p>', decameron: '', firstAbsAttestation: '<p> </p>', boccaccioDante: '', crusche: '', polyrhematics: '',
+  };
+  const piena = {
+    decameronOccurrences: 3, frequencies: [{ documentId: 'FLC', frequency: 7 }], firstAttestation: 'FLC', firstAttestationDetails: 'III.2',
+    etymology: { language: 'lat', etymon: 'sonare', details: '<p>dettaglio etimo</p>' },
+    linguisticsSemantics: '<p>commento ling</p>', decameron: '<p>attorno dec</p>', firstAbsAttestation: '<p>prima abs</p>', boccaccioDante: '<p>bocc dante</p>',
+    crusche: '<p>crusche</p>', polyrhematics: '<p>polirem</p>',
+  };
+  await page.route(/\/lexo\/data\/dictionaryEntry\?id=/, async (route) => {
+    const res = await route.fetch();
+    const body = await res.json();
+    body.note = JSON.stringify(scenario === 'vuota' ? vuota : piena);
+    body.seeAlso = scenario === 'vuota' ? [] : [{ label: 'cfr.', entity: 'suonare', type: 'seeAlso' }];
+    await route.fulfill({ response: res, json: body });
+  });
+  await openSmokeWorkspace(page, baseURL!);
+  const openPreview = async () => {
+    await closePanels(page, ['dictionaryEditTile']);
+    await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+    const tile = page.locator('#dictionaryTile');
+    const filter = tile.locator('input[type="text"]').first();
+    await filter.fill('sonare'); await filter.press('Enter');
+    const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+    await expect(row).toBeVisible({ timeout: 30_000 });
+    await row.dblclick();
+    const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+    await expect(editor.locator('[role="tab"]').nth(2)).toBeEnabled({ timeout: 30_000 });
+    await editor.locator('[role="tab"]').nth(2).click();
+    await expect(editor.locator('h2 .fw-bold').first()).toBeVisible({ timeout: 30_000 });
+    await page.waitForTimeout(1500);
+    return editor;
+  };
+  const labels = [
+    'I attestazione in Boccaccio', 'Riferimento topografico', 'N. occorrenze nel Decameron', 'Occ. altre opere', 'Etimologia',
+    'Commento linguistico e semantico', 'Attorno al Decameron', 'I attestazione assoluta', 'Boccaccio e Dante:', 'Il Decameron, le Crusche e altri vocabolari',
+    'Polirematiche / locuzioni', 'Vedi anche',
+  ];
+  const visibleLabels = async (editor: any) => {
+    const text = await editor.locator('.p-tabpanel:visible, [role="tabpanel"]:visible').first().innerText();
+    return labels.filter((l) => text.includes(l));
+  };
+  // 1) nota vuota: niente etichette di campi senza valore
+  scenario = 'vuota';
+  let editor = await openPreview();
+  const shownEmpty = await visibleLabels(editor);
+  testInfo.annotations.push({ type: 'vuota', description: JSON.stringify(shownEmpty) });
+  await snap(page, 'dict-anteprima-vuota');
+  expect(shownEmpty, 'con la nota vuota non si mostra nessun campo senza valore').toEqual([]);
+  await expect(editor.locator('p-divider'), 'senza altro sotto le forme non resta la linea divisoria').toHaveCount(0);
+  // 2) nota piena: ci sono tutte
+  scenario = 'piena';
+  await closePanels(page, ['dictionaryEditTile']);
+  editor = await openPreview();
+  const shownFull = await visibleLabels(editor);
+  testInfo.annotations.push({ type: 'piena', description: JSON.stringify(shownFull) });
+  await snap(page, 'dict-anteprima-piena');
+  expect(shownFull, 'con la nota compilata si mostrano tutti i campi').toEqual(labels);
+  await expect(editor.locator('p-divider'), 'con i campi compilati la linea divisoria c\'è').toHaveCount(1);
+});
+
 test('regressione: Dictionary Explorer - scrivere nel filtro mentre arriva la lista iniziale (lenta) non la lascia al posto di quella filtrata', async ({ page, baseURL }) => {
   test.setTimeout(180_000);
   const sent: string[] = [];
