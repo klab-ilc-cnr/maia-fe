@@ -273,7 +273,7 @@ Da Angular 14 (v0.20.0, `master`) ad Angular 21 a tappe, con un pacchetto di ver
 - Tagset: dopo la creazione di un nuovo tagset non tornare alla lista, ma aprire la pagina di modifica del tagset appena creato (quella dei valori), per inserirli subito
 
 ## In sospeso (backend / decisioni)
-- ~~Backend (maia-be/DB): `workspaces.layout` e `tiles.tile_config` erano `varchar(2000)`~~ — risolto: colonne ampliate sul DB (comunicato il 2026-11-16; dimensione non verificata dal frontend). Se anche il modello Java ha ancora `@Column(length = 2000)` va allineato
+- ~~Backend (maia-be/DB): `workspaces.layout` e `tiles.tile_config` erano `varchar(2000)`~~ — risolto: le due colonne sono ora `text` (65.535 byte, verificato sul DB il 2026-11-16 con `information_schema.columns`: oltre 400 finestre per workspace). Se il modello Java ha ancora `@Column(length = 2000)` va allineato
 - Backend: `POST /texto/layer/create` con colore vuoto dà 500 (dovrebbe rispondere 400 con un messaggio)
 - Frontend: lo stesso schema che termina lo stream della lista in caso di errore esiste ancora in corpus, workspace, lexicon e editor (non toccati)
 - maia-be: 401 di TexO/LexO restituito come 500
