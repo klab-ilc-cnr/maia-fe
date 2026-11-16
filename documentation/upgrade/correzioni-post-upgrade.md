@@ -9,6 +9,10 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: 0.26.13)
+
+- Dictionary Editor, Anteprima (e PDF): occorrenze in altre opere in ordine crescente della colonna di ordinamento delle opere (`order`, dal backend); righe vuote nascoste; opera non più in elenco in fondo col suo codice. La nota salvata non viene modificata
+
 ## 0.26.12 — `dist/maia-fe-0.26.12-test-ng21-20261112-1907.tgz`
 
 ### Dictionary Editor

@@ -2433,6 +2433,45 @@ test('regressione: Dictionary Editor, Anteprima - Etimologia su due righe: lingu
   await group.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-anteprima-etimologia.png') });
 });
 
+test('regressione: Dictionary Editor, Anteprima - occorrenze in altre opere in ordine crescente della colonna di ordinamento, senza righe vuote', async ({ page, baseURL }, testInfo) => {
+  test.setTimeout(180_000);
+  await blockWrites(page, testInfo);
+  // la nota della voce viene sostituita (solo nella risposta, niente scritto sulla VM): righe fuori ordine, vuote e con un'opera sconosciuta
+  const rows = [
+    { documentId: 'ECD', frequency: 4 }, { documentId: '', frequency: 0 }, { documentId: 'FLC', frequency: 7 },
+    { documentId: 'ZZZ', frequency: 2 }, { documentId: 'CRB', frequency: 5 }, { documentId: 'CD', frequency: 1 }, { documentId: '', frequency: 0 },
+  ];
+  await page.route(/\/lexo\/data\/dictionaryEntry\?id=/, async (route) => {
+    const res = await route.fetch();
+    const body = await res.json();
+    let note: any = {}; try { note = JSON.parse(body.note || '{}'); } catch { /* nota vuota */ }
+    body.note = JSON.stringify({ ...note, frequencies: rows });
+    await route.fulfill({ response: res, json: body });
+  });
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['dictionaryEditTile']);
+  await page.locator('#workspace-menu').first().getByText('Dictionary', { exact: true }).click();
+  const tile = page.locator('#dictionaryTile');
+  const filter = tile.locator('input[type="text"]').first();
+  await filter.fill('sonare'); await filter.press('Enter');
+  const row = tile.locator('tbody tr', { hasText: /^\s*sonare/ }).first();
+  await expect(row).toBeVisible({ timeout: 30_000 });
+  await row.dblclick();
+  const editor = page.locator('.jsPanel').filter({ hasText: /Dictionary Editor/i }).last();
+  await expect(editor.locator('[role="tab"]').nth(2)).toBeEnabled({ timeout: 30_000 });
+  await editor.locator('[role="tab"]').nth(2).click();
+  const fieldset = editor.locator('p-fieldset', { hasText: /Occ\. altre opere|Occ\. other works/ });
+  await expect(fieldset.locator('p.form-label').first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(500);
+  const shown = (await fieldset.locator('p.form-label').allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim());
+  testInfo.annotations.push({ type: 'righe', description: JSON.stringify(shown) });
+  expect(shown, 'ordine crescente della colonna order; senza righe vuote; opera sconosciuta in fondo col suo codice').toEqual([
+    'Caccia di Diana: 1', 'Filocolo: 7', 'Corbaccio: 5', 'Esposizioni sopra la Commedia di Dante: 4', 'ZZZ: 2',
+  ]);
+  await fieldset.scrollIntoViewIfNeeded();
+  await fieldset.screenshot({ path: path.join(__dirname, '..', 'artifacts', 'screens', process.env.E2E_LABEL || 'run', 'dict-anteprima-altre-opere.png') });
+});
+
 test('regressione: Dictionary Explorer - scrivere nel filtro mentre arriva la lista iniziale (lenta) non la lascia al posto di quella filtrata', async ({ page, baseURL }) => {
   test.setTimeout(180_000);
   const sent: string[] = [];

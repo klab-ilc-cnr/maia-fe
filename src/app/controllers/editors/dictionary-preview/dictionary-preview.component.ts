@@ -16,6 +16,7 @@ import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/model
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryPdfService, DictionaryPreviewPdfData } from 'src/app/services/dictionary-pdf.service';
 import { DictionaryService, DictionaryTraits } from 'src/app/services/dictionary.service';
+import { orderOtherWorksFrequencies } from 'src/app/helpers/other-works-frequencies';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
 
@@ -432,16 +433,13 @@ export class DictionaryPreviewComponent implements OnInit {
   private retrieveHeaderEntryData(): void {
     this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
 
-    // one request for the list of works: it gives the label of each "occurrences in other works" row (in the order of
-    // the note) and of the first attestation
+    // one request for the list of works: it gives the label and the position of each "occurrences in other works" row
+    // (shown in the order of the works list, not of the note) and the label of the first attestation
     this.dictionaryService.retrieveAuthorDocuments().pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
     ).subscribe((data: TextualDocument[]) => {
-      this.frequencies = this.structuredNote.frequencies.map(f => ({
-        documentLabel: data.find((item: TextualDocument) => item.code === f.documentId)?.title || '',
-        frequency: f.frequency
-      }));
+      this.frequencies = orderOtherWorksFrequencies(this.structuredNote.frequencies, data);
       this.firstAttestationLabel = data.find((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)?.title || '';
     });
 
