@@ -43,7 +43,7 @@ nvm use 22.23.4 && npx ng serve            # dalla radice del repo
 # 2) i test (Node 24), da questa cartella
 nvm use 24.14.0
 npm ci && npx playwright install chromium   # solo la prima volta
-E2E_LABEL=ng14 E2E_EXPECT_TITLE="MAIA - VocaBO - DEV UPGRADE" npx playwright test
+E2E_LABEL=ng14 E2E_EXPECT_TITLE="MAIA - develop" npx playwright test
 ```
 
 ### Contro il pacchetto di produzione (consigliato prima di consegnare uno zip)

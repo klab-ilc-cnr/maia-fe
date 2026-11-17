@@ -7,7 +7,7 @@ import { defineConfig, devices } from '@playwright/test';
  *   E2E_BASE_URL      URL dell'app. Default: http://localhost:4200/ (ng serve con proxy verso klabsrv:19443)
  *                     Esempio installazione di test: https://klabsrv:19443/maia/
  *   E2E_LABEL         etichetta della cartella degli screenshot (es. ng14, ng16...). Default: run
- *   E2E_EXPECT_TITLE  titolo atteso nella card di login (es. "MAIA - VocaBO - DEV UPGRADE")
+ *   E2E_EXPECT_TITLE  titolo atteso nella card di login (es. "MAIA - develop")
  *   E2E_ENV_FILE      file con le credenziali. Default: ~/.config/maia/e2e.env
  *                     (MAIA_E2E_USER, MAIA_E2E_PASSWORD) - fuori dal repo, permessi 600
  */
