@@ -223,7 +223,7 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 
 Non fatto, con motivo:
 - `require('package.json')` nel footer: **lasciato**. Webpack include già solo la versione (`{i8:"0.20.0"}`), nessuna esposizione. Da riverificare alla migrazione al builder esbuild (fase 2).
-- `production: false` in `environment.production.ts`: da decidere a parte (cambia il comportamento a runtime).
+- `production: true` in `environment.production.ts` (deciso il 2026-11-17): il pacchetto compilato era già in modalità produzione (la compilazione la imposta da sola: nessun messaggio «development mode», `window.ng` assente), il flag serviva solo a `enableProdMode()` in `main.ts`; verificato su un pacchetto servito.
 
 ### Fase 1 — completata (2026-11-04): Angular 14 → 15 → 16
 

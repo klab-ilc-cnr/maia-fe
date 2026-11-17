@@ -9,6 +9,10 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: 0.26.14)
+
+- Preparazione al merge su `master`: `environment.ts` con sottotitolo «develop» (come su `master`; i pacchetti per la VM lo impostano a runtime) e `production: true` in `environment.production.ts` (nessun effetto visibile: il pacchetto era già in modalità produzione)
+
 ## 0.26.13 — `dist/maia-fe-0.26.13-test-ng21-20261116-1440.tgz`
 
 - Dictionary Editor, Anteprima (e PDF): le parti senza valore non si mostrano (Forme, I attestazione, Riferimento topografico, N. occorrenze Decameron/totali con valore 0, Occ. altre opere, Etimologia e suoi campi, campi di testo, Vedi anche; linea divisoria se sotto non c'è altro)
@@ -287,5 +291,3 @@ Da Angular 14 (v0.20.0, `master`) ad Angular 21 a tappe, con un pacchetto di ver
 - Ricerca: «ch’io» non trova nulla perché i token sono `ch’` e `io`; decidere se suggerirlo o dividere sull'apice
 - Editor di testo ricco: conversione di `'` digitato in `’` ancora da decidere
 - Decisione: quill 2
-- Decisione: `production: false` in `environment.production.ts`
-- Prima del merge: sottotitolo `environment.ts` da riportare a "develop"

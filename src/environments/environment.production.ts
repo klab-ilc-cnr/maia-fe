@@ -23,7 +23,7 @@ const lexoUrl = trimSlash(maiaConfig.lexoBaseUrl || `${serverUrl}/lexo`);
 const textoUrl = trimSlash(maiaConfig.textoBaseUrl || `${serverUrl}/texto`);
 
 export const environment = {
-  production: false,
+  production: true,
   envName: 'local',
   maiaBeUrl: `${serverUrl}/api`,
   usersUrl: `${serverUrl}/api/users`,
