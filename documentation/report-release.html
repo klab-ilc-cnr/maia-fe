@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release in corso (0.20.0 → 0.26.13)</title>
+<style>
+:root { --fg:#1f2933; --muted:#6b7280; --accent:#b91c1c; --bg:#ffffff; --card:#f8fafc; --line:#e5e7eb; }
+* { box-sizing: border-box; }
+body { margin:0; font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--fg); background:var(--bg); }
+.layout { display:flex; gap:2rem; max-width:1100px; margin:0 auto; padding:1.5rem; }
+nav { flex:0 0 250px; position:sticky; top:1rem; align-self:flex-start; max-height:calc(100vh - 2rem); overflow:auto; font-size:.9rem;
+      background:var(--card); border:1px solid var(--line); border-radius:8px; padding:.75rem 1rem; }
+nav h2 { margin:.2rem 0 .5rem; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); border:0; }
+nav a { display:block; padding:.25rem 0; color:var(--fg); text-decoration:none; }
+nav a:hover { color:var(--accent); }
+main { flex:1; min-width:0; }
+h1 { font-size:1.7rem; margin:.2rem 0 1rem; }
+h2 { font-size:1.3rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--accent); }
+h3 { font-size:1.05rem; margin:1.3rem 0 .3rem; color:var(--accent); }
+ul { margin:.3rem 0 .8rem; padding-left:1.3rem; }
+li { margin:.2rem 0; }
+code { background:#eef2f7; padding:.1rem .35rem; border-radius:4px; font:0.9em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
+@media (max-width: 800px) { .layout { display:block; } nav { position:static; margin-bottom:1rem; max-height:none; } }
+@media print { nav { display:none; } .layout { display:block; } }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav><h2>Indice</h2><a href="#aggiornamento-generale">Aggiornamento generale</a><a href="#workspace">Workspace</a><a href="#finestra-del-testo-e-search">Finestra del testo e Search</a><a href="#annotazioni-layer-e-tagset">Annotazioni, layer e tagset</a><a href="#dictionary-e-lexicon">Dictionary e Lexicon</a></nav>
+<main>
+<h1 id="release-in-corso-0200-02613">Release in corso (0.20.0 → 0.26.13)</h1>
+<p>Novità e miglioramenti rispetto alla versione 0.20.0 (17 marzo 2026). Aggiornato al 16 novembre 2026.</p>
+<h2 id="aggiornamento-generale">Aggiornamento generale</h2>
+<ul>
+<li><strong>Piattaforma rinnovata.</strong> Il sistema è stato aggiornato alle versioni più recenti delle tecnologie su cui si basa (Angular 14 → 21, PrimeNG 21). Le segnalazioni di sicurezza sulle librerie utilizzate sono scese da 84 a 20, nessuna di livello critico o alto. Aspetto e modo d'uso restano quelli di prima, con i ritocchi indicati sotto.</li>
+<li><strong>Ritocchi grafici generali.</strong> Allineamenti, spaziature, scritte non tagliate, barre di scorrimento, titoli e maschera di login.</li>
+</ul>
+<h2 id="workspace">Workspace</h2>
+<ul>
+<li><strong>Nuova barra delle finestre in basso</strong>, come la barra delle applicazioni: una voce per ogni finestra aperta; con un clic si ripristina, si porta davanti o si minimizza; il tasto destro apre un menu (ripristina/minimizza, ingrandisci, chiudi).</li>
+<li><strong>Salvataggio automatico della disposizione.</strong> Finestre aperte, posizioni e dimensioni si salvano da sole, senza dover uscire dal workspace. «Last access» indica ora l'ultima modifica.</li>
+<li><strong>Finestre e sessione più affidabili.</strong> Ridimensionamento delle finestre corretto, titoli più chiari; quando la sessione sta per scadere o è scaduta il sistema avvisa e riporta al login, dopo aver salvato la disposizione.</li>
+</ul>
+<h2 id="finestra-del-testo-e-search">Finestra del testo e Search</h2>
+<ul>
+<li><strong>Annotazioni sovrapposte.</strong> Tutte visibili e cliccabili; un clic su una parola annotata apre l'annotazione; passando col mouse si evidenzia il testo annotato; ogni elemento dell'albero delle sezioni mostra il luogo del testo (es. II.8.48).</li>
+<li><strong>Ricerca.</strong> Qualsiasi tipo di apice digitato trova il testo (<code>'ntelletto</code> trova <code>’ntelletto</code>); maschera di ricerca più ordinata.</li>
+<li><strong>Finestra del testo più stabile.</strong> Apertura del testo e clic sulle annotazioni più rapidi; correzione di problemi grafici nella selezione e nella visualizzazione del testo.</li>
+</ul>
+<h2 id="annotazioni-layer-e-tagset">Annotazioni, layer e tagset</h2>
+<ul>
+<li><strong>Valore predefinito dei campi dei tagset.</strong> Ogni tagset può avere un valore predefinito, che le nuove annotazioni preselezionano; l'esempio principale è «Tipo lessicale», che parte da «Parola monorematica» nelle annotazioni semantiche (singole e multiple). Si imposta, si cambia o si toglie dalla pagina dei valori del tagset, con la stella accanto al valore; il campo resta modificabile.</li>
+<li><strong>Lessico negli autocomplete.</strong> Accanto a ogni lemma compare la categoria grammaticale.</li>
+<li><strong>Layer e tagset.</strong> Le finestre di creazione e modifica segnalano gli errori in modo chiaro e non si bloccano più.</li>
+</ul>
+<h2 id="dictionary-e-lexicon">Dictionary e Lexicon</h2>
+<ul>
+<li><strong>Anteprima della voce.</strong> Più completa (tabelle dei contesti visibili subito, accezioni numerate a ogni livello, doppio clic su un contesto per aprire il testo alla riga giusta). Le occorrenze in altre opere seguono l'ordine fisso delle opere e le parti senza valore non vengono mostrate, anche nel PDF.</li>
+<li><strong>Editor di testo per note e definizioni.</strong> Barra ridotta agli strumenti utili, caratteri speciali (« » – È ’), altri formati (apice, pedice, barrato, elenchi) e incolla pulita.</li>
+<li><strong>Explorer, Lexicon Editor e scheda Ordinamento.</strong> Filtri affidabili (la lista filtrata non viene più sostituita da risposte vecchie), meno richieste al server, alberi più leggibili e con barra di scorrimento.</li>
+</ul>
+</main>
+</div>
+</body>
+</html>
