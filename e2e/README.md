@@ -69,3 +69,10 @@ Output in `artifacts/` (ignorata da git): `screens/<label>/` per i confronti pri
 Molti editor dell'app **salvano da soli** (scheda della voce del dizionario, definizione dei sensi...) e la VM di test ha dati veri.
 Un test che digita in un campo deve chiamare `blockWrites(page, testInfo)` (in `tests/support.ts`) **prima** di aprire l'app:
 le richieste di modifica rispondono 200 senza arrivare al server e vengono annotate come `scrittura-bloccata`.
+
+## Prova reale dell'annotazione massiva (opzionale, scrive sulla VM)
+`tests/mass-annotation-real.spec.ts` seleziona i contesti di «amore» su piu pagine, li annota sul «layer test» (id 25388589) con l'editor massivo e poi li rimuove. Verifica che maia-be/TexO li creino **tutti** (nessun contesto escluso dalla seconda pagina in poi) e che la pulizia lasci il layer vuoto. **Salta se non si imposta `E2E_REAL_WRITES=1`**: non fa parte delle esecuzioni normali. Si lancia dopo un aggiornamento di maia-be/TexO o a fronte di una segnalazione. `PAGES` = pagine da 10 contesti (default 2; 27 = tutti i 269, circa 40 s):
+
+    E2E_REAL_WRITES=1 PAGES=12 E2E_LABEL=mass E2E_EXPECT_TITLE="MAIA - develop" npx playwright test tests/mass-annotation-real.spec.ts
+
+Stampa gli orari di inizio/fine/pulizia da confrontare con i log di TexO. Non usare il layer Lemma (i contesti di «amore» vi sono gia tutti annotati).
