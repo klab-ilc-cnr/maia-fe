@@ -208,7 +208,8 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 | 0.26.10 | + titolo del testo senza «Text - »; login più stretto; titolo rosso della barra in alto; Dictionary Editor (occorrenze, Etimologia su due righe, spazio nell'anteprima, Ordinamento con una cornice); ridimensionamento finestre con tasto modificatore rimasto attivo | superata — `dist/old/maia-fe-0.26.10-test-ng21-*.tgz` |
 | 0.26.11 | + Search: mano sulle righe dei risultati al posto del cursore di testo | superata — `dist/old/maia-fe-0.26.11-test-ng21-*.tgz` |
 | 0.26.12 | + salvataggio automatico del layout del workspace (10 s dopo l'ultima modifica); barra delle finestre più alta; filtri di Lexicon e Dictionary Explorer senza risposte fuori ordine, Reset con una sola richiesta; morfologie chieste una sola volta; Etimologia dell'Anteprima su due righe; pulsante Reset, altezza e «Filters» uguali nei due explorer | superata — `dist/old/maia-fe-0.26.12-test-ng21-*.tgz` |
-| **0.26.13** | + anteprima della voce: occorrenze in altre opere in ordine crescente (colonna `order`) e parti senza valore nascoste (anche nel PDF) | **attuale** — `dist/maia-fe-0.26.13-test-ng21-20261116-1440.tgz`; elenco in `correzioni-post-upgrade.md` |
+| 0.26.13 | + anteprima della voce: occorrenze in altre opere in ordine crescente (colonna `order`) e parti senza valore nascoste (anche nel PDF) | superata — `dist/old/maia-fe-0.26.13-test-ng21-20261116-1440.tgz`; elenco in `correzioni-post-upgrade.md` |
+| **0.30.0** | **release di produzione** (tutte le modifiche 0.26.x + preparazione al merge: `production: true`, sottotitolo «develop») | **attuale** — `dist/maia-fe-0.30.0-prod-20261119-0936.tgz`; elenco in `correzioni-post-upgrade.md` |
 
 ## 6bis. Avanzamento
 

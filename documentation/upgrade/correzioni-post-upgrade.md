@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: 0.26.14)
+## 0.30.0 (release di produzione) — `dist/maia-fe-0.30.0-prod-20261119-0936.tgz`
 
 - Preparazione al merge su `master`: `environment.ts` con sottotitolo «develop» (come su `master`; i pacchetti per la VM lo impostano a runtime) e `production: true` in `environment.production.ts` (nessun effetto visibile: il pacchetto era già in modalità produzione)
 

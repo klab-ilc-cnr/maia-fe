@@ -1,6 +1,6 @@
-# Release in corso (0.20.0 → 0.26.13)
+# Release 0.30.0
 
-Novità e miglioramenti rispetto alla versione 0.20.0 (17 marzo 2026). Aggiornato al 16 novembre 2026.
+Novità e miglioramenti rispetto alla versione 0.20.0 (17 marzo 2026). Aggiornato al 18 novembre 2026.
 
 ## Aggiornamento generale
 
