@@ -9,14 +9,14 @@
     </div>
     <div class="field col-6">
       <label for="pos">{{translatePrefix+'.pos'|translate}}</label>
-      <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId"
-        [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>
+      <p-select [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId"
+        [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-select>
     </div>
     <div class="field col-6">
       <label for="type">{{translatePrefix+'.type'|translate}}</label>
-      <p-dropdown [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" [filter]="true"
+      <p-select [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" [filter]="true"
         filterBy="valueLabel" [placeholder]="emptyField" formControlName="type" name="type"
-        styleClass="w-full"></p-dropdown>
+        styleClass="w-full"></p-select>
     </div>
     <div class="field col-12">
       <p-fieldset>

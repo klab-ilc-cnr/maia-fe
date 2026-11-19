@@ -20,6 +20,10 @@ export const environment = {
   maiaBeTextoUrl: `${serverUrl}/texto`,
   lexoPrefix: "lex",
   lexoBaseIRI: "http://lexica/mylexicon#",
+  // Branch upgrade/angular-21: titolo per riconoscere l'istanza di sviluppo dell'upgrade.
+  // Da riportare a "develop" prima del merge su master.
   applicationSubTitle: "develop",
   demoHide: false,
+  // ontologia non ancora pronta: menu e finestre nascosti (portare a false per riabilitarla, insieme a demoHide)
+  ontologyDisabled: true,
 };

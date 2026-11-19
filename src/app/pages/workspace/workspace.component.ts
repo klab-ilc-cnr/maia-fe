@@ -1,11 +1,12 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, NgZone, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, lastValueFrom, take, takeUntil, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, lastValueFrom, of, take, takeUntil, throwError } from 'rxjs';
 import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 import { TileType } from 'src/app/models/tile/tile-type.model';
 import { Tile } from 'src/app/models/tile/tile.model';
 import { WorkspaceService } from 'src/app/services/workspace.service';
+import { WorkspaceLayoutAutosave } from './workspace-layout-autosave';
 import { CorpusTileContent } from './../../models/tile/corpus-tile-content';
 import { ScrollingDirectionType, WorkspaceTextWindowComponent } from './workspace-text-window/workspace-text-window.component';
 // import { WorkspaceMenuComponent } from '../workspace-menu/workspace-menu.component';
@@ -25,6 +26,8 @@ import { TextTileContent } from 'src/app/models/tile/text-tile-content.model';
 import { Workspace } from 'src/app/models/workspace.model';
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryService } from 'src/app/services/dictionary.service';
+import { LayerService } from 'src/app/services/layer.service';
+import { WorkspaceStateService } from 'src/app/services/workspace-state.service';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -56,7 +59,8 @@ let currentWorkspaceInstance: any; //TODO verificare effettivo utilizzo
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
-  styleUrls: ['./workspace.component.scss']
+  styleUrls: ['./workspace.component.scss'],
+  standalone: false
 })
 export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
@@ -98,6 +102,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * Definisce il lavoro è stato salvato
    */
   private workSaved = false;
+  /** Saves the layout after a pause without changes (see WorkspaceLayoutAutosave); armed once the saved windows are restored */
+  private layoutAutosave!: WorkspaceLayoutAutosave;
   //private mainPanel: any;
   //private openPanels: Map<string, any> = new Map(); //PROBABILMENTE SI PUò DEPRECARE, USARE STOREDTILES
   /**
@@ -160,7 +166,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     // returning false will show a confirm dialog before navigating away
     //this.mainPanel.close();
     //this.openPanels.forEach((panel, id) => panel.close());
-    this.saveWork(null);
+    // when the session is over (logout, expired token) the save cannot succeed: it was done before (see
+    // saveWorkspaceBeforeLogoutEvent) and trying again would only show an error on the login page
+    // the windows are closed below: those events must not trigger the autosave
+    this.layoutAutosave.disarm();
+    if (this.storageService.isLoggedIn() && !this.storageService.isExpired()) {
+      this.saveWork(null);
+    }
 
     // if (this.workSaved) {
 
@@ -228,7 +240,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private lexiconService: LexiconService,
     private ontologyService: OntologyService,
     private dictionaryService: DictionaryService,
-  ) { }
+    private layerService: LayerService,
+    private workspaceState: WorkspaceStateService,
+    private ngZone: NgZone,
+  ) {
+    this.layoutAutosave = new WorkspaceLayoutAutosave(
+      this.ngZone,
+      () => this.layoutSignature(),
+      done => this.saveWork(null, true, done),
+      () => this.storageService.isLoggedIn() && !this.storageService.isExpired() && this.workspaceId != null && this.workspaceId !== this.newId,
+    );
+  }
 
   /**Metodo dell'interfaccia OnInit, utilizzato per il recupero iniziale dei dati e per sottoscrivere i comportamenti del jsPanel */
   ngOnInit(): void {
@@ -250,6 +272,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
             this.openTextPanel(searchResultRow.textId, searchResultRow.text, searchResultRow.rowIndex, searchResultRow.kwic, searchResultRow.kwicOffset, selectedLayer);
             break;
           }
+          case EventsConstants.saveWorkspaceBeforeLogoutEvent: {
+            this.saveWork(null, true);
+            break;
+          }
+          case EventsConstants.onDictionaryPreviewRowDoubleClickEvent: {
+            const [textId, title, rowIndex] = res.value;
+            this.layerService.retrieveSemanticLayer().pipe(
+              take(1),
+              catchError(() => of(undefined)),
+            ).subscribe(layer => this.openTextPanel(textId, title, rowIndex, undefined, undefined, layer ? structuredClone(layer) : undefined));
+            break;
+          }
           case EventsConstants.onDictionaryEntryDblClickEvent: {
             this.openDictionaryEditPanel(res.value);
             break;
@@ -269,7 +303,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.items = [
       {
         label: 'Corpus',
-        styleClass: 'p-button-raised p-button-text',
         command: (event) => { this.openExploreCorpusPanel(event) }
       },
       {
@@ -300,7 +333,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         command: (event) => { this.openDictionaryPanel(event) }
       }
     ];
-    if (environment.demoHide) {
+    if (this.ontologyDisabled) {
       this.items.splice(2, 1); /**remove ontology from menu */
     }
 
@@ -333,7 +366,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         ).subscribe((data) => {
           console.info('load workspace status data', data)
           data.tiles?.forEach(tile => tile.tileConfig = JSON.parse(tile.tileConfig));
-          this.restoreTiles(data);
+          this.restoreTiles(data).finally(() => this.layoutAutosave.arm());
           this.loaderService.hide();
         }
         );
@@ -349,6 +382,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.workspaceName = res;
       })
     }
+
+    // le finestre minimizzate stanno nella barra del workspace (app-workspace-taskbar), non nel contenitore di jsPanel
+    jsPanel.defaults.minimizeTo = false;
 
     jsPanel.extend({
       //mappa key:idPannello, value: tipo e id del tipo, es. testi, ontologie, lessico.
@@ -462,6 +498,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Metodo dell'interfaccia OnDestroy, utilizzato per eliminare eventuali sottoscrizioni */
   ngOnDestroy(): void {
     // this.subscription.unsubscribe();
+    this.layoutAutosave.disarm();
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
 
@@ -548,7 +585,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     if (panelExist) { //caso di pannello già presente
       if (startingRowIndex !== undefined && startingRowIndex !== null) {
         const textTileComponent = panelExist.getComponentsList().find((c: any) => c.id === panelExist.id);
-        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic!, kwicOffsetStart!, selectedLayer);
+        this.setChangeSectionOperationInTextTile(textTileComponent.component, startingRowIndex, kwic, kwicOffsetStart, selectedLayer);
         textTileComponent.component.instance.loadInitialData();
       }
 
@@ -559,7 +596,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     const res = this.generateTextTilePanelConfiguration(panelId, textId, title, startingRowIndex ?? 0);
 
     if (startingRowIndex !== undefined && startingRowIndex !== null) {
-      this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic!, kwicOffsetStart!, selectedLayer);
+      this.setChangeSectionOperationInTextTile(res.component!, startingRowIndex, kwic, kwicOffsetStart, selectedLayer);
     }
 
     const textTileConfig = res.panelConfig;
@@ -723,11 +760,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     searchTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     searchTileElement.titlebar.style.fontSize = '14px'
 
+    // Default size: tall enough for the default page of 10 results without having to resize the window every time
+    // (the table area is the window height minus 270px, 10 rows need ~425px); on small screens it is limited to the
+    // available space and the table scrolls.
+    const searchPanelHeight = this.defaultSearchPanelHeight();
     searchTileElement
       .resize({
-        height: 500
+        height: searchPanelHeight
       })
       .reposition();
+    result.component?.instance.updateHeight(searchPanelHeight, searchTileElement.getBoundingClientRect().width);
 
     const { content, ...text } = searchTileConfig;
 
@@ -766,9 +808,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     dictionaryTileElement.titlebar.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     dictionaryTileElement.titlebar.style.fontSize = '14px'
 
+    // same opening height as the Lexicon Explorer (half of the window), not a fixed 500px
     dictionaryTileElement
       .resize({
-        height: 500
+        height: window.innerHeight / 2
       })
       .reposition();
 
@@ -929,6 +972,14 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * The ontology is not ready: its menu and windows are hidden (demo/production builds, or `ontologyDisabled` in the
+   * environment). To enable it again set `ontologyDisabled: false` and `demoHide: false`.
+   */
+  private get ontologyDisabled(): boolean {
+    return environment.demoHide || environment.ontologyDisabled;
+  }
+
+  /**
    * Metodo che dato lo status del workspace lo riapre con le medesime caratteristiche
    * @param workspaceStatus {Workspace} status del workspace
    * @returns {void}
@@ -937,10 +988,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loaderService.show();
 
     let storedData: any = workspaceStatus.layout;
-    const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!;
+    // ontology disabled: the saved ontology windows are not reopened (they stay in the saved workspace until it is saved again)
+    const storedTiles: Array<Tile<any>> = workspaceStatus.tiles!.filter(
+      tile => !(this.ontologyDisabled && tile.type === TileType.ONTOLOGY_EXPLORER));
     // console.log('restored layout', storedData, storedTiles, workspaceStatus);
 
     if (storedTiles.length == 0) {
+      this.loaderService.hide();
       return;
     }
 
@@ -977,7 +1031,8 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
           //IMPORTANTE il merge delle config così da aggiunge le callback di risposta agli eventi,
           //che non vengono incluse dalla funzione layout.save di jspanel e salvate nel db
-          const mergedConfig = { ...textTileComponent.panelConfig, ...tile.tileConfig };
+          // i layout salvati hanno ancora il vecchio titolo «Text - nome»
+          const mergedConfig = { ...textTileComponent.panelConfig, ...tile.tileConfig, headerTitle: textTileComponent.panelConfig.headerTitle };
 
           //Ripristino il layout della tile
           currPanelElement = jsPanel.layout.restoreId({
@@ -1205,10 +1260,24 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Serialization of the layout used by the autosave to know whether something changed: windows (id, position, size, status),
+   * without the z-index (bringing a window to the front is not worth a save) plus the content of each open tile.
+   */
+  private layoutSignature(): string {
+    const layout = JSON.parse(jsPanel.layout.save({ selector: '.jsPanel-standard', storagename: this.storageName }));
+    layout.forEach((w: any) => delete w.zIndex);
+    const tiles = [...(jsPanel.extensions.getTileMap() as Map<string, Tile<any>>).values()].map(t => ({ type: t.type, content: t.content }));
+    return JSON.stringify({ layout, tiles });
+  }
+
+  /**
    * Metodo che esegue il salvataggio dello stato del workspace
    * @param event {any} evento di click sul salvataggio
+   * @param silent {boolean} salvataggio in background (prima della scadenza della sessione): senza indicatore di caricamento
+   * @param onDone {(ok: boolean) => void} se presente, è un salvataggio automatico: a fine richiesta chiama la funzione, un errore
+   * viene segnalato una volta ogni 20 s (non a ogni tentativo) e non si aggiorna l'elenco dei workspace (lo fa il salvataggio in uscita)
    */
-  saveWork(event: any) {
+  saveWork(event: any, silent = false, onDone?: (ok: boolean) => void) {
     //console.log(this.openPanels);
     //this.workSaved = true;
 
@@ -1221,16 +1290,27 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     //this.storedTiles = new Map(jsPanel.extensions.getTextTileMap()); //PER TEST, POI VERRà PRESO DAL DB
 
     const openTiles = jsPanel.extensions.getTileMap();
-    this.loaderService.show();
+    if (!silent) { this.loaderService.show(); }
     this.workspaceService.saveWorkspaceStatus(Number(this.workspaceId!), storedData, openTiles).pipe(
       take(1),
       catchError((error: HttpErrorResponse) => {
         this.loaderService.hide();
+        if (onDone) {
+          this.commonService.warnBackendErrorOnce('saveLayout', error);
+          onDone(false);
+          return EMPTY;
+        }
         return this.commonService.throwHttpErrorAndMessage(error, 'Error saving workspace status');
       })
     ).subscribe(() => {
       this.workSaved = true;
       this.loaderService.hide();
+      if (onDone) {
+        onDone(true);
+        return;
+      }
+      // the save sets the "Last access" date: the list of workspaces (kept for the session) must show it
+      this.workspaceState.refresh();
     });
 
     // close panels, here we simply close all panels in the document
@@ -1365,10 +1445,15 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param textTileComponent angular component
    * @param startingRowIndex 
    */
-  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number, kwic: string, kwicOffsetStart: number, selectedLayer?: TLayer) {
-    const kwicOffsetEnd = kwicOffsetStart + kwic.length;
+  private setChangeSectionOperationInTextTile(textTileComponent: ComponentRef<WorkspaceTextWindowComponent>, startingRowIndex: number, kwic?: string, kwicOffsetStart?: number, selectedLayer?: TLayer) {
     textTileComponent.instance.startingRowIndex = startingRowIndex;
     textTileComponent.instance.scrollingDirection = ScrollingDirectionType.ChangingSection;
+    if (kwic === undefined || kwicOffsetStart === undefined) {
+      // only the row and the layer (no word to select): e.g. from the contexts of the dictionary preview
+      if (selectedLayer) { textTileComponent.instance.showLayer(selectedLayer); }
+      return;
+    }
+    const kwicOffsetEnd = kwicOffsetStart + kwic.length;
     if (selectedLayer) {
       textTileComponent.instance.initialKwicLayer = selectedLayer;
       textTileComponent.instance.pendingKwicOpen = { start: kwicOffsetStart, end: kwicOffsetEnd, text: kwic };
@@ -1473,10 +1558,16 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * Metodo che ridimensiona l'altezza del contenitore del workspace
    */
   private resizeContainerHeight() {
-    const height = window.innerHeight - ((this.wsMenuContainer?.nativeElement?.offsetHeight ?? 0) + 1);
+    const taskbarHeight = (document.querySelector('app-workspace-taskbar') as HTMLElement | null)?.offsetHeight ?? 0;
+    const height = window.innerHeight - ((this.wsMenuContainer?.nativeElement?.offsetHeight ?? 0) + 1) - taskbarHeight;
     if (this.container) {
       this.renderer.setStyle(this.container.nativeElement, 'height', `${height}px`);
     }
+  }
+
+  /** Titolo della finestra del testo: il nome del testo in minuscolo, senza il vecchio prefisso «Text - » (anche dei layout salvati). */
+  private static textWindowTitle(title: string): string {
+    return (title ?? '').replace(/^\s*text - /i, '').toLowerCase();
   }
 
   /**
@@ -1493,7 +1584,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       id: panelId,
       container: this.workspaceContainer,
-      headerTitle: 'Text - ' + title.toLowerCase(),
+      headerTitle: WorkspaceComponent.textWindowTitle(title),
       content: textWindowComponent,
       maximizedMargin: 5,
       dragit: { snap: false },
@@ -1583,11 +1674,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.2,
+        width: () => this.defaultPanelWidth(window.innerWidth * 0.2, this.EXPLORER_MIN_WIDTH),
         height: '60vh'
       },
       resizeit: {
-        minWidth: 250
+        minWidth: this.EXPLORER_MIN_WIDTH
       },
       headerControls: {
         add: {
@@ -1668,7 +1759,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.5,
+        width: () => this.defaultPanelWidth(window.innerWidth * 0.5, 800),
         height: '60vh'
       },
       headerControls: {
@@ -1737,6 +1828,32 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param searchPanelId {string} search tile identifier
    * @returns search tile configurations
    */
+  /** Default height of the search window: 705px (10 result rows fit), limited to the space of the workspace */
+  private defaultSearchPanelHeight(): number {
+    const available = (document.querySelector(this.workspaceContainer) as HTMLElement | null)?.clientHeight ?? window.innerHeight;
+    return Math.max(500, Math.min(705, available - 10));
+  }
+
+  /** Minimum width (and default minimum opening width) of the Lexicon Explorer and Dictionary Explorer windows */
+  private readonly EXPLORER_MIN_WIDTH = 350;
+
+  /**
+   * Default opening width of a window: the preferred one (usually a fraction of the browser window) but not less than
+   * `minimum`, and never more than the space of the workspace.
+   * @param preferred {number} preferred width in px
+   * @param minimum {number} minimum opening width in px
+   */
+  private defaultPanelWidth(preferred: number, minimum: number): number {
+    const available = (document.querySelector(this.workspaceContainer) as HTMLElement | null)?.clientWidth ?? window.innerWidth;
+    return Math.min(Math.max(preferred, minimum), available - 10);
+  }
+
+  /** Default width of the search window: 60% of the window but at least 1000px, limited to the width of the workspace */
+  private defaultSearchPanelWidth(): number {
+    const available = (document.querySelector(this.workspaceContainer) as HTMLElement | null)?.clientWidth ?? window.innerWidth;
+    return Math.max(830, Math.min(Math.max(1000, window.innerWidth * 0.6), available - 10));
+  }
+
   private generateSearchPanelConfiguration(searchPanelId: string) {
     let componentRef = this.vcr.createComponent(WorkspaceSearchTileComponent) as ComponentRef<WorkspaceSearchTileComponent> | null;
 
@@ -1758,7 +1875,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.6
+        width: () => this.defaultSearchPanelWidth()
       },
       resizeit: {
         minWidth: 830,
@@ -1832,11 +1949,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         borderRadius: '.33rem',
       },
       panelSize: {
-        width: () => window.innerWidth * 0.2,
+        width: () => this.defaultPanelWidth(window.innerWidth * 0.2, this.EXPLORER_MIN_WIDTH),
         height: '60vh'
       },
       resizeit: {
-        minWidth: 250
+        minWidth: this.EXPLORER_MIN_WIDTH
       },
       // headerControls: {
       //   add: {

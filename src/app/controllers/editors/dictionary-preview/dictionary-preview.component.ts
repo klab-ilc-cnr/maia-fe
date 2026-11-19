@@ -16,6 +16,8 @@ import { SearchAnnotationResult, SearchAnnotationResultRow } from 'src/app/model
 import { CommonService } from 'src/app/services/common.service';
 import { DictionaryPdfService, DictionaryPreviewPdfData } from 'src/app/services/dictionary-pdf.service';
 import { DictionaryService, DictionaryTraits } from 'src/app/services/dictionary.service';
+import { hasRichText } from 'src/app/helpers/rich-text';
+import { orderOtherWorksFrequencies } from 'src/app/helpers/other-works-frequencies';
 import { LexiconService } from 'src/app/services/lexicon.service';
 import { SearchAnnotationService } from 'src/app/services/search-annotation.service';
 
@@ -48,7 +50,8 @@ interface FormItemPreview {
 @Component({
   selector: 'app-dictionary-preview',
   templateUrl: './dictionary-preview.component.html',
-  styleUrls: ['./dictionary-preview.component.scss']
+  styleUrls: ['./dictionary-preview.component.scss'],
+  standalone: false
 })
 export class DictionaryPreviewComponent implements OnInit {
   private readonly CONTEXT_LENGTH = 20;
@@ -73,6 +76,35 @@ export class DictionaryPreviewComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private dictionaryPdfService: DictionaryPdfService
   ) { }
+
+  /**
+   * Opens the text of a context (row of an annotation table) at its row, with the semantic layer active.
+   * @param annotation {SearchAnnotationResultRow} the context row
+   */
+  public openContextInText(annotation: SearchAnnotationResultRow): void {
+    this.commonService.notifyOther({
+      option: 'onDictionaryPreviewRowDoubleClickEvent',
+      value: [annotation.textId, annotation.text, annotation.rowIndex]
+    });
+  }
+
+  /** Template helper: has the rich text value something to show? (empty parts of the preview are not drawn) */
+  public readonly hasRichText = hasRichText;
+
+  /** The etymology box is drawn only if at least one of its three fields has a value. */
+  get hasEtymology(): boolean {
+    const e = this.structuredNote?.etymology;
+    return !!e && (!!e.language || !!e.etymon || hasRichText(e.details));
+  }
+
+  /** Is there anything in the entry header besides the forms? (otherwise the divider and the empty box are not drawn) */
+  get hasHeaderDetails(): boolean {
+    const n = this.structuredNote;
+    if (!n) return false;
+    return !!this.firstAttestationLabel || !!n.firstAttestationDetails || n.decameronOccurrences > 0 || this.totalOccurrences > 0
+      || this.frequencies.length > 0 || this.hasEtymology || this.orderedSeeAlso.length > 0
+      || [n.linguisticsSemantics, n.decameron, n.firstAbsAttestation, n.boccaccioDante, n.crusche, n.polyrhematics].some(v => hasRichText(v));
+  }
 
   get ready(): boolean {
     return !!this.dictionaryEntry && !this.loading;
@@ -227,17 +259,26 @@ export class DictionaryPreviewComponent implements OnInit {
         );
         uniqueChildren.forEach((child, index) => {
           child.data!.index = (index + 1).toString();
-          if (child.children) {
-            child.children.forEach((grandChild, grandChildIndex) => {
-              if (grandChild.data) {
-                grandChild.data.index = `${child.data!.index}.${grandChildIndex + 1}`;
-              }
-            });
-          }
+          this.assignChildrenIndexes(child);
         });
         node.children = uniqueChildren;
       }
       return node;
+    });
+  }
+
+  /**
+   * Numbers the descendants of a meaning at every depth (1 -> 1.1 -> 1.1.1 -> ...).
+   * Only the nodes with data are counted: the empty placeholder node `{}` of the leaves has no number.
+   * @param parent {TreeNode<DictionaryPreviewItem>} node whose `data.index` is already set
+   */
+  private assignChildrenIndexes(parent: TreeNode<DictionaryPreviewItem>): void {
+    let position = 0;
+    (parent.children ?? []).forEach(child => {
+      if (!child.data) { return; }
+      position++;
+      child.data.index = `${parent.data!.index}.${position}`;
+      this.assignChildrenIndexes(child);
     });
   }
 
@@ -283,14 +324,45 @@ export class DictionaryPreviewComponent implements OnInit {
 
     this.searchAnnotationService.searchAnnotationBySense(request).pipe(
       take(1),
-      catchError(() => of(new SearchAnnotationResult()))
+      catchError((error: HttpErrorResponse) => {
+        console.error('Errore nel recupero dei contesti della accezione', meaning.referredEntity, error);
+        const failed = new SearchAnnotationResult();
+        failed.error = true;
+        return of(failed);
+      })
     ).subscribe(result => {
       result.first = request.start;
-      result.rows = senseChildMeaning.children![0].data?.searchAnnotation?.rows ?? this.defaultVisibleRows;
-      // Remove any existing annotation leaf nodes before adding the new one
-      const nonAnnotationChildren = (senseChildMeaning.children ?? []).filter(child => child.type !== 'annotation');
-      senseChildMeaning.children = [...this.buildAnnotationsLeaf(result), ...nonAnnotationChildren];
+      // The children are read from the CURRENT tree when the answer arrives, not from `senseChildMeaning`: that object may be
+      // outdated. The requests of all the senses start together and their answers come in any order: if the answer of a
+      // sub-sense (1.1) arrives before that of its parent (1), the parent would put back the old children of the time of
+      // the request and wipe the table already inserted in the sub-sense.
+      this.replaceNodeChildren(senseChildMeaning.key!, current => {
+        const currentLeaf = current.find(child => child.type === 'annotation');
+        result.rows = currentLeaf?.data?.searchAnnotation?.rows ?? this.defaultVisibleRows;
+        // Remove any existing annotation leaf nodes before adding the new one
+        return [...this.buildAnnotationsLeaf(result), ...current.filter(child => child.type !== 'annotation')];
+      });
     });
+  }
+
+  /**
+   * Replaces the children of the tree node with the given key, creating new objects only along the path to it.
+   * PrimeNG 20+ tree nodes are OnPush components: changing `node.children` in place is not detected (the annotation
+   * tables showed up only after a click inside the tree), a new node object is.
+   * @param key {string} key of the node to update
+   * @param buildChildren {Function} gets the CURRENT children of the node and returns the new ones
+   */
+  private replaceNodeChildren(
+    key: string,
+    buildChildren: (current: Array<TreeNode<DictionaryPreviewItem>>) => Array<TreeNode<DictionaryPreviewItem>>
+  ): void {
+    const update = (nodes: Array<TreeNode<DictionaryPreviewItem>>): Array<TreeNode<DictionaryPreviewItem>> => nodes.map(node => {
+      if (node.key === key) { return { ...node, children: buildChildren(node.children ?? []) }; }
+      if (!node.children?.length) { return node; }
+      const updated = update(node.children);
+      return updated.some((child, i) => child !== node.children![i]) ? { ...node, children: updated } : node;
+    });
+    this.senseLexicalEntriesTree = update(this.senseLexicalEntriesTree);
   }
 
   /**
@@ -380,21 +452,14 @@ export class DictionaryPreviewComponent implements OnInit {
   private retrieveHeaderEntryData(): void {
     this.structuredNote = new DictionaryNoteVocabo(this.dictionaryEntry.note);
 
-    this.structuredNote.frequencies.forEach((f) => {
-      this.dictionaryService.retrieveAuthorDocuments().pipe(
-        take(1),
-        catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
-      ).subscribe((data: TextualDocument[]) => {
-        let document = data.filter((item: TextualDocument) => item.code === f.documentId)[0] || null;
-        this.frequencies.push({ documentLabel: document?.title || '', frequency: f.frequency });
-      });
-    });
-
+    // one request for the list of works: it gives the label and the position of each "occurrences in other works" row
+    // (shown in the order of the works list, not of the note) and the label of the first attestation
     this.dictionaryService.retrieveAuthorDocuments().pipe(
       take(1),
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, error.error.message))
     ).subscribe((data: TextualDocument[]) => {
-      this.firstAttestationLabel = data.filter((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)[0]?.title || '';
+      this.frequencies = orderOtherWorksFrequencies(this.structuredNote.frequencies, data);
+      this.firstAttestationLabel = data.find((item: TextualDocument) => item.code === this.structuredNote.firstAttestation)?.title || '';
     });
 
     this.dictionaryService.retrieveDictionaryTraits(this.dictionaryEntry.id).pipe(

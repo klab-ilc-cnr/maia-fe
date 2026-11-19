@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { decode } from 'html-entities';
 import { MessageService, SelectItem, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, debounceTime, forkJoin, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
@@ -20,13 +20,21 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
+/** Pause (ms) after the last change of a filter before the list is requested again. */
+const FILTER_PAUSE_MS = 400;
+
 @Component({
   selector: 'app-workspace-lexicon-tile',
   templateUrl: './workspace-lexicon-tile.component.html',
-  styleUrls: ['./workspace-lexicon-tile.component.scss']
+  styleUrls: ['./workspace-lexicon-tile.component.scss'],
+  standalone: false
 })
 export class WorkspaceLexiconTileComponent implements OnInit {
   private readonly unsubscribe$ = new Subject();
+  /** Load requests: only the latest one counts (a slow older response, e.g. the first full list, must not replace a newer filtered one). */
+  private readonly load$ = new Subject<void>();
+  /** Filter changes (typing, mode, selects): grouped in a single request after a short pause (same pause as the Dictionary Explorer). */
+  private readonly filter$ = new Subject<void>();
   /**Defines whether an element should be hidden/disabled in the demo version */
   demoHide = environment.demoHide;
   isUploadLexiconVisible = false;
@@ -299,18 +307,43 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo dell'interfaccia OnInit, utilizzato per l'inizializzazione di vari aspetti del componente (inizializzazione colonne, sottoscrizione ai common service, etc) */
   ngOnInit(): void {
+    this.load$.pipe(
+      // switchMap cancels the request still in flight when a new one starts, so the responses cannot arrive out of order
+      switchMap(() => this.lexiconService.getLexicalEntriesList(this.parameters).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.loading = false;
+          this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error?.message ?? error.message));
+          return EMPTY; // the stream of loads stays alive
+        }),
+      )),
+      takeUntil(this.unsubscribe$),
+    ).subscribe((data: LexicalEntriesResponse) => {
+      this.results = data.list.map((val: LexicalEntryListItem) => this.mapLexicalEntryListItemToTreeNode(val));
+      this.counter = data.totalHits;
+      this.loading = false;
+      this.pendingFilters = false;
+    });
+    this.filter$.pipe(
+      debounceTime(FILTER_PAUSE_MS),
+      takeUntil(this.unsubscribe$),
+    ).subscribe(() => {
+      this.updateFilterParameters();
+      this.loadNodes();
+    });
+
     this.globalState.languages$.pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(l => {
       this.languages = l;
       this.lang.setValue(this.languages[0].label);
     })
+    // Name takes the remaining width (the note icon is shown inside the name cell); the icon columns have a fixed
+    // width so the icons stay together on the right whatever the width of the panel (percentages spread them apart).
     this.cols = [
-      { field: 'name', header: '', width: '60%', display: 'true' },
-      { field: 'note', width: '10%', display: 'true' },
-      { field: 'isDescribedByLexicographicComponent', header: 'Component', width: '10%', display: 'true' },
-      { field: 'creator', header: 'Autore', width: '10%', display: 'true' },
-      { field: 'status', header: 'Stato', width: '10%', display: 'true' },
+      { field: 'name', header: '' },
+      { field: 'isDescribedByLexicographicComponent', header: 'Component', width: '2.5rem' },
+      { field: 'creator', header: 'Autore', width: '2.5rem' },
+      { field: 'status', header: 'Stato', width: '2.5rem' },
     ];
 
     this.commonService.notifyObservable$.pipe(
@@ -353,20 +386,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
   /**Metodo che esegue il caricamento dei nodi */
   loadNodes() {
     this.loading = true;
-
-    this.lexiconService.getLexicalEntriesList(this.parameters).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
-        return throwError(() => new Error(error.error));
-      }),
-    ).subscribe((data: LexicalEntriesResponse) => {
-      this.results = [];
-      this.results = data.list.map((val: LexicalEntryListItem) => this.mapLexicalEntryListItemToTreeNode(val));
-      this.counter = data.totalHits;
-
-      this.loading = false;
-      this.pendingFilters = false;
-    });
+    this.load$.next();
   }
 
   /**Metodo che, per ogni nodo dell'albero, sostituisce in visualizzazione la sua label con l'instanceName o viceversa */
@@ -670,9 +690,7 @@ export class WorkspaceLexiconTileComponent implements OnInit {
 
   /**Metodo che aggiorna i parametri di filtro ed esegue un caricamento filtrato delle entrate lessicali */
   filter() {
-    this.updateFilterParameters();
-
-    this.loadNodes();
+    this.filter$.next();
   }
 
   /**Metodo che resetta i filtri e segnala come siano presenti filtri pendenti (abilitando il bottone di filtro) */
@@ -907,7 +925,9 @@ export class WorkspaceLexiconTileComponent implements OnInit {
     const lexEntryIndex = this.results.findIndex(node => node.data?.instanceName === lexicalEntryId);
     this.dictionaryService.retrieveDictionariesByLexicalEntryId(lexicalEntryId).pipe(
       take(1),
-      catchError(() => {
+      catchError((error: unknown) => {
+        // without the answer the indicator stays off, which does not mean "not described": tell the user
+        this.commonService.warnBackendErrorOnce('dictionaryLinks', error);
         this.results[lexEntryIndex].data!.isDescribedByLexicographicComponent = false;
         return of([]);
       }),

@@ -10,7 +10,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
 @Component({
   selector: 'app-dictionary-entry-referral-editor',
   templateUrl: './dictionary-entry-referral-editor.component.html',
-  styleUrls: ['./dictionary-entry-referral-editor.component.scss']
+  styleUrls: ['./dictionary-entry-referral-editor.component.scss'],
+  standalone: false
 })
 export class DictionaryEntryReferralEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

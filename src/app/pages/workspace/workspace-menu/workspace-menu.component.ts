@@ -7,7 +7,8 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-workspace-menu',
   templateUrl: './workspace-menu.component.html',
-  styleUrls: ['./workspace-menu.component.scss']
+  styleUrls: ['./workspace-menu.component.scss'],
+  standalone: false
 })
 export class WorkspaceMenuComponent {
   /**Input della lista degli elementi del menu */

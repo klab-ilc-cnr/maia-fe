@@ -2,7 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { Observable, Subject, catchError, concat, debounceTime, distinctUntilChanged, last, lastValueFrom, take, takeUntil } from 'rxjs';
+import { TreeTableNodeExpandEvent } from 'primeng/treetable';
+import { EMPTY, Observable, Subject, catchError, concat, debounceTime, last, lastValueFrom, merge, switchMap, take, takeUntil } from 'rxjs';
 import { EventsConstants } from 'src/app/constants/events-constants';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
 import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.model';
@@ -20,13 +21,19 @@ export enum DICTIONARY_NODE {
   entry = 'ENTRY',
   lemma = 'LEMMA'
 }
+/** Pause (ms) after the last change of a filter before the list is requested again. */
+const FILTER_PAUSE_MS = 400;
+
 @Component({
   selector: 'app-workspace-dictionary-tile',
   templateUrl: './workspace-dictionary-tile.component.html',
   styleUrls: ['./workspace-dictionary-tile.component.scss'],
+  standalone: false
 })
 export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
+  /** Load requests: only the latest one counts (a slow older response, e.g. the first full list, must not replace a newer filtered one). */
+  private readonly load$ = new Subject<void>();
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
   /**Number of rows (nodes) to be retrieved */
   rows = 5000;
@@ -119,24 +126,38 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Label takes the remaining width; the icon columns have a fixed width so the icons stay together on the right
+    // whatever the width of the panel (percentages spread them apart and cut the add button).
     this.cols = [
-      { field: 'label', header: '', width: '70%', display: 'true' },
-      { field: 'creator', width: '10%', display: 'true' },
-      { field: 'status', header: 'Autore', width: '10%', display: 'true' },
-      { field: 'add', header: 'Stato', width: '10%', display: 'true' },
+      { field: 'label', header: '' },
+      { field: 'creator', width: '2.5rem' },
+      { field: 'status', header: 'Autore', width: '2.5rem' },
+      { field: 'add', header: 'Stato', width: '3rem' },
     ];
 
-    this.searchTextForm.valueChanges.pipe(
+    this.load$.pipe(
+      // switchMap cancels the request still in flight when a new one starts, so the responses cannot arrive out of order
+      switchMap(() => this.dictionaryService.retrieveLexicogEntryList(this.lexicogRequest).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.loading = false;
+          // the message is shown; the stream of loads stays alive
+          return this.commonService.throwHttpErrorAndMessage(error, error.error.message).pipe(catchError(() => EMPTY));
+        }),
+      )),
       takeUntil(this.unsubscribe$),
-      debounceTime(500),
-      distinctUntilChanged(),
-    ).subscribe(() => {
-      this.createFilters(true);
+    ).subscribe(resp => {
+      this.lexicogEntries = resp.list.map(entry => this.mapLexicogEntryToTreenode(entry));
+      this.counter = resp.totalHits;
+      this.loading = false;
     });
-    this.filtersForm.valueChanges.pipe(
+
+    // text and filters in a single stream with one pause: a reset (which changes both forms) or any combination of changes
+    // makes a single request, with all the current values
+    merge(this.searchTextForm.valueChanges, this.filtersForm.valueChanges).pipe(
       takeUntil(this.unsubscribe$),
+      debounceTime(FILTER_PAUSE_MS),
     ).subscribe(() => {
-      this.createFilters(false);
+      this.createFilters();
     });
 
     this.commonService.notifyObservable$.pipe(
@@ -168,17 +189,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
 
   loadNodes() {
     this.loading = true;
-    this.dictionaryService.retrieveLexicogEntryList(this.lexicogRequest).pipe(
-      takeUntil(this.unsubscribe$),
-      catchError((error: HttpErrorResponse) => {
-        this.loading = false;
-        return this.commonService.throwHttpErrorAndMessage(error, error.error.message);
-      }),
-    ).subscribe(resp => {
-      this.lexicogEntries = resp.list.map(entry => this.mapLexicogEntryToTreenode(entry));
-      this.counter = resp.totalHits;
-      this.loading = false;
-    })
+    this.load$.next();
   }
 
   onAddAssociateLemmas(dictionaryEntry: DictionaryEntry, lemmas: { lemma: string, pos: string, type: string[], isFromLexicon: boolean }[]) {
@@ -252,7 +263,7 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
    * @param event {{originalEvent: PointerEvent, node: TreeNode<any>}} event emitted on the expansion of a node
    * @returns {void}
    */
-  onFetchChildren(event: { originalEvent: PointerEvent, node: TreeNode<any> }) {
+  onFetchChildren(event: TreeTableNodeExpandEvent) {
     this.loading = true;
     const dictionaryId = event.node.data?.id;
     console.info(dictionaryId)
@@ -396,18 +407,15 @@ export class WorkspaceDictionaryTileComponent implements OnInit, OnDestroy {
     })
   }
 
-  private createFilters(isSearchInput: boolean) {
-    if (isSearchInput) {
-      this.lexicogRequest.text = this.searchTextForm.get('search')?.value || '';
-    } else {
-      const values = this.filtersForm.value;
-      if (values.match) {
-        this.lexicogRequest.searchMode = values.match;
-      }
-      this.lexicogRequest.author = values.editor || '';
-      this.lexicogRequest.lang = values.language || '';
-      this.lexicogRequest.status = values.status || '';
+  private createFilters() {
+    this.lexicogRequest.text = this.searchTextForm.get('search')?.value || '';
+    const values = this.filtersForm.value;
+    if (values.match) {
+      this.lexicogRequest.searchMode = values.match;
     }
+    this.lexicogRequest.author = values.editor || '';
+    this.lexicogRequest.lang = values.language || '';
+    this.lexicogRequest.status = values.status || '';
     this.loadNodes();
   }
 

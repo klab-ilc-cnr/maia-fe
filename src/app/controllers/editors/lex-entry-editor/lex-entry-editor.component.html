@@ -23,14 +23,14 @@
     </div>
     <div class="field col-4">
       <label for="language">Language</label>
-      <p-dropdown [options]="(languages$ | async) || []" optionLabel="label" optionValue="label" styleClass="w-full"
+      <p-select [options]="(languages$ | async) || []" optionLabel="label" optionValue="label" styleClass="w-full"
         [placeholder]="emptyField" [filter]="true" filterBy="label" name="language"
-        formControlName="language"></p-dropdown>
+        formControlName="language"></p-select>
     </div>
     <div class="field col-6">
       <label for="pos">Part-of-Speech</label>
-      <p-dropdown [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId" [filter]="true"
-        filterBy="valueLabel" [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-dropdown>
+      <p-select [options]="(pos$|async) || []" optionLabel="valueLabel" optionValue="valueId" [filter]="true"
+        filterBy="valueLabel" [placeholder]="emptyField" formControlName="pos" name="pos" styleClass="w-full"></p-select>
     </div>
     <div class="field col-6">
       <label for="type">Type</label>

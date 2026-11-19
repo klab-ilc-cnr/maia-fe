@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { TFeature } from '../models/texto/t-feature';
+import { LayerService } from './layer.service';
 /**Class of feature-related services */
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class FeatureService {
    * Constructor for FeatureService
    * @param http {HttpClient} Performs HTTP requests
    */
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private layerService: LayerService) {
     this.textoUrl = environment.maiaBeTextoUrl;
   }
 
@@ -27,11 +28,11 @@ export class FeatureService {
    */
   public createFeature(newFeature: TFeature): Observable<TFeature> {
     const uuid = uuidv4();
-    return this.http.post<TFeature>(
+    return this.invalidating(this.http.post<TFeature>(
       `${this.textoUrl}/feature/create`,
       newFeature,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
-    );
+    ));
   }
 
   /**
@@ -41,10 +42,10 @@ export class FeatureService {
    */
   public removeFeatureById(featureId: number): Observable<TFeature> {
     const uuid = uuidv4();
-    return this.http.delete<TFeature>(
+    return this.invalidating(this.http.delete<TFeature>(
       `${this.textoUrl}/feature/${featureId}/remove`,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
-    );
+    ));
   }
 
   /**
@@ -54,10 +55,15 @@ export class FeatureService {
    */
   public updateFeature(updatedFeature: TFeature): Observable<TFeature> {
     const uuid = uuidv4();
-    return this.http.post<TFeature>(
+    return this.invalidating(this.http.post<TFeature>(
       `${this.textoUrl}/feature/update`,
       updatedFeature,
       { headers: new HttpHeaders({ 'UUID': uuid }) },
-    );
+    ));
+  }
+
+  /** A change of a feature invalidates the cached features of the layers */
+  private invalidating<T>(request: Observable<T>): Observable<T> {
+    return request.pipe(tap(() => this.layerService.clearCache()));
   }
 }

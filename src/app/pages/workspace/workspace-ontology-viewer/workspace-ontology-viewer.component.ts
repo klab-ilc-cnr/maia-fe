@@ -4,7 +4,8 @@ import { TileType } from 'src/app/models/tile/tile-type.model';
 @Component({
   selector: 'app-workspace-ontology-viewer',
   templateUrl: './workspace-ontology-viewer.component.html',
-  styleUrls: ['./workspace-ontology-viewer.component.scss']
+  styleUrls: ['./workspace-ontology-viewer.component.scss'],
+  standalone: false
 })
 export class WorkspaceOntologyViewerComponent implements OnInit {
 

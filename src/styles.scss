@@ -1,23 +1,9 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
-// @import url('https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+// Le librerie CSS esterne (Bootstrap, jsPanel, icone, PrimeFlex, Quill) sono in src/styles/vendor.css,
+// le variabili del vecchio tema saga-blue in src/styles/saga-variables.css. Ordine dei layer: src/styles/README-layer.md
+@use "./assets/scss/variables" as *;
+@use "./assets/scss/mixins" as *;
 
-@import "../node_modules/primeng/resources/primeng.min.css";
-@import "../node_modules/primeicons/primeicons.css";
-@import url('~primeng/resources/themes/saga-blue/theme.css');
-@import url('~bootstrap/dist/css/bootstrap.min.css');
-@import url('~font-awesome/css/font-awesome.min.css');
-@import url('~jspanel4/dist/jspanel.min.css');
-@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
-@import "./assets/scss/variables";
-@import "./assets/scss/mixins";
-@import "../node_modules/primeflex/primeflex.css";
-
-@font-face { //TODO opzione con font caricato negli asset
-  font-family: "Cousine";
-  src: url("assets/fonts/cousine/Cousine-Regular.ttf");
-}
-
+// Variabili dell'app, senza layer e dopo saga-variables.css: ridefiniscono --primary-color e --focus-ring (rosso MAIA).
 :root {
   --primary-color: #{$redPalette2};
   --focus-ring: 0 0 0 0.2rem #{$redPalette3};
@@ -28,6 +14,17 @@
   --arc-font-family:'PT Sans Caption';
   --arc-font-size:11px;
 }
+
+@font-face { //TODO opzione con font caricato negli asset
+  font-family: "Cousine";
+  src: url("assets/fonts/cousine/Cousine-Regular.ttf");
+}
+
+
+// Regole sugli elementi HTML (*, body, a, p, h1...): layer "base", insieme a Bootstrap & co. e sotto PrimeNG.
+// Stesso layer di Bootstrap: `.form-label` vince ancora su `p`; sotto PrimeNG: `a { color }` non colora i tab.
+// Il resto del file non ha layer e vince su PrimeNG, come gli stili dei componenti. Vedi src/styles/README-layer.md.
+@layer base {
 
 // MAIN
 * {
@@ -68,6 +65,8 @@ a:hover {
   color: $redPalette1;
 }
 
+} // fine @layer base
+
 .layout-theme-light {
   background-color: #edf1f5;
 }
@@ -90,7 +89,7 @@ a:hover {
   .layout-topbar-logo {
     display: flex;
     align-items: center;
-    color: var(--surface-900);
+    color: var(--primary-color); // come il titolo nei workspace (workspace-menu)
     font-size: 1.5rem;
     font-weight: 500;
     width: 300px;
@@ -418,7 +417,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 1rem;
+  padding: 1rem 1rem 0;
   border-top: 1px solid var(--surface-border);
 }
 
@@ -475,6 +474,8 @@ a:hover {
     overflow: hidden;
   }
 }
+
+@layer base {
 
 // TIPOGRAPHY
 h1, h2, h3, h4, h5, h6 {
@@ -542,6 +543,8 @@ p {
   }
 }
 
+} // fine @layer base
+
 // UTILS
 .card {
   background-color: var(--surface-card);
@@ -590,26 +593,21 @@ p {
   }
 }
 
-.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+// PrimeNG 18+: classi di stato per componente al posto di .p-highlight
+.p-paginator .p-paginator-page.p-paginator-page-selected {
   background: $redPalette5;
   border-color: $redPalette5;
   color: $redPalette3;
 }
 
-.p-datatable .p-sortable-column.p-highlight {
+.p-datatable .p-datatable-sortable-column.p-datatable-column-sorted {
   color: $redPalette3;
 
   &:hover {
     color: $redPalette3;
   }
-}
 
-.p-datatable .p-sortable-column.p-highlight, .p-datatable .p-sortable-column.p-highlight:hover {
-  color: $redPalette3;
-}
-
-.p-datatable .p-sortable-column.p-highlight {
-  .p-sortable-column-icon, &:hover .p-sortable-column-icon {
+  .p-datatable-sort-icon, &:hover .p-datatable-sort-icon, .p-sortable-column-icon, &:hover .p-sortable-column-icon {
     color: $redPalette3;
   }
 }
@@ -619,12 +617,12 @@ p {
   border: 0;
 }
 
-.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
+.p-datatable.p-datatable-hoverable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover {
   background: $redPalette6;
   color: $redPalette7;
 }
 
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+.p-select-overlay .p-select-option.p-select-option-selected {
   background: $redPalette5;
   color: $redPalette3;
 }
@@ -632,8 +630,8 @@ p {
 .cross-validation-error input,
 input.ng-invalid.ng-touched,
 p-radioButton.ng-invalid.ng-touched .p-radiobutton-box,
-p-dropdown.ng-invalid.ng-touched > .p-dropdown,
-p-treeselect.ng-invalid.ng-touched > .p-treeselect,
+p-select.ng-invalid.ng-touched, // PrimeNG 18+ (select) e 20+ (treeselect): l'host e' il componente
+p-treeselect.ng-invalid.ng-touched,
 p-inputnumber.ng-invalid.ng-touched  input,
 input[type="file"].form-control.is-invalid {
   border-left: 5px solid $errorRed;
@@ -645,6 +643,7 @@ input[type="file"].form-control.is-invalid {
 p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   border-radius: 100%
 }
+
 .invalid-feedback,
 .invalid-feedback.invalid-feedback-show,
 .form-control.ng-invalid.ng-touched ~ .invalid-feedback,
@@ -812,4 +811,21 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   vertical-align: middle;
   margin-right: 0.5rem;
   transform: rotate(45deg);
+}
+
+/* Selettore "Visibility" dei layer del pannello Text: la checkbox dell'intestazione funziona solo come "deseleziona tutto"
+   (selezionare tutti i layer insieme genera moltissime richieste); senza layer selezionati non ha effetto: la si mostra spenta. */
+.layer-visibility-panel-empty .p-multiselect-header .p-checkbox {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+// Tooltip with the full definition of a sense (Lexicon Editor tree): the default tooltip is narrow (12.5rem)
+.p-tooltip.sense-definition-tooltip {
+  max-width: min(32rem, 90vw);
+
+  .p-tooltip-text {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }

@@ -1,4 +1,4 @@
-@import "../../../../assets/scss/variables";
+@use "../../../../assets/scss/variables" as *;
 
 .css-serial {
   counter-reset: serial-number;
@@ -57,9 +57,22 @@
 .highlight rect {
   opacity: 0.3;
 
+  // mouse over the handle of the annotation: its text is evidenced (one rect per line)
   &.over {
     opacity: 0.6;
+    stroke: #1e4d8c;
+    stroke-width: 1.5px;
   }
+}
+
+.span rect {
+  cursor: pointer;
+}
+
+// annotated text: a click opens the annotation (class toggled by the component while the mouse is over a highlight)
+.text-editor.over-annotation text,
+.text-editor.over-annotation tspan {
+  cursor: pointer;
 }
 
 .span path.curly {
@@ -136,9 +149,16 @@ path {
 }
 
 :host ::ng-deep .multiselect-custom {
+  // il campo ha altezza fissa (layerVisibilityHeight): testo segnaposto e chip del layer centrati in verticale
+  // (con il padding verticale del label il chip veniva tagliato in basso e il testo restava in alto)
+  .p-multiselect-label-container {
+    display: flex;
+    align-items: center;
+  }
+
   .p-multiselect-label {
-    padding-top: .5rem;
-    padding-bottom: .5rem;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .layer-item-value {
@@ -147,7 +167,10 @@ path {
     padding: .25rem .5rem;
     border-radius: 3px;
     display: inline-flex;
+    align-items: center;
     margin-right: .5rem;
+
+    i { line-height: 1; }
   }
 
   .layer-placeholder {
@@ -207,7 +230,7 @@ a.collapse-btn-right {
   padding: 1rem 1.3rem 1rem 1rem;
 }
 
-:host::ng-deep.p-treenode-label {
+:host::ng-deep.p-tree-node-label {
   white-space: nowrap;
 }
 

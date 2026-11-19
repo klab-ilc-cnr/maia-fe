@@ -13,3 +13,9 @@
 span[formGroupName="entryNote"] {
     display: contents;
 }
+// il numero delle occorrenze totali sta a centro dell'altezza del campo accanto (p-inputNumber), non sotto l'etichetta
+.total-occurrences {
+    display: flex;
+    align-items: center;
+    height: 2.65rem;
+}

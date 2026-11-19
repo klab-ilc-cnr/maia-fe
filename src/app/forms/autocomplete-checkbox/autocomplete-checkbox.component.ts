@@ -5,7 +5,8 @@ import { BehaviorSubject, Observable, debounceTime, switchMap } from 'rxjs';
 @Component({
   selector: 'app-autocomplete-checkbox',
   templateUrl: './autocomplete-checkbox.component.html',
-  styleUrls: ['./autocomplete-checkbox.component.scss']
+  styleUrls: ['./autocomplete-checkbox.component.scss'],
+  standalone: false
 })
 export class AutocompleteCheckboxComponent {
   /**Nome della proprietà sulla quale eseguire la ricerca dell'autocomplete */

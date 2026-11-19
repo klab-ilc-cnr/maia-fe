@@ -10,7 +10,8 @@ import { IconBaseComponent } from '../icon-base/icon-base.component';
   selector: 'app-icon-move',
   templateUrl: '../icon-base/icon-base.component.html',
   styleUrls: ['../icon-base/icon-base.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class IconMoveComponent extends IconBaseComponent implements OnInit {
 

@@ -1,4 +1,47 @@
 {
+    "BACKEND_ERROR": {
+        "title": "Server error",
+        "entryLabel": "Could not retrieve the name of a lexical entry from the server: its identifier is shown instead.",
+        "initialValue": "Could not retrieve the value of a field from the server: the saved value is shown instead.",
+        "dictionaryLinks": "Could not check with the server whether the lexical entries are described in the dictionary: the indicator may be incomplete.",
+        "saveLayout": "Could not save the layout of the workspace windows: it will be tried again at the next change and when leaving the workspace.",
+        "tooltip": "Content could not be loaded. Please try again."
+    },
+    "SESSION": {
+        "expiredTitle": "Session expired",
+        "expiredText": "Your session has expired and the server no longer accepts requests. Please log in again to continue: unsaved changes are lost."
+    },
+    "RICH_EDITOR": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "underline": "Underline",
+        "align": "Alignment",
+        "link": "Link",
+        "specialChars": "Special characters",
+        "moreFormats": "More formats",
+        "clean": "Clear formatting",
+        "superscript": "Superscript",
+        "subscript": "Subscript",
+        "strike": "Strikethrough",
+        "bulletList": "Bulleted list",
+        "orderedList": "Numbered list",
+        "chars": {
+            "laquo": "Opening guillemet «",
+            "raquo": "Closing guillemet »",
+            "ndash": "En dash –",
+            "Egrave": "Capital È",
+            "rsquo": "Typographic apostrophe ’",
+            "Agrave": "Capital À",
+            "Eacute": "Capital É",
+            "Igrave": "Capital Ì",
+            "Ograve": "Capital Ò",
+            "Ugrave": "Capital Ù",
+            "ldquo": "Opening double quote “",
+            "rdquo": "Closing double quote ”",
+            "hellip": "Ellipsis …",
+            "mdash": "Em dash —"
+        }
+    },
     "GENERAL": {
         "add": "Add",
         "backToList": "Back to list",
@@ -69,6 +112,7 @@
         },
         "PREVIEW_TAB": {
             "title": "Preview",
+            "occurrencesError": "Unable to retrieve the occurrences (server error): reopen the preview to try again.",
             "forms": "Forms",
             "entryHeader": "Entry header",
             "entryBody": "Body of the entry",
@@ -181,8 +225,11 @@
         "username": "Username or E-mail"
     },
     "TAGSET_MANAGER": {
+        "aboutDeleteDefaultTagsetValue": "You are about to delete the tagset value ${tagsetValueName}, which is the default value of the tagset: the default will be removed",
         "aboutDeleteTagset": "You are about to delete the tagset ${tagsetName}",
         "aboutDeleteTagsetValue": "You are about to delete the tagset value ${tagsetValueName}",
+        "default": "Default",
+        "defaultValue": "Default value",
         "description": "Description",
         "editTagset": "Edit tagset",
         "enterNameTagsetValue": "Need to enter the name of the tagset value",
@@ -192,6 +239,8 @@
         "newTagset": "New tagset",
         "newTagsetValue": "New tagset value",
         "newValue": "New value",
+        "removeDefault": "Remove the default value",
+        "setDefault": "Set as default value (preselected in new annotations)",
         "tagsetManager": "Tagset manager",
         "tagsetName": "Tagset name",
         "tagsetSameName": "A tagset with this name already exists",
@@ -203,10 +252,13 @@
     "TAGSET_STATE": {
         "addedTagsetItem": "Tagset item added",
         "addingTagsetItemFailed": "Adding item to tagset failed: ${errorMessage}",
+        "defaultRemoved": "Default value removed",
+        "defaultSet": "Default value set",
         "fetchingTagsetFailed": "Fetching tagset failed: ${errorMessage}",
         "fetchingTagsetItemsFailed": "Fetching tagset items failed: ${errorMessage}",
         "removedTagsetItem": "Tagset item removed",
         "removingTagsetItemFailed": "Removing tagset item failed: ${errorMessage}",
+        "updatingDefaultFailed": "Updating the default value failed: ${errorMessage}",
         "updatedTagsetItem": "Tagset item updated",
         "updatingTagsetItemFailed": "Updating tagset item failed: ${errorMessage}"
     },
@@ -344,6 +396,13 @@
         "directImports": "Direct Imports",
         "indirectImports": "Indirect Imports"
     },
+    "TASKBAR": {
+        "label": "Open windows",
+        "restore": "Restore",
+        "minimize": "Minimize",
+        "maximize": "Maximize",
+        "close": "Close"
+    },
     "SEARCH": {
         "insertForm": "insert form",
         "insertLemma": "insert lemma",
@@ -354,6 +413,11 @@
         "validSearchValue": "insert a value",
         "numberOfResults": "Number of results",
         "selected": "Selected",
+        "annotateHint": {
+            "noResults": "Run a search first",
+            "noLayer": "To annotate, choose a layer and run the search again",
+            "noRows": "Select at least one result row to annotate"
+        },
         "selectFile": "Select file",
         "exportAll": "Export all",
         "exportSelected": "Export selected",

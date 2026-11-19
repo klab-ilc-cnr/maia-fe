@@ -4,7 +4,8 @@ import { DictionaryEntry } from 'src/app/models/dictionary/dictionary-entry.mode
 @Component({
   selector: 'app-workspace-dictionary-editor-tile',
   templateUrl: './workspace-dictionary-editor-tile.component.html',
-  styleUrls: ['./workspace-dictionary-editor-tile.component.scss']
+  styleUrls: ['./workspace-dictionary-editor-tile.component.scss'],
+  standalone: false
 })
 export class WorkspaceDictionaryEditorTileComponent implements OnInit {
   public panelId!: string;

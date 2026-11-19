@@ -5,7 +5,8 @@ import { TextChoice } from 'src/app/models/tile/text-choice-element.model';
 @Component({
   selector: 'app-workspace-text-selector',
   templateUrl: './workspace-text-selector.component.html',
-  styleUrls: ['./workspace-text-selector.component.scss']
+  styleUrls: ['./workspace-text-selector.component.scss'],
+  standalone: false
 })
 export class WorkspaceTextSelectorComponent implements OnInit {
 

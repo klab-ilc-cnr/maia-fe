@@ -4,7 +4,8 @@ import { User } from '../models/user';
  * Defines whether the element is editable if the user is an administrator or the element is owned by the user
  */
 @Pipe({
-  name: 'shouldBeEditable'
+  name: 'shouldBeEditable',
+  standalone: false
 })
 export class ShouldBeEditablePipe implements PipeTransform {
 

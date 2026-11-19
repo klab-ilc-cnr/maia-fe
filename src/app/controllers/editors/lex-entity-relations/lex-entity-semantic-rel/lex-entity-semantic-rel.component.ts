@@ -17,7 +17,8 @@ interface AutoCompleteCompleteEvent {
 @Component({
   selector: 'app-lex-entity-semantic-rel',
   templateUrl: './lex-entity-semantic-rel.component.html',
-  styleUrls: ['./lex-entity-semantic-rel.component.scss']
+  styleUrls: ['./lex-entity-semantic-rel.component.scss'],
+  standalone: false
 })
 export class LexEntitySemanticRelComponent implements OnInit {
 

@@ -17,7 +17,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 @Component({
   selector: 'app-form-core-editor',
   templateUrl: './form-core-editor.component.html',
-  styleUrls: ['./form-core-editor.component.scss']
+  styleUrls: ['./form-core-editor.component.scss'],
+  standalone: false
 })
 export class FormCoreEditorComponent implements OnInit, OnDestroy {
   readonly translatePrefix = 'LEXICON_EDITOR.FORM';

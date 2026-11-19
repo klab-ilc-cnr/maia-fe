@@ -6,7 +6,8 @@ import { BaseLexEntityEditorComponent } from '../lex-entity-relations/base-lex-e
 @Component({
   selector: 'app-lex-sense-relations-editor',
   templateUrl: './lex-sense-relations-editor.component.html',
-  styleUrls: ['./lex-sense-relations-editor.component.scss']
+  styleUrls: ['./lex-sense-relations-editor.component.scss'],
+  standalone: false
 })
 export class LexSenseRelationsEditorComponent extends BaseLexEntityEditorComponent implements OnInit {
   @Input() senseEntry!: SenseCore;

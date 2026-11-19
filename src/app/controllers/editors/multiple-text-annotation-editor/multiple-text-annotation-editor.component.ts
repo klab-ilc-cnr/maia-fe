@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, forkJoin, map, take, takeUntil, of } from 'rxjs';
+import { Observable, Subject, forkJoin, map, shareReplay, take, takeUntil, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { applyDefaultTagsetValues } from 'src/app/helpers/annotation-defaults.helper';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -41,9 +42,22 @@ export interface MultipleAnnotationFeature {
 @Component({
   selector: 'app-multiple-text-annotation-editor',
   templateUrl: './multiple-text-annotation-editor.component.html',
-  styleUrls: ['./multiple-text-annotation-editor.component.scss']
+  styleUrls: ['./multiple-text-annotation-editor.component.scss'],
+  standalone: false
 })
-export class MultipleTextAnnotationEditorComponent implements OnDestroy {
+export class MultipleTextAnnotationEditorComponent implements OnChanges, OnDestroy {
+
+  /**
+   * The form is built here and not in the setter of `visible`: all the other inputs (mode, layer, offsets) are set already,
+   * whatever their order in the template is (with the layer data in memory the form was built before them, with the values
+   * of the previous opening).
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visible'] && this._visible) {
+      this.initOnOpen();
+    }
+  }
+
   private readonly unsubscribe$ = new Subject();
   private _layerId?: number;
   private _layerColor?: string;
@@ -124,9 +138,6 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
   @Input()
   set visible(value: boolean) {
     this._visible = value;
-    if (value) {
-      this.initOnOpen();
-    }
   }
   get visible(): boolean {
     return this._visible;
@@ -588,8 +599,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
    */
   private fetchAndMapFeatures(layerId: number) {
     forkJoin({
-      layer: this.layerService.retrieveLayerById(layerId),
-      features: this.layerService.retrieveLayerFeatureList(layerId),
+      layer: this.layerService.retrieveLayerByIdCached(layerId),
+      features: this.layerService.retrieveLayerFeatureListCached(layerId),
     }).pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(response => {
@@ -598,7 +609,8 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
         const tagsetId = feature.tagset?.id;
         return <FeatForAnn>{
           feature: feature,
-          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId) : undefined,
+          // shareReplay: the select (async pipe) and the default value share one request
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsByIdCached(tagsetId) : undefined,
           checked: true // default value for checked
         };
       });
@@ -606,6 +618,9 @@ export class MultipleTextAnnotationEditorComponent implements OnDestroy {
 
       if (!this.deleteMode && !this.editMode) {
         this.onClearBtn();
+        // new annotations: preselect the default value of the tagset fields (e.g. "Parola monorematica"); the
+        // user can still change or clear it
+        applyDefaultTagsetValues(this.features, this.featureForm, this.unsubscribe$);
       }
 
       if (this.deleteMode) {

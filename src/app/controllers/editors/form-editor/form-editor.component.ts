@@ -18,7 +18,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 @Component({
   selector: 'app-form-editor',
   templateUrl: './form-editor.component.html',
-  styleUrls: ['./form-editor.component.scss']
+  styleUrls: ['./form-editor.component.scss'],
+  standalone: false
 })
 export class FormEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**Sottoscrizione per la gestione del notify */

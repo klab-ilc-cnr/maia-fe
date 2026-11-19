@@ -4,10 +4,10 @@ Maia is an open and collaborative web tool based on semantic web and linked open
 It's developed by the [KLAB group](https://www.ilc.cnr.it/klab/) of the ILC CNR.
 
 ## Maia interface 
-This repository hosts the Maia interface, developed using the Angular v. 14.2 framework.
+This repository hosts the Maia interface, developed using the Angular v. 21.2 framework with PrimeNG 21 (MIT).
 
 ## Getting Started
-To be able to instantiate your own installation of the Maia interface, you must have a development environment compatible with the Angular v. 14.2 framework (refer to the official documentation for dependencies) and have set up a working version of the [maia-be](https://github.com/klab-ilc-cnr/maia-be) back-end.
+To be able to instantiate your own installation of the Maia interface, you must have a development environment compatible with the Angular v. 21.2 framework, i.e. **Node.js 22** (refer to the official documentation for dependencies) and have set up a working version of the [maia-be](https://github.com/klab-ilc-cnr/maia-be) back-end.
 
 Once you clone the project (or fork it) you can prepare a package for deployment using branches:
 
@@ -18,9 +18,10 @@ Once the branch is selected, the basic steps to follow are:
 
 1. from terminal `npm install` to download all dependencies
 2. edit the environment.production.ts file indicating the applicationSubTitle which will be the name of your application
-3. from terminal compile the code with the command `ng build --base-href=\“\” --output-path=maia -c production`
+3. from terminal compile the code with the command `npx ng build -c production --base-href=""`
 
-The deployment package will then be available in the maia folder.
+The deployment package will then be available in the `dist/projectx-fe` folder (flat: copy its content into the folder served by the web server, e.g. `maia/`).
+Do not pass `--output-path` on the command line: with the Angular application builder it would add a `browser/` subfolder.
 
 ### Local development proxy
 
@@ -40,6 +41,7 @@ In case of a bug please indicate the version of the platform used and describe t
 ## Versions and compatibility
 | maia-fe | maia-be | TextO | LexO |
 | ------------- | ------------- | ------------- | ------------- |
+| v. 0.30.0 | v. 0.0.16 | v. 0.2.0 | v. 1.2.1 |
 | v. 0.20.0 | v. 0.0.14 | v. 0.1.8 | v. 1.2.1 |
 | v. 0.19.1 | v. 0.0.14 | v. 0.1.7 | v. 1.2.1 |
 | v. 0.17.4 | v. 0.0.12 | v. 0.1.6 | v. 1.2 |

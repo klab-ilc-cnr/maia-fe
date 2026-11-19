@@ -6,7 +6,7 @@ import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete
 import { TTagset } from 'src/app/models/texto/t-tagset';
 import { CommonService } from 'src/app/services/common.service';
 import { TagsetStateService } from 'src/app/services/tagset-state.service';
-import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
+import { setUniqueNameValidators } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 /**Tagset list component */
@@ -14,7 +14,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-tagsets-list',
   templateUrl: './tagsets-list.component.html',
   styleUrls: ['./tagsets-list.component.scss'],
-  providers: [TagsetStateService]
+  providers: [TagsetStateService],
+  standalone: false
 })
 export class TagsetsListComponent implements OnDestroy {
   /**Subject for subscribe management */
@@ -99,7 +100,7 @@ export class TagsetsListComponent implements OnDestroy {
     this.tagsetForm.reset();
     this.tagsetOnEdit = tagset;
     this.name.setValue(tagset.name || '');
-    this.name.setValidators(nameDuplicateValidator(this.tagsetsNames));
+    setUniqueNameValidators(this.name, this.tagsetsNames.filter(n => n !== tagset.name)); // its own name is not a duplicate
     this.description.setValue(tagset.description || '');
     this.modalTitle = tagset.name || this.commonService.translateKey('TAGSET_MANAGER.editTagset');
     this.visibleEditNewTagset = true;
@@ -118,7 +119,7 @@ export class TagsetsListComponent implements OnDestroy {
     this.tagsetOnEdit = undefined;
     this.tagsetForm.reset();
     this.modalTitle = this.commonService.translateKey('TAGSET_MANAGER.newTagset');
-    this.name.setValidators(nameDuplicateValidator(this.tagsetsNames));
+    setUniqueNameValidators(this.name, this.tagsetsNames);
     this.visibleEditNewTagset = true;
   }
 

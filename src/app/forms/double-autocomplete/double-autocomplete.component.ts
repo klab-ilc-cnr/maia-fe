@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SelectChangeEvent } from 'primeng/select';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-double-autocomplete',
   templateUrl: './double-autocomplete.component.html',
-  styleUrls: ['./double-autocomplete.component.scss']
+  styleUrls: ['./double-autocomplete.component.scss'],
+  standalone: false
 })
 export class DoubleAutocompleteComponent implements OnInit {
   @Input() isCheckboxVisible = true;
@@ -39,11 +41,11 @@ export class DoubleAutocompleteComponent implements OnInit {
     this.remove.emit();
   }
 
-  onSelectRelation(event: { originalEvent: PointerEvent, value: string }) {
+  onSelectRelation(event: SelectChangeEvent) {
     this.currentRelation$.next(event.value);
   }
 
-  onSelectValue(event: { originalEvent: PointerEvent, value: string }) {
+  onSelectValue(event: SelectChangeEvent) {
     if (!this.relationField) {
       console.error('manca la relazione');
       return;

@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-dropdown-plus-number',
   templateUrl: './dropdown-plus-number.component.html',
-  styleUrls: ['./dropdown-plus-number.component.scss']
+  styleUrls: ['./dropdown-plus-number.component.scss'],
+  standalone: false
 })
 export class DropdownPlusNumberComponent implements OnInit {
   @Input() optionList!: Observable<any>;

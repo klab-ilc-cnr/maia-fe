@@ -1,34 +1,37 @@
 <div class="card h-100">
     <div class="row">
-        <div class="col d-flex justify-content-start">
+        <div class="col d-flex justify-content-start align-items-start">
           <p-treeSelect [(ngModel)]="selectedDocuments"
-              class="mr-5 dropdownDimensions"
-              styleClass="w-100"
+              class="mr-5 shrinkField"
               (onShow)="reloadSelectedDocuments()"
               [options]="(files$|async)||[]"
               [metaKeySelection]="false"
               selectionMode="checkbox"
-              display=""
+              display="chip"
               [placeholder]="'SEARCH.selectFile'|translate"
               [filter]="true" 
               [filterInputAutoFocus]="true">
           </p-treeSelect>
 
-          <div class="p-inputgroup">
+          <div class="search-input-group">
             <p-selectButton (onChange)="onSearchModeChange()" [options]="searchModes" [(ngModel)]="selectedSearchMode" optionLabel="name"></p-selectButton>
-            <span class="p-input-icon-left flex-fill">
-              <i [class]="searchInput.invalid && (searchInput.touched || searchInput.dirty) ? 'pi pi-search center-icon' : 'pi pi-search'"></i>
-              <input #searchInput="ngModel" required type="text" pInputText appWhitespacesValidator
-                class="w-100"
-                (keydown.enter)="onSearch()"
-                [placeholder]="this.searchLabel"
-                [(ngModel)]="searchValue" />
-              <small *ngIf="searchInput.invalid && (searchInput.touched || searchInput.dirty)" class="p-error block">
-                {{'SEARCH.validSearchValue'|translate}}
-              </small>
-            </span>
+            <div class="flex-fill">
+              <p-iconfield iconPosition="left" [class.search-error]="searchValueMissing">
+                <p-inputicon class="pi pi-search"></p-inputicon>
+                <input #searchField type="text" pInputText
+                  class="w-100"
+                  aria-required="true" [attr.aria-invalid]="searchValueMissing"
+                  (keydown.enter)="onSearch()"
+                  [placeholder]="this.searchLabel"
+                  [(ngModel)]="searchValue" (ngModelChange)="searchValueMissing = false" />
+                <!-- errore senza spostare il layout: cornice e segnaposto rossi, icona (con tooltip) e avviso per gli screen reader -->
+                <i *ngIf="searchValueMissing" class="pi pi-exclamation-circle search-error-icon"
+                  [pTooltip]="'SEARCH.validSearchValue'|translate" tooltipPosition="top"></i>
+                <span *ngIf="searchValueMissing" class="visually-hidden" role="alert">{{'SEARCH.validSearchValue'|translate}}</span>
+              </p-iconfield>
+            </div>
           </div>
-          <p-multiSelect [options]="(pos$|async)||[]" styleClass="w-100" class="mx-5 dropdownDimensions" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
+          <p-multiSelect [options]="(pos$|async)||[]" class="mx-5 shrinkField" placeholder="Pos" optionLabel="label" optionValue="upos" [filter]="true"
           filterBy="label" [(ngModel)]="posValue" [showClear]="true" ></p-multiSelect>
           
           <div class="slider-input ml-5">
@@ -40,8 +43,8 @@
 
     <div class="row">
       <div class="col d-flex justify-content-start">
-        <p-dropdown #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
-            styleClass="w-100" class="dropdownDimensions"
+        <p-select #layer="ngModel" name="layer" appendTo="body" [(ngModel)]="selectedLayer" optionLabel="name"
+            class="shrinkField"
             placeholder="Layer" [options]="(layers$|async) || []" [filter]="true" [showClear]="true" (onChange)="onChangeLayerSelection($event)"  [required]="false">
             <ng-template let-layer pTemplate="item">
                 <div class="country-item">
@@ -53,12 +56,12 @@
                   </span>
                 </div>
             </ng-template>
-        </p-dropdown>
-        <p-dropdown #restriction="ngModel" name="restriction" appendTo="body" [(ngModel)]="selectedRestriction" optionLabel="name"
-            styleClass="w-100" class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
+        </p-select>
+        <p-select #restriction="ngModel" name="restriction" appendTo="body" [(ngModel)]="selectedRestriction" optionLabel="name"
+            class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
             placeholder="{{'SEARCH.restriction.placeholder'|translate}}" [options]="restrictionOptions || []" [filter]="true" 
             [showClear]="true" (onChange)="onChangeRestrictionSelection($event)"  [required]="false">
-        </p-dropdown>        
+        </p-select>        
       </div>
       <div class="col d-flex justify-content-end">
         <button pButton type="button" (click)="onSearch()" class="mx-2 p-button-success">{{'SEARCH.buttons.search'|translate}}</button>
@@ -70,23 +73,29 @@
     <div class="row">
         <div class="col d-flex justify-content-start">
               {{'SEARCH.selected'|translate}}: {{selectedSearchResults.length}}
+              <span *ngIf="searchResults.length > 0 && !annotationEnabled" class="ms-3 text-secondary">
+                <i class="pi pi-info-circle"></i> {{'SEARCH.annotateHint.noLayer'|translate}}
+              </span>
         </div>
         <div class="col d-flex justify-content-end">
-          <p-splitButton #annotate appendTo="body" 
-              label="{{'SEARCH.buttons.annotate'|translate}}"
-              (onClick)="showAnnotationTile()"
-              (onDropdownClick)="setAnnotateMenuItems()"
-              [model]="annotateItems"
-              [disabled]="!annotationAllowed"
-              styleClass="custom-info-btn p-button-raised p-button-info mx-2">
-          </p-splitButton>
+          <!-- un pulsante disabilitato non riceve il mouse: il tooltip sta sul contenitore e spiega il primo requisito mancante -->
+          <span class="d-inline-block" [pTooltip]="annotateHint ? (annotateHint|translate) : ''" [tooltipDisabled]="!annotateHint" tooltipPosition="top">
+            <p-splitButton #annotate appendTo="body" 
+                label="{{'SEARCH.buttons.annotate'|translate}}"
+                (onClick)="showAnnotationTile()"
+                (onDropdownClick)="setAnnotateMenuItems()"
+                [model]="annotateItems"
+                [disabled]="!annotationAllowed"
+                severity="info" styleClass="custom-info-btn mx-2">
+            </p-splitButton>
+          </span>
           <p-splitButton #exp appendTo="body" 
               label="{{'SEARCH.buttons.export'|translate}}"
               (onClick)="exp.onDropdownButtonClick($event)"
               (onDropdownClick)="setExportMenuItems()"
               [model]="exportItems"
               [disabled]="searchResults.length === 0"
-              styleClass="p-button-raised p-button-info mx-2">
+              severity="info" styleClass="mx-2">
           </p-splitButton>
         </div>
       </div>
@@ -105,7 +114,6 @@
                 [rowHover]="true"
                 [(rows)]="visibleRows"
                 [scrollable]="true"
-                scrollDirection="both"
                 [resizableColumns]="true"
                 columnResizeMode="expand"
                 [scrollHeight]="tableContainerHeight+'px'"
@@ -113,7 +121,8 @@
                 [rowsPerPageOptions]="[10,25,50]" 
                 [loading]="loading"
                 [paginator]="true"
-                styleClass="p-datatable-gridlines"
+                [showGridlines]="true"
+                [tableStyle]="{'table-layout': 'fixed'}"
                 paginatorDropdownAppendTo="body"
                 [currentPageReportTemplate]="'GENERAL.currentPageReportTemplate'|translate">
         <ng-template pTemplate="header">
@@ -127,7 +136,7 @@
                 <th [ngStyle]="{'width.%': colDefaultWidths[6]}" pResizableColumn>{{'SEARCH.columns.rightContext'|translate}}</th>
             </tr>
             <tr>
-                <th [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center">
+                <th [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center text-center">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
                 <th [ngStyle]="{'width.%': colDefaultWidths[1]}">
@@ -182,7 +191,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-searchResult>
             <tr class="p-selectable-row" (dblclick)="tableRowDoubleClickHandler($event, searchResult)">
-                <td [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center">
+                <td [ngStyle]="{'width.%': colDefaultWidths[0]}" class="justify-content-center text-center">
                     <p-tableCheckbox [value]="searchResult"></p-tableCheckbox>
                 </td>
                 <td [ngStyle]="{'width.%': colDefaultWidths[1]}">
@@ -194,12 +203,12 @@
                 <td [ngStyle]="{'width.%': colDefaultWidths[3]}">
                     {{searchResult.reference}}
                 </td>
-                <td [ngStyle]="{'width.%': colDefaultWidths[4]}" class="justify-content-end">
+                <td [ngStyle]="{'width.%': colDefaultWidths[4]}" class="justify-content-end text-end">
                     <div class="leftContext">
                         <span>{{searchResult.leftContext | replaceEscapes}}</span>
                     </div>
                 </td>
-                <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center">
+                <td [ngStyle]="{'width.%': colDefaultWidths[5]}" class="justify-content-center text-center">
                     <b *ngIf="!searchResult.annotated">{{searchResult.kwic}}</b>
                     <app-async-tooltip
                         *ngIf="searchResult.annotated"
@@ -242,7 +251,7 @@
                         </ng-template>
                     </ng-template>
                 </td>
-                <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start">
+                <td [ngStyle]="{'width.%': colDefaultWidths[6]}" class="rightContext justify-content-start text-start">
                     <div class="rightContext">
                         {{searchResult.rightContext | replaceEscapes}}
                     </div>
@@ -251,7 +260,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td style="width:100%">{{'SEARCH.noResult'|translate}}</td>
+                <td colspan="7">{{'SEARCH.noResult'|translate}}</td>
             </tr>
         </ng-template>
       </p-table>

@@ -1,11 +1,13 @@
 import { Component, Input, TemplateRef, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Observable, Subscription, timer, of } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { catchError, switchMap, timeout as rxjsTimeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-async-tooltip',
   templateUrl: './async-tooltip.component.html',
   styleUrls: ['./async-tooltip.component.scss'],
+  standalone: false
 })
 export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
   @Input() tooltipId!: string;
@@ -20,6 +22,8 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
   @Input() keepVisibleOnMouseLeave: boolean = false;
 
   @ViewChild('tooltipTarget', { static: true }) tooltipTarget!: ElementRef;
+
+  constructor(private translateService: TranslateService) { }
 
   tooltipVisible = false;
   tooltipData: T | null = null;
@@ -72,8 +76,9 @@ export class AsyncTooltipComponent<T = any> implements AfterViewChecked {
         const req = this.fetchContent(this.tooltipId, this.tooltipParams);
         return this.timeout ? req.pipe(rxjsTimeout(this.timeout)) : req;
       }),
-      catchError(() => {
-        this.errorMessage = 'Content could not be loaded. Please try again.';
+      catchError((error: unknown) => {
+        console.error('[backend] tooltip', this.tooltipId, error);
+        this.errorMessage = this.translateService.instant('BACKEND_ERROR.tooltip');
         return of(null as T);
       }),
     ).subscribe(data => {

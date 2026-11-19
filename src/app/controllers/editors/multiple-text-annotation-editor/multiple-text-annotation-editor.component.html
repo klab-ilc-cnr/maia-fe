@@ -41,12 +41,12 @@
                 <label class="form-label ml-1">{{ feature.feature?.name }}</label>
                 <div class="d-flex align-items-center gap-2">
                   <!-- delete mode: switch per "qualsiasi valore" -->
-                  <p-inputSwitch
+                  <p-toggleswitch
                     *ngIf="deleteMode"
                     class="ml-1 align-self-end"
                     [pTooltip]="'SEARCH.disableForAnyValue'|translate"
                     [formControlName]="feature.feature!.name! + '_checked'">
-                  </p-inputSwitch>
+                  </p-toggleswitch>
 
                   <div *ngIf="editMode || featureForm.get(feature.feature!.name! + '_checked')?.value || (!deleteMode && !editMode); else anyValueBlock"
                        class="p-fluid flex-grow-1">
@@ -56,11 +56,11 @@
                       <div>
                         <label class="form-label small">{{'SEARCH.currentValue'|translate}}</label>
                         <div class="d-flex align-items-center gap-2">
-                          <p-inputSwitch
+                          <p-toggleswitch
                             class="align-self-end"
                             [pTooltip]="'SEARCH.disableForAnyValue'|translate"
                             [formControlName]="feature.feature!.name! + '_checked'">
-                          </p-inputSwitch>
+                          </p-toggleswitch>
                           <div *ngIf="featureForm.get(feature.feature!.name! + '_checked')?.value" class="flex-grow-1">
                             <div [ngSwitch]="feature.feature?.type">
                               <input
@@ -69,7 +69,7 @@
                                 type="text"
                                 [formControlName]="feature.feature!.name! + '_oldValue'"
                               />
-                              <p-dropdown
+                              <p-select
                                 *ngSwitchCase="featureTypes.TAGSET"
                                 [formControlName]="feature.feature!.name! + '_oldValue'"
                                 [options]="(feature.tagsetItems | async) || []"
@@ -80,7 +80,7 @@
                                 appendTo="body"
                                 emptyFilterMessage="No element found"
                                 placeholder="Select a value">
-                              </p-dropdown>
+                              </p-select>
                               <input
                                 *ngSwitchCase="featureTypes.URI"
                                 class="form-control"
@@ -90,7 +90,7 @@
                               <app-generic-autocomplete
                                 *ngSwitchCase="featureTypes.LEXICAL_ENTRY"
                                 field="label"
-                                valueField="lexicalEntry"
+                                valueField="lexicalEntry" labelSuffixField="pos"
                                 [filterFn]="lexEntryList"
                                 (selected)="setIndirectOldValue($event, feature.feature!.name!)"
                                 [currentValue]="featureForm.get(feature.feature!.name! + '_oldValue')!.value"
@@ -135,7 +135,7 @@
                             <input class="form-control" type="text" [formControlName]="feature.feature!.name!" />
                           </div>
                           <div *ngSwitchCase="featureTypes.TAGSET">
-                            <p-dropdown
+                            <p-select
                               [formControlName]="feature.feature!.name!"
                               [options]="(feature.tagsetItems | async) || []"
                               [filter]="true"
@@ -145,7 +145,7 @@
                               appendTo="body"
                               emptyFilterMessage="No element found"
                               placeholder="Select a value">
-                            </p-dropdown>
+                            </p-select>
                           </div>
                           <div *ngSwitchCase="featureTypes.URI">
                             <input class="form-control" type="text" [formControlName]="feature.feature!.name!" />
@@ -153,7 +153,7 @@
                           <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
                             <app-generic-autocomplete
                               field="label"
-                              valueField="lexicalEntry"
+                              valueField="lexicalEntry" labelSuffixField="pos"
                               [filterFn]="lexEntryList"
                               (selected)="setIndirectValue($event, feature.feature!.name!)"
                               [currentValue]="featureForm.get(feature.feature!.name!)!.value"
@@ -211,7 +211,7 @@
                       </div>
                     </div>
                     <div *ngSwitchCase="featureTypes.TAGSET">
-                      <p-dropdown
+                      <p-select
                         [formControlName]="feature.feature!.name!"
                         [options]="(feature.tagsetItems | async) || []"
                         [filter]="true"
@@ -222,7 +222,7 @@
                         emptyFilterMessage="No element found"
                         placeholder="Select a value"
                       >
-                      </p-dropdown>
+                      </p-select>
                     </div>
                     <div *ngSwitchCase="featureTypes.URI">
                       <input
@@ -249,7 +249,7 @@
                     <div *ngSwitchCase="featureTypes.LEXICAL_ENTRY">
                       <app-generic-autocomplete
                         field="label"
-                        valueField="lexicalEntry"
+                        valueField="lexicalEntry" labelSuffixField="pos"
                         [filterFn]="lexEntryList"
                         (selected)="
                           setIndirectValue($event, feature.feature!.name!)

@@ -7,7 +7,8 @@ import { Layer } from 'src/app/models/layer/layer.model';
 @Component({
   selector: 'app-workspace-layers-visibility-manager',
   templateUrl: './workspace-layers-visibility-manager.component.html',
-  styleUrls: ['./workspace-layers-visibility-manager.component.scss']
+  styleUrls: ['./workspace-layers-visibility-manager.component.scss'],
+  standalone: false
 })
 export class WorkspaceLayersVisibilityManagerComponent implements OnInit {
 

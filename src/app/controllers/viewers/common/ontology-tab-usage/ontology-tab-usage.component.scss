@@ -2,12 +2,12 @@
     font-weight: 650;
 }
 
-p-tabView,
-::ng-deep.p-tabview.p-component,
-::ng-deep div[role="tabpanel"] {
+p-tabs,
+::ng-deep.p-tabs,
+::ng-deep [role="tabpanel"] {
   height: 100%;
 
-  .p-tabview-panels {
+  .p-tabpanels {
     height: calc(100% - 41px);
   }
 }

@@ -9,7 +9,8 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
-  styleUrls: ['./side-menu.component.scss']
+  styleUrls: ['./side-menu.component.scss'],
+  standalone: false
 })
 export class SideMenuComponent {
   demoHide = environment.demoHide; //TODO rimuovere non appena pienamente implementato

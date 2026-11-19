@@ -1,7 +1,7 @@
 <p-splitter [style]="{'min-height': '100%'}" [panelSizes]="[40,60]">
   <ng-template pTemplate>
-    <p-treeTable #tt selectionMode="single" dataKey="instanceName" [(selection)]="selectedNode"
-      [value]="lexicalEntryTree" [columns]="cols" [lazy]="true" [loading]="loading" [scrollHeight]="panelHeight-40+'px'"
+    <p-treeTable #tt selectionMode="single" dataKey="instanceName" [selection]="selectedNode" (selectionChange)="selectedNode = $any($event)"
+      [value]="lexicalEntryTree" [columns]="cols" [lazy]="true" [loading]="loading" [scrollHeight]="panelHeight+'px'"
       [scrollable]="true" (onNodeExpand)="onNodeExpand($event)" (onNodeSelect)="onNodeSelect($event)">
       <ng-template pTemplate="colgroup" let-columns>
         <colgroup>
@@ -11,22 +11,24 @@
       <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
         <tr [ttSelectableRow]="rowNode">
           <td *ngFor="let col of cols; let i = index">
-            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+            <!-- name cell: toggler, name (clipped with an ellipsis), sub, then the note icon right after the label (no column of its own) -->
+            <div *ngIf="col.field === 'name'" class="name-cell">
+              <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+              <!--TODO migliorare-->
+              <span *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{ rowData[col.field] }}</span>
+              <span *ngIf="rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
+                [pTooltip]="rowData['type'] == LexicalEntryType.SENSE ? rowData['definition'] : rowData['sub']" tooltipPosition="bottom"
+                tooltipStyleClass="sense-definition-tooltip" [showDelay]="rowData['type'] == LexicalEntryType.SENSE ? 400 : 0"
+                [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
+              <sub *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
+              <app-icon-note *ngIf="rowData['note']" class="note-icon"></app-icon-note>
+            </div>
             <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
               [status]="rowData[col.field]"></app-icon-lock>
-            <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]"></app-icon-note>
             <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
               [tooltip]="'<em>Autore</em>: '+rowData['creator']+'<br><em>Creato il</em>: '+ rowData['creationDate']+'<br><em>Ultima modifica</em>: '+ rowData['lastUpdate']"></app-icon-author>
-            <!--TODO migliorare-->
-            <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
-              rowData[col.field] }}</span>
-            <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
-              [pTooltip]="rowData['sub']" tooltipPosition="bottom"
-              [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
-            <sub
-              *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
             <button pButton type="button" icon="pi pi-plus"
-              class="p-element p-button-rounded mx-2 p-button-sm p-component p-button-icon-only"
+              class="p-element p-button-rounded p-component p-button-icon-only add-node-button"
               *ngIf="col.field === 'creator' && (rowData['type'] == LexicalEntryType.FORMS_ROOT || rowData['type'] == LexicalEntryType.SENSES_ROOT)"
               (click)="onAdd($event, rowData['type'])"></button>
           </td>

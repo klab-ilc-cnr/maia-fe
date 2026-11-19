@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Observable, Subject, catchError, forkJoin, map, of, take, takeUntil, throwError } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, map, of, shareReplay, take, takeUntil, throwError } from 'rxjs';
+import { applyDefaultTagsetValues } from 'src/app/helpers/annotation-defaults.helper';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { formTypeEnum, searchModeEnum } from 'src/app/models/lexicon/lexical-entry-request.model';
 import { FormListItem, SenseListItem } from 'src/app/models/lexicon/lexical-entry.model';
@@ -33,14 +34,28 @@ export interface FeatForAnn {
 @Component({
   selector: 'app-text-annotation-editor',
   templateUrl: './text-annotation-editor.component.html',
-  styleUrls: ['./text-annotation-editor.component.scss']
+  styleUrls: ['./text-annotation-editor.component.scss'],
+  standalone: false
 })
-export class TextAnnotationEditorComponent implements OnDestroy {
+export class TextAnnotationEditorComponent implements OnChanges, OnDestroy {
   private readonly unsubscribe$ = new Subject();
   workingLayer!: TLayer;
   /**Tipi di feature */
   featureTypes = TFeatureType;
-  @Input() annotationFragment!: string;
+  /**
+   * Selected text of the annotation. A setter that updates the "Text" field: the form used to be built, with the value this
+   * input had at that moment, when the annotation arrived; the inputs are set one after the other, so (as soon as the answers
+   * were already in memory) the field showed the previous text, one click behind.
+   */
+  @Input()
+  set annotationFragment(value: string) {
+    this._annotationFragment = value;
+    this.annotationForm.controls.text.setValue(value ?? '');
+  }
+  get annotationFragment(): string { return this._annotationFragment; }
+  private _annotationFragment = '';
+  /** all the layers (the text window has them already): the name of the layer of the annotation is taken from here */
+  @Input() layers: TLayer[] = [];
   annotationForm = new FormGroup({
     layer: new FormControl<string>({ value: '', disabled: true }),
     text: new FormControl<string>({ value: '', disabled: true }),
@@ -52,8 +67,16 @@ export class TextAnnotationEditorComponent implements OnDestroy {
   get annotationModel(): TAnnotation { return this._annotation; }
   set annotationModel(annotation: TAnnotation) {
     this._annotation = annotation;
+  }
 
-    if (!annotation.layer) { return; }
+  /**
+   * The form of the annotation is built here and not in the setter of `annotationModel`: all the inputs (layers, fragment) are
+   * already set when this runs, whatever their order in the template is.
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['annotationModel']) { return; }
+    const annotation = this._annotation;
+    if (!annotation?.layer) { return; }
 
     const layerId = annotation.layer.id;
     if (!layerId) {
@@ -120,7 +143,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         label: displayLabel
       };
     }),
-    catchError(() => of({ label: id, lexicalEntry: id }))
+    catchError((error: unknown) => {
+      this.commonService.warnBackendErrorOnce('entryLabel', error);
+      return of({ label: id, lexicalEntry: id });
+    })
   );
 
   formList = (text: string) => this.lexiconService.getFormList({
@@ -165,13 +191,10 @@ export class TextAnnotationEditorComponent implements OnDestroy {
     offset: 0,
     limit: 500
   }).pipe(
-    map((resp: any) => {
-      console.info(resp.list)
-      return resp.list.map((s:any) => {return {
-        ...s,
-        definition: `[${s.lemma}] - ${HtmlHelper.stripHtml(s.definition)}`
-      }});
-    }),
+    map((resp: any) => resp.list.map((s: any) => ({
+      ...s,
+      definition: `[${s.lemma}] - ${HtmlHelper.stripHtml(s.definition)}`
+    }))),
   );
   senseById = (id: string) => this.lexiconService.getSense(id).pipe(
     map(sense => {
@@ -314,12 +337,19 @@ export class TextAnnotationEditorComponent implements OnDestroy {
       this.featureForm.addControl(controlName, newControl);
       this.featureForm.get(controlName)?.setValue(existingValue)
     });
+    // new annotation: preselect the default value of the tagset fields (e.g. "Parola monorematica"); not when editing
+    if (!this.annotationModel?.id) {
+      applyDefaultTagsetValues(this.features, this.featureForm, this.unsubscribe$);
+    }
   }
 
   private fetchAndMapFeatures(layerId: number) {
+    // the layer comes from the list the text window already has (all the layers, visible or not); the structure of the layer
+    // and the values of its tagsets are reused for a few minutes: they were asked for again at every click on an annotation
+    const knownLayer = this.layers?.find(l => l.id === layerId);
     forkJoin({
-      layer: this.layerService.retrieveLayerById(layerId),
-      features: this.layerService.retrieveLayerFeatureList(layerId),
+      layer: knownLayer ? of(knownLayer) : this.layerService.retrieveLayerByIdCached(layerId),
+      features: this.layerService.retrieveLayerFeatureListCached(layerId),
     }).pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(response => {
@@ -328,7 +358,8 @@ export class TextAnnotationEditorComponent implements OnDestroy {
         const tagsetId = feature.tagset?.id;
         return <FeatForAnn>{
           feature: feature,
-          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsById(tagsetId) : undefined
+          // cached (shared): the select (async pipe) and the default value share one request
+          tagsetItems: tagsetId ? this.tagsetService.getTagsetItemsByIdCached(tagsetId) : undefined
         };
       });
       this.createForm();

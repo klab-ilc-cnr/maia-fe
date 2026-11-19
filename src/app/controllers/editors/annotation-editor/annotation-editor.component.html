@@ -42,7 +42,7 @@
                   </div>
                 </div>
                 <div *ngSwitchCase="featureTypes.TAGSET">
-                  <p-dropdown #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"
+                  <p-select #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"
                     placeholder="{{ feature.placeholder }}" [options]="feature.dropdownOptions" [filter]="true" [showClear]="true" [required]="false">
                     <ng-template pTemplate="empty">
                       Nessun elemento da selezione
@@ -50,10 +50,10 @@
                     <ng-template pTemplate="emptyfilter">
                       Nessun elemento trovato
                     </ng-template>
-                  </p-dropdown>
+                  </p-select>
                 </div>
                 <div *ngSwitchCase="featureTypes.URI">
-<!--                   <p-dropdown #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"
+<!--                   <p-select #featureRef="ngModel" name="{{ feature.name }}" [(ngModel)]="feature.value"
                     placeholder="{{ feature.placeholder }}" [options]="feature.dropdownOptions" [filter]="true" [showClear]="true" [required]="false">
                     <ng-template pTemplate="empty">
                       Nessun elemento da selezione
@@ -61,7 +61,7 @@
                     <ng-template pTemplate="emptyfilter">
                       Nessun elemento trovato
                     </ng-template>
-                  </p-dropdown> -->
+                  </p-select> -->
                   <input #featureRef="ngModel" type="text" name="{{ feature.name }}" class="form-control" [(ngModel)]="feature.value"
                     maxlength="300" placeholder="{{ feature.placeholder }}" appUriValidator>
                   <div *ngIf="featureRef.invalid && (featureRef.touched || featureRef.dirty)" class="invalid-feedback">

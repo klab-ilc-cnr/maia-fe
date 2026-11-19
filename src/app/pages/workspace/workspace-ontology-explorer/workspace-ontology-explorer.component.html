@@ -1,17 +1,26 @@
-<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true" (onChange)="onTabChange($event)" [style]="{'height': '100%'}">
-    <p-tabPanel header="{{('ONTOLOGY.ontology'|translate)}}" >
-        <app-ontology-data-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-data-explorer>
-    </p-tabPanel>
-    <p-tabPanel header="{{('ONTOLOGY.classes'|translate)}}">
-        <app-ontology-class-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-class-explorer>
-    </p-tabPanel>
-    <p-tabPanel header="{{('ONTOLOGY.objectProperties'|translate)}}">
-        <app-ontology-object-property-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-object-property-explorer>
-    </p-tabPanel>
-    <p-tabPanel header="{{('ONTOLOGY.dataProperties'|translate)}}">
-        <app-ontology-data-property-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-data-property-explorer>
-    </p-tabPanel>
-    <p-tabPanel header="{{('ONTOLOGY.individuals'|translate)}}">
-        <app-ontology-individuals-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-individuals-explorer>
-    </p-tabPanel>
-  </p-tabView>
+<p-tabs [(value)]="selectedTab" [scrollable]="true" (valueChange)="onTabChange($event)" style="height: 100%">
+    <p-tablist>
+        <p-tab [value]="0">{{('ONTOLOGY.ontology'|translate)}}</p-tab>
+        <p-tab [value]="1">{{('ONTOLOGY.classes'|translate)}}</p-tab>
+        <p-tab [value]="2">{{('ONTOLOGY.objectProperties'|translate)}}</p-tab>
+        <p-tab [value]="3">{{('ONTOLOGY.dataProperties'|translate)}}</p-tab>
+        <p-tab [value]="4">{{('ONTOLOGY.individuals'|translate)}}</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+        <p-tabpanel [value]="0">
+            <app-ontology-data-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-data-explorer>
+        </p-tabpanel>
+        <p-tabpanel [value]="1">
+            <app-ontology-class-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-class-explorer>
+        </p-tabpanel>
+        <p-tabpanel [value]="2">
+            <app-ontology-object-property-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-object-property-explorer>
+        </p-tabpanel>
+        <p-tabpanel [value]="3">
+            <app-ontology-data-property-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-data-property-explorer>
+        </p-tabpanel>
+        <p-tabpanel [value]="4">
+            <app-ontology-individuals-explorer [panelHeight]="ontologyPanelHeight"></app-ontology-individuals-explorer>
+        </p-tabpanel>
+    </p-tabpanels>
+</p-tabs>

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ButtonModule } from "primeng/button";
-import { SidebarModule } from "primeng/sidebar";
 import { TooltipModule } from 'primeng/tooltip';
 import { IconsModule } from '../icons/icons.module';
 import { FooterComponent } from './footer/footer.component';
@@ -19,7 +18,6 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
     CommonModule,
     FontAwesomeModule,
     RouterModule,
-    SidebarModule,
     IconsModule,
     TooltipModule,
   ]

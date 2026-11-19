@@ -6,7 +6,8 @@ import { IconBaseComponent } from '../icon-base/icon-base.component';
   selector: 'app-icon-note',
   templateUrl: '../icon-base/icon-base-tooltip.component.html',
   styleUrls: ['../icon-base/icon-base.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class IconNoteComponent extends IconBaseComponent implements OnInit {
   @Input() tooltip!: string | TemplateRef<HTMLElement> | undefined;

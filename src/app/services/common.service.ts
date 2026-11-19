@@ -18,6 +18,33 @@ export class CommonService {
     private translateService: TranslateService,
   ) { }
 
+  /** last time a warning was shown for each key (see warnBackendErrorOnce) */
+  private lastBackendWarnings = new Map<string, number>();
+
+  /**
+   * Tells the user that a secondary call to the server failed (the app goes on, but something shown is incomplete or
+   * replaced by a fallback) and logs the error. The toast for the same `key` is shown at most once every `windowMs`:
+   * a server that is down would otherwise produce one toast for every field/row.
+   * @param key {string} suffix of the i18n key `BACKEND_ERROR.<key>` with the message
+   * @param error {unknown} error of the call, written to the console
+   * @param windowMs {number} minimum interval between two toasts for the same key
+   */
+  public warnBackendErrorOnce(key: string, error?: unknown, windowMs: number = 20000): void {
+    console.error(`[backend] ${key}`, error);
+    const now = Date.now();
+    const last = this.lastBackendWarnings.get(key);
+    if (last !== undefined && now - last < windowMs) {
+      return;
+    }
+    this.lastBackendWarnings.set(key, now);
+    this.messageService.add({
+      severity: 'warn',
+      summary: this.translateService.instant('BACKEND_ERROR.title'),
+      detail: this.translateService.instant(`BACKEND_ERROR.${key}`),
+      life: 8000,
+    });
+  }
+
   private notify = new Subject<any>();
   /**
    * Observable string streams

@@ -7,7 +7,7 @@ import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete
 import { WorkspaceChoice } from 'src/app/models/workspace-choice.model';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceStateService } from 'src/app/services/workspace-state.service';
-import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
+import { setUniqueNameValidators } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 import Swal from 'sweetalert2';
 
@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
   selector: 'app-workspace-list',
   templateUrl: './workspace-list.component.html',
   styleUrls: ['./workspace-list.component.scss'],
+  standalone: false
 })
 export class WorkspaceListComponent {
   /**Subject for subscribe management */
@@ -91,7 +92,9 @@ export class WorkspaceListComponent {
       takeUntil(this.unsubscribe$),
     ).subscribe(w => {
       this.workspaceNames = w.map(ws => ws.name!);
-    })
+    });
+    // the list is kept for the whole session: ask for it again each time the page is shown (last access dates)
+    this.workspaceState.refresh();
   }
 
   /**OnDestroy interface method, used for closing any swal popups and managing unsubscribe */
@@ -156,7 +159,7 @@ export class WorkspaceListComponent {
     this.name.setValue(workspace.name || '');
     this.note.setValue(workspace.note || null);
     const tempNames = this.workspaceNames.filter(w => w !== workspace.name);
-    this.name.setValidators(nameDuplicateValidator(tempNames));
+    setUniqueNameValidators(this.name, tempNames);
     this.visibleWorkspaceDialog = true;
     this.workspace = JSON.parse(JSON.stringify(workspace));
   }
@@ -164,7 +167,7 @@ export class WorkspaceListComponent {
   /**Method that invokes the modal opening of inserting a new workspace */
   showWorkspaceModal() {
     this.tWorkspaceForm.reset();
-    this.name.setValidators(nameDuplicateValidator(this.workspaceNames));
+    setUniqueNameValidators(this.name, this.workspaceNames);
     this.visibleWorkspaceDialog = true;
   }
 

@@ -8,7 +8,8 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-tabs-sense',
   templateUrl: './tabs-sense.component.html',
-  styleUrls: ['./tabs-sense.component.scss']
+  styleUrls: ['./tabs-sense.component.scss'],
+  standalone: false
 })
 export class TabsSenseComponent implements OnInit, OnDestroy {
   demoHide = environment.demoHide;

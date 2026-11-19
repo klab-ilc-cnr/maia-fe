@@ -45,8 +45,10 @@ export class GlobalStateService {
   lexicalEntryStatTypes$ = this.lexiconService.getStatTypes().pipe(
     shareReplay(1)
   );
-  /**Observable of the list of morphology elements. */
-  morphologies$ = this.lexiconService.getMorphology();
+  /**Observable of the list of morphology elements (static LexInfo data: one request, shared by every form, sense and entry editor row). */
+  morphologies$ = this.lexiconService.getMorphology().pipe(
+    shareReplay(1),
+  );
   /**Observable of the list of available POS */
   pos$ = this.morphologies$.pipe(
     switchMap(m => of(m.find(e => e.propertyId?.endsWith('#partOfSpeech'))?.propertyValues)),

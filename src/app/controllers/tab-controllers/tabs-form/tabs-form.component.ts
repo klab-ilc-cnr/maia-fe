@@ -8,7 +8,8 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-tabs-form',
   templateUrl: './tabs-form.component.html',
-  styleUrls: ['./tabs-form.component.scss']
+  styleUrls: ['./tabs-form.component.scss'],
+  standalone: false
 })
 export class TabsFormComponent implements OnInit, OnDestroy {
   demoHide = environment.demoHide;

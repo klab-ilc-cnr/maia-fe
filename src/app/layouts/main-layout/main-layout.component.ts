@@ -18,7 +18,8 @@ import { Router } from '@angular/router';
         transition('visible => hidden', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
         transition('hidden => visible', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
     ])
-  ]
+  ],
+  standalone: false
 })
 export class MainLayoutComponent implements OnInit {
 

@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Splitter } from 'primeng/splitter';
 import { Tree } from 'primeng/tree';
-import { Observable, Subject, catchError, forkJoin, of, switchMap, take, takeUntil, throttleTime } from 'rxjs';
+import { Observable, Subject, catchError, forkJoin, from, of, switchMap, take, takeUntil, throttleTime } from 'rxjs';
 import { Annotation } from 'src/app/models/annotation/annotation';
 import { SpanCoordinates } from 'src/app/models/annotation/span-coordinates';
 import { EditorType } from 'src/app/models/editor-type';
@@ -22,7 +22,8 @@ import { TFeature } from 'src/app/models/texto/t-feature';
 import { TLayer } from 'src/app/models/texto/t-layer';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { CommonService } from 'src/app/services/common.service';
-import { LayerStateService } from 'src/app/services/layer-state.service';
+import { LayerService } from 'src/app/services/layer.service';
+import { TagsetService } from 'src/app/services/tagset.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
@@ -44,7 +45,10 @@ export class TextSelection {
 
 export class TextSelectionAnnotation {
   textSelection!: TextSelection;
+  /** fill color of the selection highlight */
   color!: string;
+  /** border color of the selection highlight (darker than the fill: contrast >= 3:1 with the row background, WCAG 1.4.11) */
+  borderColor!: string;
   active!: boolean;
 }
 
@@ -56,11 +60,12 @@ export enum ScrollingDirectionType { Init, Up, Down, InRange, IncreaseWidenessUp
   selector: 'app-workspace-text-window',
   templateUrl: './workspace-text-window.component.html',
   styleUrls: ['./workspace-text-window.component.scss'],
-  providers: [LayerStateService],
+  standalone: false
 })
 export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
-  layers$ = this.layerState.layers$.pipe(
+  /** layers (list cached for a few minutes: it was asked for again at every opening of a text window) */
+  layers$ = this.layerService.retrieveLayerListCached().pipe(
     switchMap(layers => of(layers.sort((a, b) => (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1))),
   );
   selectedText = '';
@@ -170,7 +175,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   selectionHighlights: TextHighlight[] = [];
   /** property used to support the build of the selection highlight rect for the svg */
   specialTextSelectionHighlight: TextSelectionAnnotation = {
-    color: "#0067D1",
+    color: "#9CCBFF",
+    borderColor: "#0050A8",
     active: false,
     textSelection: new TextSelection()
   };
@@ -241,11 +247,15 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     private loaderService: LoaderService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
-    private layerState: LayerStateService,
     private commonService: CommonService,
     private workspaceService: WorkspaceService,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    private layerService: LayerService,
+    private tagsetService: TagsetService,
+    private elementRef: ElementRef,
+    private ngZone: NgZone,
   ) {
+    this.fontsReady = this.loadTextFonts();
     this.workspaceService.getTextoCurrentUserId().pipe(
       take(1),
     ).subscribe({
@@ -309,6 +319,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    // outside Angular: a handler in the template would run a change detection at every mouse move (it was removed on purpose, #76)
+    this.ngZone.runOutsideAngular(() => (this.elementRef.nativeElement as HTMLElement).addEventListener('mousemove', this.onMouseMoveOverText, { passive: true }));
     this.textRowsWideness = this.textRowsRangeWidenessPredictor();
     this.extraRowsWidenessUpOrDown = this.extraTextRowsWidenessPredictor();
     if (this.initialKwicLayer) {
@@ -322,39 +334,108 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.textTileSplitter.cd.detectChanges();
-      this.fixPrimeNgSplitterPanelInitialSize();
     });
+  }
+
+  /** true from the first request of rows, made without knowing how many rows the text has, until its answer */
+  private initialRangeToClamp = false;
+
+  /**
+   * The first range (asked for before knowing the total) may go beyond the end of the text: now that the total is known it is
+   * brought back, taking away first the extra rows below and then the rows of the range itself.
+   */
+  private clampInitialRange(): void {
+    if (!this.initialRangeToClamp) { return; }
+    this.initialRangeToClamp = false;
+    const range = this.textRange;
+    if (!range || range.end <= this.textTotalRows) { return; }
+    const over = range.end - this.textTotalRows;
+    const fromExtra = Math.min(over, range.extraRowsAfterEnd);
+    range.extraRowsAfterEnd -= fromExtra;
+    range.end = Math.max(range.start, range._end - (over - fromExtra));
+    this.precTextRange = range.clone();
+    this.scrollingRowIndex = range.end;
+  }
+
+  /** resolved when the fonts used to draw the text are loaded (or after a timeout), see `loadTextFonts` */
+  private fontsReady: Promise<unknown> = Promise.resolve();
+
+  /**
+   * The positions of words, highlights and handles are calculated measuring the text on a canvas with the font of the text.
+   * The font is a @font-face that the browser downloads only when text using it is drawn: the first time the window was opened
+   * it was not there yet, the measure used a fallback font and highlights and handles came out shifted from the words (until
+   * the next rendering). The font is asked for in advance and the first load of rows waits for it (at most 2 seconds).
+   */
+  private loadTextFonts(): Promise<unknown> {
+    const css = getComputedStyle(document.documentElement);
+    const font = (size: string, family: string) => `${css.getPropertyValue(size)} ${css.getPropertyValue(family)}`.trim();
+    const fonts = [font('--text-font-size', '--text-font-family'), font('--annotation-font-size', '--annotation-font-family')];
+    const loaded = Promise.all(fonts.map(f => document.fonts.load(f).catch(() => [])));
+    return Promise.race([loaded, new Promise(resolve => setTimeout(resolve, 2000))]);
   }
 
   /**initialize text range and load data */
   loadInitialData() {
-    this.annotationService.retrieveTextTotalRows(this.textId!).pipe(
+    from(this.fontsReady).pipe(
       take(1),
     ).subscribe({
-      next: (result) => {
-        this.textTotalRows = result!
+      next: () => {
+        // The total number of rows is not asked for any more before the first load: the answer of the rows has it (`count`) and the
+        // range is adjusted when it arrives (see `clampInitialRange`). It used to be a request in front of the first load of the
+        // text, ~160 ms in the way.
+        this.textTotalRows = Number.MAX_SAFE_INTEGER;
+        this.initialRangeToClamp = true;
 
         let start = this.startingRowIndex;
         let end = this.startingRowIndex + this.textRowsWideness;
-
-        if (end > this.textTotalRows) {
-          end = this.textTotalRows;
-        }
 
         this.textRange = new TextRange(start, end);
         this.precTextRange = this.textRange.clone();
         this.scrollingDirection = this.scrollingDirection ?? ScrollingDirectionType.Init; // if we are changin section we already have a value in this.scrollingDirection
         this.currentVisibleRowIndex = this.startingRowIndex;
         this.scrollingRowIndex = this.textRange.end;
+        if (this.scrollingDirection === ScrollingDirectionType.ChangingSection && this.startingRowIndex > 0) {
+          // Opening at a row (from the search results): the extra rows above and below are asked together with the range, as
+          // when a section is selected in the tree. Without them the row was the first of the range, the scroll check found
+          // nothing above it and asked again for a wider range that contained the first one: two requests of rows and of
+          // annotations, two renderings and a jump of the text.
+          this.addExtraRowsUp();
+          this.addExtraRowsDown();
+        }
         this.loadDataOrchestrator(this.textRange.start, this.textRange.end);
       },
       error: (error) => {
-        this.commonService.throwHttpErrorAndMessage(error, `Error retrieving text total rows: ${error.error.message}`);
+        this.commonService.throwHttpErrorAndMessage(error, `Error loading the text: ${error?.error?.message}`);
+      }
+    });
+  }
+
+  private hoverFrame?: number;
+  private overAnnotatedText = false;
+
+  /**
+   * The pointer becomes a hand over annotated text (a click opens the annotation, as clicking its handle does). The highlights are
+   * drawn under the text, which receives the mouse: the elements at the point are asked for, one animation frame at a time.
+   */
+  private onMouseMoveOverText = (event: MouseEvent): void => {
+    if (this.hoverFrame !== undefined) { return; }
+    const { clientX, clientY, target } = event;
+    this.hoverFrame = requestAnimationFrame(() => {
+      this.hoverFrame = undefined;
+      const svg = this.svg?.nativeElement?.querySelector('svg.text-editor') as SVGElement | null;
+      if (!svg) { return; }
+      const overText = target instanceof Element && !!target.closest('#gText');
+      const over = overText && document.elementsFromPoint(clientX, clientY).some(el => el instanceof SVGRectElement && el.id.startsWith('h-'));
+      if (over !== this.overAnnotatedText) {
+        this.overAnnotatedText = over;
+        svg.classList.toggle('over-annotation', over);
       }
     });
   }
 
   ngOnDestroy(): void {
+    (this.elementRef.nativeElement as HTMLElement).removeEventListener('mousemove', this.onMouseMoveOverText);
+    if (this.hoverFrame !== undefined) { cancelAnimationFrame(this.hoverFrame); }
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
 
@@ -415,6 +496,33 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    * Metodo che aggiorna la lista dei layer visibili e richiama il caricamento complessivo dei dati
    * @param event {any} evento di variazione dei layer visibili
    */
+  /** true when the header checkbox was clicked to "select all" (ignored): the onChange PrimeNG emits right after must not reload the text */
+  private ignoreNextLayersChange = false;
+
+  /**
+   * Header checkbox of the layer visibility selector: it works only as "deselect all".
+   * Selecting every layer at once would trigger a huge number of backend requests and rendering work,
+   * so checking it is ignored (the checkbox is checked only while at least one layer is selected).
+   * PrimeNG emits onChange right after this event, which reloads the text for the new selection.
+   * @param event checked: new state requested by the user
+   */
+  onToggleAllLayers(event: { checked: boolean }) {
+    if (event.checked) {
+      this.ignoreNextLayersChange = true;
+      return;
+    }
+    this.selectedLayers = [];
+  }
+
+  /** Selection change of the layer visibility selector. */
+  onLayersChange(event?: any) {
+    if (this.ignoreNextLayersChange) {
+      this.ignoreNextLayersChange = false;
+      return;
+    }
+    this.changeVisibleLayers(event);
+  }
+
   changeVisibleLayers(event?: any) {
     this.visibleLayers = this.selectedLayers || [];
     this.scrollingDirection = ScrollingDirectionType.InRange;
@@ -619,10 +727,56 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
   }
 
 
+  /** timer of the click on a word that opens its annotation (cancelled if the click turns out to be a double click) */
+  private openClickedAnnotationTimer?: ReturnType<typeof setTimeout>;
+
+  /**
+   * A click (no selection) on an annotated word opens the annotation in the editor, as clicking its handle does. When
+   * several annotations contain the word the innermost (shortest) is opened, the others are reachable from their own handles.
+   * It waits a moment: a double click selects the word to annotate it and must not open anything first.
+   * @param row {TextRow} row clicked
+   */
+  private openAnnotationUnderCaret(row: TextRow): void {
+    const index = this.getCaretIndex();
+    if (index === null) { return; }
+    const candidates = (this.simplifiedAnns ?? []).filter((a: any) => a.span.start <= index && index < a.span.end);
+    if (candidates.length === 0) { return; }
+    const length = (a: any) => a.span.end - a.span.start;
+    const innermost = candidates.reduce((best: any, a: any) => {
+      if (length(a) !== length(best)) { return length(a) < length(best) ? a : best; }
+      return a.layer === this.selectedLayer?.id ? a : best; // same extent: the one of the layer being annotated
+    });
+    this.openClickedAnnotationTimer = setTimeout(() => this.expandCollapseAnnotationDiv(innermost.id, row), 250);
+  }
+
+  /** index (in the text shown) of the caret of a collapsed selection, or null */
+  private getCaretIndex(): number | null {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount <= 0 || !selection.isCollapsed) { return null; }
+    const range = selection.getRangeAt(0);
+    if (!this.svg.nativeElement.contains(range.startContainer)) { return null; }
+    const preRange = range.cloneRange();
+    preRange.selectNodeContents(this.svg.nativeElement);
+    preRange.setEnd(range.startContainer, range.startOffset);
+    return [...preRange.toString()].length;
+  }
+
+  /**
+   * Highlights (or not) the text of an annotation while the mouse is over its handle: with several handles stacked it
+   * shows which text each one refers to. The highlights of an annotation share the id (one per line).
+   * @param annotationId {number} id of the annotation
+   * @param over {boolean} mouse entering or leaving
+   */
+  public onAnnotationHandleHover(annotationId: number, over: boolean): void {
+    const highlights = this.svg?.nativeElement?.querySelectorAll(`[id="${this.generateHighlightId(annotationId)}"]`) ?? [];
+    highlights.forEach((h: Element) => h.classList.toggle('over', over));
+  }
+
   /**this function override the normal window double click text selection
    * that keeps the trailing whitespace at the end of the word and selects just the word
    */
   public onSelectionChangeDoubleClick() {
+    clearTimeout(this.openClickedAnnotationTimer);
     const selection = window.getSelection();
 
     if (!selection) { return; }
@@ -651,11 +805,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
    */
   onSelectionChange(event: any, row: TextRow): void {
     this.currentVisibleRowIndex = row.rowIndex;
+    // a pending "click on a word opens its annotation" is cancelled by whatever comes next (double click, new selection)
+    clearTimeout(this.openClickedAnnotationTimer);
 
     const textSelection = this.getCurrentTextSelection();
 
     if (!textSelection) { //in case of no selection
       this.disableTextSelection();
+      if (event?.detail <= 1) { // single click: it may be the first of a double click, see openAnnotationUnderCaret
+        this.openAnnotationUnderCaret(row);
+      }
       return;
     }
 
@@ -763,13 +922,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         };
 
         if (widthPx > 0) {
+          // same geometry as the annotation highlights and the selection built from indexes (KWIC):
+          // 1px of padding on both sides (x - 1, width + 2) and the standard line box (yText - lineHeight + 5, lineHeight - 2),
+          // not the glyph bounding box of the tspan
+          const yText = Number(tSpanSentence.getAttribute("y"));
           this.selectionHighlights.push({
             id: undefined,
-            width: widthPx,
-            height: height,
+            width: widthPx + 2,
+            height: this.visualConfig.stdTextLineHeight - 2,
             coordinates: {
-              x: x + startOffsetPx,
-              y: y
+              x: x + startOffsetPx - 1,
+              y: Number.isFinite(yText) ? yText - this.visualConfig.stdTextLineHeight + 5 : y
             },
             bgColor: this.specialTextSelectionHighlight.color
           });
@@ -929,6 +1092,16 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.visibleAnnotationId = undefined;
   }
 
+  /**
+   * Makes a layer the selected and visible one, without selecting any word (the panel is opened only to show a row).
+   * If the layers are not loaded yet it is applied when they are.
+   * @param layer {TLayer} the layer to show
+   */
+  showLayer(layer: TLayer) {
+    this.initialKwicLayer = layer;
+    this.applyInitialKwicLayer(this.layersList);
+  }
+
   private applyInitialKwicLayer(list?: TLayer[]) {
     if (!this.initialKwicLayer) { return; }
     const layers = list ?? this.layersList;
@@ -1001,13 +1174,6 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     if (annotationIndex !== -1) {
       this.textoAnnotationsRes.splice(annotationIndex, 1);
     }
-  }
-
-  /**this is a workaround to fix a rendering problem with the primneg splitter component */
-  private fixPrimeNgSplitterPanelInitialSize() {
-    const panels: any = document.getElementsByClassName('p-splitter-panel');
-    const annotationPanel = panels[2];
-    annotationPanel.style.flexBasis = 'calc(' + this.textTileSplitter.panelSizes[2] + '% - ' + ((panels.length - 1) * 4) + 'px)';
   }
 
   /** inits the text tile splitteer properties */
@@ -1191,6 +1357,8 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.prefetchLayersConfig(visibleLayersIds);
+
     this.loaderService.show();
     // this.relation = new Relation();
 
@@ -1284,7 +1452,29 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 * Manages the retrieve of the layers to add
 * @returns {void}
 */
+  /**
+   * Asks in the background (and keeps) the structure of the visible layers and the values of their tagsets, so that the first
+   * click on an annotation of any visible layer finds the editor data ready. Silent: if it fails the editor asks again.
+   * @param layerIds {Array<number>} visible layers
+   */
+  private prefetchLayersConfig(layerIds: Array<number>): void {
+    layerIds.forEach(layerId => {
+      this.layerService.retrieveLayerFeatureListCached(layerId).pipe(
+        take(1),
+        takeUntil(this.unsubscribe$),
+      ).subscribe({
+        next: (features) => features.forEach(f => {
+          if (f.tagset?.id) {
+            this.tagsetService.getTagsetItemsByIdCached(f.tagset.id).pipe(take(1), takeUntil(this.unsubscribe$)).subscribe({ error: () => { } });
+          }
+        }),
+        error: () => { }, // not cached on failure: the editor will ask again and report the error
+      });
+    });
+  }
+
   private loadLayersOnlyAdd(start: number, end: number, visibleLayersIds: Array<number>, layerIdsToAdd: Array<number>): void {
+    this.prefetchLayersConfig(layerIdsToAdd);
     if (!this.textId) {
       return;
     }
@@ -1309,14 +1499,17 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 */
   private setTextData(textResponse: PaginatedResponse) {
     this.textTotalRows = textResponse.count!;
+    this.clampInitialRange();
     this.textRes = textResponse.data?.map(d => d.text) || [];
     this.textSplittedRows = textResponse.data;
     this.offset = textResponse.data![0].start;
 
     if (this.specialTextSelectionHighlight.active) {
       let text = this.textRes.join('').substring(this.specialTextSelectionHighlight.textSelection.startIndex! - this.offset, this.specialTextSelectionHighlight.textSelection.endIndex! - this.offset);
+      // the annotation editor shows this text in its "Text" field (input `annotationFragment`): the annotation is not copied
+      // any more to "refresh the panel", that rebuilt the editor form at every load of rows (a new request of the sense label
+      // and, if the user was editing the annotation and scrolled the text, the changes not saved were lost)
       this.selectedText = text;
-      this.textoAnnotation = { ...this.textoAnnotation }; //refresh annotation panel
     }
   }
 
@@ -1619,14 +1812,19 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
     this.scrollingRowIndex = this.getScrollingRowIndex(this.scrollingDirection);
     const scrollTop = this.calculateScrollTop(this.scrollingDirection, this.scrollingRowIndex);
 
-    if (scrollTop <= 0 && this.textRange.start != 0) {
+    // When a section / a search result is opened (ChangingSection) the scroll top is 0 by definition (the position is set
+    // afterwards by renderData), which looked like "the user scrolled up to the top of the loaded rows" and asked again for a wider
+    // range that contained the one just loaded. The extra rows above and below are already part of the range.
+    const changingSection = this.scrollingDirection === ScrollingDirectionType.ChangingSection;
+
+    if (!changingSection && scrollTop <= 0 && this.textRange.start != 0) {
       this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessUp;
       this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();
       return;
     }
 
-    if (this.scrollBarReachesBottomOfTile(scrollTop) && this.textRange.end < this.textTotalRows) {
+    if (!changingSection && this.scrollBarReachesBottomOfTile(scrollTop) && this.textRange.end < this.textTotalRows) {
       this.scrollingDirection = ScrollingDirectionType.IncreaseWidenessDown;
       this.enableIncreaseWidenessOperation();
       this.updateTextRowsView();
@@ -2144,7 +2342,10 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
     const line = {
       text: auxLineBuilder.line.text,
-      words: auxLineBuilder.line.words,
+      // the line breaks inside the rows of the text (e.g. "’ntelletto:\nné") are drawn as a space: Chromium does that, Firefox
+      // really breaks the line inside the SVG text and the rest of the row is drawn over the previous lines. One character
+      // for one character, so no offset (selection, annotations, highlights) changes
+      words: auxLineBuilder.line.words?.map((w: string) => w.replace(/[\r\n\u2028\u2029]/g, ' ')),
       height: lineHeight,
       yText: yText,
       x: this.visualConfig.stdTextOffsetX,
@@ -2342,21 +2543,24 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
       (a.span.start >= (startIndex || 0) && a.span.start < (endIndex || 0) && a.span.end > (endIndex || 0)) || //inizia nella riga e finisce oltre la riga
       (a.span.start < (startIndex || 0) && a.span.end > (endIndex || 0)));
 
-    localAnns.sort((a: any, b: any) => (a.span.end - a.span.start) - (b.span.end - b.span.start));
+    // Each annotation is cut to the line on a COPY (the span object is shared with `simplifiedAnns`: changing it, as it was
+    // done, altered the annotation for the following lines). With the real extent of every fragment on the line the
+    // overlaps between a multi-line annotation and the ones inside it are detected and their handles are stacked, instead
+    // of being drawn one over the other (only the last one could be clicked).
+    const lineFragments = localAnns
+      .map((a: any) => ({
+        ...a,
+        span: { start: Math.max(a.span.start, startIndex || 0), end: Math.min(a.span.end, endIndex || 0) },
+        startsBeforeLine: a.span.start < (startIndex || 0),
+        endsAfterLine: a.span.end > (endIndex || 0),
+        fullLength: a.span.end - a.span.start,
+      }))
+      .filter((a: any) => a.span.end > a.span.start);
 
-    localAnns.map((a: any) => {
-      if (a.span.start >= (startIndex || 0) && a.span.end <= (endIndex || 0)) {
-        return a;
-      }
-      const temp = { ...a };
-      if (a.span.start < (startIndex || 0) && a.span.end <= endIndex) {
-        const difference = startIndex - a.span.start;
-        temp.span.end = a.span.end - difference;
-      }
-      return temp;
-    });
+    // shorter first (they stay close to the text), then the shortest in absolute terms
+    lineFragments.sort((a: any, b: any) => ((a.span.end - a.span.start) - (b.span.end - b.span.start)) || (a.fullLength - b.fullLength));
 
-    const towers = this.sortFragmentsIntoTowers(localAnns);
+    const towers = this.sortFragmentsIntoTowers(lineFragments);
 
     towers.forEach((t: any) => {
       const annTower = new Array();
@@ -2369,7 +2573,9 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
         let endX = startX + width;
         width = endX > maxWidthForLine ? maxWidthForLine - startX : width;
         endX = startX + width;
-        const text = this.elaborateAnnotationLabel(layer, ann, width);
+        // label only on the first fragment of an annotation that goes over more lines (as in INCEpTION): the following
+        // fragments are plain handles, still clickable
+        const text = ann.startsBeforeLine ? '' : this.elaborateAnnotationLabel(layer, ann, width);
         const textAnnLenght = this.getComputedTextLength(text, this.visualConfig.annotationFont);
 
         // console.log(w, startX + (w/2) - (textAnnLenght/2), this.randomString(t.span.end - t.span.start))
@@ -2472,7 +2678,7 @@ export class WorkspaceTextWindowComponent implements OnInit, OnDestroy {
 
       lineHighlights.push({
         id: undefined,
-        width: width,
+        width: width + 2, // as the annotation highlight (x - 1, width + 2): 1px of padding on both sides, otherwise the frame is tight on the right
         height: this.visualConfig.stdTextLineHeight - 2,
         coordinates: {
           x: startX - 1,

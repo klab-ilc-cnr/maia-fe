@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Correzioni e modifiche dopo l&#x27;upgrade ad Angular 21 / PrimeNG 21</title>
+<style>
+:root { --fg:#1f2933; --muted:#6b7280; --accent:#b91c1c; --bg:#ffffff; --card:#f8fafc; --line:#e5e7eb; }
+* { box-sizing: border-box; }
+body { margin:0; font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--fg); background:var(--bg); }
+.layout { display:flex; gap:2rem; max-width:1100px; margin:0 auto; padding:1.5rem; }
+nav { flex:0 0 250px; position:sticky; top:1rem; align-self:flex-start; max-height:calc(100vh - 2rem); overflow:auto; font-size:.9rem;
+      background:var(--card); border:1px solid var(--line); border-radius:8px; padding:.75rem 1rem; }
+nav h2 { margin:.2rem 0 .5rem; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); border:0; }
+nav a { display:block; padding:.25rem 0; color:var(--fg); text-decoration:none; }
+nav a:hover { color:var(--accent); }
+main { flex:1; min-width:0; }
+h1 { font-size:1.7rem; margin:.2rem 0 1rem; }
+h2 { font-size:1.3rem; margin:2rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--accent); }
+h3 { font-size:1.05rem; margin:1.3rem 0 .3rem; color:var(--accent); }
+ul { margin:.3rem 0 .8rem; padding-left:1.3rem; }
+li { margin:.2rem 0; }
+code { background:#eef2f7; padding:.1rem .35rem; border-radius:4px; font:0.9em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+hr { border:0; border-top:1px solid var(--line); margin:1.5rem 0; }
+@media (max-width: 800px) { .layout { display:block; } nav { position:static; margin-bottom:1rem; max-height:none; } }
+@media print { nav { display:none; } .layout { display:block; } }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav><h2>Indice</h2><a href="#0300-release-di-produzione-distmaia-fe-0300-prod-20261119-0936tgz">0.30.0 (release di produzione)</a><a href="#02613-distmaia-fe-02613-test-ng21-20261116-1440tgz">0.26.13</a><a href="#02612-distmaia-fe-02612-test-ng21-20261112-1907tgz">0.26.12</a><a href="#02611-distmaia-fe-02611-test-ng21-20261111-1546tgz">0.26.11</a><a href="#02610-distmaia-fe-02610-test-ng21-20261111-1542tgz">0.26.10</a><a href="#0269-distmaia-fe-0269-test-ng21-20261111-1058tgz">0.26.9</a><a href="#0268-distmaia-fe-0268-test-ng21-20261110-1935tgz">0.26.8</a><a href="#0267-pacchetto-maia-fe-0267-test-ng21-20261110-1427tgz">0.26.7</a><a href="#0266-pacchetto-maia-fe-0266-test-ng21-20261109-1916tgz">0.26.6</a><a href="#0265-pacchetto-maia-fe-0265-test-ng21-20261107-1154tgz">0.26.5</a><a href="#0264-pacchetto-maia-fe-0264-test-ng21-20261107-1049tgz">0.26.4</a><a href="#0263-pacchetto-maia-fe-0263-test-ng21-20261106-1554tgz-include-la-0262-mai-impacchettata">0.26.3</a><a href="#0261-pacchetto-maia-fe-0261-test-ng21-20261105-0919zip">0.26.1</a><a href="#0260-upgrade-ad-angular-21-primeng-21-pacchetto-maia-fe-0260-test-ng21-20261104-2231zip">0.26.0</a><a href="#da-fare-richieste-già-concordate-non-ancora-implementate">Da fare (richieste già concordate, non ancora implementate)</a><a href="#in-sospeso-backend-decisioni">In sospeso (backend / decisioni)</a></nav>
+<main>
+<h1 id="correzioni-e-modifiche-dopo-lupgrade-ad-angular-21-primeng-21">Correzioni e modifiche dopo l'upgrade ad Angular 21 / PrimeNG 21</h1>
+<p>Elenco per punti, senza dettagli (i dettagli stanno nei commit e in <code>AGENTS.md</code>). Comprende anche il riassunto dell'upgrade (0.26.0).</p>
+<p><strong>Come mantenerlo</strong>: ogni correzione/modifica consegnata va aggiunta nella sezione "Non ancora in un pacchetto (prossimo: X.Y.Z)", in alto (si crea con la prima correzione dopo un pacchetto; quando si prepara un pacchetto diventa la sezione di quella versione). Dopo ogni modifica rigenerare la copia HTML: <code>python3 tools/md-to-html.py documentation/upgrade/correzioni-post-upgrade.md</code>.</p>
+<hr>
+<h2 id="0300-release-di-produzione-distmaia-fe-0300-prod-20261119-0936tgz">0.30.0 (release di produzione) — <code>dist/maia-fe-0.30.0-prod-20261119-0936.tgz</code></h2>
+<ul>
+<li>Preparazione al merge su <code>master</code>: <code>environment.ts</code> con sottotitolo «develop» (come su <code>master</code>; i pacchetti per la VM lo impostano a runtime) e <code>production: true</code> in <code>environment.production.ts</code> (nessun effetto visibile: il pacchetto era già in modalità produzione)</li>
+</ul>
+<h2 id="02613-distmaia-fe-02613-test-ng21-20261116-1440tgz">0.26.13 — <code>dist/maia-fe-0.26.13-test-ng21-20261116-1440.tgz</code></h2>
+<ul>
+<li>Dictionary Editor, Anteprima (e PDF): le parti senza valore non si mostrano (Forme, I attestazione, Riferimento topografico, N. occorrenze Decameron/totali con valore 0, Occ. altre opere, Etimologia e suoi campi, campi di testo, Vedi anche; linea divisoria se sotto non c'è altro)</li>
+<li>Dictionary Editor, Anteprima (e PDF): occorrenze in altre opere in ordine crescente della colonna di ordinamento delle opere (<code>order</code>, dal backend); righe vuote nascoste; opera non più in elenco in fondo col suo codice. La nota salvata non viene modificata</li>
+</ul>
+<h2 id="02612-distmaia-fe-02612-test-ng21-20261112-1907tgz">0.26.12 — <code>dist/maia-fe-0.26.12-test-ng21-20261112-1907.tgz</code></h2>
+<h3 id="dictionary-editor">Dictionary Editor</h3>
+<ul>
+<li>Anteprima, Etimologia: su due righe come nella scheda Voce (lingua ed etimo accanto, dettagli sotto a tutta larghezza invece di una colonna stretta); l'etimo è in corsivo come nella scheda Voce)</li>
+</ul>
+<h3 id="workspace">Workspace</h3>
+<ul>
+<li>Barra delle finestre più alta (42 px invece di 29) e con testo e icone più grandi; l'altezza è una sola variabile (<code>--taskbar-height</code> in <code>workspace-taskbar.component.scss</code>) e il contenitore delle finestre si adatta</li>
+<li>Salvataggio automatico del layout (finestre aperte, posizioni, dimensioni, minimizzate): una sola richiesta dopo 10 secondi senza modifiche, nulla se il layout non è cambiato (il primo piano non conta), mai due salvataggi sovrapposti (una modifica durante un salvataggio ne accoda uno solo) e nessun salvataggio automatico durante l'uscita; un errore viene segnalato una volta ogni 20 s. Resta il salvataggio all'uscita dal workspace; «Last access» diventa l'ultima modifica del layout</li>
+</ul>
+<h3 id="dictionary-explorer">Dictionary Explorer</h3>
+<ul>
+<li>Il pannello dei filtri si chiama «Filters» (era «Filtri») come nel Lexicon Explorer</li>
+<li>Pulsante Reset della stessa larghezza di quello del Lexicon Explorer (era compresso a 18 px invece di 31); finestra con la stessa altezza di apertura del Lexicon Explorer (metà della finestra del browser, non 500 px fissi)</li>
+<li>Reset del filtro: una sola richiesta, con il testo vuoto (prima ne partiva una prima col vecchio valore, inutile); testo e filtri a tendina hanno ora un'unica pausa</li>
+<li>Filtro: come nel Lexicon Explorer, scrivendo subito la lista iniziale (lenta) poteva arrivare dopo e sostituire quella filtrata (nessun risultato per «sonare» che c'è); ora conta solo l'ultima richiesta (le precedenti vengono annullate) e un errore del backend non spegne più il filtro</li>
+</ul>
+<h3 id="lexicon-explorer">Lexicon Explorer</h3>
+<ul>
+<li>Niente overlay con lo spinner sopra la lista mentre si filtra (resta lo spin del pulsante di aggiornamento, come nel Dictionary Explorer); pausa del filtro portata a 400 ms, la stessa del Dictionary Explorer</li>
+<li>Filtro: scrivendo subito, la lista iniziale (lenta) poteva arrivare dopo e sostituire quella filtrata, e il filtro sembrava non funzionare; ora conta solo l'ultima richiesta (le precedenti vengono annullate) e la scrittura invia una richiesta sola dopo una pausa di 250 ms (prima una per tasto, doppia per il <code>keyup</code>); un errore del backend non spegne più il filtro</li>
+</ul>
+<h3 id="lexicon-editor">Lexicon Editor</h3>
+<ul>
+<li>Forme, sensi ed entrate: la lista delle morfologie (<code>lexinfo/data/morphology</code>) si chiede una sola volta e si riusa, invece di una richiesta per ogni riga di morfologia (4 richieste uguali cliccando su una forma con due morfologie)</li>
+</ul>
+<h2 id="02611-distmaia-fe-02611-test-ng21-20261111-1546tgz">0.26.11 — <code>dist/maia-fe-0.26.11-test-ng21-20261111-1546.tgz</code></h2>
+<h3 id="finestra-search">Finestra Search</h3>
+<ul>
+<li>Risultati: sulla riga di un risultato il cursore è la mano (la riga si apre con il doppio clic) invece del cursore di testo</li>
+</ul>
+<h2 id="02610-distmaia-fe-02610-test-ng21-20261111-1542tgz">0.26.10 — <code>dist/maia-fe-0.26.10-test-ng21-20261111-1542.tgz</code></h2>
+<h3 id="dictionary-editor">Dictionary Editor</h3>
+<ul>
+<li>Scheda Ordinamento: una sola cornice (quella della lista; tolta quella dell'albero dentro la lista) e spazio tra la lista e i bottoni Save/Restore, che toccavano il bordo</li>
+<li>Anteprima: spazio tra la marca e la definizione di un senso («1. [Mus.] Generare vibrazioni…»; mancava, nel PDF c'era già)</li>
+<li>Scheda Voce: il numero di occorrenze totali è allineato in verticale al campo delle occorrenze nel Decameron (prima era 8 px più in alto)</li>
+<li>Scheda Voce, Etimologia: lingua di provenienza ed etimo su una riga (colonne 3/3), allineati in verticale; dettagli sotto a tutta larghezza (la toolbar si vede intera); l'etichetta «Lingua di provenienza» non è più tagliata coi tre puntini</li>
+</ul>
+<h3 id="login-footer-barra-in-alto">Login / footer / barra in alto</h3>
+<ul>
+<li>Barra in alto delle pagine (lista workspace, layer, tagset, lessico, utenti): il titolo «MAIA - …» è rosso come nei workspace, non più nero</li>
+<li>Login: la maschera ha una larghezza standard (420 px al massimo, a misura di schermo sui piccoli) invece di allargarsi con il contenuto (~650 px)</li>
+</ul>
+<h3 id="workspace">Workspace</h3>
+<ul>
+<li>Finestre: il bordo destro (o sinistro) non cambia più anche l'altezza quando jsPanel crede un tasto Ctrl/Alt ancora premuto (il rilascio del tasto non arrivava alla pagina, es. Alt+Tab o Ctrl+Tab): lo stato dei tasti si legge dal clic stesso; Ctrl/Alt/Shift tenuti premuti davvero funzionano come prima</li>
+<li>Finestra del testo: il titolo è il nome del testo, senza il prefisso «Text - » (anche per i layout già salvati, che lo avevano)</li>
+</ul>
+<h2 id="0269-distmaia-fe-0269-test-ng21-20261111-1058tgz">0.26.9 — <code>dist/maia-fe-0.26.9-test-ng21-20261111-1058.tgz</code></h2>
+<h3 id="login-footer">Login / footer</h3>
+<ul>
+<li>Footer (anche della pagina di login): la versione in basso a destra non tocca più il bordo (margine laterale di 1 rem)</li>
+</ul>
+<h3 id="workspace">Workspace</h3>
+<ul>
+<li>Nuova barra delle finestre in basso, come la barra delle applicazioni: una voce per finestra aperta (icona per tipo, titolo, ordine di apertura), la finestra in primo piano evidenziata; clic = ripristina se minimizzata, porta davanti se dietro, minimizza se già davanti; tasto destro = ripristina/minimizza, ingrandisci, chiudi. Le finestre minimizzate non vanno più nel riquadro in basso a sinistra di jsPanel ma restano nella barra, e il contenitore delle finestre non ci passa sotto. Ripristinate minimizzate alla riapertura del workspace</li>
+<li>Barra delle finestre: nelle voci gli editor sono abbreviati («LexE - …», «DictE - …») e il prefisso «Text - » non compare, per lasciare spazio al nome; il tooltip ha il titolo completo e i titoli delle finestre non cambiano</li>
+</ul>
+<h2 id="0268-distmaia-fe-0268-test-ng21-20261110-1935tgz">0.26.8 — <code>dist/maia-fe-0.26.8-test-ng21-20261110-1935.tgz</code></h2>
+<h3 id="finestra-search">Finestra Search</h3>
+<ul>
+<li>Ricerca: qualsiasi apice digitato (<code>'</code> <code>‘</code> <code>ʼ</code> `<code> </code> `<code> </code>´<code> </code>′<code>) viene inviato come </code>’<code>, la forma usata nei testi, quindi </code>'ntelletto<code> trova </code>’ntelletto`; vale anche per i filtri di colonna (parola, contesti) e per l'esportazione. Il campo resta come l'utente l'ha scritto. Soluzione lato frontend, solo per la ricerca nel testo (vedi «In sospeso»)</li>
+</ul>
+<h3 id="finestra-del-testo">Finestra del testo</h3>
+<ul>
+<li>Firefox: il testo di alcune righe veniva impaginato due volte, con le code delle righe sovrapposte alla colonna delle sentenze e le evidenziazioni fuori posto (es. I.Concl.19 aprendo il risultato di «’ntelletto»); i ritorni a capo dentro le righe sono ora disegnati come spazio, come fa Chromium. Il difetto c'era anche in Angular 14 (<code>master</code>), non viene dall'upgrade</li>
+</ul>
+<hr>
+<h2 id="0267-pacchetto-maia-fe-0267-test-ng21-20261110-1427tgz">0.26.7 — pacchetto <code>maia-fe-0.26.7-test-ng21-20261110-1427.tgz</code></h2>
+<h3 id="finestra-del-testo">Finestra del testo</h3>
+<ul>
+<li>Selezione del testo (doppio clic e trascinamento) che smetteva di funzionare fino a un F5: il <code>p-dialog</code> di PrimeNG spegne la selezione in tutta la pagina (<code>user-select: none</code> sul body) mentre si trascina o ridimensiona una finestra di dialogo, e se si chiude prima del rilascio del mouse resta spenta; ora al primo rilascio del mouse la pagina torna a posto</li>
+</ul>
+<h3 id="layer-tagset-workspace-finestre-nuovo">Layer, tagset, workspace (finestre "nuovo")</h3>
+<ul>
+<li>Nuovo layer: il campo colore parte con un colore libero (prima il selettore mostrava un rosso ma il campo era vuoto e Add restava spento senza dire perché); alla riapertura della finestra Add era acceso con nome e colore vuoti e il backend rispondeva 500</li>
+<li>Stesso difetto corretto nelle finestre nuovo/modifica di tagset, valore del tagset, workspace e feature: nome obbligatorio e non solo spazi restano validi dopo la prima apertura</li>
+<li>Finestre di modifica di tagset, valore del tagset e feature: il proprio nome non conta come nome già usato</li>
+<li>Un errore del backend (es. 500) in layer e tagset non interrompe più la lista (console: «ERROR Error: [object Object]», la lista non si aggiornava più) e l'avviso dice il motivo («server error 500») invece di «undefined»</li>
+</ul>
+<h3 id="tagset">Tagset</h3>
+<ul>
+<li>Valore predefinito del tagset (campo <code>defaultItem</code> del backend): si imposta, si cambia e si toglie dalla pagina dei valori del tagset con la stella; la pagina mostra il valore predefinito</li>
+<li>Le nuove annotazioni preselezionano il valore predefinito del tagset (es. "Tipo lessicale"): sparisce la lista fissa nel codice; senza predefinito nessuna preselezione</li>
+<li>La modifica di nome e descrizione del tagset non toglie il predefinito; cancellare il valore predefinito lo toglie prima (il backend altrimenti rifiuta)</li>
+</ul>
+<hr>
+<h2 id="0266-pacchetto-maia-fe-0266-test-ng21-20261109-1916tgz">0.26.6 — pacchetto <code>maia-fe-0.26.6-test-ng21-20261109-1916.tgz</code></h2>
+<h3 id="finestra-del-testo">Finestra del testo</h3>
+<ul>
+<li>Puntatore a mano anche sopra il testo annotato (come sull'handle): un clic apre l'annotazione</li>
+<li>Albero delle sezioni: tooltip con il luogo del testo (es. "II.8.48") su ogni elemento</li>
+<li>Annotazioni sovrapposte sullo stesso layer (anche a capo): gli handle si impilano, ognuno è visibile e cliccabile (prima si vedeva e selezionava solo l'ultimo)</li>
+<li>Annotazione su più righe: etichetta solo sul primo frammento (come INCEpTION)</li>
+<li>Passando col mouse su un handle si evidenzia il testo dell'annotazione</li>
+<li>Clic su una parola annotata: apre l'annotazione più interna (il doppio clic resta la selezione della parola)</li>
+</ul>
+<h3 id="finestra-del-testo-apertura-da-un-risultato-della-search">Finestra del testo (apertura da un risultato della Search)</h3>
+<ul>
+<li>Una sola richiesta di righe e di annotazioni (prima due, la seconda conteneva la prima), senza il salto del testo</li>
+<li>L'editor di annotazione non si ricostruisce a ogni caricamento di righe: niente seconda richiesta dell'etichetta del senso e le modifiche non salvate non si perdono scorrendo il testo</li>
+<li>Il numero di righe del testo non si chiede più prima del primo caricamento (lo dà la risposta delle righe) e l'elenco dei layer è in cache per 5 minuti: aperture della finestra del testo più rapide e meno richieste</li>
+<li>Alla prima apertura evidenziazioni e handle erano spostati rispetto alle parole (font del testo non ancora caricato al momento della misura): ora si attende il font</li>
+</ul>
+<h3 id="finestra-del-testo-correzione-della-cache">Finestra del testo (correzione della cache)</h3>
+<ul>
+<li>Il campo "Text" dell'editor di annotazione mostrava il testo precedente (restava indietro di un clic); il form si costruisce ora a inputs completi, anche nell'editor della modifica massiva</li>
+</ul>
+<h3 id="prestazioni-clic-su-unannotazione-e-campi-con-autocomplete">Prestazioni (clic su un'annotazione e campi con autocomplete)</h3>
+<ul>
+<li>Tolta la ricerca a vuoto dei campi con autocomplete (lessico, forme, sensi: un elenco di centinaia di voci richiesto a ogni apertura, mai mostrato): 26 punti dell'applicazione</li>
+<li>Editor di annotazione: nome del layer dall'elenco già in memoria; campi dei layer e valori dei tagset in cache per 5 minuti (svuotata a ogni modifica fatta dall'app); caricamento in background per i layer resi visibili. Un clic passa da 5 chiamate a 1 (solo l'etichetta del senso)</li>
+</ul>
+<h3 id="elenco-workspace">Elenco workspace</h3>
+<ul>
+<li>"Last access" aggiornato: l'elenco veniva richiesto una sola volta per sessione; ora si rinnova a ogni apertura della pagina e dopo il salvataggio all'uscita da un workspace</li>
+</ul>
+<h3 id="sessione">Sessione</h3>
+<ul>
+<li>Il layout del workspace si salva 30 s prima della scadenza (all'avviso di disconnessione) e di nuovo se si rifiuta di continuare</li>
+<li>Tornando al login non compare più l'avviso "Error saving workspace status" (dopo la fine della sessione non si prova più a salvare)</li>
+</ul>
+<h3 id="lexicon-explorer-dictionary-explorer">Lexicon Explorer / Dictionary Explorer</h3>
+<ul>
+<li>Con poche voci le righe non si allungano più per riempire il tile: altezza sempre uguale, spazio bianco sotto</li>
+</ul>
+<h3 id="lexicon-editor">Lexicon Editor</h3>
+<ul>
+<li>Albero a sinistra: compare la barra di scorrimento verticale quando form e sensi riempiono la colonna (es. "sonare verb"); l'altezza segue la colonna anche ridimensionando il pannello</li>
+</ul>
+<hr>
+<h2 id="0265-pacchetto-maia-fe-0265-test-ng21-20261107-1154tgz">0.26.5 — pacchetto <code>maia-fe-0.26.5-test-ng21-20261107-1154.tgz</code></h2>
+<h3 id="dictionary-editor">Dictionary Editor</h3>
+<ul>
+<li>Anteprima: doppio clic su un contesto apre il testo alla riga giusta, con il layer semantico attivo (senza selezione della parola), con la manina sulle righe</li>
+</ul>
+<hr>
+<h2 id="0264-pacchetto-maia-fe-0264-test-ng21-20261107-1049tgz">0.26.4 — pacchetto <code>maia-fe-0.26.4-test-ng21-20261107-1049.tgz</code></h2>
+<h3 id="lexicon-editor">Lexicon Editor</h3>
+<ul>
+<li>Espandere "sense"/"form" non svuota più il ramo già aperto (apertura da una forma o da un senso)</li>
+<li>Larghezza di apertura almeno 800 px</li>
+<li>Pannello di sinistra (albero) con larghezza minima 300 px</li>
+<li>Tooltip con la definizione intera passando sul senso nell'albero</li>
+</ul>
+<h3 id="lexicon-explorer-dictionary-explorer">Lexicon Explorer / Dictionary Explorer</h3>
+<ul>
+<li>Larghezza di apertura e minima 350 px</li>
+</ul>
+<h3 id="annotazioni">Annotazioni</h3>
+<ul>
+<li>"Tipo lessicale" preselezionato su "Parola monorematica" nelle annotazioni semantiche nuove (singola e multipla)</li>
+</ul>
+<h3 id="dictionary-editor">Dictionary Editor</h3>
+<ul>
+<li>Scheda Ordinamento: la card occupa tutta l'altezza del pannello</li>
+<li>Scheda Ordinamento: l'albero dei sensi non resta più tagliato</li>
+<li>Anteprima: i contesti dei sottosensi non si perdono più (gara tra le risposte)</li>
+<li>Lista delle opere richiesta una sola volta (prima una richiesta per riga "occorrenze in altre opere")</li>
+</ul>
+<h3 id="test">Test</h3>
+<ul>
+<li>Test di fumo: il pannello Lexicon viene portato in primo piano prima del clic</li>
+<li><code>blockWrites</code>: lascia passare <code>/texto/util/*</code> (ricerche e letture)</li>
+<li>Nuovi test di regressione per tutti i punti sopra</li>
+</ul>
+<hr>
+<h2 id="0263-pacchetto-maia-fe-0263-test-ng21-20261106-1554tgz-include-la-0262-mai-impacchettata">0.26.3 — pacchetto <code>maia-fe-0.26.3-test-ng21-20261106-1554.tgz</code> (include la 0.26.2, mai impacchettata)</h2>
+<h3 id="sessione-e-errori">Sessione e errori</h3>
+<ul>
+<li>Sessione scaduta: messaggio e ritorno al login (401, 403 sul token, 500 con token scaduto)</li>
+<li>Avviso "stai per essere disconnesso" anche dopo un ricaricamento della pagina</li>
+<li>Controllo della scadenza quando la scheda torna visibile</li>
+<li>Scadenza basata anche sulla scadenza scritta nel token</li>
+<li>Errori delle chiamate secondarie non più silenziosi (avviso unico, i18n <code>BACKEND_ERROR</code>)</li>
+<li>Tooltip asincrono: messaggio d'errore tradotto</li>
+<li>Tooltip dei KWIC: l'errore non diventa più "nessuna annotazione"</li>
+</ul>
+<h3 id="ontologia">Ontologia</h3>
+<ul>
+<li>Disabilitata nel frontend (<code>ontologyDisabled</code>): niente menu, finestre salvate non riaperte</li>
+</ul>
+<h3 id="editor-di-testo-note-definizioni">Editor di testo (note, definizioni)</h3>
+<ul>
+<li>Nuovo componente <code>app-rich-text-editor</code> al posto di <code>p-editor</code> negli editor modificabili</li>
+<li>Barra ridotta a 8 strumenti</li>
+<li>Menu caratteri speciali (« » – È ’ …)</li>
+<li>Menu altri formati (apice, pedice, barrato, elenchi)</li>
+<li>Incolla pulita (via colori, sfondi, font, titoli, immagini)</li>
+<li>Distanze uniformi tra gli strumenti</li>
+</ul>
+<h3 id="search">Search</h3>
+<ul>
+<li>Finestra di apertura 1000×705 px (10 risultati senza ridimensionare)</li>
+<li>Maschera di input: campi non allungati dall'errore</li>
+<li>Maschera di input: testo unico preselezionato</li>
+<li>Maschera di input: selettori testi/Pos/layer che si restringono con il pannello</li>
+<li>Maschera di input: distanze e spazio dopo "lunghezza contesto"</li>
+<li>Errore del campo vuoto senza spostare il layout</li>
+<li>Avvisi del pulsante "Annota"</li>
+</ul>
+<h3 id="finestra-del-testo">Finestra del testo</h3>
+<ul>
+<li>Filtro Visibility: chip non tagliato, centrature, checkbox solo "deseleziona tutto"</li>
+<li>Evidenziazione del testo selezionato più visibile</li>
+<li>Cornice della parola aperta dal Search con il padding giusto</li>
+<li>Cornice della selezione col mouse uguale a quella delle annotazioni</li>
+<li>Tolto il workaround dello splitter ("annotationPanel is undefined")</li>
+</ul>
+<h3 id="lexicon-explorer-lexicon-editor-dictionary-explorer">Lexicon Explorer / Lexicon Editor / Dictionary Explorer</h3>
+<ul>
+<li>Albero senza barra orizzontale, icone ancorate a destra</li>
+<li>Colonna delle note tolta, icona accanto al nome</li>
+<li>Larghezze minime degli splitter ripristinate (<code>.p-splitterpanel</code>)</li>
+<li>Pulsanti "+" piccoli (Dictionary Explorer e Lexicon Editor)</li>
+</ul>
+<h3 id="dictionary-editor">Dictionary Editor</h3>
+<ul>
+<li>Anteprima: tabelle delle occorrenze visibili senza clic</li>
+<li>Anteprima: numerazione delle accezioni a ogni livello (1.1.1, …)</li>
+<li>Anteprima: errore dei contesti visibile (non più "Nessun risultato")</li>
+</ul>
+<h3 id="annotazioni">Annotazioni</h3>
+<ul>
+<li>POS accanto ai lemmi del lessico nell'autocomplete (una sola volta, tra parentesi quadre)</li>
+</ul>
+<h3 id="generale">Generale</h3>
+<ul>
+<li>Campi numerici: frecce su/giù della tastiera disabilitate</li>
+<li>Test e2e che non scrivono sul server (<code>blockWrites</code>)</li>
+</ul>
+<hr>
+<h2 id="0261-pacchetto-maia-fe-0261-test-ng21-20261105-0919zip">0.26.1 — pacchetto <code>maia-fe-0.26.1-test-ng21-20261105-0919.zip</code></h2>
+<h3 id="primeng">PrimeNG</h3>
+<ul>
+<li>Etichette dei chip delle marche del senso (<code>[object Object]</code>), anche nelle relazioni semantiche</li>
+<li>Chip di nuovo azzurri</li>
+<li>Segnaposto del filtro Visibility</li>
+<li><code>scrollDirection</code> tolto dalla tabella della Search</li>
+<li>Nuovo controllo <code>npm run check-primeng-attrs</code></li>
+</ul>
+<hr>
+<h2 id="0260-upgrade-ad-angular-21-primeng-21-pacchetto-maia-fe-0260-test-ng21-20261104-2231zip">0.26.0 — upgrade ad Angular 21 / PrimeNG 21 — pacchetto <code>maia-fe-0.26.0-test-ng21-20261104-2231.zip</code></h2>
+<p>Da Angular 14 (v0.20.0, <code>master</code>) ad Angular 21 a tappe, con un pacchetto di verifica a ogni traguardo: Angular 16, poi 0.22.0 (17), 0.23.0 (18), 0.24.0 (19), 0.25.0 (20) e 0.26.0 (21). Piano e decisioni: <code>angular-upgrade-plan.md</code>.</p>
+<h3 id="versioni-aggiornate-da-a">Versioni aggiornate (da → a)</h3>
+<ul>
+<li>Angular (core, router, forms, ecc.): 14.2 → <strong>21.2.26</strong>; CLI 14.2 → <strong>21.2.29</strong>; CDK 14.2 → 21.2.14</li>
+<li>Builder: <code>build-angular</code> (webpack) → <code>@angular/build</code> (esbuild), uscita piatta in <code>dist/projectx-fe</code></li>
+<li>PrimeNG: 14.1 → <strong>21.1.10</strong> (l'ultima versione con licenza MIT); tema con <code>@primeuix/themes</code> 2.0.3 (nuovo sistema di temi, preset in <code>src/app/theme/maia-preset.ts</code>)</li>
+<li>TypeScript: 4.8 → <strong>5.9</strong>; zone.js 0.11 → 0.15; rxjs 7.4 → 7.8</li>
+<li>Node richiesto: 16 → <strong>22.23.4</strong> (su <code>master</code> resta Node 16)</li>
+<li><code>@ngx-translate/core</code> 14 → 15; <code>http-loader</code> 7 → 8</li>
+<li>Font Awesome: angular-fontawesome 0.10 → 4; librerie svg 1.2 → 7.3; icone solide 5.15 → 7.3</li>
+<li><code>uuid</code> 9 → 11; <code>pdfmake</code> 0.3.5 → 0.3.x; <code>sweetalert2</code> 11.6 → 11.26; Compodoc 1.1 → 2.0</li>
+<li><code>primeicons</code> 6.0 → 7.0 (ultima versione MIT)</li>
+<li>Invariate di proposito: <code>jspanel4</code> 4.16 (libreria abbandonata, i layout dei tile sono salvati nel backend), <code>quill</code> 1.3.7, <code>primeflex</code> 3.2.1, <code>bootstrap</code> 5.2</li>
+</ul>
+<h3 id="cosa-è-cambiato-nel-codice">Cosa è cambiato nel codice</h3>
+<ul>
+<li>Tema: PrimeNG 18+ non ha più CSS dei temi; l'aspetto (Lara con i valori di saga-blue) è un preset a runtime, con livelli CSS (<code>src/styles/README-layer.md</code>)</li>
+<li>Sostituiti i componenti rimossi o rinominati: TabView → Tabs, OverlayPanel → Popover, InputSwitch → ToggleSwitch; AutoComplete <code>field</code> → <code>optionLabel</code>, MultiSelect <code>defaultLabel</code> → <code>placeholder</code></li>
+<li>Nuovi controlli: <code>npm run check-primeng-attrs</code> (attributi statici ignorati in silenzio da PrimeNG) e <code>npm run check-licenses</code> (impedisce di installare PrimeNG 22, primeicons 8, <code>@primeuix/themes</code> 3 o versioni <code>-lts</code>)</li>
+<li>Sicurezza: <code>npm audit</code> da 84 (prima dello studio di sicurezza) a <strong>20</strong>, tutte di livello moderato; a runtime resta solo <code>quill</code> 1.3.7. Rimossi tutti gli <code>overrides</code> dell'era Angular 14</li>
+<li>Non applicata: migrazione ai blocchi di controllo di flusso (<code>@if</code>, <code>@for</code>)</li>
+</ul>
+<h3 id="in-attesa-di-aggiornamento-npm-outdated-10-novembre-2026">In attesa di aggiornamento (<code>npm outdated</code>, 10 novembre 2026)</h3>
+<ul>
+<li><strong>Angular 22</strong> (core 22.2.5, CLI e builder 22.2.6) e con esso CDK 22, <code>zone.js</code> 0.16, angular-fontawesome 5 e <code>@ngx-translate</code> 18 (legati al salto di versione): rinviati, si fanno insieme</li>
+<li><strong>PrimeNG 22</strong>, <strong>primeicons 8</strong> e <code>@primeuix/themes</code> 3: licenza proprietaria (PrimeUI), <strong>da non installare</strong>. Per Angular 22 si valuta <code>@openng/optimus-ui</code> (fork MIT di PrimeNG 21, ancora giovane)</li>
+<li><strong>quill 2</strong> (2.0.3): cambia l'HTML salvato da liste e formati, usato dal dizionario e dall'esportazione PDF; decisione aperta, da provare sui dati</li>
+<li><strong>primeflex 4</strong> (le classi della 3 sono usate nei template), <strong>jquery 4</strong>, <strong>uuid 14</strong>: nessuna urgenza</li>
+<li>Aggiornamenti minori disponibili senza rischi noti: <code>bootstrap</code> 5.3.8, <code>pdfmake</code> 0.3.14, <code>html-to-pdfmake</code> 2.5.36, <code>tslib</code> 2.9, Font Awesome free (CSS) 6.7</li>
+<li>Strumenti di sviluppo molto indietro: <code>eslint</code> 8 (ultima 10), <code>@typescript-eslint</code> 6 (8), <code>karma</code>/<code>jasmine</code>; <code>npm test</code> è rotto fin dalla 14 e va sistemato a parte</li>
+<li>TypeScript 7 è uscito, ma Angular 21 usa la 5.9; <code>@types/node</code> è ancora 12</li>
+</ul>
+<hr>
+<h2 id="da-fare-richieste-già-concordate-non-ancora-implementate">Da fare (richieste già concordate, non ancora implementate)</h2>
+<ul>
+<li>Tagset: dopo la creazione di un nuovo tagset non tornare alla lista, ma aprire la pagina di modifica del tagset appena creato (quella dei valori), per inserirli subito</li>
+</ul>
+<h2 id="in-sospeso-backend-decisioni">In sospeso (backend / decisioni)</h2>
+<ul>
+<li>~~Backend (maia-be/DB): <code>workspaces.layout</code> e <code>tiles.tile_config</code> erano <code>varchar(2000)</code>~~ — risolto: le due colonne sono ora <code>text</code> (65.535 byte, verificato sul DB il 2026-11-16 con <code>information_schema.columns</code>: oltre 400 finestre per workspace). Se il modello Java ha ancora <code>@Column(length = 2000)</code> va allineato</li>
+<li>~~Backend (maia-be): l'annotazione massiva (<code>POST /texto/annotation/multiple</code>) falliva per tutti i contesti con «user required» di TexO~~ — risolto dal backend e verificato il 2026-11-18 sulla VM con il «layer test»: 20 contesti su 2 pagine (2,9 s), 120 su 12 pagine (19 s) e 269 su 27 pagine (40 s) creati tutti (<code>errors []</code>), annotazioni ripulite alla fine. Il frontend invia tutti i contesti selezionati di tutte le pagine. Tempo ≈ 0,15 s per contesto: con selezioni molto grandi (oltre ~400 contesti) la richiesta può superare i 60 s dei timeout abituali di proxy/Apache (non provato). La segnalazione originale («dalla seconda pagina i contesti sono esclusi») non si è riprodotta dopo la correzione. La prova è ripetibile: <code>e2e/tests/mass-annotation-real.spec.ts</code> (opzionale, solo con <code>E2E_REAL_WRITES=1</code>; scrive sul «layer test» e ripulisce), da rilanciare dopo ogni aggiornamento di maia-be/TexO</li>
+<li>Backend: <code>POST /texto/layer/create</code> con colore vuoto dà 500 (dovrebbe rispondere 400 con un messaggio)</li>
+<li>Frontend: lo stesso schema che termina lo stream della lista in caso di errore esiste ancora in corpus, workspace, lexicon e editor (non toccati)</li>
+<li>maia-be: 401 di TexO/LexO restituito come 500</li>
+<li>maia-be/TexO: offset vuoti nei contesti di alcune annotazioni recenti (evidenziazione gialla mancante in anteprima)</li>
+<li>maia-be/TexO: 401 intermittente su <code>/texto/util/ais</code></li>
+<li>Backend (TexO): lo storico dei tagset ha <code>time</code> al secondo: due modifiche dello stesso tagset nello stesso secondo danno 500 e il tagset resta non modificabile né cancellabile (<code>prova tagset</code> 25388553 e <code>tmp-prova-default</code> 25388562 da sbloccare o cancellare)</li>
+<li>Dati: impostare il valore predefinito di "Tipo lessicale" ("Parola monorematica") dalla pagina dei tagset, su ogni istanza (VM di test e produzione), perché la lista fissa non c'è più</li>
+<li>Decisione (apici nella ricerca): <strong>nessuna richiesta al backend (TexO)</strong>. Il backend deve rispettare i dati e restare generico (regole come «quali caratteri equivalgono» sono del progetto); nessuna collazione MariaDB unisce gli apici, e i dati del corpus sono coerenti (Decameron: <code>’</code> 8.204 volte, <code>‘</code> 28 virgolette di apertura, <code>'</code> 1 in «L'altre», refuso). La normalizzazione in <code>’</code> sta nel frontend (<code>helpers/apostrophes.ts</code>) e vale <strong>solo per la ricerca nel testo</strong> (finestra Search): lì non si può più cercare il solo apice dritto o <code>‘</code>, accettato. <strong>Non riusarla</strong> per ricerche su annotazioni, lessico, dizionario o voci: quei contenuti li scrivono più persone senza una convenzione e le varianti convivono; servirebbero prima una convenzione alla scrittura (vedi sotto la conversione <code>'</code> → <code>’</code> nell'editor di testo ricco) o un'equivalenza lato ricerca, configurabile e non cablata nel backend</li>
+<li>Dati (facoltativo): l'unico apice dritto del Decameron («L'altre») si può correggere nel testo; per nuovi testi, uniformare gli apici in <code>’</code> nella preparazione/importazione del corpus</li>
+<li>Backend (TexO): la ricerca <code>*</code> da sola (<code>token like '%'</code>, 307.500 token) esaurisce la memoria (<code>-Xmx1024m</code>) e blocca TexO finché non viene riavviato: serve paginazione/limite in SQL</li>
+<li>Ricerca: «ch’io» non trova nulla perché i token sono <code>ch’</code> e <code>io</code>; decidere se suggerirlo o dividere sull'apice</li>
+<li>Editor di testo ricco: conversione di <code>'</code> digitato in <code>’</code> ancora da decidere</li>
+<li>Decisione: quill 2</li>
+</ul>
+</main>
+</div>
+</body>
+</html>

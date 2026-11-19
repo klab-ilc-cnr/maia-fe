@@ -14,7 +14,8 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
 @Component({
   selector: 'app-lexical-entry-editor',
   templateUrl: './lexical-entry-editor.component.html',
-  styleUrls: ['./lexical-entry-editor.component.scss']
+  styleUrls: ['./lexical-entry-editor.component.scss'],
+  standalone: false
 })
 export class LexicalEntryEditorComponent implements OnInit, OnDestroy {
   /**Sottoscrizione per la gestione del notify */

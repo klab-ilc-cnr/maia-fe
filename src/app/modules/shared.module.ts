@@ -10,18 +10,22 @@ import { ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { EditorModule } from 'primeng/editor';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputIconModule } from 'primeng/inputicon';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OrderListModule } from 'primeng/orderlist';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PopoverModule } from 'primeng/popover';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
 import { PasswordModule } from 'primeng/password';
@@ -33,7 +37,7 @@ import { SliderModule } from 'primeng/slider';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
 import { TagModule } from 'primeng/tag';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
@@ -53,6 +57,8 @@ import { NotDuplicateNameDirective } from '../validators/not-duplicate-name.dire
 import { TagsetValueNotDuplicateNameDirective } from '../validators/tagset-value-not-duplicate-name.directive';
 import { UriValidator } from '../validators/uri-validator.directive';
 import { WhitespacesValidatorDirective } from '../validators/whitespaces-validator.directive';
+import { NoArrowSpinDirective } from '../directives/no-arrow-spin.directive';
+import { RichTextEditorComponent } from '../forms/rich-text-editor/rich-text-editor.component';
 import { DividerModule } from "primeng/divider";
 import { ChipModule } from 'primeng/chip';
 
@@ -60,8 +66,8 @@ const PRIMENG_MODULES = [
   ButtonModule,
   TableModule,
   MultiSelectModule,
-  DropdownModule,
-  InputSwitchModule,
+  SelectModule,
+  ToggleSwitchModule,
   ListboxModule,
   MenubarModule,
   DialogModule,
@@ -79,7 +85,7 @@ const PRIMENG_MODULES = [
   SkeletonModule,
   ToggleButtonModule,
   TagModule,
-  OverlayPanelModule,
+  PopoverModule,
   SplitterModule,
   SelectButtonModule,
   ScrollPanelModule,
@@ -88,13 +94,17 @@ const PRIMENG_MODULES = [
   MenuModule,
   TieredMenuModule,
   EditorModule,
-  TabViewModule,
+  TabsModule,
   AutoCompleteModule,
   CardModule,
   InputNumberModule,
   PaginatorModule,
   PasswordModule,
   InputTextModule,
+  IconFieldModule,
+  InputGroupModule,
+  InputGroupAddonModule,
+  InputIconModule,
   SliderModule,
   SplitButtonModule,
   OrderListModule,
@@ -103,6 +113,7 @@ const PRIMENG_MODULES = [
 ];
 
 const DIRECTIVES = [
+  NoArrowSpinDirective,
   TagsetValueNotDuplicateNameDirective,
   WhitespacesValidatorDirective,
   NotDuplicateNameDirective,
@@ -110,6 +121,7 @@ const DIRECTIVES = [
 ];
 
 const COMPONENTS = [
+  RichTextEditorComponent,
   PopupDeleteItemComponent,
   AutocompleteCheckboxComponent,
   DoubleAutocompleteComponent,

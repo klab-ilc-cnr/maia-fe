@@ -12,7 +12,8 @@ import { OntologyService } from 'src/app/services/ontology.service';
 @Component({
   selector: 'app-ontology-class-explorer',
   templateUrl: './ontology-class-explorer.component.html',
-  styleUrls: ['./ontology-class-explorer.component.scss', "../shared.scss"]
+  styleUrls: ['./ontology-class-explorer.component.scss', "../shared.scss"],
+  standalone: false
 })
 export class OntologyClassExplorerComponent implements OnInit {
   /**Nascondi i componenti legati a questa variabile temporaneamente issue #161 */

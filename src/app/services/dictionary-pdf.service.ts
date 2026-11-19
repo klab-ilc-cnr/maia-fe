@@ -1,10 +1,11 @@
+import { hasRichText } from '../helpers/rich-text';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { TreeNode } from 'primeng/api';
 import { decode } from 'html-entities';
 import htmlToPdfmake from 'html-to-pdfmake';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as pdfMakeModule from 'pdfmake/build/pdfmake';
+import * as pdfFontsModule from 'pdfmake/build/vfs_fonts';
 import { DictionaryEntry } from '../models/dictionary/dictionary-entry.model';
 import { DictionaryNoteVocabo } from '../models/custom-models/dictionary-note-vocabo';
 import { DictionaryPreviewItem } from '../models/dictionary/dictionary-preview-item.model';
@@ -12,11 +13,14 @@ import { LinguisticRelationModel } from '../models/lexicon/linguistic-relation.m
 import { SearchAnnotationResultRow } from '../models/search/search-annotation-result';
 import type { Content } from 'pdfmake/interfaces';
 
-if (typeof (pdfFonts as any).pdfMake !== 'undefined') {
-  (pdfMake as any).vfs = (pdfFonts as any).pdfMake.vfs;
-} else if (typeof (pdfFonts as any).default?.pdfMake !== 'undefined') {
-  (pdfMake as any).vfs = (pdfFonts as any).default.pdfMake.vfs;
-}
+/*
+ * pdfmake 0.3: vfs_fonts esporta direttamente l'oggetto dei font e si registra con addVirtualFileSystem.
+ * Non si assegna `pdfMake.vfs` sul modulo importato: con il builder esbuild gli import ES sono in sola lettura.
+ * `default ?? modulo` regge entrambe le forme di interoperabilita' CommonJS (webpack ed esbuild).
+ */
+const pdfMake: any = (pdfMakeModule as any).default ?? pdfMakeModule;
+const pdfFonts: any = (pdfFontsModule as any).default ?? pdfFontsModule;
+pdfMake.addVirtualFileSystem(pdfFonts.pdfMake?.vfs ?? pdfFonts);
 
 export interface DictionaryPreviewPdfData {
   entry: DictionaryEntry;
@@ -92,9 +96,9 @@ export class DictionaryPdfService {
     const sectionColLabel = this.translate.instant('DICTIONARY_EDITOR.PREVIEW_TAB.section');
     const noResultLabel = this.translate.instant('GENERAL.noResult');
 
-    // Forms (data.forms may be empty)
-    content.push({ text: `${formsLabel}:`, style: 'fieldLabel' });
+    // Forms (empty parts are left out, as in the preview)
     if (data.forms?.length) {
+      content.push({ text: `${formsLabel}:`, style: 'fieldLabel' });
       const formRuns: Content[] = [];
       data.forms.forEach((f, i) => {
         formRuns.push({ text: f.label });
@@ -104,23 +108,20 @@ export class DictionaryPdfService {
         }
       });
       content.push({ text: formRuns, marginBottom: 6 });
-    } else {
-      content.push({ text: '', marginBottom: 6 });
     }
 
-    // First attestation, topographic reference, occurrences
-    content.push({
-      columns: [
-        { width: '*', text: [{ text: `${firstAttestLabel}: `, bold: true }, { text: data.firstAttestationLabel || '' }], marginBottom: 4 },
-        { width: '*', text: [{ text: `${topoLabel}: `, bold: true }, { text: note.firstAttestationDetails ?? '' }], marginBottom: 4 }
-      ]
-    });
-    content.push({
-      columns: [
-        { width: '*', text: [{ text: `${nOccDecLabel}: `, bold: true }, { text: String(note.decameronOccurrences ?? 0) }], marginBottom: 4 },
-        { width: '*', text: [{ text: `${nTotalLabel}: `, bold: true }, { text: String(data.totalOccurrences ?? 0) }], marginBottom: 4 }
-      ]
-    });
+    // First attestation, topographic reference, occurrences: only the ones with a value
+    const label = (l: string, v: string) => ({ width: '*', text: [{ text: `${l}: `, bold: true }, { text: v }], marginBottom: 4 });
+    const attestColumns = [
+      data.firstAttestationLabel ? label(firstAttestLabel, data.firstAttestationLabel) : null,
+      note.firstAttestationDetails ? label(topoLabel, note.firstAttestationDetails) : null
+    ].filter(c => !!c) as Content[];
+    if (attestColumns.length) content.push({ columns: attestColumns });
+    const occColumns = [
+      note.decameronOccurrences > 0 ? label(nOccDecLabel, String(note.decameronOccurrences)) : null,
+      data.totalOccurrences > 0 ? label(nTotalLabel, String(data.totalOccurrences)) : null
+    ].filter(c => !!c) as Content[];
+    if (occColumns.length) content.push({ columns: occColumns });
 
     // Occorrenze altre opere
     if (data.frequencies?.length) {
@@ -131,14 +132,15 @@ export class DictionaryPdfService {
       content.push({ text: '', marginBottom: 6 });
     }
 
-    // Etymology
-    if (note.etymology) {
+    // Etymology: only if it has some value, and only the fields with a value
+    const etym = note.etymology;
+    if (etym && (etym.language || etym.etymon || hasRichText(etym.details))) {
       content.push({ text: etymLabel, style: 'fieldsetTitle', marginTop: 8 });
-      content.push({ text: `${sourceLangLabel}: ${note.etymology.language || ''}`, marginLeft: 8, marginBottom: 2 });
-      content.push({ text: `${etymonLabel}: ${note.etymology.etymon || ''}`, marginLeft: 8, marginBottom: 4 });
-      if (note.etymology.details) {
+      if (etym.language) content.push({ text: `${sourceLangLabel}: ${etym.language}`, marginLeft: 8, marginBottom: 2 });
+      if (etym.etymon) content.push({ text: `${etymonLabel}: ${etym.etymon}`, marginLeft: 8, marginBottom: 4 });
+      if (hasRichText(etym.details)) {
         content.push({ text: `${detailsLabel}:`, marginLeft: 8, marginBottom: 2 });
-        const detailsContent = this.htmlToContent(note.etymology.details);
+        const detailsContent = this.htmlToContent(etym.details);
         content.push({ stack: detailsContent, marginLeft: 8, marginBottom: 6 });
       }
     }
@@ -152,9 +154,9 @@ export class DictionaryPdfService {
       { label: vocsLabel, html: note.crusche ?? '' },
       { label: miscLabel, html: note.polyrhematics ?? '' }
     ];
-    richFields.forEach(({ label, html }) => {
+    richFields.filter(f => hasRichText(f.html)).forEach(({ label, html }) => {
       if (label) content.push({ text: label, style: 'fieldLabel', marginTop: 6 });
-      if (html) content.push({ stack: this.htmlToContent(html), marginBottom: 4 });
+      content.push({ stack: this.htmlToContent(html), marginBottom: 4 });
     });
 
     // See also

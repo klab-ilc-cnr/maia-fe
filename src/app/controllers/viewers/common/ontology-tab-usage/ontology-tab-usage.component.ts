@@ -8,7 +8,8 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-tab-usage',
   templateUrl: './ontology-tab-usage.component.html',
-  styleUrls: ['./ontology-tab-usage.component.scss', '../shared.scss']
+  styleUrls: ['./ontology-tab-usage.component.scss', '../shared.scss'],
+  standalone: false
 })
 export class OntologyTabUsageComponent implements OnInit {
   /**ontology element id */

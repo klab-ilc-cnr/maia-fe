@@ -1,4 +1,47 @@
 {
+    "BACKEND_ERROR": {
+        "title": "Errore del server",
+        "entryLabel": "Impossibile recuperare dal server il nome di una voce lessicale: viene mostrato il suo identificativo.",
+        "initialValue": "Impossibile recuperare dal server il valore di un campo: viene mostrato quello salvato.",
+        "dictionaryLinks": "Impossibile verificare dal server se le voci lessicali sono descritte nel dizionario: l'indicatore può risultare incompleto.",
+        "saveLayout": "Impossibile salvare la disposizione delle finestre del workspace: verrà riprovato alla prossima modifica e quando si esce dal workspace.",
+        "tooltip": "Impossibile caricare il contenuto. Riprovare."
+    },
+    "SESSION": {
+        "expiredTitle": "Sessione scaduta",
+        "expiredText": "La sessione è scaduta e il server non accetta più le richieste. Accedi di nuovo per continuare: le modifiche non salvate vanno perse."
+    },
+    "RICH_EDITOR": {
+        "bold": "Grassetto",
+        "italic": "Corsivo",
+        "underline": "Sottolineato",
+        "align": "Allineamento",
+        "link": "Link",
+        "specialChars": "Caratteri speciali",
+        "moreFormats": "Altri formati",
+        "clean": "Rimuovi formattazione",
+        "superscript": "Apice",
+        "subscript": "Pedice",
+        "strike": "Barrato",
+        "bulletList": "Elenco puntato",
+        "orderedList": "Elenco numerato",
+        "chars": {
+            "laquo": "Caporale aperta «",
+            "raquo": "Caporale chiusa »",
+            "ndash": "Trattino breve (en dash) –",
+            "Egrave": "È maiuscola",
+            "rsquo": "Apostrofo tipografico ’",
+            "Agrave": "À maiuscola",
+            "Eacute": "É maiuscola",
+            "Igrave": "Ì maiuscola",
+            "Ograve": "Ò maiuscola",
+            "Ugrave": "Ù maiuscola",
+            "ldquo": "Virgolette alte aperte “",
+            "rdquo": "Virgolette alte chiuse ”",
+            "hellip": "Puntini di sospensione …",
+            "mdash": "Trattino lungo (em dash) —"
+        }
+    },
     "GENERAL": {
         "add": "Aggiungi",
         "backToList": "Torna all'elenco",
@@ -69,6 +112,7 @@
         },
         "PREVIEW_TAB": {
             "title": "Anteprima",
+            "occurrencesError": "Impossibile recuperare le occorrenze (errore del server): riaprire l'anteprima per riprovare.",
             "forms": "Forme",
             "entryHeader": "Intestazione della voce",
             "entryBody": "Corpo della voce",
@@ -114,7 +158,7 @@
         "duplicateComponent": "L'entrata lessicale è già associata a questa voce",
         "editor": "Redattore",
         "export": "Esporta",
-        "filtersPanel": "Filtri",
+        "filtersPanel": "Filters",
         "firstRemoveLemmas": "Prima è necessario dissociare i lemmi",
         "language": "Lingua",
         "refresh": "Aggiorna i risultati",
@@ -181,8 +225,11 @@
         "username": "Nome utente o E-mail"
     },
     "TAGSET_MANAGER": {
+        "aboutDeleteDefaultTagsetValue": "Si sta per cancellare il valore del tagset ${tagsetValueName}, che è il valore predefinito del tagset: il predefinito verrà tolto",
         "aboutDeleteTagset": "Si sta per cancellare il tagset ${tagsetName}",
         "aboutDeleteTagsetValue": "Si sta per cancellare il valore del tagset ${tagsetValueName}",
+        "default": "Predefinito",
+        "defaultValue": "Valore predefinito",
         "description": "Descrizione",
         "editTagset": "Modifica tagset",
         "enterNameTagsetValue": "È necessario inserire il nome del valore del tagset",
@@ -192,6 +239,8 @@
         "newTagset": "Nuovo tagset",
         "newTagsetValue": "Nuovo valore del tagset",
         "newValue": "Nuovo valore",
+        "removeDefault": "Togli il valore predefinito",
+        "setDefault": "Imposta come valore predefinito (preselezionato nelle nuove annotazioni)",
         "tagsetManager": "Gestione tagset",
         "tagsetName": "Nome del tagset",
         "tagsetSameName": "Esiste già un tagset con questo nome",
@@ -203,10 +252,13 @@
     "TAGSET_STATE": {
         "addedTagsetItem": "Elemento del tagset aggiunto",
         "addingTagsetItemFailed": "Aggiunta di un elemento al tagset fallita: ${errorMessage}",
+        "defaultRemoved": "Valore predefinito tolto",
+        "defaultSet": "Valore predefinito impostato",
         "fetchingTagsetFailed": "Recupero del tagset fallito: ${errorMessage}",
         "fetchingTagsetItemsFailed": "Recupero degli elementi del tagset fallito: ${errorMessage}",
         "removedTagsetItem": "Elemento del tagset rimosso",
         "removingTagsetItemFailed": "Rimozione di un elemento dal tagset fallita: ${errorMessage}",
+        "updatingDefaultFailed": "Aggiornamento del valore predefinito fallito: ${errorMessage}",
         "updatedTagsetItem": "Elemento del tagset aggiornato",
         "updatingTagsetItemFailed": "Aggiornamento dell'elemento del tagset fallito: ${errorMessage}"
     },
@@ -347,6 +399,13 @@
         "directImports": "Direct Imports",
         "indirectImports": "Indirect Imports"
     },
+    "TASKBAR": {
+        "label": "Finestre aperte",
+        "restore": "Ripristina",
+        "minimize": "Minimizza",
+        "maximize": "Ingrandisci",
+        "close": "Chiudi"
+    },
     "SEARCH": {
         "insertForm": "inserisci forma",
         "insertLemma": "inserisci lemma",
@@ -357,6 +416,11 @@
         "validSearchValue": "inserisci un valore",
         "numberOfResults": "Numero di risultati",
         "selected": "Selezionati",
+        "annotateHint": {
+            "noResults": "Esegui prima una ricerca",
+            "noLayer": "Per annotare scegli un layer e rilancia la ricerca",
+            "noRows": "Seleziona almeno una riga del risultato per annotare"
+        },
         "selectFile": "Seleziona file",
         "exportAll": "Esporta tutto",
         "exportSelected": "Esporta selezionati",

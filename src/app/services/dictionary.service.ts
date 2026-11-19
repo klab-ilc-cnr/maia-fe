@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DictionaryEntry } from '../models/dictionary/dictionary-entry.model';
 import { DictionarySortingItem } from '../models/dictionary/dictionary-sorting-item.model';
@@ -224,12 +224,33 @@ export class DictionaryService {
     return this.http.get<LexiconStatistics[]>(`${this.lexoUrl}/statistics/dictionary/authors`);
   }
 
+  /** Reference lists (the works) that are requested again and again: see cachedList */
+  private referenceLists = new Map<string, { loadedAt: number; list$: Observable<unknown> }>();
+
+  /**
+   * GET of a reference list (e.g. the list of works) shared by all the callers: one request, whoever subscribes and
+   * however many times (the entry editor has one dropdown per "occurrences in other works" row and each of them used
+   * to ask for the whole list: ~20 identical requests when opening an entry). The list is asked again after 10
+   * minutes; a failed request is not kept (the next caller tries again).
+   * @param url {string} url of the list
+   * @returns {Observable<T>}
+   */
+  private cachedList<T>(url: string): Observable<T> {
+    const cached = this.referenceLists.get(url);
+    if (cached && Date.now() - cached.loadedAt < 10 * 60 * 1000) {
+      return cached.list$ as Observable<T>;
+    }
+    const list$ = this.http.get<T>(url).pipe(shareReplay({ bufferSize: 1, refCount: false }));
+    this.referenceLists.set(url, { loadedAt: Date.now(), list$ });
+    return list$;
+  }
+
   /**
  * Request http to retrieve the list of works from an author
  * @returns {Observable<TextualDocument[]>}
  */
   retrieveAuthorDocuments(): Observable<TextualDocument[]> {
-    return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/authorDocuments`);
+    return this.cachedList<TextualDocument[]>(`${this.lexoUrl}/dictionary/authorDocuments`);
   }
 
 
@@ -299,7 +320,7 @@ export class DictionaryService {
    * @returns {Observable<TextualDocument[]>}
    */
   retrieveOtherWorks(): Observable<TextualDocument[]> {
-    return this.http.get<TextualDocument[]>(`${this.lexoUrl}/dictionary/otherDocuments`);
+    return this.cachedList<TextualDocument[]>(`${this.lexoUrl}/dictionary/otherDocuments`);
   }
 
   retrieveDictionaryTraits(dictionaryId: string): Observable<DictionaryTraits[]> {

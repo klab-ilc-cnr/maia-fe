@@ -7,7 +7,7 @@
                 <ng-template pTemplate="header">{{'ONTOLOGY.VIEWER.characteristics'|translate}}</ng-template>
                 <ng-template pTemplate="content">
                     <div class="block mb-5">
-                        <p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.functional" [label]="'ONTOLOGY.VIEWER.CHARACTERISTICS.functional'|translate"></p-checkbox>
+                        <label class="inline-flex align-items-center gap-2"><p-checkbox [disabled]="true" [binary]="true" [(ngModel)]="characteristics.functional"></p-checkbox><span class="p-checkbox-label">{{ 'ONTOLOGY.VIEWER.CHARACTERISTICS.functional'|translate }}</span></label>
                     </div>
                 </ng-template>
             </p-fieldset>

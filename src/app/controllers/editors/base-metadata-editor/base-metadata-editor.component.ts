@@ -10,7 +10,8 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-base-metadata-editor',
   templateUrl: './base-metadata-editor.component.html',
-  styleUrls: ['./base-metadata-editor.component.scss']
+  styleUrls: ['./base-metadata-editor.component.scss'],
+  standalone: false
 })
 export class BaseMetadataEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();

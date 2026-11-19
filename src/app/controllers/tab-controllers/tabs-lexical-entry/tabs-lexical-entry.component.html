@@ -1,17 +1,28 @@
-<p-tabView [(activeIndex)]="selectedTab" [scrollable]="true">
-  <p-tabPanel header="Lex. entry">
-    <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$" *ngIf="selectedTab === 0"></app-lex-entry-editor>
-  </p-tabPanel>
-  <p-tabPanel header="Decomposition" [disabled]="!isMultiword">
-    <app-lex-entry-decomp *ngIf="selectedTab===1" [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-lex-entry-decomp>
-  </p-tabPanel>
-  <p-tabPanel header="Relations">
-    <app-lex-entry-relations-editor *ngIf="selectedTab === 2" [entry$]="lexicalEntry$"></app-lex-entry-relations-editor>
-  </p-tabPanel>
-  <p-tabPanel header="Contexts" [disabled]="demoHide"></p-tabPanel>
-  <p-tabPanel header="Multimedia" [disabled]="demoHide"></p-tabPanel>
-  <p-tabPanel header="Dictionary view" [disabled]="demoHide"></p-tabPanel>
-  <p-tabPanel header="Metadata">
-    <app-lex-entry-metadata-editor *ngIf="selectedTab === 6" [entry$]="lexicalEntry$"></app-lex-entry-metadata-editor>
-  </p-tabPanel>
-</p-tabView>
+<p-tabs [(value)]="selectedTab" [scrollable]="true">
+  <p-tablist>
+    <p-tab [value]="0">Lex. entry</p-tab>
+    <p-tab [value]="1" [disabled]="!isMultiword">Decomposition</p-tab>
+    <p-tab [value]="2">Relations</p-tab>
+    <p-tab [value]="3" [disabled]="demoHide">Contexts</p-tab>
+    <p-tab [value]="4" [disabled]="demoHide">Multimedia</p-tab>
+    <p-tab [value]="5" [disabled]="demoHide">Dictionary view</p-tab>
+    <p-tab [value]="6">Metadata</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel [value]="0">
+      <app-lex-entry-editor [lexicalEntry$]="lexicalEntry$" *ngIf="selectedTab === 0"></app-lex-entry-editor>
+    </p-tabpanel>
+    <p-tabpanel [value]="1">
+      <app-lex-entry-decomp *ngIf="selectedTab===1" [lexicalEntryInstanceName]="lexicalEntryInstanceName"></app-lex-entry-decomp>
+    </p-tabpanel>
+    <p-tabpanel [value]="2">
+      <app-lex-entry-relations-editor *ngIf="selectedTab === 2" [entry$]="lexicalEntry$"></app-lex-entry-relations-editor>
+    </p-tabpanel>
+    <p-tabpanel [value]="3"></p-tabpanel>
+    <p-tabpanel [value]="4"></p-tabpanel>
+    <p-tabpanel [value]="5"></p-tabpanel>
+    <p-tabpanel [value]="6">
+      <app-lex-entry-metadata-editor *ngIf="selectedTab === 6" [entry$]="lexicalEntry$"></app-lex-entry-metadata-editor>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

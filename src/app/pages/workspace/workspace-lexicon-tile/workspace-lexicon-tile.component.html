@@ -26,7 +26,7 @@
 </p-toolbar>
 <div class="grid p-fluid input-search">
   <div class="flex card-container w-full">
-    <div class="p-inputgroup">
+    <p-inputgroup>
       <p-button pTooltip="Refresh results" class="mr-2" icon="pi pi-spinner" [loading]="loading"
         (onClick)="loadNodes()"></p-button>
       <button #infoButton class="flex-none flex" pButton type="button" (click)="op.toggle($event)"
@@ -38,10 +38,10 @@
         (click)="reset()"></button>
       <span id="lexExpCounter" class="flex-none flex w-2 align-items-center justify-content-center font-weight-bold font-italic">
         {{counter}}</span>
-    </div>
+    </p-inputgroup>
   </div>
 </div>
-<p-panel iconPos="left" header="Filters" [toggleable]="true" [collapsed]="true">
+<p-panel iconPos="start" header="Filters" [toggleable]="true" [collapsed]="true">
   <div class="flex flex-row">
     <div class="flex m-2 field-checkbox">
       <p-checkbox id="lexicon-caseSensitiveInput" [(ngModel)]="caseSensitive" [binary]="true" inputId="caseSensitive" (ngModelChange)="onChangeFilter()"></p-checkbox>
@@ -73,45 +73,57 @@
     </div>
   </div>
   <div class="flex flex-row w-100">
-    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectTypes$|async) || []" optionValue="label" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true" appendTo="body">
-      <ng-template let-item pTemplate="item">
-        <div>{{item.label}} ({{item.count}})</div>
-      </ng-template>
-    </p-dropdown>
-    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectPartOfSpeech$ |async)|| []" optionValue="label" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos"
-      [showClear]="true" [filter]="true" filterBy="label" appendTo="body">
-      <ng-template let-item pTemplate="item">
-        <div>{{item.label}} ({{item.count}})</div>
-      </ng-template>
-    </p-dropdown>
+    <div class="col-6">
+      <p-select (onChange)="onChangeFilter()" styleClass="w-100"
+        [options]="(selectTypes$|async) || []" optionValue="label" [(ngModel)]="selectedType" placeholder="Type" [showClear]="true" appendTo="body">
+        <ng-template let-item pTemplate="item">
+          <div>{{item.label}} ({{item.count}})</div>
+        </ng-template>
+      </p-select>
+    </div>
+    <div class="col-6">
+      <p-select (onChange)="onChangeFilter()" styleClass="w-100"
+        [options]="(selectPartOfSpeech$ |async)|| []" optionValue="label" [(ngModel)]="selectedPartOfSpeech" placeholder="Pos"
+        [showClear]="true" [filter]="true" filterBy="label" appendTo="body">
+        <ng-template let-item pTemplate="item">
+          <div>{{item.label}} ({{item.count}})</div>
+        </ng-template>
+      </p-select>
+    </div>
   </div>
   <div class="flex flex-row w-100">
-    <p-dropdown class="flex  justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectLanguages$|async)||[]" optionValue="label" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true" appendTo="body">
-      <ng-template let-item pTemplate="item">
-        <div>{{item.label}} ({{item.count}})</div>
-      </ng-template>
-    </p-dropdown>
-    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectAuthors$|async) || []" optionValue="label" [(ngModel)]="selectedAuthor" placeholder="Author" [showClear]="true"
-      [filter]="true" filterBy="label" appendTo="body">
-      <ng-template let-item pTemplate="item">
-        <div>{{item.label}} ({{item.count}})</div>
-      </ng-template>
-    </p-dropdown>
+    <div class="col-6">
+      <p-select (onChange)="onChangeFilter()" styleClass="w-100"
+        [options]="(selectLanguages$|async)||[]" optionValue="label" [(ngModel)]="selectedLanguage" placeholder="Language" [showClear]="true" appendTo="body">
+        <ng-template let-item pTemplate="item">
+          <div>{{item.label}} ({{item.count}})</div>
+        </ng-template>
+      </p-select>
+    </div>
+    <div class="col-6">
+      <p-select (onChange)="onChangeFilter()" styleClass="w-100"
+        [options]="(selectAuthors$|async) || []" optionValue="label" [(ngModel)]="selectedAuthor" placeholder="Author" [showClear]="true"
+        [filter]="true" filterBy="label" appendTo="body">
+        <ng-template let-item pTemplate="item">
+          <div>{{item.label}} ({{item.count}})</div>
+        </ng-template>
+      </p-select>
+    </div>
   </div>
   <div class="flex flex-row">
-    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="(selectStatuses$ | async) || []" optionValue="label" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true" appendTo="body">
-      <ng-template let-item pTemplate="item">
-        <div>{{item.label}} ({{item.count}})</div>
-      </ng-template>
-    </p-dropdown>
-    <p-dropdown class="flex justify-content-between col-6" (onChange)="onChangeFilter()" styleClass="w-100"
-      [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true" appendTo="body">
-    </p-dropdown>
+    <div class="col-6">
+      <p-select (onChange)="onChangeFilter()" styleClass="w-100"
+        [options]="(selectStatuses$ | async) || []" optionValue="label" [(ngModel)]="selectedStatus" placeholder="Status" [showClear]="true" appendTo="body">
+        <ng-template let-item pTemplate="item">
+          <div>{{item.label}} ({{item.count}})</div>
+        </ng-template>
+      </p-select>
+    </div>
+    <div class="col-6">
+      <p-select (onChange)="onChangeFilter()" styleClass="w-100"
+        [options]="selectEntries" [(ngModel)]="selectedEntry" placeholder="Entry" [showClear]="true" appendTo="body">
+      </p-select>
+    </div>
   </div>
 </p-panel>
 
@@ -125,8 +137,8 @@
   <!-- <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
     [columns]="cols" [lazy]="true" (onLazyLoad)="loadNodes()" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true" scrollHeight="flex"> -->
-  <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [(selection)]="selectedNodes" [value]="results"
-    [columns]="cols" [loading]="loading" (onNodeExpand)="onNodeExpand($event)"
+  <p-treeTable #tt selectionMode="checkbox" dataKey="instanceName" [selection]="selectedNodes" (selectionChange)="selectedNodes = $any($event)" [value]="results"
+    [columns]="cols" (onNodeExpand)="onNodeExpand($event)"
     [scrollable]="true" scrollHeight="flex" [virtualScrollItemSize]="44" [virtualScroll]="true">
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
@@ -136,24 +148,26 @@
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
       <tr (dblclick)="lexicalEntryDoubleClickHandler($event, rowNode)">
         <td *ngFor="let col of cols; let i = index">
-          <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0 && isVisibleCheckbox && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY"></p-treeTableCheckbox>
+          <!-- name cell: toggler, checkbox, name (clipped with an ellipsis), sub, then the note icon right after the label (no column of its own) -->
+          <div *ngIf="col.field === 'name'" class="name-cell">
+            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+            <p-treeTableCheckbox [value]="rowNode" *ngIf="isVisibleCheckbox && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY"></p-treeTableCheckbox>
+            <span *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
+              rowData[col.field]+'@'+rowData['language'] }}</span>
+            <span *ngIf="rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
+              [pTooltip]="rowData['sub']" tooltipPosition="bottom"
+              [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
+            <sub *ngIf="rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
+            <app-icon-note *ngIf="rowData['note']" class="note-icon" [pTooltip]="rowData['note']" [escape]="false"></app-icon-note>
+          </div>
           <app-icon-lock *ngIf="col.field === 'status' && rowData[col.field]"
             [status]="rowData[col.field]"></app-icon-lock>
-          <app-icon-note *ngIf="col.field ==='note' && rowData[col.field]" [pTooltip]="rowData[col.field]" [escape]="false"></app-icon-note>
           <!--TODO completare con tooltip e dialog con la label del dictionary associato-->
           <i class="pi pi-link link-pointer"
             *ngIf="col.field === 'isDescribedByLexicographicComponent'&& rowData['type'] == LexicalEntryType.LEXICAL_ENTRY && rowData['isDescribedByLexicographicComponent']"
             [pTooltip]="'LEXICON_EXPLORER.associatedToDictionary'|translate" (click)="onOpenLinkedDictionaries(rowData)"></i>
           <app-icon-author *ngIf="col.field === 'creator' && rowData['creator']" [isBot]="false"
             [tooltip]="'<em>Author</em>: '+rowData['creator']+'<br><em>Creation date</em>: '+ rowData['creationDate']+'<br><em>Last update</em>: '+ rowData['lastUpdate']"></app-icon-author><!--TODO migliorare la creazione del tooltip-->
-          <span *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{
-            rowData[col.field]+'@'+rowData['language'] }}</span>
-          <span *ngIf="col.field === 'name' && rowData['type'] !== LexicalEntryType.LEXICAL_ENTRY"
-            [pTooltip]="rowData['sub']" tooltipPosition="bottom"
-            [style.fontWeight]="rowData['isCanonical'] ? 'bold' : ''">{{ rowData[col.field] !== '' ? rowData[col.field] : ('LEXICON_EXPLORER.noDefinition'|translate) }}</span>
-          <sub
-            *ngIf="col.field === 'name' && rowData['type'] == LexicalEntryType.LEXICAL_ENTRY">{{rowData['sub']}}</sub>
         </td>
       </tr>
     </ng-template>
@@ -165,8 +179,8 @@
   </p-treeTable>
 </div>
 
-<p-overlayPanel #op [dismissable]="true">
-  <ng-template pTemplate>
+<p-popover #op [dismissable]="true">
+  <ng-template #content>
     <h3>Search examples</h3>
     <br>
     <span><b>Multiple character wildcard search:</b></span>
@@ -178,7 +192,7 @@
     <br><b>Weighted fuzzy search:</b>
     <span><i>test~0.8</i></span>
   </ng-template>
-</p-overlayPanel>
+</p-popover>
 
 <p-dialog [(visible)]="isUploadLexiconVisible" [style]="{ width: '40vw' }">
   <ng-template pTemplate="header">
@@ -191,23 +205,23 @@
           <div class="field col-6">
             <label for="language">Language *</label>
             <p-autoComplete #language="ngModel" name="language" [(ngModel)]="selectedUploadLanguage"
-              [suggestions]="(filteredLanguages$ | async) || []" field="label" (completeMethod)="filterLanguage($event)"
+              [suggestions]="(filteredLanguages$ | async) || []" optionLabel="label" (completeMethod)="filterLanguage($event)"
               [required]="true" appendTo="body"></p-autoComplete>
           </div>
           <div class="field col-6">
             <label class="form-label">Overwrite</label>
-            <p-inputSwitch #drop="ngModel" name="drop" [(ngModel)]="isOverwriteLexicon"></p-inputSwitch>
+            <p-toggleswitch #drop="ngModel" name="drop" [(ngModel)]="isOverwriteLexicon"></p-toggleswitch>
           </div>
           <div class="form-group field col-6">
             <label class="form-label">Prefix *</label>
             <p-autoComplete #prefix="ngModel" name="prefix" [(ngModel)]="selectedUploadPrefix"
               [suggestions]="filteredPrefix" (completeMethod)="filterPrefix($event)"
-              (onSelect)="onSelectPrefixBaseIRI($event, true)" [required]="true" appendTo="body"></p-autoComplete>
+              (onSelect)="onSelectPrefixBaseIRI($event.value, true)" [required]="true" appendTo="body"></p-autoComplete>
           </div>
           <div class="form-group field col-6">
             <label class="form-label">Base IRI *</label>
             <p-autoComplete #baseIRI="ngModel" name="baseIRI" [(ngModel)]="selectedBaseIRI" [suggestions]="filteredBase"
-              (completeMethod)="filterBase($event)" (onSelect)="onSelectPrefixBaseIRI($event, false)" [required]="true"
+              (completeMethod)="filterBase($event)" (onSelect)="onSelectPrefixBaseIRI($event.value, false)" [required]="true"
               appendTo="body"></p-autoComplete>
           </div>
           <div class="field col-6">
@@ -245,8 +259,8 @@
         <div class="field col-6 form-group">
           <label class="w-full form-label" for="newLELang">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.language'|translate }}
             *</label>
-          <p-dropdown name="lang" id="newLELang" styleClass="w-full" [options]="languages" optionLabel="label"
-            optionValue="label" appendTo="body" [filter]="true" filterBy="label" formControlName="lang"></p-dropdown>
+          <p-select name="lang" id="newLELang" styleClass="w-full" [options]="languages" optionLabel="label"
+            optionValue="label" appendTo="body" [filter]="true" filterBy="label" formControlName="lang"></p-select>
           <div *ngIf="lang.invalid && (lang.touched || lang.dirty)" class="invalid-feedback">
             <div *ngIf="lang.errors?.['required']">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.languageRequired'|translate }}
             </div>
@@ -266,9 +280,9 @@
         <div class="field col-6 form-group">
           <label class="w-full form-label" for="newLEPos">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.pos'|translate }}
             *</label>
-          <p-dropdown name="pos" inputId="newLEPos" styleClass="w-full" formControlName="pos"
+          <p-select name="pos" inputId="newLEPos" styleClass="w-full" formControlName="pos"
             [options]="(pos$|async)||[]" optionLabel="valueLabel" optionValue="valueId" appendTo="body" [filter]="true"
-            filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate"></p-dropdown>
+            filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate"></p-select>
           <div *ngIf="pos.invalid && (pos.touched || pos.dirty)" class="invalid-feedback">
             <div *ngIf="pos.errors?.['required']">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.posRequired'|translate }}</div>
           </div>
@@ -276,9 +290,9 @@
         <div class="field col-6 form-group">
           <label class="w-full form-label" for="newLEType">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.type'|translate }}
             *</label>
-          <p-dropdown name="type" inputId="newLEType" styleClass="w-full" formControlName="type"
+          <p-select name="type" inputId="newLEType" styleClass="w-full" formControlName="type"
             [options]="(types$|async)||[]" optionLabel="valueLabel" optionValue="valueId" appendTo="body"
-            [filter]="true" filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate"></p-dropdown>
+            [filter]="true" filterBy="valueLabel" [placeholder]="'GENERAL.selectValue'|translate"></p-select>
             <div *ngIf="type.invalid && (type.touched || type.dirty)" class="invalid-feedback">
               <div *ngIf="type.errors?.['required']">{{ 'LEXICON_EXPLORER.NEW_LEXICAL_ENTRY.typeRequired'|translate }}</div>
             </div>  

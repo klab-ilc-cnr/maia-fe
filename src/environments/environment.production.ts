@@ -9,6 +9,8 @@
  *
  * Override opzionale, senza ricompilare: basta una riga in index.html, prima degli script:
  *   <script>window.__MAIA_CONFIG={apiBaseUrl:"https://host:porta/prefisso/maia"}</script>
+ * Chiavi: apiBaseUrl, lexoBaseUrl, textoBaseUrl, applicationSubTitle (titolo "MAIA - ...";
+ * utile per distinguere un'installazione di test senza ricompilare).
  */
 const maiaConfig = (window as any).__MAIA_CONFIG || {};
 const trimSlash = (url: string): string => url.replace(/\/+$/, '');
@@ -21,7 +23,7 @@ const lexoUrl = trimSlash(maiaConfig.lexoBaseUrl || `${serverUrl}/lexo`);
 const textoUrl = trimSlash(maiaConfig.textoBaseUrl || `${serverUrl}/texto`);
 
 export const environment = {
-  production: false,
+  production: true,
   envName: 'local',
   maiaBeUrl: `${serverUrl}/api`,
   usersUrl: `${serverUrl}/api/users`,
@@ -36,6 +38,8 @@ export const environment = {
   maiaBeTextoUrl: textoUrl,
   lexoPrefix: "lex",
   lexoBaseIRI: "http://lexica/mylexicon#",
-  applicationSubTitle: "VocaBO",
+  applicationSubTitle: maiaConfig.applicationSubTitle || "VocaBO",
   demoHide: true,
+  // ontologia non ancora pronta: menu e finestre nascosti (portare a false per riabilitarla, insieme a demoHide)
+  ontologyDisabled: true,
 };

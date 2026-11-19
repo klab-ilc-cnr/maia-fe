@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageControllersModule } from './controllers/page-controllers/page-controllers.module';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { providePrimeNG } from 'primeng/config';
+import { MaiaPreset } from './theme/maia-preset';
 import { BaseMetadataEditorComponent } from './controllers/editors/base-metadata-editor/base-metadata-editor.component';
 import { FormCoreEditorComponent } from './controllers/editors/form-core-editor/form-core-editor.component';
 import { FormMetadataEditorComponent } from './controllers/editors/form-metadata-editor/form-metadata-editor.component';
@@ -54,6 +55,7 @@ import { WorkspaceLexiconEditTileComponent } from './pages/workspace/workspace-l
 import { WorkspaceLexiconTileComponent } from './pages/workspace/workspace-lexicon-tile/workspace-lexicon-tile.component';
 import { WorkspaceListComponent } from './pages/workspace/workspace-list/workspace-list.component';
 import { WorkspaceMenuComponent } from './pages/workspace/workspace-menu/workspace-menu.component';
+import { WorkspaceTaskbarComponent } from './pages/workspace/workspace-taskbar/workspace-taskbar.component';
 import { WorkspaceSearchTileComponent } from './pages/workspace/workspace-search-tile/workspace-search-tile.component';
 import { WorkspaceTextSelectorComponent } from './pages/workspace/workspace-text-selector/workspace-text-selector.component';
 import { WorkspaceTextWindowComponent } from './pages/workspace/workspace-text-window/workspace-text-window.component';
@@ -87,6 +89,7 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
     WorkspaceListComponent,
     WorkspaceLayoutComponent,
     WorkspaceMenuComponent,
+    WorkspaceTaskbarComponent,
     WorkspaceTextSelectorComponent,
     WorkspaceCorpusExplorerComponent,
     MainLayoutComponent,
@@ -147,7 +150,6 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -156,13 +158,23 @@ import { MultipleTextAnnotationEditorComponent } from './controllers/editors/mul
       }
     }),
     BrowserAnimationsModule,
-    NgbModule,
     PageControllersModule,
     FontAwesomeModule,
     IconsModule,
     SharedModule
   ],
-  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders],
+  // Angular 18: HttpClientModule deprecato -> provideHttpClient; withInterceptorsFromDi mantiene gli interceptor
+  // registrati con HTTP_INTERCEPTORS (httpInterceptorProviders: JWT).
+  providers: [PendingChangesGuard, MessageService, ConfirmationService, CommonService, httpInterceptorProviders, provideHttpClient(withInterceptorsFromDi()),
+    // PrimeNG 18+: tema a design token (src/app/theme/maia-preset.ts). Niente tema scuro automatico;
+    // stili dei componenti nel layer "primeng" dichiarato in src/styles/vendor.css (vedi src/styles/README-layer.md).
+    providePrimeNG({
+      theme: {
+        preset: MaiaPreset,
+        options: { darkModeSelector: false, cssLayer: { name: 'primeng', order: 'base, primeng' } },
+      },
+    }),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

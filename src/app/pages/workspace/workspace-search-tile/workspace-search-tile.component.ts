@@ -1,7 +1,8 @@
-import { AfterViewChecked, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { normalizeApostrophes } from '../../../helpers/apostrophes';
+import { AfterViewChecked, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable, Subject, Subscription, catchError, debounceTime, forkJoin, map, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, catchError, debounceTime, forkJoin, map, of, switchMap, takeUntil, tap } from 'rxjs';
 import { TextOffset } from 'src/app/controllers/editors/multiple-text-annotation-editor/multiple-text-annotation-editor.component';
 import { HtmlHelper } from 'src/app/helpers/html.helper';
 import { ElementType } from 'src/app/models/corpus/element-type';
@@ -42,7 +43,8 @@ interface Restriction {
   selector: 'app-workspace-search-tile',
   templateUrl: './workspace-search-tile.component.html',
   styleUrls: ['./workspace-search-tile.component.scss'],
-  providers: [CorpusStateService, LayerStateService]
+  providers: [CorpusStateService, LayerStateService],
+  standalone: false
 })
 export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
@@ -75,6 +77,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   contextMaxLenght: number = 10;
   files$!: Observable<TreeNode<CorpusElement>[]>;
   selectedDocuments: TreeNode<CorpusElement>[] = [];
+  private corpusNodes: TreeNode<CorpusElement>[] = [];
   selectedLayer?: TLayer;
   lastSearchRequestLayer?: TLayer;
   layers$: Observable<TLayer[]> = this.layerState.layers$.pipe(
@@ -124,11 +127,21 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   isEditing: boolean = false;
   annotationEnabled: boolean = false;
 
-  @ViewChild('searchInput') searchInput: any;
+  @ViewChild('searchField') searchField?: ElementRef<HTMLInputElement>;
+  /** true dopo "Cerca" con il campo vuoto; torna false appena si scrive (non compare cancellando il testo) */
+  searchValueMissing = false;
   @ViewChild('dt') searchResultsTable!: Table;
 
   private filtersSubject: Subject<any> = new Subject();
   private readonly unsubscribe$ = new Subject<void>();
+
+  /** Chiave di traduzione del primo requisito mancante per annotare (null se si puo' annotare). */
+  get annotateHint(): string | null {
+    if (this.searchResults.length === 0) { return 'SEARCH.annotateHint.noResults'; }
+    if (!this.annotationEnabled) { return 'SEARCH.annotateHint.noLayer'; }
+    if (!this.selectedSearchResults || this.selectedSearchResults.length === 0) { return 'SEARCH.annotateHint.noRows'; }
+    return null;
+  }
 
   get annotationAllowed(): boolean {
     return this.annotationEnabled && this.selectedSearchResults && this.selectedSearchResults.length > 0;
@@ -137,6 +150,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.files$ = this.corpusStateService.filesystem$.pipe(
       switchMap(docs => of(this.mapToTreeNodes(docs))),
+      tap(nodes => { this.corpusNodes = nodes; this.selectSingleDocument(nodes); }),
       takeUntil(this.unsubscribe$)
     );
 
@@ -275,7 +289,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
 
     const input = target as HTMLInputElement;
     this.filtersChanged = true;
-    this.searchInput.control.markAsTouched();
     this.searchResultsTable.filter(input.value, fieldName, matchMode);
   }
 
@@ -313,11 +326,13 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchRequest.layerId = this.selectedLayer?.id;
     this.searchRequest.filters.annotated = this.setAnnotadeFilter(this.selectedRestriction?.code);
     this.searchRequest.filters.searchMode = this.selectedSearchMode.code;
-    this.searchRequest.filters.searchValue = this.searchValue?.trim();
+    this.searchRequest.filters.searchValue = normalizeApostrophes(this.searchValue?.trim());
     this.searchRequest.filters.contextLength = this.contextLength;
     this.searchRequest.filters.pos = this.posValue;
     this.searchRequest.reload = true;
     this.lastSearchRequestLayer = this.selectedLayer;
+    this.searchValueMissing = !this.searchRequest.filters.searchValue;
+    if (this.searchValueMissing) { this.searchField?.nativeElement.focus(); }
     this.clearTable();
     this.resetColumnFilters();
     this.setColumnFilters();
@@ -345,7 +360,9 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.totalRecords = 0;
     this.selectedSearchResults = [];
     this.selectedDocuments = [];
+    this.selectSingleDocument(this.corpusNodes);
     this.searchValue = '';
+    this.searchValueMissing = false;
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
     this.selectedLayer = undefined;
@@ -457,7 +474,10 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
           if (cached !== undefined) return of(cached);
           return this.lexiconService.getLexicalEntry(id).pipe(
             map(le => le.pos ? `${le.label} [${le.pos}]` : (le.label ?? id)),
-            catchError(() => of(id)),
+            catchError((error: unknown) => {
+              this.commonService.warnBackendErrorOnce('entryLabel', error);
+              return of(id);
+            }),
             map(label => {
               this.lexicalEntryLabelCache.set(id, label);
               return label;
@@ -468,7 +488,8 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
           map(labels => this.applyLexicalEntryLabels(result, ids, labels))
         );
       }),
-      catchError(() => of([]))
+      // no catchError here: the tooltip (app-async-tooltip) shows "content could not be loaded" if the call fails;
+      // an empty list would look like "no annotations"
     );
   }
 
@@ -674,9 +695,9 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    */
   private setColumnFilters() {
     this.searchRequest.filters.index = (<FilterMetadata>(this.searchResultsTable.filters['index']))?.value;
-    this.searchRequest.filters.kwic = (<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value;
-    this.searchRequest.filters.leftContext = (<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value;
-    this.searchRequest.filters.rightContext = (<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value;
+    this.searchRequest.filters.kwic = normalizeApostrophes((<FilterMetadata>(this.searchResultsTable.filters['kwic']))?.value);
+    this.searchRequest.filters.leftContext = normalizeApostrophes((<FilterMetadata>(this.searchResultsTable.filters['leftContext']))?.value);
+    this.searchRequest.filters.rightContext = normalizeApostrophes((<FilterMetadata>(this.searchResultsTable.filters['rightContext']))?.value);
     this.searchRequest.filters.text = (<FilterMetadata>(this.searchResultsTable.filters['text']))?.value;
     this.searchRequest.filters.reference = (<FilterMetadata>(this.searchResultsTable.filters['textHeader']))?.value;
   }
@@ -708,8 +729,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
    * Validates inputs and starts the search process.
    */
   private search() {
-    this.searchInput.control.markAsTouched();
-
     if (!this.searchRequest.filters.searchValue) {
       return;
     }
@@ -839,6 +858,32 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
       result.push(this.mapToTreeNode(element));
     });
     return result;
+  }
+
+  /**
+   * If the corpus contains exactly one text, selects it (and shows it) in the tree selector,
+   * so the user does not have to choose the only possible text.
+   * Selection state of the folders above it is the same PrimeNG computes when the user checks the leaf.
+   * @param nodes The tree nodes of the corpus.
+   */
+  private selectSingleDocument(nodes: TreeNode<CorpusElement>[]): void {
+    const leaves: TreeNode<CorpusElement>[] = [];
+    const collect = (list: TreeNode<CorpusElement>[]) => list.forEach(n => n.leaf ? leaves.push(n) : collect(n.children ?? []));
+    collect(nodes);
+    if (leaves.length !== 1) { return; }
+
+    const selection: TreeNode<CorpusElement>[] = [];
+    const visit = (node: TreeNode<CorpusElement>): boolean => {
+      if (node === leaves[0]) { selection.push(node); return true; }
+      const children = node.children ?? [];
+      const results = children.map(visit);
+      const all = children.length > 0 && results.every(r => r);
+      node.partialSelected = !all && results.some(r => r);
+      if (all) { selection.push(node); }
+      return all;
+    };
+    nodes.forEach(visit);
+    this.selectedDocuments = selection;
   }
 
   private mapToTreeNode(element: CorpusElement): TreeNode<CorpusElement> {

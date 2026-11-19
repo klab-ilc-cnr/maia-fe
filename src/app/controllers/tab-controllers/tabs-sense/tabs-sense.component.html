@@ -1,14 +1,21 @@
-<p-tabView [scrollable]="true" [(activeIndex)]="selectedTab" (onChange)="onChangeTab()">
-  <p-tabPanel header="Sense">
-    <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton>
-    <app-sense-core-editor *ngIf="senseEntry && selectedTab === 0" [senseEntry]="senseEntry"
-      [lexEntryId]="lexEntryId"></app-sense-core-editor>
-  </p-tabPanel>
-  <p-tabPanel header="Semantic Relations">
-    <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton>
-    <app-lex-sense-relations-editor *ngIf="senseEntry && selectedTab === 1" [senseEntry]="senseEntry"></app-lex-sense-relations-editor>
-  </p-tabPanel>
-  <p-tabPanel header="Metadata">
-    <app-sense-metadata-editor *ngIf="senseEntry && selectedTab === 2" [entry$]="entry$" confidenceLabel="Sense confidence"></app-sense-metadata-editor>
-  </p-tabPanel>
-</p-tabView>
+<p-tabs [scrollable]="true" [(value)]="selectedTab" (valueChange)="onChangeTab()">
+  <p-tablist>
+    <p-tab [value]="0">Sense</p-tab>
+    <p-tab [value]="1">Semantic Relations</p-tab>
+    <p-tab [value]="2">Metadata</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel [value]="0">
+      <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton>
+      <app-sense-core-editor *ngIf="senseEntry && selectedTab === 0" [senseEntry]="senseEntry"
+        [lexEntryId]="lexEntryId"></app-sense-core-editor>
+    </p-tabpanel>
+    <p-tabpanel [value]="1">
+      <p-skeleton *ngIf="!senseEntry" width="30rem" height="40rem"></p-skeleton>
+      <app-lex-sense-relations-editor *ngIf="senseEntry && selectedTab === 1" [senseEntry]="senseEntry"></app-lex-sense-relations-editor>
+    </p-tabpanel>
+    <p-tabpanel [value]="2">
+      <app-sense-metadata-editor *ngIf="senseEntry && selectedTab === 2" [entry$]="entry$" confidenceLabel="Sense confidence"></app-sense-metadata-editor>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

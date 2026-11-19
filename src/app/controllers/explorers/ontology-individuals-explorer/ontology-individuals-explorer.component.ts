@@ -10,7 +10,8 @@ import { OntologyService } from 'src/app/services/ontology.service';
 @Component({
   selector: 'app-ontology-individuals-explorer',
   templateUrl: './ontology-individuals-explorer.component.html',
-  styleUrls: ['./ontology-individuals-explorer.component.scss', "../shared.scss"]
+  styleUrls: ['./ontology-individuals-explorer.component.scss', "../shared.scss"],
+  standalone: false
 })
 export class OntologyIndividualsExplorerComponent implements OnInit {
   /**Nascondi i componenti legati a questa variabile temporaneamente issue #161 */

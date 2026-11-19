@@ -8,7 +8,7 @@ import { TLayer } from 'src/app/models/texto/t-layer';
 import { TTagset } from 'src/app/models/texto/t-tagset';
 import { LayerStateService } from 'src/app/services/layer-state.service';
 import { TagsetStateService } from 'src/app/services/tagset-state.service';
-import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
+import { setUniqueNameValidators } from 'src/app/validators/not-duplicate-name.directive';
 import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.directive';
 
 /**Component of the detail view of a layer accompanied by the feature list */
@@ -16,7 +16,8 @@ import { whitespacesValidator } from 'src/app/validators/whitespaces-validator.d
   selector: 'app-layers-view',
   templateUrl: './layers-view.component.html',
   styleUrls: ['./layers-view.component.scss'],
-  providers: [LayerStateService, TagsetStateService]
+  providers: [LayerStateService, TagsetStateService],
+  standalone: false
 })
 export class LayersViewComponent implements OnInit {
   /**Subject for subscribe management */
@@ -157,7 +158,7 @@ export class LayersViewComponent implements OnInit {
     this.featureOnEdit = undefined;
     this.newEditTitle = 'New feature';
     this.featuresForm.reset();
-    this.name.setValidators(nameDuplicateValidator(this.featureNames));
+    setUniqueNameValidators(this.name, this.featureNames);
     this.visibleEditNewFeature = true;
   }
 
@@ -185,7 +186,7 @@ export class LayersViewComponent implements OnInit {
     if (feature.type === TFeatureType.TAGSET) {
       this.tagset.setValue(feature.tagset || null);
     }
-    this.name.setValidators(nameDuplicateValidator(this.featureNames));
+    setUniqueNameValidators(this.name, this.featureNames.filter(n => n !== feature.name)); // its own name is not a duplicate
     this.visibleEditNewFeature = true;
   }
 }

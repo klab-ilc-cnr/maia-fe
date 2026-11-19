@@ -11,7 +11,8 @@ import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-ontology-individual-viewer',
   templateUrl: './ontology-individual-viewer.component.html',
-  styleUrls: ['./ontology-individual-viewer.component.scss', '../common/shared.scss']
+  styleUrls: ['./ontology-individual-viewer.component.scss', '../common/shared.scss'],
+  standalone: false
 })
 export class OntologyIndividualViewerComponent implements OnInit {
   /**ontology element id */

@@ -10,7 +10,8 @@ import { OntologyService, SubPropertyType } from 'src/app/services/ontology.serv
 @Component({
   selector: 'app-ontology-data-property-explorer',
   templateUrl: './ontology-data-property-explorer.component.html',
-  styleUrls: ['./ontology-data-property-explorer.component.scss', "../shared.scss"]
+  styleUrls: ['./ontology-data-property-explorer.component.scss', "../shared.scss"],
+  standalone: false
 })
 export class OntologyDataPropertyExplorerComponent implements OnInit {
   /**Nascondi i componenti legati a questa variabile temporaneamente issue #161 */

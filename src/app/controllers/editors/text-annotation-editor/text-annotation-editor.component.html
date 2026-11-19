@@ -37,10 +37,10 @@
                   </div>
                 </div>
                 <div *ngSwitchCase="featureTypes.TAGSET">
-                  <p-dropdown [formControlName]="feature.feature!.name!" [options]="(feature.tagsetItems|async)|| []"
+                  <p-select [formControlName]="feature.feature!.name!" [options]="(feature.tagsetItems|async)|| []"
                     [filter]="true" [showClear]="true" optionLabel="name" optionValue="name" appendTo="body"
                     emptyFilterMessage="No element found" placeholder="Select a value">
-                  </p-dropdown>
+                  </p-select>
                 </div>
                 <div *ngSwitchCase="featureTypes.URI">
                   <input class="form-control" type="text" [formControlName]="feature.feature!.name!">

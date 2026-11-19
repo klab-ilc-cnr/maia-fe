@@ -7,7 +7,8 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-tabs-lexical-entry',
   templateUrl: './tabs-lexical-entry.component.html',
-  styleUrls: ['./tabs-lexical-entry.component.scss']
+  styleUrls: ['./tabs-lexical-entry.component.scss'],
+  standalone: false
 })
 export class TabsLexicalEntryComponent implements OnInit {
   demoHide = environment.demoHide;

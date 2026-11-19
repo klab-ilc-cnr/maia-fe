@@ -14,7 +14,8 @@ import { MessageConfigurationService } from 'src/app/services/message-configurat
   templateUrl: './dictionary-sorting-editor.component.html',
   styleUrls: ['./dictionary-sorting-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TreeDragDropService]
+  providers: [TreeDragDropService],
+  standalone: false
 })
 export class DictionarySortingEditorComponent implements OnInit {
   /**Dictionary entry currently in edit */
@@ -98,7 +99,7 @@ export class DictionarySortingEditorComponent implements OnInit {
         type: isSense ? 'sense' : 'lexicalEntry',
         label: HtmlHelper.stripHtml(item.label),
         data: item,
-        index: itemIndex,
+        sortIndex: itemIndex, // non "index": da PrimeNG 17 TreeNode.index e' un numero riservato
         expanded: true,
         children: this.mapSortingItemToTreeNode(item.children ?? [], itemIndex)
       }

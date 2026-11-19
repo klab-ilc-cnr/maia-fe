@@ -4,9 +4,9 @@
             <div class="field col-4">
                 <label for="dictLang"
                     class="form-label w-full">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.language'|translate}} *</label>
-                <p-dropdown id="dictLang" styleClass="w-full" [options]="languages" optionLabel="label"
+                <p-select id="dictLang" styleClass="w-full" [options]="languages" optionLabel="label"
                     optionValue="label" appendTo="body" [filter]="true" filterBy="valueLabel" placeholder="Select value"
-                    formControlName="language"></p-dropdown>
+                    formControlName="language"></p-select>
             </div>
             <div class="field col-4 form-group">
                 <label for="dictName"
@@ -38,9 +38,9 @@
             <div class="field col-6 form-group" *ngIf="selectedCategory?.value === 'referralEntry'">
                 <label for="sameAsFullEntry">{{'DICTIONARY_EXPLORER.CREATE_ENTRY.seeFullEntry'|translate}} *</label>
                 <div class="d-flex w-full">
-                    <p-autoComplete style="width: inherit;" inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
+                    <p-autoComplete [style]="{'width': 'inherit'}" inputId="sameAsFullEntry" [suggestions]="(suggestions|async)||[]"
                     (completeMethod)="onFilter($event)" [delay]="300" appendTo="body" [virtualScroll]="true"
-                    field="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
+                    optionLabel="label" [showEmptyMessage]="true" styleClass="w-full" inputStyleClass="w-full"
                     [emptyMessage]="'DICTIONARY_EXPLORER.CREATE_ENTRY.noMatching'|translate"
                     formControlName="fullEntry">
                     <ng-template let-item pTemplate="item">

@@ -4,7 +4,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-workspace-layout',
   templateUrl: './workspace-layout.component.html',
-  styleUrls: ['./workspace-layout.component.scss']
+  styleUrls: ['./workspace-layout.component.scss'],
+  standalone: false
 })
 export class WorkspaceLayoutComponent implements OnInit {
 

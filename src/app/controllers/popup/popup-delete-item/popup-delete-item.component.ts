@@ -6,7 +6,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-popup-delete-item',
   templateUrl: './popup-delete-item.component.html', //TODO template vuoto, si potrebbe rimuovere?
-  styleUrls: ['./popup-delete-item.component.scss']
+  styleUrls: ['./popup-delete-item.component.scss'],
+  standalone: false
 })
 export class PopupDeleteItemComponent {
 

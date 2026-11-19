@@ -22,7 +22,8 @@ import { PopupDeleteItemComponent } from '../../popup/popup-delete-item/popup-de
 @Component({
   selector: 'app-annotation-editor',
   templateUrl: './annotation-editor.component.html',
-  styleUrls: ['./annotation-editor.component.scss']
+  styleUrls: ['./annotation-editor.component.scss'],
+  standalone: false
 })
 export class AnnotationEditorComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject();
