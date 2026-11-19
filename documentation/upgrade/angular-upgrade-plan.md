@@ -1,6 +1,7 @@
 # Maia-fe — Piano di aggiornamento Angular e librerie
 
 - **Data**: 2026-11-02
+- **Stato (2026-11-19)**: **concluso**. Angular 21.2 / PrimeNG 21.1 in produzione con la release **0.30.0** (`master`, tag `v0.30.0`). Il resto del documento è il piano originale e il diario dell'avanzamento; Angular 22 + Optimus UI resta nel backlog.
 - **Stato di partenza**: Angular 14.2.9 · Node 16.20.2 · TypeScript 4.8.4 · PrimeNG 14.1.2 · builder webpack (`@angular-devkit/build-angular:browser`)
 - **Codice**: 254 file TS (27.2k righe, spec esclusi) · 93 componenti (tutti in NgModule, 0 standalone) · 82 template · 83 scss · 172 spec (non compilano)
 - **Fonti**: angular.dev/reference/releases, angular.dev/reference/versions, dati della Update Guide ufficiale (`adev/src/app/features/update/recommendations.ts`, 199 passi da v15 a v22), guide di migrazione PrimeNG v19–v22 (primeng.org/migration), registro npm, GitHub API. Tutti i conteggi sul codice vengono da grep sul branch `study/security-fixes`.

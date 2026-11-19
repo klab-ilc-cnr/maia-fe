@@ -4,21 +4,21 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 
 ## Overview
 
-- **What it is**: MAIA is an open, collaborative web tool for text annotation, e-lexicography and lexical linking, built by [KLAB @ ILC-CNR](https://www.ilc.cnr.it/klab/). This repo is the **Angular frontend**: **Angular 14.2.9 on `master`**, **Angular 21.2 + PrimeNG 21.1 on `upgrade/angular-21`** (upgrade done up to the Angular 21 checkpoint; QA/merge pending) (project name in `angular.json`: `projectxFE`).
+- **What it is**: MAIA is an open, collaborative web tool for text annotation, e-lexicography and lexical linking, built by [KLAB @ ILC-CNR](https://www.ilc.cnr.it/klab/). This repo is the **Angular frontend**: **Angular 21.2 + PrimeNG 21.1 on `master`** (since release 0.30.0, merged from `upgrade/angular-21`; before it `master` was Angular 14.2.9, tag `v0.20.0`) (project name in `angular.json`: `projectxFE`).
 - **Backend**: `maia-be` (Spring Boot). Others: **TexO** (text backend; replaced the legacy CASH app) and **LexO** (lexicon backend).
-- **Versions**: package.json `name: maia-fe`; `0.20.0` on `master` (last release, tagged `v0.20.0`), **`0.30.0` on `upgrade/angular-21` (release to be merged into `master`)**. Docs/versions map in `README.md`. Upgrade convention: **Y +1 at each delivered Angular step, Z +1 at each delivered fix package**, X stays 0; set with `npm version X.Y.Z --no-git-tag-version`; **no git tags** for test versions. The footer shows the version and the e2e smoke checks it. Test packages are named `dist/maia-fe-<version>-test-<desc>-<timestamp>.zip` (superseded ones in `dist/old/`).
-- **Branches**: `master` (stable; `study/security-fixes` fast-forwarded into it on 2026-11-04), `develop`. **Active work: `upgrade/angular-21`** (plan: `documentation/upgrade/angular-upgrade-plan.md`). `epic/#9044-…` is stale and fully contained in master. No CI workflows configured.
+- **Versions**: package.json `name: maia-fe`; **`0.30.0` on `master`** (last release, tagged `v0.30.0`, in production on `klab.ilc.cnr.it/maia-vocabo/`; compatible with maia-be 0.0.16, TexO 0.2.0, LexO 1.2.1). Docs/versions map in `README.md` (update it at every release). Releases are decided together with the maintainer and are not the same as the test packages: the release number goes into `package.json` (`npm version X.Y.Z --no-git-tag-version`) at release time and a single `vX.Y.Z` tag marks the merge commit; **no git tags** for test packages (test versions in the upgrade were 0.26.Z). The footer shows the version and the e2e smoke checks it. Packages: `dist/maia-fe-<version>-test-<desc>-<timestamp>.tgz` for the test VM (subtitle "VocaBO - DEV UPGRADE" injected into `index.html`), `dist/maia-fe-<version>-prod-<timestamp>.tgz` for production (no injection); each with its `.sha256`, archive with the `maia/` folder; superseded ones in `dist/old/`.
+- **Branches**: `master` (stable, Angular 21; **small changes go directly on `master`**, larger ones on short branches), `develop` (stale, not used), `upgrade/angular-21` (merged into `master` with `--no-ff` as release 0.30.0, 2026-11-19; kept on GitHub for reference, plan and history in `documentation/upgrade/angular-upgrade-plan.md`). `epic/#9044-…` is stale and fully contained in master. No CI workflows configured.
 
 ## Toolchain (MUST FOLLOW)
 
-- **Node by branch (via nvm)**: `master` (Angular 14) → **Node 16.20.2** (newer Node breaks Angular 14). `upgrade/angular-21` (Angular 21) → **Node 22.23.4** (valid for Angular 18–22). Use: `export NVM_DIR="$HOME/.nvm"; source "$NVM_DIR/nvm.sh"; nvm use <version>`; `nvm` is a shell function (cannot be wrapped by `timeout`).
-- TypeScript **4.8.4** on master / **5.9** on `upgrade/angular-21`.
+- **Node (via nvm)**: **Node 22.23.4** for the app (Angular 21; valid for Angular 18–22). Node 16.20.2 was only for the old Angular 14 `master` (tag `v0.20.0`: use it only to rebuild that old release). Use: `export NVM_DIR="$HOME/.nvm"; source "$NVM_DIR/nvm.sh"; nvm use <version>`; `nvm` is a shell function (cannot be wrapped by `timeout`).
+- TypeScript **5.9**.
 - Commands:
-  - `npm install` — fine on Node 16 (engine warnings are advisory).
-  - `npm run build-prod` (=`ng build --configuration production --base-href='./'`) — **passes** (±30s). Budget warning only (initial 5.65 MB > 5 MB). *(master)*
+  - `npm install` — on Node 22.23.4.
+  - `npm run build-prod` is the old Angular 14 script (`--base-href='./'`): **use the command below** for packages.
   - **On `upgrade/angular-21`** (builder `@angular/build:application`, esbuild): `npx ng build -c production --base-href=""` → flat output in `dist/projectx-fe` (`outputPath.browser: ""`). **Do not pass `--output-path`** on the CLI (it replaces the outputPath object and re-adds `browser/`). Deploy packages are built this way and copied into `maia/`.
   - `npm start` (=`ng serve`) — dev server on `http://localhost:4200`, uses `src/proxy.conf.json`.
-  - `npm test` (=`ng test`, karma/ChromeHeadless) — **BROKEN on master**: ~19 TS errors under `strict` (spec + app files), `Executed 0 of 0`. Pre-existing, not caused by security work. Fixing it is a separate task (172 `.spec.ts` exist).
+  - `npm test` (=`ng test`) — **was BROKEN on Angular 14** (~19 TS errors, `Executed 0 of 0`); **not re-checked on Angular 21** (backlog; 172 `.spec.ts` exist). Regressions are covered by the e2e suite.
   - `npm run compodoc` — offline doc generation (uses `tsconfig.doc.json`; compodoc 2 on the upgrade branch).
   - `npm run check-primeng-attrs` — lists static attributes on `<p-*>` that are not PrimeNG inputs and unknown `pTemplate` names. **Run it after every PrimeNG upgrade**: removed/renamed inputs written as static attributes (`field="x"`) compile fine and are silently ignored (bindings `[field]` do fail).
   - `npm run check-licenses` — fails if a PrimeUI-licensed package (PrimeNG 22, primeicons 8, `@primeuix/themes` 3…) or a PrimeTek `-lts` version enters `node_modules`. Run it after every dependency change.
@@ -50,7 +50,7 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 
 ## Security status (study on branch `study/security-fixes`, Aug 2026)
 
-- **Upgrade branch (Angular 21, 2026-11-05)**: `npm audit` **20**, 0 critical / 0 high. All `@angular/*` CVEs fixed (≥ 20.3.27). Left: Angular CLI 21 toolchain chain (fixed only in CLI 22), compodoc 2 deps, and **quill 1.3.7** (the only runtime one). The figures below refer to `master`.
+- **Upgrade branch (Angular 21, 2026-11-05)**: `npm audit` **20**, 0 critical / 0 high. All `@angular/*` CVEs fixed (≥ 20.3.27). Left: Angular CLI 21 toolchain chain (fixed only in CLI 22), compodoc 2 deps, and **quill 1.3.7** (the only runtime one). The figures below refer to the old Angular 14 `master` (before release 0.30.0).
 
 - `npm audit`: **84 → 29** (critical 3→0, high 45→16, moderate 29→13, low 7→0). Build green.
 - Mechanism: `overrides` in `package.json` for transitive deps + direct bumps (`pdfmake 0.3.6`, `sweetalert2 11.26`, `uuid 11.1.1`) + `tsconfig.json` `skipLibCheck:true` (uuid 11 CJS typings incompatible with TS 4.8).
@@ -63,10 +63,9 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 
 ## Gotchas for AI agents
 
-- **quill is still 1.3.7** (moderate XSS advisory). On `master` quill 2 breaks primeng 14's `p-editor` (empty editor). On the upgrade branch PrimeNG 21 works with quill 1.3.7; quill 2 changes the HTML saved by the editors (lists, formats) used by the dictionary and the PDF export: **open decision, test the stored data before switching**.
-- **Do NOT bump primeng/@ngx-translate on `master`** without the Angular upgrade.
+- **quill is still 1.3.7** (moderate XSS advisory). On the old Angular 14 PrimeNG 14 quill 2 broke `p-editor` (empty editor). With PrimeNG 21 the editor works with quill 1.3.7; quill 2 changes the HTML saved by the editors (lists, formats) used by the dictionary and the PDF export: **open decision, test the stored data before switching**.
 - **npm overrides** (none left on the upgrade branch: the 43 Angular-14-era ones were removed because they forced old versions): you may NOT override a package that is also a *direct dependency* (`EOVERRIDE`). For multi-major transitive deps use version-keyed keys, e.g. `"minimatch@3": "3.1.4", "minimatch@9": "9.0.8"`. Verify target versions exist before writing them (some advisories are *unfixed* — e.g. newest tar `<=7.5.18` critical had no patch until 7.5.22 was published).
-- Always check `node -v` before building: Node 16.20.2 on `master`, Node 22.23.4 on `upgrade/angular-21`.
+- Always check `node -v` before building: Node 22.23.4 (nvm).
 - Test a deploy package **before** handing it over: `python3 e2e/tools/serve-package.py dist/projectx-fe 8099` (same topology as the test VM) + full e2e with `E2E_BASE_URL=http://127.0.0.1:8099/maia/`.
 - `NG0100: ExpressionChangedAfterItHasBeenCheckedError` in dev on the lexicon tile (`workspace-lexicon-edit-tile`, `[scrollHeight]="panelHeight-40+'px'"`, panelHeight set in `ngAfterViewInit`) is **cosmetic and dev-only** — ignore.
 - `bootstrap-autofill-overlay.js` console errors come from the Bitwarden browser extension — ignore.
@@ -84,7 +83,7 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 - **PrimeNG 20+ renamed CSS classes**: splitter panels are `.p-splitterpanel` (was `.p-splitter-panel`): CSS or `getElementsByClassName` using the old name silently match nothing (this lost the min-widths of the Lexicon Editor columns and broke an old PrimeNG 14 workaround in the Text window). Search the code for old class names after a PrimeNG upgrade.
 - **Tree tables (Lexicon Editor / Explorer)**: icon columns have fixed `rem` widths with `table-layout: fixed`; the name column takes the rest, the note icon is inside the name cell (`.name-cell`, flex). Don't use percentage widths or a fixed `width` on the name cell (the table spreads the free space over all columns).
 - **PrimeNG 17 → 21 behaviour changes already handled**: Tree/TreeSelect `metaKeySelection` default false (set `true` where needed); `TreeNode.index` reserved; Select `autoDisplayFirst` removed (no auto first option); `p-orderList` buttons secondary by default (`[buttonProps]="{}"`); Popover content via `<ng-template #content>`; Tabs panels: content stays instantiated (projection), PrimeNG 19 keeps inactive panels in the DOM (hidden via compat CSS).
-- **Reference instances** for visual/behavioural diffs (same backend): Angular 14 worktree `/home/simone/maia-fe-ng14` (commit `49474068`, `ng serve --port 4201`, Node 16) and Angular 18/PrimeNG 17 worktree `/home/simone/maia-fe-ng18` (commit `1323f8a8`, `--port 4202`, Node 22). e2e can target them with `E2E_BASE_URL`. Remove with `git worktree remove <path>` when no longer needed.
+- **Reference instances** for visual/behavioural diffs (same backend): Angular 14 worktree `/home/simone/maia-fe-ng14` (commit `49474068`, `ng serve --port 4201`, Node 16) and Angular 18/PrimeNG 17 worktree `/home/simone/maia-fe-ng18` (commit `1323f8a8`, `--port 4202`, Node 22). e2e can target them with `E2E_BASE_URL`. Both worktrees were removed after the 0.30.0 merge (recreate from those commits with `git worktree add <path> <commit>` if needed).
 - **e2e runs change the saved layout of workspace `e2e-smoke`** when a script leaves the workspace (layout saved on route exit): compare screenshots of the same run order, or re-run the smoke test first.
 - **Never install PrimeNG `*-lts` versions** (commercial, e.g. `16.9.17-lts`); caret ranges don't pick them.
 - Editing `angular.json`: use targeted text replacement (it has mixed tab indentation); a JSON dump reformats the whole file.
