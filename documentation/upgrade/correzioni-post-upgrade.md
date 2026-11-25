@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: da decidere)
+## 0.30.1 (pacchetto per la VM di test) — `dist/maia-fe-0.30.1-test-ng21-20261125-1028.tgz`
 
 - Pulsanti tondi degli Explorer (Lexicon, Dictionary, Corpus, visibilità dei layer): erano ovali e con l'icona un po' in alto; ora sono cerchi veri (33 px, misure intere: a 1× l’icona è esattamente al centro) con l’icona centrata; tolto uno spostamento a mano dell'icona «Upload file» del Corpus. Residuo accettato: in Chrome il «+» può risultare ancora di circa mezzo pixel a destra (in Firefox è centrato): dipende da come i browser disegnano il carattere dell'icona, non dal layout
 - Dictionary Editor: nuovo campo «Proverbi» (editor di testo ricco) nella scheda della voce, dopo «Polirematiche / locuzioni / fraseologia / collocazioni» e prima di «Vedi anche»; compare anche nell'Anteprima e nel PDF (nascosto se vuoto). Viene salvato nello stesso JSON della nota (chiave `proverbs`, stesso salvataggio automatico): nessuna modifica al backend (maia-be passa la nota a LexO come stringa). Le voci esistenti restano intatte e aprono il campo vuoto (provato sulla VM con la voce «eretico», poi ripristinata). Da comunicare a chi legge il JSON della nota fuori da MAIA (sito vocabo.org: da verificare)
