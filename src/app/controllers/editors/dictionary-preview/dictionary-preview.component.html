@@ -216,6 +216,15 @@
           </ng-template>
         </p-editor>
       </div>
+      <div class="flex-column w-100 mt-5" *ngIf="hasRichText(structuredNote.proverbs)" id="preview_proverbs">
+        <p-editor [(ngModel)]="structuredNote.proverbs" [readonly]="true">
+          <ng-template pTemplate="header">
+            <p class="form-label">
+              {{ "DICTIONARY_EDITOR.EDIT_TAB.proverbs" | translate }}:
+            </p>
+          </ng-template>
+        </p-editor>
+      </div>
       <div class="flex-column w-100 mt-5" *ngIf="orderedSeeAlso.length > 0" id="previewSeeAlso">
         <p-fieldset>
           <ng-template pTemplate="header">

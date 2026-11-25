@@ -76,3 +76,9 @@ le richieste di modifica rispondono 200 senza arrivare al server e vengono annot
     E2E_REAL_WRITES=1 PAGES=12 E2E_LABEL=mass E2E_EXPECT_TITLE="MAIA - develop" npx playwright test tests/mass-annotation-real.spec.ts
 
 Stampa gli orari di inizio/fine/pulizia da confrontare con i log di TexO. Non usare il layer Lemma (i contesti di «amore» vi sono gia tutti annotati).
+
+## Prova reale del campo «Proverbi» (opzionale, scrive sulla VM)
+`tests/dictionary-proverbs-real.spec.ts` scrive un proverbio nella voce «eretico» (voce gia esistente, senza `proverbs`), controlla che l'autosave mandi un unico JSON con tutti i campi di prima piu `proverbs`, che i testi esistenti siano conservati e che l'Anteprima lo mostri dopo le polirematiche; poi ripristina la nota originale. Salta senza `E2E_REAL_WRITES=1`:
+
+    E2E_REAL_WRITES=1 E2E_LABEL=prov E2E_EXPECT_TITLE="MAIA - develop" npx playwright test tests/dictionary-proverbs-real.spec.ts
+

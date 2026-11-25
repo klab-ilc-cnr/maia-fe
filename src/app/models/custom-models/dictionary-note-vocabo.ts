@@ -20,6 +20,7 @@ export class DictionaryNoteVocabo {
     boccaccioDante: string = '';
     crusche: string = '';
     polyrhematics: string = '';
+    proverbs: string = '';
 
     constructor(note: string) {
         if(note !== '') {
@@ -39,6 +40,7 @@ export class DictionaryNoteVocabo {
                 this.boccaccioDante = decode(parsedNote?.boccaccioDante) ?? '';
                 this.crusche = decode(parsedNote?.crusche) ?? '';
                 this.polyrhematics = decode(parsedNote?.polyrhematics) ?? '';
+                this.proverbs = decode(parsedNote?.proverbs) ?? '';
             } catch (error) {
                 console.group('Error with note structure, note value will be ignored');
                 console.error(error);

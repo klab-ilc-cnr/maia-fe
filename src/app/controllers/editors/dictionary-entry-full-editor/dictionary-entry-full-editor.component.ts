@@ -74,7 +74,8 @@ export class DictionaryEntryFullEditorComponent implements OnInit, AfterViewChec
       firstAbsAttestation: new FormControl<string>(''),
       boccaccioDante: new FormControl<string>(''),
       crusche: new FormControl<string>(''),
-      polyrhematics: new FormControl<string>('')
+      polyrhematics: new FormControl<string>(''),
+      proverbs: new FormControl<string>('')
     }),
     seeAlso: new FormArray<FormControl>([])
   });
@@ -126,7 +127,8 @@ export class DictionaryEntryFullEditorComponent implements OnInit, AfterViewChec
       firstAbsAttestation: this.structuredNote.firstAbsAttestation,
       boccaccioDante: this.structuredNote.boccaccioDante,
       crusche: this.structuredNote.crusche,
-      polyrhematics: this.structuredNote.polyrhematics
+      polyrhematics: this.structuredNote.polyrhematics,
+      proverbs: this.structuredNote.proverbs
     });
     this.initFrequencies(this.structuredNote.frequencies);
 
@@ -173,7 +175,8 @@ export class DictionaryEntryFullEditorComponent implements OnInit, AfterViewChec
         firstAbsAttestation: encode(v.firstAbsAttestation),
         boccaccioDante: encode(v.boccaccioDante),
         crusche: encode(v.crusche),
-        polyrhematics: encode(v.polyrhematics)
+        polyrhematics: encode(v.polyrhematics),
+        proverbs: encode(v.proverbs)
       }
       const updatedNote = JSON.stringify(encodedValue);
       this.dictionaryService.createAndUpdateDictionaryNote(this.dictionaryEntry.id, username, updatedNote).pipe(

@@ -9,6 +9,10 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: da decidere)
+
+- Dictionary Editor: nuovo campo «Proverbi» (editor di testo ricco) nella scheda della voce, dopo «Polirematiche / locuzioni / fraseologia / collocazioni» e prima di «Vedi anche»; compare anche nell'Anteprima e nel PDF (nascosto se vuoto). Viene salvato nello stesso JSON della nota (chiave `proverbs`, stesso salvataggio automatico): nessuna modifica al backend (maia-be passa la nota a LexO come stringa). Le voci esistenti restano intatte e aprono il campo vuoto (provato sulla VM con la voce «eretico», poi ripristinata). Da comunicare a chi legge il JSON della nota fuori da MAIA (sito vocabo.org: da verificare)
+
 ## 0.30.0 (release di produzione) — `dist/maia-fe-0.30.0-prod-20261119-0936.tgz`
 
 - Preparazione al merge su `master`: `environment.ts` con sottotitolo «develop» (come su `master`; i pacchetti per la VM lo impostano a runtime) e `production: true` in `environment.production.ts` (nessun effetto visibile: il pacchetto era già in modalità produzione)

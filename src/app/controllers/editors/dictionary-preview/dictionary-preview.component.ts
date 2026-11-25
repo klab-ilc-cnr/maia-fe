@@ -103,7 +103,7 @@ export class DictionaryPreviewComponent implements OnInit {
     if (!n) return false;
     return !!this.firstAttestationLabel || !!n.firstAttestationDetails || n.decameronOccurrences > 0 || this.totalOccurrences > 0
       || this.frequencies.length > 0 || this.hasEtymology || this.orderedSeeAlso.length > 0
-      || [n.linguisticsSemantics, n.decameron, n.firstAbsAttestation, n.boccaccioDante, n.crusche, n.polyrhematics].some(v => hasRichText(v));
+      || [n.linguisticsSemantics, n.decameron, n.firstAbsAttestation, n.boccaccioDante, n.crusche, n.polyrhematics, n.proverbs].some(v => hasRichText(v));
   }
 
   get ready(): boolean {

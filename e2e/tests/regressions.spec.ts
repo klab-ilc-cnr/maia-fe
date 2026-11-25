@@ -2480,13 +2480,13 @@ test('regressione: Dictionary Editor, Anteprima - le parti senza valore non si m
   const vuota = {
     decameronOccurrences: 0, frequencies: [{ documentId: '', frequency: 0 }], firstAttestation: '', firstAttestationDetails: '',
     etymology: { language: '', etymon: '', details: '<p><br></p>' },
-    linguisticsSemantics: '<p><br></p>', decameron: '', firstAbsAttestation: '<p> </p>', boccaccioDante: '', crusche: '', polyrhematics: '',
+    linguisticsSemantics: '<p><br></p>', decameron: '', firstAbsAttestation: '<p> </p>', boccaccioDante: '', crusche: '', polyrhematics: '', proverbs: '',
   };
   const piena = {
     decameronOccurrences: 3, frequencies: [{ documentId: 'FLC', frequency: 7 }], firstAttestation: 'FLC', firstAttestationDetails: 'III.2',
     etymology: { language: 'lat', etymon: 'sonare', details: '<p>dettaglio etimo</p>' },
     linguisticsSemantics: '<p>commento ling</p>', decameron: '<p>attorno dec</p>', firstAbsAttestation: '<p>prima abs</p>', boccaccioDante: '<p>bocc dante</p>',
-    crusche: '<p>crusche</p>', polyrhematics: '<p>polirem</p>',
+    crusche: '<p>crusche</p>', polyrhematics: '<p>polirem</p>', proverbs: '<p>proverbio di prova</p>',
   };
   await page.route(/\/lexo\/data\/dictionaryEntry\?id=/, async (route) => {
     const res = await route.fetch();
@@ -2515,7 +2515,7 @@ test('regressione: Dictionary Editor, Anteprima - le parti senza valore non si m
   const labels = [
     'I attestazione in Boccaccio', 'Riferimento topografico', 'N. occorrenze nel Decameron', 'Occ. altre opere', 'Etimologia',
     'Commento linguistico e semantico', 'Attorno al Decameron', 'I attestazione assoluta', 'Boccaccio e Dante:', 'Il Decameron, le Crusche e altri vocabolari',
-    'Polirematiche / locuzioni', 'Vedi anche',
+    'Polirematiche / locuzioni', 'Proverbi:', 'Vedi anche',
   ];
   const visibleLabels = async (editor: any) => {
     const text = await editor.locator('.p-tabpanel:visible, [role="tabpanel"]:visible').first().innerText();
@@ -2538,6 +2538,12 @@ test('regressione: Dictionary Editor, Anteprima - le parti senza valore non si m
   await snap(page, 'dict-anteprima-piena');
   expect(shownFull, 'con la nota compilata si mostrano tutti i campi').toEqual(labels);
   await expect(editor.locator('p-divider'), 'con i campi compilati la linea divisoria c\'è').toHaveCount(1);
+  // "Proverbi" sta dopo le polirematiche e prima di "Vedi anche"
+  const fullText = await editor.locator('.p-tabpanel:visible, [role="tabpanel"]:visible').first().innerText();
+  const [iPoli, iProv, iVedi] = ['Polirematiche / locuzioni', 'Proverbi:', 'Vedi anche'].map((l) => fullText.indexOf(l));
+  expect(iPoli, 'polirematiche presenti').toBeGreaterThan(-1);
+  expect(iProv, 'Proverbi dopo le polirematiche').toBeGreaterThan(iPoli);
+  expect(iVedi, 'Vedi anche dopo Proverbi').toBeGreaterThan(iProv);
 });
 
 test('regressione: Dictionary Explorer - scrivere nel filtro mentre arriva la lista iniziale (lenta) non la lascia al posto di quella filtrata', async ({ page, baseURL }) => {

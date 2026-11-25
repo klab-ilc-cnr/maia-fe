@@ -89,6 +89,7 @@ export class DictionaryPdfService {
     const firstAbsLabel = this.translate.instant('DICTIONARY_EDITOR.EDIT_TAB.firstAttestAbs');
     const vocsLabel = this.translate.instant('DICTIONARY_EDITOR.EDIT_TAB.vocs');
     const miscLabel = this.translate.instant('DICTIONARY_EDITOR.EDIT_TAB.misc');
+    const proverbsLabel = this.translate.instant('DICTIONARY_EDITOR.EDIT_TAB.proverbs');
     const seeAlsoLabel = this.translate.instant('DICTIONARY_EDITOR.EDIT_TAB.seeAlso');
     const noDefLabel = this.translate.instant('DICTIONARY_EDITOR.SORT_TAB.noDefinition');
     const textColLabel = this.translate.instant('DICTIONARY_EDITOR.PREVIEW_TAB.text');
@@ -152,7 +153,8 @@ export class DictionaryPdfService {
       { label: firstAbsLabel, html: note.firstAbsAttestation ?? '' },
       { label: 'Boccaccio e Dante', html: note.boccaccioDante ?? '' },
       { label: vocsLabel, html: note.crusche ?? '' },
-      { label: miscLabel, html: note.polyrhematics ?? '' }
+      { label: miscLabel, html: note.polyrhematics ?? '' },
+      { label: proverbsLabel, html: note.proverbs ?? '' }
     ];
     richFields.filter(f => hasRichText(f.html)).forEach(({ label, html }) => {
       if (label) content.push({ text: label, style: 'fieldLabel', marginTop: 6 });
