@@ -2737,3 +2737,25 @@ test('autosalvataggio del layout: due salvataggi non si sovrappongono (una modif
   await page.waitForTimeout(26_000);
   expect(saves.length, 'una sola richiesta in piu\' per le due modifiche').toBe(2);
 });
+
+test('regressione: pulsanti tondi degli Explorer (Lexicon, Dictionary, Corpus) - cerchi veri e icona centrata', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['lexiconTile', 'dictionaryTile', 'corpusTile']);
+  for (const menu of ['Lexicon', 'Dictionary', 'Corpus']) {
+    await page.locator('#workspace-menu').first().getByText(menu, { exact: true }).click();
+    await page.waitForTimeout(2000);
+    const btns = await page.evaluate(() => [...document.querySelectorAll('.btn.rounded-circle')].filter((b) => (b as HTMLElement).offsetParent).map((b) => {
+      const r = b.getBoundingClientRect();
+      const ir = b.querySelector('i,svg,fa-icon')!.getBoundingClientRect();
+      return { w: r.width, h: r.height, dx: (ir.left + ir.width / 2) - (r.left + r.width / 2), dy: (ir.top + ir.height / 2) - (r.top + r.height / 2) };
+    }));
+    expect(btns.length, `${menu}: pulsanti tondi visibili`).toBeGreaterThanOrEqual(3);
+    for (const b of btns) {
+      expect(Math.abs(b.w - b.h), `${menu}: il pulsante e' un cerchio, non un ovale (${b.w}x${b.h})`).toBeLessThanOrEqual(0.5);
+      expect(Math.abs(b.dx), `${menu}: icona centrata in orizzontale (dx ${b.dx.toFixed(2)})`).toBeLessThanOrEqual(0.5);
+      expect(Math.abs(b.dy), `${menu}: icona centrata in verticale (dy ${b.dy.toFixed(2)})`).toBeLessThanOrEqual(0.5);
+    }
+    await closePanels(page, ['lexiconTile', 'dictionaryTile', 'corpusTile']);
+  }
+});

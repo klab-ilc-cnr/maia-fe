@@ -703,6 +703,19 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   line-height: 1;
 }
 
+// Round icon buttons (Bootstrap `.btn.rounded-circle`: Explorer toolbars, Corpus explorer, layers visibility):
+// Bootstrap gives them more horizontal than vertical padding (an oval) and the icon sits on the text baseline
+// (about 1px too high). Square box, icon centred.
+.btn.rounded-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem; // 32.5px (the root font size is 13px)
+  height: 2.5rem;
+  padding: 0;
+  line-height: 1;
+}
+
 .button-group-actions {
   display: flex;
   align-items: center;
