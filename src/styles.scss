@@ -710,8 +710,10 @@ p-radioButton.ng-invalid.ng-touched .p-radiobutton-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem; // 32.5px (the root font size is 13px)
-  height: 2.5rem;
+  // whole pixels on purpose (not 2.5rem = 32.5px): with 33px the 13px icon sits exactly 9px from each border, so the
+  // icon and the ring are snapped to the device pixels in the same way (with 32.5px the icon looked ~0.5px off)
+  width: 33px;
+  height: 33px;
   padding: 0;
   line-height: 1;
 }
