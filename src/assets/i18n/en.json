@@ -5,6 +5,7 @@
         "initialValue": "Could not retrieve the value of a field from the server: the saved value is shown instead.",
         "dictionaryLinks": "Could not check with the server whether the lexical entries are described in the dictionary: the indicator may be incomplete.",
         "saveLayout": "Could not save the layout of the workspace windows: it will be tried again at the next change and when leaving the workspace.",
+        "usersList": "Could not retrieve the list of users: the checks on the last administrator may not be active.",
         "tooltip": "Content could not be loaded. Please try again."
     },
     "SESSION": {
@@ -264,6 +265,21 @@
         "updatingTagsetItemFailed": "Updating tagset item failed: ${errorMessage}"
     },
     "USERS_MANAGER": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "status": "Status",
+        "password": "Password",
+        "email": "Email",
+        "searchUsers": "Search a user…",
+        "missingFields": "To save, complete",
+        "unsavedChanges": "Unsaved changes",
+        "emailInvalid": "The e-mail is not valid",
+        "cannotDeactivateSelf": "You cannot deactivate your own user",
+        "lastAdmin": "This is the last active administrator: it cannot be deactivated or have its role changed",
+        "cannotDeleteSelf": "You cannot delete your own user",
+        "cannotDeleteLastAdmin": "The last active administrator cannot be deleted",
+        "pwdAdminHint": "As an administrator you can set the new password without knowing the current one.",
+        "createdNoPassword": "The user was created but the password was not set: set it from this page.",
         "activeUser": "Active user",
         "confirmDeleteUser":"You are about to delete the user ${username}",
         "confirmPassword": "Confirm password",

@@ -1,10 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { catchError, take } from 'rxjs';
 import { PopupDeleteItemComponent } from 'src/app/controllers/popup/popup-delete-item/popup-delete-item.component';
+import { User } from 'src/app/models/user';
+import { StorageService } from 'src/app/services/storage.service';
 import { CommonService } from 'src/app/services/common.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { UserService } from 'src/app/services/user.service';
@@ -16,15 +18,21 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-list.component.scss'],
   standalone: false
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
 
   /**Reference to the display table */
   @ViewChild('dt') public dt: Table | undefined
   /**Reference to item deletion popup */
   @ViewChild("popupDeleteItem") public popupDeleteItem!: PopupDeleteItemComponent;
 
-  /**Observable of the user list */
-  public users = this.userService.findAll();
+  /**List of the users shown in the table */
+  public users: User[] = [];
+  /**True while the list is being loaded */
+  public loading = false;
+  /**Id of the logged-in user */
+  private readonly loggedUserId = this.storageService.getCurrentUser()?.id;
+  /**Fields on which the search box filters */
+  public readonly globalFilterFields = ['username', 'name', 'surname', 'email', 'role'];
 
   /**
    * Costructor for UserListComponent
@@ -39,7 +47,32 @@ export class UserListComponent {
     private utility: CommonService,
     private messageService: MessageService,
     private msgConfService: MessageConfigurationService,
+    private storageService: StorageService,
   ) { }
+
+  ngOnInit(): void {
+    this.loadUsers();
+  }
+
+  /**Loads (or reloads) the list of users */
+  private loadUsers(): void {
+    this.loading = true;
+    this.userService.findAll().pipe(
+      take(1),
+      catchError((error: HttpErrorResponse) => { this.loading = false; return this.utility.throwHttpErrorAndMessage(error, error.message); }),
+    ).subscribe(users => {
+      this.users = users;
+      this.loading = false;
+    });
+  }
+
+  /**Why a user cannot be deleted (i18n key), or null if it can: not yourself, not the last active administrator */
+  public deleteBlockReason(user: User): string | null {
+    if (user.id != null && user.id.toString() === this.loggedUserId?.toString()) { return 'USERS_MANAGER.cannotDeleteSelf'; }
+    const activeAdmins = this.users.filter(u => u.active && u.role === 'ADMINISTRATOR').length;
+    if (user.active && user.role === 'ADMINISTRATOR' && activeAdmins <= 1) { return 'USERS_MANAGER.cannotDeleteLastAdmin'; }
+    return null;
+  }
 
   private delete = (id: number): void => {
     this.userService.deleteUser(id).pipe(
@@ -47,7 +80,7 @@ export class UserListComponent {
       catchError((error: HttpErrorResponse) => this.utility.throwHttpErrorAndMessage(error,error.message)),
     ).subscribe(()=>{
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.utility.translateKey('USERS_MANAGER.userDeleted')));
-      this.users = this.userService.findAll();
+      this.loadUsers();
     });
   }
 

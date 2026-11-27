@@ -6,17 +6,24 @@
         <p-button [label]="'USERS_MANAGER.newUser'|translate" icon="pi pi-user-plus" styleClass="p-button-danger" (click)="goToNewUser()"
           class="ms-start"></p-button>
       </div>
-      <p-table #dt [value]="(users|async) ?? []" [rowHover]="true" [scrollable]="false" [paginator]="true"
-        [rows]="5" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" [stripedRows]="true" (onRowSelect)="goToEditUser($event)">
+      <div class="mb-3">
+        <p-iconfield iconPosition="left">
+          <p-inputicon class="pi pi-search"></p-inputicon>
+          <input type="text" pInputText id="usersSearch" [placeholder]="'USERS_MANAGER.searchUsers'|translate"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
+        </p-iconfield>
+      </div>
+      <p-table #dt [value]="users" [loading]="loading" [globalFilterFields]="globalFilterFields" [rowHover]="true" [scrollable]="false" [paginator]="true"
+        [rows]="10" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" dataKey="id" [stripedRows]="true" (onRowSelect)="goToEditUser($event)">
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th pSortableColumn="username">{{'USERS_MANAGER.username'|translate}}</th>
+            <th pSortableColumn="username">{{'USERS_MANAGER.username'|translate}} <p-sortIcon field="username"></p-sortIcon></th>
             <th pSortableColumn="name">{{'USERS_MANAGER.name'|translate}} <p-sortIcon field="name"></p-sortIcon></th>
             <th pSortableColumn="surname">{{'USERS_MANAGER.surname'|translate}} <p-sortIcon field="surname"></p-sortIcon></th>
             <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
             <th pSortableColumn="role">{{'USERS_MANAGER.role'|translate}} <p-sortIcon field="role"></p-sortIcon></th>
-            <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+            <th pSortableColumn="active">{{'USERS_MANAGER.status'|translate}} <p-sortIcon field="active"></p-sortIcon></th>
             <th class="text-center">{{'USERS_MANAGER.details'|translate}}</th>
             <th class="text-center">{{'USERS_MANAGER.delete'|translate}}</th>
           </tr>
@@ -29,7 +36,9 @@
             <td>{{ user.surname }}</td>
             <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
             <td>{{ user.role }}</td>
-            <td>{{ user.active ? 'ACTIVE' : 'INACTIVE' }}</td>
+            <td>
+              <span class="badge" [ngClass]="user.active ? 'bg-success' : 'bg-secondary'">{{ (user.active ? 'USERS_MANAGER.active' : 'USERS_MANAGER.inactive') | translate }}</span>
+            </td>
             <td class="text-center">
               <button pButton pRipple type="button" icon="pi pi-user-edit" aria-label="Go to edit user"
                 class="p-button-rounded p-button-danger p-button-text" (click)="goToEditUserById(user.id)">
@@ -37,14 +46,15 @@
             </td>
             <td class="text-center">
               <button pButton pRipple type="button" icon="pi pi-user-minus" aria-label="Remove user"
-                class="p-button-rounded p-button-danger p-button-text" (click)="onRemoveUser(user.username, user.id)">
+                class="p-button-rounded p-button-danger p-button-text" (click)="onRemoveUser(user.username, user.id)"
+                [disabled]="!!deleteBlockReason(user)" [pTooltip]="(deleteBlockReason(user) || '')|translate" tooltipPosition="left">
               </button>
             </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="7">{{'USERS_MANAGER.emptyUsers'|translate}}</td>
+            <td colspan="9">{{'USERS_MANAGER.emptyUsers'|translate}}</td>
           </tr>
         </ng-template>
       </p-table>

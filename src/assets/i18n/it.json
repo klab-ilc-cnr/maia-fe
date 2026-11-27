@@ -5,6 +5,7 @@
         "initialValue": "Impossibile recuperare dal server il valore di un campo: viene mostrato quello salvato.",
         "dictionaryLinks": "Impossibile verificare dal server se le voci lessicali sono descritte nel dizionario: l'indicatore può risultare incompleto.",
         "saveLayout": "Impossibile salvare la disposizione delle finestre del workspace: verrà riprovato alla prossima modifica e quando si esce dal workspace.",
+        "usersList": "Impossibile recuperare l'elenco degli utenti: i controlli sull'ultimo amministratore potrebbero non essere attivi.",
         "tooltip": "Impossibile caricare il contenuto. Riprovare."
     },
     "SESSION": {
@@ -264,6 +265,21 @@
         "updatingTagsetItemFailed": "Aggiornamento dell'elemento del tagset fallito: ${errorMessage}"
     },
     "USERS_MANAGER": {
+        "active": "Attivo",
+        "inactive": "Non attivo",
+        "status": "Stato",
+        "password": "Password",
+        "email": "Email",
+        "searchUsers": "Cerca un utente…",
+        "missingFields": "Per salvare completa",
+        "unsavedChanges": "Modifiche non salvate",
+        "emailInvalid": "L'e-mail non è valida",
+        "cannotDeactivateSelf": "Non puoi disattivare il tuo stesso utente",
+        "lastAdmin": "È l'ultimo amministratore attivo: non si può disattivare né cambiargli il ruolo",
+        "cannotDeleteSelf": "Non puoi eliminare il tuo stesso utente",
+        "cannotDeleteLastAdmin": "Non si può eliminare l'ultimo amministratore attivo",
+        "pwdAdminHint": "Come amministratore puoi impostare la nuova password senza conoscere quella attuale.",
+        "createdNoPassword": "L'utente è stato creato ma la password non è stata impostata: impostala da questa pagina.",
         "activeUser": "Utente attivo",
         "confirmDeleteUser": "Stai per eliminare l'utente ${username}",
         "confirmPassword": "Conferma password",

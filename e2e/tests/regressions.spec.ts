@@ -2836,3 +2836,181 @@ test('regressione: Search - senza risultati e senza jolly si suggerisce di usarl
   await expect(tile.locator('tbody tr').first()).toContainText('lampeggiar');
   await expect(hint).toHaveCount(0);
 });
+
+/** Utenti: blocca ogni scrittura su /api/users (PUT/POST/DELETE, anche la password) e le annota. */
+async function blockUserWrites(page: Page): Promise<string[]> {
+  const sent: string[] = [];
+  await page.route(/\/api\/users(\/password|\/\d+)?$/, async (route) => {
+    const req = route.request();
+    if (req.method() === 'GET') { await route.continue(); return; }
+    sent.push(`${req.method()} ${new URL(req.url()).pathname} ${req.postData() ?? ''}`);
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+  });
+  return sent;
+}
+
+test('regressione: Utenti, dettaglio - Salva si accende solo con modifiche, e se si esce con modifiche non salvate si chiede conferma', async ({ page }) => {
+  test.setTimeout(180_000);
+  const sent = await blockUserWrites(page);
+  await uiLogin(page);
+  await page.goto('#/usersManagement/userDetails/4');
+  const save = page.locator('#userFormSave');
+  await expect(page.locator('#username')).toHaveValue('veronica', { timeout: 30_000 });
+  await page.waitForTimeout(800);
+  // appena aperto: niente da salvare
+  await expect(save, 'senza modifiche Salva e\' spento').toBeDisabled();
+  await expect(page.locator('#userFormPending')).toHaveCount(0);
+  await expect(page.locator('#userFormMissing')).toHaveCount(0);
+  // disattivo/attivo l'utente: Salva si accende e compare l'avviso
+  await page.locator('p-toggleswitch').first().click();
+  await expect(save, 'dopo aver toccato l\'interruttore Salva e\' acceso').toBeEnabled();
+  await expect(page.locator('#userFormPending')).toContainText('Modifiche non salvate');
+  await snap(page, 'utenti-salva-acceso');
+  // Annulla con modifiche: conferma; "Annulla" della conferma resta sulla pagina
+  let dialogs: string[] = [];
+  page.on('dialog', async (d) => { dialogs.push(d.message()); if (dialogs.length === 1) await d.dismiss(); else await d.accept(); });
+  await page.getByRole('button', { name: 'Annulla' }).first().click();
+  await page.waitForTimeout(800);
+  expect(dialogs.length, 'chiede conferma').toBe(1);
+  expect(page.url(), 'restando sulla pagina').toContain('userDetails/4');
+  await page.getByRole('button', { name: 'Annulla' }).first().click();
+  await expect(page).toHaveURL(/usersManagement\/users/, { timeout: 15_000 });
+  expect(dialogs.length, 'seconda conferma accettata: si esce').toBe(2);
+  // dopo aver salvato non si chiede conferma
+  dialogs = [];
+  await page.goto('#/usersManagement/userDetails/4');
+  await expect(page.locator('#username')).toHaveValue('veronica', { timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await page.locator('p-toggleswitch').first().click();
+  await save.click();
+  await expect(page).toHaveURL(/usersManagement\/users/, { timeout: 15_000 });
+  expect(dialogs, 'salvato: nessuna conferma').toEqual([]);
+  expect(sent.length, 'una sola scrittura (bloccata)').toBe(1);
+  expect(sent[0]).toMatch(/^PUT \S*\/api\/users /);
+  expect(JSON.parse(sent[0].split(' ').slice(2).join(' ')), 'manda l\'utente 4 con "active" invertito rispetto a prima').toMatchObject({ id: 4, active: true });
+});
+
+test('regressione: Utenti, dettaglio - se il form non e\' valido (utente senza lingue) si spiega cosa manca', async ({ page }) => {
+  test.setTimeout(120_000);
+  await blockUserWrites(page);
+  await uiLogin(page);
+  await page.goto('#/usersManagement/userDetails/1'); // admin: nessuna lingua
+  await expect(page.locator('#username')).toHaveValue('admin', { timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await expect(page.locator('#userFormSave')).toBeDisabled();
+  await expect(page.locator('#userFormMissing'), 'dice cosa manca').toContainText('Lingue');
+  await expect(page.locator('.alert-danger', { hasText: 'almeno una lingua' }), 'errore visibile senza dover toccare il campo').toBeVisible();
+  await snap(page, 'utenti-manca-lingua');
+  await page.locator('p-listbox').getByText('Italiano', { exact: true }).click();
+  await expect(page.locator('#userFormMissing')).toHaveCount(0);
+  await expect(page.locator('#userFormSave'), 'scelta una lingua si puo\' salvare').toBeEnabled();
+});
+
+test('regressione: Utenti, password - un amministratore imposta la password di un altro senza la vecchia; per se stesso serve', async ({ page }) => {
+  test.setTimeout(150_000);
+  const sent = await blockUserWrites(page);
+  await uiLogin(page);
+  await page.goto('#/usersManagement/userDetails/4');
+  await expect(page.locator('#username')).toHaveValue('veronica', { timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await expect(page.locator('#oldPassword'), 'altro utente: niente vecchia password').toHaveCount(0);
+  await expect(page.locator('#pwdAdminHint')).toBeVisible();
+  const pwdForm = page.locator('form').nth(1);
+  const pwdSave = pwdForm.locator('button[type="submit"]');
+  await expect(pwdSave).toBeDisabled();
+  await page.locator('p-password#newPassword input').fill('NuovaPasswordDiProva1');
+  await page.locator('p-password#confirmPassword input').fill('NuovaPasswordDiProva1');
+  await expect(pwdSave, 'nuova + conferma bastano').toBeEnabled();
+  await pwdSave.click();
+  await expect.poll(() => sent.length, { timeout: 10_000 }).toBe(1);
+  expect(sent[0]).toMatch(/^POST \S*\/api\/users\/password /);
+  const body = JSON.parse(sent[0].split(' ').slice(2).join(' '));
+  expect(body).toEqual({ id: 4, newPassword: 'NuovaPasswordDiProva1' }); // niente currentPassword
+  await expect(page.locator('p-password#newPassword input'), 'dopo il salvataggio i campi si svuotano').toHaveValue('');
+  // il proprio utente: la vecchia password serve
+  await page.goto('#/usersManagement/userDetails/30');
+  await expect(page.locator('#username')).toHaveValue('agente', { timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await expect(page.locator('#oldPassword'), 'proprio utente: vecchia password richiesta').toHaveCount(1);
+  await expect(page.locator('#pwdAdminHint')).toHaveCount(0);
+});
+
+test('regressione: Utenti, dettaglio - il proprio utente non si puo\' disattivare', async ({ page }) => {
+  test.setTimeout(120_000);
+  await blockUserWrites(page);
+  await uiLogin(page);
+  await page.goto('#/usersManagement/userDetails/30'); // agente, l'utente dei test
+  await expect(page.locator('#username')).toHaveValue('agente', { timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await expect(page.locator('p-toggleswitch input[type="checkbox"]').first()).toBeDisabled();
+  await expect(page.locator('#activeLockHint')).toContainText('tuo stesso utente');
+  // un altro utente si puo' disattivare
+  await page.goto('#/usersManagement/userDetails/4');
+  await expect(page.locator('#username')).toHaveValue('veronica', { timeout: 30_000 });
+  await page.waitForTimeout(800);
+  await expect(page.locator('p-toggleswitch input[type="checkbox"]').first()).toBeEnabled();
+  await expect(page.locator('#activeLockHint')).toHaveCount(0);
+});
+
+test('regressione: Utenti, elenco - stato tradotto, ordinabile, ricerca, 10 righe, e non si elimina se stessi', async ({ page }) => {
+  test.setTimeout(120_000);
+  await blockUserWrites(page);
+  await uiLogin(page);
+  await page.goto('#/usersManagement/users');
+  const rows = page.locator('p-table tbody tr');
+  await expect(rows.first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(500);
+  expect(await rows.count(), '10 righe per pagina').toBe(10);
+  const body = await page.locator('p-table').innerText();
+  expect(body).not.toMatch(/\bACTIVE\b|\bINACTIVE\b/);
+  expect(body).toMatch(/Attivo|Non attivo/);
+  await snap(page, 'utenti-elenco');
+  // ordinamento per stato: prima i non attivi
+  await page.locator('th', { hasText: 'Stato' }).click();
+  await page.waitForTimeout(500);
+  const first = (await rows.first().innerText()).replace(/\s+/g, ' ');
+  expect(first, 'ordinando per stato in ordine crescente iniziano i non attivi').toContain('Non attivo');
+  // ricerca
+  await page.locator('#usersSearch').fill('burgassi');
+  await page.waitForTimeout(600);
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first()).toContainText('cosimo.burgassi');
+  // non si elimina il proprio utente (agente)
+  await page.locator('#usersSearch').fill('agente');
+  await page.waitForTimeout(600);
+  const del = rows.first().locator('button[aria-label="Remove user"]');
+  await expect(rows.first()).toContainText('agente');
+  await expect(del, 'il proprio utente non si elimina').toBeDisabled();
+  await page.locator('#usersSearch').fill('cosimo');
+  await page.waitForTimeout(600);
+  await expect(rows.first().locator('button[aria-label="Remove user"]'), 'un altro utente si')
+    .toBeEnabled();
+});
+
+test('regressione: Utenti, nuovo utente - Salva resta spento finche mancano campi, e dice quali', async ({ page }) => {
+  test.setTimeout(120_000);
+  const sent = await blockUserWrites(page);
+  await uiLogin(page);
+  await page.goto('#/usersManagement/userDetails/new');
+  await expect(page.locator('#username')).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(800);
+  const save = page.locator('#userFormSave');
+  await expect(save).toBeDisabled();
+  const missing = page.locator('#userFormMissing');
+  await expect(missing).toBeVisible();
+  const txt = await missing.innerText();
+  for (const f of ['Nome utente', 'Password', 'Nome', 'Cognome', 'Email', 'Ruolo', 'Lingue']) expect(txt, `manca: ${f}`).toContain(f);
+  // si compila tutto (con un nome utente che non esiste): Salva si accende e l'elenco dei mancanti sparisce
+  await page.locator('#username').fill('zz-prova-form');
+  await page.locator('#name').fill('Prova');
+  await page.locator('#surname').fill('Form');
+  await page.locator('#email').fill('prova.form@example.org');
+  await page.locator('p-password#password input').fill('PasswordDiProva1');
+  await page.locator('p-password#confirmPassword input').fill('PasswordDiProva1');
+  await page.locator('p-select[formcontrolname="role"]').click();
+  await page.locator('.p-select-option').filter({ hasText: 'VIEWER' }).first().click();
+  await page.locator('p-listbox').getByText('Italiano', { exact: true }).click();
+  await expect(missing).toHaveCount(0);
+  await expect(save, 'tutto compilato: si puo\' salvare').toBeEnabled();
+  expect(sent, 'nessuna scrittura finche non si preme Salva').toEqual([]);
+});

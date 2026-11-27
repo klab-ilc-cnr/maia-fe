@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -13,6 +13,7 @@ import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { MessageConfigurationService } from 'src/app/services/message-configuration.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
+import { ComponentCanDeactivate } from 'src/app/pending-changes-guard';
 import { matchNewPassword } from 'src/app/validators/match-new-password.directive';
 import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.directive';
 
@@ -23,7 +24,7 @@ import { nameDuplicateValidator } from 'src/app/validators/not-duplicate-name.di
   styleUrls: ['./user-form.component.scss'],
   standalone: false
 })
-export class UserFormComponent implements OnInit, OnDestroy {
+export class UserFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   /**Subject for subscribe management */
   private readonly unsubscribe$ = new Subject();
   /**User description form */
@@ -33,7 +34,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     confirmPassword: new FormControl<string>(''),
     name: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
-    email: new FormControl<string>('', Validators.required),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
     role: new FormControl<string>('', Validators.required),
     active: new FormControl<boolean>(false),
     languages: new FormControl<Language[]>([], Validators.required),
@@ -81,7 +82,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private editUser = false;
   /**Defines whether it is a user in creation */
   private newUser = false;
-  private currentUser = false; //TODO PROBABLY TO BE REMOVED @MPapini91
+  /**Number of active administrators (null while unknown): the last one cannot be deactivated or demoted */
+  private activeAdmins: number | null = null;
   /**Identificativo per l'inserimento di un nuovo utente */
   private newId = 'new';
   /**Lista dei ruoli utente */
@@ -124,9 +126,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
     ).subscribe(params => {
       const id = params.get('id'); //retrieve user id from navigation url
       this.isSameUser = id == this.currentMaiaUserId?.toString();
+      this.newUser = false; //the component is reused when the route changes (new -> existing user)
+      this.configurePasswordForm();
 
       if (id === this.newId) //case of a new user entry
       {
+        this.userForm.enable();
         this.userForm.get('newPassword')?.setValidators(Validators.required);
         this.userForm.get('confirmPassword')?.setValidators(Validators.required);
         this.userForm.setValidators(matchNewPassword);
@@ -139,11 +144,13 @@ export class UserFormComponent implements OnInit, OnDestroy {
       if ((id != null && id != undefined) && !this.isSameUser) { //case of indicating a user id (other than logged in) to be changed
         this.editUser = true;
         this.loadUser(id);
+        this.loadActiveAdmins();
         return;
       }
 
       this.editUser = false;
       this.loadCurrentUserProfile();
+      this.loadActiveAdmins();
     });
   }
 
@@ -170,7 +177,53 @@ export class UserFormComponent implements OnInit, OnDestroy {
    */
   public get isNewUser(): boolean { return this.newUser; }
 
-  public get isCurrentUser() { return this.currentUser; }//TODO PROBABLY TO BE REMOVED @MPapini91
+  /**
+   * The old password is asked only to who changes their own password, or is not an administrator:
+   * an administrator can set the password of another user without knowing the current one (the backend does not ask for it)
+   */
+  public get needsOldPassword(): boolean { return !this.canManageUsers || this.isSameUser; }
+
+  /** There are changes not saved yet in the user form */
+  public get hasPendingChanges(): boolean { return this.userForm.dirty; }
+
+  /** Names of the mandatory fields still to fill/fix: they are why the Save button is disabled */
+  public get blockedFields(): string[] {
+    const labels: { [control: string]: string } = {
+      username: 'USERS_MANAGER.username', newPassword: 'USERS_MANAGER.password', confirmPassword: 'USERS_MANAGER.confirmPassword',
+      name: 'USERS_MANAGER.name', surname: 'USERS_MANAGER.surname', email: 'USERS_MANAGER.email', role: 'USERS_MANAGER.role',
+      languages: 'USERS_MANAGER.languages',
+    };
+    return Object.entries(this.userForm.controls)
+      .filter(([, control]) => control.enabled && control.invalid)
+      .map(([name]) => this.commonService.translateKey(labels[name]));
+  }
+
+  /** The logged-in user can save this form: valid, and (for an existing user) with something changed */
+  public get canSave(): boolean {
+    const allowed = this.canManageUsers || this.user.id == this.currentMaiaUserId;
+    return allowed && this.userForm.valid && (this.isNewUser || this.userForm.dirty);
+  }
+
+  /** Why the "active" switch cannot be changed (i18n key), or null if it can */
+  public get activeLockReason(): string | null {
+    if (!this.canManageUsers) { return null; }
+    if (this.isSameUser) { return 'USERS_MANAGER.cannotDeactivateSelf'; }
+    return this.isLastActiveAdmin ? 'USERS_MANAGER.lastAdmin' : null;
+  }
+
+  /** The user being edited is the only active administrator */
+  private get isLastActiveAdmin(): boolean {
+    return !this.isNewUser && this.user.role === 'ADMINISTRATOR' && !!this.user.active && this.activeAdmins === 1;
+  }
+
+  /** Guard: asks for confirmation before leaving the page with unsaved changes (see PendingChangesGuard) */
+  canDeactivate(): boolean { return !this.userForm.dirty; }
+
+  /** Browser warning when the tab is closed/reloaded with unsaved changes */
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.userForm.dirty) { event.preventDefault(); }
+  }
 
   /**Method that proceeds to create the new user or save the changes of the selected user */
   onSubmitUser() {
@@ -201,11 +254,17 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this.userService.updatePassword({ id: userId, newPassword: this.userPwd.value! }).pipe(
           takeUntil(this.unsubscribe$),
           catchError((error: HttpErrorResponse) => {
-            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error.message));
+            // the user exists but has no password: leave the loader and open the user to set it
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(error.error?.message ?? error.message));
+            this.messageService.add(this.msgConfService.generateWarningMessageConfig(this.commonService.translateKey('USERS_MANAGER.createdNoPassword')));
+            this.loaderService.hide();
+            this.userForm.markAsPristine();
+            this.router.navigate(['usersManagement', 'userDetails', userId]);
             return throwError(() => new Error(error.error));
           }),
         ).subscribe(() => {
           this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMessage));
+          this.userForm.markAsPristine();
           this.goToUserList();
           this.loaderService.hide();
         });
@@ -220,6 +279,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         }),
       ).subscribe(() => {
         this.messageService.add(this.msgConfService.generateSuccessMessageConfig(successMessage));
+        this.userForm.markAsPristine(); //saved: leaving the page must not ask for confirmation
         this.goToUserList();
         this.loaderService.hide();
       });
@@ -232,7 +292,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     if (!this.isSameUser) {
       pwdBody.id = +this.user.id!;
     }
-    if (!this.canManageUsers || this.isSameUser) {
+    if (this.needsOldPassword) {
       pwdBody.currentPassword = this.oldPassword?.value;
     }
     this.userService.updatePassword(pwdBody).pipe(
@@ -243,6 +303,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(() => {
       this.messageService.add(this.msgConfService.generateSuccessMessageConfig(this.commonService.translateKey('USERS_MANAGER.pwdUpdated')));
+      this.passwordForm.reset();
     });
   }
 
@@ -305,6 +366,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   /**Private method that sets the initial value of the user form and evaluates whether it should be disabled in part or in full */
   private setFormInitialValue() {
+    this.userForm.enable(); //the form is reused between users: undo the locks of the previous one
+    this.configurePasswordForm();
     this.userForm.setValue({
       username: this.user.username ?? '',
       newPassword: '',
@@ -322,5 +385,45 @@ export class UserFormComponent implements OnInit, OnDestroy {
     if (!this.canManageUsers && this.user.id != this.currentMaiaUserId) {
       this.userForm.disable();
     }
+    this.userForm.markAsPristine();
+    this.userForm.markAsUntouched();
+    this.applyLocks();
+    if (this.userForm.invalid) { this.userForm.markAllAsTouched(); } //show what is missing (e.g. a user without languages)
+  }
+
+  /**Locks role and "active" where changing them would be a mistake (own user, last administrator, non administrators) */
+  private applyLocks() {
+    if (this.isNewUser || !this.user.id) { return; }
+    if (!this.canManageUsers && this.user.id != this.currentMaiaUserId) { return; } //the whole form is already disabled
+    if (!this.canManageUsers) {
+      //a non-administrator cannot change their own role or activation
+      this.userForm.controls.role.disable();
+      this.userForm.controls.active.disable();
+      return;
+    }
+    if (this.isSameUser || this.isLastActiveAdmin) { this.userForm.controls.active.disable(); }
+    if (this.isLastActiveAdmin) { this.userForm.controls.role.disable(); }
+  }
+
+  /**Asks the list of users to know how many active administrators there are (the last one must not be deactivated/demoted) */
+  private loadActiveAdmins() {
+    this.activeAdmins = null;
+    this.userService.findAll().pipe(
+      take(1),
+      takeUntil(this.unsubscribe$),
+    ).subscribe({
+      next: users => {
+        this.activeAdmins = users.filter(u => u.active && u.role === 'ADMINISTRATOR').length;
+        this.applyLocks();
+      },
+      error: (error) => this.commonService.warnBackendErrorOnce('usersList', error),
+    });
+  }
+
+  /**The old password is mandatory only when it is asked (see needsOldPassword) */
+  private configurePasswordForm() {
+    const oldPwd = this.passwordForm.controls.oldPassword;
+    if (this.needsOldPassword) { oldPwd.setValidators(Validators.required); } else { oldPwd.clearValidators(); }
+    oldPwd.updateValueAndValidity();
   }
 }
