@@ -266,7 +266,8 @@
         <ng-template pTemplate="emptymessage">
             <tr>
                 <td colspan="7">{{'SEARCH.noResult'|translate}}
-                  <span *ngIf="showWildcardHint" id="searchWildcardHint" class="ms-2 text-secondary"><i class="pi pi-info-circle"></i> {{'SEARCH.noResultWildcardHint'|translate}}</span>
+                  <span *ngIf="showWildcardHint" id="searchWildcardHint" class="ms-2 text-secondary"><i class="pi pi-info-circle"></i> {{'SEARCH.noResultWildcardHint'|translate}}
+                    <button type="button" id="searchWildcardGuide" class="btn btn-link p-0 align-baseline" (click)="wildcardHelp.toggle($event)">{{'SEARCH.noResultWildcardGuide'|translate}}</button>.</span>
                 </td>
             </tr>
         </ng-template>

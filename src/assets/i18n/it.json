@@ -432,7 +432,8 @@
         "contextLength": "lunghezza contesto",
         "validSearchValue": "inserisci un valore",
         "onlyWildcards": "inserisci almeno una lettera (non solo * o ?)",
-        "noResultWildcardHint": "Per trovare anche forme che iniziano o finiscono in modo diverso usa i caratteri jolly, per esempio lampegg* (vedi l'aiuto accanto al campo).",
+        "noResultWildcardHint": "Per trovare forme o lemmi prova ad usare i caratteri jolly. Vedi la",
+        "noResultWildcardGuide": "GUIDA",
         "WILDCARD_HELP": {
             "title": "Caratteri jolly",
             "star": "sostituisce un qualsiasi gruppo di caratteri, anche nessuno",

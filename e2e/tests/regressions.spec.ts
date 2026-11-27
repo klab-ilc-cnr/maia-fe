@@ -2827,8 +2827,17 @@ test('regressione: Search - senza risultati e senza jolly si suggerisce di usarl
   await search('zzzqxw');            // nessuna forma, nessun jolly
   await expect(tile.locator('tbody')).toContainText('Nessun risultato');
   await expect(hint, 'zero risultati senza jolly: suggerimento').toBeVisible();
-  expect(await hint.innerText()).toContain('lampegg*');
+  expect(await hint.innerText()).toContain('prova ad usare i caratteri jolly');
   await snap(page, 'search-suggerimento-jolly');
+  // «GUIDA» e' un link che apre lo stesso popover del «?»
+  const guide = tile.locator('#searchWildcardGuide');
+  await expect(guide).toHaveText('GUIDA');
+  await guide.click();
+  await expect(page.locator('#searchWildcardHelpContent'), 'la GUIDA apre l\'aiuto sui jolly').toBeVisible();
+  await expect(page.locator('#searchWildcardHelpContent')).toContainText('Caratteri jolly');
+  await snap(page, 'search-guida-jolly');
+  await page.keyboard.press('Escape');
+  await page.mouse.click(5, 500);
   await search('zzzqxw*');           // con jolly e senza risultati: niente suggerimento
   await expect(tile.locator('tbody')).toContainText('Nessun risultato');
   await expect(hint, 'con i jolly il suggerimento non serve').toHaveCount(0);

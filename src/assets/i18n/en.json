@@ -429,7 +429,8 @@
         "contextLength": "context length",
         "validSearchValue": "insert a value",
         "onlyWildcards": "insert at least one letter (not only * or ?)",
-        "noResultWildcardHint": "To also find forms that start or end differently use wildcards, for example lampegg* (see the help next to the field).",
+        "noResultWildcardHint": "To find forms or lemmas try using wildcards. See the",
+        "noResultWildcardGuide": "GUIDE",
         "WILDCARD_HELP": {
             "title": "Wildcards",
             "star": "stands for any group of characters, even none",
