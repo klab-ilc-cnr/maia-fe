@@ -33,6 +33,17 @@ cp src/proxy_stub.conf.json src/proxy.conf.json
 
 `src/proxy.conf.json` is intentionally gitignored (machine-specific), so it will not appear in commits; the versioned default is the empty stub `src/proxy_stub.conf.json`.
 
+#### Dev server against a `maia-be` on localhost (e.g. an SSH tunnel)
+
+To run a second dev server (port 4202, kept apart from the default one on 4200) against a `maia-be` reachable on `127.0.0.1:19400` (for example through an SSH tunnel to the development machine), copy the stub once and start it:
+
+```
+cp src/proxy_local_stub.conf.json src/proxy.local.conf.json
+npm run start:local
+```
+
+The stub proxies `/api`, `/lexo` and `/texto` to `http://127.0.0.1:19400`, rewriting them to `/maia/api`, `/maia/lexo` and `/maia/texto`. If your `maia-be` listens elsewhere, edit your copy: `src/proxy.local.conf.json` is gitignored, only the stub is versioned.
+
 ## Reporting issues and bugs
 To report any bugs or propose new features, you can open a new issue in the [dedicated section](https://github.com/klab-ilc-cnr/Maia/issues) of the main Maia repository.
 

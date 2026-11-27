@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:local": "ng serve --port 4202 --proxy-config src/proxy.local.conf.json",
     "build": "ng build",
     "build-prod": "ng build --configuration production --base-href='./'",
     "watch": "ng build --watch --configuration development",

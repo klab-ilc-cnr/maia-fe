@@ -1,0 +1,20 @@
+{
+  "/api": {
+    "target": "http://127.0.0.1:19400",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/api": "/maia/api" }
+  },
+  "/lexo": {
+    "target": "http://127.0.0.1:19400",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/lexo": "/maia/lexo" }
+  },
+  "/texto": {
+    "target": "http://127.0.0.1:19400",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/texto": "/maia/texto" }
+  }
+}

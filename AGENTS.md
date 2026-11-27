@@ -39,6 +39,7 @@ Reference doc for AI agents working on this repository. Keep it updated when the
 
 - `angular.json` (`serve.options.proxyConfig`) points to **`src/proxy.conf.json`** — a **gitignored, machine-specific** file. On a fresh clone run once: `cp src/proxy_stub.conf.json src/proxy.conf.json`, then fill it with your backend target (`{}` = no proxy).
 - Versioned default in the repo: `src/proxy_stub.conf.json` (empty stub).
+- **Local `maia-be` (e.g. SSH tunnel to the dev machine)**: `npm run start:local` = `ng serve --port 4202 --proxy-config src/proxy.local.conf.json`, target `http://127.0.0.1:19400` rewriting to `/maia/{api,lexo,texto}` (one `/maia`, unlike the VM's `/maia/maia`). Versioned stub: `src/proxy_local_stub.conf.json` (copy to the gitignored `src/proxy.local.conf.json`; a copy is also in `~/.config/maia/`). Port 4202 on purpose: the e2e helpers (`backendBase`) only treat `42xx` as a local `ng serve`. TexO/LexO behind that backend may answer 401 to a locally issued token, which maia-be returns as 500 (known limit).
 - Local instance used in this project targets **`https://klabsrv:19443`** = test VM (Alpine, `10.10.0.19`, in the NAT subnet `10.10.0.0/24` of the KVM host `klabsrv`, port-forwarded). Apache there exposes the backend under **`/maia/maia/…`**, so `pathRewrite`:
   - `/api` → `/maia/maia/api`
   - `/lexo` → `/maia/maia/lexo` (LexO, still used by ontology/lexicon/dictionary services)

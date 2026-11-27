@@ -50,3 +50,4 @@ Thumbs.db
 /src/environments/environment.ts
 # Proxy locale (istanzia da src/proxy_stub.conf.json)
 /src/proxy.conf.json
+/src/proxy.local.conf.json
