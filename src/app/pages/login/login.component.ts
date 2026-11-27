@@ -67,6 +67,8 @@ export class LoginComponent {
       catchError((error: HttpErrorResponse) => this.commonService.throwHttpErrorAndMessage(error, this.commonService.translateKey('LOGIN.errorRetrievingUser'))),
     ).subscribe(user => {
       this.storageService.setCurrentUser(user);
+      // the warning needs a logged-in user (token AND user): at setExpiration the user was not stored yet, so it was never armed
+      this.storageService.scheduleExpirationWarning();
       this.router.navigate(['']);
     })
   }

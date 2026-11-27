@@ -3030,3 +3030,85 @@ test('regressione: Utenti, nuovo utente - Salva resta spento finche mancano camp
   await expect(save, 'tutto compilato: si puo\' salvare').toBeEnabled();
   expect(sent, 'nessuna scrittura finche non si preme Salva').toEqual([]);
 });
+
+// ---- Esci: avviso di logout a maia-be (audit) ------------------------------------------------------------------------
+const LOGOUT_URL = /\/api\/authentication\/logout$/;
+const storedToken = (page: Page) => page.evaluate(() => {
+  const k = Object.keys(localStorage).find((x) => x.endsWith('_jwt-token'));
+  return k ? localStorage.getItem(k) : null;
+});
+const clickExit = (page: Page) => page.locator('a.layout-topbar-icon-button', { hasText: 'Logout' }).click();
+
+test('regressione: Esci - avvisa maia-be con il token, senza aspettare la risposta, e la richiesta non viene annullata dalla navigazione', async ({ page }) => {
+  test.setTimeout(120_000);
+  const seen: { auth: string | undefined; method: string; body: string | null; t: number }[] = [];
+  const renew: string[] = [];
+  let answeredAt = 0;
+  await page.route(LOGOUT_URL, async (route) => {
+    const r = route.request();
+    seen.push({ auth: r.headers()['authorization'], method: r.method(), body: r.postData(), t: Date.now() });
+    await new Promise((res) => setTimeout(res, 1500)); // il server risponde lentamente
+    answeredAt = Date.now();
+    await route.fulfill({ status: 204, body: '' });
+  });
+  page.on('request', (r) => { if (/authentication\/renew/.test(r.url())) renew.push(r.url()); });
+  await uiLogin(page);
+  const token = await storedToken(page);
+  expect(token, 'il token c\'e\' prima di uscire').toBeTruthy();
+  const t0 = Date.now();
+  await clickExit(page);
+  await expect(page).toHaveURL(/#\/login/, { timeout: 10_000 });
+  const leftAfter = Date.now() - t0;
+  expect(answeredAt, 'si e\' usciti prima che il server rispondesse').toBe(0);
+  expect(leftAfter, 'non ha aspettato la risposta (1,5 s)').toBeLessThan(1400);
+  expect(await storedToken(page), 'token rimosso').toBeNull();
+  // la richiesta e' partita, con il token di prima, senza body, ed e' arrivata a destinazione anche se la pagina e' cambiata
+  await expect.poll(() => seen.length, { timeout: 5000 }).toBe(1);
+  expect(seen[0].method).toBe('POST');
+  expect(seen[0].auth, 'con il Bearer corrente').toBe(`Bearer ${token}`);
+  expect(seen[0].body, 'senza body').toBeNull();
+  await expect.poll(() => answeredAt, { timeout: 5000 }).toBeGreaterThan(0);
+  await page.waitForTimeout(500);
+  expect(renew, 'nessun rinnovo').toEqual([]);
+  await expect(page.locator('.swal2-popup'), 'nessun avviso «Sessione scaduta»').toHaveCount(0);
+});
+
+test('regressione: Esci - se il logout verso maia-be fallisce (401) si esce lo stesso, senza rinnovo ne\' «Sessione scaduta»', async ({ page }) => {
+  test.setTimeout(120_000);
+  const renew: string[] = [];
+  let called = 0;
+  await page.route(LOGOUT_URL, (route) => { called++; return route.fulfill({ status: 401, contentType: 'application/json', body: '{"code":"TOKEN_INVALID"}' }); });
+  page.on('request', (r) => { if (/authentication\/renew/.test(r.url())) renew.push(r.url()); });
+  await uiLogin(page);
+  await clickExit(page);
+  await expect(page).toHaveURL(/#\/login/, { timeout: 10_000 });
+  expect(await storedToken(page)).toBeNull();
+  await expect.poll(() => called, { timeout: 5000 }).toBe(1);
+  await page.waitForTimeout(1500);
+  await expect(page.locator('.swal2-popup')).toHaveCount(0);
+  expect(renew).toEqual([]);
+});
+
+test('regressione: dopo un login (senza ricaricare) compare l\'avviso «sta per essere disconnesso» poco prima dei 90 minuti', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.clock.install();
+  await uiLogin(page);
+  await page.waitForTimeout(500);
+  await page.clock.runFor('01:25:00');
+  await page.waitForTimeout(500);
+  await expect(page.locator('.swal2-popup'), 'a 85 minuti ancora niente').toHaveCount(0);
+  await page.clock.runFor('00:05:00'); // 90 minuti: l'avviso parte 30 s prima
+  await expect(page.locator('.swal2-popup')).toContainText('about to be disconnected', { timeout: 10_000 });
+});
+
+test('regressione: Esci - il timer «sta per essere disconnesso» non resta attivo dopo il logout', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.clock.install();
+  await page.route(LOGOUT_URL, (route) => route.fulfill({ status: 204, body: '' }));
+  await uiLogin(page);
+  await clickExit(page);
+  await expect(page).toHaveURL(/#\/login/, { timeout: 10_000 });
+  await page.clock.runFor('01:35:00'); // oltre i 90 minuti della sessione
+  await page.waitForTimeout(500);
+  await expect(page.locator('.swal2-popup'), 'nessun avviso di disconnessione sulla pagina di login').toHaveCount(0);
+});

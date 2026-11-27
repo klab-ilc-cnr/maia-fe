@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoggedUserService } from 'src/app/services/logged-user.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
@@ -27,11 +28,17 @@ export class HeaderComponent {
     private router: Router,
     private loggedUserService: LoggedUserService,
     private storageService: StorageService,
+    private authService: AuthenticationService,
   ) {
   }
 
   /**Metodo che richiama il logout dell'utente */
   logout() {
+    // this button exists only in the main layout: an open workspace has no "Logout" (it saves its layout when it is left)
+    // 1. audit of the explicit logout in maia-be: not waited for, errors ignored. The token is read when the request
+    //    starts, so it must go out BEFORE the local logout removes it
+    this.authService.notifyLogout();
+    // 2. local logout
     this.storageService.cleanStorage();
     this.router.navigate(['/login']);
   }

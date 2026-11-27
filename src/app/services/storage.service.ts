@@ -154,6 +154,11 @@ export class StorageService {
 
   /**Clean local storage */
   public cleanStorage(): void {
+    // the "about to be disconnected" warning of a session that no longer exists must not appear (not even on the login page)
+    if (this.warningTimer) {
+      clearTimeout(this.warningTimer);
+      this.warningTimer = undefined;
+    }
     for (const key in localStorage) {
       if (key.indexOf(`${this.tokenPrefix}_`) >= 0) {
         localStorage.removeItem(key);
