@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: da decidere)
+## 0.30.2 (pacchetto per la VM di test) — `dist/maia-fe-0.30.2-test-ng21-20261127-1650.tgz`
 
 - Esci: prima di togliere il token il frontend avvisa maia-be con `POST /api/authentication/logout` (Bearer corrente, senza body; solo audit, non revoca il token). Non aspetta la risposta (timeout 3 s), ignora ogni errore e non può avviare rinnovi né «Sessione scaduta»; parte solo dal click su «Esci», non alla scadenza. Richiede maia-be con l'endpoint (non ancora sulle istanze: fino ad allora la chiamata fallisce in silenzio)
 - Sessione: dopo un login (senza ricaricare la pagina) l'avviso «sta per essere disconnesso» non partiva mai (il timer si armava prima che l'utente fosse salvato; difetto introdotto con la gestione della scadenza), e dopo il logout il timer restava attivo: ora si arma dopo il login e si ferma all'uscita
@@ -21,7 +21,6 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 - Utenti, elenco: stato tradotto con un badge «Attivo»/«Non attivo», ordinamento per stato funzionante (prima ordinava un campo inesistente), icone di ordinamento anche sul nome utente, campo di ricerca, 10 righe per pagina; non si elimina il proprio utente né l'ultimo amministratore attivo (icona disabilitata con spiegazione)
 - Search: aiuto sui caratteri jolly della ricerca nel testo: icona «?» sul bordo destro del campo di ricerca che, con un clic, apre un popover con `*` (qualsiasi gruppo di caratteri, anche nessuno) e `?` (un solo carattere), esempi verificati sul Decameron (`sconsolat*`, `amor?`, `*mente`), la forma esatta senza jolly e la nota su maiuscole/accenti (italiano e inglese). Dentro il campo e non accanto: fuori toglieva spazio e alla larghezza minima della finestra il campo scendeva a 88 px
 - Search: un testo fatto solo di `*` e/o `?` (nessun carattere vero) non viene più inviato: errore «inserisci almeno una lettera». Cercare solo `*` (`token like '%'`) manda in tilt TexO (memoria esaurita fino al riavvio)
-- Search: se una ricerca senza `*` né `?` non trova nulla, sotto «Nessun risultato» compare il suggerimento di usare i caratteri jolly (es. `lampegg*`)
 
 ## 0.30.1 (pacchetto per la VM di test) — `dist/maia-fe-0.30.1-test-ng21-20261125-1028.tgz`
 
