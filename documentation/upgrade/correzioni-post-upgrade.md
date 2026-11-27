@@ -11,7 +11,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ## Non ancora in un pacchetto (prossimo: da decidere)
 
-- Search, zero risultati: il suggerimento ora dice «Per trovare forme o lemmi prova ad usare i caratteri jolly. Vedi la GUIDA»; «GUIDA» è un link che apre lo stesso riquadro del «?» accanto al campo
+- Search: il suggerimento «Per trovare forme o lemmi prova ad usare i caratteri jolly. Vedi la GUIDA» è sempre visibile (prima di cercare, senza risultati e con risultati), in una riga sotto il modulo; «GUIDA» è un link che apre lo stesso riquadro del «?» accanto al campo
 - Utenti, dettaglio: «Salva» acceso solo se il form è valido e c'è qualcosa di modificato; accanto compare «Modifiche non salvate» oppure l'elenco dei campi obbligatori da completare (prima un utente senza lingue, come `admin`, aveva il pulsante grigio senza spiegazioni); gli errori dei campi obbligatori si vedono subito all'apertura; uscendo con modifiche non salvate si chiede conferma (come nel workspace)
 - Utenti, dettaglio: il proprio utente non si può disattivare; l'ultimo amministratore attivo non si può disattivare né cambiargli il ruolo; un non amministratore non cambia ruolo e attivazione del proprio utente; il ruolo non si può più svuotare; controllo di formato dell'email; tolto lo stile «disabilitato» dal campo email (era modificabile)
 - Utenti, password: un amministratore imposta la password di un altro utente senza la vecchia (prima il campo era obbligatorio anche se non veniva inviato); la vecchia password resta per chi cambia la propria; a salvataggio riuscito i campi si svuotano; tolto il blocco commentato

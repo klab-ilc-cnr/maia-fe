@@ -74,6 +74,11 @@
         <button disabled pButton type="button" class="p-button-help mx-2">{{'SEARCH.buttons.saveAs'|translate}}</button>
       </div>
     </div>
+    <!-- suggerimento sempre visibile (anche prima di cercare e con risultati): la GUIDA apre lo stesso riquadro del «?» -->
+    <div id="searchWildcardHint" class="wildcard-hint text-secondary">
+      <i class="pi pi-info-circle"></i> {{'SEARCH.noResultWildcardHint'|translate}}
+      <button type="button" id="searchWildcardGuide" class="btn btn-link p-0 align-baseline" (click)="wildcardHelp.toggle($event)">{{'SEARCH.noResultWildcardGuide'|translate}}</button>.
+    </div>
     <p-divider></p-divider>
     <div class="row">
         <div class="col d-flex justify-content-start">
@@ -265,10 +270,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="7">{{'SEARCH.noResult'|translate}}
-                  <span *ngIf="showWildcardHint" id="searchWildcardHint" class="ms-2 text-secondary"><i class="pi pi-info-circle"></i> {{'SEARCH.noResultWildcardHint'|translate}}
-                    <button type="button" id="searchWildcardGuide" class="btn btn-link p-0 align-baseline" (click)="wildcardHelp.toggle($event)">{{'SEARCH.noResultWildcardGuide'|translate}}</button>.</span>
-                </td>
+                <td colspan="7">{{'SEARCH.noResult'|translate}}</td>
             </tr>
         </ng-template>
       </p-table>

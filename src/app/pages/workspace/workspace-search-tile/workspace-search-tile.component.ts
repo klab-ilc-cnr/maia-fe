@@ -1,5 +1,5 @@
 import { normalizeApostrophes } from '../../../helpers/apostrophes';
-import { hasLiteralChars, hasWildcard } from '../../../helpers/search-wildcards';
+import { hasLiteralChars } from '../../../helpers/search-wildcards';
 import { AfterViewChecked, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FilterMetadata, MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -100,7 +100,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   selectedSearchResults: Array<SearchResultRow> = [];
   loading: boolean = false;
   tableContainerHeight!: number;
-  tableHeaderHegith: number = 270;
+  tableHeaderHegith: number = 294; // 270 + 24 della riga del suggerimento sui jolly
   totalRecords: number = 0;
   visibleRows: number = 10;
   tableCleared = false;
@@ -134,7 +134,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   /** Chiave di traduzione dell'errore del campo di ricerca (vuoto, oppure solo caratteri jolly) */
   searchValueErrorKey = 'SEARCH.validSearchValue';
   /** Valore dell'ultima ricerca inviata (per il suggerimento dei jolly quando non trova nulla); vuoto se non c'e' */
-  lastSearchedValue = '';
   @ViewChild('dt') searchResultsTable!: Table;
 
   private filtersSubject: Subject<any> = new Subject();
@@ -342,18 +341,12 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.searchValueMissing = !typed || onlyWildcards;
     this.searchValueErrorKey = onlyWildcards ? 'SEARCH.onlyWildcards' : 'SEARCH.validSearchValue';
     if (onlyWildcards) { this.searchRequest.filters.searchValue = ''; }
-    this.lastSearchedValue = this.searchValueMissing ? '' : typed;
     if (this.searchValueMissing) { this.searchField?.nativeElement.focus(); }
     this.clearTable();
     this.resetColumnFilters();
     this.setColumnFilters();
 
     this.search();
-  }
-
-  /** Dopo una ricerca senza risultati e senza jolly: suggerisce di usare `*` / `?` (aiuto accanto al campo). */
-  get showWildcardHint(): boolean {
-    return !this.loading && !!this.lastSearchedValue && !hasWildcard(this.lastSearchedValue);
   }
 
   /**
@@ -379,7 +372,6 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
     this.selectSingleDocument(this.corpusNodes);
     this.searchValue = '';
     this.searchValueMissing = false;
-    this.lastSearchedValue = '';
     this.selectedSearchMode = this.searchModes[0];
     this.contextLength = this.contextLenghtDefaultValue;
     this.selectedLayer = undefined;
