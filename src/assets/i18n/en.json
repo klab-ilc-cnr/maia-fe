@@ -429,8 +429,7 @@
         "contextLength": "context length",
         "validSearchValue": "insert a value",
         "onlyWildcards": "insert at least one letter (not only * or ?)",
-        "noResultWildcardHint": "To find forms or lemmas try using wildcards. See the",
-        "noResultWildcardGuide": "GUIDE",
+        "searchGuide": "Search guide",
         "WILDCARD_HELP": {
             "title": "Wildcards",
             "star": "stands for any group of characters, even none",

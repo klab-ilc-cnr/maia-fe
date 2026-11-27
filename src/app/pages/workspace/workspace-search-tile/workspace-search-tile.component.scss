@@ -239,16 +239,3 @@ small {
     color: inherit;
   }
 }
-
-
-/* suggerimento sui caratteri jolly: una riga di altezza fissa (la tabella sotto la tiene in conto in tableHeaderHegith) */
-.wildcard-hint {
-  height: 24px;
-  line-height: 24px;
-  margin: 0;
-  padding: 0;
-  font-size: 0.875rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}

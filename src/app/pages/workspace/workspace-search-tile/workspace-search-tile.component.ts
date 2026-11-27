@@ -100,7 +100,7 @@ export class WorkspaceSearchTileComponent implements OnInit, AfterViewChecked {
   selectedSearchResults: Array<SearchResultRow> = [];
   loading: boolean = false;
   tableContainerHeight!: number;
-  tableHeaderHegith: number = 294; // 270 + 24 della riga del suggerimento sui jolly
+  tableHeaderHegith: number = 270;
   totalRecords: number = 0;
   visibleRows: number = 10;
   tableCleared = false;

@@ -2813,7 +2813,7 @@ test('regressione: Search - aiuto sui caratteri jolly (popover a destra del camp
   await expect(tile.locator('.search-error-icon')).toHaveCount(0);
 });
 
-test('regressione: Search - il suggerimento sui jolly con la GUIDA e\' sempre visibile (prima di cercare, senza risultati, con risultati)', async ({ page, baseURL }) => {
+test('regressione: Search - il link «Guida per la ricerca» (a destra della Restrizione) apre l\'aiuto sui jolly', async ({ page, baseURL }) => {
   test.setTimeout(180_000);
   await openSmokeWorkspace(page, baseURL!);
   await closePanels(page, ['searchTile']);
@@ -2821,36 +2821,15 @@ test('regressione: Search - il suggerimento sui jolly con la GUIDA e\' sempre vi
   const tile = page.locator('#searchTile');
   await expect(tile).toBeVisible();
   await page.waitForTimeout(1500);
-  const input = tile.locator('p-iconfield input[pinputtext]').first();
-  const search = async (v: string) => { await input.fill(v); await input.press('Enter'); await page.waitForTimeout(2500); };
-  const hint = tile.locator('#searchWildcardHint');
-  // prima di cercare
-  await expect(hint, 'prima di cercare').toBeVisible();
-  expect(await hint.innerText()).toContain('Per trovare forme o lemmi prova ad usare i caratteri jolly');
-  await snap(page, 'search-suggerimento-jolly-iniziale');
-  // la tabella non esce dal riquadro per via della riga in piu'
-  const tileBox = await tile.boundingBox();
-  const tableBox = await tile.locator('p-table').boundingBox();
-  expect(tableBox!.y + tableBox!.height, 'la tabella resta dentro la finestra').toBeLessThanOrEqual(tileBox!.y + tileBox!.height + 1);
-  await search('zzzqxw');
-  await expect(tile.locator('tbody')).toContainText('Nessun risultato');
-  await expect(hint, 'senza risultati').toBeVisible();
-  await snap(page, 'search-suggerimento-jolly');
-  // «GUIDA» e' un link che apre lo stesso popover del «?»
   const guide = tile.locator('#searchWildcardGuide');
-  await expect(guide).toHaveText('GUIDA');
+  await expect(guide, 'visibile subito, prima di cercare').toHaveText('Guida per la ricerca');
+  const g = (await guide.boundingBox())!;
+  const r = (await tile.locator('p-select[name="restriction"]').boundingBox())!;
+  expect(g.x, 'a destra della Restrizione').toBeGreaterThanOrEqual(r.x + r.width);
+  expect(Math.abs((g.y + g.height / 2) - (r.y + r.height / 2)), 'sulla stessa riga').toBeLessThan(6);
   await guide.click();
-  await expect(page.locator('#searchWildcardHelpContent'), 'la GUIDA apre l\'aiuto sui jolly').toBeVisible();
   await expect(page.locator('#searchWildcardHelpContent')).toContainText('Caratteri jolly');
-  await snap(page, 'search-guida-jolly');
-  await page.keyboard.press('Escape');
-  await page.mouse.click(5, 500);
-  await search('zzzqxw*');
-  await expect(hint, 'anche usando i jolly').toBeVisible();
-  await search('lampegg*');          // con risultati
-  await expect(tile.locator('tbody tr').first()).toContainText('lampeggiar');
-  await expect(hint, 'con risultati').toBeVisible();
-  await snap(page, 'search-suggerimento-jolly-risultati');
+  await snap(page, 'search-guida-ricerca');
 });
 
 /** Utenti: blocca ogni scrittura su /api/users (PUT/POST/DELETE, anche la password) e le annota. */

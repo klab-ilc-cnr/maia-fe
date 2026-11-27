@@ -66,18 +66,15 @@
             class="mx-5 dropdownDimensions" [disabled]="!selectedLayer"
             placeholder="{{'SEARCH.restriction.placeholder'|translate}}" [options]="restrictionOptions || []" [filter]="true" 
             [showClear]="true" (onChange)="onChangeRestrictionSelection($event)"  [required]="false">
-        </p-select>        
+        </p-select>
+        <!-- guida ai caratteri jolly: apre lo stesso riquadro del «?» nel campo di ricerca -->
+        <button type="button" id="searchWildcardGuide" class="btn btn-link p-0 align-self-center text-nowrap" (click)="wildcardHelp.toggle($event)">{{'SEARCH.searchGuide'|translate}}</button>
       </div>
       <div class="col d-flex justify-content-end">
         <button pButton type="button" (click)="onSearch()" class="mx-2 p-button-success">{{'SEARCH.buttons.search'|translate}}</button>
         <button pButton type="button" (click)="onClear()" class="p-button-secondary mx-2">{{'SEARCH.buttons.clear'|translate}}</button>
         <button disabled pButton type="button" class="p-button-help mx-2">{{'SEARCH.buttons.saveAs'|translate}}</button>
       </div>
-    </div>
-    <!-- suggerimento sempre visibile (anche prima di cercare e con risultati): la GUIDA apre lo stesso riquadro del «?» -->
-    <div id="searchWildcardHint" class="wildcard-hint text-secondary">
-      <i class="pi pi-info-circle"></i> {{'SEARCH.noResultWildcardHint'|translate}}
-      <button type="button" id="searchWildcardGuide" class="btn btn-link p-0 align-baseline" (click)="wildcardHelp.toggle($event)">{{'SEARCH.noResultWildcardGuide'|translate}}</button>.
     </div>
     <p-divider></p-divider>
     <div class="row">

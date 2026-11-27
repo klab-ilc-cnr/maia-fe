@@ -432,8 +432,7 @@
         "contextLength": "lunghezza contesto",
         "validSearchValue": "inserisci un valore",
         "onlyWildcards": "inserisci almeno una lettera (non solo * o ?)",
-        "noResultWildcardHint": "Per trovare forme o lemmi prova ad usare i caratteri jolly. Vedi la",
-        "noResultWildcardGuide": "GUIDA",
+        "searchGuide": "Guida per la ricerca",
         "WILDCARD_HELP": {
             "title": "Caratteri jolly",
             "star": "sostituisce un qualsiasi gruppo di caratteri, anche nessuno",
