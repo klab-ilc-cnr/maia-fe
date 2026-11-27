@@ -24,10 +24,15 @@
                   (keydown.enter)="onSearch()"
                   [placeholder]="this.searchLabel"
                   [(ngModel)]="searchValue" (ngModelChange)="searchValueMissing = false" />
+                <!-- aiuto sui caratteri jolly (* e ?) della ricerca nel testo: dentro il campo, sul bordo destro (fuori toglierebbe spazio al campo) -->
+                <button type="button" class="wildcard-help-btn" id="searchWildcardHelp"
+                  [attr.aria-label]="'SEARCH.WILDCARD_HELP.title'|translate" (click)="wildcardHelp.toggle($event)">
+                  <i class="pi pi-question-circle"></i>
+                </button>
                 <!-- errore senza spostare il layout: cornice e segnaposto rossi, icona (con tooltip) e avviso per gli screen reader -->
                 <i *ngIf="searchValueMissing" class="pi pi-exclamation-circle search-error-icon"
-                  [pTooltip]="'SEARCH.validSearchValue'|translate" tooltipPosition="top"></i>
-                <span *ngIf="searchValueMissing" class="visually-hidden" role="alert">{{'SEARCH.validSearchValue'|translate}}</span>
+                  [pTooltip]="searchValueErrorKey|translate" tooltipPosition="top"></i>
+                <span *ngIf="searchValueMissing" class="visually-hidden" role="alert">{{searchValueErrorKey|translate}}</span>
               </p-iconfield>
             </div>
           </div>
@@ -260,14 +265,29 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="7">{{'SEARCH.noResult'|translate}}</td>
+                <td colspan="7">{{'SEARCH.noResult'|translate}}
+                  <span *ngIf="showWildcardHint" id="searchWildcardHint" class="ms-2 text-secondary"><i class="pi pi-info-circle"></i> {{'SEARCH.noResultWildcardHint'|translate}}</span>
+                </td>
             </tr>
         </ng-template>
       </p-table>
     </div>
 </div>
 
-<app-multiple-text-annotation-editor #annotationEditor 
+<p-popover #wildcardHelp [dismissable]="true" styleClass="wildcard-help-popover">
+  <ng-template #content>
+    <div class="wildcard-help" id="searchWildcardHelpContent">
+      <h3>{{'SEARCH.WILDCARD_HELP.title'|translate}}</h3>
+      <p class="mb-2"><code>*</code> {{'SEARCH.WILDCARD_HELP.star'|translate}}<br><i>{{'SEARCH.WILDCARD_HELP.starExample'|translate}}</i></p>
+      <p class="mb-2"><code>?</code> {{'SEARCH.WILDCARD_HELP.question'|translate}}<br><i>{{'SEARCH.WILDCARD_HELP.questionExample'|translate}}</i></p>
+      <p class="mb-2">{{'SEARCH.WILDCARD_HELP.combine'|translate}}<br><i>{{'SEARCH.WILDCARD_HELP.combineExample'|translate}}</i></p>
+      <p class="mb-2">{{'SEARCH.WILDCARD_HELP.exact'|translate}}</p>
+      <p class="mb-0">{{'SEARCH.WILDCARD_HELP.caseAccents'|translate}}</p>
+    </div>
+  </ng-template>
+</p-popover>
+
+<app-multiple-text-annotation-editor #annotationEditor  
     [visible]="showMultipleAnnotationDialog"
     [deleteMode]="isDeleting" 
     [editMode]="isEditing"

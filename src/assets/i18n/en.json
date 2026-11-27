@@ -412,6 +412,19 @@
         "noResult": "No results found.",
         "contextLength": "context length",
         "validSearchValue": "insert a value",
+        "onlyWildcards": "insert at least one letter (not only * or ?)",
+        "noResultWildcardHint": "To also find forms that start or end differently use wildcards, for example lampegg* (see the help next to the field).",
+        "WILDCARD_HELP": {
+            "title": "Wildcards",
+            "star": "stands for any group of characters, even none",
+            "starExample": "sconsolat* finds sconsolata, sconsolato, sconsolate…",
+            "question": "stands for exactly one character",
+            "questionExample": "amor? finds amore, amori",
+            "combine": "They can be combined and placed anywhere in the word.",
+            "combineExample": "*mente finds massimamente, mente…",
+            "exact": "Without * or ? the exact form is searched: amor finds only «amor».",
+            "caseAccents": "Upper/lower case and accents do not matter (perche = perché)."
+        },
         "numberOfResults": "Number of results",
         "selected": "Selected",
         "annotateHint": {

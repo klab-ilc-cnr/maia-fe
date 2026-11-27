@@ -415,6 +415,19 @@
         "noResult": "Nessun risultato.",
         "contextLength": "lunghezza contesto",
         "validSearchValue": "inserisci un valore",
+        "onlyWildcards": "inserisci almeno una lettera (non solo * o ?)",
+        "noResultWildcardHint": "Per trovare anche forme che iniziano o finiscono in modo diverso usa i caratteri jolly, per esempio lampegg* (vedi l'aiuto accanto al campo).",
+        "WILDCARD_HELP": {
+            "title": "Caratteri jolly",
+            "star": "sostituisce un qualsiasi gruppo di caratteri, anche nessuno",
+            "starExample": "sconsolat* trova sconsolata, sconsolato, sconsolate…",
+            "question": "sostituisce un solo carattere",
+            "questionExample": "amor? trova amore, amori",
+            "combine": "Si possono combinare e mettere in qualsiasi punto della parola.",
+            "combineExample": "*mente trova massimamente, mente…",
+            "exact": "Senza * né ? si cerca la forma esatta: amor trova solo «amor».",
+            "caseAccents": "Maiuscole, minuscole e accenti non contano (perche = perché)."
+        },
         "numberOfResults": "Numero di risultati",
         "selected": "Selezionati",
         "annotateHint": {

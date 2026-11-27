@@ -9,6 +9,12 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: da decidere)
+
+- Search: aiuto sui caratteri jolly della ricerca nel testo: icona «?» sul bordo destro del campo di ricerca che, con un clic, apre un popover con `*` (qualsiasi gruppo di caratteri, anche nessuno) e `?` (un solo carattere), esempi verificati sul Decameron (`sconsolat*`, `amor?`, `*mente`), la forma esatta senza jolly e la nota su maiuscole/accenti (italiano e inglese). Dentro il campo e non accanto: fuori toglieva spazio e alla larghezza minima della finestra il campo scendeva a 88 px
+- Search: un testo fatto solo di `*` e/o `?` (nessun carattere vero) non viene più inviato: errore «inserisci almeno una lettera». Cercare solo `*` (`token like '%'`) manda in tilt TexO (memoria esaurita fino al riavvio)
+- Search: se una ricerca senza `*` né `?` non trova nulla, sotto «Nessun risultato» compare il suggerimento di usare i caratteri jolly (es. `lampegg*`)
+
 ## 0.30.1 (pacchetto per la VM di test) — `dist/maia-fe-0.30.1-test-ng21-20261125-1028.tgz`
 
 - Pulsanti tondi degli Explorer (Lexicon, Dictionary, Corpus, visibilità dei layer): erano ovali e con l'icona un po' in alto; ora sono cerchi veri (33 px, misure intere: a 1× l’icona è esattamente al centro) con l’icona centrata; tolto uno spostamento a mano dell'icona «Upload file» del Corpus. Residuo accettato: in Chrome il «+» può risultare ancora di circa mezzo pixel a destra (in Firefox è centrato): dipende da come i browser disegnano il carattere dell'icona, non dal layout

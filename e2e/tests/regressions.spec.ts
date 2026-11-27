@@ -2759,3 +2759,80 @@ test('regressione: pulsanti tondi degli Explorer (Lexicon, Dictionary, Corpus) -
     await closePanels(page, ['lexiconTile', 'dictionaryTile', 'corpusTile']);
   }
 });
+
+test('regressione: Search - aiuto sui caratteri jolly (popover a destra del campo) e blocco della ricerca di soli * / ?', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  const kwic: string[] = [];
+  await page.route(/\/texto\/util\/kwic$/, async (route) => { kwic.push((route.request().postDataJSON() as any)?.filters?.searchValue ?? ''); await route.continue(); });
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['searchTile']);
+  await page.locator('#workspace-menu').first().getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(1500);
+  const input = tile.locator('p-iconfield input[pinputtext]').first();
+  const help = tile.locator('#searchWildcardHelp');
+
+  // 1) il pulsante c'e', sta sul bordo destro del campo (dentro: fuori toglierebbe spazio al campo), centrato in altezza
+  await expect(help).toBeVisible();
+  const [bi, bh] = await Promise.all([input.boundingBox(), help.boundingBox()]);
+  expect(bh!.x, 'il pulsante sta nella parte destra del campo').toBeGreaterThan(bi!.x + bi!.width * 0.7);
+  expect(bh!.x + bh!.width, 'e non esce dal campo').toBeLessThanOrEqual(bi!.x + bi!.width);
+  expect(Math.abs((bh!.y + bh!.height / 2) - (bi!.y + bi!.height / 2)), 'centrato in altezza').toBeLessThanOrEqual(1.5);
+
+  // 2) il clic apre l'aiuto con i due jolly e gli esempi; un clic fuori lo chiude
+  await help.click();
+  const content = page.locator('#searchWildcardHelpContent');
+  await expect(content).toBeVisible();
+  const text = (await content.innerText()).replace(/\s+/g, ' ');
+  expect(text).toContain('Caratteri jolly');
+  expect(text).toMatch(/\*.*qualsiasi gruppo di caratteri/);
+  expect(text).toMatch(/\?.*un solo carattere/);
+  expect(text).toContain('sconsolat*');
+  expect(text).toContain('amor?');
+  await page.waitForTimeout(600); // fine dell'animazione di apertura
+  await snap(page, 'search-aiuto-jolly');
+  await tile.locator('.card').first().click({ position: { x: 5, y: 5 } });
+  await expect(content).toBeHidden();
+
+  // 3) solo jolly: non parte nessuna richiesta, errore con il messaggio specifico
+  kwic.length = 0;
+  for (const v of ['*', '?', '*?', ' * ']) {
+    await input.fill(v);
+    await input.press('Enter');
+    await page.waitForTimeout(600);
+    await expect(tile.locator('.search-error-icon'), `"${v}": errore`).toBeVisible();
+    await expect(tile.locator('[role="alert"]'), `"${v}": messaggio`).toContainText('almeno una lettera');
+  }
+  expect(kwic, 'con soli * e ? non si interroga TexO').toEqual([]);
+  // con un carattere vero invece si cerca, e l'errore sparisce
+  await input.fill('lampegg*');
+  await input.press('Enter');
+  await expect.poll(() => kwic.length, { timeout: 30_000 }).toBeGreaterThan(0);
+  expect(kwic[kwic.length - 1]).toBe('lampegg*');
+  await expect(tile.locator('.search-error-icon')).toHaveCount(0);
+});
+
+test('regressione: Search - senza risultati e senza jolly si suggerisce di usarli (con i jolly o con risultati no)', async ({ page, baseURL }) => {
+  test.setTimeout(180_000);
+  await openSmokeWorkspace(page, baseURL!);
+  await closePanels(page, ['searchTile']);
+  await page.locator('#workspace-menu').first().getByText('Search', { exact: true }).click();
+  const tile = page.locator('#searchTile');
+  await expect(tile).toBeVisible();
+  await page.waitForTimeout(1500);
+  const input = tile.locator('p-iconfield input[pinputtext]').first();
+  const search = async (v: string) => { await input.fill(v); await input.press('Enter'); await page.waitForTimeout(2500); };
+  const hint = tile.locator('#searchWildcardHint');
+  await search('zzzqxw');            // nessuna forma, nessun jolly
+  await expect(tile.locator('tbody')).toContainText('Nessun risultato');
+  await expect(hint, 'zero risultati senza jolly: suggerimento').toBeVisible();
+  expect(await hint.innerText()).toContain('lampegg*');
+  await snap(page, 'search-suggerimento-jolly');
+  await search('zzzqxw*');           // con jolly e senza risultati: niente suggerimento
+  await expect(tile.locator('tbody')).toContainText('Nessun risultato');
+  await expect(hint, 'con i jolly il suggerimento non serve').toHaveCount(0);
+  await search('lampegg*');          // con risultati: niente suggerimento
+  await expect(tile.locator('tbody tr').first()).toContainText('lampeggiar');
+  await expect(hint).toHaveCount(0);
+});
