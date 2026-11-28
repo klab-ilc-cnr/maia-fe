@@ -1,0 +1,38 @@
+.activity-list {
+  display: grid;
+  grid-template-columns: minmax(16rem, max-content) 1fr;
+  gap: 0.75rem 2rem;
+  margin: 1rem 0 1.5rem;
+
+  dt {
+    font-weight: normal;
+    color: var(--text-color-secondary, #6c757d);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.activity-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.activity-unavailable {
+  margin: 1rem 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  background: #fff3cd;
+  color: #664d03;
+  font-weight: 600;
+
+  .text-secondary {
+    font-weight: normal;
+    color: inherit;
+  }
+}
+
+.activity-note {
+  max-width: 60rem;
+}

@@ -1,0 +1,44 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="page-header">
+        <h5>{{'ACTIVITY.title'|translate}}</h5>
+        <div class="d-flex align-items-center ms-start">
+          <span *ngIf="status" id="activityUpdatedAt" class="text-secondary me-3">{{'ACTIVITY.updatedAt'|translate}} {{formatInstant(status.observedAt)}}</span>
+          <p-button id="activityRefresh" [label]="'ACTIVITY.refresh'|translate" icon="pi pi-refresh" styleClass="p-button-danger"
+            [disabled]="loading" (click)="refresh()"></p-button>
+        </div>
+      </div>
+
+      <!-- stato non disponibile: nessun numero (mai zeri al posto di un dato che non si conosce) -->
+      <div *ngIf="unavailable" id="activityUnavailable" class="activity-unavailable" role="alert">
+        <i class="pi pi-exclamation-triangle"></i> {{'ACTIVITY.unavailable'|translate}}
+        <div class="text-secondary mt-1">{{'ACTIVITY.unavailableHint'|translate}}</div>
+      </div>
+
+      <div *ngIf="loading && !status && !unavailable" class="text-secondary">{{'ACTIVITY.loading'|translate}}</div>
+
+      <dl *ngIf="status" class="activity-list">
+        <dt>{{'ACTIVITY.activeUsers'|translate:{minutes: status.windowMinutes} }}</dt>
+        <dd>
+          <span id="activityActiveUsers" class="activity-value">{{status.activeUsers}}</span>
+          <small class="text-secondary d-block">{{'ACTIVITY.activeUsersHint'|translate}}</small>
+        </dd>
+
+        <dt>{{'ACTIVITY.inFlight'|translate}}</dt>
+        <dd><span id="activityInFlight" class="activity-value">{{status.inFlightRequests}}</span></dd>
+
+        <dt>{{'ACTIVITY.lastActivity'|translate}}</dt>
+        <dd>
+          <span id="activityLast" class="activity-value" *ngIf="status.lastAuthenticatedActivityAt !== null; else noActivity">{{formatInstant(status.lastAuthenticatedActivityAt)}}</span>
+          <ng-template #noActivity><span id="activityLast" class="activity-value">{{'ACTIVITY.noneObserved'|translate}}</span></ng-template>
+        </dd>
+
+        <dt>{{'ACTIVITY.observedSince'|translate}}</dt>
+        <dd><span id="activitySince" class="activity-value">{{formatInstant(status.observedSince)}}</span></dd>
+      </dl>
+
+      <p class="text-secondary activity-note mb-0">{{'ACTIVITY.note'|translate}}</p>
+    </div>
+  </div>
+</div>

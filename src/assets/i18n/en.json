@@ -264,6 +264,22 @@
         "updatedTagsetItem": "Tagset item updated",
         "updatingTagsetItemFailed": "Updating tagset item failed: ${errorMessage}"
     },
+    "ACTIVITY": {
+        "menu": "Recent activity",
+        "title": "Recent activity",
+        "refresh": "Refresh",
+        "loading": "Loading…",
+        "updatedAt": "Updated at",
+        "activeUsers": "Distinct users active in the last {{minutes}} minutes",
+        "activeUsersHint": "Includes you, if you used the application in this period.",
+        "inFlight": "Requests in progress",
+        "lastActivity": "Last authenticated activity",
+        "noneObserved": "No activity observed since the server started",
+        "observedSince": "The server has been observing since",
+        "unavailable": "Status not available",
+        "unavailableHint": "The server did not answer or the feature is not available yet. Try again with «Refresh».",
+        "note": "Data of this server instance: it starts again from zero at every restart. It is an indication, not a maintenance lock: a user can connect right afterwards, and a browser may hold changes not sent yet."
+    },
     "USERS_MANAGER": {
         "active": "Active",
         "inactive": "Inactive",

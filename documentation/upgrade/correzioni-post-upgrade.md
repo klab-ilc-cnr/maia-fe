@@ -9,6 +9,10 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
+## Non ancora in un pacchetto (prossimo: da decidere)
+
+- User management: nuova voce «Attività recente» (solo amministratori) che legge `GET /api/system/activity` e mostra gli utenti distinti attivi negli ultimi N minuti (non «utenti connessi»), le richieste in corso, l'ultima attività autenticata (o «Nessuna attività osservata dall'avvio del server») e da quando il server osserva i dati; orari nel fuso del browser; se l'endpoint non risponde o non c'è ancora, «Stato non disponibile» (mai zeri); pulsante «Aggiorna», nessun aggiornamento automatico; non cambia login né logout
+
 ## 0.30.2 (pacchetto per la VM di test) — `dist/maia-fe-0.30.2-test-ng21-20261127-1650.tgz`
 
 - Esci: prima di togliere il token il frontend avvisa maia-be con `POST /api/authentication/logout` (Bearer corrente, senza body; solo audit, non revoca il token). Non aspetta la risposta (timeout 3 s), ignora ogni errore e non può avviare rinnovi né «Sessione scaduta»; parte solo dal click su «Esci», non alla scadenza. Richiede maia-be con l'endpoint (non ancora sulle istanze: fino ad allora la chiamata fallisce in silenzio)

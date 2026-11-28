@@ -264,6 +264,22 @@
         "updatedTagsetItem": "Elemento del tagset aggiornato",
         "updatingTagsetItemFailed": "Aggiornamento dell'elemento del tagset fallito: ${errorMessage}"
     },
+    "ACTIVITY": {
+        "menu": "Attività recente",
+        "title": "Attività recente",
+        "refresh": "Aggiorna",
+        "loading": "Lettura in corso…",
+        "updatedAt": "Aggiornato alle",
+        "activeUsers": "Utenti distinti attivi negli ultimi {{minutes}} minuti",
+        "activeUsersHint": "Comprende anche te, se hai usato l'applicazione in questo periodo.",
+        "inFlight": "Richieste in corso",
+        "lastActivity": "Ultima attività autenticata",
+        "noneObserved": "Nessuna attività osservata dall'avvio del server",
+        "observedSince": "Il server osserva i dati dal",
+        "unavailable": "Stato non disponibile",
+        "unavailableHint": "Il server non ha risposto o la funzione non è ancora disponibile. Riprova con «Aggiorna».",
+        "note": "Dati di questa istanza del server: ripartono da zero a ogni riavvio. Sono un'indicazione, non un blocco di manutenzione: un utente può collegarsi subito dopo, e un browser può contenere modifiche non ancora inviate."
+    },
     "USERS_MANAGER": {
         "active": "Attivo",
         "inactive": "Non attivo",

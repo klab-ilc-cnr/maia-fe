@@ -3091,3 +3091,64 @@ test('regressione: Esci - il timer «sta per essere disconnesso» non resta atti
   await page.waitForTimeout(500);
   await expect(page.locator('.swal2-popup'), 'nessun avviso di disconnessione sulla pagina di login').toHaveCount(0);
 });
+
+// ---- Attivita' recente (GET /api/system/activity, solo amministratori) -----------------------------------------------
+test.describe('Attivita\' recente', () => {
+  test.use({ timezoneId: 'Europe/Rome' });
+
+  test('regressione: Attivita\' recente - voce di menu, valori con orari nel fuso dell\'utente, nessuna attivita\' osservata, stato non disponibile (mai zeri)', async ({ page }) => {
+    test.setTimeout(120_000);
+    const sent: string[] = [];
+    let answer: 'normale' | 'nessuna' | '500' | 'html' = 'normale';
+    await page.route(/\/api\/system\/activity$/, async (route) => {
+      const r = route.request();
+      sent.push(`${r.method()} ${r.headers()['authorization'] ? 'Bearer' : 'senza-token'}`);
+      if (answer === '500') { await route.fulfill({ status: 500, contentType: 'application/json', body: '{"status":500}' }); return; }
+      if (answer === 'html') { await route.fulfill({ status: 200, contentType: 'text/html', body: '<html>non e\' json</html>' }); return; }
+      await route.fulfill({
+        status: 200, contentType: 'application/json', headers: { 'Cache-Control': 'no-store' },
+        body: JSON.stringify({
+          observedSince: '2026-11-28T08:00:00.123456789Z', observedAt: '2026-11-28T12:30:00Z', windowMinutes: 10,
+          activeUsers: 3, inFlightRequests: 2,
+          lastAuthenticatedActivityAt: answer === 'nessuna' ? null : '2026-11-28T10:42:08.987654321Z',
+        }),
+      });
+    });
+    await uiLogin(page);
+    // dalla voce di menu «Attività recente» sotto User management
+    await page.goto('#/usersManagement/users');
+    await page.locator('app-side-menu a', { hasText: 'Attività recente' }).click();
+    await expect(page).toHaveURL(/#\/usersManagement\/activity/);
+    await expect(page.locator('#activityActiveUsers')).toHaveText('3', { timeout: 15_000 });
+    expect(sent[0], 'GET con il Bearer').toBe('GET Bearer');
+    const body = await page.locator('app-activity-status').innerText();
+    expect(body).toContain('Utenti distinti attivi negli ultimi 10 minuti');
+    expect(body, 'mai «utenti connessi»').not.toMatch(/connessi/i);
+    await expect(page.locator('#activityInFlight')).toHaveText('2');
+    // orari UTC mostrati nel fuso del browser (Europe/Rome = CET, UTC+1), frazioni oltre i millisecondi ignorate
+    await expect(page.locator('#activityLast')).toContainText('11:42:08');
+    await expect(page.locator('#activityLast')).toContainText('28/11/2026');
+    await expect(page.locator('#activitySince')).toContainText('09:00:00');
+    await expect(page.locator('#activityUpdatedAt')).toContainText('13:30:00');
+    await snap(page, 'attivita-recente');
+    // nessuna attivita' osservata dall'avvio
+    answer = 'nessuna';
+    await page.locator('#activityRefresh').click();
+    await expect(page.locator('#activityLast')).toHaveText(/Nessuna attività osservata dall'avvio del server/);
+    await expect(page.locator('#activitySince'), 'l\'inizio dell\'osservazione resta').toContainText('09:00:00');
+    // errore: «Stato non disponibile», nessun numero e nessuno zero
+    for (const a of ['500', 'html'] as const) {
+      answer = a;
+      await page.locator('#activityRefresh').click();
+      await expect(page.locator('#activityUnavailable')).toContainText('Stato non disponibile');
+      await expect(page.locator('#activityActiveUsers'), `${a}: nessun numero`).toHaveCount(0);
+      await expect(page.locator('#activityInFlight')).toHaveCount(0);
+    }
+    await snap(page, 'attivita-recente-non-disponibile');
+    // torna a rispondere
+    answer = 'normale';
+    await page.locator('#activityRefresh').click();
+    await expect(page.locator('#activityActiveUsers')).toHaveText('3');
+    await expect(page.locator('#activityUnavailable')).toHaveCount(0);
+  });
+});

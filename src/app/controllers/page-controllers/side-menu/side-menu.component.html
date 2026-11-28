@@ -47,19 +47,24 @@
           </li>
           <hr class="side-menu-hr">
           <li *ngIf="canManageUsers"
-            [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/userDetails'])}">
+            [ngClass]="{'active': isActive(['usersManagement/users','usersManagement/userDetails','usersManagement/activity'])}">
             <a routerLink="/usersManagement/users">
               <i class="layout-menuitem-icon pi pi-users"></i>
               <span>User management</span>
               <i class="pi pi-chevron-down pi-fw ms-auto"
-                *ngIf="isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
+                *ngIf="isActive(['usersManagement/users','usersManagement/userDetails','usersManagement/activity'])"></i>
               <i class="pi pi-chevron-right pi-fw ms-auto"
-                *ngIf="!isActive(['usersManagement/users','usersManagement/userDetails'])"></i>
+                *ngIf="!isActive(['usersManagement/users','usersManagement/userDetails','usersManagement/activity'])"></i>
             </a>
-            <ul [ngClass]="{'collapse':!(isActive(['usersManagement/users','usersManagement/userDetails']))}">
+            <ul [ngClass]="{'collapse':!(isActive(['usersManagement/users','usersManagement/userDetails','usersManagement/activity']))}">
               <li [ngClass]="{'active': isActive(['usersManagement/users'])}">
                 <a routerLink="/usersManagement/users">
                   <span>Master data</span>
+                </a>
+              </li>
+              <li [ngClass]="{'active': isActive(['usersManagement/activity'])}">
+                <a routerLink="/usersManagement/activity">
+                  <span>{{'ACTIVITY.menu'|translate}}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': isActive(['usersManagement/userDetails'])}" class="d-none">
