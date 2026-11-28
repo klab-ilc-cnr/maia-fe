@@ -91,6 +91,7 @@ export class ActivityStatusComponent implements OnInit, OnDestroy {
       && typeof status.windowMinutes === 'number'
       && typeof status.activeUsers === 'number'
       && typeof status.inFlightRequests === 'number'
+      && (status.otherActiveUsers === undefined || status.otherActiveUsers === null || typeof status.otherActiveUsers === 'number')
       && !!this.parseInstant(status.observedSince)
       && !!this.parseInstant(status.observedAt)
       && (status.lastAuthenticatedActivityAt === null || !!this.parseInstant(status.lastAuthenticatedActivityAt));

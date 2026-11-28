@@ -272,6 +272,7 @@
         "updatedAt": "Aggiornato alle",
         "activeUsers": "Utenti distinti attivi negli ultimi {{minutes}} minuti",
         "activeUsersHint": "Comprende anche te, se hai usato l'applicazione in questo periodo.",
+        "otherActiveUsers": "Altri utenti attivi (oltre a te)",
         "inFlight": "Richieste in corso",
         "lastActivity": "Ultima attività autenticata",
         "noneObserved": "Nessuna attività osservata dall'avvio del server",

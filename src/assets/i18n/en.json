@@ -272,6 +272,7 @@
         "updatedAt": "Updated at",
         "activeUsers": "Distinct users active in the last {{minutes}} minutes",
         "activeUsersHint": "Includes you, if you used the application in this period.",
+        "otherActiveUsers": "Other active users (besides you)",
         "inFlight": "Requests in progress",
         "lastActivity": "Last authenticated activity",
         "noneObserved": "No activity observed since the server started",

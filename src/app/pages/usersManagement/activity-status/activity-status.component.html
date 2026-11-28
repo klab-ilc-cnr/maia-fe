@@ -25,6 +25,12 @@
           <small class="text-secondary d-block">{{'ACTIVITY.activeUsersHint'|translate}}</small>
         </dd>
 
+        <!-- facoltativo (i server piu' vecchi non lo mandano): se manca si vede solo il totale; 0 e' un valore vero -->
+        <ng-container *ngIf="status.otherActiveUsers !== undefined && status.otherActiveUsers !== null">
+          <dt>{{'ACTIVITY.otherActiveUsers'|translate}}</dt>
+          <dd><span id="activityOtherUsers" class="activity-value">{{status.otherActiveUsers}}</span></dd>
+        </ng-container>
+
         <dt>{{'ACTIVITY.inFlight'|translate}}</dt>
         <dd><span id="activityInFlight" class="activity-value">{{status.inFlightRequests}}</span></dd>
 
