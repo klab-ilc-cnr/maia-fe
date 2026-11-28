@@ -44,6 +44,21 @@
         <dd><span id="activitySince" class="activity-value">{{formatInstant(status.observedSince)}}</span></dd>
       </dl>
 
+      <!-- elenco facoltativo: assente o non valido = non si mostra; vuoto = nessun altro utente -->
+      <section *ngIf="status && otherUsers" class="activity-users" id="activityUsers">
+        <h6>{{'ACTIVITY.otherUsersTitle'|translate}}</h6>
+        <div *ngIf="otherUsers.length === 0; else usersTable" id="activityUsersEmpty" class="text-secondary">{{'ACTIVITY.noOtherUsers'|translate}}</div>
+        <ng-template #usersTable>
+          <table class="table table-sm activity-users-table" id="activityUsersList">
+            <thead><tr><th>{{'ACTIVITY.username'|translate}}</th><th>{{'ACTIVITY.lastUserActivity'|translate}}</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let u of otherUsers"><td>{{u.username}}</td><td>{{u.time}}</td></tr>
+            </tbody>
+          </table>
+        </ng-template>
+        <small class="text-secondary">{{'ACTIVITY.otherUsersNote'|translate}}</small>
+      </section>
+
       <p class="text-secondary activity-note mb-0">{{'ACTIVITY.note'|translate}}</p>
     </div>
   </div>

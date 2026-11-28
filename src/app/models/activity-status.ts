@@ -1,3 +1,10 @@
+/** One row of the list of the other active users (administrators only; no IP, e-mail or ids) */
+export interface ActiveUserDetail {
+  username: string;
+  /** that user's last activity in the window (ISO-8601 UTC, variable fraction of second) */
+  lastActivityAt: string;
+}
+
 /**
  * Operational activity of the server (`GET /api/system/activity`, administrators only). Aggregates only: no user names,
  * sessions or tokens. Per server instance; `observedSince` is reset at every restart. All the instants are UTC ISO-8601
@@ -17,6 +24,11 @@ export interface ActivityStatus {
    * built before it was added do not send it; then only the total is shown. 0 is a real value.
    */
   otherActiveUsers?: number;
+  /**
+   * Optional: one row per distinct user active in the window, the caller excluded by id (same snapshot as
+   * `otherActiveUsers`). Absent or malformed = ignored; empty = nobody else was active. Recent activity, not open sessions.
+   */
+  otherActiveUserDetails?: ActiveUserDetail[];
   /** requests being handled right now on /api, /texto, /lexo (not counting this one) */
   inFlightRequests: number;
   /** last authenticated activity seen by this process, even if older than the window; null = none since the start */

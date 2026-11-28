@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, take, takeUntil } from 'rxjs';
-import { ActivityStatus } from 'src/app/models/activity-status';
+import { ActiveUserDetail, ActivityStatus } from 'src/app/models/activity-status';
 import { SystemService } from 'src/app/services/system.service';
 
 /**
@@ -18,6 +18,8 @@ import { SystemService } from 'src/app/services/system.service';
 export class ActivityStatusComponent implements OnInit, OnDestroy {
   /** last status read, null while it is unknown or unavailable */
   status: ActivityStatus | null = null;
+  /** rows of the list of the other active users; null = the server did not send a usable list (the page shows no list) */
+  otherUsers: { username: string; time: string }[] | null = null;
   /** true when the last reading failed (or the answer was not a valid status) */
   unavailable = false;
   loading = false;
@@ -43,6 +45,7 @@ export class ActivityStatusComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.unavailable = false;
     this.status = null;
+    this.otherUsers = null;
     this.systemService.getActivity().pipe(
       take(1),
       takeUntil(this.unsubscribe$),
@@ -51,6 +54,7 @@ export class ActivityStatusComponent implements OnInit, OnDestroy {
         this.loading = false;
         if (this.isValid(status)) {
           this.status = status;
+          this.otherUsers = this.buildOtherUsers(status.otherActiveUserDetails);
         } else {
           this.unavailable = true;
         }
@@ -77,6 +81,21 @@ export class ActivityStatusComponent implements OnInit, OnDestroy {
       hour: '2-digit', minute: '2-digit', second: '2-digit',
       timeZoneName: 'short',
     });
+  }
+
+  /**
+   * Rows of the list: most recent activity first, then by username (case-sensitive), whatever the order of the server.
+   * A list that is not an array, or with a row without a username, is ignored as a whole (the counts stay valid, so the
+   * page does not become "unavailable"); a row with an invalid time is shown with the username only.
+   */
+  private buildOtherUsers(details: ActiveUserDetail[] | undefined | null): { username: string; time: string }[] | null {
+    if (!Array.isArray(details)) { return null; }
+    if (details.some(d => !d || typeof d.username !== 'string' || !d.username)) { return null; }
+    return details
+      .map(d => ({ username: d.username, date: this.parseInstant(d.lastActivityAt) }))
+      .sort((a, b) => (b.date?.getTime() ?? -Infinity) - (a.date?.getTime() ?? -Infinity)
+        || (a.username < b.username ? -1 : a.username > b.username ? 1 : 0))
+      .map(d => ({ username: d.username, time: d.date ? this.formatInstant(d.date.toISOString()) : '' }));
   }
 
   private parseInstant(instant: string | null | undefined): Date | null {

@@ -3099,7 +3099,7 @@ test.describe('Attivita\' recente', () => {
   test('regressione: Attivita\' recente - voce di menu, valori con orari nel fuso dell\'utente, nessuna attivita\' osservata, stato non disponibile (mai zeri)', async ({ page }) => {
     test.setTimeout(120_000);
     const sent: string[] = [];
-    let answer: 'normale' | 'nessuna' | 'altri-zero' | '500' | 'html' = 'normale';
+    let answer: 'normale' | 'nessuna' | 'altri-zero' | 'lista-rotta' | '500' | 'html' = 'normale';
     await page.route(/\/api\/system\/activity$/, async (route) => {
       const r = route.request();
       sent.push(`${r.method()} ${r.headers()['authorization'] ? 'Bearer' : 'senza-token'}`);
@@ -3112,6 +3112,11 @@ test.describe('Attivita\' recente', () => {
           activeUsers: 3, inFlightRequests: 2,
           // facoltativo: assente nella risposta «nessuna» (build vecchie del server), 0 in «altri-zero»
           ...(answer === 'nessuna' ? {} : { otherActiveUsers: answer === 'altri-zero' ? 0 : 2 }),
+          // elenco facoltativo: fuori ordine nella risposta (il frontend ordina), vuoto, malformato, o assente
+          ...(answer === 'normale' ? { otherActiveUserDetails: [
+            { username: 'zeta', lastActivityAt: '2026-11-28T10:00:00Z' },
+            { username: 'alfa', lastActivityAt: '2026-11-28T10:30:15.987654321Z' },
+          ] } : answer === 'altri-zero' ? { otherActiveUserDetails: [] } : answer === 'lista-rotta' ? { otherActiveUserDetails: 'boh' } : {}),
           lastAuthenticatedActivityAt: answer === 'nessuna' ? null : '2026-11-28T10:42:08.987654321Z',
         }),
       });
@@ -3129,6 +3134,13 @@ test.describe('Attivita\' recente', () => {
     await expect(page.locator('#activityInFlight')).toHaveText('2');
     expect(body).toContain('Altri utenti attivi (oltre a te)');
     await expect(page.locator('#activityOtherUsers'), 'altri utenti (escluso chi consulta)').toHaveText('2');
+    // elenco degli altri utenti: piu' recente per primo, ora locale, senza altri dati
+    const rows = page.locator('#activityUsersList tbody tr');
+    await expect(rows).toHaveCount(2);
+    await expect(rows.nth(0)).toContainText('alfa');
+    await expect(rows.nth(0)).toContainText('11:30:15');
+    await expect(rows.nth(1)).toContainText('zeta');
+    await expect(rows.nth(1)).toContainText('11:00:00');
     // orari UTC mostrati nel fuso del browser (Europe/Rome = CET, UTC+1), frazioni oltre i millisecondi ignorate
     await expect(page.locator('#activityLast')).toContainText('11:42:08');
     await expect(page.locator('#activityLast')).toContainText('28/11/2026');
@@ -3141,11 +3153,19 @@ test.describe('Attivita\' recente', () => {
     await expect(page.locator('#activityLast')).toHaveText(/Nessuna attività osservata dall'avvio del server/);
     await expect(page.locator('#activitySince'), 'l\'inizio dell\'osservazione resta').toContainText('09:00:00');
     await expect(page.locator('#activityOtherUsers'), 'campo assente: solo il totale').toHaveCount(0);
+    await expect(page.locator('#activityUsers'), 'elenco assente: pagina come prima').toHaveCount(0);
     await expect(page.locator('#activityActiveUsers')).toHaveText('3');
     // altri utenti = 0: e' un valore vero e si mostra
     answer = 'altri-zero';
     await page.locator('#activityRefresh').click();
     await expect(page.locator('#activityOtherUsers')).toHaveText('0');
+    await expect(page.locator('#activityUsersEmpty')).toHaveText('Nessun altro utente attivo nel periodo');
+    // elenco malformato: ignorato, i conteggi restano e la pagina non diventa «non disponibile»
+    answer = 'lista-rotta';
+    await page.locator('#activityRefresh').click();
+    await expect(page.locator('#activityActiveUsers')).toHaveText('3');
+    await expect(page.locator('#activityUsers')).toHaveCount(0);
+    await expect(page.locator('#activityUnavailable')).toHaveCount(0);
     // errore: «Stato non disponibile», nessun numero e nessuno zero
     for (const a of ['500', 'html'] as const) {
       answer = a;
