@@ -9,7 +9,7 @@ Dopo ogni modifica rigenerare la copia HTML: `python3 tools/md-to-html.py docume
 
 ---
 
-## Non ancora in un pacchetto (prossimo: da decidere)
+## 0.30.3 (pacchetto per la VM di test) — `dist/maia-fe-0.30.3-test-ng21-20261128-1013.tgz`
 
 - User management: nuova voce «Attività recente» (solo amministratori) che legge `GET /api/system/activity` e mostra gli utenti distinti attivi negli ultimi N minuti (non «utenti connessi»), le richieste in corso, l'ultima attività autenticata (o «Nessuna attività osservata dall'avvio del server») e da quando il server osserva i dati; orari nel fuso del browser; se l'endpoint non risponde o non c'è ancora, «Stato non disponibile» (mai zeri); pulsante «Aggiorna», nessun aggiornamento automatico; non cambia login né logout; se il server manda anche `otherActiveUsers` mostra «Altri utenti attivi (oltre a te)» (0 compreso), altrimenti solo il totale; elenco facoltativo «Altri utenti attivi» (`otherActiveUserDetails`: utente e ora dell'ultima attività, più recente per primo; assente o malformato = non si mostra; vuoto = «Nessun altro utente attivo nel periodo»; attività recente, non sessioni aperte)
 

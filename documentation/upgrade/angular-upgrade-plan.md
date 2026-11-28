@@ -212,7 +212,8 @@ Nessun tag git per queste versioni di test (i tag `vX.Y.Z` restano per i rilasci
 | 0.26.13 | + anteprima della voce: occorrenze in altre opere in ordine crescente (colonna `order`) e parti senza valore nascoste (anche nel PDF) | superata — `dist/old/maia-fe-0.26.13-test-ng21-20261116-1440.tgz`; elenco in `correzioni-post-upgrade.md` |
 | 0.30.0 | **release di produzione** (tutte le modifiche 0.26.x + preparazione al merge: `production: true`, sottotitolo «develop») | in produzione — `dist/maia-fe-0.30.0-prod-20261119-0936.tgz`; elenco in `correzioni-post-upgrade.md` |
 | 0.30.1 | + campo «Proverbi» nella scheda della voce (editor, anteprima, PDF); pulsanti tondi degli Explorer centrati | superata — `dist/old/maia-fe-0.30.1-test-ng21-20261125-1028.tgz`; elenco in `correzioni-post-upgrade.md` |
-| **0.30.2** | + pagina utenti rivista (Salva solo con modifiche, protezioni, elenco con stato e ricerca), aiuto sui caratteri jolly della ricerca con link «Guida per la ricerca», avviso di logout a maia-be (serve l'endpoint nel backend), avviso di disconnessione dopo il login | **attuale (test)** — `dist/maia-fe-0.30.2-test-ng21-20261127-1650.tgz`; elenco in `correzioni-post-upgrade.md` |
+| 0.30.2 | + pagina utenti rivista (Salva solo con modifiche, protezioni, elenco con stato e ricerca), aiuto sui caratteri jolly della ricerca con link «Guida per la ricerca», avviso di logout a maia-be (serve l'endpoint nel backend), avviso di disconnessione dopo il login | superata — `dist/old/maia-fe-0.30.2-test-ng21-20261127-1650.tgz`; elenco in `correzioni-post-upgrade.md` |
+| **0.30.3** | + «Attività recente» in User management (solo amministratori; utenti distinti attivi, richieste in corso, ultima attività, elenco degli altri utenti attivi; serve il backend con `/api/system/activity`) | **attuale (test)** — `dist/maia-fe-0.30.3-test-ng21-20261128-1013.tgz`; elenco in `correzioni-post-upgrade.md` |
 
 ## 6bis. Avanzamento
 
